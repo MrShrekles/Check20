@@ -219,6 +219,88 @@ table tbody td:first-child {
     text-align: center;
 }
 
+.header-subtitle {
+    font-size: 1.5rem;
+    color: var(--cream);
+    text-transform: uppercase;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+nav ul li a:hover {
+    color: var(--darkgold);
+    transition: 0.3s ease;
+}
+
+/* Navigation Panel */
+#navigation {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.nav-section {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.nav-section button {
+    background: var(--theme);
+    color: var(--white);
+    padding: 15px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-transform: uppercase;
+}
+
+.nav-section button:hover {
+    background: var(--theme-hover);
+    box-shadow: var(--box-hover);
+    transition: 0.3s ease-in-out;
+}
+
+/* Warm vs Cool Colors */
+.warm button { background: var(--hate); }
+.cool button { background: var(--theme); }
+
+/* Content Section */
+#content {
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+    background-color: var(--theme-alt);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.splash-screen {
+    width: 100vw;
+    height: auto; /* Adjust as needed */
+    background-size: cover; /* Ensures it fills the area */
+}
+
 /* Flex Container for Grid */
 .flex-container {
     display: flex;
