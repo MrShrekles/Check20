@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armored Noir - Check20</title>
+    <link rel="stylesheet" href="styles/main.css"> <!-- Custom styles -->
+</head>
+
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header class="main-header">
+        <div class="header-container">
+            <h1 class="header-title" style="border-bottom: none;">Armored Noir</h1>
+            <h2 class="header-subtitle">A Check20 Roleplaying Theme</h2>
+            <p class="header-description">
+                Immerse yourself in the shadows and steel of the Armored Noir, a Check20 Roleplaying System that merges
+                intrigue, danger, and tactical depth.
+            </p>
+        </div>
+        <nav>
+            <ul class="tabs">
+                <ul class="tabs">
+                    <li><a href="index.html">Main</a></li>
+                    <li><a href="character.html">Character</a></li>
+                    <li><a href="gear.html">Gear</a></li>
+                    <li><a href="reference.html">Reference</a></li>
+                    <li><a href="worldbuilding.html">Worldbuilding</a></li>
+                    <li><a href="almanac.html">Almanac</a></li>
+                    <li><a href="monsters.html">Monsters</a></li>
+                </ul>
+            </ul>
+        </nav>
+    </header>
+
+        <img src="assets/images/frontsplash.jpg" alt="Character Creation Splash" class="splash-screen">
+
+
+    <!-- Content Display Section -->
+    <section id="content">
+        <p>Select a section to begin.</p>
+    </section>
+
+    <script src="script.js">
+        // Function to switch content sections
+        function navigateTo(section) {
+            const content = document.getElementById('content');
+            let text = "";
+
+            switch (section) {
+                case 'character':
+                    text = "<h2>Character Builder</h2><p>Build and manage characters.</p>";
+                    break;
+                case 'gear':
+                    text = "<h2>Gear & Crafting</h2><p>Manage weapons, armor, and upgrades.</p>";
+                    break;
+                case 'reference':
+                    text = "<h2>Reference Rules</h2><p>Look up game mechanics and conditions.</p>";
+                    break;
+                case 'generators':
+                    text = "<h2>Generators & Tables</h2><p>Randomized content for NPCs, businesses, and more.</p>";
+                    break;
+                case 'campaign':
+                    text = "<h2>Campaign Guide</h2><p>Worldbuilding, quests, and faction info.</p>";
+                    break;
+                case 'monsters':
+                    text = "<h2>Monster Bestiary</h2><p>View and create creatures.</p>";
+                    break;
+                default:
+                    text = "<p>Select a section to begin.</p>";
+            }
+
+            content.innerHTML = text;
+        }
+
+        // Dice roller functionality
+        document.getElementById('rollDice').addEventListener('click', function () {
+            let roll = Math.floor(Math.random() * 20) + 1;
+            alert("You rolled a " + roll + "!");
+        });
+
+    </script> <!-- JavaScript for interactivity -->
+</body>
+
+</html>
