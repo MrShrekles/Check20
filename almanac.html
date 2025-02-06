@@ -1,30 +1,979 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Almanac | Armored Noir - Check20</title>
+    <title>Check20 Wiki</title>
     <link rel="stylesheet" href="styles/main.css">
-    <script src="scripts/main.js" defer></script>
+    <script src="scripts/narrator-tools.js" defer></script>
 </head>
-<body class="almanac-page">
+
+<body>
     <header class="main-header">
-        <h1 class="header-title">Storyteller's Almanac</h1>
-        <nav class="flex-container">
-            <a href="index.html" class="nav-link">Main</a>
-            <a href="front.html" class="nav-link">Home</a>
-            <a href="character.html" class="nav-link">Character</a>
-            <a href="gear.html" class="nav-link">Gear</a>
-            <a href="reference.html" class="nav-link">Reference</a>
-            <a href="worldbuilding.html" class="nav-link">Worldbuilding</a>
-            <a href="almanac.html" class="nav-link">Almanac</a>
-            <a href="monsters.html" class="nav-link">Monsters</a>
-            <a href="spellcasting.html" class="nav-link">Spellcasting</a>
-        </nav>
+        <h1 class="header-title">Worldbuilding</h1>
+        <div class="flex-container">
+            <div class="flex-item">
+                <a href="index.html" class="nav-link">Main</a>
+            </div>
+            <div class="flex-item">
+                <a href="character.html" class="nav-link">Character</a>
+            </div>
+            <div class="flex-item">
+                <a href="gear.html" class="nav-link">Gear</a>
+            </div>
+            <div class="flex-item">
+                <a href="reference.html" class="nav-link">Reference</a>
+            </div>
+
+            <div class="flex-item">
+                <a href="monsters.html" class="nav-link">Monsters</a>
+            </div>
+            <div class="flex-item">
+                <a href="spellcasting.html" class="nav-link">Spellcasting</a>
+            </div>
+        </div>
     </header>
 
-    <main>
-        <!-- Almanac content goes here -->
-    </main>
+    <section>
+        <h2>NPC Generator</h2>
+        <!-- NPC Generator 1 -->
+        <div class="flex-container">
+            <div class="flex-gen" id="generator-1">
+                <div class="flex-pop">
+                    <button id="generate-name-btn-1">Name</button>
+                    <div id="generated-name-1" class="display-box">[Generated Name]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-species-btn-1">Species</button>
+                    <div id="generated-species-1" class="display-box">[Generated Species]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-history-btn-1">Affinity</button>
+                    <div id="generated-history-1" class="display-box">[Generated Affinity]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-religion-btn-1">Religion</button>
+                    <div id="generated-religion-1" class="display-box">[Generated Religion]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-item-btn-1">Signature Item</button>
+                    <div id="generated-item-1" class="display-box">[Generated Item]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-motivation-btn-1">Motivation</button>
+                    <div id="generated-motivation-1" class="display-box">[Generated Motivation]</div>
+                </div>
+                <div class="flex-pop full-width">
+                    <button id="generate-all-btn-1">Generate All</button>
+                </div>
+            </div>
+
+            <!-- NPC Generator 2 -->
+            <div class="flex-gen" id="generator-2">
+                <div class="flex-pop">
+                    <button id="generate-name-btn-2">Name</button>
+                    <div id="generated-name-2" class="display-box">[Generated Name]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-species-btn-2">Species</button>
+                    <div id="generated-species-2" class="display-box">[Generated Species]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-history-btn-2">Affinity</button>
+                    <div id="generated-history-2" class="display-box">[Generated Affinity]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-religion-btn-2">Religion</button>
+                    <div id="generated-religion-2" class="display-box">[Generated Religion]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-item-btn-2">Signature Item</button>
+                    <div id="generated-item-2" class="display-box">[Generated Item]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-motivation-btn-2">Motivation</button>
+                    <div id="generated-motivation-2" class="display-box">[Generated Motivation]</div>
+                </div>
+                <div class="flex-pop full-width">
+                    <button id="generate-all-btn-2">Generate All</button>
+                </div>
+            </div>
+
+            <!-- NPC Generator 3 -->
+            <div class="flex-gen" id="generator-3">
+                <div class="flex-pop">
+                    <button id="generate-name-btn-3">Name</button>
+                    <div id="generated-name-3" class="display-box">[Generated Name]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-species-btn-3">Species</button>
+                    <div id="generated-species-3" class="display-box">[Generated Species]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-history-btn-3">Affinity</button>
+                    <div id="generated-history-3" class="display-box">[Generated Affinity]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-religion-btn-3">Religion</button>
+                    <div id="generated-religion-3" class="display-box">[Generated Religion]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-item-btn-3">Signature Item</button>
+                    <div id="generated-item-3" class="display-box">[Generated Item]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-motivation-btn-3">Motivation</button>
+                    <div id="generated-motivation-3" class="display-box">[Generated Motivation]</div>
+                </div>
+                <div class="flex-pop full-width">
+                    <button id="generate-all-btn-3">Generate All</button>
+                </div>
+            </div>
+
+            <!-- NPC Generator 4 -->
+            <div class="flex-gen" id="generator-4">
+                <div class="flex-pop">
+                    <button id="generate-name-btn-4">Name</button>
+                    <div id="generated-name-4" class="display-box">[Generated Name]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-species-btn-4">Species</button>
+                    <div id="generated-species-4" class="display-box">[Generated Species]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-history-btn-4">Affinity</button>
+                    <div id="generated-history-4" class="display-box">[Generated Affinity]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-religion-btn-4">Religion</button>
+                    <div id="generated-religion-4" class="display-box">[Generated Religion]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-item-btn-4">Signature Item</button>
+                    <div id="generated-item-4" class="display-box">[Generated Item]</div>
+                </div>
+                <div class="flex-pop">
+                    <button id="generate-motivation-btn-4">Motivation</button>
+                    <div id="generated-motivation-4" class="display-box">[Generated Motivation]</div>
+                </div>
+                <div class="flex-pop full-width">
+                    <button id="generate-all-btn-4">Generate All</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <details>
+        <summary>
+            Businesses
+        </summary>
+
+        <section>
+            <div class="flex-container">
+                <div class="flex-gen business-generator">
+                    <div class="flex-pop">
+                        <button class="generate-business-name-btn">Business Name</button>
+                        <div class="display-box generated-business-name">[Generated Business Name]</div>
+                    </div>
+                    <div class="flex-pop">
+                        <button class="generate-owner-btn">Owner</button>
+                        <div class="display-box generated-owner">[Generated Owner]</div>
+                    </div>
+                    <div class="flex-pop">
+                        <button class="generate-reputation-btn">Reputation</button>
+                        <div class="display-box generated-reputation">[Generated Reputation]</div>
+                    </div>
+                    <div class="flex-pop">
+                        <button class="generate-secret-btn">Secret</button>
+                        <div class="display-box generated-secret">[Generated Secret]</div>
+                    </div>
+                    <div class="flex-pop full-width">
+                        <button class="generate-all-business-btn">Generate All</button>
+                    </div>
+                </div>
+
+                <div class="flex-gen business-generator">
+                    <div class="flex-pop">
+                        <button class="generate-business-name-btn">Business Name</button>
+                        <div class="display-box generated-business-name">[Generated Business Name]</div>
+                    </div>
+                    <div class="flex-pop">
+                        <button class="generate-owner-btn">Owner</button>
+                        <div class="display-box generated-owner">[Generated Owner]</div>
+                    </div>
+                    <div class="flex-pop">
+                        <button class="generate-reputation-btn">Reputation</button>
+                        <div class="display-box generated-reputation">[Generated Reputation]</div>
+                    </div>
+                    <div class="flex-pop">
+                        <button class="generate-secret-btn">Secret</button>
+                        <div class="display-box generated-secret">[Generated Secret]</div>
+                    </div>
+                    <div class="flex-pop full-width">
+                        <button class="generate-all-business-btn">Generate All</button>
+                    </div>
+                </div>
+                <div class="flex-gen business-generator">
+                    <div class="flex-pop">
+                        <button class="generate-business-name-btn">Business Name</button>
+                        <div class="display-box generated-business-name">[Generated Business Name]</div>
+                    </div>
+                    <div class="flex-pop">
+                        <button class="generate-owner-btn">Owner</button>
+                        <div class="display-box generated-owner">[Generated Owner]</div>
+                    </div>
+                    <div class="flex-pop">
+                        <button class="generate-reputation-btn">Reputation</button>
+                        <div class="display-box generated-reputation">[Generated Reputation]</div>
+                    </div>
+                    <div class="flex-pop">
+                        <button class="generate-secret-btn">Secret</button>
+                        <div class="display-box generated-secret">[Generated Secret]</div>
+                    </div>
+                    <div class="flex-pop full-width">
+                        <button class="generate-all-business-btn">Generate All</button>
+                    </div>
+                </div>
+                <div class="flex-gen business-generator">
+                    <div class="flex-pop">
+                        <button class="generate-business-name-btn">Business Name</button>
+                        <div class="display-box generated-business-name">[Generated Business Name]</div>
+                    </div>
+                    <div class="flex-pop">
+                        <button class="generate-owner-btn">Owner</button>
+                        <div class="display-box generated-owner">[Generated Owner]</div>
+                    </div>
+                    <div class="flex-pop">
+                        <button class="generate-reputation-btn">Reputation</button>
+                        <div class="display-box generated-reputation">[Generated Reputation]</div>
+                    </div>
+                    <div class="flex-pop">
+                        <button class="generate-secret-btn">Secret</button>
+                        <div class="display-box generated-secret">[Generated Secret]</div>
+                    </div>
+                    <div class="flex-pop full-width">
+                        <button class="generate-all-business-btn">Generate All</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </details>
+
+    <section>
+        <div class="flex-gen" id="character-question-generator">
+            <div class="flex-pop">
+                <button id="generate-question-btn">Generate Question</button>
+                <div id="generated-question" class="display-box">[Your Character's Question]</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Narrator Guide Section -->
+    <section>
+        <h1>Narrator Guide</h1>
+        <p>As a narrator, you are the architect of the story and world. This guide includes advice on
+            setting up
+            challenges, balancing mechanics, and facilitating immersive gameplay.</p>
+
+        <div class="two-column">
+            <div class="column">
+                <h2>Enemies and NPCs</h2>
+                <p>The Power Level (PL) system provides a simple and effective way to create and manage
+                    monsters,
+                    enemies, and NPCs. This system allows narrators to quickly generate creatures with
+                    appropriate
+                    stats for any encounter, ensuring balance and flexibility.</p>
+
+                <summary>Basic Mechanics</summary>
+                <div class="features">
+                    <h4>Basic Mechanics</h4>
+                    <ul>
+                        <li><strong>Standard Check:</strong> Roll 1d6 + Power Level (PL) for all checks.
+                            Specific bonuses may apply for special creatures.</li>
+                        <li><strong>Standard Damage:</strong> Roll 1d6 + PL for damage, choosing a logical
+                            type
+                            based on the creature.</li>
+                        <li><strong>Capacity: </strong> Capacity is a number of reactions, condition removals, special
+                            actions, or plot
+                            moments for combat. If this is a traveling NPC or vehicle, these recover after 1 on Press On
+                            and all
+                            on a Long Rest.</li>
+                        <li><strong>HP:</strong> Instead of Armor and Wounds, npcs and monsters have HP which is a
+                            number of points of damage they can take before becoming dead. Monsters do not take the
+                            Injured condition, but you could allow an important NPC to have the INjured condiiton</li>
+                        <li><strong>Number of Attacks:</strong> A monster could have a numnber of attacks equal to
+                            Capacity divided by 3 (minimum of 1), rounded down </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="column">
+                <div class="features">
+                    <h4>Creature Table</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Creature</th>
+                                <th>Power</th>
+                                <th>HP</th>
+                                <th>Capacity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Harmless</td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Fragile</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Weak</td>
+                                <td>2</td>
+                                <td>4</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Average</td>
+                                <td>3</td>
+                                <td>9</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>Formidable</td>
+                                <td>4</td>
+                                <td>16</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>Strong</td>
+                                <td>5</td>
+                                <td>25</td>
+                                <td>8</td>
+                            </tr>
+                            <tr>
+                                <td>Mighty</td>
+                                <td>6</td>
+                                <td>36</td>
+                                <td>12</td>
+                            </tr>
+                            <tr>
+                                <td>Elite</td>
+                                <td>7</td>
+                                <td>49</td>
+                                <td>16</td>
+                            </tr>
+                            <tr>
+                                <td>Champion</td>
+                                <td>8</td>
+                                <td>64</td>
+                                <td>21</td>
+                            </tr>
+                            <tr>
+                                <td>Legendary</td>
+                                <td>9</td>
+                                <td>81</td>
+                                <td>27</td>
+                            </tr>
+                            <tr>
+                                <td>Mythic</td>
+                                <td>10</td>
+                                <td>100</td>
+                                <td>33</td>
+                            </tr>
+                            <tr>
+                                <td>Godlike</td>
+                                <td>15</td>
+                                <td>225</td>
+                                <td>75</td>
+                            </tr>
+                            <tr>
+                                <td>Cosmic</td>
+                                <td>20</td>
+                                <td>400</td>
+                                <td>133</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <details>
+        <summary>Abilities</summary>
+        <div class="features">
+            <details>
+                <summary>Defensive Abilities</summary>
+                <ul>
+                    <li><strong>Hardened Carapace (Passive):</strong> Increases armor by 10 x PL.
+                    </li>
+                    <li><strong>Counterstrike (Reaction):</strong> On being attacked, the monster
+                        can
+                        make an immediate attack against the aggressor, spending a capacity point.
+                    </li>
+                    <li><strong>Regeneration (Special Ability):</strong> Regains health 1d(PL) or
+                        (PL)d4+ at the start of its turn.</li>
+                </ul>
+            </details>
+            <details>
+                <summary>Utility Abilities</summary>
+                <ul>
+                    <li><strong>Terrifying Roar (Action):</strong> Inflicts the Fear condition on
+                        enemies within range.</li>
+                    <li><strong>Burrow (Half-Action):</strong> Allows movement underground to avoid
+                        attacks and emerge for an unexpected strike.</li>
+                    <li><strong>Summon Minions (Action):</strong> Summons lesser creatures to aid in
+                        combat (e.g., 1d4, 2d6, or 3d8 based on PL).</li>
+                </ul>
+            </details>
+            <details>
+                <summary>Special Attacks</summary>
+                <ul>
+                    <li><strong>Grapple (Action):</strong> Attempts to seize and immobilize an
+                        opponent.
+                    </li>
+                    <li><strong>Swallow Whole (Action):</strong> Consumes a smaller creature,
+                        dealing
+                        internal and acid damage.</li>
+                    <li><strong>Blast Wave (Action):</strong> Releases a shockwave that damages and
+                        knocks back all nearby foes.</li>
+                </ul>
+            </details>
+            <details>
+                <summary>Reaction Abilities</summary>
+                <ul>
+                    <li><strong>Retaliate (Reaction):</strong> Strikes back at an attacker when hit
+                        by a
+                        close-range attack.</li>
+                    <li><strong>Absorb Spell (Reaction):</strong> Absorbs an incoming spell,
+                        converting
+                        it into health or energy at the cost of a capacity point.</li>
+                </ul>
+            </details>
+        </div>
+    </details>
+    </section>
+    </details>
+
+    <!-- Locks n Traps -->
+    <section>
+        <h1>Locks & Traps</h1>
+        <div class="two-column">
+            <div class="column">
+                <ul>
+                    <li>
+                        <strong>Mundane Lock & Physical Key:</strong>
+                        A standard lock that requires a traditional <em>Physical Key</em>. It can range from
+                        basic padlocks to more complex tumbler mechanisms. These locks are susceptible to
+                        lockpicking or brute force.
+                    </li>
+                    <li>
+                        <strong>Blood Lock & Blood Key:</strong>
+                        A <em>Blood Lock</em> requires the touch of blood to open. Depending on the
+                        difficulty,
+                        it might require the blood of a specific creature, a creature type, or just any
+                        generic
+                        blood. A <em>Blood Key</em> often takes the form of a dagger-like object that
+                        requires a
+                        cut to activate, channeling the essence of the wielder into the lock.
+                    </li>
+                    <li>
+                        <strong>Soul Lock & Soul Key:</strong>
+                        A <em>Soul Lock</em> remains closed until touched by a specific soul linked to it. In
+                        more challenging versions, a soul must be sacrificed for the lock to open. The
+                        corresponding <em>Soul Key</em> may manifest as an enchanted crystal or token
+                        infused
+                        with the required soul or spiritual essence.
+                    </li>
+                    <li>
+                        <strong>Trap Rune Lock & Rune Key:</strong>
+                        A <em>Trap Rune Lock</em> detonates when tampered with, layering protective runes
+                        that
+                        require an <em>Arcane Rune Key</em> to disarm. The key itself is often a magical
+                        glyph
+                        or talisman that matches the runes’ inscription.
+                    </li>
+                    <li>
+                        <strong>Construct Mimic Lock & Password:</strong>
+                        The <em>Construct Mimic Lock</em> is a sentient mechanism resembling a lock but
+                        requiring
+                        a specific password to deactivate. The lock may interact with those attempting to
+                        open
+                        it, even bargaining or testing them for entry.
+                    </li>
+                    <li>
+                        <strong>Illusionary Lock & Perception:</strong>
+                        An <em>Illusionary Lock</em> appears real but is not truly locked. Often, it hides a
+                        secondary trap, tricking the unwary into ignoring other dangers. Observant
+                        individuals
+                        or those skilled in perception can identify it for what it is.
+                    </li>
+                    <li>
+                        <strong>Tech Lock & Code Key:</strong>
+                        A <em>Tech Lock</em> incorporates advanced mechanisms such as keypads, fingerprint
+                        readers, or voice-activated commands. These locks require a <em>Code Key</em>, which
+                        might be a passphrase, biometric data, or a specific tool like a data chip.
+                    </li>
+                    <li>
+                        <strong>Basic Magic Lock & Spell Key:</strong>
+                        This lock relies on simple magical energy and requires a basic incantation or a
+                        low-power
+                        spell to unlock. The <em>Spell Key</em> might be a single word of power or a
+                        specific
+                        hand motion.
+                    </li>
+                    <li>
+                        <strong>Celestial Lock & Star Key:</strong>
+                        A <em>Celestial Lock</em> glimmers with divine light or cosmic energy. It can only be
+                        opened with a <em>Star Key</em>, which might take the form of a constellation map, a
+                        blessed object, or a mote of starlight.
+                    </li>
+                    <li>
+                        <strong>Chaos Lock & Entropy Key:</strong>
+                        A swirling, unpredictable <em>Chaos Lock</em> shifts and changes form, preventing
+                        easy
+                        access. The <em>Entropy Key</em> is equally erratic, requiring a random or illogical
+                        approach to use properly.
+                    </li>
+                    <li>
+                        <strong>Chronomancy Lock & Temporal Key:</strong>
+                        A <em>Chronomancy Lock</em> is bound by time itself, only accessible at specific
+                        moments
+                        or when manipulated with a <em>Temporal Key</em>, such as a clockwork device or a
+                        relic
+                        attuned to time magic.
+                    </li>
+                    <li>
+                        <strong>Crystal Lock & Resonance Key:</strong>
+                        Crafted from shimmering crystal, the <em>Crystal Lock</em> resonates with specific
+                        frequencies. A <em>Resonance Key</em>, often a crystal shard or tuning fork, must
+                        match
+                        the lock's frequency to open it.
+                    </li>
+                    <li>
+                        <strong>Dragon Lock & Wyrm Key:</strong>
+                        Guarded by ancient draconic magic, the <em>Dragon Lock</em> often requires the breath
+                        or
+                        blood of a dragon to unlock. A <em>Wyrm Key</em> might be a scale, a claw, or a
+                        sigil
+                        carved in the language of dragons.
+                    </li>
+                    <li>
+                        <strong>Elemental Lock & Element Key:</strong>
+                        The <em>Elemental Lock</em> binds its magic to one of the primal forces (fire, water,
+                        air, or earth). The <em>Element Key</em> could be a manifestation of the element,
+                        such
+                        as a flame, a vial of water, or a stone from a sacred place.
+                    </li>
+                    <li>
+                        <strong>Nature Lock & Grove Key:</strong>
+                        A <em>Nature Lock</em> thrives with vines, wood, or blooming flowers. It requires a
+                        <em>Grove Key</em>, such as a sacred leaf, a druid's token, or a whispered prayer to
+                        the
+                        forest spirits.
+                    </li>
+                    <li>
+                        <strong>Vozian Lock & Infernal Key:</strong>
+                        A dark and malevolent <em>Vozian Lock</em> pulses with infernal energy. It requires
+                        an
+                        <em>Infernal Key</em>, often a cursed artifact or a pact with an evil entity, to
+                        open.
+                    </li>
+
+                </ul>
+            </div>
+            <div class="column">
+                <h3>Trap Power Levels (PL)</h3>
+                <p>Trap PL is a modular system that allows narrators to scale traps for their desired level of
+                    danger or challenge. Each PL adds to the damage, range, or complexity of a trap. Use the
+                    following guidelines to adapt traps:</p>
+                <ul>
+                    <li><strong>Damage:</strong> Traps deal <code>1d6</code> damage per PL (e.g., a PL 2 trap
+                        deals
+                        <code>2d6</code> damage).
+                    </li>
+                    <li><strong>Range:</strong> Trap effects scale by area or target range. A PL 1 trap has a
+                        range
+                        of 5 ft, increasing by +5 ft per PL. For example, a PL 10 trap would affect a 50 ft
+                        radius.
+                    </li>
+                    <li><strong>+Table:</strong> Every 3 PL adds a roll on the +Table for the damage type of the
+                        trap. For example, a PL 3 trap would act similarly to a Success+ on a weapon attack,
+                        adding
+                        effects like conditions or bonus damage.</li>
+                    <li><strong>Disarm:</strong> Traps can typically be disarmed with either a Physical check
+                        (e.g.,
+                        Agility or Strength) or a Mental check (e.g., Intellect or Spirit), depending on the
+                        trap
+                        type.</li>
+                </ul>
+
+                <h4>Generic Trap Types</h4>
+                <p>Below are common trap concepts for narrators to customize. Apply damage types, conditions, or
+                    thematic elements as needed.</p>
+                <ul>
+                    <li>
+                        <strong>Dart Trap: </strong>A hidden mechanism fires a projectile when triggered. Damage
+                        type can be chosen by the narrator (e.g., Toxic, Piercing, Fire).
+                    </li>
+                    <li>
+                        <strong>Rune Trap:</strong>
+                        Magical symbols activate when disturbed, unleashing effects like explosions, curses, or
+                        elemental damage. Narrators can define the damage type (e.g., Fire, Lightning, or
+                        Psychic).
+                    </li>
+                    <li>
+                        <strong>Trap Door:</strong>
+                        A concealed mechanism drops the target into a pit or hazard. Damage type depends on the
+                        environment (e.g., Impact, Spikes, or Lava).
+                    </li>
+                    <li>
+                        <strong>Gas Trap:</strong>
+                        Releases a harmful cloud when triggered. Narrators can specify conditions (e.g.,
+                        Coughing,
+                        Poisoned) and damage type (e.g., Toxic or Eclipse).
+                    </li>
+                    <li>
+                        <strong>Net Trap:</strong>
+                        Launches a net to immobilize targets, applying the <em>Pinned</em> condition. Narrators
+                        can
+                        add enhancements like barbs (Piercing damage) or elemental effects.
+                    </li>
+                    <li>
+                        <strong>Illusion Trap:</strong>
+                        Creates a deceptive or disorienting visual or auditory effect. Can impose conditions
+                        like
+                        <em>Blind</em>, <em>Confused</em>, or <em>Fear</em>.
+                    </li>
+                    <li>
+                        <strong>Explosive Trap:</strong>
+                        Triggers an area-of-effect blast. Damage type can range from Fire to Thunder or even
+                        Vozian
+                        for infernal-themed traps.
+                    </li>
+                </ul>
+
+                <h4>Trap Customization Ideas</h4>
+                <ul>
+                    <li><strong>Conditions:</strong> Add conditions like <em>Coughing</em>, <em>Prone</em>, or
+                        <em>Blinded</em> to enhance the trap’s complexity.
+                    </li>
+                    <li><strong>Triggers:</strong> Traps can be triggered by pressure plates, tripwires, magical
+                        detection, or proximity.</li>
+                    <li><strong>Themes:</strong> Adjust the theme of traps to fit your setting (e.g.,
+                        jungle-themed
+                        vine traps, steampunk clockwork mechanisms, or infernal traps with cursed effects).</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- merchant stuff  -->
+    <section>
+        <div class="two-column">
+            <div class="column">
+                <h2>Merchant: Masters of Downtime</h2>
+                <p>The Merchant class thrives not in battle, but in the spaces between. Downtime is their domain,
+                    where
+                    they build empires, craft unique goods, and influence the game world through cunning negotiation
+                    and
+                    resource management. Their impact on the narrative comes from creating opportunities, solving
+                    problems with commerce, and shaping the economy around them.</p>
+
+                <h3>Merchant Conflict Hooks</h3>
+                <p>As a merchant grows in power, their actions may disrupt local economies or provoke powerful
+                    factions.
+                    Here are potential challenges and hooks:</p>
+                <ul>
+                    <li><strong>Criminal Syndicates:</strong> A faction sabotages operations with extortion or
+                        espionage, targeting trade routes or assets.</li>
+                    <li><strong>Merchant Guilds:</strong> Rival merchants or guilds lobby to impose regulations
+                        or
+                        dismantle monopolies.</li>
+                    <li><strong>Economic Collapse:</strong> Rapid expansion causes market instability, leading
+                        to
+                        price
+                        crashes or resource shortages.</li>
+                    <li><strong>Rebellion:</strong> Workers or customers revolt against unethical practices,
+                        requiring
+                        the merchant to address labor disputes or PR crises.</li>
+                    <li><strong>Political Intrigue:</strong> Nobles or governing bodies court the merchant for
+                        alliances, seeking influence over their wealth and network.</li>
+                </ul>
+
+                <h3>Merchant Reputation System</h3>
+                <p>A merchant’s reputation shapes their interactions with the world, from loyal customers to
+                    envious
+                    rivals. Reputation can be tracked as a tiered system:</p>
+                <ul>
+                    <li><strong>Tier 1 (Neutral):</strong> No special bonuses or penalties; standard market
+                        interactions.</li>
+                    <li><strong>Tier 2 (Respected):</strong> Merchants and buyers trust the player, offering
+                        minor
+                        discounts or favors.</li>
+                    <li><strong>Tier 3 (Trusted):</strong> Access to restricted markets, exclusive goods, or
+                        secret
+                        trade deals.</li>
+                    <li><strong>Tier 4 (Influential):</strong> Political figures or guilds seek alliances;
+                        rivals
+                        become
+                        increasingly hostile.</li>
+                    <li><strong>Tier 5 (Legendary):</strong> The merchant becomes a household name, influencing
+                        economies, nations, and even world events.</li>
+                </ul>
+                <h3>Merchant-Themed Quests</h3>
+                <p>Merchants often drive quests that revolve around their goals or conflicts:</p>
+                <ul>
+                    <li><strong>Supply Chain Disruption:</strong> Bandits or monsters block a critical trade
+                        route,
+                        halting business.</li>
+                    <li><strong>Hostile Takeover:</strong> A rival attempts to seize control of a merchant’s
+                        assets,
+                        requiring investigation or sabotage to counter.</li>
+                    <li><strong>Black Market Deals:</strong> The merchant must decide whether to engage in risky
+                        or
+                        illegal trade for immense profits.</li>
+                    <li><strong>Economic War:</strong> Compete against another merchant to dominate a market,
+                        leading to
+                        intrigue, sabotage, or alliances.</li>
+                    <li><strong>Crafting Challenge:</strong> A high-profile client commissions a unique item,
+                        requiring
+                        rare materials and tight deadlines.</li>
+                </ul>
+
+                <h3>Merchant Role in Party Dynamics</h3>
+                <p>Merchants contribute to their party in diverse ways, emphasizing creativity and
+                    collaboration:
+                </p>
+                <ul>
+                    <li><strong>Resource Management:</strong> Merchants can provide access to rare items,
+                        healing
+                        potions, or magical gear.</li>
+                    <li><strong>Economic Leverage:</strong> Their wealth can bribe enemies, fund operations, or
+                        sway
+                        political outcomes.</li>
+                    <li><strong>Social Connections:</strong> Merchants often have extensive networks, offering
+                        the
+                        party
+                        access to information, favors, or safe havens.</li>
+                    <li><strong>Non-Combat Options:</strong> Merchants excel in resolving conflicts through
+                        negotiation,
+                        trade, or cunning schemes.</li>
+                </ul>
+            </div>
+            <div class="column">
+                <h3>Merchant Downtime Activities</h3>
+                <p>During downtime, merchants can engage in activities that enrich the narrative and offer
+                    unique
+                    gameplay opportunities:</p>
+                <ul>
+                    <li><strong>Market Expansion:</strong> Establish new trade routes or expand operations into
+                        untapped
+                        regions. Success opens up new resources but may draw competition or attention from rival
+                        factions.</li>
+                    <li><strong>Crafting:</strong> Use skills like alchemy or blacksmithing to create unique
+                        items.
+                        High-quality or rare goods could attract buyers, leading to side quests or encounters.
+                    </li>
+                    <li><strong>Negotiation:</strong> Broker deals, forge alliances, or settle disputes.
+                        Successful
+                        negotiations might provide discounts, rare materials, or political favor.</li>
+                    <li><strong>Speculation:</strong> Invest in goods or businesses to manipulate the economy.
+                        Risk-reward scenarios can lead to significant profits—or devastating losses.</li>
+                    <li><strong>Infrastructure Projects:</strong> Build facilities like warehouses, workshops,
+                        or
+                        trade
+                        hubs. These structures provide tangible benefits, such as faster crafting or increased
+                        inventory
+                        capacity.</li>
+                    <li><strong>Merchant Intrigue:</strong> Hire spies or informants to gather intel on
+                        competitors,
+                        governments, or criminal organizations. This information could be leveraged for personal
+                        gain or
+                        to avoid conflict.</li>
+                </ul>
+
+                <h3>Guild Motivations Table</h3>
+                <p>Merchants frequently interact with guilds, whose motivations shape the economic and social
+                    landscape:
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Guild Type</th>
+                            <th>Motivation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Artisan Guild</td>
+                            <td>Preserve tradition and innovation.</td>
+                        </tr>
+                        <tr>
+                            <td>Alchemist Guild</td>
+                            <td>Ensure safety and ethical trade of potions.</td>
+                        </tr>
+                        <tr>
+                            <td>Thieves Guild</td>
+                            <td>Undermine powerful merchants for profit.</td>
+                        </tr>
+                        <tr>
+                            <td>Merchant Alliance</td>
+                            <td>Protect markets from monopolies or exploitation.</td>
+                        </tr>
+                        <tr>
+                            <td>Explorers Guild</td>
+                            <td>Open new trade routes and access rare resources.</td>
+                        </tr>
+                        <tr>
+                            <td>Bankers Guild</td>
+                            <td>Control the flow of wealth and ensure financial stability.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+    </section>
+
+        <!-- Downtime -->
+<section>
+    <h2>Downtime Activities</h2>
+                <p>Roll 1d8 to determine resource yield for fishing, hunting, or crafting:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Roll</th>
+                            <th>Outcome</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Catch nothing.</td>
+                        </tr>
+                        <tr>
+                            <td>2-3</td>
+                            <td>Small catch; minor materials.</td>
+                        </tr>
+                        <tr>
+                            <td>4-5</td>
+                            <td>Moderate; usable in crafting.</td>
+                        </tr>
+                        <tr>
+                            <td>6-7</td>
+                            <td>Rare find; worth [[2d10]] gold.</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Exotic/Legendary material.</td>
+                        </tr>
+                    </tbody>
+                </table>
+</section>
+
+        <!-- Lore Section -->
+        <details>
+            <summary>Lore</summary>
+            <section>
+                <h2>Deities</h2>
+                <p>The world of Check20 is shaped by a pantheon of gods and deities. Each represents unique
+                    aspects
+                    of
+                    existence and influences the world through their followers and myths.</p>
+            </section>
+        </details>
+
+        <!-- Sidebar -->
+<div id="sidebar" class="closed">
+    <button id="toggle-sidebar">Tools</button>
+    <div id="sidebar-content">
+
+        <!-- Dice Roller -->
+        <div id="dice-roller">
+            <h3>Dice Roller</h3>
+            <form id="dice-roller-form">
+                <div class="flex-container">
+                    <div class="flex-item">
+                        <label for="number-of-dice">Number of Dice:</label>
+                        <input type="number" id="number-of-dice" min="1" value="1" style="width: 50px;" />
+                    </div>
+
+                    <div class="flex-item">
+                        <label for="dice-type">Dice Type:</label>
+                        <select id="dice-type" style="width: 50px;">
+                            <option value="4">d4</option>
+                            <option value="6" selected>d6</option>
+                            <option value="8">d8</option>
+                            <option value="10">d10</option>
+                            <option value="12">d12</option>
+                            <option value="20">d20</option>
+                            <option value="100">d100</option>
+                        </select>
+                    </div>
+                    <div class="flex-item">
+                        <label for="modifier">Modifier:</label>
+                        <input type="number" id="modifier" value="0" style="width: 50px;" />
+                    </div>
+                    <div class="flex-item">
+                        <label for="advantage">Advantage/Disadvantage:</label>
+                        <select id="advantage">
+                            <option value="none" selected>None</option>
+                            <option value="advantage">Advantage</option>
+                            <option value="disadvantage">Disadvantage</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="button" id="roll-dice">Roll</button>
+            </form>
+            <h4>Roll History</h4>
+            <ul id="roll-history">
+                <!-- Roll results will be appended here -->
+            </ul>
+        </div>
+
+        <!-- D20 Check Roller -->
+        <div id="d20-check-roller">
+            <h3>D20 Check Roller</h3>
+            <form id="d20-check-roller-form">
+                <div class="flex-container">
+                    <div class="flex-item">
+                        <label for="check-modifier">Modifier:</label>
+                        <input type="number" id="check-modifier" value="0" style="width: 50px;" />
+                    </div>
+
+                    <div class="flex-item">
+                        <label for="check-advantage">Advantage or Disadvantage:</label>
+                        <select id="check-advantage">
+                            <option value="none" selected>None</option>
+                            <option value="advantage">Advantage</option>
+                            <option value="disadvantage">Disadvantage</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="button" id="roll-d20-check">Roll</button>
+            </form>
+
+            <h4>Check History</h4>
+            <ul id="check-history">
+                <!-- Roll results will be appended here -->
+            </ul>
+        </div>
+        <!-- Open Sidebar Button -->
+        <button id="open-sidebar">Tools</button>
+    </div>
+</div>
+
 </body>
+
 </html>
