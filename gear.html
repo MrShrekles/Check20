@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,24 +8,2167 @@
     <link rel="stylesheet" href="styles/main.css">
     <script src="scripts/main.js" defer></script>
 </head>
+
 <body class="gear-page">
     <header class="main-header">
         <h1 class="header-title">Gear</h1>
-        <nav class="flex-container">
-            <a href="index.html" class="nav-link">Main</a>
-            <a href="front.html" class="nav-link">Home</a>
-            <a href="character.html" class="nav-link">Character</a>
-            <a href="gear.html" class="nav-link">Gear</a>
-            <a href="reference.html" class="nav-link">Reference</a>
-            <a href="worldbuilding.html" class="nav-link">Worldbuilding</a>
-            <a href="almanac.html" class="nav-link">Almanac</a>
-            <a href="monsters.html" class="nav-link">Monsters</a>
-            <a href="spellcasting.html" class="nav-link">Spellcasting</a>
-        </nav>
+        <div class="flex-container">
+            <div class="flex-item">
+                <a href="front.html" class="nav-link">Home</a>
+            </div>
+            <div class="flex-item">
+                <a href="index.html" class="nav-link">Main</a>
+            </div>
+            <div class="flex-item">
+                <a href="character.html" class="nav-link">Character</a>
+            </div>
+            <div class="flex-item">
+                <a href="gear.html" class="nav-link">Gear</a>
+            </div>
+            <div class="flex-item">
+                <a href="reference.html" class="nav-link">Reference</a>
+            </div>
+            <div class="flex-item">
+                <a href="worldbuilding.html" class="nav-link">Worldbuilding</a>
+            </div>
+            <div class="flex-item">
+                <a href="almanac.html" class="nav-link">Almanac</a>
+            </div>
+            <div class="flex-item">
+                <a href="monsters.html" class="nav-link">Monsters</a>
+            </div>
+            <div class="flex-item">
+                <a href="spellcasting.html" class="nav-link">Spellcasting</a>
+            </div>
+        </div>
     </header>
 
     <main>
-        <!-- Gear content goes here -->
+        <!-- Equipment -->
+        <section id="equipment">
+
+            <div class="two-column">
+                <div class="column">
+                    <h2>Equipment</h2>
+                    <p>
+                        In the diverse world of Shek, equipment is more than just tools; it's an extension of a hero's
+                        identity and story. This section offers a variety of equipment options, each with its own
+                        history
+                        and value. As you prepare for your journey, choose gear that enhances your character's story and
+                        prepares them for the challenges of Shek.
+                    </p>
+
+                    <!-- Basic Weaponry -->
+                    <h3>Basic Weaponry</h3>
+                    <p>
+                        Weapons in Shek range from traditional to exotic, classified into two main types based on the
+                        required physical attributes: Strength and Agility. This guide simplifies understanding these
+                        weapons and their broader applications beyond combat.
+                    </p>
+                    <!-- Weapon Classification -->
+                    <h4>Weapon Classification and Mechanics</h4>
+                    <p>
+                        In the vast world of Shek, weapons are classified into two foundational categories based on the
+                        attributes they rely upon:
+                    </p>
+                    <ul>
+                        <li><strong>Strength-Based Weapons:</strong> Heavy and powerful weapons like hammers and
+                            broadswords, requiring brute force for impact.</li>
+                        <li><strong>Agility-Based Weapons:</strong> Lightweight weapons like daggers, rapiers, and bows,
+                            relying on finesse and precision.</li>
+                        <li><strong>Standard Weapons:</strong> Basic and simple weapons that can be wielded with either
+                            Strength or Agility.</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <!-- Weapon Properties -->
+                    <div class="features">
+                        <h4>Weapon Properties</h4>
+
+                        <ul class="weapon-properties">
+                            <li><strong>Light:</strong> Lightweight and easy to wield, allowing for quick and fluid
+                                movements. Can be dual-wielded or used as an Off-Action.</li>
+                            <li><strong>Free Hands:</strong> Your hands are free and not occupied by the weapon.</li>
+                            <li><strong>Attached:</strong> This weapon is attached and cannot be disarmed.</li>
+                            <li><strong>Thrown:</strong> Can be used in melee or thrown for ranged attacks with short
+                                range.
+                            </li>
+                            <li><strong>Range:</strong> Weapons operate within specific ranges:
+                                <ul>
+                                    <li><strong>Melee:</strong> 5ft</li>
+                                    <li><strong>Reach:</strong> 10ft</li>
+                                    <li><strong>Short:</strong> Under 60ft</li>
+                                    <li><strong>Medium:</strong> 60-220ft</li>
+                                    <li><strong>Long:</strong> 220-600ft</li>
+                                </ul>
+                                <p>Optional rule: Attacking over half the range imposes disadvantage.</p>
+                            </li>
+                            <li><strong>Hefty:</strong> Excessively heavy. Carrying more than two Hefty items causes the
+                                Pinned condition.</li>
+                            <li><strong>Reload:</strong> Requires reloading using an action, half-action, off-action, or
+                                movement.</li>
+                            <li><strong>Explosive:</strong> Causes powerful explosions that deal damage to all within
+                                range.
+                            </li>
+                            <li><strong>Hidden:</strong> Designed to be concealed, making detection difficult.</li>
+                            <li><strong>Mechanical:</strong> Can be disrupted, jammed, or broken.</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Damage & Damage Types -->
+        <details>
+            <summary>
+                Damage & Damage Types
+            </summary>
+            <p>In the world of Shek, numerous damage types exist, each with unique properties and effects. When a
+                character rolls a success+ or greater with a weapon or spell, they have the opportunity to roll on
+                the associated damage table, leading to a variety of outcomes. Here's an overview of the damage
+                types and their potential interactions with armor, wounds, and injuries:
+                These are organized by physical, elemental, and Realm Damage types. These are in each category not
+                because of the amount of damage they do but what conditions and effects they cause on their damage
+                tables. physical damage will often just deal additional damage while Realm Damage can cause
+                immediate injuries or banish creatures to alternate planes momentarily.
+                If an ability, weapon, gear, spell or whatever says it deals physical damage, it means a physical
+                damage type of your choice. Same thing if it says elemental or realm. If you are given a choice at
+                the time of creation of an item that usually means that item is locked into that damage type, unless
+                you and the narrator determine that it is a shifting item or if it says so in the description.
+                A weapon can only have one type of damage. If you have abilities that add damage to a weapon, spell
+                or ability then it adds that on and doesn't change the type unless otherwise specified. A glyph can
+                change the type of damage on a weapon. When you make a check with multiple successes then the
+                weapon’s damage type is used, not the additional damage types.
+            </p>
+            <section id="damage-types">
+                <h2>Damage Types</h2>
+
+                <h3>Physical Damage</h3>
+                <div class="flex-container">
+                    <div class="flex-item">
+                        <h4>✊ Impact</h4>
+                        <p>The raw force of blunt weapons such as hammers, maces, and clubs delivers bone-crushing
+                            blows. This type of damage shatters defenses and can leave foes dazed and reeling,
+                            representing the sheer power behind a solid, heavy strike.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>🎯 Piercing</h4>
+                        <p>Sharp and precise, piercing damage comes from weapons like arrows, spears, and daggers,
+                            which are designed to penetrate armor and flesh alike. Each thrust or shot aims for
+                            vital points, making it deadly in the hands of a skilled wielder.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>⚔️ Slashing</h4>
+                        <p>Swords, axes, and claws inflict slashing damage, cutting through flesh and armor with
+                            swift, sweeping motions. This type of attack leaves open wounds and bleeding gashes,
+                            representing the ferocity and precision of edged weaponry.</p>
+                    </div>
+                </div>
+
+                <h3>Elemental Damage</h3>
+                <div class="flex-container">
+                    <div class="flex-item">
+                        <h4>🧪 Acid</h4>
+                        <p>Corrosive substances eat away at armor and flesh, leaving a sizzling aftermath. Acid
+                            damage represents the destructive power of alchemical concoctions, venomous creatures,
+                            and spells that dissolve whatever they touch.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>🌑 Eclipse</h4>
+                        <p>Drawing power from shadows and dark magic, eclipse damage drains the essence of life and
+                            light. It encompasses the creeping death of necromancy, the suffocating embrace of
+                            smoke, and the chill of pure darkness.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>🔥 Fire</h4>
+                        <p>Flames and explosions unleash intense heat, burning everything in their path. Fire damage
+                            is the fiery fury of magical fireballs, molten lava, and blazing infernos, leaving
+                            behind charred remains.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>❄️ Ice</h4>
+                        <p>The biting cold of ice magic freezes the air and ground, numbing the flesh and slowing
+                            movement. Ice damage can encase enemies in frost, rendering them brittle and vulnerable
+                            to shattering.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>⚡ Lightning</h4>
+                        <p>Electricity arcs and dances through the air, delivering shocking force. Lightning damage
+                            is the power of storms, crackling through the battlefield with speed and precision,
+                            often leaving scorch marks in its wake.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>☀️ Solar</h4>
+                        <p>Brilliant light and divine radiance smite the unholy and cleanse the corrupt. Solar
+                            damage channels the power of the sun and holy magic, shining brightly to banish darkness
+                            and purify evil.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>🌩️ Thunder</h4>
+                        <p>Thunder damage is the concussive force of loud, resonant sounds, capable of shaking the
+                            earth and shattering eardrums. It captures the essence of roaring booms, shockwaves, and
+                            the wrath of the skies.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>☣️ Toxic</h4>
+                        <p>Poison and radiation inflict toxic damage, seeping into the body and corrupting it from
+                            within. It represents the slow, insidious nature of venomous creatures and noxious
+                            fumes, capable of weakening the strongest foes.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>💧 Fluid</h4>
+                        <p>Water, blood, oil, and other liquids can overwhelm and suffocate. Fluid damage includes
+                            the crushing force of tidal waves, the searing burn of boiling liquids, and the
+                            asphyxiation of drowning or being engulfed by fluids.</p>
+                    </div>
+                </div>
+
+                <h3>Realm Damage</h3>
+                <div class="flex-container">
+                    <div class="flex-item">
+                        <h4>🌿 Nature</h4>
+                        <p>Harnessing the primal forces of the natural world, nature damage draws upon plants,
+                            animals, and the elements. It can manifest as thorny vines, swarming insects, or the
+                            relentless force of wind and rain, often bringing disease and decay to those who fall
+                            victim.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>✨ Psychic</h4>
+                        <p>Psychic damage delves into the mind, bypassing physical defenses to inflict mental
+                            torment. It represents telepathic attacks, illusions, and the twisting of thoughts,
+                            leaving victims disoriented or shattered mentally.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>☠️ Vozian</h4>
+                        <p>Born from decay, hate, and chaos, Vozian damage embodies the corrupting force of disorder
+                            and malevolence. It spreads disease and rot, unraveling order and stability, and often
+                            leaves a lingering taint on the soul.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>❤️‍🩹 Healing</h4>
+                        <p>Unlike other damage types, healing repairs and restores, mending wounds and revitalizing
+                            the body. It draws upon positive energy and restorative magic, capable of bringing the
+                            gravely injured back to health, though it cannot cure conditions or ailments without
+                            special intervention.</p>
+                    </div>
+                </div>
+            </section>
+
+        </details>
+
+        <!-- Damage Tables -->
+        <details>
+            <summary>Damage Tables</summary>
+            <h1>Damage Tables</h1>
+            <p>When you roll a 20 or above on damage, this is termed a "success+". For every "success+" you achieve,
+                you're
+                granted a roll on the appropriate damage table specific to your weapon. Every 5 above 20 is an
+                additional
+                success+, so 25 would be 2 rolls, and 30 would be 3. It's vital to remember that different weapons come
+                with
+                distinct damage tables, so strategic weapon selection can offer unique advantages in combat.
+            </p>
+            <p><strong>Repeated Conditions</strong>: When you have a repeated, non-stacking condition you deal +1 damage
+                instead</p>
+            <h3>Special Values</h3>
+            <li><strong>Cleave</strong>: deal the half damage to any other targetted creatures within melee range</li>
+            <li><strong>Siphon</strong>: heal for the amount listed</li>
+
+
+            <h2>Physical Damage</h2>
+            <div class="flex-container" id="damage-tables">
+                <div class="flex-item">
+                    <h3>Impact Table</h3>
+                    <ol>
+                        <li>Broken</li>
+                        <li>Concussion</li>
+                        <li>Coughing</li>
+                        <li>Dislocation</li>
+                        <li>Prone</li>
+                        <li>Knockback (10ft)</li>
+                    </ol>
+                </div>
+                <div class="flex-item">
+                    <h3>Piercing Table</h3>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Additional +3</li>
+                        <li>Additional +4</li>
+                        <li>Additional +5</li>
+                        <li>Pinned</li>
+                    </ol>
+                </div>
+                <div class="flex-item">
+                    <h3>Slashing Table</h3>
+                    <ol>
+                        <li>Additional +2</li>
+                        <li>Additional +3</li>
+                        <li>Bleeding</li>
+                        <li>Cleave</li>
+                        <li>Disarm</li>
+                        <li>Feint (Take Stance)</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h2>Elemental Damage</h2>
+            <div class="flex-container">
+                <div class="flex-item">
+                    <h3>Acid</h3>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Additional +3</li>
+                        <li>Exposed</li>
+                        <li>Slowed</li>
+                        <li>Coughing</li>
+                    </ol>
+                </div>
+                <div class="flex-item">
+                    <h3>Eclipse</h3>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Blind</li>
+                        <li>Deaf</li>
+                        <li>Raise upon Death</li>
+                        <li>Fear</li>
+                    </ol>
+                </div>
+                <div class="flex-item">
+                    <h3>Fire</h3>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Additional +3</li>
+                        <li>Exposed</li>
+                        <li>Blind</li>
+                        <li>Coughing</li>
+                    </ol>
+                </div>
+                <div class="flex-item">
+                    <h3>Fluid</h3>
+                    <ol>
+                        <li>Blind</li>
+                        <li>Coughing</li>
+                        <li>Deaf</li>
+                        <li>Broken</li>
+                        <li>Concussion</li>
+                        <li>Prone</li>
+                    </ol>
+                </div>
+                <div class="flex-item">
+                    <h3>Ice</h3>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Constrained</li>
+                        <li>Dislocation</li>
+                        <li>Slowed (End Next)</li>
+                        <li>Pinned</li>
+                    </ol>
+                </div>
+                <div class="flex-item">
+                    <h3>Lightning</h3>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Additional +3</li>
+                        <li>Blind</li>
+                        <li>Confusion</li>
+                        <li>Pinned</li>
+                    </ol>
+                </div>
+                <div class="flex-item">
+                    <h3>Solar</h3>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Additional +3</li>
+                        <li>Blind</li>
+                        <li>Pinned</li>
+                        <li>Evil Banishment</li>
+                    </ol>
+                </div>
+                <div class="flex-item">
+                    <h3>Thunder</h3>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Cleave</li>
+                        <li>Confusion</li>
+                        <li>Deaf</li>
+                        <li>Disarm</li>
+                        <li>Knockback (20ft)</li>
+                    </ol>
+                </div>
+                <div class="flex-item">
+                    <h3>Toxic</h3>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Blind</li>
+                        <li>Confusion</li>
+                        <li>Coughing</li>
+                        <li>Fear</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h2>Realm Damage</h2>
+            <div class="flex-container">
+                <div class="flex-item">
+                    <h3>Nature</h3>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Constrained</li>
+                        <li>Confusion</li>
+                        <li>Coughing</li>
+                        <li>Disease (Verdant Fever)</li>
+                        <li>Pinned</li>
+                    </ol>
+                </div>
+                <div class="flex-item">
+                    <h3>Psychic</h3>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Blind</li>
+                        <li>Charmed</li>
+                        <li>Concussion</li>
+                        <li>Confusion</li>
+                        <li>Fear</li>
+                    </ol>
+                </div>
+                <div class="flex-item">
+                    <h3>Vozian</h3>
+                    <ol>
+                        <li>Siphon (Half Damage)</li>
+                        <li>Blind</li>
+                        <li>Coughing</li>
+                        <li>Disease (Infernal Skritches)</li>
+                        <li>Intangible (1 round)</li>
+                        <li>Double Damage</li>
+                    </ol>
+
+                </div>
+            </div>
+
+            </div>
+        </details>
+
+        <!-- Weaponry -->
+        <section id="weaponry">
+            <div class="two-column">
+                <div class="column">
+                    <h3>Weapons</h3>
+                    <p>
+                        Weapons in Shek range from traditional to exotic, classified into two primary categories based
+                        on
+                        their required attributes: Strength and Agility. This section provides detailed weapon options,
+                        their properties, and their relevance in both combat and narrative.
+                    </p>
+
+                    <!-- Standard Weapons -->
+                    <h4>Standard Weapons (Strength or Agility)</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Weapon</th>
+                                <th>Properties</th>
+                                <th>Damage</th>
+                                <th>Cost</th>
+                                <th>Bulk</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Unarmed Attack</td>
+                                <td>Light, Free Hands, Attached</td>
+                                <td>1 Impact</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>Fist Weapon</td>
+                                <td>Light, Free Hands, Attached</td>
+                                <td>1d4 Physical</td>
+                                <td>$10</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Standard Weapon</td>
+                                <td>1 Hand, Light</td>
+                                <td>1d6 Physical</td>
+                                <td>$20</td>
+                                <td>1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Strength-Based Weapons -->
+                    <h4>Strength-Based Weapons</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Weapon</th>
+                                <th>Properties</th>
+                                <th>Damage</th>
+                                <th>Cost</th>
+                                <th>Bulk</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Heavy Thrown</td>
+                                <td>2 Hand, Thrown</td>
+                                <td>1d10 Physical</td>
+                                <td>$10</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Siege Crossbow</td>
+                                <td>2 Hand, Hefty, Medium Range, Mechanical, Reload</td>
+                                <td>2d6 Piercing</td>
+                                <td>$70</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Hefty Weapon</td>
+                                <td>2 Hand, Hefty</td>
+                                <td>Strength as Physical</td>
+                                <td>$50</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>Hefty Reach Weapon</td>
+                                <td>2 Hand, Hefty, Reach</td>
+                                <td>2d6 Physical</td>
+                                <td>$30</td>
+                                <td>4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Agility-Based Weapons -->
+                    <h4>Agility-Based Weapons</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Weapon</th>
+                                <th>Properties</th>
+                                <th>Damage</th>
+                                <th>Cost</th>
+                                <th>Bulk</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Standard Ranged</td>
+                                <td>2 Hand, Medium Range, Reload</td>
+                                <td>1d10 Piercing</td>
+                                <td>$50</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Small Ranged</td>
+                                <td>1 Hand, Medium Range, Mechanical, Reload, Light</td>
+                                <td>1d4 Piercing</td>
+                                <td>$30</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Small Weapon</td>
+                                <td>1 Hand, Light, Hidden, Thrown (Short Range)</td>
+                                <td>1d4 Physical</td>
+                                <td>$5</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Staff</td>
+                                <td>2 Hand, Hefty</td>
+                                <td>Agility as Physical</td>
+                                <td>$20</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Swinging Weapon</td>
+                                <td>1 Hand, Reach</td>
+                                <td>1d6 Physical</td>
+                                <td>$30</td>
+                                <td>2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="column">
+                    <!-- Firearm Table -->
+                    <h4>Firearms</h4>
+                    <p>
+                        Firearms are rare and powerful tools in our world, often viewed with suspicion due to their
+                        potential for destruction. Most cities and populated areas regulate or even ban their use.
+                        Carrying a firearm openly attracts attention, especially from law enforcement or bandits.
+                        While
+                        firearms provide immense firepower, they come with risks and consequences. If you choose to
+                        wield one, do so wisely and carefully.
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Firearm</th>
+                                <th>Properties</th>
+                                <th>Damage</th>
+                                <th>Cost</th>
+                                <th>Bulk</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Standard Pistol</td>
+                                <td>Check(Agi, Lck, Str, Obs), Medium Range, 1 Hand, Light</td>
+                                <td>1d4! Piercing</td>
+                                <td>$50</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Standard Rifle</td>
+                                <td>Check(Agi, Lck, Str, Obs), Long Range, 2 Hand, Close Range Disadvantage</td>
+                                <td>3d4! Piercing</td>
+                                <td>$150</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Revolver</td>
+                                <td>Check(Agi, Lck, Str, Obs), Medium Range, 1 Hand</td>
+                                <td>2d6! Piercing</td>
+                                <td>$100</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Shotgun</td>
+                                <td>Strength, Short Range, 2 Hand</td>
+                                <td>3d6! Piercing</td>
+                                <td>$200</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Dual Revolvers</td>
+                                <td>Agility, Short Range, 2 Hands, Split Damage</td>
+                                <td>2d10! Piercing</td>
+                                <td>$200</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>Gut Shredder LMG</td>
+                                <td>Strength, Short Range, 2 Hand, Hefty</td>
+                                <td>5d4! Piercing</td>
+                                <td>$500</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>Spectral Revolver</td>
+                                <td>Agility or Spirit, Medium Range, 1 Hand</td>
+                                <td>1d10! Thunder</td>
+                                <td>-</td>
+                                <td>1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Ammunition Table -->
+                    <h4>Ammunition Types</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Damage Type</th>
+                                <th>Cost per 10</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Physical (Impact, Piercing, Slashing)</td>
+                                <td>$5</td>
+                            </tr>
+                            <tr>
+                                <td>Elemental (Acid, Eclipse, Fire, Fluid, etc)</td>
+                                <td>$15</td>
+                            </tr>
+                            <tr>
+                                <td>Realm (Nature, Psychic, Vozian)</td>
+                                <td>$30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <div class="features">
+                        <!-- Special Firearms -->
+                        <h4>Special Firearms</h4>
+                        <ul class="special-firearms">
+                            <li>
+                                <strong>Alchemist Launcher:</strong> Launch a potion at a target within short range
+                                using an Intellect check and a potion. On a success, it affects the target fully,
+                                and
+                                creatures within 5ft take half the effect.
+                            </li>
+                            <li>
+                                <strong>Flamethrower:</strong> Check (Agi, Str, Obs); 2 Hand. Deals [[1d4!]] Fire
+                                damage
+                                to targets in a short-range line.
+                            </li>
+                        </ul>
+
+                        <!-- Firearm Properties -->
+                        <h4>Firearm Properties</h4>
+                        <ul class="firearm-properties">
+                            <li><strong>Loud:</strong> Firearms can be heard up to a mile away outdoors. They cause
+                                the
+                                Deaf condition to all creatures within short range. (Optional)</li>
+                            <li><strong>Reload:</strong> All firearms require reloading using an action,
+                                half-action,
+                                off-action, or movement. (Optional)</li>
+                            <li><strong>Mechanical:</strong> Firearms are mechanical devices that can jam or break.
+                            </li>
+                            <li><strong>Ammunition:</strong> All firearms require ammunition as described in the
+                                ammunition section.</li>
+                            <li><strong>Dual Wield:</strong> Dual-wielded firearms split damage dice between two
+                                targets.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Armro -->
+        <section id="armor">
+            <div class="two-column">
+                <div class="column">
+                    <h1>Armor</h1>
+
+                    <p>
+                        When adventuring, armor is your primary line of defense. It's essential to ally with a
+                        blacksmith who can repair and upgrade your gear. In combat, armor absorbs hits before they
+                        affect your health. Remember, armor is not destroyed when its protection points are
+                        depleted; it
+                        simply can't offer protection until repaired.
+                    </p>
+                    <p>
+                        Armor also shields against poison, as venom requires direct contact with the skin to be
+                        effective. Be cautious, as wearing too much heavy gear can impose the 'pinned' condition,
+                        hindering your movement.
+                    </p>
+                </div>
+                <div class="column">
+                    <!-- Repair Methods -->
+                    <div class="features">
+                        <h4>Repair Methods</h4>
+                        <ul class="repair-methods">
+                            <li>
+                                <strong>Quick Repair:</strong> Characters must succeed in a Crafting check once per
+                                hour
+                                to repair [[1d6]] + Crafting points of armor integrity. This represents quick fixes
+                                using whatever materials are at hand.
+                            </li>
+                            <li>
+                                <strong>Standard Repair:</strong> Utilizing a workbench, characters can repair
+                                armor,
+                                restoring half the total armor value + Crafting points per successful check per
+                                hour.
+                                This involves physical repairs like patching holes or replacing segments.
+                            </li>
+                            <li>
+                                <strong>Magical Repair:</strong> Using spell points, repair [[1d6]] per spell point.
+                                This is an action requiring 1 spell point.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="column">
+                    <!-- Armor Table -->
+                    <h4>Armor Styles</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Armor</th>
+                                <th>Modifiers</th>
+                                <th>Hefty</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Light Armor</td>
+                                <td>Stealth +1, Agility +1</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>Traveler's Cloak</td>
+                                <td>Survival +1, Observation +1</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>Scout's Armor</td>
+                                <td>Magic -4, Stealth +1</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>Medium Armor</td>
+                                <td>Movement -10, Stealth -2, Magic -2, Agility +1</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>Arcane Robes</td>
+                                <td>Movement -20, Stealth -4, Survival -2</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>Heavy Armor</td>
+                                <td>Movement -20, Stealth -4, Magic -4</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Armor Penalties -->
+                    <h4>Armor Penalties</h4>
+                    <p>
+                        If a check's modifier is negative, it is considered a penalty. Features that negate
+                        penalties
+                        can remove these effects.
+                    </p>
+
+                </div>
+                <div class="column">
+
+                    <!-- Shields -->
+                    <h4>Shields</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Armor</th>
+                                <th>Modifiers</th>
+                                <th>Hefty</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Light Shield</td>
+                                <td>3 armor</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>Spellcaster's Shield</td>
+                                <td>5 armor; Stealth -2, Spirit +1</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>Shield</td>
+                                <td>7 armor; Stealth -1, Magic -1</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>Heavy Shield</td>
+                                <td>10 armor; Stealth -2, Magic -2</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Shield Bash -->
+                    <h4>Shield Bash</h4>
+                    <p>
+                        Use your shield as a weapon. Make a Strength check as an off-action to deal [[1d4]]
+                        bludgeoning
+                        damage to an enemy.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- bulk -->
+        <section id="bulk">
+            <h3>Bulk Items</h3>
+            <p>
+                Bulk represents the weight and space your gear occupies, from negligible trinkets to
+                burdensome
+                hauls. It's not just about weight but also the size and how cumbersome an item is. Managing
+                your
+                bulk is crucial for maintaining agility and avoiding encumbrance.
+            </p>
+            <p>
+                For example, a watch has 0 Bulk because it can be worn and forgotten about. Meanwhile, an
+                empty
+                barrel may be light but is awkward to carry, giving it a Bulk of 5.
+            </p>
+
+            <h4>Bulk Classifications</h4>
+            <div class="two-column">
+                <div class="column">
+                    <!-- Bulk Classifications -->
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Bulk</th>
+                                <th>Description</th>
+                                <th>Examples</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0</td>
+                                <td>Small/wearable items</td>
+                                <td>Watch, ring, eyeglasses</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Backpack-sized items</td>
+                                <td>Clothes, flask, small tools</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Large items</td>
+                                <td>Armor, barrel, large pot</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Heavy items</td>
+                                <td>Furniture, small canoe</td>
+                            </tr>
+                            <tr>
+                                <td>15</td>
+                                <td>Very heavy items</td>
+                                <td>Piano, cart</td>
+                            </tr>
+                            <tr>
+                                <td>20</td>
+                                <td>Extremely heavy items</td>
+                                <td>Small car, heavy safe</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="column">
+                    <!-- Bulk Penalties -->
+                    <div class="features">
+                        <h4>Bulk Penalties</h4>
+                        <ul>
+                            <li><strong>Bulk exceeds Strength:</strong> Over-encumbered (Pinned condition).</li>
+                            <li><strong>Bulk > 2x Strength:</strong> Over-encumbered + Exhausted condition.</li>
+                            <li><strong>Worn items:</strong> Worn items have no bulk.</li>
+                            <li><strong>Bundles:</strong> Bundles reduce the average bulk of items.</li>
+                            <li><strong>Backpacks:</strong> Reduce total bulk carried.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="column">
+                    <!-- Storage Options -->
+                    <h4>Types of Mundane Storage</h4>
+                    <p>
+                        Mundane storage allows characters to organize and carry items effectively. Accessing storage
+                        usually requires an off-action or is included in an action like switching weapons or
+                        grabbing a
+                        potion.
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Storage Option</th>
+                                <th>Description</th>
+                                <th>Bulk Reduction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Utility Pouch</td>
+                                <td>A small, rugged pouch worn on a belt or strap. Designed for carrying small
+                                    tools,
+                                    trinkets, or coins.</td>
+                                <td>-1 Bulk</td>
+                            </tr>
+                            <tr>
+                                <td>Craftsman’s Satchel</td>
+                                <td>A compact, cross-body satchel with multiple compartments for tools and
+                                    materials.
+                                    Ideal for organization.</td>
+                                <td>-3 Bulk</td>
+                            </tr>
+                            <tr>
+                                <td>Traveler’s Backpack</td>
+                                <td>A durable backpack with adjustable straps and reinforced compartments for
+                                    essential
+                                    gear.</td>
+                                <td>-5 Bulk</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="column">
+                    <h4>Types of Dimensional Storage</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Storage Option</th>
+                                <th>Capacity</th>
+                                <th>Access Time</th>
+                                <th>Living Creatures</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Ring Safe</td>
+                                <td>1 item, up to 1 bulk</td>
+                                <td>Off-Action to store or retrieve</td>
+                                <td>Not allowed</td>
+                            </tr>
+                            <tr>
+                                <td>Nomad Pouch</td>
+                                <td>Up to 10 bulk (items ≤ 2 bulk each)</td>
+                                <td>Off-Action to store or retrieve</td>
+                                <td>Tiny creatures for up to 1 hour</td>
+                            </tr>
+                            <tr>
+                                <td>Small Bag of Efficient Storage</td>
+                                <td>Up to 50 bulk (items ≤ 5 bulk each)</td>
+                                <td>Half-Action to store, Action to retrieve large items</td>
+                                <td>Creatures up to 2 bulk for 8 hours</td>
+                            </tr>
+                            <tr>
+                                <td>Deep Pack</td>
+                                <td>200 bulk</td>
+                                <td>1 Action to store or retrieve items</td>
+                                <td>Up to 10 bulk for 24 hours</td>
+                            </tr>
+                            <tr>
+                                <td>Storage Vault</td>
+                                <td>Up to 1,000 bulk</td>
+                                <td>1 minute to access and retrieve items</td>
+                                <td>Any size with air and sustenance</td>
+                            </tr>
+                            <tr>
+                                <td>Portable Sanctuary</td>
+                                <td>Unlimited</td>
+                                <td>10 minutes to open or close</td>
+                                <td>Thrives with no time limits or constraints</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Items -->
+        <details>
+            <summary>
+                Items
+            </summary>
+            <section id="item-list">
+                <h3>Complete Item Catalog</h3>
+                <input type="text" id="search-input" placeholder="Search for an item..." />
+                <table id="item-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="category">Category</th>
+                            <th data-sort="name">Name</th>
+                            <th>Description</th>
+                            <th data-sort="cost">Cost</th>
+                            <th>Bulk</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Food & Drink -->
+                        <tr>
+                            <td>Food & Drink</td>
+                            <td>Canned Food</td>
+                            <td>Non-perishable, in a can</td>
+                            <td>$2</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Food & Drink</td>
+                            <td>Bottle of Whiskey</td>
+                            <td>Distilled grain alcohol</td>
+                            <td>$4</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Food & Drink</td>
+                            <td>Loaf of Bread</td>
+                            <td>Freshly baked</td>
+                            <td>$1</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Food & Drink</td>
+                            <td>Fancy Cigars</td>
+                            <td>Tightly-rolled tobacco</td>
+                            <td>$10</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Food & Drink</td>
+                            <td>Dried Fruit Mix</td>
+                            <td>A nutritious blend of various dried fruits</td>
+                            <td>$3</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Food & Drink</td>
+                            <td>Traveler's Tea Kit</td>
+                            <td>Compact set for brewing tea on the go</td>
+                            <td>$7</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Food & Drink</td>
+                            <td>Spiced Nuts</td>
+                            <td>A bag of mixed nuts seasoned with exotic spices</td>
+                            <td>$2</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Food & Drink</td>
+                            <td>Preserved Meats</td>
+                            <td>Salted and dried meats, perfect for long journeys</td>
+                            <td>$5</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Food & Drink</td>
+                            <td>Energizing Elixir</td>
+                            <td>Boosts energy, removes Exhausted condition for 1 minute</td>
+                            <td>$8</td>
+                            <td>-</td>
+                        </tr>
+
+                        <!-- Musical Instruments -->
+                        <tr>
+                            <td>Musical Instruments</td>
+                            <td>Harmonica</td>
+                            <td>Mouth-played instrument</td>
+                            <td>$3</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Musical Instruments</td>
+                            <td>Banjo</td>
+                            <td>4/5-stringed, circular frame</td>
+                            <td>$15</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Musical Instruments</td>
+                            <td>Tin Whistle</td>
+                            <td>Six-holed woodwind</td>
+                            <td>$1</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Musical Instruments</td>
+                            <td>Sheet Music</td>
+                            <td>Printed popular songs</td>
+                            <td>$2</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Musical Instruments</td>
+                            <td>Gramophone Record</td>
+                            <td>For gramophones</td>
+                            <td>$2</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Musical Instruments</td>
+                            <td>Travel Guitar</td>
+                            <td>Compact, lightweight guitar ideal for traveling</td>
+                            <td>$20</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Musical Instruments</td>
+                            <td>Pan Flute</td>
+                            <td>Set of pipes producing melodious sounds</td>
+                            <td>$4</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Musical Instruments</td>
+                            <td>Djembe Drum</td>
+                            <td>Hand drum with rich, versatile beats</td>
+                            <td>$18</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Musical Instruments</td>
+                            <td>Accordion</td>
+                            <td>Hand-held bellows-driven instrument</td>
+                            <td>$30</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Musical Instruments</td>
+                            <td>Violin</td>
+                            <td>Classic stringed instrument with emotional range</td>
+                            <td>$25</td>
+                            <td>1</td>
+                        </tr>
+
+                        <!-- Tools & Equipment -->
+                        <tr>
+                            <td>Tools & Equipment</td>
+                            <td>Handcuffs</td>
+                            <td>Wrist restraints</td>
+                            <td>$10</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Tools & Equipment</td>
+                            <td>Straight Razor</td>
+                            <td>Foldable blade</td>
+                            <td>$5</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Tools & Equipment</td>
+                            <td>Pocket Knife</td>
+                            <td>Foldable multi-blade</td>
+                            <td>$3</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Tools & Equipment</td>
+                            <td>Shoe Shine Kit</td>
+                            <td>For polished shoes</td>
+                            <td>$3</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Tools & Equipment</td>
+                            <td>Ear Plugs</td>
+                            <td>Muffles firearm noise</td>
+                            <td>$1</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Tools & Equipment</td>
+                            <td>Multipurpose Tool</td>
+                            <td>Compact tool with multiple functions</td>
+                            <td>$6</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Tools & Equipment</td>
+                            <td>Magnifying Glass</td>
+                            <td>Useful for close inspections and starting fires</td>
+                            <td>$4</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Tools & Equipment</td>
+                            <td>Sewing Kit</td>
+                            <td>Contains needles, thread, and buttons</td>
+                            <td>$3</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Tools & Equipment</td>
+                            <td>Waterproof Tarp</td>
+                            <td>Durable tarp for shelter and protection</td>
+                            <td>$10</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Tools & Equipment</td>
+                            <td>Lock Pick Set</td>
+                            <td>Tools for picking locks</td>
+                            <td>$15</td>
+                            <td>-</td>
+                        </tr>
+
+                        <!-- Miscellaneous Items -->
+                        <tr>
+                            <td>Miscellaneous</td>
+                            <td>Ouija Board</td>
+                            <td>For seances</td>
+                            <td>$5</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Miscellaneous</td>
+                            <td>Crystal Ball</td>
+                            <td>Clairvoyance tool</td>
+                            <td>$25</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Miscellaneous</td>
+                            <td>Opera Glasses</td>
+                            <td>Theater binoculars</td>
+                            <td>$10</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Miscellaneous</td>
+                            <td>Masquerade Mask</td>
+                            <td>Grants +1 to Mystery (a special social skill). An ornate mask for balls and
+                                secretive gatherings</td>
+                            <td>$20</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Miscellaneous</td>
+                            <td>Deck of Cards</td>
+                            <td>For games</td>
+                            <td>$1</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Miscellaneous</td>
+                            <td>Smoking Pipe</td>
+                            <td>Tobacco device</td>
+                            <td>$2</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Miscellaneous</td>
+                            <td>Eyeglasses</td>
+                            <td>Vision aid, Observation +1 if negative from a disability</td>
+                            <td>$7</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Miscellaneous</td>
+                            <td>Hand Mirror</td>
+                            <td>Portable mirror</td>
+                            <td>$2</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Miscellaneous</td>
+                            <td>Umbrella</td>
+                            <td>For rain/sun, water or solar damage immunity from environment while equipped
+                            </td>
+                            <td>$4</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Miscellaneous</td>
+                            <td>Lucky Cufflinks</td>
+                            <td>Grants +1 to Luck. Elegant cufflinks are said to bring good fortune</td>
+                            <td>$18</td>
+                            <td>-</td>
+                        </tr>
+
+                        <!-- Fashion Items -->
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Power Suit and Tie</td>
+                            <td>Grants +1 to Influence. A sleek, professional suit symbolizing authority and
+                                confidence</td>
+                            <td>$30</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Elegant Ball Gown</td>
+                            <td>Grants +1 to Influence. A stunning gown for formal events, accentuating grace
+                                and
+                                elegance</td>
+                            <td>$45</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Charm Bracelet</td>
+                            <td>Grants +1 to Influence. A delicate bracelet with charms that captivate attention
+                            </td>
+                            <td>$15</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Dapper Fedora</td>
+                            <td>Grants +1 to Intellect. A stylish hat that adds a touch of sophistication</td>
+                            <td>$20</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Silk Scarf</td>
+                            <td>Grants +1 to Stealth. A soft, lightweight scarf that aids in blending into
+                                crowds
+                            </td>
+                            <td>$12</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>High-Performance Sneakers</td>
+                            <td>Grants +1 to Agility. Designed for comfort and speed, ideal for quick movements
+                            </td>
+                            <td>$35</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Mystic's Cloak</td>
+                            <td>Grants +1 to Spirit. A mysterious cloak that seems to shimmer with otherworldly
+                                energy</td>
+                            <td>$40</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Explorer's Vest</td>
+                            <td>Grants +1 to Survival. Pockets and compartments make it perfect for adventurous
+                                souls</td>
+                            <td>$25</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Glittering Cocktail Dress</td>
+                            <td>Grants +1 to Influence. A dress that dazzles and captivates in social settings
+                            </td>
+                            <td>$50</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Vintage Aviator Jacket</td>
+                            <td>Grants +1 to Observation. A rugged, stylish jacket reminiscent of daring pilots
+                            </td>
+                            <td>$45</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Embroidered Overalls</td>
+                            <td>Grants +1 to Crafting. A beautifully crafted garment showcasing artistic skill
+                            </td>
+                            <td>$55</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Sleek Spy Trench Coat</td>
+                            <td>Grants +1 to Stealth and has a built-in hidden pocket. Perfect for concealing
+                                identities and items</td>
+                            <td>$50</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Flamboyant Cape</td>
+                            <td>Comes with a 'Flourish' ability, allowing the wearer to make a grand entrance
+                                once
+                                per day with an advantage Influence Check</td>
+                            <td>$22</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Red Bull Jacket</td>
+                            <td>A vibrant red jacket that seems to infuriate bovines</td>
+                            <td>$30</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Citrus Cloak</td>
+                            <td>Repels felines. Infused with a strong citrus scent that cats dislike</td>
+                            <td>$25</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Shimmering Merfolk Robe</td>
+                            <td>Attracts aquatic creatures. A robe adorned with scales that glimmer like a
+                                mermaid's
+                                tail</td>
+                            <td>$40</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Stormcaller's Mantle</td>
+                            <td>Attracts lightning in storms. A cloak that crackles with static energy, drawing
+                                lightning</td>
+                            <td>$45</td>
+                            <td>1</td>
+                        </tr>
+
+                        <!-- Add the rest of the items in the same format -->
+                    </tbody>
+                </table>
+            </section>
+
+        </details>
+
+        <!-- Vehicles -->
+        <details>
+            <summary>
+                Vehicles
+            </summary>
+            <!-- Vehicles Section -->
+            <section id="vehicles">
+                <h2>Vehicles</h2>
+                <p>In the world of Shek, vehicles are the lifelines of modernity, weaving through city streets,
+                    soaring
+                    across open skies, and cutting across vast seas. From the sleek cars that line the boulevards to
+                    the
+                    airships that dance among the clouds and the steamboats that cruise the rivers, each vehicle is
+                    a
+                    testament to the era's boundless ambition and the adventurous hearts of those who pilot them. As
+                    integral parts of daily life, they serve not just as transportation but as companions in the
+                    journey
+                    of discovery and the pursuit of dreams in a world where magic meets machines.</p>
+
+                <div class="flex-container">
+                    <div class="flex-item">
+                        <h4>🚗 Automobiles</h4>
+                        <p>The workhorses of the urban streets, automobiles range from luxurious sedans for the
+                            city's
+                            elite to rugged trucks for adventurous souls.</p>
+                        <p><strong>The Rambler:</strong> A sturdy sedan favored by private detectives and
+                            journalists.
+                            Reliable, with modest speed and spacious enough for a team and their gear.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>🚡 Airships</h4>
+                        <p>Symbols of progress and the romance of travel, airships float serenely across the sky,
+                            serving as both private vessels for the wealthy and commercial liners connecting
+                            continents.
+                        </p>
+                        <p><strong>The Zephyr:</strong> A medium-sized airship capable of long voyages, offering a
+                            smooth ride and panoramic views from its gondola.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>🚢 Steamboats</h4>
+                        <p>On the waterways, steamboats chug along, their paddles churning through the waves. They
+                            range
+                            from small riverboats to grand vessels that ply the trade routes with passengers and
+                            cargo.
+                        </p>
+                        <p><strong>The River Queen:</strong> A grand paddle steamer dominating river traffic,
+                            equipped
+                            for both freight and passenger service, known for its reliability and comfort.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>🚂 Trains</h4>
+                        <p>The iron horses of Shek, trains thunder across the continent, connecting industrial
+                            heartlands to bustling coastal cities.</p>
+                        <p><strong>The Iron Comet:</strong> A fast and luxurious passenger train offering a smooth,
+                            swift journey across Shek's varied landscapes.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>✈️ Biplanes</h4>
+                        <p>For thrill-seekers and barnstormers, biplanes offer an unrivaled sense of freedom. These
+                            nimble crafts are as much about sport as they are transportation.</p>
+                        <p><strong>The Sky Dancer:</strong> A two-seater biplane known for its agility and speed,
+                            popular with stunt pilots and adventurers.</p>
+                    </div>
+                    <div class="flex-item">
+                        <h4>🤖 Mechanical Walkers</h4>
+                        <p>At the cutting edge of technology, mechanical walkers are rare and imposing, towering
+                            over
+                            landscapes with their complex clockwork legs.</p>
+                        <p><strong>The Colossus:</strong> A formidable mechanical walker designed for heavy lifting
+                            and
+                            construction, showcasing engineering prowess in the age of steam and gears.</p>
+                    </div>
+                </div>
+                <p>These vehicles are the heartbeat of Shek, carrying tales of human endeavor and echoing the pulse
+                    of
+                    an era defined by its relentless pursuit of the extraordinary. Each type of vehicle offers a
+                    different experience and opportunity for adventure, shaping the very way the inhabitants of Shek
+                    interact with their world and each other.</p>
+            </section>
+
+            <!-- Mounted Combat Section -->
+            <section id="mounted-combat">
+                <h2>Mounted Combat</h2>
+                <p>Mounted combat stands as a thrilling fusion of tradition and innovation. Knights and daredevils
+                    alike
+                    take to the streets and skies, not on horses, but on mechanized steeds and mystical creatures.
+                    Here,
+                    a well-timed cavalry charge might be led by a line of sleek motorcycles, while Pegasus-mounted
+                    aces
+                    could duel among the skyscrapers. In this era, the mounted warrior's valor is matched only by
+                    the
+                    speed of their mount, be it flesh or steel, feathered or geared.</p>
+
+                <h3>Rules for Mounted Combat</h3>
+                <ul>
+                    <li><strong>Mount Movement:</strong> The base speed for beasts of burden such as horses is 60
+                        ft.
+                        Speed for other creatures used as mounts will be determined based on their type and size.
+                    </li>
+                    <li><strong>Target Selection:</strong> Enemies may choose to direct their attacks at either you
+                        or
+                        your mount.</li>
+                    <li><strong>Dismounting & Mounting:</strong> Exiting your mount requires either the expenditure
+                        of
+                        20 ft of movement or an action, and the same for mounting a creature or vehicle.</li>
+                    <li><strong>Mount Abilities:</strong> Different types of mounts provide various abilities and
+                        combat
+                        options. For example:
+                        <ul>
+                            <li><strong>Warhorse:</strong> Might grant a charge ability that allows for a powerful
+                                attack after moving a certain distance.</li>
+                            <li><strong>Flying Mount:</strong> Could offer aerial movement options, but with
+                                limitations
+                                on how long they can stay aloft or how they maneuver.</li>
+                            <li><strong>Aquatic Mount:</strong> May allow for swift underwater movement and possibly
+                                an
+                                evasion bonus due to the fluid environment.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+        </details>
+
+        <!-- Crafting Section -->
+        <section id="crafting">
+            <h2>Weapon & Armor Crafting</h2>
+            <p>In the world of Shek, crafting armor and weapons requires a Forge Workbench, materials (purchased
+                or
+                scavenged), and skilled hands. Existing mundane items can also be repurposed into new items,
+                such as
+                converting heavy armor into medium armor or reshaping medium armor into a weapon.</p>
+
+            <h3>Forge Workbench</h3>
+            <p>A Forge Workbench is essential for crafting and includes a main station where the crafter makes
+                their
+                Crafting check. Up to three allies can assist the main crafter using different workstations,
+                each
+                contributing with their skills.</p>
+            <div class="flex-container">
+                <div class="flex-item">
+                    <h4>🔥 Forge</h4>
+                    <p>Requires a <strong>Strength</strong> or <strong>Survival</strong> check.</p>
+                </div>
+                <div class="flex-item">
+                    <h4>⚒️ Anvil</h4>
+                    <p>Requires a <strong>Strength</strong> or <strong>Agility</strong> check.</p>
+                </div>
+                <div class="flex-item">
+                    <h4>🧵 Tailoring Station</h4>
+                    <p>For adding intricate details, using an <strong>Intellect</strong> or
+                        <strong>Influence</strong> check.
+                    </p>
+                </div>
+            </div>
+
+            <h3>Crafting Process</h3>
+            <p>Crafting armor or weapons is a collaborative process requiring time, effort, and teamwork:</p>
+            <ul>
+                <li><strong>Crafting Time:</strong> A long downtime or long rest in a safe place with a Forge
+                    Workbench.</li>
+                <li><strong>Making Checks:</strong> The main crafter and allies at workstations each make their
+                    respective checks. The total number of successes determines the item’s quality.</li>
+            </ul>
+
+            <div class="two-column">
+                <div class="column">
+                    <h4>Determining Quality by Successes</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Quality</th>
+                                <th>Successes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Poor Quality</td>
+                                <td>3 or fewer</td>
+                            </tr>
+                            <tr>
+                                <td>Good Quality</td>
+                                <td>4 to 6</td>
+                            </tr>
+                            <tr>
+                                <td>Great Quality</td>
+                                <td>7 to 10</td>
+                            </tr>
+                            <tr>
+                                <td>Legendary Quality</td>
+                                <td>10 or more (requires a Legendary Workbench)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="column">
+                    <h4>Item Quality Effects</h4>
+                    <p>The total successes achieved during crafting directly determine the item's bonuses, value, and
+                        glyph
+                        slots for enchantments.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Quality</th>
+                                <th>Weapon Bonus</th>
+                                <th>Armor Bonus</th>
+                                <th>Value (gp)</th>
+                                <th>Glyph Slots</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Poor Quality</td>
+                                <td>-5</td>
+                                <td>-5</td>
+                                <td>0</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Good Quality</td>
+                                <td>+1</td>
+                                <td>+5</td>
+                                <td>35</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Great Quality</td>
+                                <td>+3</td>
+                                <td>+10</td>
+                                <td>1,200</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Legendary Quality</td>
+                                <td>+9</td>
+                                <td>+35</td>
+                                <td>60,000</td>
+                                <td>8</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+        <!-- Firearms & Ammunition Section -->
+        <section id="firearms-ammunition">
+            <h2>Firearms & Ammunition</h2>
+            <p>Crafting firearms and ammunition requires a Precision Workbench and specialized materials
+                suited
+                for ranged weaponry. Similar to crafting armor and melee weapons, this process involves
+                workstations and various skill checks, allowing multiple party members to assist in creating
+                reliable and high-quality firearms or ammunition.</p>
+
+            <h3>Precision Workbench</h3>
+            <p>The Precision Workbench is essential for crafting firearms and ammunition. It includes a main
+                station for the crafter to make their Crafting check, with up to three allies assisting at
+                other
+                specialized workstations. Each station focuses on different aspects of firearm and
+                ammunition
+                crafting.</p>
+
+            <div class="flex-container">
+                <div class="flex-item">
+                    <h4>🔧 Assembly Station</h4>
+                    <p>For assembling firearm parts; requires a <strong>Strength</strong> or
+                        <strong>Crafting</strong> check.
+                    </p>
+                </div>
+                <div class="flex-item">
+                    <h4>🎯 Calibration Station</h4>
+                    <p>For fine-tuning accuracy and stability; requires an <strong>Intellect</strong> or
+                        <strong>Observation</strong> check.
+                    </p>
+                </div>
+                <div class="flex-item">
+                    <h4>💥 Munitions Station</h4>
+                    <p>For crafting ammunition or cartridges; requires a <strong>Luck</strong> or
+                        <strong>Intellect</strong> check.
+                    </p>
+                </div>
+            </div>
+
+            <h3>Crafting Process</h3>
+            <ul>
+                <li><strong>Crafting Time:</strong> Crafting firearms requires downtime or a long rest in a
+                    safe
+                    place with access to a Precision Workbench.</li>
+                <li><strong>Making Checks:</strong> The main crafter and assisting allies each make their
+                    respective checks. The total number of successes across all checks determines the
+                    quality of
+                    the crafted item or the amount of ammunition produced.</li>
+            </ul>
+
+            <div class="two-column">
+                <div class="column">
+                    <h4>Determining Quality or Ammunition Amounts by Successes</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Quality</th>
+                                <th>Successes</th>
+                                <th>Ammunition Produced</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Poor Quality</td>
+                                <td>3 or fewer</td>
+                                <td>5 ammunition</td>
+                            </tr>
+                            <tr>
+                                <td>Good Quality</td>
+                                <td>4 to 6</td>
+                                <td>10 ammunition</td>
+                            </tr>
+                            <tr>
+                                <td>Great Quality</td>
+                                <td>7 to 10</td>
+                                <td>20 ammunition</td>
+                            </tr>
+                            <tr>
+                                <td>Legendary Quality</td>
+                                <td>10 or more (requires Legendary Precision Workbench)</td>
+                                <td>30 ammunition</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="column">
+                    <h4>Firearm Quality Effects</h4>
+                    <p>The item's quality directly affects weapon bonuses, durability, and special features.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Quality</th>
+                                <th>Check Bonus</th>
+                                <th>Damage Bonus</th>
+                                <th>Value (gp)</th>
+                                <th>Glyphs</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Poor Quality</td>
+                                <td>-5</td>
+                                <td>-5</td>
+                                <td>0</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Good Quality</td>
+                                <td>+1</td>
+                                <td>+5</td>
+                                <td>35</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Great Quality</td>
+                                <td>+3</td>
+                                <td>+10</td>
+                                <td>1,200</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Legendary Quality</td>
+                                <td>+9</td>
+                                <td>+35</td>
+                                <td>60,000</td>
+                                <td>8</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Unique Workbenches Section -->
+        <section id="unique-workbenches">
+            <h2>Unique Workbenches</h2>
+            <p>Each unique workbench provides specialized features for crafting weapons and armor, enhancing
+                items with unique qualities that reflect their origin and theme.</p>
+
+            <div class="flex-container">
+                <div class="flex-item">
+                    <h3>🌘 Eclipse Workbench</h3>
+                    <p>Items created on the Eclipse Workbench channel dark energy, adding fearsome and
+                        stealthy
+                        qualities.</p>
+                    <ul>
+                        <li><strong>Necrotic Edge:</strong> Deals +1d4 necrotic damage on a hit.</li>
+                        <li><strong>Soul Siphon:</strong> Restores 1 HP for every 5 damage dealt to a living
+                            target.</li>
+                        <li><strong>Shadow Shroud:</strong> Grants +2 to Stealth checks while in darkness or
+                            dim
+                            light.</li>
+                        <li><strong>Wraith’s Aura:</strong> once per long rest, create a fear aura around
+                            the
+                            wearer
+                            for 1 minute, causing enemies within 10 feet to make a Spirit check or be
+                            frightened.</li>
+                    </ul>
+                </div>
+                <div class="flex-item">
+                    <h3>🍃 Fey Workbench</h3>
+                    <p>Items from the Fey Workbench are imbued with the power of nature and the trickery of
+                        the
+                        fey, providing agility and life-based enhancements.</p>
+                    <ul>
+                        <li><strong>Thorned Strike:</strong> Adds +1d4 poison damage on a hit.</li>
+                        <li><strong>Blooming Edge:</strong> On a critical hit, allies within 5 feet heal 1d4
+                            HP
+                            as flowers bloom magically.</li>
+                        <li><strong>Vine’s Embrace:</strong> Wearer gains +2 to grapple checks as magical
+                            vines
+                            aid in restraining opponents.</li>
+                        <li><strong>Barkskin:</strong> Reduces physical damage by 2 points, mimicking the
+                            resilience of tree bark.</li>
+                    </ul>
+                </div>
+                <div class="flex-item">
+                    <h3>💤 Dreamsea Workbench</h3>
+                    <p>The Dreamsea Workbench bestows items with ethereal, illusion-based qualities,
+                        granting
+                        abilities that confuse or mislead.</p>
+                    <ul>
+                        <li><strong>Memory Strike:</strong> Hit targets must make a Spirit check or suffer
+                            short-term amnesia, forgetting the last 10 seconds.</li>
+                        <li><strong>Nightmare Infusion:</strong> Deals +1d4 psychic damage on a hit.</li>
+                        <li><strong>Veil of Dreams:</strong> Attackers have disadvantage on attack rolls if
+                            they
+                            fail an Observation check.</li>
+                        <li><strong>Enigmatic Aura:</strong> Grants +2 to saves against charm effects, as a
+                            dreamy aura protects the wearer’s mind.</li>
+                    </ul>
+                </div>
+                <div class="flex-item">
+                    <h3>🔥 Ordealis Workbench</h3>
+                    <p>The Ordealis Workbench infuses items with infernal fire and aggression, adding
+                        destructive and intimidating effects.</p>
+                    <ul>
+                        <li><strong>Infernal Flame:</strong> Deals +1d6 fire damage on a hit.</li>
+                        <li><strong>Hellbound Edge:</strong> When below half health, the weapon gains +2 to
+                            hit
+                            as the user’s fury enhances their aim.</li>
+                        <li><strong>Molten Core:</strong> Absorbs one fire-based attack per encounter,
+                            negating
+                            its damage.</li>
+                        <li><strong>Aura of Fear:</strong> Enemies within 5 feet must make a Spirit check or
+                            be
+                            frightened for 1 round.</li>
+                    </ul>
+                </div>
+                <div class="flex-item">
+                    <h3>🌟 Holy Workbench</h3>
+                    <p>Items crafted on the Holy Workbench are blessed with radiant power and protective
+                        qualities, enhancing the wearer’s ability to resist dark forces.</p>
+                    <ul>
+                        <li><strong>Radiant Smite:</strong> Deals +1d6 radiant damage against undead and
+                            fiends.
+                        </li>
+                        <li><strong>Blessed Blade:</strong> Each hit has a 10% chance to remove a minor
+                            curse on
+                            the target.</li>
+                        <li><strong>Sanctuary Aura:</strong> Enemies must succeed on a Spirit check to
+                            attack
+                            the wearer, or they feel compelled to target other creatures.</li>
+                        <li><strong>Healing Touch:</strong> once per long rest, heal 1d6 HP by touching a
+                            holy
+                            symbol
+                            on the armor.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- glyphs -->
+        <details>
+            <summary>
+                Glyphs
+            </summary>
+            <!-- Glyphs Section -->
+            <section id="glyphs">
+                <h2>Glyphs</h2>
+                <p>Glyphs are powerful symbols infused with magic, capable of granting weapons, armor, and even
+                    characters with remarkable abilities and enhancements. Through glyphs, a simple piece of
+                    gear
+                    can become a legendary artifact, and a character may access abilities that significantly
+                    alter
+                    their role and capabilities within the game.</p>
+
+                <h3>Crafting and Application</h3>
+                <ul>
+                    <li><strong>Implementation:</strong> Crafting and applying glyphs require specific materials
+                        and
+                        a suitable crafting station, such as an enchanting table or magical lab. The rarity of
+                        materials and quality of the station can affect the outcome.</li>
+                    <li><strong>Crafting Process:</strong> Crafters must perform Crafting, Intellect, Spirit, or
+                        other related checks. The complexity of the glyph determines the number of successes
+                        required.</li>
+                    <li><strong>Application Process:</strong> Applying a glyph involves a similar check to
+                        integrate
+                        the glyph's magical essence fully. Each step takes one hour, with more complex glyphs
+                        requiring additional time.</li>
+                    <li><strong>Risk of Failure:</strong> Failed crafting or application checks can damage or
+                        destroy the item, with consequences scaling based on the severity of the failure.</li>
+                </ul>
+
+                <h3>Glyph Tiers</h3>
+
+                <div class="flex-container">
+                    <div class="flex-item">
+                        <h4>✨ Basic Glyphs</h4>
+                        <p>Enhance damage, armor, or checks, ideal for incremental improvements to gear.</p>
+                        <p><strong>Requirements:</strong> 1 check to craft, 1 to apply; each step takes an hour
+                            and
+                            can be done with minimal equipment.</p>
+                        <ul>
+                            <li><strong>Glyph of Fortification:</strong> Increases armor by +2.</li>
+                            <li><strong>Glyph of Sharpness:</strong> Adds +1 to damage rolls on bladed weapons.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="flex-item">
+                        <h4>⚔️ Advanced Glyphs</h4>
+                        <p>Introduce new mechanics like special attacks, defensive maneuvers, or unique effects.
+                        </p>
+                        <p><strong>Requirements:</strong> 2 checks to craft and apply; requires a proper
+                            workstation
+                            and additional materials or assistance.</p>
+                        <ul>
+                            <li><strong>Glyph of Rebounding:</strong> Reflects half of damage back to the
+                                attacker
+                                as an off-action (reaction).</li>
+                            <li><strong>Glyph of Swiftness:</strong> Increases movement speed by +20ft when
+                                applied
+                                to footwear.</li>
+                            <li><strong>Glyph of Silence:</strong> Silences weapons or armor, ideal for stealthy
+                                characters.</li>
+                        </ul>
+                    </div>
+                    <div class="flex-item">
+                        <h4>🌟 Legendary Glyphs</h4>
+                        <p>Provide progression systems and grant game-changing abilities or major character
+                            transformations.</p>
+                        <p><strong>Requirements:</strong> 3 checks to craft and apply; requires a powerful
+                            workstation and a team effort.</p>
+                        <ul>
+                            <li><strong>Glyph of Transformation:</strong> Allows the character to shift into a
+                                specific creature, gaining its abilities temporarily.</li>
+                            <li><strong>Glyph of Time Manipulation:</strong> once per long rest, take 2 actions
+                                on
+                                your
+                                turn.</li>
+                            <li><strong>Glyph of Elemental Mastery:</strong> Grants control over a specific
+                                element
+                                for strategic advantages.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Glyphcrafting Failure</h3>
+                <p>When a failure occurs, the magical energies manifest as a complication. The crafter must
+                    resolve
+                    the issue by rolling on the Complication Table and taking specific actions to mitigate the
+                    effects.</p>
+
+                <h4>1d10 - Complication Table</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Roll</th>
+                            <th>Complication</th>
+                            <th>Resolution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><strong>Magical Surge:</strong> Energy overflows, risking damage to nearby
+                                magical
+                                items.</td>
+                            <td>Perform a quick Intellect check to contain the surge.</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>Elemental Anomaly:</strong> An elemental creature spawns from mishandled
+                                energies.</td>
+                            <td>Combat or negotiation may be required to dispel it.</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><strong>Arcane Feedback:</strong> Crafter suffers a backlash of minor health or
+                                mana
+                                loss.</td>
+                            <td>Perform a quick Spirit check to shield yourself.</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>Material Corruption:</strong> Materials degrade, potentially ruining
+                                them.
+                            </td>
+                            <td>A Crafting check can salvage some or all materials.</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><strong>Unstable Rift:</strong> A small portal opens, drawing in nearby objects.
+                            </td>
+                            <td>Close it with a combined Intellect and Spirit effort.</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><strong>Glyph Melding Error:</strong> Glyphs merge unpredictably, altering
+                                effects.
+                            </td>
+                            <td>Solve a puzzle representing the glyph's structure to correct the melding.</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><strong>Energetic Overload:</strong> The workstation overloads, risking an
+                                explosion.</td>
+                            <td>Distribute the energy with Strength and Agility checks.</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><strong>Phantom Echoes:</strong> Ghostly entities mimic party members, causing
+                                confusion.</td>
+                            <td>Use Insight and Perception checks to identify the real from the phantom.</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><strong>Temporal Distortion:</strong> Time slows or speeds up in the crafting
+                                area.
+                            </td>
+                            <td>Navigate anomalies to stabilize the glyph.</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><strong>Magical Infestation:</strong> Mana-eating insects swarm, depleting
+                                magical
+                                resources.</td>
+                            <td>Repel or capture the insects to complete the glyph.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </details>
+
+
+
     </main>
 </body>
+
 </html>
