@@ -10,6 +10,7 @@
     --darkgold: darkgoldenrod;
     --white: whitesmoke;
     --cream: #d9b382;
+    --rust: #a45e3b;
     --hate: rgb(95, 45, 25);
     --border-radius: 8px;
     --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -175,51 +176,62 @@ summary {
 table {
     width: 100%;
     border-collapse: collapse;
-    background-color: var(--medium);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    background-color: #2a2523;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
     overflow: hidden;
+    border: 2px solid #3b332f;
 }
 
 /* Table Header */
 table thead th {
-    background-color: var(--theme);
-    color: var(--gold);
-    text-align: left;
+    background-color: var(--rust);
+    color: var(--white);
+    text-align: center;
     font-weight: bold;
-    padding: var(--padding);
-    border-bottom: 2px solid var(--dark);
+    padding: 12px;
+    border-bottom: 3px solid var(--dark);
     text-transform: uppercase;
     font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: #3b332f;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #4a403a;
 }
 
 /* Table Rows */
 table tbody tr {
-    border-bottom: 1px solid var(--dark);
+    border-bottom: 1px solid #5b514a;
     transition: background-color 0.3s ease;
-    font-size: 0.95rem;
+    font-size: 1rem;
 }
 
 /* Table Cells */
 table td {
-    padding: var(--padding);
-    line-height: 1.5;
-}
-
-/* Hover Effect for Rows */
-table tbody tr:hover {
-    background-color: var(--theme-hover);
-    color: var(--white);
-    /* Enhances readability on hover */
-}
-
-/* Highlight First Column */
-table thead th:first-child,
-table tbody td:first-child {
-    background-color: var(--theme);
-    color: var(--gold);
-    font-weight: bold;
     text-align: center;
+    color: var(--cream);
+}
+
+/* Hover Effect */
+table tbody tr:hover {
+    background-color: #5b4a42;
+    color: #fff;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* First Column (Creature Names) Standout */
+table tbody td:first-child {
+    background-color: var(--hate);
+    color: var(--white);
+    font-weight: bold;
+    text-align: left;
+    padding: var(--padding);
+    text-transform: uppercase;
 }
 
 .header-subtitle {
@@ -343,8 +355,19 @@ nav ul li a:hover {
     transition: transform 0.3s ease, background 0.3s ease;
 }
 
+.flex-spell {
+    flex: 1;
+    min-width: 20%;
+    background-color: var(--medium);
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
 /* Flex Item Hover */
-.flex-item:hover {
+.flex-item:hover,
+.flex-spell:hover {
     background-color: var(--dark);
     box-shadow: var(--box-hover);
     transform: scale(1.1);
@@ -445,6 +468,7 @@ section {
 
 /* Headers */
 h1 {
+    font-size: 200%;
     color: var(--cream);
     margin-bottom: 10px;
     border-bottom: 2px solid var(--cream);
@@ -470,6 +494,11 @@ code {
     border-radius: 5px;
     font-family: monospace;
     font-size: 0.9rem;
+}
+
+em {
+    color: var(--rust);
+    font-size: 110%;
 }
 
 /* FEATURES */
@@ -926,6 +955,11 @@ nav {
 #search-results a:hover {
     background-color: var(--medium);
 }
+
+.thanks {
+
+    text-align: center;
+  }
 
 
 /* Responsive Adjustments */
