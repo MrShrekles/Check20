@@ -321,6 +321,33 @@ nav ul li a:hover {
     background-size: cover;
 }
 
+.image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    /* Adjust as needed */
+    margin: 0 auto;
+}
+
+.overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7);
+    /* Semi-transparent background */
+    color: white;
+    padding: 30% 50%;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+}
+
+
 .nav-link {
     text-decoration: none;
     color: var(--gold);
@@ -354,6 +381,41 @@ nav ul li a:hover {
     color: var(--white);
     transition: transform 0.3s ease, background 0.3s ease;
 }
+
+/* 🔹 Labels */
+.flex-item label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #f0f0f0;
+}
+
+/* 🔹 Checkboxes */
+.flex-item input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: #6a0dad;
+    transform: scale(1.2);
+}
+
+/* 🔹 Dropdown Select */
+.flex-item select {
+    width: 100%;
+    padding: 10px;
+    background: rgba(60, 60, 60, 0.9);
+    color: #ddd;
+    border: 1px solid #666;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+/* 🔹 Dropdown Hover */
+.flex-item select:hover,
+.flex-item select:focus {
+    background: rgba(80, 80, 80, 1);
+}
+
 
 .flex-spell {
     flex: 1;
@@ -873,7 +935,6 @@ nav {
 /* Column Styling */
 .column {
     flex: 1 1 48%;
-    /* Takes roughly half the available space */
     min-width: 300px;
 }
 
@@ -957,9 +1018,89 @@ nav {
 }
 
 .thanks {
-
     text-align: center;
-  }
+}
+
+/* Monster Output Grid (Ensures Proper Row Alignment) */
+.monster-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 100%;
+}
+
+/* Monster Card Styling */
+.monster-card {
+    background: rgba(40, 40, 40, 0.9);
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: transform 0.2s ease;
+    width: 300px;
+    
+}
+
+/* Make text editable */
+.monster-card h3,
+.monster-card p span,
+.monster-card ul li {
+    cursor: text;
+    transition: background 0.3s ease;
+}
+
+/* Highlight when editing */
+.monster-card h3:focus,
+.monster-card p span:focus,
+.monster-card ul li:focus {
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+    border-radius: 5px;
+}
+
+/* Hover Effect */
+.monster-card:hover {
+    background-color: var(--dark);
+    box-shadow: var(--box-hover);
+    transform: scale(1.05);
+}
+
+/* Remove Button */
+.delete-monster {
+    background-color: #d9534f;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 10px;
+}
+
+.delete-monster:hover {
+    background-color: #b52b27;
+}
+
+/* 🔹 Generate Button */
+#generate-monster {
+    background: var(--hate);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    height: 100%;
+}
+
+/* 🔹 Button Hover */
+#generate-monster:hover {
+    background: var(--rust);
+    box-shadow: var(--gold);
+}
 
 
 /* Responsive Adjustments */
@@ -971,7 +1112,6 @@ nav {
 
     .flex-gen {
         flex: 1 1 100%;
-        /* Makes each generator take full width on small screens */
     }
 
     .two-column {
