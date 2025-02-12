@@ -1,46 +1,91 @@
+// Standard base movement speeds
+const BASE_MOVEMENT = { walk: 30, burrow: 0, fly: 0 };
+
+// Combine an array of movementModifier objects with BASE_MOVEMENT
+const combineMovement = (modifiers) =>
+    modifiers.reduce((acc, mod) => {
+        Object.entries(mod).forEach(([mode, value]) => {
+            acc[mode] = (acc[mode] || 0) + value;
+        });
+        return acc;
+    }, { ...BASE_MOVEMENT });
+
 // Data definitions
 var monsterData = {
     base: {
         Celestial: {
             description: "Heavenly and pure, imbued with divine power.",
             names: ["Seraph", "Guardian", "Luminary"],
-            features: [{ name: "Divine Radiance", effect: "Heals allies and weakens foes." }],
-            movement: 35
+            features: [
+                {
+                    name: "Divine Radiance",
+                    type: "Healing Effect",
+                    effect: "You and allies within {range} regain {value} wounds. If an ally is under the {condition} condition, they may make a {check} to end it."
+                },
+                {
+                    name: "Blessing",
+                    type: "Support Effect",
+                    effect: "Grant an ally within {range} a divine blessing, giving them +{value} to their next {check} for {duration}."
+                },
+                {
+                    name: "Halo of Protection",
+                    type: "Defense Buff",
+                    effect: "Allies within {range} gain {value} armor and resistance to {damage} damage for {duration}."
+                }
+            ],
+            movementModifier: { walk: 5 }
         },
         Angelic: {
             description: "Benevolent and graceful, with a touch of celestial might.",
             names: ["Cherub", "Archangel", "Messenger"],
-            features: [{ name: "Blessing", effect: "Boosts morale and grants temporary strength." }],
-            movement: 35
+            features: [
+                {
+                    name: "Angelic Grace",
+                    type: "Status Infliction",
+                    effect: "Creatures that attack you must succeed on a {check} or take the {condition} condition until the end of their next turn."
+                },
+                {
+                    name: "Holy Smite",
+                    type: "Damage Effect",
+                    effect: "Your melee attacks deal an additional {value} {damage} damage. If the target fails a {check}, they take the {condition} condition."
+                }
+            ],
+            movementModifier: { walk: 5 }
         },
         Construct: {
             description: "Artificially created beings with a mechanical or magical design.",
             names: ["Golem", "Automaton", "Sentinel"],
-            features: [{ name: "Immovable", effect: "High defense and resistance to magic" }],
-            movement: 20,
+            features: [
+                {
+                    name: "Immovable",
+                    type: "Defense Buff",
+                    effect: "You gain {value} additional armor and resistance to magic-based attacks."
+                }
+            ],
+            movementModifier: { walk: -10 },
             subtypes: {
                 Core: {
                     description: "Constructs with an imbued magical core.",
                     subtypes: {
                         Arcane: {
                             description: "A core powered by arcane forces.",
-                            features: [{ name: "Arcane Core", effect: "Enhances magical abilities" }]
+                            features: [{ name: "Arcane Core", type: "Passive Effect", effect: "Enhances magical abilities, granting +{value} to {check} rolls for spellcasting." }]
                         },
                         Dryad: {
                             description: "A core infused with nature’s spirit.",
-                            features: [{ name: "Natural Resilience", effect: "Heals over time" }]
+                            features: [{ name: "Natural Resilience", type: "Healing Effect", effect: "Regenerate {value} wounds at the start of each turn." }]
                         },
                         Vozian: {
                             description: "A mysterious, otherworldly core.",
-                            features: [{ name: "Mystic Echo", effect: "Mimics magical abilities" }]
+                            features: [{ name: "Mystic Echo", type: "Passive Effect", effect: "Mimics magical abilities used within {range} for {duration}." }]
                         },
                         Adapted: {
                             description: "A core that adapts to combat needs.",
-                            features: [{ name: "Adaptive Response", effect: "Adjusts defenses dynamically" }]
+                            features: [{ name: "Adaptive Response", type: "Passive Effect", effect: "Adjusts defenses dynamically, increasing resistance to the last {damage} attack taken." }]
                         },
                         Cursed: {
                             description: "A core that brings misfortune to enemies.",
-                            features: [{ name: "Curse of Misfortune", effect: "Lowers enemy stats" }]
+                            features: [{ name: "Curse of Misfortune", type: "Status Infliction", effect: "Lowers enemy {check} rolls by {value} for {duration}." }]
                         }
                     }
                 },
@@ -49,7 +94,7 @@ var monsterData = {
                     subtypes: {
                         Standard: {
                             description: "A standard mechanical design.",
-                            features: [{ name: "Metallic Body", effect: "Resistant to physical damage" }]
+                            features: [{ name: "Metallic Body", type: "Defense Buff", effect: "Resistant to physical damage, reducing all incoming damage by {value}." }]
                         }
                     }
                 },
@@ -58,43 +103,43 @@ var monsterData = {
                     subtypes: {
                         "Battle Chariot": {
                             description: "A fast, armored vehicle.",
-                            features: [{ name: "Ram", effect: "Charges at enemies" }]
+                            features: [{ name: "Ram", type: "Movement Bonus", effect: "Charge at enemies, dealing {value} {damage} damage and knocking them prone if they fail a {check}." }]
                         }
                     }
                 },
-                arcane: {
+                Arcane: {
                     description: "Arcane constructs blending technology and magic.",
                     subtypes: {
                         "Arcane Tinker": {
                             description: "A gadget-based magical construct.",
-                            features: [{ name: "Spell Tinker", effect: "Fires arcane bolts" }]
+                            features: [{ name: "Spell Tinker", type: "Damage Effect", effect: "Fires arcane bolts dealing {value} {damage} damage." }]
                         }
                     }
                 },
-                tinker: {
+                Tinker: {
                     description: "Ingenious constructs built with mechanical ingenuity.",
                     subtypes: {
                         Clockwork: {
                             description: "Precisely engineered for accuracy.",
-                            features: [{ name: "Precise Strike", effect: "Delivers calculated damage" }]
+                            features: [{ name: "Precise Strike", type: "Damage Effect", effect: "Delivers calculated damage with +{value} to {check} rolls for accuracy." }]
                         }
                     }
                 },
-                steampunk: {
+                Steampunk: {
                     description: "Constructs powered by steam and gears.",
                     subtypes: {
                         Gearwork: {
                             description: "A blend of brass and steam.",
-                            features: [{ name: "Steam Burst", effect: "Blasts foes with scalding steam" }]
+                            features: [{ name: "Steam Burst", type: "Damage Effect", effect: "Blasts foes with scalding steam, dealing {value} {damage} damage and applying the {condition} condition." }]
                         }
                     }
                 },
-                crystal: {
+                Crystal: {
                     description: "Constructs formed from crystalline structures.",
                     subtypes: {
                         "Crystal Golem": {
                             description: "Hard and refractive, built from crystal.",
-                            features: [{ name: "Prismatic Shield", effect: "Deflects energy attacks" }]
+                            features: [{ name: "Prismatic Shield", type: "Defense Buff", effect: "Deflects energy attacks, reducing incoming {damage} damage by {value}." }]
                         }
                     }
                 }
@@ -103,116 +148,102 @@ var monsterData = {
         Demon: {
             description: "Malevolent demonic beings from various infernal realms.",
             names: ["Imp", "Fiend", "Hellspawn"],
-            features: [{ name: "Hellfire", effect: "Unleashes damaging infernos" }],
-            movement: 40,
+            features: [
+                {
+                    name: "Hellfire",
+                    type: "Damage Effect",
+                    effect: "Unleashes damaging infernos, dealing {value} {damage} damage within {range}."
+                }
+            ],
+            movementModifier: { walk: 10 },
             subtypes: {
                 "Ordealis Demon": {
                     description: "A demon from the Ordealis realm.",
-                    features: [{ name: "Ordealis Curse", effect: "Weakens enemy defenses" }]
+                    features: [{ name: "Ordealis Curse", type: "Status Infliction", effect: "Weakens enemy defenses, imposing a {condition} condition on a failed {check}." }]
                 },
                 "Fey Demon": {
                     description: "A demon with an otherworldly twist.",
-                    features: [{ name: "Fey Trickery", effect: "Confuses foes" }]
+                    features: [{ name: "Fey Trickery", type: "Status Infliction", effect: "Confuses foes, causing them to make a {check} or suffer the {condition} condition." }]
                 },
                 "Dreamsea Demon": {
                     description: "Born of nightmares and illusory seas.",
-                    features: [{ name: "Nightmare Wave", effect: "Sends enemies into a fearful daze" }]
+                    features: [{ name: "Nightmare Wave", type: "Status Infliction", effect: "Sends enemies into a fearful daze, applying {condition} for {duration}." }]
                 },
                 Imp: {
                     description: "A small, cunning demon.",
-                    features: [{ name: "Mischief", effect: "Disrupts enemy actions" }]
+                    features: [{ name: "Mischief", type: "Passive Effect", effect: "Disrupts enemy actions, imposing {condition} when interacting with abilities." }]
                 },
                 "Greater Demon": {
                     description: "A powerful demon of immense strength.",
-                    features: [{ name: "Demonic Strength", effect: "Deals devastating blows" }]
+                    features: [{ name: "Demonic Strength", type: "Damage Effect", effect: "Deals devastating blows, increasing melee {damage} damage by {value}." }]
                 },
                 "Angelic Demon": {
                     description: "A demon with a twisted, angelic aspect.",
-                    features: [{ name: "Fallen Grace", effect: "Baffles foes with contradictory power" }]
+                    features: [{ name: "Fallen Grace", type: "Passive Effect", effect: "Baffles foes with contradictory power, forcing them to make a {check} or suffer {condition}." }]
                 },
                 "Abyssal Demon": {
                     description: "A demon emerging from the abyss, embodying chaos.",
-                    features: [{ name: "Abyssal Roar", effect: "Instills terror in enemies" }]
+                    features: [{ name: "Abyssal Roar", type: "Status Infliction", effect: "Instills terror in enemies, forcing them to make a {check} or become {condition} for {duration}." }]
                 },
                 "Eclipse Demon": {
                     description: "A demon associated with eclipses and dark omens.",
-                    features: [{ name: "Shadow Rift", effect: "Tears at the fabric of light" }]
+                    features: [{ name: "Shadow Rift", type: "Movement Bonus", effect: "Tears at the fabric of light, teleporting {range} and applying {condition} to creatures in the path." }]
                 }
             }
         },
         Denizen: {
             description: "Urban dwellers of mystical cities (orcs, elves, dwarves, etc.), resourceful and diverse.",
-            names: ["Orc", "Elf", "Dwarf"],
-            features: [{ name: "Streetwise", effect: "Knows the hidden routes and secrets of the city." }],
-            movement: 30
+            names: ["Humanoid", "Bandit", "Thief", "Brigand", "Thug"],
+            features: [{ name: "Streetwise", type: "Passive Effect", effect: "Knows the hidden routes and secrets of the city, granting advantage on {check} rolls for navigation." }],
+            movementModifier: { walk: 0 }
         },
         Dragon: {
             description: "Ancient and majestic draconic beings wielding elemental might.",
             names: ["Wyrm", "Drake", "Serpent"],
-            features: [{ name: "Dragon's Breath", effect: "Unleashes elemental fury" }],
-            movement: 50,
+            features: [{ name: "Dragon's Breath", type: "Damage Effect", effect: "Unleashes elemental fury, dealing {value} {damage} damage in a {range} cone." }],
+            movementModifier: { walk: 20 },
             subtypes: {
                 wyvern: {
                     description: "A lighter, winged form of draconic terror.",
-                    features: [{ name: "Piercing Talons", effect: "Rips through enemy armor" }]
+                    features: [{ name: "Piercing Talons", type: "Damage Effect", effect: "Rips through enemy armor, increasing {damage} damage by {value} and bypassing {value} armor." }]
                 },
                 wyrm: {
                     description: "A serpentine, ancient dragon steeped in legend.",
-                    features: [{ name: "Ancient Wisdom", effect: "Reveals enemy weaknesses" }]
+                    features: [{ name: "Ancient Wisdom", type: "Passive Effect", effect: "Reveals enemy weaknesses, granting +{value} to {check} rolls when analyzing foes." }]
                 },
                 hydra: {
                     description: "A multi-headed beast that regenerates quickly.",
-                    features: [{ name: "Regenerative Heads", effect: "Recovers from damage rapidly" }]
+                    features: [{ name: "Regenerative Heads", type: "Healing Effect", effect: "Recovers from damage rapidly, regenerating {value} wounds at the start of each turn." }]
                 }
             }
         },
         Dreamsea: {
             description: "Mystical beings born of dreams and illusions.",
             names: ["Phantom", "Mirage", "Specter"],
-            features: [{ name: "Illusory Veil", effect: "Confuses foes with reality-distorting energy." }],
-            movement: 30
+            features: [{ name: "Illusory Veil", type: "Status Infliction", effect: "Confuses foes with reality-distorting energy, causing them to make a {check} or suffer {condition}." }],
+            movementModifier: { walk: 0 }
         },
         Eclipse: {
             description: "Creatures shrouded in darkness and the power of death.",
             names: ["Wraith", "Ghoul", "Lich"],
-            features: [{ name: "Shadow Strike", effect: "Delivers surprise attacks from darkness" }],
-            movement: 30,
+            features: [{ name: "Shadow Strike", type: "Damage Effect", effect: "Delivers surprise attacks from darkness, dealing {value} {damage} damage and applying {condition}." }],
+            movementModifier: { walk: 0 },
             subtypes: {
                 Undead: {
                     description: "Reanimated corpses that serve dark forces.",
-                    features: [{ name: "Decay", effect: "Weakens living creatures over time" }]
+                    features: [{ name: "Decay", type: "Status Infliction", effect: "Weakens living creatures over time, reducing {check} results by {value}." }]
                 },
                 Vampire: {
                     description: "Bloodsucking predators of the night.",
-                    features: [{ name: "Blood Drain", effect: "Steals life from its victims" }]
+                    features: [{ name: "Blood Drain", type: "Healing Effect", effect: "Steals life from its victims, healing for {value} per attack." }]
                 },
                 Ghoul: {
                     description: "Cannibalistic creatures haunting graveyards.",
-                    features: [{ name: "Grisly Bite", effect: "Inflicts infection on contact" }]
+                    features: [{ name: "Grisly Bite", type: "Damage Effect", effect: "Inflicts infection on contact, dealing {value} {damage} damage and applying {condition}." }]
                 },
                 Wraith: {
                     description: "Ethereal beings that drain life force.",
-                    features: [{ name: "Ethereal Touch", effect: "Saps the vitality of foes" }]
-                },
-                Ghost: {
-                    description: "Spirits that linger between worlds.",
-                    features: [{ name: "Haunting", effect: "Disturbs enemy focus" }]
-                },
-                Skeleton: {
-                    description: "Bones animated by dark magic.",
-                    features: [{ name: "Bone Rattle", effect: "Distracts and unsettles enemies" }]
-                },
-                Zombie: {
-                    description: "Mindless undead that relentlessly pursue the living.",
-                    features: [{ name: "Infectious Bite", effect: "Spreads a dangerous plague" }]
-                },
-                Lich: {
-                    description: "Undead mages with immense dark knowledge.",
-                    features: [{ name: "Soul Siphon", effect: "Absorbs magical energy from opponents" }]
-                },
-                Revenant: {
-                    description: "Spirits returned from the dead to exact vengeance.",
-                    features: [{ name: "Vengeful Strike", effect: "Deals extra damage to past tormentors" }]
+                    features: [{ name: "Ethereal Touch", type: "Damage Effect", effect: "Saps the vitality of foes, dealing {value} {damage} damage and reducing {check} by {value}." }]
                 }
             }
         },
@@ -220,7 +251,7 @@ var monsterData = {
             description: "A creature composed of raw elemental energies.",
             names: ["Essence", "Wisp", "Specter"],
             features: [{ name: "Elemental Surge", effect: "Unleashes pure energy" }],
-            movement: 30,
+            movementModifier: { walk: 0 },
             subtypes: {
                 acid: {
                     description: "Corrosive energy that eats through matter.",
@@ -332,13 +363,13 @@ var monsterData = {
             description: "Spirits that drain mana, evolving from a Mana Spirit to a Storm with rising power.",
             names: ["Mana Spirit", "Wraith", "Storm"],
             features: [{ name: "Mana Drain", effect: "Drains magical energy from nearby foes." }],
-            movement: 30
+            movementModifier: { walk: 0 }
         },
         Mimic: {
             description: "Creatures that mimic objects or beings to deceive their prey.",
             names: ["Imitator", "Shifter"],
             features: [{ name: "Camouflage", effect: "Blends into surroundings for ambush" }],
-            movement: 25,
+            movementModifier: { walk: -5 },
             subtypes: {
                 "mobject mimic": {
                     description: "Mimics inanimate objects.",
@@ -378,444 +409,341 @@ var monsterData = {
             description: "Creatures altered by magic or environment, unpredictable and evolving.",
             names: ["Aberration", "Chimera", "Mutant"],
             features: [{ name: "Adaptive Mutation", effect: "Changes abilities mid-combat." }],
-            movement: 30
+            movementModifier: { walk: 0 }
         },
         Nature: {
             description: "Wild and untamed beings representing the raw force of nature.",
             names: ["Beast", "Wildling", "Forest Spirit"],
             features: [{ name: "Nature's Fury", effect: "Unleashes elemental wrath on foes." }],
-            movement: 35
+            movementModifier: { walk: 5 }
         },
         Ordealis: {
             description: "Mysterious beings from a forgotten realm, unpredictable and enigmatic.",
             names: ["Oracle", "Mystic", "Seer"],
             features: [{ name: "Prophetic Insight", effect: "Foretells enemy moves." }],
-            movement: 30
+            movementModifier: { walk: 0 }
         },
         Shifter: {
             description: "Chameleons of both nature and magic, able to transform at will.",
             names: ["Formwalker", "Shifter"],
             features: [{ name: "Transform", effect: "Adopts various forms to suit combat." }],
-            movement: 35
+            movementModifier: { walk: 5 }
         }
     },
     additional: {
-        Avatar: {
-            description: "A divine manifestation bridging the mortal and celestial realms.",
-            names: ["Avatar", "Incarnation", "Manifestation"],
-            features: [{ name: "Celestial Aura", effect: "Grants blessings that empower allies." }],
-            movement: 30
+        // 🔥 FRONTLINE COMBATANTS
+        Frontline: {
+            description: "Close-quarters combatants built for resilience and melee power.",
+            names: ["Brute", "Warrior", "Knight", "Mightforge", "Champion", "Legionnaire", "Vanguard", "Gladiator", "Warlord", "Battlemaster"],
+            features: [
+                { name: "Crushing Blow", effect: "Delivers devastating physical strikes." },
+                { name: "Defensive Stance", effect: "Bolsters defenses and shields allies." },
+                { name: "Raging Assault", effect: "Unleashes a flurry of powerful strikes." },
+                { name: "Glorious Strike", effect: "Deals extra damage to challenging foes." },
+                { name: "Unyielding Guard", effect: "Reduces incoming damage while holding the front line." }
+            ],
+            movementModifier: { walk: 5 }
         },
-        brute: {
-            description: "A creature defined by raw power and unrefined strength.",
-            names: ["Brute", "Brawler", "Smasher"],
-            features: [{ name: "Crushing Blow", effect: "Delivers devastating physical strikes." }],
-            movement: 35
+
+        // 🏹 RANGED & ARTILLERY
+        Ranged: {
+            description: "Ranged specialists who strike from a distance.",
+            names: ["Grenadier", "Sharpshooter", "Marksman", "Arbalest", "Longshot", "Sniper", "Bowmaster", "Gunner", "Ballista", "Deadeye"],
+            features: [
+                { name: "Explosive Charge", effect: "Deals area damage with a burst of energy." },
+                { name: "Deadeye Shot", effect: "Hits weak points for extra critical damage." },
+                { name: "Piercing Volley", effect: "Fires a barrage that passes through enemies." },
+                { name: "Suppressive Fire", effect: "Reduces enemy movement with continuous fire." }
+            ],
+            movementModifier: { walk: 0 }
         },
-        Champion: {
-            description: "A battle-tested fighter with a legacy of valor and triumph.",
-            names: ["Champion", "Victor", "Hero"],
-            features: [{ name: "Glorious Strike", effect: "Deals extra damage to challenging foes." }],
-            movement: 35
+
+        // 🎭 STEALTH & INFILTRATION
+        Stealth: {
+            description: "Experts in deception, subterfuge, and precise eliminations.",
+            names: ["Thief", "Rogue", "Assassin", "Cultist", "Saboteur", "Infiltrator", "Shade", "Nightstalker", "Stalker", "Ghost"],
+            features: [
+                { name: "Stealth Strike", effect: "Delivers critical damage when undetected." },
+                { name: "Shadow Cloak", effect: "Becomes invisible for a short time." },
+                { name: "Silent Execution", effect: "Kills instantly if a target is unaware." },
+                { name: "Poison Blade", effect: "Laces weapons with debilitating toxins." }
+            ],
+            movementModifier: { walk: 5 }
         },
-        Cultist: {
-            description: "A devoted follower of mysterious, often dark doctrines.",
-            names: ["Cultist", "Zealot"],
-            features: [{ name: "Fanatical Rant", effect: "Unleashes maddening incantations that unsettle enemies." }],
-            movement: 30
+
+        // ✨ SPELLCASTERS & ARCANE MANIPULATORS
+        Magic: {
+            description: "Spellcasters who wield magic to control the battlefield.",
+            names: ["Mage", "Sorcerer", "Mindrift", "Time Warden", "Arcanist", "Invoker", "Spellbinder", "Elementalist", "Voidcaller", "Illusionist"],
+            features: [
+                { name: "Arcane Blast", effect: "Unleashes a burst of magical energy." },
+                { name: "Temporal Shift", effect: "Slows enemies by bending time." },
+                { name: "Mental Onslaught", effect: "Bombards foes with psychic energy." },
+                { name: "Reality Tear", effect: "Disrupts physical space to create dangerous rifts." }
+            ],
+            movementModifier: { walk: 0 }
         },
-        Detective: {
-            description: "Observant and methodical, skilled at uncovering hidden truths.",
-            names: ["Detective", "Investigator"],
-            features: [{ name: "Uncover Truth", effect: "Exposes enemy vulnerabilities." }],
-            movement: 30
-        },
-        Doctor: {
-            description: "A healer or experimental researcher, pushing the limits of medicine.",
-            names: ["Doctor", "Surgeon", "Physician"],
-            features: [{ name: "Medical Expertise", effect: "Restores health and cures ailments." }],
-            movement: 30
-        },
-        Fungal: {
-            description: "A creature fused with spores and decay, thriving on organic rot.",
-            names: ["Mycelium", "Sporeling"],
-            features: [{ name: "Spore Burst", effect: "Releases toxic spores to weaken foes." }],
-            movement: 25
-        },
-        Gravitas: {
-            description: "A gravity bender who manipulates the force of mass at will.",
-            names: ["Gravitas", "Gravity Master"],
-            features: [{ name: "Gravity Well", effect: "Draws enemies in or pushes them away with gravitational force." }],
-            movement: 30
-        },
-        Grenadier: {
-            description: "An explosive specialist who uses incendiary and shrapnel tactics.",
-            names: ["Grenadier", "Bomber"],
-            features: [{ name: "Explosive Charge", effect: "Deals area damage with a burst of explosive energy." }],
-            movement: 30
-        },
-        Knight: {
-            description: "A noble warrior clad in armor, upholding honor and duty.",
-            names: ["Knight", "Cavalier", "Squire"],
-            features: [{ name: "Defensive Stance", effect: "Bolsters defenses and shields allies." }],
-            movement: 30
-        },
-        Mage: {
-            description: "A master of arcane arts, wielding potent spells and mystical knowledge.",
-            names: ["Mage", "Wizard", "Sorcerer"],
-            features: [{ name: "Arcane Blast", effect: "Unleashes a burst of magical energy on foes." }],
-            movement: 30
-        },
-        Medic: {
-            description: "A skilled battlefield healer dedicated to saving lives.",
-            names: ["Medic", "Healer"],
-            features: [{ name: "Healing Touch", effect: "Rapidly restores health to injured allies." }],
-            movement: 30
-        },
-        Mightforge: {
-            description: "A warrior whose strength is honed through relentless combat.",
-            names: ["Mightforge", "Berserker"],
-            features: [{ name: "Raging Assault", effect: "Unleashes a flurry of powerful strikes." }],
-            movement: 30
-        },
-        Mindrift: {
-            description: "A psionic force that warps perception and assaults the mind.",
-            names: ["Mindrift", "Psion", "Telepath"],
-            features: [{ name: "Mental Onslaught", effect: "Bombards foes with psychic energy." }],
-            movement: 30
-        },
-        Paladin: {
-            description: "A holy warrior imbued with divine power and unyielding faith.",
-            names: ["Paladin", "Crusader"],
-            features: [{ name: "Sacred Strike", effect: "Delivers righteous blows that smite evil." }],
-            movement: 30
-        },
-        Priest: {
-            description: "A spiritual guide and healer, devoted to sacred orders.",
-            names: ["Priest", "Cleric"],
-            features: [{ name: "Divine Prayer", effect: "Calls upon divine intervention to protect allies." }],
-            movement: 30
-        },
-        Prophet: {
-            description: "A visionary seer gifted with foresight and mystic insight.",
-            names: ["Prophet", "Seer"],
-            features: [{ name: "Foretelling", effect: "Predicts enemy moves to gain tactical advantage." }],
-            movement: 30
-        },
+
+        // 🌿 SUPPORT & HEALING
         Support: {
-            description: "A dedicated enhancer who bolsters the capabilities of their comrades.",
-            names: ["Support", "Buffer"],
-            features: [{ name: "Inspire", effect: "Boosts the morale and effectiveness of nearby allies." }],
-            movement: 30
+            description: "Healers and enablers who empower allies.",
+            names: ["Medic", "Doctor", "Priest", "Support", "Adept", "Caretaker", "Guardian", "Pacifier", "Soother", "Warden"],
+            features: [
+                { name: "Healing Touch", effect: "Rapidly restores health to injured allies." },
+                { name: "Divine Prayer", effect: "Calls upon divine intervention for protection." },
+                { name: "Medical Expertise", effect: "Cures ailments and wounds with precision." },
+                { name: "Inspiring Presence", effect: "Boosts the morale and effectiveness of allies." }
+            ],
+            movementModifier: { walk: 0 }
         },
-        Thief: {
-            description: "A cunning and agile rogue skilled in stealth and subterfuge.",
-            names: ["Thief", "Rogue", "Cutpurse"],
-            features: [{ name: "Stealth Strike", effect: "Delivers critical damage when undetected." }],
-            movement: 35
+
+        // ⚡ SPECIAL ABILITIES (UNIQUE FANTASTICAL ROLES)
+        Mystic: {
+            description: "Unconventional beings with unique abilities beyond standard combat roles.",
+            names: ["Avatar", "Gravitas", "Visionary", "Prophet", "Herald", "Oracle", "Transcendent", "Fatebinder", "Celestial", "Harbinger"],
+            features: [
+                { name: "Celestial Aura", effect: "Grants blessings that empower allies." },
+                { name: "Gravity Well", effect: "Manipulates mass to hinder enemies." },
+                { name: "Foretelling", effect: "Predicts enemy moves to gain tactical advantage." },
+                { name: "Reality Distortion", effect: "Causes strange and unpredictable effects on the battlefield." }
+            ],
+            movementModifier: { walk: 0 }
         },
-        "Time Warden": {
-            description: "A keeper of temporal order who manipulates the flow of time.",
-            names: ["Time Warden", "Chrono Guardian"],
-            features: [{ name: "Temporal Shift", effect: "Slows enemies by bending time." }],
-            movement: 30
+
+        // 🌿 NATURE & ELEMENTAL FORCES
+        Nature: {
+            description: "Creatures infused with elemental power or the raw force of nature.",
+            names: ["Fungal", "Tribal", "Shaman", "Warden", "Beastcaller", "Wildspeaker", "Druid", "Primalist", "Stormcaller", "Verdant"],
+            features: [
+                { name: "Primal Roar", effect: "Channels the raw power of nature to intimidate foes." },
+                { name: "Spore Cloud", effect: "Releases toxic spores that weaken enemies." },
+                { name: "Earthen Bind", effect: "Uses the land itself to trap opponents." },
+                { name: "Elemental Surge", effect: "Unleashes bursts of elemental energy." }
+            ],
+            movementModifier: { walk: 0 }
         },
-        Tribal: {
-            description: "A warrior steeped in ancestral tradition and primal might.",
-            names: ["Tribal", "Shaman"],
-            features: [{ name: "Primal Roar", effect: "Channels the raw power of nature to intimidate foes." }],
-            movement: 30
-        },
-        Visionary: {
-            description: "A creative and forward-thinking soul, devising unconventional tactics.",
-            names: ["Visionary", "Dreamer"],
-            features: [{ name: "Inspiring Vision", effect: "Unleashes innovative tactics to confuse enemies." }],
-            movement: 30
-        },
-        Warrior: {
-            description: "A seasoned combatant with extensive battlefield experience.",
-            names: ["Warrior", "Fighter", "Soldier"],
-            features: [{ name: "Relentless Assault", effect: "Maintains continuous pressure on opponents." }],
-            movement: 30
+
+        // 🕵️‍♂️ INTELLECTUAL & STRATEGIC ROLES
+        Tactician: {
+            description: "Masters of planning, knowledge, and calculated strikes.",
+            names: ["Detective", "Knight", "Paladin", "Strategist", "Tactician", "Commander", "Marshal", "Sentinel", "Battle Sage", "Fieldmaster"],
+            features: [
+                { name: "Uncover Truth", effect: "Exposes enemy vulnerabilities." },
+                { name: "Defensive Tactician", effect: "Anticipates and counters attacks effectively." },
+                { name: "Sacred Strike", effect: "Delivers righteous blows that smite evil." },
+                { name: "Strategic Insight", effect: "Predicts and outmaneuvers enemies." }
+            ],
+            movementModifier: { walk: 0 }
         }
     },
     mod: {
-        "bound servant": {
-            description: "A creature forced into servitude by dark magic.",
-            names: ["Bound Servant", "Enslaved Spirit"],
-            features: [{ name: "Obedient", effect: "Follows commands without question." }]
+        // MUNDANE MODS - Simple but effective modifications
+        Mundane: {
+            description: "Practical, physical, or tactical changes to a creature.",
+            names: ["Armored", "Fast", "Slow", "Resilient", "Heavy", "Agile", "Lumbering", "Stealthy", "Burrowing", "Climbing"],
+            features: [
+                { name: "Thick Hide", effect: "Reduces damage from physical attacks." },
+                { name: "Enhanced Reflexes", effect: "Dodges attacks more easily." },
+                { name: "Bulky", effect: "Moves slower but is harder to push around." },
+                { name: "Silent Stalker", effect: "Moves unnoticed and ambushes prey." },
+                { name: "Tunnel Maker", effect: "Excavates tunnels to surprise enemies." }
+            ],
+            movementModifier: { walk: 5 }
         },
-        brimstone: {
-            description: "Infused with the searing essence of brimstone and fire.",
-            names: ["Brimstone", "Sulfuric"],
-            features: [{ name: "Burning Presence", effect: "Radiates heat that scorches foes." }]
+
+        // SUPERNATURAL MODS - Magic-infused and mythic traits
+        Supernatural: {
+            description: "Otherworldly or mystical alterations to a creature.",
+            names: ["Elemental Infused", "Ethereal", "Brimstone", "Vampiric", "Immortal", "Fungal", "Void-Touched", "Celestial Marked"],
+            features: [
+                { name: "Mystic Flight", effect: "Grants the ability to hover and maneuver magically." },
+                { name: "Undying", effect: "Sustains itself through magical regeneration." },
+                { name: "Venomous Bite", effect: "Injects toxins that paralyze enemies." },
+                { name: "Spore Burst", effect: "Releases toxic spores to impair foes." },
+                { name: "Elemental Boost", effect: "Augments elemental damage output." }
+            ],
+            movementModifier: { fly: 10 }
         },
-        burrowing: {
-            description: "Modified for underground movement.",
-            names: ["Burrower"],
-            features: [{ name: "Tunnel Maker", effect: "Excavates tunnels to surprise enemies." }]
+
+        // STRANGE MUTATIONS - Weird and unpredictable modifications
+        Mutations: {
+            description: "Unnatural or corrupted traits, often unstable in nature.",
+            names: ["Corrupted", "Parasitic", "Voidshape", "Intra-Planar", "Goldrot", "Siphon", "Nested", "Titanic", "Horrific"],
+            features: [
+                { name: "Tainted Aura", effect: "Weakens nearby beings with corrupt energy." },
+                { name: "Life Leech", effect: "Drains strength from its host to bolster itself." },
+                { name: "Planar Shift", effect: "Flickers between dimensions to evade attacks." },
+                { name: "Cursed Decay", effect: "Weakens armor and corrodes metal." },
+                { name: "Shifting Form", effect: "Alters its appearance to confuse attackers." }
+            ],
+            movementModifier: { walk: 0 }
         },
-        Corrupted: {
-            description: "Twisted by malevolent forces, tainted and unstable.",
-            names: ["Corrupted", "Blighted"],
-            features: [{ name: "Tainted Aura", effect: "Weakens nearby beings with its corrupt presence." }]
-        },
-        Deathsong: {
-            description: "Haunted by a spectral melody that foretells demise.",
-            names: ["Deathsong", "Dirge Singer"],
-            features: [{ name: "Melancholy Tune", effect: "Saps the will of those who hear it." }]
-        },
-        diseased: {
-            description: "Carrying a virulent, debilitating illness.",
-            names: ["Diseased", "Plagued"],
-            features: [{ name: "Infectious Touch", effect: "Spreads sickness with each contact." }]
-        },
-        "elemental infused": {
-            description: "Enhanced by raw elemental energies, altering its core abilities.",
-            names: ["Elementally Infused"],
-            features: [{ name: "Elemental Boost", effect: "Augments elemental damage output." }]
-        },
-        "flying -magical": {
-            description: "Levitation granted by mystical energies.",
-            names: ["Magical Flyer"],
-            features: [{ name: "Mystic Flight", effect: "Grants the ability to hover and maneuver magically." }]
-        },
-        "flying -winged": {
-            description: "True flight enabled by natural wings.",
-            names: ["Winged"],
-            features: [{ name: "Soaring", effect: "Enables sustained, agile flight." }]
-        },
-        fungal: {
-            description: "Overgrown with fungus and spores, exuding decay.",
-            names: ["Fungal", "Mushroomed"],
-            features: [{ name: "Spore Burst", effect: "Releases toxic spores to impair foes." }]
-        },
-        "giant (size)": {
-            description: "Enlarged beyond normal scale, making it a towering threat.",
-            names: ["Giant"],
-            features: [{ name: "Massive", effect: "Delivers powerful, oversized strikes." }]
-        },
-        goldrot: {
-            description: "Infused with cursed gold that decays with a toxic touch.",
-            names: ["Goldrot"],
-            features: [{ name: "Cursed Decay", effect: "Weakens armor and corrodes metal." }]
-        },
-        immortal: {
-            description: "Defies death and the ravages of time.",
-            names: ["Immortal"],
-            features: [{ name: "Undying", effect: "Sustains itself through magical regeneration." }]
-        },
-        "intra-planar": {
-            description: "Connected to energies that flow between planes of existence.",
-            names: ["Intra-planar"],
-            features: [{ name: "Planar Shift", effect: "Flickers between dimensions to evade attacks." }]
-        },
-        Iron: {
-            description: "Reinforced with iron, bolstering its durability.",
-            names: ["Iron", "Steeled"],
-            features: [{ name: "Ironclad", effect: "Greatly increases physical resistance." }]
-        },
-        king: {
-            description: "Exudes regal authority, inspiring obedience and fear.",
-            names: ["King", "Monarch"],
-            features: [{ name: "Regal Command", effect: "Boosts the morale of allies and intimidates foes." }]
-        },
-        leader: {
-            description: "A natural commander, guiding others in battle.",
-            names: ["Leader", "Commander"],
-            features: [{ name: "Commanding Presence", effect: "Inspires and directs allies effectively." }]
-        },
-        minion: {
-            description: "A subordinate creature, weaker but numerous.",
-            names: ["Minion", "Underling"],
-            features: [{ name: "Swarm Tactics", effect: "Excels when operating as part of a horde." }]
-        },
-        nested: {
-            description: "Complex, layered abilities hidden beneath the surface.",
-            names: ["Nested"],
-            features: [{ name: "Hidden Depths", effect: "Reveals unexpected abilities in dire moments." }]
-        },
-        parasitic: {
-            description: "Relies on a host to feed and enhance its power.",
-            names: ["Parasitic"],
-            features: [{ name: "Life Leech", effect: "Drains strength from its host to bolster itself." }]
-        },
-        poisonous: {
-            description: "Exudes toxins that can debilitate or kill.",
-            names: ["Poisonous"],
-            features: [{ name: "Toxic Secretion", effect: "Inflicts poison that saps vitality." }]
-        },
-        rooted: {
-            description: "Anchored to the ground, sacrificing mobility for resilience.",
-            names: ["Rooted"],
-            features: [{ name: "Deep Roots", effect: "Increases defense and regenerates health slowly." }]
-        },
-        Rust: {
-            description: "Covered in corrosion that deteriorates nearby metal.",
-            names: ["Rusty"],
-            features: [{ name: "Corrosion", effect: "Accelerates the decay of enemy armor." }]
-        },
-        siphon: {
-            description: "Drains energy or life from its surroundings.",
-            names: ["Siphon"],
-            features: [{ name: "Energy Drain", effect: "Absorbs power from opponents to strengthen itself." }]
-        },
-        tiny: {
-            description: "Diminutive in size yet quick and elusive.",
-            names: ["Tiny"],
-            features: [{ name: "Elusive", effect: "Easily dodges attacks due to its small size." }]
-        },
-        tyrant: {
-            description: "Dominates with oppressive force and ruthless power.",
-            names: ["Tyrant"],
-            features: [{ name: "Oppressive Rule", effect: "Instills fear and enforces obedience in its presence." }]
-        },
-        Vampiric: {
-            description: "Drains life from its foes to sustain its own existence.",
-            names: ["Vampiric"],
-            features: [{ name: "Life Drain", effect: "Steals vitality with every attack." }]
-        },
-        venomous: {
-            description: "Emits potent venom that can cripple or kill.",
-            names: ["Venomous"],
-            features: [{ name: "Venomous Bite", effect: "Injects toxins that paralyze enemies." }]
-        },
-        Void: {
-            description: "Embodies the emptiness and chaos of the void.",
-            names: ["Void"],
-            features: [{ name: "Null Field", effect: "Suppresses magical energies in its vicinity." }]
-        },
-        Voidshape: {
-            description: "Constantly shifting form, like the ever-changing void.",
-            names: ["Voidshape"],
-            features: [{ name: "Shifting Form", effect: "Alters its appearance to confuse attackers." }]
-        },
-        weak: {
-            description: "Inherently frail and lacking in strength.",
-            names: ["Weak"],
-            features: [{ name: "Fragile", effect: "Suffers from low durability and power." }]
+
+        // COMMANDER & HIERARCHY - Mods that change social or tactical positioning
+        Command: {
+            description: "Denotes leadership, servitude, or group combat effectiveness.",
+            names: ["King", "Tyrant", "Leader", "Minion", "Bound Servant", "Commander", "Pack Alpha"],
+            features: [
+                { name: "Regal Command", effect: "Boosts the morale of allies and intimidates foes." },
+                { name: "Oppressive Rule", effect: "Enforces obedience in its presence." },
+                { name: "Commanding Presence", effect: "Inspires and directs allies effectively." },
+                { name: "Swarm Tactics", effect: "Excels when operating as part of a horde." },
+                { name: "Obedient", effect: "Follows commands without question." }
+            ],
+            movementModifier: { walk: 0 }
         }
     }
 };
-var actionTypes = ["Action", "Half-Action", "Off-Action"];
-var ranges = ["Melee", "Short", "Medium", "Long"];
-var damageTypes = ["Physical", "Fire", "Ice", "Lightning", "Toxic"];
 
-// Elemental subtypes with unique features
-var elementalFeatures = {
-    acid: { name: "Corrosive Touch", effect: "Corrodes armor and flesh" },
-    smoke: { name: "Obscuring Mist", effect: "Blurs enemy vision" },
-    darkness: { name: "Umbral Veil", effect: "Shrouds the area in dark energy" },
-    fire: { name: "Blazing Inferno", effect: "Engulfs foes in flames" },
-    plasma: { name: "Electrostatic Surge", effect: "Releases charged plasma bolts" },
-    paper: { name: "Brittle Edges", effect: "Cuts with surprising sharpness" },
-    ice: { name: "Frostbite", effect: "Chills and slows opponents" },
-    stone: { name: "Rock Solid", effect: "Grants temporary resistance" },
-    lightning: { name: "Storm Strike", effect: "Electrocutes with high voltage" },
-    wire: { name: "Barbed Trap", effect: "Entangles and stuns" },
-    solar: { name: "Radiant Burst", effect: "Emits a blinding flash" },
-    thunder: { name: "Sonic Boom", effect: "Disorients with powerful sound" },
-    sound: { name: "Resonance", effect: "Vibrates enemy bones" },
-    toxic: { name: "Venomous Cloud", effect: "Poisons those nearby" },
-    radiation: { name: "Irradiation", effect: "Causes lingering sickness" },
-    poison: { name: "Noxious Spray", effect: "Emits a toxic mist" },
-    fluid: { name: "Liquid Form", effect: "Shifts shape unpredictably" },
-    water: { name: "Tidal Wave", effect: "Washes away obstacles" },
-    oil: { name: "Slippery Coating", effect: "Makes surfaces dangerously slick" },
-    blood: { name: "Crimson Flow", effect: "Saps strength from victims" },
-    metal: { name: "Metallic Clang", effect: "Stuns with reverberation" },
-    copper: { name: "Electro-Copper", effect: "Channels electric shocks" },
-    iron: { name: "Iron Will", effect: "Boosts defensive power" },
-    bronze: { name: "Bronze Charge", effect: "Delivers a crushing blow" },
-    empathy: { name: "Emotional Surge", effect: "Empowers allies with shared feeling" }
+const monsterMotivations = [
+    "Bloodlust", "Hunting prey", "Defending territory", "Seeking revenge", "Eliminating a perceived threat",
+    "Fighting for dominance", "Following orders to kill", "Destroying intruders", "Rampaging due to pain or madness",
+    "Marking territory with violence", "Scavenging for food", "Protecting young", "Guarding a nest or lair",
+    "Defending a wounded ally", "Hiding from a larger predator", "Storing food or resources", "Avoiding danger",
+    "Moving to a safer area", "Seeking a cure for an ailment", "Following a leader’s command", "Seeking companionship",
+    "Performing a ritual", "Testing intruders before trusting them", "Enforcing order in its domain", "Looking for a mate",
+    "Defending its tribe or faction", "Reclaiming lost land", "Investigating strange sounds or smells",
+    "Searching for something lost", "Chasing a moving object", "Collecting shiny objects", "Observing intruders without hostility",
+    "Imitating other creatures", "Seeking something familiar", "Seeking magical energy", "Guarding an ancient secret",
+    "Bound by a curse to perform an action", "Absorbing souls or life force", "Being controlled by another entity",
+    "Manifesting due to an old prophecy", "Enforcing a divine or eldritch law", "Reenacting an ancient battle",
+    "Wandering aimlessly", "Playing tricks or misleading travelers", "Spreading destruction for fun",
+    "Escaping from a captor", "Experiencing a mental break", "Acting out due to unnatural corruption",
+    "Confused about its purpose", "Seeking freedom from servitude"
+];
+const actionTypes = ["Action", "Half-Action", "Off-Action"];
+const ranges = ["Melee", "Reach", "Short", "Medium", "Long"];
+const damageTypes = ["Physical", "Elemental", "Acid", "Eclipse", "Fire", "Ice", "Lighting", "Solar", "Thunder", "Toxic", "Fluid", "Realm"];
+const values = ["1d6", "1d8", "2d4", "1d4!", "3"];
+const condition = ["Bleeding", "Broken", "Concussion", "Coughing", "Dislocation", "Slowed", "Pinned", "Prone", "", "Blind", "Charmed", "Confused", "Deaf", "Fear", "Intangible", "Invisible", "Unconscious", "Stunned", "Exhaustion", "Constrained", "Exposed"]
+const check = ["Agility","Crafting","Influence","Intellect","Luck","Observation","Spirit","Stealth","Strength","Survival"]
+const duration = ["Until the end of their next turn", "1 Minute"]
+const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+const formatFeature = (feature) => {
+    // Get random values for your custom tokens
+    const randomRange = randomItem(ranges);
+    const randomValue = randomItem(values);
+    const randomAction = randomItem(actionTypes);
+    const randomDamage = randomItem(damageTypes);
+    const randomCondition = randomItem(condition);
+    const randomCheck = randomItem(check);
+    const randomDuration = randomItem(duration);
+
+
+
+    // Replace tokens in the effect string with randomized values
+    let effect = feature.effect
+        .replace("{range}", randomRange)
+        .replace("{value}", randomValue)
+        .replace("{action}", randomAction)
+        .replace("{condition}", randomCondition)
+        .replace("{damage}", randomDamage)
+        .replace("{check}", randomCheck)
+        .replace("{duration}", randomDuration)
+        ;
+
+    return { name: feature.name, action: randomAction, effect };
 };
 
-// Helper to pick a random item from an array
-function randomItem(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-}
+class Monster {
+    constructor() {
+        this.baseKey = document.getElementById("randomize-base").checked
+            ? randomItem(Object.keys(monsterData.base))
+            : document.getElementById("base-type").value;
+        this.addKey = document.getElementById("randomize-additional").checked
+            ? randomItem(Object.keys(monsterData.additional))
+            : document.getElementById("additional-type").value;
+        this.modKey = document.getElementById("randomize-mod").checked
+            ? randomItem(Object.keys(monsterData.mod))
+            : document.getElementById("mod-type").value;
 
-// Format a feature with random properties
-function formatFeature(feature) {
-    var action = randomItem(actionTypes);
-    var range = randomItem(ranges);
-    var damage = randomItem(damageTypes);
-    var effect = feature.effect + " with a " + action + " attack (" + damage + " damage, " + range + " range)";
-    return { name: feature.name, action: action, range: range, damage: damage, effect: effect };
-}
+        this.base = monsterData.base[this.baseKey];
+        this.additional = monsterData.additional[this.addKey];
+        this.mod = monsterData.mod[this.modKey];
+        this.motivation = randomItem(monsterMotivations);
 
-// Monster class that builds a monster based on filter settings
-function Monster() {
-    // Determine base type: if randomize is checked, pick randomly; else use selected value.
-    this.baseKey = document.getElementById("randomize-base").checked
-        ? randomItem(Object.keys(monsterData.base))
-        : document.getElementById("base-type").value;
-    this.addKey = document.getElementById("randomize-additional").checked
-        ? randomItem(Object.keys(monsterData.additional))
-        : document.getElementById("additional-type").value;
-    this.modKey = document.getElementById("randomize-mod").checked
-        ? randomItem(Object.keys(monsterData.mod))
-        : document.getElementById("mod-type").value;
+        // Create a monster name from mod, base, and additional names.
+        this.name = `${randomItem(this.mod.names)} ${randomItem(this.base.names)} ${randomItem(this.additional.names)}`;
 
-    // Get the corresponding data
-    this.base = monsterData.base[this.baseKey];
-    this.additional = monsterData.additional[this.addKey];
-    this.mod = monsterData.mod[this.modKey];
+        // Pick one feature from each category (if available) and format them.
+        this.features = [
+            randomItem(this.base.features || []),
+            randomItem(this.additional.features || []),
+            randomItem(this.mod.features || [])
+        ].filter(Boolean).map(formatFeature);
 
-    // Create a monster name from additional and base names
-    this.name = randomItem(this.additional.names) + " " + randomItem(this.base.names);
-
-    // If base is Elemental, choose an elemental subtype and add its feature.
-    if (this.baseKey === "Elemental") {
-        var availableElementals = Object.keys(elementalFeatures);
-        this.elementalType = randomItem(availableElementals);
-        this.name += " (" + this.elementalType + ")";
-        this.elementalFeature = formatFeature(elementalFeatures[this.elementalType]);
+        // Calculate movement speed using combineMovement.
+        const movementMods = [this.base.movementModifier, this.additional.movementModifier, this.mod.movementModifier].filter(Boolean);
+        this.movement = combineMovement(movementMods);
     }
-
-    // Format features from base and additional types.
-    var baseFeatures = this.base.features.map(formatFeature);
-    var addFeatures = this.additional.features.map(formatFeature);
-    this.features = this.elementalFeature
-        ? baseFeatures.concat(addFeatures, [this.elementalFeature])
-        : baseFeatures.concat(addFeatures);
-
-    // Calculate movement speed
-    this.movement = this.base.movement + this.additional.movement;
 }
 
-// Create and return a monster card element.
-function createMonsterCard(monster) {
-    var monsterDiv = document.createElement("div");
-    monsterDiv.classList.add("monster-card");
-    monsterDiv.innerHTML =
-        "<h4 contenteditable='true'>" + monster.name + "</h4>" +
-"<p><strong>" + toTitleCase(monster.baseKey) + " - " + toTitleCase(monster.addKey) + " - " + toTitleCase(monster.modKey) + "</strong></p>" +
-        "<p>" + monster.base.description + " " + monster.additional.description + " " + monster.mod.description + "</p>" +
-        "<p><strong>Movement Speed:</strong> " + monster.movement + " ft</p>" +
-        "<h3>Features:</h3><ul>" +
-        monster.features.map(function (f) {
-            return "<li contenteditable='true'><strong>" + f.name + "</strong> (" + f.action + ") - " + f.effect + "</li>";
-        }).join('') +
-        "</ul>" +
-        "<button class='delete-monster'>Remove</button>";
-
-    // Remove button functionality
-    monsterDiv.querySelector(".delete-monster").addEventListener("click", function () {
-        monsterDiv.remove();
-    });
+const createMonsterCard = (monster) => {
+    const monsterDiv = document.createElement("div");
+    monsterDiv.className = "monster-card";
+    const featuresHtml = monster.features
+        .map(
+            (f) =>
+                `<li contenteditable="true"><strong>${f.name}</strong> (${f.action}): ${f.effect}</li>`
+        )
+        .join("");
+    monsterDiv.innerHTML = `
+      <h4 contenteditable="true">${monster.name}</h4>
+      <p><strong>${toTitleCase(monster.baseKey)} - ${toTitleCase(monster.addKey)} - ${toTitleCase(monster.modKey)}</strong></p>
+      <p>${monster.base.description} ${monster.additional.description} ${monster.mod.description}</p>
+      <p><strong>Movement Speed:</strong> Walk: ${monster.movement.walk} ft${monster.movement.burrow ? `, Burrow: ${monster.movement.burrow} ft` : ""
+        }${monster.movement.fly ? `, Fly: ${monster.movement.fly} ft` : ""}</p>
+      <p><strong>Motivation:</strong> ${monster.motivation}</p>
+      <h3>Features:</h3>
+      <ul>${featuresHtml}</ul>
+      <button class="delete-monster">Remove</button>`;
+    monsterDiv
+        .querySelector(".delete-monster")
+        .addEventListener("click", () => monsterDiv.remove());
     return monsterDiv;
 }
 
+// Helper to convert a string to Title Case
 function toTitleCase(str) {
-    return str.replace(/\w\S*/g, function(txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    return str.replace(/\w\S*/g, function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
-  }
-  
+}
 
-// Attach event listener when DOM is ready
+// Populate the select dropdowns when DOM is ready.
 document.addEventListener("DOMContentLoaded", function () {
+    // Populate Base Type select
+    var baseSelect = document.getElementById("base-type");
+    baseSelect.innerHTML = "";
+    Object.keys(monsterData.base).forEach(function (key) {
+        var option = document.createElement("option");
+        option.value = key;
+        option.textContent = toTitleCase(key);
+        baseSelect.appendChild(option);
+    });
+
+    // Populate Additional Type select
+    var addSelect = document.getElementById("additional-type");
+    addSelect.innerHTML = "";
+    Object.keys(monsterData.additional).forEach(function (key) {
+        var option = document.createElement("option");
+        option.value = key;
+        option.textContent = toTitleCase(key);
+        addSelect.appendChild(option);
+    });
+
+    // Populate Mod Type select
+    var modSelect = document.getElementById("mod-type");
+    modSelect.innerHTML = "";
+    Object.keys(monsterData.mod).forEach(function (key) {
+        var option = document.createElement("option");
+        option.value = key;
+        option.textContent = toTitleCase(key);
+        modSelect.appendChild(option);
+    });
+
+    // Attach event listener for generating a monster card
     var generateBtn = document.getElementById("generate-monster");
     var output = document.getElementById("monster-output");
     generateBtn.addEventListener("click", function () {
@@ -825,45 +753,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Helper to title-case strings
-    function toTitleCase(str) {
-      return str.replace(/\w\S*/g, function(txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-      });
-    }
-  
-    // Populate Base Type select
-    var baseSelect = document.getElementById("base-type");
-    baseSelect.innerHTML = "";
-    Object.keys(monsterData.base).forEach(function(key) {
-      var option = document.createElement("option");
-      option.value = key;
-      option.textContent = toTitleCase(key);
-      baseSelect.appendChild(option);
-    });
-  
-    // Populate Additional Type select
-    var addSelect = document.getElementById("additional-type");
-    addSelect.innerHTML = "";
-    Object.keys(monsterData.additional).forEach(function(key) {
-      var option = document.createElement("option");
-      option.value = key;
-      option.textContent = toTitleCase(key);
-      addSelect.appendChild(option);
-    });
-  
-    // Populate Mod Type select
-    var modSelect = document.getElementById("mod-type");
-    modSelect.innerHTML = "";
-    Object.keys(monsterData.mod).forEach(function(key) {
-      var option = document.createElement("option");
-      option.value = key;
-      option.textContent = toTitleCase(key);
-      modSelect.appendChild(option);
-    });
-  });
-  
 
 // -----------------------------------------------------------------------//
 // Sidebar toggle functionality
