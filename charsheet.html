@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Sheet</title>
+    <link rel="stylesheet" href="styles/charsheet.css">
+    <script src="scripts/charsheet.js" defer></script>
+
+</head>
+
+<body>
+    <div class="two-column">
+        <div class="column">
+            <div class="flex-container">
+                <div class="flex-item">
+                    <label>Character Name:</label>
+                    <input type="text" id="charName">
+                </div>
+                <div class="flex-item">
+                    <h2>Health</h2>
+                    <table>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Total</th>
+                            <th>Current</th>
+                        </tr>
+                        <tr>
+                            <td>Armor</td>
+                            <td><input type="number"></td>
+                            <td><input type="number"></td>
+                        </tr>
+                        <tr>
+                            <td>Wounds</td>
+                            <td><input type="number"></td>
+                            <td><input type="number"></td>
+                            <td>Agi + Str</td>
+                        </tr>
+                        <tr>
+                            <td>Movement Speed</td>
+                            <td><input type="number"></td>
+                            <td><input type="number"></td>
+                            <td>30 + 5 per 2 Agi</td>
+                        </tr>
+                        <tr>
+                            <td>Low Light Vision</td>
+                            <td><input type="number"></td>
+                            <td><input type="number"></td>
+                            <td>30 + 5 per 2 Obs</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <h2>Checks</h2>
+            <table>
+                <tr>
+                    <th>Check</th>
+                    <th>Total</th>
+                    <th>Bonus</th>
+                    <th>Dis/Lock</th>
+                </tr>
+                <tr>
+                    <td>Agility</td>
+                    <td><input type="number"></td>
+                    <td><input type="number"></td>
+
+                </tr>
+                <tr>
+                    <td>Crafting</td>
+                    <td><input type="number"></td>
+                    <td><input type="number"></td>
+
+                </tr>
+                <tr>
+                    <td>Influence</td>
+                    <td><input type="number"></td>
+                    <td><input type="number"></td>
+
+                </tr>
+                <tr>
+                    <td>Intellect</td>
+                    <td><input type="number"></td>
+                    <td><input type="number"></td>
+
+                </tr>
+                <tr>
+                    <td>Luck</td>
+                    <td><input type="number"></td>
+                    <td><input type="number"></td>
+
+                </tr>
+                <tr>
+                    <td>Observation</td>
+                    <td><input type="number"></td>
+                    <td><input type="number"></td>
+
+                </tr>
+                <tr>
+                    <td>Spirit</td>
+                    <td><input type="number"></td>
+                    <td><input type="number"></td>
+
+                </tr>
+                <tr>
+                    <td>Stealth</td>
+                    <td><input type="number"></td>
+                    <td><input type="number"></td>
+
+                </tr>
+                <tr>
+                    <td>Strength</td>
+                    <td><input type="number"></td>
+                    <td><input type="number"></td>
+
+                </tr>
+                <tr>
+                    <td>Survival</td>
+                    <td><input type="number"></td>
+                    <td><input type="number"></td>
+
+                </tr>
+            </table>
+
+            <hr>
+
+            <div class="flex-item">
+                <label>Class:</label> <input type="text">
+            </div>
+            <div class="flex-item">
+                <label>Path:</label> <input type="text">
+            </div>
+            <div class="flex-item">
+                <label>Talent:</label> <input type="text">
+            </div>
+            <div class="flex-item">
+                <textarea name="class-note" id="class-note" placeholder="Other class information"></textarea>
+            </div>
+
+            <h2>Roll Outcomes</h2>
+            <table>
+                <tr>
+                    <th>Roll</th>
+                    <th>Outcome</th>
+                    <th>Opportunity Attack</th>
+                </tr>
+                <tr>
+                    <td>1-4</td>
+                    <td>Fail +</td>
+                    <td>Yes @ Advantage</td>
+                </tr>
+                <tr>
+                    <td>5-9</td>
+                    <td>Fail</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>10-14</td>
+                    <td>Minor Failure</td>
+                    <td>Yes @ Disadvantage</td>
+                </tr>
+                <tr>
+                    <td>15-19</td>
+                    <td>Success</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>20-24</td>
+                    <td>Success +</td>
+                    <td>1 roll</td>
+                </tr>
+                <tr>
+                    <td>25-29</td>
+                    <td>Success ++</td>
+                    <td>2 rolls</td>
+                </tr>
+                <tr>
+                    <td>30-34</td>
+                    <td>Success +++</td>
+                    <td>3 rolls</td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="column">
+<textarea name="note1" id="note1" placeholder="Notes and other information"></textarea>
+            <div class="lined-section">
+                <h2>Features, Equipment, & Notes</h2>
+                <div id="repeating-section">
+                    <button type="button" onclick="addItem()">+ Add Item</button>
+                </div>
+
+                <div class="lined-paper"></div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+
+</html>
