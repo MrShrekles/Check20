@@ -120,11 +120,8 @@ details {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
     position: relative;
-    /* Ensures positioning context for child elements */
     overflow: visible;
-    /* Default to avoid clipping tooltip by parent */
     border: 2px solid transparent;
-    /* Adds consistent border to prevent layout shift */
 }
 
 details[open] {
@@ -143,6 +140,21 @@ details:hover {
 summary {
     font-weight: bold;
     color: var(--gold);
+}
+
+select {
+    background-color: var(--dark);
+    color: var(--gold);
+    width: 100%;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: var(--padding);
+    border: 2px solid var(--theme);
+    font-size: large;
+}
+
+select:focus {
+    border: 2px solid var(--gold);
 }
 
 /* General Table Styling */
@@ -197,7 +209,6 @@ table tbody td:first-child {
 }
 
 table td {
-    text-align: justify;
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: normal;
@@ -352,7 +363,7 @@ nav ul li a:hover {
 /* General Flex Items */
 .flex-item {
     flex: 1;
-    min-width: min-content;
+    min-width: 200px;
     max-width: 30%;
     background-color: var(--medium);
     padding: var(--padding);
@@ -399,7 +410,7 @@ nav ul li a:hover {
 
 .flex-spell {
     flex: 1;
-    min-width: 20%;
+    min-width: 25%;
     background-color: var(--medium);
     padding: var(--padding);
     border-radius: var(--border-radius);
@@ -500,8 +511,8 @@ code {
 
 /* Section General Styling */
 section {
-    margin: 20px 0;
-    padding: 20px;
+    margin: 10px;
+    padding: 10px;
     background-color: var(--theme-alt);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
@@ -1079,15 +1090,14 @@ nav {
     box-shadow: var(--gold);
 }
 
-
-/* Responsive Adjustments */
+/* 📌 Mobile-Friendly Adjustments */
 @media (max-width: 768px) {
-    button {
+    button, .flex-pop button {
         font-size: 0.9rem;
         padding: 8px 16px;
     }
 
-    .flex-gen {
+    .flex-gen, .column {
         flex: 1 1 100%;
     }
 
@@ -1095,39 +1105,47 @@ nav {
         flex-direction: column;
     }
 
-    .column {
-        flex: 1 1 100%;
-    }
-
     table {
         white-space: nowrap;
         border-radius: 0;
     }
 
-    /* Reduce Padding & Font Size for Better Mobile Fit */
-    table thead th,
-    table tbody td {
-        padding: 0px;
+    /* 🛠 Reduce Padding & Font Size for Better Mobile Fit */
+    table th, table td {
+        padding: 2px 6px;
         font-size: 0.8rem;
-    }
-
-    table th,
-    table td {
         min-width: 10vw;
     }
-}
 
-@media (max-width: 600px) {
+    /* 📌 Make Flex Items Full Width */
+    .flex-item, .flex-spell {
+        max-width: 100%;
+        min-width: 100%;
+        padding: var(--padding-small);
+    }
 
+    /* Improve Label Readability */
+    .flex-item label {
+        font-size: 16px;
+    }
+
+    /* Touch-Friendly Inputs */
+    .flex-item input[type="checkbox"] {
+        transform: scale(1.5);
+    }
+
+    .flex-item select {
+        font-size: 18px;
+        padding: 12px;
+    }
     thead {
-        display: none;
-        /* Hide headers */
+        display: none; /* Hide table headers for compact mobile views */
     }
 
     tr {
-        margin-bottom: 10px;
+        display: block;
         border: 1px solid var(--medium);
+        margin-bottom: 10px;
         padding: 10px;
     }
-
 }
