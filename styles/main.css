@@ -110,38 +110,48 @@ footer {
     color: black;
 }
 
-/* Details and Summary Styling */
+/* 🔹 Details (Container for Dropdown) */
 details {
-    margin: 1rem 0;
+    margin: 0.5rem 0;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    padding: var(--padding);
+    padding: 0;
     color: var(--white);
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
     position: relative;
-    overflow: visible;
-    border: 2px solid transparent;
+    overflow: hidden;
+    border: none;
 }
 
-details[open] {
-    background-color: var(--theme-dark);
-    box-shadow: var(--box-hover);
-    cursor: auto;
-    border: 2px solid var(--theme-alt);
-    overflow: visible;
-}
-
-details:hover {
-    background-color: var(--medium);
-    border-color: var(--theme);
-}
-
+/* 🔹 Summary (Button-Like Header) */
 summary {
+    display: block;
+    background-color: var(--theme);
+    color: var(--white);
+    padding: 12px;
+    text-align: center;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
     font-weight: bold;
-    color: var(--gold);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
 }
 
+/* 🔹 Summary Hover Effect */
+summary:hover {
+    background-color: var(--theme-hover);
+    box-shadow: var(--box-hover);
+}
+
+/* 🔹 When Open, Change Summary Button Style */
+details[open] summary {
+    background-color: var(--gold);
+    color: var(--dark);
+    box-shadow: var(--box-hover);
+}
 select {
     background-color: var(--dark);
     color: var(--gold);
@@ -347,16 +357,12 @@ nav ul li a:hover {
     /* Darker green on hover */
 }
 
-.flex-container {
-    display: flex;
-    gap: var(--padding);
-}
 
 /* General Flex Container */
 .flex-container {
     display: flex;
-    flex-wrap: wrap;
     gap: var(--padding);
+    flex-wrap: wrap;
     justify-content: flex-start;
 }
 
@@ -364,7 +370,7 @@ nav ul li a:hover {
 .flex-item {
     flex: 1;
     min-width: 200px;
-    max-width: 30%;
+    max-width: 50%;
     background-color: var(--medium);
     padding: var(--padding);
     border-radius: var(--border-radius);
@@ -405,17 +411,6 @@ nav ul li a:hover {
 .flex-item select:hover,
 .flex-item select:focus {
     background: rgba(80, 80, 80, 1);
-}
-
-
-.flex-spell {
-    flex: 1;
-    min-width: 25%;
-    background-color: var(--medium);
-    padding: var(--padding);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    transition: transform 0.3s ease, background 0.3s ease;
 }
 
 /* Flex Item Hover */
@@ -833,11 +828,32 @@ form {
     transition-delay: 0.3s;
 }
 
-/* Tabs Navigation */
+/* Dropdown Navigation */
 nav {
     display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
+    flex-direction: column;
+    background-color: var(--theme-dark);
+    border-radius: var(--border-radius);
+    padding: 5px;
+    margin-top: 5px;
+}
+
+/* Navigation Links */
+nav a {
+    text-decoration: none;
+    color: var(--gold);
+    padding: 10px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+nav a:hover {
+    background-color: var(--theme-alt);
+    color: var(--darkgold);
 }
 
 .tabs {

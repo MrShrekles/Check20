@@ -1,0 +1,791 @@
+{
+  "species": [
+    {
+      "id": "primarch",
+      "name": "Primarch",
+      "description": "Primarchs, often referred to as 'True Humans' by some cultures, represent a rare and enigmatic strain of humanity that embodies the full spectrum of human potential and ambition.",
+      "size": "5-6 ft",
+      "lifespan": "60-90 years",
+      "language": [
+        "Imperial"
+      ],
+      "diet": "Omnivore",
+      "rarity": "Very Rare",
+      "tags": [
+        "human",
+        "leader",
+        "command"
+      ],
+      "features": [
+        {
+          "name": "Command",
+          "description": "As an action, make a contested Influence Check targeting an intelligent creature within short range. On success, the creature follows a single-word command until the start of their turn.",
+          "options": [
+            {
+              "name": "Obey",
+              "effect": "Move toward you by the shortest route."
+            },
+            {
+              "name": "Discard",
+              "effect": "Drop whatever the target is holding."
+            },
+            {
+              "name": "Retreat",
+              "effect": "Move away from you by the fastest means."
+            },
+            {
+              "name": "Submit",
+              "effect": "Fall prone until the end of the next turn."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "changeling-elemental",
+      "name": "Elemental Changeling",
+      "base_species": "Changeling",
+      "description": "Elemental Changelings are born from unions between mortals and elemental spirits. Their tribes and clans are scattered across harsh landscapes, where they master the forces of nature and serve as mediators between civilizations and the wilds.",
+      "size": "5-6 ft",
+      "lifespan": "60-90 years",
+      "language": [
+        "Imperial"
+      ],
+      "diet": "Omnivore",
+      "rarity": "Very Rare",
+      "tags": [
+        "changeling",
+        "elemental",
+        "nature",
+        "shapeshifter"
+      ],
+      "features": [
+        {
+          "name": "Faceshift",
+          "description": "As an action, shift your facial structure into that of another creature that you have studied within the past 24 hours, that you know intimately, or have loyalty with."
+        },
+        {
+          "name": "Elemental Immunity",
+          "description": "Once per long rest, as an action, gain immunity to an elemental damage type for 1 minute.",
+          "options": [
+            {
+              "name": "Fire",
+              "effect": "Become immune to Fire damage for 1 minute."
+            },
+            {
+              "name": "Cold",
+              "effect": "Become immune to Cold damage for 1 minute."
+            },
+            {
+              "name": "Lightning",
+              "effect": "Become immune to Lightning damage for 1 minute."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "changeling-vozian",
+      "name": "Vozian Changeling",
+      "base_species": "Changeling",
+      "description": "Vozian Changelings bear the legacy of infernal pacts and forbidden magic. Some serve as agents of destruction, while others seek redemption, using their power to protect instead of terrorize.",
+      "size": "5-6 ft",
+      "lifespan": "60-90 years",
+      "language": [
+        "Imperial"
+      ],
+      "diet": "Omnivore",
+      "rarity": "Very Rare",
+      "tags": [
+        "changeling",
+        "vozian",
+        "infernal",
+        "shapeshifter"
+      ],
+      "features": [
+        {
+          "name": "Dreadful Faceshift",
+          "description": "As an action, shift your facial structure into that of a horrifying visage or a monster. Choose an intelligent creature within reach range and make an Influence check. On a success, they gain the Fear condition and immunity to this effect."
+        },
+        {
+          "name": "Vozian Defense",
+          "description": "As a half-action, assume a Vozian Defense stance. While in this stance, the next time you take damage, the total is halved and you leave the stance."
+        }
+      ]
+    },
+    {
+      "id": "changeling-nemuri",
+      "name": "Nemuri Changeling",
+      "base_species": "Changeling",
+      "description": "Nemuri Changelings trace their origins to the Dreamsea, born from the convergence of dream spirits and mortals. Their ethereal grace allows them to blur the lines between reality and illusion, acting as both wanderers and guardians of the dream realm.",
+      "size": "5-6 ft",
+      "lifespan": "60-90 years",
+      "language": [
+        "Imperial"
+      ],
+      "diet": "Omnivore",
+      "rarity": "Very Rare",
+      "tags": [
+        "changeling",
+        "dreamsea",
+        "shapeshifter",
+        "ethereal"
+      ],
+      "features": [
+        {
+          "name": "Intangible Shifting",
+          "description": "As an action, shift your facial structure into that of another creature that you have studied within the past 24 hours, that you know intimately, or have loyalty with."
+        },
+        {
+          "name": "Phasing",
+          "description": "As an action, become intangible until the start of your next turn. Additionally, while you are intangible, you are also invisible."
+        }
+      ]
+    },
+    {
+      "id": "dwarf-hill",
+      "name": "Hill Dwarf",
+      "base_species": "Dwarf",
+      "description": "Hill Dwarves have adapted to life above ground, known for their dark, sun-kissed skin and thick black hair. They excel in farming, stone-cutting, and brewing, carrying their Dwarven heritage with unwavering determination.",
+      "size": "3-5 ft",
+      "lifespan": "200-400 years",
+      "language": [
+        "Imperial",
+        "Dwarga"
+      ],
+      "diet": [
+        "Omnivore",
+        "Dirt & Soil"
+      ],
+      "rarity": "Common",
+      "tags": [
+        "dwarf",
+        "hill",
+        "hardy",
+        "brewer"
+      ],
+      "features": [
+        {
+          "name": "Stonecast Liver",
+          "description": "As an off-action, if you are missing wounds, drink any alcoholic drink to regain [[1d4]] wounds but gain the Confused condition for 1 minute."
+        }
+      ]
+    },
+    {
+      "id": "dwarf-mountain",
+      "name": "Mountain Dwarf",
+      "base_species": "Dwarf",
+      "description": "Mountain Dwarves are the traditionalists of their kind, living in vast underground cities beneath towering peaks. They are natural warriors and master craftsmen, revered for their skill in forging and resilience against toxins.",
+      "size": "3-5 ft",
+      "lifespan": "200-400 years",
+      "language": [
+        "Imperial",
+        "Dwarga"
+      ],
+      "diet": [
+        "Omnivore",
+        "Dirt & Soil"
+      ],
+      "rarity": "Common",
+      "tags": [
+        "dwarf",
+        "mountain",
+        "warrior",
+        "craftsman"
+      ],
+      "features": [
+        {
+          "name": "Poison Drinker",
+          "description": "Immune to poison effects."
+        },
+        {
+          "name": "Stone Skin",
+          "description": "As a half-action, gain +5 armor until the end of your next turn."
+        }
+      ]
+    },
+    {
+      "id": "dwarf-flamebeard",
+      "name": "Flamebeard Dwarf",
+      "base_species": "Dwarf",
+      "description": "Flamebeard Dwarves are a fiery and enigmatic lineage, hailing from volcanic regions of the Dwelfmire. Their ashen skin and burning hair reflect their affinity for fire and heat, making them legendary craftsmen of elemental-infused weaponry.",
+      "size": "3-5 ft",
+      "lifespan": "200-400 years",
+      "language": [
+        "Imperial",
+        "Dwarga"
+      ],
+      "diet": [
+        "Omnivore",
+        "Dirt & Soil"
+      ],
+      "rarity": "Rare",
+      "tags": [
+        "dwarf",
+        "fire",
+        "volcanic",
+        "craftsman"
+      ],
+      "features": [
+        {
+          "name": "Molten Core",
+          "description": "As an off-action, gain fire damage immunity until the end of your next turn."
+        },
+        {
+          "name": "Heat Iron",
+          "description": "As a half-action, give a weapon +3 fire damage for 1 minute."
+        }
+      ]
+    },
+    {
+      "id": "dwarf-breaker",
+      "name": "Breaker Dwarf",
+      "base_species": "Dwarf",
+      "description": "The Breaker Dwarves, an ancient lineage, are known for their rigid traditions and controversial history of indentured servitude. Marked by pale skin and intricate red tattoos symbolizing their rank, they are both feared and respected. While many embrace their role as enforcers of order, others have abandoned their heritage, seeking a life beyond the rule of the Tyrant Lord.",
+      "size": "3-5 ft",
+      "lifespan": "200-400 years",
+      "language": [
+        "Imperial",
+        "Dwarga"
+      ],
+      "diet": [
+        "Omnivore",
+        "Dirt & Soil"
+      ],
+      "rarity": "Uncommon",
+      "tags": [
+        "dwarf",
+        "breaker",
+        "oppressive",
+        "renegade"
+      ],
+      "features": [
+        {
+          "name": "Breaker Gear",
+          "description": "You have a Breaker Pistol: 1-hand, medium range, [[1d4]] piercing damage, and automatically hits without a check."
+        }
+      ]
+    },
+    {
+      "id": "elf-gloom",
+      "name": "Gloom Elf",
+      "base_species": "Elf",
+      "description": "Gloom Elves have adapted to life in shadowy, subterranean environments where light is scarce. Their keen senses make them skilled hunters and scouts, allowing them to detect unseen threats with ease. Though their appearance is often somber, they are fiercely loyal and resourceful.",
+      "size": "5-6 ft",
+      "lifespan": "200-400 years",
+      "language": [
+        "Imperial",
+        "Eln"
+      ],
+      "diet": [
+        "Omnivore",
+        "Vegetarian"
+      ],
+      "rarity": "Uncommon",
+      "tags": [
+        "elf",
+        "shadow",
+        "underground",
+        "stealth"
+      ],
+      "features": [
+        {
+          "name": "Poison Stinger",
+          "description": "Unarmed strikes deal an additional [[1d4]] toxic damage."
+        },
+        {
+          "name": "Vibration Sense",
+          "description": "Your feet are sensitive to ground vibrations. As an off-action, detect the approach of any creature making contact with the ground within medium range."
+        }
+      ]
+    },
+    {
+      "id": "elf-forest",
+      "name": "Forest Elf",
+      "base_species": "Elf",
+      "description": "Forest Elves maintain the closest connection to the original elven lineage, living in harmony with nature and the Feywild. Their hidden homes are woven into vast forests, and they are seen as guardians of the natural world, using their bond with the land to protect it.",
+      "size": "5-6 ft",
+      "lifespan": "200-400 years",
+      "language": [
+        "Imperial",
+        "Eln",
+        "Naech"
+      ],
+      "diet": [
+        "Omnivore",
+        "Vegetarian"
+      ],
+      "rarity": "Common",
+      "tags": [
+        "elf",
+        "nature",
+        "fey",
+        "guardian"
+      ],
+      "features": [
+        {
+          "name": "Tree Step",
+          "description": "As part of your movement, move into a tree and exit another within medium range."
+        },
+        {
+          "name": "Tree Speech",
+          "description": "You can fluently speak Naech and communicate with plants and animals."
+        }
+      ]
+    },
+    {
+      "id": "elf-noble",
+      "name": "Noble Elf",
+      "base_species": "Elf",
+      "description": "Also known as High Elves, Noble Elves pride themselves on their mastery of magic and their long-standing heritage as rulers and scholars. Many once resided in the Feywild, but some have returned to the material plane, seeking to reclaim their influence over mortal kingdoms.",
+      "size": "5-6 ft",
+      "lifespan": "200-400 years",
+      "language": [
+        "Imperial",
+        "Eln"
+      ],
+      "diet": [
+        "Omnivore",
+        "Vegetarian"
+      ],
+      "rarity": "Common",
+      "tags": [
+        "elf",
+        "magic",
+        "aristocrat",
+        "arcane"
+      ],
+      "features": [
+        {
+          "name": "Mind Spike",
+          "description": "As an action, reach into the mind of a creature within medium range. On a successful Intellect check, the creature takes [[1d4]] psychic damage."
+        }
+      ]
+    },
+    {
+      "id": "elf-eclipse",
+      "name": "Eclipse Elf",
+      "base_species": "Elf",
+      "description": "Eclipse Elves are enigmatic beings born in the Eclipse, a shadowy realm between worlds. Their smoky, ethereal appearance reflects their nature as wanderers of the void, often serving as guides or guardians of planar boundaries.",
+      "size": "5-6 ft",
+      "lifespan": "200-400 years",
+      "language": [
+        "Imperial",
+        "Eln"
+      ],
+      "diet": [
+        "Omnivore",
+        "Vegetarian"
+      ],
+      "rarity": "Rare",
+      "tags": [
+        "elf",
+        "shadow",
+        "planar",
+        "mystic"
+      ],
+      "features": [
+        {
+          "name": "Eclipse Born",
+          "description": "As a half-action, gain the Invisible condition while in darkness until the end of your next turn."
+        }
+      ]
+    },
+    {
+      "id": "elf-vozian",
+      "name": "Vozian Elf",
+      "base_species": "Elf",
+      "description": "Vozian Elves have adapted to life near demons, devils, and the ashlands of the far north. Their eerie violet-toned skin and aura make them feared and misunderstood, with their magical abilities reflecting the suffering and chaos of their surroundings.",
+      "size": "5-6 ft",
+      "lifespan": "200-400 years",
+      "language": [
+        "Imperial",
+        "Eln"
+      ],
+      "diet": [
+        "Live creatures (for suffering)"
+      ],
+      "rarity": "Rare",
+      "tags": [
+        "elf",
+        "infernal",
+        "dark magic",
+        "twisted"
+      ],
+      "features": [
+        {
+          "name": "Vozian Blast",
+          "description": "As an action, create twisted magic targeting a creature within medium range. On a successful Spirit check, the creature takes [[1d4]] psychic damage."
+        }
+      ]
+    },
+    {
+      "id": "elf-water",
+      "name": "Water Elf",
+      "base_species": "Elf",
+      "description": "Water Elves have adapted to amphibious life, forming close-knit communities with merfolk and aquatic creatures. Their connection to water allows them to harness its magic for protection and healing.",
+      "size": "5-6 ft",
+      "lifespan": "200-400 years",
+      "language": [
+        "Imperial",
+        "Eln"
+      ],
+      "diet": [
+        "Omnivore",
+        "Vegetarian"
+      ],
+      "rarity": "Uncommon",
+      "tags": [
+        "elf",
+        "water",
+        "amphibious",
+        "healer"
+      ],
+      "features": [
+        {
+          "name": "Water Armor",
+          "description": "At the start of your turn, gain 1 armor. You can only have 5 armor max from this source."
+        }
+      ]
+    },
+    {
+      "id": "elf-nemuri",
+      "name": "Nemuri Elf",
+      "base_species": "Elf",
+      "description": "Nemuri Elves dwell in the Dreamsea, where they act as spiritual guides, helping others navigate the realm of dreams. Their ghostly appearance and ability to influence subconscious minds make them both revered and enigmatic.",
+      "size": "5-6 ft",
+      "lifespan": "200-400 years",
+      "language": [
+        "Imperial",
+        "Eln"
+      ],
+      "diet": [
+        "Omnivore",
+        "Vegetarian"
+      ],
+      "rarity": "Rare",
+      "tags": [
+        "elf",
+        "dream",
+        "spiritual",
+        "mystic"
+      ],
+      "features": [
+        {
+          "name": "Ethereal Movement",
+          "description": "As an action, gain the Intangible condition until the end of your next turn."
+        }
+      ]
+    },
+    {
+      "id": "elf-fungal",
+      "name": "Fungal Elf",
+      "base_species": "Elf",
+      "description": "Fungal Elves have formed a symbiotic relationship with their environment, living within dense fungal networks. They are deeply connected to the slow, interwoven intelligence of fungal colonies, using their spores to defend their homes.",
+      "size": "5-6 ft",
+      "lifespan": "200-400 years",
+      "language": [
+        "Imperial",
+        "Eln",
+        "Naech"
+      ],
+      "diet": [
+        "Omnivore",
+        "Vegetarian"
+      ],
+      "rarity": "Rare",
+      "tags": [
+        "elf",
+        "fungus",
+        "nature",
+        "spore magic"
+      ],
+      "features": [
+        {
+          "name": "Spore Burst",
+          "description": "As an action, release a burst of spores. Creatures within reach range must make a Survival check or take the Confused condition until the end of their next turn."
+        }
+      ]
+    },
+    {
+      "id": "gnome",
+      "name": "Gnome",
+      "description": "Gnomes are inventive and endlessly curious, known for their boundless imagination and risk-taking in pursuit of knowledge. Once thriving in the Feywild, their ingenuity led to a dark chapter with the rise of Tinker Gnomes, who harvested dryad hearts for powerful constructs. This led to their banishment by Mother Nature, forcing all Gnomes into exile. Since then, Gnomes have split into those seeking redemption and those embracing progress at any cost.",
+      "size": "3-4 ft",
+      "lifespan": "120-200 years",
+      "language": [
+        "Imperial (Complicated Elvish)"
+      ],
+      "diet": [
+        "Omnivore",
+        "Vegetarian"
+      ],
+      "rarity": "Somewhat Common",
+      "tags": [
+        "gnome",
+        "inventive",
+        "exile",
+        "curious"
+      ],
+      "features": []
+    },
+    {
+      "id": "gnome-tinker",
+      "name": "Tinker Gnome",
+      "base_species": "Gnome",
+      "description": "The banishment never disturbed the work of the Tinker Gnomes. They continue their experiments, creating innovations that have helped and harmed creatures throughout the world. Their cities are mechanical wonders, filled with moving parts and self-operating traps.",
+      "size": "3-4 ft",
+      "lifespan": "120-200 years",
+      "language": [
+        "Imperial (Complicated Elvish)"
+      ],
+      "diet": [
+        "Omnivore",
+        "Vegetarian"
+      ],
+      "rarity": "Common",
+      "tags": [
+        "gnome",
+        "tinkerer",
+        "engineer",
+        "mechanical"
+      ],
+      "features": [
+        {
+          "name": "Tinker-ish",
+          "description": "You start with an interesting invention, an item that was created by you or your family and is very important to you. Choose one:",
+          "options": [
+            {
+              "name": "The Impossible Pocket",
+              "effect": "A pocket that is 6in wide and can fit up to 100 lbs."
+            },
+            {
+              "name": "Light Switch",
+              "effect": "Can flick the switch and turn lights on or off."
+            },
+            {
+              "name": "The Chemical Transmuter",
+              "effect": "Pour in one potion and get another; make a Luck check to determine if it improves or worsens."
+            },
+            {
+              "name": "Tikky Tim",
+              "effect": "A clockwork companion (PL 1), can be repaired as an action."
+            },
+            {
+              "name": "Temporary Teleport",
+              "effect": "Click the device to teleport up to medium range for 1 minute, then you are violently teleported back."
+            },
+            {
+              "name": "Tinker Wings",
+              "effect": "Allows flight equal to movement but you fall at the end of your turn."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gnome-gloom",
+      "name": "Gloom Gnome",
+      "base_species": "Gnome",
+      "description": "Gloom Gnomes are fun-loving creatures who have sought a new home in the Dwelfmire after leaving the Feywild’s grassy mountains. They struggle to find a permanent place, but wherever they settle, they create a welcoming and cozy atmosphere for themselves and those around them.",
+      "size": "3-4 ft",
+      "lifespan": "120-200 years",
+      "language": [
+        "Imperial (Complicated Elvish)"
+      ],
+      "diet": [
+        "Omnivore",
+        "Vegetarian"
+      ],
+      "rarity": "Uncommon",
+      "tags": [
+        "gnome",
+        "comfort",
+        "hospitality",
+        "survival"
+      ],
+      "features": [
+        {
+          "name": "Quality Comforts",
+          "description": "When you and your party Press On, give everyone a +1 to anything they recover or repair. Additionally, when you stop somewhere, you create a comfortable environment, increasing rest healing and safety. It's unlikely that creatures will invade, and if they do, they are unlikely to attack."
+        }
+      ]
+    },
+    {
+      "id": "gnome-vozian",
+      "name": "Vozian Gnome",
+      "base_species": "Gnome",
+      "description": "Vozian Gnomes have formed pacts with infernal entities, granting them immense power at a terrible cost. Their reddish skin and fiery red eyes make them stand out among other Gnomes, and they are often feared for their connections to the infernal realm.",
+      "size": "3-4 ft",
+      "lifespan": "120-200 years",
+      "language": [
+        "Imperial (Complicated Elvish)"
+      ],
+      "diet": [
+        "Omnivore",
+        "Vegetarian"
+      ],
+      "rarity": "Rare",
+      "tags": [
+        "gnome",
+        "infernal",
+        "pact",
+        "dark magic"
+      ],
+      "features": [
+        {
+          "name": "Infernal Pact",
+          "description": "As an action, summon a PL 2 demon that follows your commands but resents doing so. It remains for 1 minute or until killed."
+        }
+      ]
+    },
+    {
+      "id": "gnome-nemuri",
+      "name": "Nemuri Gnome",
+      "base_species": "Gnome",
+      "description": "Nemuri Gnomes have forged a connection with the Dreamsea, gaining increased magical abilities and an affinity for Dreamsea travel. Their ethereal glow and dreamlike nature make them sought after for their skills in divination and mental manipulation.",
+      "size": "3-4 ft",
+      "lifespan": "120-200 years",
+      "language": [
+        "Imperial (Complicated Elvish)"
+      ],
+      "diet": [
+        "Omnivore",
+        "Vegetarian"
+      ],
+      "rarity": "Rare",
+      "tags": [
+        "gnome",
+        "dreamsea",
+        "telepathic",
+        "mystic"
+      ],
+      "features": [
+        {
+          "name": "Nemuri Connection",
+          "description": "You can telepathically connect with a creature over the course of 1 hour. Once linked, you can always speak to this creature regardless of distance or plane. You can only link to 1 creature at a time."
+        },
+        {
+          "name": "Nemuri Manipulation",
+          "description": "+2 Spell Points."
+        }
+      ]
+    },
+    {
+      "id": "kleinkind",
+      "name": "Kleinkind",
+      "description": "Small in stature but grand in spirit, the Kleinkind are a species as cozy as a well-worn quilt and as surprising as a jack-in-the-box. Often referred to as 'Halflings' by outsiders, they believe they were the first intelligent beings on the planet. Their knack for blending into the background kept them safe in early history, allowing them to survive while larger creatures fought. They are known for their love of community, comfort, and hospitality, creating villages filled with warmth, feasts, and laughter. However, some Kleinkind feel the pull of adventure, becoming Barnstormers who travel the world bringing joy, stories, and a touch of chaos.",
+      "size": "1-2 ft",
+      "lifespan": "60-90 years",
+      "language": ["Imperial"],
+      "diet": ["Comfort food"],
+      "rarity": "Somewhat Common",
+      "tags": ["kleinkind", "halfling", "hospitality", "wanderer"],
+      "features": [
+        {
+          "name": "Pleasant Aura",
+          "description": "If a creature is willing to listen, you can regale them with a story for 1 minute. Afterward, you and the creature gain +2 loyalty with one another. Creatures with positive loyalty toward you cannot willingly attack you."
+        },
+        {
+          "name": "Warmbones",
+          "description": "Your connection to home and hearth grants you an aura of calm that makes others feel safe."
+        },
+        {
+          "name": "Barnstormer",
+          "description": "When you travel for more than 1 week without settling in one place, you gain advantage on Luck checks until you remain in the same location for 1 week but lose your Warmbones aura."
+        }
+      ]
+    },
+    {
+      "id": "orc-desert",
+      "name": "Desert Orc",
+      "base_species": "Orc",
+      "description": "Desert Orcs used stone-moving magic and relentless effort to construct dome-like stone structures, where they live in large packs. However, frequent conflict led to a tradition where leadership is decided by combat—whoever can fight their way to dominance earns the right to rule. Desert Orcs prefer overwhelming force in battle, coordinating multiple attackers to bring down opponents.",
+      "size": "6-8 ft",
+      "lifespan": "60-90 years",
+      "language": ["Imperial", "Orkid"],
+      "diet": ["Omnivore", "Vegetarian"],
+      "rarity": "Uncommon",
+      "tags": ["orc", "desert", "warrior", "pack tactics"],
+      "features": [
+        {
+          "name": "Desert Striker",
+          "description": "+2 to Unarmed Attack checks and damage."
+        }
+      ]
+    },
+    {
+      "id": "orc-mountain",
+      "name": "Mountain Orc",
+      "base_species": "Orc",
+      "description": "In the mountains of the Orclands, the pale-skinned Mountain Orcs reign supreme. They possess mastery over stone and metalwork, rivaling even the Dwarves in craftsmanship. Their civilization remains largely isolated, with their existence shrouded in mystery. Those who leave their temples are bound by powerful magical tattoos to keep their secrets.",
+      "size": "6-8 ft",
+      "lifespan": "60-90 years",
+      "language": ["Imperial", "Orkid"],
+      "diet": ["Omnivore", "Vegetarian"],
+      "rarity": "Rare",
+      "tags": ["orc", "mountain", "craftsman", "stoic"],
+      "features": [
+        {
+          "name": "Weapon Connection",
+          "description": "+2 to Attack Checks and Damage with weapons."
+        }
+      ]
+    },
+    {
+      "id": "orc-jungle",
+      "name": "Jungle Orc",
+      "base_species": "Orc",
+      "description": "The Green Jungle Orcs were the original rulers of the Orclands, known for their written language, which evolved from knotted threads to scarification tattoos. Their diet of superfoods allowed them to grow to immense sizes and develop seemingly endless endurance. This strength helped them establish a vast empire, dominating their territory for generations.",
+      "size": "6-8 ft",
+      "lifespan": "60-90 years",
+      "language": ["Imperial", "Orkid"],
+      "diet": ["Omnivore", "Vegetarian"],
+      "rarity": "Common",
+      "tags": ["orc", "jungle", "strong", "strategist"],
+      "features": [
+        {
+          "name": "Rushing Charge",
+          "description": "If you move toward a creature within 20 ft and make an attack, gain advantage on the attack."
+        }
+      ]
+    },
+    {
+      "id": "orc-maldios",
+      "name": "Maldios Orc",
+      "base_species": "Orc",
+      "description": "The Orcs are not untouched by Vozian influence. Legend states that the first Orc to walk the land was also the first to turn to darkness. Maldios, a mad guardian of the infernal sands, left behind descendants marked by his infernal heritage. These Orcs, with bright orange skin and fiery eyes, wield twisted magic and are feared for their unpredictable nature.",
+      "size": "6-8 ft",
+      "lifespan": "60-90 years",
+      "language": ["Imperial", "Orkid"],
+      "diet": ["Omnivore", "Vegetarian"],
+      "rarity": "Rare",
+      "tags": ["orc", "infernal", "dark magic", "twisted"],
+      "features": [
+        {
+          "name": "Infernal Skin",
+          "description": "As a reaction to being hit with a melee attack, deal [[1d4]] Vozian damage to the creature that hit you."
+        }
+      ]
+    },
+    {
+      "id": "orc-oceanic",
+      "name": "Oceanic Orc",
+      "base_species": "Orc",
+      "description": "Oceanic Orcs, native to the Dreamsea, possess an ethereal, translucent glow. Their elongated limbs and fingers allow them to move effortlessly in the weightless currents. These peaceful creatures act as spiritual guides, communicating with the spirits of the dead and guiding lost travelers through the Dreamsea.",
+      "size": "6-8 ft",
+      "lifespan": "60-90 years",
+      "language": ["Imperial", "Orkid"],
+      "diet": ["Omnivore", "Vegetarian"],
+      "rarity": "Rare",
+      "tags": ["orc", "dreamsea", "spiritual", "mystic"],
+      "features": [
+        {
+          "name": "Nemuri Manipulation",
+          "description": "As a half-action, imbue a weapon with Dreamsea water, changing its damage type to water and dealing an additional +4 damage for 1 minute."
+        }
+      ]
+    }
+    
+  ]
+}

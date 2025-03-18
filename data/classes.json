@@ -11,9 +11,14 @@
         {
           "name": "Champion Points",
           "description": "Start with 4 Champion Points.",
-          "subfeatures": [
-            "Regain 1 point on Press On or all points on a long rest.",
-            "Regain points by killing an enemy, making them yield, or when an enemy fails a morale check."
+          "options": [
+            {
+              "name": "Regain",
+              "effect": "1 point on Press On or all points on a long rest."
+            },
+            {
+              "name": "Regain points by killing an enemy, making them yield, or when an enemy fails a morale check."
+            }
           ]
         },
         {
@@ -1049,7 +1054,7 @@
     },
     {
       "name": "Professional",
-      "description": "The Professional is a seasoned individual, having faced the tumultuous tides of time and emerging as a beacon of resilience and expertise. Whether they've survived the brutal trenches of war or navigated the intricate politics of the big city, their experiences have crafted them into unparalleled specialists in their fields. They are the ex-military tacticians employing strategies in the boardroom, the seasoned detectives with an uncanny ability to read a crime scene, or the old-time engineers who've seen the rise of the modern age. Their scars, both visible and hidden, are a testament to their enduring spirit, their stories etched in every line on their face.\n\nA Professional is characterized by their unwavering determination, their vast experience making them adaptable and invaluable. They've seen the world change, and they've changed with it, but their core – forged in the crucible of challenges – remains unyielding. They don't merely survive; they lead, mentor, and inspire.",
+      "description": "The Professional is a seasoned individual, having faced the tumultuous tides of time and emerging as a beacon of resilience and expertise. Whether they've survived the brutal trenches of war or navigated the intricate politics of the big city, their experiences have crafted them into unparalleled specialists in their fields",
       "features": [
         {
           "name": "Professional Knowledge",
@@ -5191,7 +5196,7 @@
               "description": "Your keen instincts allow you to evade danger. Once per day, if an attack is to hit you, it does not."
             }
           ]
-        },   
+        },
         {
           "name": "Ravager",
           "description": "Your spells are born of the earth and the instinct to endure, casting spells that protect, nourish, or summon nature's fury. Your Survival Check is your spellcasting check. You have Spell points equal to your Survival Check. Regain 1 spell point on a Press On, all on a long rest. Gain an additional spell point each time you successfully survive from poison or disease, or find food or water in the wilderness.",
@@ -5248,8 +5253,6 @@
             }
           ]
         }
-        
-        
       ]
     }
   ]

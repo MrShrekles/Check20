@@ -1,8 +1,290 @@
-// ==========================
-// ITEM MANAGEMENT FUNCTIONS
-// ==========================
+document.addEventListener("DOMContentLoaded", () => {
+    // Load class, species, and item options
+    loadOptions('data/classes.json', 'class', 'class-description', 'class-features', 'class-equipment', 'path', 'talent');
+    loadOptions('data/species.json', 'species', 'species-description', 'species-features', null, 'subspecies', null);
+});
 
-// Function to add a new item to the "repeating-section"
+// Main function to load options for classes, species, paths, and talents
+function loadOptions(filePath, dropdownId, descriptionId, featureListId, equipmentListId = null, pathDropdownId = null, talentDropdownId = null) {
+    fetch(filePath)
+        .then(response => response.json())
+        .then(data => {
+            const dropdown = document.getElementById(dropdownId);
+            const description = document.getElementById(descriptionId);
+            const featureList = document.getElementById(featureListId);
+            const pathDropdown = pathDropdownId ? document.getElementById(pathDropdownId) : null;
+            const talentDropdown = talentDropdownId ? document.getElementById(talentDropdownId) : null;
+
+            // Clear and populate dropdown
+            dropdown.innerHTML = `<option value="">Select ${capitalizeFirstLetter(dropdownId)}</option>`;
+            const dataKey = dropdownId === "species" ? "species" : "classes";
+
+            data[dataKey].forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.name;
+                option.textContent = item.name;
+                dropdown.appendChild(option);
+            });
+
+            // Handle selection change
+            dropdown.addEventListener('change', () => {
+                const selectedItem = data[dataKey].find(item => item.name === dropdown.value);
+                if (!selectedItem) return;
+
+                description.textContent = selectedItem.description || "No description available.";
+                featureList.innerHTML = selectedItem.features?.map(feature =>
+                    `<li><strong>${feature.name}:</strong> ${feature.description}</li>`
+                ).join('') || "<li>No features available.</li>";
+
+                if (dropdownId === "class") {
+                    populateDropdown(pathDropdown, selectedItem.paths, "Select a Path");
+                    populateDropdown(talentDropdown, selectedItem.talents, "Select a Talent");
+                }
+            });
+
+            // Path selection logic
+            if (pathDropdown) {
+                pathDropdown.addEventListener('change', () => {
+                    const selectedPath = data[dataKey]
+                        .find(item => item.name === dropdown.value)
+                        ?.paths?.find(p => (typeof p === 'object' ? p.name : p) === pathDropdown.value);
+                    if (selectedPath) loadPathDetails(selectedPath);
+                });
+            }
+
+            // Talent selection logic
+            if (talentDropdown) {
+                talentDropdown.addEventListener('change', () => {
+                    const selectedTalent = data[dataKey]
+                        .find(item => item.name === dropdown.value)
+                        ?.talents?.find(t => t.name === talentDropdown.value);
+                    if (selectedTalent) loadTalentDetails(selectedTalent);
+                });
+            }
+        })
+        .catch(error => console.warn(`Failed to load ${filePath}:`, error));
+}
+
+// Populate dropdown dynamically
+function populateDropdown(dropdown, items, defaultText) {
+    if (!dropdown) return;
+    dropdown.innerHTML = `<option value="">${defaultText}</option>` +
+        items.map(item => `<option value="${item.name}">${item.name}</option>`).join('');
+}
+
+// Load path details
+function loadPathDetails(selectedPath) {
+    const pathContainer = document.getElementById('path-details');
+    if (!pathContainer) return;
+    pathContainer.innerHTML = `
+        <h4>${selectedPath.name}</h4>
+        <p>${selectedPath.description}</p>
+        <h4>Features</h4>
+        ${selectedPath.features?.map(feature => `<p><strong>${feature.name}:</strong> ${feature.description}</p>`).join('') || "<p>No special features available.</p>"}
+        <details>
+            <summary>Progression</summary>
+            <ol>
+                ${selectedPath.progressionSteps?.map(step => `<li><strong>${step.name}:</strong> ${step.description}</li>`).join('') || "<li>No progression steps available.</li>"}
+            </ol>
+        </details>
+    `;
+}
+
+// Load talent details
+function loadTalentDetails(selectedTalent) {
+    const talentContainer = document.getElementById('talent-details');
+    if (!talentContainer) return;
+    talentContainer.innerHTML = `
+        <h4>${selectedTalent.name}</h4>
+        <p>${selectedTalent.description}</p>
+        <h4>Features</h4>
+        ${selectedTalent.features?.map(feature => `<p><strong>${feature.name}:</strong> ${feature.description}</p>`).join('') || "<p>No special features available.</p>"}
+        <details>
+            <summary>Progression</summary>
+            <ol>
+                ${selectedTalent.progressionSteps?.map(step => `<li><strong>${step.name}:</strong> ${step.description}</li>`).join('') || "<li>No progression steps available.</li>"}
+            </ol>
+        </details>
+    `;
+}
+
+// Capitalize first letter for dropdown labels
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadSpeciesOptions('data/species.json', 'species', 'species-description', 'species-features', 'subspecies');
+});
+
+// Load species and handle selection
+function loadSpeciesOptions(filePath, speciesDropdownId, descriptionId, featureListId, subspeciesDropdownId) {
+    fetch(filePath)
+        .then(response => response.json())
+        .then(data => {
+            const speciesDropdown = document.getElementById(speciesDropdownId);
+            const description = document.getElementById(descriptionId);
+            const featureList = document.getElementById(featureListId);
+            const subspeciesDropdown = document.getElementById(subspeciesDropdownId);
+
+            speciesDropdown.innerHTML = `<option value="">Select Species</option>`;
+
+            // Populate species dropdown
+            data.species.forEach(species => {
+                const option = document.createElement('option');
+                option.value = species.name;
+                option.textContent = species.name;
+                speciesDropdown.appendChild(option);
+            });
+
+            // Handle species selection
+            speciesDropdown.addEventListener('change', () => {
+                const selectedSpeciesName = speciesDropdown.value;
+                const selectedSpecies = data.species.find(s => s.name === selectedSpeciesName);
+
+                if (!selectedSpecies) return;
+
+                // Update species details
+                description.textContent = selectedSpecies.description || "No description available.";
+                featureList.innerHTML = selectedSpecies.features?.map(feature =>
+                    `<li><strong>${feature.name}:</strong> ${feature.description}</li>`
+                ).join('') || "<li>No features available.</li>";
+
+                // Handle subspecies dropdown
+                if (selectedSpecies.subspecies && selectedSpecies.subspecies.length > 0) {
+                    populateDropdown(subspeciesDropdown, selectedSpecies.subspecies, "Select Subspecies");
+                    subspeciesDropdown.style.display = "block";
+                } else {
+                    subspeciesDropdown.innerHTML = "";
+                    subspeciesDropdown.style.display = "none";
+                }
+            });
+
+            // Handle subspecies selection
+            subspeciesDropdown.addEventListener('change', () => {
+                const selectedSpeciesName = speciesDropdown.value;
+                const selectedSubspeciesName = subspeciesDropdown.value;
+                const selectedSpecies = data.species.find(s => s.name === selectedSpeciesName);
+
+                if (!selectedSpecies || !selectedSpecies.subspecies) return;
+
+                const selectedSubspecies = selectedSpecies.subspecies.find(s => s.name === selectedSubspeciesName);
+                if (selectedSubspecies) {
+                    loadSubspeciesDetails(selectedSubspecies);
+                }
+            });
+        })
+        .catch(error => console.error(`Failed to load ${filePath}:`, error));
+}
+
+// Populate dropdown dynamically
+function populateDropdown(dropdown, items, defaultText) {
+    if (!dropdown) return;
+
+    dropdown.innerHTML = `<option value="">${defaultText}</option>` +
+        items.map(item => `<option value="${item.name}">${item.name}</option>`).join('');
+}
+
+// Load subspecies details dynamically
+function loadSubspeciesDetails(selectedSubspecies) {
+    const subspeciesContainer = document.getElementById('subspecies-details');
+    if (!subspeciesContainer) return;
+
+    subspeciesContainer.innerHTML = `
+        <h4>${selectedSubspecies.name}</h4>
+        <p>${selectedSubspecies.description}</p>
+
+        <div class="features">
+            <h4>Traits</h4>
+            ${selectedSubspecies.traits?.map(trait => `<p><strong>${trait.name}:</strong> ${trait.description}</p>`).join('') || "<p>No special traits available.</p>"}
+        </div>
+    `;
+}
+
+// Capitalize first letter for dropdown labels
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function formatFeatureOptions(options) {
+    if (!options || options.length === 0) return ""; // No options, return empty string
+
+    return `
+        <ul class="feature-options">
+            ${options.map(option => {
+        if (typeof option === "string") {
+            return `<li>${option}</li>`; // Simple list item if it's just a string
+        } else if (option.name && option.effect) {
+            return `<li><strong>${option.name}:</strong> ${option.effect}</li>`; // Name + Effect format
+        } else {
+            return `<li>${JSON.stringify(option)}</li>`; // Fallback for unknown formats
+        }
+    }).join('')}
+        </ul>
+    `;
+}
+
+function loadSpeciesDetails(selectedSpecies) {
+    const speciesContainer = document.getElementById('species-details');
+    if (!speciesContainer) return;
+
+    speciesContainer.innerHTML = `
+        <h4>${selectedSpecies.name}</h4>
+        <p>${selectedSpecies.description}</p>
+
+            ${selectedSpecies.features?.map(feature => `
+                <p><strong>${feature.name}:</strong> ${feature.description}</p>
+                ${feature.options ? formatFeatureOptions(feature.options) : ""}
+            `).join('') || "<p>No special features available.</p>"}
+    `;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadSpeciesOptions('data/species.json', 'species', 'species-description', 'species-features');
+});
+
+function loadSpeciesOptions(filePath, speciesDropdownId) {
+    fetch(filePath)
+        .then(response => response.json())
+        .then(data => {
+            const speciesDropdown = document.getElementById(speciesDropdownId);
+            speciesDropdown.innerHTML = `<option value="">Select Species</option>`;
+
+            data.species.forEach(species => {
+                const option = document.createElement('option');
+                option.value = species.name;
+                option.textContent = species.name;
+                speciesDropdown.appendChild(option);
+            });
+
+            speciesDropdown.addEventListener('change', () => {
+                const selectedSpeciesName = speciesDropdown.value;
+                const selectedSpecies = data.species.find(s => s.name === selectedSpeciesName);
+                if (selectedSpecies) loadSpeciesDetails(selectedSpecies);
+            });
+        })
+        .catch(error => console.error(`Failed to load ${filePath}:`, error));
+}
+
+// --------------- Auto Pop -------------------
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("data/species.json") // Adjust path if needed
+        .then(response => response.json())
+        .then(data => {
+            const speciesList = document.getElementById("species-list");
+            
+            // Populate datalist options dynamically
+            data.species.forEach(species => {
+                let option = document.createElement("option");
+                option.value = species.name;
+                speciesList.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Failed to load species data:", error));
+});
+
+
+// --------------ITEM MANAGEMENT FUNCTIONS-----------------------
 function addItem() {
     let container = document.getElementById("repeating-section");
 
@@ -65,37 +347,18 @@ function removeResource(btn) {
     entry.parentElement.removeChild(entry);
 }
 
-// ==========================
-// DERIVED STAT CALCULATION
-// ==========================
-
-// Calculate all derived stats on button click
+// Derived stat calculation
 function recalculateAllStats() {
-    const agility = parseInt(document.getElementById('agilityTotal').value) || 0;
-    const strength = parseInt(document.getElementById('strength').value) || 0;
-    const observation = parseInt(document.getElementById('observation').value) || 0;
+    const agility = parseInt(document.getElementById('agilityTotal')?.value) || 0;
+    const strength = parseInt(document.getElementById('strength')?.value) || 0;
+    const observation = parseInt(document.getElementById('observation')?.value) || 0;
 
-    // Calculate wounds: Agility + Strength
-    const wounds = agility + strength;
-    document.getElementById('wounds').value = wounds;
-
-    // Calculate movement: Base 30 + 5 ft per 2 Agility
-    const movement = 30 + Math.floor(agility / 2) * 5;
-    document.getElementById('movement').value = movement;
-
-    // Calculate low light vision: Base 30 + 5 ft per 2 Observation
-    const llv = 30 + Math.floor(observation / 2) * 5;
-    document.getElementById('llv').value = llv;
-
-    // Provide feedback in the console for debugging
-    console.log(`Stats recalculated: Wounds=${wounds}, Movement=${movement}, LLV=${llv}`);
+    document.getElementById('wounds').value = agility + strength;
+    document.getElementById('movement').value = 30 + Math.floor(agility / 2) * 5;
+    document.getElementById('llv').value = 30 + Math.floor(observation / 2) * 5;
 }
 
-// ==========================
 // CHARACTER SAVE/LOAD/PRINT
-// ==========================
-
-// Save character data to a JSON file
 function saveCharacter() {
     const character = {
         name: document.getElementById('charName').value,
@@ -163,289 +426,6 @@ function loadCharacter() {
 // Print the character sheet
 function printCharacter() {
     window.print();
-}
-
-// ==========================
-// STATIC TOOLTIP LIBRARY
-// ==========================
-
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("Initializing tooltips...");
-
-    const tooltipLibrary = {
-        // General stats
-        "Movement Speed": "Base 30 ft + 5 ft per 2 Agility",
-        "Wounds": "Agility + Strength",
-        "Low Light Vision": "Base 30 ft + 5 ft per 2 Observation",
-        "Hefty": "These items are excessively heavy and cumbersome, More than 2 hefty items causes pinned condition",
-        "Reload": "This weapon needs to be reloaded with an action, half-action, off-action or using your movement.",
-
-        // Ranges
-        "Melee Range": "Within 5ft",
-        "Reach Range": "10ft",
-        "Short Range": "Within 50ft",
-        "Medium Range": "50-200ft",
-        "Long Range": "200-1000ft",
-
-        // Rest and recovery
-        "Press On": "After combat take a moment to recover, can only be done twice per long rest.",
-        "Long Rest": "A long rest requires 10 hours of uninterrupted downtime.",
-        "Morale Check": "A check from an enemy or NPC; a failed check can cause them to flee from combat.",
-
-        // Conditions
-        "Bleeding": "Cannot recover wounds or receive healing.",
-        "Broken": "Physical Disadvantage",
-        "Concussion": "Mental Disadvantage, Spellcasting Disadvantage",
-        "Coughing": "Mental Disadvantage",
-        "Dislocation": "Physical Disadvantage",
-        "Slowed": "Movement halved",
-        "Pinned": "Cannot move; restrained by an object or creature.",
-        "Prone": "Disadvantage on ranged attacks; advantage for melee attacks against you.",
-        "Blind": "Disadvantage on attack checks; attacks against you have advantage.",
-        "Charmed": "Mental Disadvantage; cannot attack the source of the charm.",
-        "Confused": "Mental Disadvantage, attacks against you have advantage.",
-        "Deaf": "Stealth disadvantage; Spellcasting disadvantage.",
-        "Fear": "Must dash away or hide until the end of your next turn.",
-        "Intangible": "Immune to physical damage; cannot attack; movement halved.",
-        "Invisible": "Cannot be targeted by opportunity attacks; attacks against you have disadvantage.",
-        "Unconscious": "Unable to act; vulnerable to critical hits and Finishers.",
-        "Stunned": "Disadvantage on all checks; movement halved.",
-        "Exhaustion": "Disadvantage on all checks; movement halved.",
-        "Constrained": "Cannot make attack actions; attacks against have advantage.",
-        "Exposed": "Take double damage.",
-        "Injured": "At 0 wounds, any further damage causes immediate Death.",
-        "Death": "Character dies and cannot interact with the living world.",
-
-    };
-
-    function applyTooltips() {
-        const allElements = document.querySelectorAll("body *");
-
-        allElements.forEach(element => {
-            const textNodes = Array.from(element.childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
-
-            textNodes.forEach(node => {
-                let text = node.textContent;
-
-                Object.entries(tooltipLibrary).forEach(([term, description]) => {
-                    const regex = new RegExp(`\\b${term}\\b`, "gi");
-                    if (regex.test(text)) {
-                        const replacement = text.replace(
-                            regex,
-                            `<span class="tooltip" data-tooltip="${description}">${term}</span>`
-                        );
-
-                        const tempContainer = document.createElement('span');
-                        tempContainer.innerHTML = replacement;
-                        node.replaceWith(tempContainer);
-                    }
-                });
-            });
-        });
-    }
-
-    // Apply tooltips once on page load
-    applyTooltips();
-
-    // Attach a global event listener to reapply tooltips when needed
-    document.addEventListener('tooltips:update', () => {
-        console.log('Reapplying tooltips for dynamic content...');
-        applyTooltips();
-    });
-});
-// ==========================
-// CLASS LOADER WITH PATHS & TALENTS
-// ==========================
-document.addEventListener("DOMContentLoaded", () => {
-    loadOptions('data/classes.json', 'class', 'class-description', 'class-features', 'class-equipment', 'path', 'talent');
-});
-
-// Main function to load class, path, and talent options
-function loadOptions(filePath, dropdownId, descriptionId, featureListId, equipmentListId, pathDropdownId, talentDropdownId) {
-    fetch(filePath)
-        .then(response => response.json())
-        .then(data => {
-            const classDropdown = document.getElementById(dropdownId);
-            const description = document.getElementById(descriptionId);
-            const featureList = document.getElementById(featureListId);
-            const equipmentList = document.getElementById(equipmentListId);
-            const pathDropdown = document.getElementById(pathDropdownId);
-            const talentDropdown = document.getElementById(talentDropdownId);
-            const pathDetails = document.getElementById('path-details');
-            const talentDetails = document.getElementById('talent-details');
-
-            // Clear existing dropdowns
-            classDropdown.innerHTML = '<option value="">Select Class</option>';
-            pathDropdown.innerHTML = '<option value="">Select Path</option>';
-            talentDropdown.innerHTML = '<option value="">Select Talent</option>';
-            pathDetails.innerHTML = '';
-            talentDetails.innerHTML = '';
-
-            // Load classes into dropdown
-            data.classes.forEach(item => {
-                const option = document.createElement('option');
-                option.value = item.name;
-                option.textContent = item.name;
-                classDropdown.appendChild(option);
-            });
-
-            // Event listener for class selection
-            classDropdown.addEventListener('change', () => {
-                const selectedClass = classDropdown.value;
-                const selectedItem = data.classes.find(item => item.name === selectedClass);
-
-                if (!selectedItem) return;
-
-                // Update class description
-                description.textContent = selectedItem.description || "No description available.";
-
-                // Update features
-                featureList.innerHTML = selectedItem.features?.map(feature =>
-                    `<li><strong>${feature.name}:</strong> ${feature.description}</li>`
-                ).join('') || "<li>No features available.</li>";
-
-                // Update equipment
-                equipmentList.innerHTML = selectedItem.equipment?.map(item =>
-                    `<li><strong>${item.name}:</strong> ${item.description}</li>`
-                ).join('') || "<li>No equipment available.</li>";
-
-                // Populate path dropdown
-                pathDropdown.innerHTML = '<option value="">Select Path</option>';
-                if (Array.isArray(selectedItem.paths)) {
-                    selectedItem.paths.forEach(path => {
-                        const pathName = typeof path === 'object' ? path.name : path;
-                        const option = document.createElement('option');
-                        option.value = pathName;
-                        option.textContent = pathName;
-                        pathDropdown.appendChild(option);
-                    });
-                } else {
-                    pathDropdown.innerHTML = '<option value="">No Paths Available</option>';
-                }
-
-                talentDropdown.innerHTML = '<option value="">Select Talent</option>';
-                if (Array.isArray(selectedItem.talents)) {
-                    selectedItem.talents.forEach(talent => {
-                        const option = document.createElement('option');
-                
-                        // Handle both string and object formats
-                        if (typeof talent === 'object' && talent.name) {
-                            option.value = talent.name;
-                            option.textContent = talent.name;
-                        } else if (typeof talent === 'string') {
-                            option.value = talent;
-                            option.textContent = talent; // If talents are strings, just use the value
-                        }
-                
-                        talentDropdown.appendChild(option);
-                    });
-                } else {
-                    talentDropdown.innerHTML = '<option value="">No Talents Available</option>';
-                }
-                
-
-                // Auto-clear path and talent details when class changes
-                pathDetails.innerHTML = '';
-                talentDetails.innerHTML = '';
-            });
-
-            // Event listener for path selection
-            pathDropdown.addEventListener('change', () => {
-                const selectedClass = classDropdown.value;
-                const selectedPathName = pathDropdown.value;
-                const selectedItem = data.classes.find(item => item.name === selectedClass);
-
-                if (!selectedItem || !selectedItem.paths) return;
-
-                const selectedPath = selectedItem.paths.find(p => (typeof p === 'object' ? p.name : p) === selectedPathName);
-                
-                if (selectedPath && typeof selectedPath === 'object') {
-                    displayPathDetails(selectedPath);
-                } else {
-                    pathDetails.innerHTML = '<p>No details available for this path.</p>';
-                }
-            });
-
-            // Event listener for talent selection
-            talentDropdown.addEventListener('change', () => {
-                const selectedClass = classDropdown.value;
-                const selectedTalentName = talentDropdown.value;
-                const selectedItem = data.classes.find(item => item.name === selectedClass);
-
-                if (!selectedItem || !selectedItem.talents) return;
-
-                const selectedTalent = selectedItem.talents.find(t => t.name === selectedTalentName);
-                
-                if (selectedTalent) {
-                    displayTalentDetails(selectedTalent);
-                } else {
-                    talentDetails.innerHTML = '<p>No details available for this talent.</p>';
-                }
-            });
-        })
-        .catch(error => console.error(`Failed to load ${filePath}:`, error));
-}
-
-// Function to display path details
-function displayPathDetails(path) {
-    const pathContainer = document.getElementById('path-details');
-
-    // Ensure path object is valid before trying to display
-    if (!path || typeof path !== 'object') {
-        pathContainer.innerHTML = '<p>No path details available.</p>';
-        return;
-    }
-
-    pathContainer.innerHTML = `
-        <h3><strong>${path.name}</strong></h3>
-        <p>${path.description || "No description available."}</p>
-
-        <div class="features">
-            <h4><strong>Path Feature</strong></h4>
-            ${path.feature ? `<p><strong>${path.feature.name}:</strong> ${path.feature.description}</p>` : `<p>No special feature available.</p>`}
-        </div>
-
-        <details>
-            <summary>Progression</summary>
-            <p>Path progression is linear; you will select these progression steps in order.</p>
-            <ol>
-                ${path.progressionSteps ? path.progressionSteps.map(step => `<li><strong>${step.name}:</strong> ${step.description}</li>`).join('') : `<li>No progression steps available.</li>`}
-            </ol>
-        </details>
-    `;
-
-    document.dispatchEvent(new Event('tooltips:update'));
-}
-
-// Function to display talent details
-function displayTalentDetails(talent) {
-    const talentContainer = document.getElementById('talent-details');
-
-    // Ensure talent object is valid before trying to display
-    if (!talent || typeof talent !== 'object') {
-        talentContainer.innerHTML = '<p>No talent details available.</p>';
-        return;
-    }
-
-    talentContainer.innerHTML = `
-        <h3><strong>${talent.name}</strong></h3>
-        <p>${talent.description || "No description available."}</p>
-
-        <div class="features">
-            <h4><strong>Talent Feature</strong></h4>
-            ${talent.feature ? `<p><strong>${talent.feature.name}:</strong> ${talent.feature.description}</p>` : `<p>No special feature available.</p>`}
-        </div>
-
-        <details>
-            <summary>Progression</summary>
-            <p>You may freely select talent progression steps in any order.</p>
-            <ol>
-                ${talent.progressionSteps ? talent.progressionSteps.map(step => `<li><strong>${step.name}:</strong> ${step.description}</li>`).join('') : `<li>No progression steps available.</li>`}
-            </ol>
-        </details>
-    `;
-
-    document.dispatchEvent(new Event('tooltips:update'));
 }
 
 // Enable mouse wheel scrolling for all number inputs

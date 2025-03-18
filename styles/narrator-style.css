@@ -49,7 +49,6 @@ section {
     box-shadow: var(--box-shadow);
     color: var(--white);
     display: flex;
-
 }
 
 /* Headers */

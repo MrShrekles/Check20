@@ -7,6 +7,7 @@
     --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     --box-hover: 0 2px 8px rgba(0, 0, 0, 0.7);
     --padding: 5px;
+    --body-font: 0.85em;
 }
 
 body {
@@ -14,7 +15,7 @@ body {
     height: 11in;
     margin: 0.2in;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 0.8em;
+    font-size: var(--body-font);
     color: var(--black);
     background: none;
 }
@@ -46,7 +47,6 @@ body {
 }
 
 .flex-item label {
-    font-size: 0.75rem;
     margin-bottom: 0;
     display: block;
 }
@@ -54,7 +54,6 @@ body {
 .flex-item input,
 .flex-item select,
 .flex-item textarea {
-    font-size: 0.7rem;
     width: 100%;
 }
 
@@ -115,21 +114,24 @@ h4 {
     border-bottom: 2px solid var(--medium);
 }
 
+#char-details {
+    font-size: var(--body-font);
+}
+
 /* Compact Health Section */
 .health-section,
 .checks-section {
-    font-size: 0.75rem;
     padding: 0px;
     border-radius: var(--border-radius);
     page-break-inside: avoid;
 }
 
 h2 {
-    font-size: 1rem;
     margin-bottom: 0px;
     text-align: center;
     text-transform: uppercase;
     border-bottom: 2px solid #333;
+    font-size: 1.3em;
 }
 
 .health-table,
@@ -150,7 +152,7 @@ h2 {
     background-color: #d3d3d3;
     font-weight: bold;
     text-transform: uppercase;
-    font-size: .8rem;
+
 }
 
 .health-table td input {
@@ -168,7 +170,6 @@ h2 {
 
 .health-table button {
     padding: 4px 6px;
-    font-size: 0.7rem;
     border: none;
     background-color: #444;
     color: #fff;
@@ -198,7 +199,7 @@ h2 {
     width: 100%;
     border-collapse: collapse;
     text-align: center;
-    font-size: 0.75rem;
+    font-size: var(--body-font);
 }
 
 .resources-table th {
@@ -207,7 +208,6 @@ h2 {
 }
 
 .resources-table input.circle-input {
-    font-size: 0.7rem;
     box-sizing: border-box;
 }
 
@@ -244,7 +244,6 @@ h2 {
 
 .note-cell {
     padding-left: 8px;
-    font-size: 80%;
     color: grey;
 }
 
@@ -253,6 +252,7 @@ h2 {
     margin-bottom: 1em;
     border-radius: 8px;
     background: #fff;
+    font-size: var(--body-font);
 }
 
 .resources h3 {
@@ -298,40 +298,6 @@ h2 {
     cursor: pointer;
 }
 
-.tooltip {
-    position: relative;
-    cursor: help;
-    color: var(--black);
-    text-decoration: none;
-}
-
-.tooltip::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: max-content;
-    max-width: 250px;
-    background-color: #222;
-    color: #fff;
-    text-align: center;
-    padding: 6px 10px;
-    border-radius: 5px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s;
-    font-size: 0.85em;
-}
-
-.tooltip:hover::after {
-    opacity: 1;
-}
-
-.feature {
-    font-size: .8em;
-}
-
 .feature-list {
     list-style: none;
     padding: 0;
@@ -357,4 +323,67 @@ h2 {
 .feature-list ul li {
     margin-bottom: 0px;
     border-bottom: 2px solid var(--medium);
+}
+
+@media print {
+    /* Remove unnecessary elements */
+    .nav-button, .no-print {
+        display: none !important;
+    }
+
+    /* Adjust layout for printing */
+    body {
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+    }
+
+    #char-sheet {
+        width: 100%;
+        height: auto;
+        page-break-inside: avoid;
+    }
+
+    /* Ensure content fits within a single page */
+    html, body {
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Scale down the character sheet if necessary */
+    @page {
+        size: auto; /* Adjusts to paper size */
+        margin: 0.5in; /* Small margin for printing */
+    }
+
+    /* Prevent elements from breaking between pages */
+    .feature-list, .description-text, .feature {
+        page-break-inside: avoid;
+    }
+
+    /* Ensure all sections are properly contained */
+    #char-sheet {
+        display: block;
+        width: 100%;
+        max-width: 8.5in; /* Standard Letter Size */
+        max-height: 11in;
+        overflow: hidden;
+    }
+
+    /* Reduce font size for better fit */
+    h1, h2, h3, h4 {
+        font-size: smaller;
+    }
+
+    /* Adjust table and grid layouts */
+    table {
+        width: 100%;
+        font-size: 10px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 4px;
+    }
 }

@@ -1,3 +1,83 @@
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM fully loaded. Initializing tooltips...");
+
+    const tooltipLibrary = {
+        // Ranges
+        "Melee Range": "Within 5ft",
+        "reach range": "10ft",
+        "Short range": "Within 50ft",
+        "Medium range": "50-200ft",
+        "Long range": "200-1000ft",
+
+        // Rest and recovery
+        "Press On": "After combat take a moment to recover, can only be done twice per long rest.",
+        "Long Rest": "A long rest requires 10 hours of uninterrupted downtime",
+        "Morale Check": "A check from an enemy or NPC, a failed check can cause them to flee from combat",
+
+        // Conditions
+        "Bleeding": "Cannot recover wounds or receive healing.",
+        "Broken": "Physical Disadvantage",
+        "Concussion": "Mental Disadvantage, Spellcasting Disadvantage",
+        "Coughing": "Mental Disadvantage",
+        "Dislocation": "Physical Disadvantage",
+        "Slowed": "Movement halved",
+        "Pinned": "Cannot move; restrained by an object or creature.",
+        "Prone": "Disadvantage on ranged attacks; advantage for melee attacks against you.",
+        "Blind": "Disadvantage on attack checks; attacks against you have advantage.",
+        "Charmed": "Mental Disadvantage; cannot attack the source of the charm.",
+        "Confused": "Mental Disadvantage, attacks against you have advantage.",
+        "Deaf": "Stealth disadvantage; Spellcasting disadvantage.",
+        "Fear": "Must dash away or hide until the end of your next turn.",
+        "Intangible": "Immune to physical damage; cannot attack; movement halved.",
+        "Invisible": "Cannot be targeted by opportunity attacks; attacks against you have disadvantage.",
+        "Unconscious": "Unable to act; vulnerable to critical hits and Finishers.",
+        "Stunned": "Disadvantage on all checks; movement halved.",
+        "Exhaustion": "Disadvantage on all checks; movement halved.",
+        "Constrained": "Cannot make attack actions; attacks against have advantage.",
+        "Exposed": "Take double damage.",
+        "Injured": "At 0 wounds, any further damage causes immediate Death.",
+        "Death": "Character dies and cannot interact with the living world."
+    };
+
+    function applyTooltips() {
+        const allElements = document.querySelectorAll("body *");
+
+        if (!allElements.length) {
+            console.warn("No elements found in body for tooltip processing.");
+            return;
+        }
+
+        allElements.forEach(element => {
+            const textNodes = Array.from(element.childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
+
+            textNodes.forEach(node => {
+                let originalText = node.textContent.trim(); // Trim whitespace
+
+                Object.keys(tooltipLibrary).forEach(term => {
+                    const regex = new RegExp(`\\b${term}\\b`, "gi"); // Match whole words, case-insensitive
+
+                    if (regex.test(originalText)) {
+                        console.log(`Match found for: "${term}" in text: "${originalText}"`); // Debugging
+                        const tooltipText = tooltipLibrary[term];
+
+                        // Ensure the node hasn't been replaced already
+                        if (element.contains(node)) {
+                            const html = originalText.replace(
+                                regex,
+                                `<span class="tooltip" data-tooltip="${tooltipText}">${term}</span>`
+                            );
+                            const wrapper = document.createElement("span");
+                            wrapper.innerHTML = html;
+                            element.replaceChild(wrapper, node);
+                        }
+                    }
+                });
+            });
+        });
+    }
+
+    applyTooltips();
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     // Name Generator Components
