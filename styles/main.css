@@ -152,6 +152,7 @@ details[open] summary {
     color: var(--dark);
     box-shadow: var(--box-hover);
 }
+
 select {
     background-color: var(--dark);
     color: var(--gold);
@@ -321,6 +322,108 @@ nav ul li a:hover {
     /* Adjust as needed */
     margin: 0 auto;
 }
+
+.img-standard {
+    max-width: 100%;
+    height: auto;
+    transform: scalex(-1);
+}
+
+#flip {
+    margin-top: -12%;
+    margin-bottom: -10%;
+    max-width: 90%;
+    height: auto;
+    transform: scalex(1);
+    pointer-events: none;
+}
+
+/*  Clickable Image (Normal State) */
+.img-zoom {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+    cursor: zoom-in;
+}
+
+/*  Zoomed-In State */
+.img-zoom.zoomed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    /* Fills the screen */
+    height: 100vh;
+    /* Fills the screen */
+    object-fit: contain;
+    /* Ensures it scales properly */
+    background: rgba(0, 0, 0, 0.7);
+    /* Dark overlay */
+    z-index: 999;
+    cursor: zoom-out;
+    transition: transform 0.3s ease-in-out;
+}
+
+/*  Image Breakout (Larger & Overlapping) */
+.img-breakout {
+    max-width: 100%;
+    height: auto;
+    transform: scaleX(-1);
+    position: relative;
+    z-index: 2;
+}
+/* 🔹 Optional: Floating Effect */
+.img-breakout.floating {
+    animation: floatImage 4s ease-in-out infinite alternate;
+}
+
+/* 🔹 Floating Animation */
+@keyframes floatImage {
+    from {
+        transform: scaleX(-1) translateY(0);
+    }
+
+    to {
+        transform: scaleX(-1) translateY(20px);
+    }
+}
+
+/* 🔹 Letter-Like Styling */
+.letter-container {
+    position: relative;
+    background: var(--cream);
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 800px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    font-family: "Garamond", serif;
+    color: var(--dark);
+    text-align: justify;
+    line-height: 1.6;
+    border: 2px solid var(--rust);
+}
+
+/* 🔹 Title (Professor’s Name & Header) */
+.letter-title {
+    font-weight: bold;
+    text-align: center;
+    font-family: "Playfair Display", serif;
+    color: var(--rust);
+    margin-bottom: 1rem;
+}
+
+/* 🔹 Italic Styling for Quotes */
+.letter-container p {
+    font-size: 1.2rem;
+}
+
+/* 🔹 First Paragraph is Slightly Larger */
+.letter-container p:first-of-type {
+    font-size: 2rem;
+}
+
 
 .flex-nav {
     display: flex;
@@ -1108,12 +1211,15 @@ nav a:hover {
 
 /* 📌 Mobile-Friendly Adjustments */
 @media (max-width: 768px) {
-    button, .flex-pop button {
+
+    button,
+    .flex-pop button {
         font-size: 0.9rem;
         padding: 8px 16px;
     }
 
-    .flex-gen, .column {
+    .flex-gen,
+    .column {
         flex: 1 1 100%;
     }
 
@@ -1121,20 +1227,11 @@ nav a:hover {
         flex-direction: column;
     }
 
-    table {
-        white-space: nowrap;
-        border-radius: 0;
-    }
 
-    /* 🛠 Reduce Padding & Font Size for Better Mobile Fit */
-    table th, table td {
-        padding: 2px 6px;
-        font-size: 0.8rem;
-        min-width: 10vw;
-    }
 
     /* 📌 Make Flex Items Full Width */
-    .flex-item, .flex-spell {
+    .flex-item,
+    .flex-spell {
         max-width: 100%;
         min-width: 100%;
         padding: var(--padding-small);
@@ -1154,14 +1251,5 @@ nav a:hover {
         font-size: 18px;
         padding: 12px;
     }
-    thead {
-        display: none; /* Hide table headers for compact mobile views */
-    }
 
-    tr {
-        display: block;
-        border: 1px solid var(--medium);
-        margin-bottom: 10px;
-        padding: 10px;
-    }
 }

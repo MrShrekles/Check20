@@ -13,7 +13,7 @@
     <header class="main-header">
         <h1 class="header-title">Worldbuilding</h1>
         <div class="flex-container">
-    
+
             <!-- Character Dropdown -->
             <div class="flex-item">
                 <details>
@@ -25,7 +25,7 @@
                     </nav>
                 </details>
             </div>
-    
+
             <!-- How to Play Dropdown -->
             <div class="flex-item">
                 <details>
@@ -37,7 +37,7 @@
                     </nav>
                 </details>
             </div>
-    
+
             <!-- Narrator Dropdown -->
             <div class="flex-item">
                 <details>
@@ -49,7 +49,7 @@
                     </nav>
                 </details>
             </div>
-    
+
             <!-- Marketing Dropdown -->
             <div class="flex-item">
                 <details>
@@ -64,230 +64,71 @@
     </header>
 
     <section>
-        <h2>NPC Generator</h2>
-        <!-- NPC Generator 1 -->
-        <div class="flex-container">
-            <div class="flex-gen" id="generator-1">
-                <div class="flex-pop">
-                    <button id="generate-name-btn-1">Name</button>
-                    <div id="generated-name-1" class="display-box">[Generated Name]</div>
+        <div class="two-column">
+            <div class="column">
+                <h2>NPC Generator</h2>
+                <!-- NPC Generator 1 -->
+                <div class="flex-container">
+                    <div class="flex-gen" id="generator-1">
+                        <div class="flex-pop">
+                            <button id="generate-name-btn-1">Name</button>
+                            <div id="generated-name-1" class="display-box">[Generated Name]</div>
+                        </div>
+                        <div class="flex-pop">
+                            <button id="generate-species-btn-1">Species</button>
+                            <div id="generated-species-1" class="display-box">[Generated Species]</div>
+                        </div>
+                        <div class="flex-pop">
+                            <button id="generate-history-btn-1">Affinity</button>
+                            <div id="generated-history-1" class="display-box">[Generated Affinity]</div>
+                        </div>
+                        <div class="flex-pop">
+                            <button id="generate-religion-btn-1">Religion</button>
+                            <div id="generated-religion-1" class="display-box">[Generated Religion]</div>
+                        </div>
+                        <div class="flex-pop">
+                            <button id="generate-item-btn-1">Signature Item</button>
+                            <div id="generated-item-1" class="display-box">[Generated Item]</div>
+                        </div>
+                        <div class="flex-pop">
+                            <button id="generate-motivation-btn-1">Motivation</button>
+                            <div id="generated-motivation-1" class="display-box">[Generated Motivation]</div>
+                        </div>
+                        <div class="flex-pop full-width">
+                            <button id="generate-all-btn-1">Generate All</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex-pop">
-                    <button id="generate-species-btn-1">Species</button>
-                    <div id="generated-species-1" class="display-box">[Generated Species]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-history-btn-1">Affinity</button>
-                    <div id="generated-history-1" class="display-box">[Generated Affinity]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-religion-btn-1">Religion</button>
-                    <div id="generated-religion-1" class="display-box">[Generated Religion]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-item-btn-1">Signature Item</button>
-                    <div id="generated-item-1" class="display-box">[Generated Item]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-motivation-btn-1">Motivation</button>
-                    <div id="generated-motivation-1" class="display-box">[Generated Motivation]</div>
-                </div>
-                <div class="flex-pop full-width">
-                    <button id="generate-all-btn-1">Generate All</button>
-                </div>
+                <!-- End Left -->
             </div>
-
-            <!-- NPC Generator 2 -->
-            <div class="flex-gen" id="generator-2">
-                <div class="flex-pop">
-                    <button id="generate-name-btn-2">Name</button>
-                    <div id="generated-name-2" class="display-box">[Generated Name]</div>
+            <div class="column">
+                <h2>Business Generator</h2>
+                <div class="flex-container">
+                    <div class="flex-gen business-generator">
+                        <div class="flex-pop">
+                            <button class="generate-business-name-btn">Business Name</button>
+                            <div class="display-box generated-business-name">[Generated Business Name]</div>
+                        </div>
+                        <div class="flex-pop">
+                            <button class="generate-owner-btn">Owner</button>
+                            <div class="display-box generated-owner">[Generated Owner]</div>
+                        </div>
+                        <div class="flex-pop">
+                            <button class="generate-reputation-btn">Reputation</button>
+                            <div class="display-box generated-reputation">[Generated Reputation]</div>
+                        </div>
+                        <div class="flex-pop">
+                            <button class="generate-secret-btn">Secret</button>
+                            <div class="display-box generated-secret">[Generated Secret]</div>
+                        </div>
+                        <div class="flex-pop full-width">
+                            <button class="generate-all-business-btn">Generate All</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex-pop">
-                    <button id="generate-species-btn-2">Species</button>
-                    <div id="generated-species-2" class="display-box">[Generated Species]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-history-btn-2">Affinity</button>
-                    <div id="generated-history-2" class="display-box">[Generated Affinity]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-religion-btn-2">Religion</button>
-                    <div id="generated-religion-2" class="display-box">[Generated Religion]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-item-btn-2">Signature Item</button>
-                    <div id="generated-item-2" class="display-box">[Generated Item]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-motivation-btn-2">Motivation</button>
-                    <div id="generated-motivation-2" class="display-box">[Generated Motivation]</div>
-                </div>
-                <div class="flex-pop full-width">
-                    <button id="generate-all-btn-2">Generate All</button>
-                </div>
+                <!-- End Right -->
             </div>
-
-            <!-- NPC Generator 3 -->
-            <div class="flex-gen" id="generator-3">
-                <div class="flex-pop">
-                    <button id="generate-name-btn-3">Name</button>
-                    <div id="generated-name-3" class="display-box">[Generated Name]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-species-btn-3">Species</button>
-                    <div id="generated-species-3" class="display-box">[Generated Species]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-history-btn-3">Affinity</button>
-                    <div id="generated-history-3" class="display-box">[Generated Affinity]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-religion-btn-3">Religion</button>
-                    <div id="generated-religion-3" class="display-box">[Generated Religion]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-item-btn-3">Signature Item</button>
-                    <div id="generated-item-3" class="display-box">[Generated Item]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-motivation-btn-3">Motivation</button>
-                    <div id="generated-motivation-3" class="display-box">[Generated Motivation]</div>
-                </div>
-                <div class="flex-pop full-width">
-                    <button id="generate-all-btn-3">Generate All</button>
-                </div>
-            </div>
-
-            <!-- NPC Generator 4 -->
-            <div class="flex-gen" id="generator-4">
-                <div class="flex-pop">
-                    <button id="generate-name-btn-4">Name</button>
-                    <div id="generated-name-4" class="display-box">[Generated Name]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-species-btn-4">Species</button>
-                    <div id="generated-species-4" class="display-box">[Generated Species]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-history-btn-4">Affinity</button>
-                    <div id="generated-history-4" class="display-box">[Generated Affinity]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-religion-btn-4">Religion</button>
-                    <div id="generated-religion-4" class="display-box">[Generated Religion]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-item-btn-4">Signature Item</button>
-                    <div id="generated-item-4" class="display-box">[Generated Item]</div>
-                </div>
-                <div class="flex-pop">
-                    <button id="generate-motivation-btn-4">Motivation</button>
-                    <div id="generated-motivation-4" class="display-box">[Generated Motivation]</div>
-                </div>
-                <div class="flex-pop full-width">
-                    <button id="generate-all-btn-4">Generate All</button>
-                </div>
-            </div>
-        </div>
     </section>
-
-    <details>
-        <summary>
-            Businesses
-        </summary>
-
-        <section>
-            <div class="flex-container">
-                <div class="flex-gen business-generator">
-                    <div class="flex-pop">
-                        <button class="generate-business-name-btn">Business Name</button>
-                        <div class="display-box generated-business-name">[Generated Business Name]</div>
-                    </div>
-                    <div class="flex-pop">
-                        <button class="generate-owner-btn">Owner</button>
-                        <div class="display-box generated-owner">[Generated Owner]</div>
-                    </div>
-                    <div class="flex-pop">
-                        <button class="generate-reputation-btn">Reputation</button>
-                        <div class="display-box generated-reputation">[Generated Reputation]</div>
-                    </div>
-                    <div class="flex-pop">
-                        <button class="generate-secret-btn">Secret</button>
-                        <div class="display-box generated-secret">[Generated Secret]</div>
-                    </div>
-                    <div class="flex-pop full-width">
-                        <button class="generate-all-business-btn">Generate All</button>
-                    </div>
-                </div>
-
-                <div class="flex-gen business-generator">
-                    <div class="flex-pop">
-                        <button class="generate-business-name-btn">Business Name</button>
-                        <div class="display-box generated-business-name">[Generated Business Name]</div>
-                    </div>
-                    <div class="flex-pop">
-                        <button class="generate-owner-btn">Owner</button>
-                        <div class="display-box generated-owner">[Generated Owner]</div>
-                    </div>
-                    <div class="flex-pop">
-                        <button class="generate-reputation-btn">Reputation</button>
-                        <div class="display-box generated-reputation">[Generated Reputation]</div>
-                    </div>
-                    <div class="flex-pop">
-                        <button class="generate-secret-btn">Secret</button>
-                        <div class="display-box generated-secret">[Generated Secret]</div>
-                    </div>
-                    <div class="flex-pop full-width">
-                        <button class="generate-all-business-btn">Generate All</button>
-                    </div>
-                </div>
-                <div class="flex-gen business-generator">
-                    <div class="flex-pop">
-                        <button class="generate-business-name-btn">Business Name</button>
-                        <div class="display-box generated-business-name">[Generated Business Name]</div>
-                    </div>
-                    <div class="flex-pop">
-                        <button class="generate-owner-btn">Owner</button>
-                        <div class="display-box generated-owner">[Generated Owner]</div>
-                    </div>
-                    <div class="flex-pop">
-                        <button class="generate-reputation-btn">Reputation</button>
-                        <div class="display-box generated-reputation">[Generated Reputation]</div>
-                    </div>
-                    <div class="flex-pop">
-                        <button class="generate-secret-btn">Secret</button>
-                        <div class="display-box generated-secret">[Generated Secret]</div>
-                    </div>
-                    <div class="flex-pop full-width">
-                        <button class="generate-all-business-btn">Generate All</button>
-                    </div>
-                </div>
-                <div class="flex-gen business-generator">
-                    <div class="flex-pop">
-                        <button class="generate-business-name-btn">Business Name</button>
-                        <div class="display-box generated-business-name">[Generated Business Name]</div>
-                    </div>
-                    <div class="flex-pop">
-                        <button class="generate-owner-btn">Owner</button>
-                        <div class="display-box generated-owner">[Generated Owner]</div>
-                    </div>
-                    <div class="flex-pop">
-                        <button class="generate-reputation-btn">Reputation</button>
-                        <div class="display-box generated-reputation">[Generated Reputation]</div>
-                    </div>
-                    <div class="flex-pop">
-                        <button class="generate-secret-btn">Secret</button>
-                        <div class="display-box generated-secret">[Generated Secret]</div>
-                    </div>
-                    <div class="flex-pop full-width">
-                        <button class="generate-all-business-btn">Generate All</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </details>
 
     <section>
         <div class="flex-gen" id="character-question-generator">
@@ -868,58 +709,58 @@
                         </tr>
                     </tbody>
                 </table>
-                
+
             </div>
         </div>
     </section>
 
-        <!-- Downtime -->
-<section>
-    <h2>Downtime Activities</h2>
-                <p>Roll 1d8 to determine resource yield for fishing, hunting, or crafting:</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Roll</th>
-                            <th>Outcome</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Catch nothing.</td>
-                        </tr>
-                        <tr>
-                            <td>2-3</td>
-                            <td>Small catch; minor materials.</td>
-                        </tr>
-                        <tr>
-                            <td>4-5</td>
-                            <td>Moderate; usable in crafting.</td>
-                        </tr>
-                        <tr>
-                            <td>6-7</td>
-                            <td>Rare find; worth [[2d10]] gold.</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>Exotic/Legendary material.</td>
-                        </tr>
-                    </tbody>
-                </table>
-</section>
+    <!-- Downtime -->
+    <section>
+        <h2>Downtime Activities</h2>
+        <p>Roll 1d8 to determine resource yield for fishing, hunting, or crafting:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Roll</th>
+                    <th>Outcome</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Catch nothing.</td>
+                </tr>
+                <tr>
+                    <td>2-3</td>
+                    <td>Small catch; minor materials.</td>
+                </tr>
+                <tr>
+                    <td>4-5</td>
+                    <td>Moderate; usable in crafting.</td>
+                </tr>
+                <tr>
+                    <td>6-7</td>
+                    <td>Rare find; worth [[2d10]] gold.</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>Exotic/Legendary material.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 
-        <!-- Lore Section -->
-        <details>
-            <summary>Lore</summary>
-            <section>
-                <h2>Deities</h2>
-                <p>The world of Check20 is shaped by a pantheon of gods and deities. Each represents unique
-                    aspects
-                    of
-                    existence and influences the world through their followers and myths.</p>
-            </section>
-        </details>
+    <!-- Lore Section -->
+    <details>
+        <summary>Lore</summary>
+        <section>
+            <h2>Deities</h2>
+            <p>The world of Check20 is shaped by a pantheon of gods and deities. Each represents unique
+                aspects
+                of
+                existence and influences the world through their followers and myths.</p>
+        </section>
+    </details>
 
 </body>
 
