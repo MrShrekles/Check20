@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check20 Wiki</title>
     <link rel="stylesheet" href="styles/main.css">
-    <script src="scripts/narrator-tools.js" defer></script>
+    <script src="scripts/almanac.js" defer></script>
 </head>
 
 <body>
@@ -17,11 +17,25 @@
             <!-- Character Dropdown -->
             <div class="flex-item">
                 <details>
-                    <summary class="nav-button">Player's Grimoire</summary>
+                    <summary class="nav-button">Character Options</summary>
                     <nav>
                         <a href="class.html">Class</a>
                         <a href="species.html">Species</a>
-                        <a href="gear.html">Gear</a>
+                        <a href="tables.html">Tables</a>
+                        <a href="curse.html">Curses & Diseases</a>
+                    </nav>
+                </details>
+            </div>
+
+            <!-- Gear and Items -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">Gear</summary>
+                    <nav>
+                        <a href="armor.html">Armor</a>
+                        <a href="weapons.html">Weapons</a>
+                        <a href="items.html">Items</a>
+                        <a href="crafting.html">Crafting</a>
                     </nav>
                 </details>
             </div>
@@ -31,9 +45,11 @@
                 <details>
                     <summary class="nav-button">How To Play</summary>
                     <nav>
+                        <a href="charsheet.html">Character Sheet</a>
                         <a href="reference.html">Reference</a>
+                        <a href="damage.html">Damage & Damage Tables</a>
                         <a href="spellcasting.html">Spellcasting</a>
-                        <a href="merchant.html">Merchant</a>
+                        <a href="downtime.html">Downtime</a>
                     </nav>
                 </details>
             </div>
@@ -41,11 +57,12 @@
             <!-- Narrator Dropdown -->
             <div class="flex-item">
                 <details>
-                    <summary class="nav-button">Narrator</summary>
+                    <summary class="nav-button">Storyteller's Almanac</summary>
                     <nav>
-                        <a href="worldbuilding.html">Storyteller's Almanac</a>
+                        <a href="worldbuilding.html">Worldbuilding</a>
+                        <a href="enchanted.html">Enchanted Items & Progression</a>
+                        <a href="vehicles.html">Vehicles & Mounts</a>
                         <a href="lore.html">Lore</a>
-                        <a href="monsters.html">Monsters</a>
                     </nav>
                 </details>
             </div>
@@ -132,11 +149,62 @@
 
     <section>
         <div class="flex-gen" id="character-question-generator">
+            <h2>Character Roleplay Question</h2>
             <div class="flex-pop">
                 <button id="generate-question-btn">Generate Question</button>
                 <div id="generated-question" class="display-box">[Your Character's Question]</div>
             </div>
         </div>
+    </section>
+
+
+    <section>
+        <h2>Monster Creator</h2>
+        <section>
+            <div class="flex-container">
+
+                <!-- Base Type -->
+                <div class="flex-item">
+                    <label>
+                        <input type="checkbox" id="randomize-base" checked> Randomize Base Type
+                    </label>
+                    <select id="base-type">
+                    </select>
+                </div>
+
+                <!-- Add Type -->
+                <div class="flex-item">
+                    <label>
+                        <input type="checkbox" id="randomize-additional" checked> Randomize Additional Type
+                    </label>
+                    <select id="additional-type">
+                    </select>
+                </div>
+
+                <!-- Mod Type -->
+                <div class="flex-item">
+                    <label>
+                        <input type="checkbox" id="randomize-mod" checked> Randomize Mod Type
+                    </label>
+                    <select id="mod-type">
+                    </select>
+                </div>
+
+                <!-- Generate Button -->
+                <div class="flex-item">
+                    <button id="generate-monster">Generate Monster</button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Output Section -->
+        <div class="column">
+            <h2>Generated Monsters</h2>
+            <div id="monster-output" class="monster-grid"></div>
+        </div>
+
+        <img src="assets/images/Monsta.png" alt="monster" style="width: 100%;">
     </section>
 
     <!-- Narrator Guide Section -->

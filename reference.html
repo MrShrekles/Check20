@@ -19,13 +19,25 @@
             <!-- Character Dropdown -->
             <div class="flex-item">
                 <details>
-                    <summary class="nav-button">Player's Grimoire</summary>
+                    <summary class="nav-button">Character Options</summary>
                     <nav>
                         <a href="class.html">Class</a>
                         <a href="species.html">Species</a>
-                        <a href="gear.html">Gear</a>
                         <a href="tables.html">Tables</a>
-                        <a href="progression.html">Progression Options</a>
+                        <a href="curse.html">Curses & Diseases</a>
+                    </nav>
+                </details>
+            </div>
+
+            <!-- Gear and Items -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">Gear</summary>
+                    <nav>
+                        <a href="armor.html">Armor</a>
+                        <a href="weapons.html">Weapons</a>
+                        <a href="items.html">Items</a>
+                        <a href="crafting.html">Crafting</a>
                     </nav>
                 </details>
             </div>
@@ -35,9 +47,11 @@
                 <details>
                     <summary class="nav-button">How To Play</summary>
                     <nav>
+                        <a href="charsheet.html">Character Sheet</a>
                         <a href="reference.html">Reference</a>
+                        <a href="damage.html">Damage & Damage Tables</a>
                         <a href="spellcasting.html">Spellcasting</a>
-                        <a href="merchant.html">Merchant</a>
+                        <a href="downtime.html">Downtime</a>
                     </nav>
                 </details>
             </div>
@@ -45,11 +59,12 @@
             <!-- Narrator Dropdown -->
             <div class="flex-item">
                 <details>
-                    <summary class="nav-button">Narrator</summary>
+                    <summary class="nav-button">Storyteller's Almanac</summary>
                     <nav>
-                        <a href="worldbuilding.html">Storyteller's Almanac</a>
+                        <a href="worldbuilding.html">Worldbuilding</a>
+                        <a href="enchanted.html">Enchanted Items & Progression</a>
+                        <a href="vehicles.html">Vehicles & Mounts</a>
                         <a href="lore.html">Lore</a>
-                        <a href="monsters.html">Monsters</a>
                     </nav>
                 </details>
             </div>
@@ -68,7 +83,6 @@
     </header>
 
     <main>
-
         <!-- How to play -->
         <section id="howto">
             <div class="two-column">
@@ -779,6 +793,7 @@
             </div>
         </section>
 
+        <!-- Movement -->
         <section>
             <h2>Movement</h2>
             <div class="two-column">
@@ -846,7 +861,7 @@
 
         </section>
 
-
+        <!-- Actions -->
         <section>
             <h1>Types of Actions</h1>
             <div class="two-column">
@@ -1082,6 +1097,8 @@
             </table>
 
         </section>
+
+        <!-- Additonal Character Information -->
         <section class="character-section">
             <h2>Additional Character Information</h2>
             <!-- Character information -->
@@ -1153,6 +1170,181 @@
                 </div>
 
             </div>
+        </section>
+
+        <!-- Bulk & Inventory -->
+        <section id="bulk">
+            <h1>Bulk Items</h1>
+            <p>
+                Bulk represents the weight and space your gear occupies, from negligible trinkets to
+                burdensome
+                hauls. It's not just about weight but also the size and how cumbersome an item is. Managing
+                your
+                bulk is crucial for maintaining agility and avoiding encumbrance.
+            </p>
+            <p>
+                For example, a watch has 0 Bulk because it can be worn and forgotten about. Meanwhile, an
+                empty
+                barrel may be light but is awkward to carry, giving it a Bulk of 5.
+            </p>
+
+            <h4>Bulk Classifications</h4>
+            <div class="two-column">
+                <div class="column">
+                    <!-- Bulk Classifications -->
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Bulk</th>
+                                <th>Description</th>
+                                <th>Examples</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0</td>
+                                <td>Small/wearable items</td>
+                                <td>Watch, ring, eyeglasses</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Backpack-sized items</td>
+                                <td>Clothes, flask, small tools</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Large items</td>
+                                <td>Armor, barrel, large pot</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Heavy items</td>
+                                <td>Furniture, small canoe</td>
+                            </tr>
+                            <tr>
+                                <td>15</td>
+                                <td>Very heavy items</td>
+                                <td>Piano, cart</td>
+                            </tr>
+                            <tr>
+                                <td>20</td>
+                                <td>Extremely heavy items</td>
+                                <td>Small car, heavy safe</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="column">
+                    <!-- Bulk Penalties -->
+                    <div class="features">
+                        <h4>Bulk Penalties</h4>
+                        <ul>
+                            <li><strong>Bulk exceeds Strength:</strong> Over-encumbered (Pinned condition).</li>
+                            <li><strong>Bulk > 2x Strength:</strong> Over-encumbered + Exhausted condition.</li>
+                            <li><strong>Worn items:</strong> Worn items have no bulk.</li>
+                            <li><strong>Bundles:</strong> Bundles reduce the average bulk of items.</li>
+                            <li><strong>Backpacks:</strong> Reduce total bulk carried.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="column">
+                    <!-- Storage Options -->
+                    <h4>Types of Mundane Storage</h4>
+                    <p>
+                        Mundane storage allows characters to organize and carry items effectively. Accessing storage
+                        usually requires an off-action or is included in an action like switching weapons or
+                        grabbing a
+                        potion.
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Storage Option</th>
+                                <th>Description</th>
+                                <th>Bulk Reduction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Utility Pouch</td>
+                                <td>A small, rugged pouch worn on a belt or strap. Designed for carrying small
+                                    tools,
+                                    trinkets, or coins.</td>
+                                <td>-1 Bulk</td>
+                            </tr>
+                            <tr>
+                                <td>Craftsman’s Satchel</td>
+                                <td>A compact, cross-body satchel with multiple compartments for tools and
+                                    materials.
+                                    Ideal for organization.</td>
+                                <td>-3 Bulk</td>
+                            </tr>
+                            <tr>
+                                <td>Traveler’s Backpack</td>
+                                <td>A durable backpack with adjustable straps and reinforced compartments for
+                                    essential
+                                    gear.</td>
+                                <td>-5 Bulk</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="column">
+                    <h4>Types of Dimensional Storage</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Storage Option</th>
+                                <th>Capacity</th>
+                                <th>Access Time</th>
+                                <th>Living Creatures</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Ring Safe</td>
+                                <td>1 item, up to 1 bulk</td>
+                                <td>Off-Action to store or retrieve</td>
+                                <td>Not allowed</td>
+                            </tr>
+                            <tr>
+                                <td>Nomad Pouch</td>
+                                <td>Up to 10 bulk (items ≤ 2 bulk each)</td>
+                                <td>Off-Action to store or retrieve</td>
+                                <td>Tiny creatures for up to 1 hour</td>
+                            </tr>
+                            <tr>
+                                <td>Small Bag of Efficient Storage</td>
+                                <td>Up to 50 bulk (items ≤ 5 bulk each)</td>
+                                <td>Half-Action to store, Action to retrieve large items</td>
+                                <td>Creatures up to 2 bulk for 8 hours</td>
+                            </tr>
+                            <tr>
+                                <td>Deep Pack</td>
+                                <td>200 bulk</td>
+                                <td>1 Action to store or retrieve items</td>
+                                <td>Up to 10 bulk for 24 hours</td>
+                            </tr>
+                            <tr>
+                                <td>Storage Vault</td>
+                                <td>Up to 1,000 bulk</td>
+                                <td>1 minute to access and retrieve items</td>
+                                <td>Any size with air and sustenance</td>
+                            </tr>
+                            <tr>
+                                <td>Portable Sanctuary</td>
+                                <td>Unlimited</td>
+                                <td>10 minutes to open or close</td>
+                                <td>Thrives with no time limits or constraints</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </section>
 
         <!-- Sidebar -->

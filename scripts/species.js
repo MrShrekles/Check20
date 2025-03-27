@@ -199,7 +199,7 @@ document.getElementById("roll-d20-check").addEventListener("click", () => {
         finalRoll = chosenValue + modifier;
     } else if (advantage === "disadvantage") {
         const lowerRoll = Math.min(roll1, roll2); // Lower roll
-        const adjustedRoll = roll1 + 4; // Add +4 to the first roll
+        const adjustedRoll = roll1 - 4; // Add +4 to the first roll
         chosenValue = Math.max(lowerRoll, adjustedRoll); // Choose the best value
         finalRoll = chosenValue + modifier;
     } else {

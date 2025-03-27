@@ -549,4 +549,3 @@ function highlightRoll(value) {
         return `<span class="roll-normal">${value}</span>`; // Default roll
     }
 }
-
