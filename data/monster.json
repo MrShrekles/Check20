@@ -17,31 +17,76 @@
                 {
                     "name": "Divine Radiance",
                     "type": "Healing Effect",
-                    "effect": "You and allies within {range} regain {value} wounds. If an ally is under the {condition} condition, they may make a {check} to end it."
-                },
-                {
-                    "name": "Blessing",
-                    "type": "Support Effect",
-                    "effect": "Grant an ally within {range} a divine blessing, giving them +{value} to their next {check} for {duration}."
-                },
-                {
-                    "name": "Halo of Protection",
-                    "type": "Defense Buff",
-                    "effect": "Allies within {range} gain {value} armor and resistance to {damage} damage for {duration}."
-                },
-                {
-                    "name": "Angelic Grace",
-                    "type": "Status Infliction",
-                    "effect": "Creatures that attack you must succeed on a {check} or take the {condition} condition until the end of their next turn."
-                },
-                {
-                    "name": "Holy Smite",
-                    "type": "Damage Effect",
-                    "effect": "Your melee attacks deal an additional {value} {damage} damage. If the target fails a {check}, they take the {condition} condition."
+                    "effect": "You and allies within short range regain 5 wounds. If an ally is under the Fear or Cognition condition, they may make a Spirit check to end it."
                 }
             ],
             "movementModifier": {
                 "walk": 5
+            },
+            "subtypes": {
+                "shackleborn": {
+                    "description": "Servants of Brakkus, enforcers of divine order and judgment.",
+                    "features": [
+                        {
+                            "name": "Chains of Authority",
+                            "effect": "Summon celestial chains to bind a nearby creature. On failure, they are Pinned until the end of their next turn."
+                        }
+                    ]
+                },
+                "chronal warden": {
+                    "description": "Temporal angels of Chronus, intervening when time frays.",
+                    "features": [
+                        {
+                            "name": "Chronal Intervention",
+                            "effect": "Once per encounter, rewind a failed check by an ally—they may reroll it immediately."
+                        }
+                    ]
+                },
+                "resonance": {
+                    "description": "Angels of Dumda who weaponize vibration and clarity.",
+                    "features": [
+                        {
+                            "name": "Sonic Burst",
+                            "effect": "Emit a wave of pure tone. Enemies in short range must make an Observation check or gain the Deaf condition."
+                        }
+                    ]
+                },
+                "empyrean": {
+                    "description": "Guides and restorers in service of Exembar, balancing ambition and peace.",
+                    "features": [
+                        {
+                            "name": "Restorative Balance",
+                            "effect": "As an action, heal 10 wounds and remove 1 Cognition condition from an ally."
+                        }
+                    ]
+                },
+                "silent guardian": {
+                    "description": "Silent watchers of Jesha, bringing quietude where chaos reigns.",
+                    "features": [
+                        {
+                            "name": "Field of Silence",
+                            "effect": "Create a zone around you where verbal components and sound-based abilities fail for 1 round."
+                        }
+                    ]
+                },
+                "librarian": {
+                    "description": "Keepers of lost knowledge and divine memory under Signessen’s gaze.",
+                    "features": [
+                        {
+                            "name": "Whispered Insight",
+                            "effect": "Once per encounter, grant +5 to any check made by an ally within range. They gain the Stunned condition until their next turn."
+                        }
+                    ]
+                },
+                "emissary": {
+                    "description": "Agents of Zuinmuir, collectors of souls and silence.",
+                    "features": [
+                        {
+                            "name": "Eyes of Ending",
+                            "effect": "Target must make a Spirit check or gain the Fear condition. If already feared, they must retreat their next turn."
+                        }
+                    ]
+                }
             }
         },
         "Construct": {
@@ -210,7 +255,7 @@
             }
         },
         "Demon": {
-            "description": "Malevolent demonic beings from various infernal realms.",
+            "description": "Demon is a soul; that has been twisted into a foul shape.",
             "names": [
                 "Imp",
                 "Fiend",
@@ -322,79 +367,310 @@
                 {
                     "name": "Streetwise",
                     "type": "Passive Effect",
-                    "effect": "Knows the hidden routes and secrets of the city, granting advantage on {check} rolls for navigation."
+                    "effect": "Knows the hidden routes and secrets of the city, granting advantage on Observation or Survival checks for urban navigation."
                 }
             ],
             "movementModifier": {
                 "walk": 0
+            },
+            "subtypes": {
+                "urban tank": {
+                    "description": "Brawlers, enforcers, and shield-bearers who dominate narrow alleys and doorways.",
+                    "features": [
+                        {
+                            "name": "City Blockade",
+                            "effect": "Takes up an extra 5ft of space and may guard a choke point. Enemies provoke if moving past."
+                        }
+                    ]
+                },
+                "gutter mage": {
+                    "description": "Uses twisted, scrapped-together magic. Knows the city's ley lines and arcane trash.",
+                    "features": [
+                        {
+                            "name": "Scrap Spell",
+                            "effect": "May cast a spell with half cost and a glitchy side effect (roll on chaos table if one exists)."
+                        }
+                    ]
+                },
+                "market broker": {
+                    "description": "Smooth-talking dealers, con artists, and fence liaisons.",
+                    "features": [
+                        {
+                            "name": "Greased Palms",
+                            "effect": "Once per encounter, bribe or persuade a hostile NPC to back off, buy time, or offer help."
+                        }
+                    ]
+                },
+                "dockhand professional": {
+                    "description": "Engineers, fixers, or operatives with a working-class edge.",
+                    "features": [
+                        {
+                            "name": "Problem Solver",
+                            "effect": "Can improvise a tool or bypass a simple mechanical obstacle once per scene."
+                        }
+                    ]
+                },
+                "medic runner": {
+                    "description": "Mobile healers and urban aid workers who move fast through chaos.",
+                    "features": [
+                        {
+                            "name": "Emergency Aid",
+                            "effect": "As an off-action, can stabilize a dying ally or grant them 5 temporary HP."
+                        }
+                    ]
+                }
             }
         },
         "Dragon": {
-            "description": "Ancient and majestic draconic beings wielding elemental might.",
+            "description": "Territorial and mighty creatures, each defined by the realm or element they embody.",
             "names": [
-                "Wyrm",
                 "Drake",
-                "Serpent"
+                "Wyrm",
+                "Serpent",
+                "Skybeast",
+                "Broodling"
             ],
             "features": [
                 {
-                    "name": "Dragon's Breath",
-                    "type": "Damage Effect",
-                    "effect": "Unleashes elemental fury, dealing {value} {damage} damage in a {range} cone."
+                    "name": "Draconic Presence",
+                    "effect": "Creatures within short range must succeed a Spirit check or gain the Fear condition until end of turn."
                 }
             ],
             "movementModifier": {
-                "walk": 20
+                "walk": 10,
+                "fly": 15
             },
             "subtypes": {
-                "wyvern": {
-                    "description": "A lighter, winged form of draconic terror.",
+                "viridian bile": {
+                    "description": "Slick, acid-blooded dragons of caves and marshes.",
                     "features": [
                         {
-                            "name": "Piercing Talons",
-                            "type": "Damage Effect",
-                            "effect": "Rips through enemy armor, increasing {damage} damage by {value} and bypassing {value} armor."
+                            "name": "Vile Bite",
+                            "effect": "Bite attack deals [[1d8]] acid damage."
                         }
                     ]
                 },
-                "wyrm": {
-                    "description": "A serpentine, ancient dragon steeped in legend.",
+                "crimson pyre": {
+                    "description": "Proud, fire-born dragons with smoldering scales and searing tempers.",
                     "features": [
                         {
-                            "name": "Ancient Wisdom",
-                            "type": "Passive Effect",
-                            "effect": "Reveals enemy weaknesses, granting +{value} to {check} rolls when analyzing foes."
+                            "name": "Fiery Presence",
+                            "effect": "Deal 1 fire damage to all in reach each turn. On enter/start: 1 fire damage."
                         }
                     ]
                 },
-                "hydra": {
-                    "description": "A multi-headed beast that regenerates quickly.",
+                "glacial shard": {
+                    "description": "Icy dragons of still mountains, cold and calculating.",
                     "features": [
                         {
-                            "name": "Regenerative Heads",
-                            "type": "Healing Effect",
-                            "effect": "Recovers from damage rapidly, regenerating {value} wounds at the start of each turn."
+                            "name": "Winter’s Freeze",
+                            "effect": "Target within reach gains Slowed condition until end of next turn."
+                        }
+                    ]
+                },
+                "cloudburst": {
+                    "description": "Dragons of storm and thunder, revered as living tempests.",
+                    "features": [
+                        {
+                            "name": "Sonic Roar",
+                            "effect": "All in reach must succeed Survival check or gain Deaf condition."
+                        }
+                    ]
+                },
+                "aquarion": {
+                    "description": "Ocean-loving dragons with a tranquil presence and torrential wrath.",
+                    "features": [
+                        {
+                            "name": "Tidal Breath",
+                            "effect": "Target must succeed Strength check or be pushed 10 ft (or -5 ft per success)."
+                        }
+                    ]
+                },
+                "venom cloud": {
+                    "description": "Toxic dragons of decay and manipulation.",
+                    "features": [
+                        {
+                            "name": "Foul Claws",
+                            "effect": "Unarmed attacks deal an additional [[1d4]] toxic damage."
+                        }
+                    ]
+                },
+                "zephyr voltstryke": {
+                    "description": "Lightning-fast dragons with volatile tempers.",
+                    "features": [
+                        {
+                            "name": "Lightning Reflexes",
+                            "effect": "Cannot be locked out of Agility checks. +1 Agility."
+                        }
+                    ]
+                },
+                "solarflare": {
+                    "description": "Radiant golden dragons embodying the sun’s fury.",
+                    "features": [
+                        {
+                            "name": "Solar Powered",
+                            "effect": "Gain +3 spell points until end of next turn."
+                        }
+                    ]
+                },
+                "ashen wisp": {
+                    "description": "Shadow-breathing dragons that guide through wildfire and ruin.",
+                    "features": [
+                        {
+                            "name": "Smoke Veil",
+                            "effect": "Advantage on Stealth, enemies have disadvantage on ranged attacks."
+                        }
+                    ]
+                },
+                "verdant whisper": {
+                    "description": "Plant-bound dragons that act as forest guardians.",
+                    "features": [
+                        {
+                            "name": "Draconic Barkskin",
+                            "effect": "+5 Armor. Speak to plants and animals in riddles."
+                        }
+                    ]
+                },
+                "shadowraith": {
+                    "description": "Eclipse-born dragons that guide the dying.",
+                    "features": [
+                        {
+                            "name": "Deathspeaker",
+                            "effect": "Communicate with uncommanded undead; they follow your will."
+                        }
+                    ]
+                },
+                "radiance": {
+                    "description": "Divine dragons that shimmer with celestial judgment.",
+                    "features": [
+                        {
+                            "name": "Divine Shield",
+                            "effect": "Grant a 1-hit radiant shield for 1 minute."
+                        }
+                    ]
+                },
+                "astraleon": {
+                    "description": "Chaotic dragons that shimmer between thought and form.",
+                    "features": [
+                        {
+                            "name": "Nemuri Shift",
+                            "effect": "Become semi-ethereal; take half damage and impose attack disadvantage."
+                        }
+                    ]
+                },
+                "vozurion": {
+                    "description": "Vozian dragons of wrath and memory.",
+                    "features": [
+                        {
+                            "name": "Nightmare Scream",
+                            "effect": "Force Spirit check or apply Fear. Immune afterward if passed."
+                        }
+                    ]
+                },
+                "thornspike": {
+                    "description": "Barbed dragons driven by instinct and brute aggression.",
+                    "features": [
+                        {
+                            "name": "Spiked Hide",
+                            "effect": "Melee attackers take 2 piercing damage on hit."
+                        }
+                    ]
+                },
+                "auric reaver": {
+                    "description": "Massive, noble dragons of order and battle.",
+                    "features": [
+                        {
+                            "name": "Reaper’s Tail",
+                            "effect": "Off- or Full-action tail attack deals [[1d6]] slashing damage."
+                        }
+                    ]
+                },
+                "crystal wyrm": {
+                    "description": "Ancient gem-bodied dragons tied to balance and patience.",
+                    "features": [
+                        {
+                            "name": "Boulder Bash",
+                            "effect": "+3 Armor; Impact attacks deal +3 damage."
                         }
                     ]
                 }
             }
         },
         "Dreamsea": {
-            "description": "Mystical beings born of dreams and illusions.",
+            "description": "Born from the drifting waves of subconscious thought, Dreamsea creatures manifest illusion, madness, beauty, and horror. From pirate corsairs sailing starlit fog to the abyssal spawn of forgotten nightmares, these beings are unpredictable, unmoored, and unforgettable.",
             "names": [
                 "Phantom",
                 "Mirage",
-                "Specter"
+                "Specter",
+                "Corsair",
+                "Mindspawn",
+                "Dreamborn"
             ],
             "features": [
                 {
                     "name": "Illusory Veil",
-                    "type": "Status Infliction",
-                    "effect": "Confuses foes with reality-distorting energy, causing them to make a {check} or suffer {condition}."
+                    "effect": "Once per turn, force a nearby creature to make a Spirit or Observation check or become Confused until the end of their next turn."
                 }
             ],
             "movementModifier": {
-                "walk": 0
+                "walk": 0,
+                "fly": 10
+            },
+            "subtypes": {
+                "nightmare larva": {
+                    "description": "Primordial spawn from the depths of nightmare. Their shape is inconsistent, pulsing with memories that don’t belong.",
+                    "features": [
+                        {
+                            "name": "Dream Corruption",
+                            "effect": "On hit, target gains a random Corpus condition from fear, sleep, or exhaustion themes."
+                        }
+                    ]
+                },
+                "dream pirate": {
+                    "description": "Corsairs of the astral tides, they sail galleons of woven thought and prey on lucid travelers.",
+                    "features": [
+                        {
+                            "name": "Lucid Ambush",
+                            "effect": "Gain advantage on attacks against targets who failed a Mental or Perception check in the last round."
+                        }
+                    ]
+                },
+                "harlequin shard": {
+                    "description": "Fractured dream spirits that appear as shifting clowns, dancers, or masked figures.",
+                    "features": [
+                        {
+                            "name": "Laughing Curse",
+                            "effect": "On contact, force a Spirit check or be forced to spend next action laughing uncontrollably (Staggered)."
+                        }
+                    ]
+                },
+                "lucid horror": {
+                    "description": "Aberrant beings that formed when someone became aware of their dream too late. Tentacled, reflective, half-familiar.",
+                    "features": [
+                        {
+                            "name": "Echo Strike",
+                            "effect": "When a creature takes an action, the Lucid Horror can mimic it as an off-action once per encounter."
+                        }
+                    ]
+                },
+                "hypnosiren": {
+                    "description": "Wingless, eyeless creatures that sing across dream-waves, luring minds deeper into unconscious traps.",
+                    "features": [
+                        {
+                            "name": "Sleep Song",
+                            "effect": "Force a Spirit check. On failure, target is Drowsy or Staggered until the end of their next turn."
+                        }
+                    ]
+                },
+                "dreamseeker": {
+                    "description": "Collectors of forgotten wishes and regrets, often appearing as masked wanderers or glowing orbs.",
+                    "features": [
+                        {
+                            "name": "Memory Drain",
+                            "effect": "As an action, target forgets a known ally or ability for 1 round (DM chooses effect)."
+                        }
+                    ]
+                }
             }
         },
         "Eclipse": {
@@ -710,21 +986,61 @@
                 }
             }
         },
-        "Mana Wraith": {
-            "description": "Spirits that drain mana, evolving from a Mana Spirit to a Storm with rising power.",
+        "Drain": {
+            "description": "Creatures that feed on magical, spiritual, or life essence from others.",
             "names": [
-                "Mana Spirit",
-                "Wraith",
-                "Storm"
+                "Siphoning",
+                "Leeching",
+                "Draining",
+                "Devouring",
+                "Absorbing"
             ],
             "features": [
                 {
-                    "name": "Mana Drain",
-                    "effect": "Drains magical energy from nearby foes."
+                    "name": "Essence Leech",
+                    "effect": "Heals or empowers when it damages foes (gain half damage dealt as HP or resources)."
                 }
             ],
             "movementModifier": {
                 "walk": 0
+            },
+            "subtypes": {
+                "mana drain": {
+                    "description": "Draws power from magical or spellcasting targets.",
+                    "features": [
+                        {
+                            "name": "Mana Drain",
+                            "effect": "Drains 1 spell point or weakens casting checks by -2 per PL."
+                        }
+                    ]
+                },
+                "life drain": {
+                    "description": "Feeds on the vitality of living beings.",
+                    "features": [
+                        {
+                            "name": "Vital Drain",
+                            "effect": "Deals damage and heals HP equal to half dealt."
+                        }
+                    ]
+                },
+                "spirit drain": {
+                    "description": "Consumes morale, willpower, or inner strength.",
+                    "features": [
+                        {
+                            "name": "Spiritual Drain",
+                            "effect": "Applies Fear or lowers Spirit-based checks each round."
+                        }
+                    ]
+                },
+                "energy drain": {
+                    "description": "Feeds on raw energy from magical, mechanical, or elemental sources.",
+                    "features": [
+                        {
+                            "name": "Energy Absorption",
+                            "effect": "Gains temporary armor or damage boost when hit by energy attacks."
+                        }
+                    ]
+                }
             }
         },
         "Mimic": {
@@ -818,70 +1134,624 @@
             }
         },
         "Mutant": {
-            "description": "Creatures altered by magic or environment, unpredictable and evolving.",
+            "description": "Creatures warped by unstable forces—magic, radiation, forbidden knowledge. Unpredictable, often grotesque.",
             "names": [
                 "Aberration",
                 "Chimera",
-                "Mutant"
+                "Mutant",
+                "Twisted",
+                "Malformed"
             ],
             "features": [
                 {
                     "name": "Adaptive Mutation",
-                    "effect": "Changes abilities mid-combat."
-                }
-            ],
-            "movementModifier": {
-                "walk": 0
-            }
-        },
-        "Nature": {
-            "description": "Wild and untamed beings representing the raw force of nature.",
-            "names": [
-                "Beast",
-                "Wildling",
-                "Forest Spirit"
-            ],
-            "features": [
-                {
-                    "name": "Nature's Fury",
-                    "effect": "Unleashes elemental wrath on foes."
+                    "effect": "Once per combat, randomly replace one of its features with a new one from another monster type."
                 }
             ],
             "movementModifier": {
                 "walk": 5
+            },
+            "subtypes": {
+                "fleshshaper": {
+                    "description": "Twisted flesh reformers with unstable limbs.",
+                    "features": [
+                        {
+                            "name": "Lashing Growths",
+                            "effect": "Gain a random reach-based unarmed attack each round (+5 ft range, [[1d6]] damage)."
+                        }
+                    ]
+                },
+                "mindspike": {
+                    "description": "Psychically unstable mutants that radiate pain and thought.",
+                    "features": [
+                        {
+                            "name": "Mental Howl",
+                            "effect": "Force all creatures within short range to make a Spirit check or take 1d4 psychic damage and Disoriented condition."
+                        }
+                    ]
+                },
+                "warpborn": {
+                    "description": "Creatures blink in and out of reality or spatial geometry.",
+                    "features": [
+                        {
+                            "name": "Phase Step",
+                            "effect": "Once per round, teleport up to 10 ft before or after an attack."
+                        }
+                    ]
+                },
+                "toxin host": {
+                    "description": "Laced with unstable toxins that seep from skin, breath, or claws.",
+                    "features": [
+                        {
+                            "name": "Toxic Sweat",
+                            "effect": "Creatures in melee take [[1d4]] toxic damage at the start of their turn if they remain in contact."
+                        }
+                    ]
+                },
+                "chimera strain": {
+                    "description": "Multi-animal hybrids, grafted forms built for pure aggression.",
+                    "features": [
+                        {
+                            "name": "Hybrid Strike",
+                            "effect": "Can make two attacks of different types each turn (bite + claw, tail + slam, etc.)."
+                        }
+                    ]
+                },
+                "arcane-warped": {
+                    "description": "Spell-mutated beings that flicker with wild magic.",
+                    "features": [
+                        {
+                            "name": "Unstable Pulse",
+                            "effect": "At the start of each round, roll [[1d6]] to determine a random elemental aura (fire, cold, lightning, etc.) that deals [[1d4]] damage to nearby enemies."
+                        }
+                    ]
+                },
+                "bonecrown": {
+                    "description": "Mutants with exposed skeletal growth and armor.",
+                    "features": [
+                        {
+                            "name": "Spinal Plating",
+                            "effect": "+3 Armor. Melee attackers take 1 piercing damage when they strike you."
+                        }
+                    ]
+                }
+            }
+        },
+        "Beast": {
+            "description": "Mammals, reptiles, and amphibians driven by instinct or territorial nature.",
+            "names": [
+                "Feral",
+                "Wild",
+                "Stalking",
+                "Alpha",
+                "Territorial"
+            ],
+            "features": [
+                {
+                    "name": "Savage Pounce",
+                    "effect": "On a successful hit after moving 10ft, the target is knocked prone."
+                },
+                {
+                    "name": "Territorial Roar",
+                    "effect": "Forces enemies within 10ft to make a Fear check or lose their next reaction."
+                }
+            ],
+            "movementModifier": {
+                "walk": 10
+            },
+            "subtypes": {
+                "predator": {
+                    "description": "Stalks prey with cunning and patience.",
+                    "features": [
+                        {
+                            "name": "Kill Zone",
+                            "effect": "Gains advantage on attacks against isolated targets."
+                        }
+                    ]
+                },
+                "pack hunter": {
+                    "description": "Coordinates attacks with allies.",
+                    "features": [
+                        {
+                            "name": "Pack Tactics",
+                            "effect": "Gain +2 to hit if an ally is adjacent to the target."
+                        }
+                    ]
+                },
+                "giant": {
+                    "description": "An oversized version of its species.",
+                    "features": [
+                        {
+                            "name": "Massive Frame",
+                            "effect": "Ignores difficult terrain and deals +5 damage on all melee attacks."
+                        }
+                    ]
+                },
+                "dire": {
+                    "description": "Unusually savage and twisted by the wild.",
+                    "features": [
+                        {
+                            "name": "Blood Frenzy",
+                            "effect": "Gains an extra attack when under half HP."
+                        }
+                    ]
+                },
+                "tamed": {
+                    "description": "Domesticated or trained, though still deadly.",
+                    "features": [
+                        {
+                            "name": "Obedient Strike",
+                            "effect": "Acts immediately after its controller."
+                        }
+                    ]
+                },
+                "alpha": {
+                    "description": "Leader of its kind, asserts dominance.",
+                    "features": [
+                        {
+                            "name": "Dominating Aura",
+                            "effect": "Nearby beasts deal +2 damage while within 20ft."
+                        }
+                    ]
+                }
+            }
+        },
+        "Insect": {
+            "description": "Hive-minded, carapaced, and relentless — from crawling swarms to armored titans.",
+            "names": [
+                "Chittering",
+                "Carapaced",
+                "Hiveborn",
+                "Swarming",
+                "Clacking"
+            ],
+            "features": [
+                {
+                    "name": "Exoskeletal Plating",
+                    "effect": "Reduces all incoming damage by 2 per PL."
+                },
+                {
+                    "name": "Insectile Vision",
+                    "effect": "Cannot be blinded and ignores visual illusions."
+                }
+            ],
+            "movementModifier": {
+                "walk": 5
+            },
+            "subtypes": {
+                "swarm": {
+                    "description": "Made of many tiny creatures acting as one.",
+                    "features": [
+                        {
+                            "name": "Mass Body",
+                            "effect": "Immune to single-target effects; weak to area attacks."
+                        }
+                    ]
+                },
+                "hive queen": {
+                    "description": "Spawns and commands others.",
+                    "features": [
+                        {
+                            "name": "Brood Pulse",
+                            "effect": "Summons 1d4 swarmlings each round."
+                        }
+                    ]
+                },
+                "burrower": {
+                    "description": "Travels underground to ambush prey.",
+                    "features": [
+                        {
+                            "name": "Tunnel Ambush",
+                            "effect": "May emerge under a target to deal surprise damage."
+                        }
+                    ]
+                },
+                "camouflaged": {
+                    "description": "Blends into terrain like bark, rock, or sand.",
+                    "features": [
+                        {
+                            "name": "Natural Camouflage",
+                            "effect": "Invisible while not moving in natural terrain."
+                        }
+                    ]
+                },
+                "venomous": {
+                    "description": "Injects toxins to paralyze or weaken.",
+                    "features": [
+                        {
+                            "name": "Toxin Bite",
+                            "effect": "On hit, target must roll or gain a random condition (Weakened, Slowed, Confused)."
+                        }
+                    ]
+                },
+                "flying": {
+                    "description": "Takes to the air with buzzing wings.",
+                    "features": [
+                        {
+                            "name": "Aerial Agility",
+                            "effect": "Disadvantage to melee attacks against this creature while flying."
+                        }
+                    ]
+                }
+            }
+        },
+        "Plant": {
+            "description": "Ambulatory flora, animated vines, sentient roots — patient and predatory.",
+            "names": [
+                "Creeping",
+                "Rooted",
+                "Lashing",
+                "Blooming",
+                "Overgrown"
+            ],
+            "features": [
+                {
+                    "name": "Photosynthetic Shielding",
+                    "effect": "Heals 2 HP per turn while in sunlight or water-rich areas."
+                },
+                {
+                    "name": "Rootgrasp",
+                    "effect": "All terrain within 10ft becomes difficult terrain for non-flying creatures."
+                }
+            ],
+            "movementModifier": {
+                "walk": -5
+            },
+            "subtypes": {
+                "ent": {
+                    "description": "Massive, tree-like guardian of forests.",
+                    "features": [
+                        {
+                            "name": "Branch Slam",
+                            "effect": "Deals impact damage in a 10ft cone in front of it."
+                        }
+                    ]
+                },
+                "creeper": {
+                    "description": "Sprawling vine networks that constrict prey.",
+                    "features": [
+                        {
+                            "name": "Constrict",
+                            "effect": "Target must succeed a Strength check or be grappled each turn."
+                        }
+                    ]
+                },
+                "blossom lure": {
+                    "description": "Radiates beauty or scent to deceive.",
+                    "features": [
+                        {
+                            "name": "Pollen Trap",
+                            "effect": "Creatures within 10ft must roll or be charmed for 1 round."
+                        }
+                    ]
+                },
+                "rotting bloom": {
+                    "description": "Carries decay or fungal infection.",
+                    "features": [
+                        {
+                            "name": "Spore Cloud",
+                            "effect": "Releases a 10ft cloud that causes nausea or blindness."
+                        }
+                    ]
+                },
+                "fungal growth": {
+                    "description": "Spore-spreading and reanimating decay.",
+                    "features": [
+                        {
+                            "name": "Fungal Rebirth",
+                            "effect": "Killed creatures rise as mushroom zombies for 1 turn."
+                        }
+                    ]
+                },
+                "thorn wall": {
+                    "description": "Defensive and immobile but heavily barbed.",
+                    "features": [
+                        {
+                            "name": "Reactive Thorns",
+                            "effect": "Deals piercing damage to melee attackers."
+                        }
+                    ]
+                }
+            }
+        },
+        "Aquatic": {
+            "description": "Creatures of the rivers, lakes, and sea — sleek, alien, or abyssal.",
+            "names": [
+                "Scaled",
+                "Tideborn",
+                "Deeplurker",
+                "Slippery",
+                "Amphibious"
+            ],
+            "features": [
+                {
+                    "name": "Aquatic Adaptation",
+                    "effect": "Unhindered in water, can breathe both air and water."
+                },
+                {
+                    "name": "Jet Movement",
+                    "effect": "Can move 30ft as a reaction once per round while submerged."
+                }
+            ],
+            "movementModifier": {
+                "swim": 15
+            },
+            "subtypes": {
+                "tidecaller": {
+                    "description": "Harnesses water itself as a weapon.",
+                    "features": [
+                        {
+                            "name": "Wave Crash",
+                            "effect": "Deals force damage in a 15ft cone and pushes targets back."
+                        }
+                    ]
+                },
+                "deep one": {
+                    "description": "Twisted being from the ocean's deepest trenches.",
+                    "features": [
+                        {
+                            "name": "Crushing Pressure",
+                            "effect": "Deals extra damage to enemies not adapted to deep water."
+                        }
+                    ]
+                },
+                "coral beast": {
+                    "description": "Covered in razor coral or hardened barnacles.",
+                    "features": [
+                        {
+                            "name": "Shard Armor",
+                            "effect": "Attacks against it deal 2 piercing damage to the attacker."
+                        }
+                    ]
+                },
+                "siren": {
+                    "description": "Uses voice or illusion to lure prey.",
+                    "features": [
+                        {
+                            "name": "Luring Song",
+                            "effect": "Forces a Spirit check or causes the target to approach."
+                        }
+                    ]
+                },
+                "leviathan": {
+                    "description": "A massive and ancient sea predator.",
+                    "features": [
+                        {
+                            "name": "Tidal Devour",
+                            "effect": "Deals massive area damage, ignoring armor if submerged."
+                        }
+                    ]
+                },
+                "tide crawler": {
+                    "description": "Fast and agile in water or along rocky shores.",
+                    "features": [
+                        {
+                            "name": "Skittering Dash",
+                            "effect": "Can move across vertical surfaces while wet."
+                        }
+                    ]
+                }
             }
         },
         "Ordealis": {
-            "description": "Mysterious beings from a forgotten realm, unpredictable and enigmatic.",
+            "description": "Demons forged across the infernal layers of the Ordealis, each shaped by unique trials. From dismembered remnants to ascendant horrors of philosophy and pain.",
             "names": [
-                "Oracle",
-                "Mystic",
-                "Seer"
+                "Lesser",
+                "Twisted",
+                "Broken",
+                "Infernal",
+                "Ascended"
             ],
             "features": [
                 {
-                    "name": "Prophetic Insight",
-                    "effect": "Foretells enemy moves."
-                }
-            ],
-            "movementModifier": {
-                "walk": 0
-            }
-        },
-        "Shifter": {
-            "description": "Chameleons of both nature and magic, able to transform at will.",
-            "names": [
-                "Formwalker",
-                "Shifter"
-            ],
-            "features": [
+                    "name": "Demonic Resilience",
+                    "effect": "Resists fire, necrotic, and cognition-based effects."
+                },
                 {
-                    "name": "Transform",
-                    "effect": "Adopts various forms to suit combat."
+                    "name": "Hell Echo",
+                    "effect": "Once per combat, mimic a recently used ability from another creature."
                 }
             ],
             "movementModifier": {
                 "walk": 5
+            },
+            "subtypes": {
+                "lesser demon": {
+                    "description": "Detached limbs or chunks of demons still animated with hatred.",
+                    "features": [
+                        {
+                            "name": "Severed Hunger",
+                            "effect": "Claws, jaws, or limbs scramble toward living creatures and cling. If latched, the target has -2 to checks until removed."
+                        },
+                        {
+                            "name": "Residual Will",
+                            "effect": "Despite lacking heads, these parts still act with purpose. Immune to mind-affecting effects."
+                        }
+                    ]
+                },
+                "desolate": {
+                    "description": "Silent demons of cracked stone, shaped in the Fields of Desolation.",
+                    "features": [
+                        {
+                            "name": "Stone Endure",
+                            "effect": "Can ignore one cognition condition per rest with a successful Survival check."
+                        }
+                    ]
+                },
+                "rustfiend": {
+                    "description": "Demons of labor and utility, born in the Iron Dominion.",
+                    "features": [
+                        {
+                            "name": "Iron Embrace",
+                            "effect": "Once per rest, gain armor equal to Strength for 1 minute."
+                        }
+                    ]
+                },
+                "soulshade": {
+                    "description": "Whispering ghosts from the fractured Clockwork Abyss.",
+                    "features": [
+                        {
+                            "name": "Spirit Channel",
+                            "effect": "Once per rest, gain advantage on a Mental check via a lingering spirit."
+                        }
+                    ]
+                },
+                "inkshadow": {
+                    "description": "Memory-drunk archivists from the Library of Demons.",
+                    "features": [
+                        {
+                            "name": "Tomebound Recall",
+                            "effect": "Once per rest, recall secret knowledge about a target or environment."
+                        }
+                    ]
+                },
+                "echo horn": {
+                    "description": "Sonic devourers from the Discordant Symphony.",
+                    "features": [
+                        {
+                            "name": "Soundburst",
+                            "effect": "Force a nearby creature to make a Survival check or become Confused."
+                        }
+                    ]
+                },
+                "icereaver": {
+                    "description": "Frozen sentinels from the Silent Void.",
+                    "features": [
+                        {
+                            "name": "Frost Touch",
+                            "effect": "Inflict or remove Slowed/Pinned on touch, once per rest."
+                        }
+                    ]
+                },
+                "mistfire": {
+                    "description": "Unstable demons from the River of Forgotten Souls.",
+                    "features": [
+                        {
+                            "name": "Mistform",
+                            "effect": "Become intangible or invisible until end of next turn, once per rest."
+                        }
+                    ]
+                },
+                "warshade": {
+                    "description": "Blood-tempered warriors from the Fields of Torment.",
+                    "features": [
+                        {
+                            "name": "War Fury",
+                            "effect": "Gain an additional melee attack at disadvantage once per turn."
+                        }
+                    ]
+                },
+                "moraltus": {
+                    "description": "Order-driven enforcers from the Temple of Asmodeus.",
+                    "features": [
+                        {
+                            "name": "Serene Command",
+                            "effect": "As a half-action, remove a cognition condition from an ally."
+                        }
+                    ]
+                },
+                "vozian": {
+                    "description": "Twisted mortals tainted by VoZo’s fall.",
+                    "features": [
+                        {
+                            "name": "Skin of Hate",
+                            "effect": "Once per rest, reflect half the damage or main effect of a spell on a Luck check."
+                        }
+                    ]
+                },
+                "abyssal": {
+                    "description": "Massive, galaxy-eyed demons of consuming void.",
+                    "features": [
+                        {
+                            "name": "Lost in the Abyss",
+                            "effect": "While grappling, force a soul check; on failure the target is marked or consumed by the abyss."
+                        }
+                    ]
+                }
+            }
+        },
+        "Shifter": {
+            "description": "Chameleons of nature, flesh, or parasitic origin — these beings shift form or blend with others to survive, deceive, or dominate.",
+            "names": [
+                "Formwalker",
+                "Shifter",
+                "Mimic",
+                "Symbiote",
+                "Echobeast"
+            ],
+            "features": [
+                {
+                    "name": "Morphic Form",
+                    "effect": "As a half-action, change body shape or disguise as another creature type. Gain +2 to Deception or Stealth for one round after shifting."
+                }
+            ],
+            "movementModifier": {
+                "walk": 5
+            },
+            "subtypes": {
+                "gloomspawn": {
+                    "description": "Parasitic symbiotes that reshape hosts with living goo.",
+                    "features": [
+                        {
+                            "name": "Goop Shifter",
+                            "effect": "As a half-action, create a melee weapon of your choice. It dissolves after impact if thrown or dropped."
+                        }
+                    ]
+                },
+                "devourer": {
+                    "description": "Aggressive symbiotes that consume control of the host.",
+                    "features": [
+                        {
+                            "name": "Predatory Control",
+                            "effect": "Gain +1 to melee attack rolls and healing ability (6 HP or remove Corpus condition) once per day."
+                        }
+                    ]
+                },
+                "eternal worm": {
+                    "description": "Ancient memory-bonded symbiotes offering knowledge and latent magic.",
+                    "features": [
+                        {
+                            "name": "Soul Bond",
+                            "effect": "Gain one starting feature from any class, path, or talent. Chosen once and locked in."
+                        }
+                    ]
+                },
+                "passenger": {
+                    "description": "Secretive infiltrators that remain undetected while influencing hosts.",
+                    "features": [
+                        {
+                            "name": "Cloak Within",
+                            "effect": "As an action, the host becomes Invisible until their next aggressive action or end of turn."
+                        }
+                    ]
+                },
+                "mimic-meld": {
+                    "description": "Shifters that copy appearance and mannerisms of a specific target.",
+                    "features": [
+                        {
+                            "name": "Mirror Flesh",
+                            "effect": "Can take the physical form and voice of any Small or Medium creature they've observed for 1 minute."
+                        }
+                    ]
+                },
+                "wildform": {
+                    "description": "Primal shifters that adapt beast traits in combat.",
+                    "features": [
+                        {
+                            "name": "Instinctive Mutation",
+                            "effect": "Choose each round: +10 speed, climb speed, swim speed, or natural weapon attack [[1d6]]."
+                        }
+                    ]
+                },
+                "void echo": {
+                    "description": "Otherworldly shifters that rewrite biology mid-fight.",
+                    "features": [
+                        {
+                            "name": "Reactive Morph",
+                            "effect": "Once per round when taking damage, change one resistance or add a temporary limb/weapon until end of next turn."
+                        }
+                    ]
+                }
             }
         }
     },
@@ -1197,11 +2067,11 @@
             "features": [
                 {
                     "name": "Thick Hide",
-                    "effect": "Reduces damage from physical attacks."
+                    "effect": "Increase armor by 5 times PL"
                 },
                 {
                     "name": "Enhanced Reflexes",
-                    "effect": "Dodges attacks more easily."
+                    "effect": "Attacks against this creature have -5 to hit."
                 },
                 {
                     "name": "Bulky",
@@ -1219,6 +2089,21 @@
             "movementModifier": {
                 "walk": 5
             }
+        },
+        "Weak": {
+            "description": " a weak creature, seems frail and barely able to stand",
+            "names": [
+                "frail",
+                "weak",
+                "feeble",
+                "fragile"
+            ],
+            "features": [
+                {
+                    "name": "Weak",
+                    "effect": "Start with half normal HP, checks at -1 per PL"
+                }
+            ]
         },
         "Supernatural": {
             "description": "Otherworldly or mystical alterations to a creature.",
@@ -1328,6 +2213,53 @@
                 {
                     "name": "Obedient",
                     "effect": "Follows commands without question."
+                }
+            ],
+            "movementModifier": {
+                "walk": 0
+            }
+        },
+        "Quick": {
+            "description": "Hyper-fast or jittery creatures that interrupt turn flow.",
+            "names": [
+                "Quickened",
+                "Hasty",
+                "Twitching",
+                "Hyperactive",
+                "Nimble",
+                "Sparked"
+            ],
+            "features": [
+                {
+                    "name": "Interruptive Assault",
+                    "effect": "May attack after each player turn (once per round per PL)."
+                },
+                {
+                    "name": "Accelerated Motion",
+                    "effect": "Takes an extra movement action on its turn."
+                }
+            ],
+            "movementModifier": {
+                "walk": 10
+            }
+        },
+        "Immune": {
+            "description": "Possesses complete immunity to a specific damage type.",
+            "names": [
+                "Immune",
+                "Nullbound",
+                "Impervious",
+                "Sealed",
+                "Hardened"
+            ],
+            "features": [
+                {
+                    "name": "Damage Nullification",
+                    "effect": "Immune to one damage type (narrator chooses or rolls)."
+                },
+                {
+                    "name": "Selective Weakness",
+                    "effect": "Optional: Takes double damage from another specified type."
                 }
             ],
             "movementModifier": {

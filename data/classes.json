@@ -5,29 +5,8 @@
       "description": "A resilient frontliner who protects allies by absorbing damage.",
       "features": [
         {
-          "name": "Walking Fortress",
-          "description": "Gain +10 Wounds, suffer no penalties from wearing armor, and carry 3 hefty items before becoming pinned."
-        },
-        {
-          "name": "Champion Points",
-          "description": "Start with 4 Champion Points.",
-          "options": [
-            {
-              "name": "Regain",
-              "effect": "1 point on Press On or all points on a long rest."
-            },
-            {
-              "name": "Regain points by killing an enemy, making them yield, or when an enemy fails a morale check."
-            }
-          ]
-        },
-        {
-          "name": "Champion Strike",
-          "description": "Spend 1 Champion Point to add [[1d6]] to your attack check and damage."
-        },
-        {
-          "name": "Champion’s Endurance",
-          "description": "Spend 1 Champion Point to heal +10 or remove 1 condition as an action."
+          "name": "Champion",
+          "description": "Gain +10 Wounds, suffer no penalties from wearing armor, and may carry 3 hefty items before becoming Pinned. You have 4 Champion Points. Regain 1 when you Press On, all on a long rest, when you kill an enemy, or force one to submit. You can use a champion point to either: When you attack gain [[1d6]] to the check and damage, or remove one condition and heal for +5"
         }
       ],
       "equipment": [
@@ -1676,7 +1655,7 @@
             },
             {
               "name": "Bonded Fury",
-              "description": "When your Chroma Dragon takes damage, you can spend a champion point to grant both you and your dragon advantage on your next attack rolls until the end of your next turn."
+              "description": "As an off-action when your Dragon takes damage, give your dragon advantage on attack checks until the end of your next turn."
             },
             {
               "name": "Elder Dragon Form",
@@ -1893,58 +1872,6 @@
             {
               "name": "Soul Bond",
               "description": "As a 1-minute action, you can create a telepathic link with an ally, allowing silent communication over any distance for 1 hour."
-            }
-          ]
-        },
-        {
-          "name": "Steadfast",
-          "description": "Walk the path where honor is your shield and resolve your sword. Embody the unyielding spirit of the warrior, standing resolute against all odds. In the tumult of war, you are the calm within the storm. Your talent as a soldier is not just a skill; it is an intrinsic part of who you are. You read the battlefield as a maestro reads a symphony, each movement a note, each strategy a chord. Your instincts, honed by countless skirmishes, allow you to anticipate enemy tactics, turning their maneuvers to your advantage with uncanny precision.",
-          "features": [
-            {
-              "name": "Awareness Stance",
-              "description": "When you take this stance as a half-action, you can use your off-action to make an opportunity attack at advantage against any creature that enters your melee weapon range."
-            }
-          ],
-          "progressionSteps": [
-            {
-              "name": "Steadfast Resolve",
-              "description": "While in the Awareness Stance, you are immune to the Fear condition."
-            },
-            {
-              "name": "Battlefield Tactician",
-              "description": "Your tactical acumen allows you to exploit enemy weaknesses. When you use Tactical Assessment on an enemy, you and your allies gain a +2 to their attack checks against that enemy while Tactical Assessment is active."
-            },
-            {
-              "name": "Silent Storm Approach",
-              "description": "Learn to blend stealth and speed, striking unexpectedly and with deadly efficiency. You can take the Hide action while you Disengage."
-            },
-            {
-              "name": "Defensive Harmony",
-              "description": "When you take the Awareness Stance, gain [[12]] armor. Additionally, you can hold 2 stances at once."
-            },
-            {
-              "name": "Zenith Focus",
-              "description": "Achieve a heightened state of focus. When you take the Awareness Stance, you can hear invisible creatures and treat them as not being invisible."
-            },
-            {
-              "name": "Awareness II",
-              "description": "When you take the Awareness Stance, give enemies Disadvantage to hit you."
-            },
-            {
-              "name": "Indomitable Spirit",
-              "description": "When you take the Awareness Stance, you are immune to Corpus Conditions until the start of your next turn."
-            },
-            {
-              "name": "Wind Cutter Technique",
-              "description": "You can take the Awareness Stance as an off-action. After taking the Awareness Stance, you can attack twice on your next turn when you take the Attack action."
-            },
-            {
-              "name": "Step of the Wind",
-              "description": "You are wind incarnate. You can Dash as a half-action."
-            },
-            {
-              "name": "Steadfast Gambit",
-              "description": "Unleash the full extent of your training and inner power in a single, decisive action. As an action, you become a blur to all creatures, making [[1d10+1]] attacks on any creature within medium range or on a single creature. Upon using this ability, you take the Exhausted, Stunned, and Confused conditions for [[1d4]] rounds."
             }
           ]
         },
@@ -4683,8 +4610,12 @@
       "talents": [
         {
           "name": "Galeforce",
-          "description": "You harness the essence of motion and speed, casting spells that enhance swiftness or slow down foes. Your Agility Check determines your spellcasting check. You have Spell Points equal to your Agility Check. Regain 1 Spell Point on a Press On, all on a long rest. Additionally, gain 1 Spell Point by successfully avoiding an attack or trap using your agility.",
+          "description": "You harness the essence of motion and speed, casting spells that enhance swiftness or slow down foes.",
           "features": [
+            {
+              "name": "Spellcasting Check",
+              "description": "Your Agility Check determines your spellcasting check. You have Spell Points equal to your Agility Check. Regain 1 Spell Point on a Press On, all on a long rest. Additionally, gain 1 Spell Point by successfully avoiding an attack or trap using your agility."
+            },
             {
               "name": "Gale Step",
               "description": "As an action, teleport short range with a burst of wind. Where you choose to arrive, all creatures within 5ft must make a Strength check or be knocked prone."
@@ -4735,8 +4666,12 @@
         },
         {
           "name": "Artifex",
-          "description": "Your magic is in creation and transformation, casting spells that fabricate objects or alter materials. Your Crafting Check is your spellcasting check. You have Spell Points equal to your Crafting Check. Regain 1 spell point on a Press On, all on a long rest. Additionally, gain 1 spell point by crafting an item or successfully repairing something significant.",
+          "description": "Your magic is in creation and transformation, casting spells that fabricate objects or alter materials. ",
           "features": [
+            {
+              "name": "Spellcasting Check",
+              "description": "Your Crafting Check is your spellcasting check. You have Spell Points equal to your Crafting Check. Regain 1 spell point on a Press On, all on a long rest. Additionally, gain 1 spell point by crafting an item or successfully repairing something significant."
+            },
             {
               "name": "Mage Artisan",
               "description": "Once per long rest, you can craft a temporary magical item without the need for materials. This magical item is imbued with a spell you craft with your words of power that has a feature you design. This item lasts for 24 hours and is a standard weapon unless otherwise specified."
@@ -4787,8 +4722,12 @@
         },
         {
           "name": "Heartflow",
-          "description": "Your spells sway minds and hearts, casting enchantments that manipulate emotions and convictions. Your Influence Check serves as your spellcasting check. You have Spell Points equal to your Influence Check. Regain 1 Spell Point on a Press On, all on a long rest. Gain an additional Spell Point by convincing someone to change their mind or by successfully navigating a difficult social encounter in your favor.",
+          "description": "Your spells sway minds and hearts, casting enchantments that manipulate emotions and convictions.",
           "features": [
+            {
+              "name": "Spellcasting Check",
+              "description": "Your Influence Check serves as your spellcasting check. You have Spell Points equal to your Influence Check. Regain 1 Spell Point on a Press On, all on a long rest. Gain an additional Spell Point by convincing someone to change their mind or by successfully navigating a difficult social encounter in your favor."
+            },
             {
               "name": "Heartstring Tug",
               "description": "When making an Influence Check, you can spend Spell Points to increase the check by +1 per point spent. Additionally, when you get a success+ on an Influence check, a single target takes the Charmed condition."
@@ -4835,60 +4774,12 @@
         },
         {
           "name": "Mindrift",
-          "description": "Your magic is the pursuit of knowledge and arcane secrets, casting spells that unlock mysteries or enhance understanding. Your Intellect Check is your spellcasting check. You have Spell Points equal to your Intellect Check. Regain 1 Spell Point on a Press On, all on a long rest. Gain an additional Spell Point by acquiring new knowledge or solving a complex puzzle or problem.",
+          "description": "Your magic is the pursuit of knowledge and arcane secrets, casting spells that unlock mysteries or enhance understanding. ",
           "features": [
             {
-              "name": "Mana Insight",
-              "description": "As an action, spend 1 Spell Point to reveal magical traps, enchantments, or the presence of magical creatures within a short range for the next minute. This insight allows you to understand the basic properties of the revealed magic, such as its effect, strength, and potential origin."
-            }
-          ],
-          "progressionSteps": [
-            {
-              "name": "Arcane Efficiency",
-              "description": "With countless hours spent in libraries and arcane laboratories, you've learned some tricks about casting spells with less energy. Your spells cost 2 less to cast, allowing you to weave magic with effortless grace."
+              "name": "Spellcasting Check",
+              "description": "Your Intellect Check is your spellcasting check. You have Spell Points equal to your Intellect Check. Regain 1 Spell Point on a Press On, all on a long rest. Gain an additional Spell Point by acquiring new knowledge or solving a complex puzzle or problem."
             },
-            {
-              "name": "Tracking Spell",
-              "description": "By spending an additional 2 Spell Points when you hit a creature with a spell, you can leave a 'trace' on any magical effect or creature you detect. For the next 24 hours, you can sense the direction and general distance of this effect or creature if it is within 5 miles. This trace cannot be detected and allows you to track elusive magical entities or artifacts."
-            },
-            {
-              "name": "Soul Exchange",
-              "description": "After navigating the ethereal conduits of life and magic, you've discovered a dangerous ritual to exchange your life force for magical energy. You can sacrifice 2 wounds to regain 1 Spell Point, a testament to your dedication or desperation."
-            },
-            {
-              "name": "Knowledge Recovery",
-              "description": "Once per day as an action, read an entire book and regain [[2d6]] Spell Points. It must be a new book each time."
-            },
-            {
-              "name": "Memory Smith",
-              "description": "As an action spending 3 Spell Points, you and up to 3 other creatures dive into the memory of a creature that you can touch if they fail an Intellect Check. It feels like 1 hour while in the memory but only takes until the end of your next turn."
-            },
-            {
-              "name": "Word Wrangler",
-              "description": "You can cast two spells at once. It must be the same target."
-            },
-            {
-              "name": "Reactive Spellweaver",
-              "description": "You can cast single Spell Point spells or less as an off-action."
-            },
-            {
-              "name": "Mana Bulwark",
-              "description": "Your mastery of magical protection creates additional armor of +10 Armor for yourself. If your shield is depleted, you may recharge it as an action for 2 Spell Points. Alternatively, as an action spending 1 Spell Point, you can extend a portion of this protective magic to nearby allies, granting Armor of +3 per Spell Point to allies within short range until the end of your next turn."
-            },
-            {
-              "name": "Stealth Caster",
-              "description": "When you cast spells, there is no sign that you are casting them. Your magic becomes an unseen tool, its presence known only by its effects."
-            },
-            {
-              "name": "Arcane Sanctum",
-              "description": "As an action, spend 1 Spell Point to create a Sanctuary of Reflection, a mental library filled with mirrors that reflect moments of knowledge from your life. Creatures resting in the Mystic Archive gain advantage on their next Intellect-based check and can ask one question, which the Archive answers based on your accumulated knowledge."
-            }
-          ]
-        },
-        {
-          "name": "Mindrift",
-          "description": "Your magic is the pursuit of knowledge and arcane secrets, casting spells that unlock mysteries or enhance understanding. Your Intellect Check is your spellcasting check. You have Spell Points equal to your Intellect Check. Regain 1 Spell Point on a Press On, all on a long rest. Gain an additional Spell Point by acquiring new knowledge or solving a complex puzzle or problem.",
-          "features": [
             {
               "name": "Mana Insight",
               "description": "As an action, spend 1 Spell Point to reveal magical traps, enchantments, or the presence of magical creatures within a short range for the next minute. This insight allows you to understand the basic properties of the revealed magic, such as its effect, strength, and potential origin."
@@ -4939,8 +4830,12 @@
         },
         {
           "name": "Prophecy",
-          "description": "You bend fortune to your will, casting spells that manipulate probabilities and chance. Your magic is unpredictable, your Luck Check is your check for spellcasting. You have Spell Points equal to your Luck Check. Regain 1 Spell Point on a Press On, all on a long rest. Gain an additional Spell Point each time you experience a stroke of good luck or a favorable turn of events deemed significant by the narrator.",
+          "description": "You bend fortune to your will, casting spells that manipulate probabilities and chance. ",
           "features": [
+            {
+              "name": "Spellcasting Check",
+              "description": "Your magic is unpredictable, your Luck Check is your check for spellcasting. You have Spell Points equal to your Luck Check. Regain 1 Spell Point on a Press On, all on a long rest. Gain an additional Spell Point each time you experience a stroke of good luck or a favorable turn of events deemed significant by the narrator."
+            },
             {
               "name": "Prophecy Pool",
               "description": "You have 3 additional Spell Points that recover 1 on a Press On and 1 on a long rest. Expend 3 Spell Points to gain a Prophecy Point."
@@ -4991,8 +4886,12 @@
         },
         {
           "name": "Visionary",
-          "description": "Your magic is intuitive, born from a deep understanding of your surroundings. You cast spells by observing and reacting to the environment, using your Observation Check. Spell points equal your Observation Check. Regain 1 spell point on a Press On, all on a long rest. Gain an additional spell point each time you spot something hidden or invisible, notice a secret, or spot a danger before others that keeps everyone safe.",
+          "description": "Your magic is intuitive, born from a deep understanding of your surroundings.",
           "features": [
+            {
+              "name": "Spellcasting Check",
+              "description": "You cast spells by observing and reacting to the environment, using your Observation Check. Spell points equal your Observation Check. Regain 1 spell point on a Press On, all on a long rest. Gain an additional spell point each time you spot something hidden or invisible, notice a secret, or spot a danger before others that keeps everyone safe."
+            },
             {
               "name": "Insight",
               "description": "Your acute observations allow you to channel magical energy with precision, infusing your spells with the essence of your surroundings. You have a resource of 3 Insight Points. You can expend a point to gain advantage on a spell, uncover truths, find hidden objects, remove the invisible or intangible condition. Regain 1 point on a Press On, all on a long rest."
@@ -5043,8 +4942,12 @@
         },
         {
           "name": "Soulstream",
-          "description": "Your spells connect to the ethereal and the divine, manipulating the fabric of reality itself. Your Spirit Check is your spellcasting check. You have Spell points equal to your Spirit Check. Regain 1 spell point on a Press On, all on a long rest. Additionally, gain 1 spell point by performing a spiritual or religious act that aligns with your beliefs or magic source.",
+          "description": "Your spells connect to the ethereal and the divine, manipulating the fabric of reality itself.",
           "features": [
+            {
+              "name": "Spellcasting Check",
+              "description": "Your Spirit Check is your spellcasting check. You have Spell points equal to your Spirit Check. Regain 1 spell point on a Press On, all on a long rest. Additionally, gain 1 spell point by performing a spiritual or religious act that aligns with your beliefs or magic source."
+            },
             {
               "name": "Possession",
               "description": "As an action, touch a creature and attempt to possess it with a contested Spirit check. If you succeed, you become intangible and merge with the targeted creature until the end of your next turn. While possessing a creature, you have full physical control, sensory access, communication, and limited memory observation (only surface-level thoughts). You cannot cast your spells, damage the host, or cause damage to host loyalties. If damage comes to the host, they can make the Spirit check again, gaining a bonus equal to the damage taken. If the host regains control, you are pushed from the body, knocked prone within 5ft in a direction of your choice, and take the Confused condition until the end of your next turn."
@@ -5095,8 +4998,12 @@
         },
         {
           "name": "Nightwhisper",
-          "description": "Your magic is subtle and elusive, casting spells that cloak and reveal, hiding allies or exposing enemies. Your Stealth Check is your spellcasting check. You have Spell points equal to your Stealth Check. Regain 1 spell point on a Press On, all on a long rest. Gain an additional spell point each time you successfully move undetected past enemies or eavesdrop on a conversation without being noticed.",
+          "description": "Your magic is subtle and elusive, casting spells that cloak and reveal, hiding allies or exposing enemies.",
           "features": [
+            {
+              "name": "Spellcasting Check",
+              "description": "Your Stealth Check is your spellcasting check. You have Spell points equal to your Stealth Check. Regain 1 spell point on a Press On, all on a long rest. Gain an additional spell point each time you successfully move undetected past enemies or eavesdrop on a conversation without being noticed."
+            },
             {
               "name": "Mirage Cloak",
               "description": "Wrap yourself in an illusion as an action, altering your appearance or becoming invisible until the end of your next turn. You can also change small aspects of your appearance at will, such as eye color, hairstyle, or even the pattern of your clothing, perfect for blending in or standing out."
@@ -5147,8 +5054,12 @@
         },
         {
           "name": "Mightforge",
-          "description": "Your magic embodies raw power and force, casting spells that enhance physical might or crush obstacles. Your Strength Check is your spellcasting check. You have Spell points equal to your Strength Check. Regain 1 spell point on a Press On, all on a long rest. Gain an additional spell point each time you triumph in a feat of strength or win a physical contest.",
+          "description": "Your magic embodies raw power and force, casting spells that enhance physical might or crush obstacles. ",
           "features": [
+            {
+              "name": "Spellcasting Check",
+              "description": "Your Strength Check is your spellcasting check. You have Spell points equal to your Strength Check. Regain 1 spell point on a Press On, all on a long rest. Gain an additional spell point each time you triumph in a feat of strength or win a physical contest."
+            },
             {
               "name": "Armored Mage",
               "description": "You suffer no penalties from wearing armor."
@@ -5199,8 +5110,12 @@
         },
         {
           "name": "Ravager",
-          "description": "Your spells are born of the earth and the instinct to endure, casting spells that protect, nourish, or summon nature's fury. Your Survival Check is your spellcasting check. You have Spell points equal to your Survival Check. Regain 1 spell point on a Press On, all on a long rest. Gain an additional spell point each time you successfully survive from poison or disease, or find food or water in the wilderness.",
+          "description": "Your spells are born of the earth and the instinct to endure, casting spells that protect, nourish, or summon nature's fury. ",
           "features": [
+            {
+              "name": "Spellcasting Check",
+              "description": "Your Survival Check is your spellcasting check. You have Spell points equal to your Survival Check. Regain 1 spell point on a Press On, all on a long rest. Gain an additional spell point each time you successfully survive from poison or disease, or find food or water in the wilderness."
+            },
             {
               "name": "Mana Hunger",
               "description": "Gain a resource of Mana Hunger that starts at 0. When this reaches 10, you enter Mana Overdrive that lasts for 1 minute, setting your Mana Hunger back to 0. While in Mana Overdrive, your spells cost -3 less, but the strain of the spells causes 1 psychic damage per cast. On a long rest, you can reduce your Mana Hunger by [[1d4]]."
