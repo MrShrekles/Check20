@@ -1,0 +1,884 @@
+/* Root Variables */
+:root {
+    --dark: rgb(30, 30, 30);
+    --medium: rgb(50, 50, 50);
+    --theme: rgb(70, 100, 100);
+    --theme-hover: rgb(50, 100, 100);
+    --theme-alt: rgb(50, 75, 75);
+    --theme-dark: rgb(40, 50, 50);
+    --gold: goldenrod;
+    --darkgold: darkgoldenrod;
+    --white: whitesmoke;
+    --cream: #d9b382;
+    --rust: #a45e3b;
+    --hate: rgb(95, 45, 25);
+    --border-radius: 10px;
+    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    --box-hover: 0 2px 8px rgba(0, 0, 0, 0.7);
+    --padding: .5vw;
+}
+
+/* General Styles */
+body {
+    font-family: "Candara", sans-serif;
+    background-color: var(--dark);
+    color: var(--white);
+    margin: 0;
+}
+
+header {
+    background-color: var(--theme);
+    padding: var(--padding);
+}
+
+.main-header {
+    background: linear-gradient(to bottom, #1c1c1c, #000000);
+    color: var(--white);
+    text-align: center;
+    border-bottom: 3px solid var(--gold);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.8);
+    position: relative;
+}
+
+.main-header::before {
+    content: "";
+    position: absolute;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.7), transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.header-title {
+    font-size: 3rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin: 0;
+    letter-spacing: 10px;
+}
+
+.header-subtitle {
+    font-size: 1.5rem;
+    color: #7c531c;
+    margin: 0px 0;
+    text-transform: uppercase;
+    font-family: "Playfair Display", serif;
+}
+
+.header-description {
+    font-size: 1rem;
+    color: var(--white);
+    font-style: italic;
+    line-height: 1.6;
+    margin: 10px 0 0;
+    border-top: 1px solid #444;
+}
+
+.header-title:hover {
+    color: var(--white);
+    text-shadow: 4px 4px 15px var(--gold);
+    transition: 0.3s ease-in-out;
+    cursor: cell;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+}
+
+header nav ul li a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header nav ul li a:hover {
+    color: var(--darkgold);
+}
+
+/* Dropdown Navigation */
+nav {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--theme-dark);
+    border-radius: var(--border-radius);
+    padding: 5px;
+    margin-top: 5px;
+}
+
+/* Navigation Links */
+nav a {
+    text-decoration: none;
+    color: var(--gold);
+    padding: 10px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+nav a:hover {
+    background-color: var(--theme-alt);
+    color: var(--darkgold);
+}
+
+main {
+    border-radius: var(--border-radius);
+    margin: 1rem auto;
+    max-width: 95vw;
+    box-shadow: var(--box-shadow);
+}
+
+footer {
+    text-align: center;
+    padding: var(--padding);
+    background-color: var(--theme-alt);
+    color: black;
+}
+
+/* 🔹 Details (Container for Dropdown) */
+details {
+    margin: 0.5rem 0;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 0;
+    color: var(--white);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: none;
+}
+
+/* 🔹 Summary (Button-Like Header) */
+summary {
+    display: block;
+    background-color: var(--theme);
+    color: var(--white);
+    padding: 12px;
+    text-align: center;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+}
+
+/* 🔹 Summary Hover Effect */
+summary:hover {
+    background-color: var(--theme-hover);
+    box-shadow: var(--box-hover);
+}
+
+/* 🔹 When Open, Change Summary Button Style */
+details[open] summary {
+    background-color: var(--gold);
+    color: var(--dark);
+    box-shadow: var(--box-hover);
+}
+
+/* 🔹 Navigation Dropdown */
+nav {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--theme-dark);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    padding: 5px;
+    margin-top: 0;
+}
+
+/* 🔹 Navigation Links */
+nav a {
+    text-decoration: none;
+    color: var(--gold);
+    padding: 10px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+nav a:hover {
+    background-color: var(--theme-alt);
+    color: var(--darkgold);
+}
+
+
+summary {
+    font-weight: bold;
+    color: var(--gold);
+}
+
+select {
+    background-color: var(--dark);
+    color: var(--gold);
+    width: 100%;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: var(--padding);
+    border: 2px solid var(--theme);
+    font-size: large;
+}
+
+select:focus {
+    border: 2px solid var(--gold);
+}
+
+/* General Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #2a2523;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* Table Header */
+table thead th {
+    background-color: var(--rust);
+    color: var(--white);
+    text-align: left;
+    font-weight: bold;
+    padding: var(--padding);
+    border-bottom: 3px solid var(--dark);
+}
+
+/* Alternating Row Colors */
+table tbody tr:nth-child(odd) {
+    background-color: #3b332f;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #4a403a;
+}
+
+/* Table Rows */
+table tbody tr {
+    border-bottom: 1px solid #5b514a;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover Effect */
+table tbody tr:hover {
+    background-color: #5b4a42;
+    color: var(--white);
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* First Column (Creature Names) - Standout */
+table tbody td:first-child {
+    background-color: var(--hate);
+    color: var(--white);
+    font-weight: bold;
+    text-align: left;
+    padding: var(--padding);
+    text-transform: uppercase;
+}
+
+table td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.header-subtitle {
+    font-size: 1.5rem;
+    color: var(--cream);
+    text-transform: uppercase;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+nav ul li a:hover {
+    color: var(--darkgold);
+    transition: 0.3s ease;
+}
+
+/* Navigation Panel */
+#navigation {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.nav-section {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.nav-section button {
+    background: var(--theme);
+    color: var(--white);
+    padding: 15px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-transform: uppercase;
+}
+
+.nav-section button:hover {
+    background: var(--theme-hover);
+    box-shadow: var(--box-hover);
+    transition: 0.3s ease-in-out;
+}
+
+
+.flex-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--padding);
+    justify-content: flex-start;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--gold);
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--dark);
+    text-shadow: 0px 0px 8px var(--gold);
+}
+
+.nav-button {
+    border: none;
+    background-color: var(--theme-dark);
+    font-size: 16px;
+    cursor: pointer;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-button:hover {
+    background-color: var(--theme-alt);
+    /* Darker green on hover */
+}
+
+/* 🔹 General Flex Container (Main wrapper for flex items) */
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--padding);
+    justify-content: flex-start;
+    background-color: transparent;
+}
+
+/* 🔹 General Flex Item (Default flexible element) */
+.flex-item {
+    flex: 1;
+    min-width: 200px;
+    max-width: 30%;
+    background-color: transparent;
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    color: var(--white);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+/* 🔹 Hover Effect */
+.flex-item:hover {
+    background-color: var(--dark);
+    box-shadow: var(--box-hover);
+    transform: scale(1.05);
+}
+
+/* 🔹 Card Headers (Used inside flex-items) */
+.flex-item h3 {
+    color: var(--gold);
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+/* 🔹 List Styling (Inside Flex Items) */
+.flex-item ol {
+    padding-left: 20px;
+    margin: 0;
+}
+
+.flex-item ol li {
+    font-size: 0.85rem;
+    padding: 3px 0;
+    color: var(--white);
+    border-bottom: 1px solid var(--dark);
+}
+
+.flex-item ol li::marker {
+    color: var(--theme-alt);
+    font-weight: bold;
+}
+
+/* 🔹 Label Formatting (Used inside flex items) */
+.flex-item label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #f0f0f0;
+}
+
+/* 🔹 Checkbox Styling (For forms inside flex-items) */
+.flex-item input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: #6a0dad;
+    transform: scale(1.2);
+}
+
+/* 🔹 Select Dropdown (For choosing options inside flex items) */
+.flex-item select {
+    width: 100%;
+    padding: 10px;
+    background: rgba(60, 60, 60, 0.9);
+    color: #ddd;
+    border: 1px solid #666;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+/* 🔹 Dropdown Hover Effects */
+.flex-item select:hover,
+.flex-item select:focus {
+    background: rgba(80, 80, 80, 1);
+}
+
+
+/* Code highlight for dice rolls */
+code {
+    background-color: var(--dark);
+    color: var(--gold);
+    padding: 2px 5px;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+/* Section General Styling */
+section {
+    margin: 10px;
+    padding: 10px;
+    background-color: var(--theme-alt);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    color: var(--white);
+}
+
+/* Headers */
+h1 {
+    font-size: 200%;
+    color: var(--cream);
+    margin-bottom: 10px;
+    border-bottom: 2px solid var(--cream);
+}
+
+h2,
+h3,
+h4 {
+    color: var(--gold);
+    margin-bottom: 10px;
+}
+
+h4 {
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 5px;
+}
+
+code {
+    background-color: var(--dark);
+    color: var(--gold);
+    padding: 2px 5px;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+em {
+    color: var(--rust);
+    font-size: 110%;
+}
+
+strong {
+    font-weight: bold;
+    color: var(--cream);
+}
+
+button {
+    background-color: var(--theme);
+    color: var(--white);
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover Effect */
+button:hover {
+    background-color: var(--theme-hover);
+    transform: scale(1.1);
+}
+
+/* FEATURES */
+.features {
+    padding: var(--padding);
+    background-color: var(--dark);
+    color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border: 1px solid var(--gold);
+}
+
+.features h4,
+.features h3 {
+    font-size: 1.4rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--gold);
+}
+
+.features ol {
+    list-style-type: decimal;
+    padding-left: 20px;
+}
+
+.features ol li,
+.features ul li {
+    margin-bottom: 5px;
+}
+
+.features ol li strong,
+.features ul li strong {
+    color: var(--gold);
+    font-weight: bold;
+}
+
+/* Sidebar styles */
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: -500px;
+    width: 300px;
+    height: 100%;
+    background: var(--dark);
+    color: var(--white);
+    padding: var(--padding);
+    box-shadow: var(--box-shadow);
+    transition: left 0.3s ease;
+    z-index: 1000;
+    border-radius: var(--border-radius);
+}
+
+#sidebar.open {
+    left: 0;
+}
+
+#toggle-sidebar {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: var(--dark);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    z-index: 1001;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: left 0.3s ease, transform 0.3s ease;
+}
+
+/* Adjust button position when sidebar opens */
+#sidebar.open #toggle-sidebar {
+    transform: translateX(300px);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding);
+}
+
+#roll-history {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid var(--medium);
+    padding: var(--padding);
+    background: var(--dark);
+    border-radius: var(--border-radius);
+}
+
+#clear-history {
+    background: var(--medium);
+    color: var(--white);
+    border: none;
+    padding: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+#clear-history:hover {
+    background: var(--theme-hover);
+    box-shadow: var(--box-hover);
+}
+
+/* Highlight Rolls */
+.roll-max {
+    color: var(--gold);
+    font-weight: bold;
+    text-shadow: 0 0 5px var(--darkgold);
+}
+
+.roll-min {
+    color: red;
+    font-weight: bold;
+    text-shadow: 0 0 5px var(--medium);
+}
+
+.roll-normal {
+    color: var(--white);
+}
+
+/* D20 Check Roller Styles */
+#d20-check-roller {
+    background: var(--dark);
+    color: var(--white);
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 20px;
+}
+
+#d20-check-roller h3 {
+    color: var(--theme);
+}
+
+#d20-check-roller-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding);
+}
+
+#check-history {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid var(--medium);
+    padding: var(--padding);
+    background: var(--medium);
+    border-radius: var(--border-radius);
+}
+
+#roll-d20-check {
+    background: var(--theme);
+    color: var(--white);
+    border: none;
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+}
+
+#roll-d20-check:hover {
+    background: var(--theme-hover);
+    box-shadow: var(--box-hover);
+}
+
+/* Tooltip Container */
+.tooltip {
+    position: relative;
+    cursor: help;
+    color: var(--cream);
+    display: inline-block;
+}
+
+/* Tooltip Text */
+.tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 150%;
+    transform: translateX(-50%);
+    background-color: var(--hate);
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    white-space: normal;
+    max-width: 250px;
+    box-shadow: var(--box-shadow);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    z-index: 9999;
+    word-wrap: normal;
+    width: 200px;
+    pointer-events: none;
+}
+
+.tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+.tooltip::after {
+    transition-delay: 0.3s;
+}
+
+/* Two-Column Layout */
+.two-column {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+/* Column Styling */
+.column {
+    flex: 1 1 48%;
+    min-width: 300px;
+}
+
+/* 🔹 Letter-Like Styling */
+.letter-container {
+    position: relative;
+    background: var(--cream);
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 800px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    font-family: "Garamond", serif;
+    color: var(--dark);
+    text-align: justify;
+    line-height: 1.6;
+    border: 2px solid var(--rust);
+}
+
+/* 🔹 Title (Professor’s Name & Header) */
+.letter-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-align: center;
+    font-family: "Playfair Display", serif;
+    color: var(--rust);
+    margin-bottom: 1rem;
+}
+
+/* 🔹 Italic Styling for Quotes */
+.letter-container p {
+    font-style: italic;
+    font-size: 1.4rem;
+}
+
+/* 🔹 First Paragraph is Slightly Larger */
+.letter-container p:first-of-type {
+    font-size: 2rem;
+}
+
+/* 🔹 Image Breakout (Larger & Overlapping) */
+.img-breakout {
+    display: block;
+    max-width: 140%;
+    height: auto;
+    margin: -2rem auto 1rem -7rem;
+    transform: scaleX(-1);
+    position: relative;
+    z-index: 2;
+}
+
+.img-back {
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+    overflow: visible;
+}
+
+
+
+/* 🔹 Optional: Floating Effect */
+.img-breakout.floating {
+    animation: floatImage 4s ease-in-out infinite alternate;
+}
+
+/* 🔹 Clickable Image (Normal State) */
+.img-zoom {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+    cursor: zoom-in;
+}
+
+/* 🔹 Zoomed-In State */
+.img-zoom.zoomed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+    cursor: zoom-out;
+    transition: transform 0.3s ease-in-out;
+}
+
+a {
+    color: var(--gold);
+}
+
+
+
+/* 🔹 Floating Animation */
+@keyframes floatImage {
+    from {
+        transform: scaleX(-1) translateY(0);
+    }
+
+    to {
+        transform: scaleX(-1) translateY(20px);
+    }
+}
