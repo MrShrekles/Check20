@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Items of Check20</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="scripts/main.js" defer></script>
+</head>
+
+<body>
+    <header class="main-header">
+        <h1 class="header-title">Items</h1>
+        <div class="flex-container">
+
+            <!-- Character Dropdown -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">Character Options</summary>
+                    <nav>
+                        <a href="class.html">Class</a>
+                        <a href="species.html">Species</a>
+                        <a href="tables.html">Tables</a>
+                        <a href="curse.html">Curses & Diseases</a>
+                    </nav>
+                </details>
+            </div>
+
+            <!-- Gear and Items -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">Gear</summary>
+                    <nav>
+                        <a href="armor.html">Armor</a>
+                        <a href="weapons.html">Weapons</a>
+                        <a href="items.html">Items</a>
+                        <a href="crafting.html">Crafting</a>
+                    </nav>
+                </details>
+            </div>
+
+            <!-- How to Play Dropdown -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">How To Play</summary>
+                    <nav>
+                        <a href="charsheet.html">Character Sheet</a>
+                        <a href="reference.html">Reference</a>
+                        <a href="damage.html">Damage & Damage Tables</a>
+                        <a href="spellcasting.html">Spellcasting</a>
+                        <a href="downtime.html">Downtime</a>
+                    </nav>
+                </details>
+            </div>
+
+            <!-- Narrator Dropdown -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">Storyteller's Almanac</summary>
+                    <nav>
+                        <a href="worldbuilding.html">Worldbuilding</a>
+                        <a href="enchanted.html">Enchanted Items & Progression</a>
+                        <a href="vehicles.html">Vehicles & Mounts</a>
+                        <a href="lore.html">Lore</a>
+                    </nav>
+                </details>
+            </div>
+
+            <!-- Marketing Dropdown -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">Marketing</summary>
+                    <nav>
+                        <a href="downloads.html">Downloads</a>
+                        <a href="support.html">Donate/Support</a>
+                    </nav>
+                </details>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="item-list">
+            <h3>Complete Item Catalog</h3>
+            <input type="text" id="search-input" placeholder="Search for an item..." />
+            <table id="item-table">
+                <thead>
+                    <tr>
+                        <th data-sort="category">Category</th>
+                        <th data-sort="name">Name</th>
+                        <th>Description</th>
+                        <th data-sort="cost">Cost</th>
+                        <th>Bulk</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Food & Drink -->
+                    <tr>
+                        <td>Food & Drink</td>
+                        <td>Canned Food</td>
+                        <td>Non-perishable, in a can</td>
+                        <td>$2</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Food & Drink</td>
+                        <td>Bottle of Whiskey</td>
+                        <td>Distilled grain alcohol</td>
+                        <td>$4</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Food & Drink</td>
+                        <td>Loaf of Bread</td>
+                        <td>Freshly baked</td>
+                        <td>$1</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Food & Drink</td>
+                        <td>Fancy Cigars</td>
+                        <td>Tightly-rolled tobacco</td>
+                        <td>$10</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Food & Drink</td>
+                        <td>Dried Fruit Mix</td>
+                        <td>A nutritious blend of various dried fruits</td>
+                        <td>$3</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Food & Drink</td>
+                        <td>Traveler's Tea Kit</td>
+                        <td>Compact set for brewing tea on the go</td>
+                        <td>$7</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Food & Drink</td>
+                        <td>Spiced Nuts</td>
+                        <td>A bag of mixed nuts seasoned with exotic spices</td>
+                        <td>$2</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Food & Drink</td>
+                        <td>Preserved Meats</td>
+                        <td>Salted and dried meats, perfect for long journeys</td>
+                        <td>$5</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Food & Drink</td>
+                        <td>Energizing Elixir</td>
+                        <td>Boosts energy, removes Exhausted condition for 1 minute</td>
+                        <td>$8</td>
+                        <td>-</td>
+                    </tr>
+
+                    <!-- Musical Instruments -->
+                    <tr>
+                        <td>Musical Instruments</td>
+                        <td>Harmonica</td>
+                        <td>Mouth-played instrument</td>
+                        <td>$3</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Musical Instruments</td>
+                        <td>Banjo</td>
+                        <td>4/5-stringed, circular frame</td>
+                        <td>$15</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Musical Instruments</td>
+                        <td>Tin Whistle</td>
+                        <td>Six-holed woodwind</td>
+                        <td>$1</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Musical Instruments</td>
+                        <td>Sheet Music</td>
+                        <td>Printed popular songs</td>
+                        <td>$2</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Musical Instruments</td>
+                        <td>Gramophone Record</td>
+                        <td>For gramophones</td>
+                        <td>$2</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Musical Instruments</td>
+                        <td>Travel Guitar</td>
+                        <td>Compact, lightweight guitar ideal for traveling</td>
+                        <td>$20</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Musical Instruments</td>
+                        <td>Pan Flute</td>
+                        <td>Set of pipes producing melodious sounds</td>
+                        <td>$4</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Musical Instruments</td>
+                        <td>Djembe Drum</td>
+                        <td>Hand drum with rich, versatile beats</td>
+                        <td>$18</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Musical Instruments</td>
+                        <td>Accordion</td>
+                        <td>Hand-held bellows-driven instrument</td>
+                        <td>$30</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Musical Instruments</td>
+                        <td>Violin</td>
+                        <td>Classic stringed instrument with emotional range</td>
+                        <td>$25</td>
+                        <td>1</td>
+                    </tr>
+
+                    <!-- Tools & Equipment -->
+                    <tr>
+                        <td>Tools & Equipment</td>
+                        <td>Handcuffs</td>
+                        <td>Wrist restraints</td>
+                        <td>$10</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Tools & Equipment</td>
+                        <td>Straight Razor</td>
+                        <td>Foldable blade</td>
+                        <td>$5</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Tools & Equipment</td>
+                        <td>Pocket Knife</td>
+                        <td>Foldable multi-blade</td>
+                        <td>$3</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Tools & Equipment</td>
+                        <td>Shoe Shine Kit</td>
+                        <td>For polished shoes</td>
+                        <td>$3</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Tools & Equipment</td>
+                        <td>Ear Plugs</td>
+                        <td>Muffles firearm noise</td>
+                        <td>$1</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Tools & Equipment</td>
+                        <td>Multipurpose Tool</td>
+                        <td>Compact tool with multiple functions</td>
+                        <td>$6</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Tools & Equipment</td>
+                        <td>Magnifying Glass</td>
+                        <td>Useful for close inspections and starting fires</td>
+                        <td>$4</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Tools & Equipment</td>
+                        <td>Sewing Kit</td>
+                        <td>Contains needles, thread, and buttons</td>
+                        <td>$3</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Tools & Equipment</td>
+                        <td>Waterproof Tarp</td>
+                        <td>Durable tarp for shelter and protection</td>
+                        <td>$10</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Tools & Equipment</td>
+                        <td>Lock Pick Set</td>
+                        <td>Tools for picking locks</td>
+                        <td>$15</td>
+                        <td>-</td>
+                    </tr>
+
+                    <!-- Miscellaneous Items -->
+                    <tr>
+                        <td>Miscellaneous</td>
+                        <td>Ouija Board</td>
+                        <td>For seances</td>
+                        <td>$5</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Miscellaneous</td>
+                        <td>Crystal Ball</td>
+                        <td>Clairvoyance tool</td>
+                        <td>$25</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Miscellaneous</td>
+                        <td>Opera Glasses</td>
+                        <td>Theater binoculars</td>
+                        <td>$10</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Miscellaneous</td>
+                        <td>Masquerade Mask</td>
+                        <td>Grants +1 to Mystery (a special social skill). An ornate mask for balls and
+                            secretive gatherings</td>
+                        <td>$20</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Miscellaneous</td>
+                        <td>Deck of Cards</td>
+                        <td>For games</td>
+                        <td>$1</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Miscellaneous</td>
+                        <td>Smoking Pipe</td>
+                        <td>Tobacco device</td>
+                        <td>$2</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Miscellaneous</td>
+                        <td>Eyeglasses</td>
+                        <td>Vision aid, Observation +1 if negative from a disability</td>
+                        <td>$7</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Miscellaneous</td>
+                        <td>Hand Mirror</td>
+                        <td>Portable mirror</td>
+                        <td>$2</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Miscellaneous</td>
+                        <td>Umbrella</td>
+                        <td>For rain/sun, water or solar damage immunity from environment while equipped
+                        </td>
+                        <td>$4</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Miscellaneous</td>
+                        <td>Lucky Cufflinks</td>
+                        <td>Grants +1 to Luck. Elegant cufflinks are said to bring good fortune</td>
+                        <td>$18</td>
+                        <td>-</td>
+                    </tr>
+
+                    <!-- Fashion Items -->
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Power Suit and Tie</td>
+                        <td>Grants +1 to Influence. A sleek, professional suit symbolizing authority and
+                            confidence</td>
+                        <td>$30</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Elegant Ball Gown</td>
+                        <td>Grants +1 to Influence. A stunning gown for formal events, accentuating grace
+                            and
+                            elegance</td>
+                        <td>$45</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Charm Bracelet</td>
+                        <td>Grants +1 to Influence. A delicate bracelet with charms that captivate attention
+                        </td>
+                        <td>$15</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Dapper Fedora</td>
+                        <td>Grants +1 to Intellect. A stylish hat that adds a touch of sophistication</td>
+                        <td>$20</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Silk Scarf</td>
+                        <td>Grants +1 to Stealth. A soft, lightweight scarf that aids in blending into
+                            crowds
+                        </td>
+                        <td>$12</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>High-Performance Sneakers</td>
+                        <td>Grants +1 to Agility. Designed for comfort and speed, ideal for quick movements
+                        </td>
+                        <td>$35</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Mystic's Cloak</td>
+                        <td>Grants +1 to Spirit. A mysterious cloak that seems to shimmer with otherworldly
+                            energy</td>
+                        <td>$40</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Explorer's Vest</td>
+                        <td>Grants +1 to Survival. Pockets and compartments make it perfect for adventurous
+                            souls</td>
+                        <td>$25</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Glittering Cocktail Dress</td>
+                        <td>Grants +1 to Influence. A dress that dazzles and captivates in social settings
+                        </td>
+                        <td>$50</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Vintage Aviator Jacket</td>
+                        <td>Grants +1 to Observation. A rugged, stylish jacket reminiscent of daring pilots
+                        </td>
+                        <td>$45</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Embroidered Overalls</td>
+                        <td>Grants +1 to Crafting. A beautifully crafted garment showcasing artistic skill
+                        </td>
+                        <td>$55</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Sleek Spy Trench Coat</td>
+                        <td>Grants +1 to Stealth and has a built-in hidden pocket. Perfect for concealing
+                            identities and items</td>
+                        <td>$50</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Flamboyant Cape</td>
+                        <td>Comes with a 'Flourish' ability, allowing the wearer to make a grand entrance
+                            once
+                            per day with an advantage Influence Check</td>
+                        <td>$22</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Red Bull Jacket</td>
+                        <td>A vibrant red jacket that seems to infuriate bovines</td>
+                        <td>$30</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Citrus Cloak</td>
+                        <td>Repels felines. Infused with a strong citrus scent that cats dislike</td>
+                        <td>$25</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Shimmering Merfolk Robe</td>
+                        <td>Attracts aquatic creatures. A robe adorned with scales that glimmer like a
+                            mermaid's
+                            tail</td>
+                        <td>$40</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                        <td>Stormcaller's Mantle</td>
+                        <td>Attracts lightning in storms. A cloak that crackles with static energy, drawing
+                            lightning</td>
+                        <td>$45</td>
+                        <td>1</td>
+                    </tr>
+
+                    <!-- Add the rest of the items in the same format -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Sidebar -->
+        <div id="sidebar" class="closed">
+            <button id="toggle-sidebar">Tools</button>
+            <div id="sidebar-content">
+                <div class="roller-switch">
+                    <!-- Radio Toggles -->
+                    <input type="radio" name="roller-mode" id="check-mode" checked>
+                    <input type="radio" name="roller-mode" id="standard-mode">
+
+                    <!-- Toggle Buttons -->
+                    <label for="check-mode">Check20 Roller</label>
+                    <label for="standard-mode">Standard Roller</label>
+
+                    <!-- Rollers -->
+                    <div class="roller-content">
+                        <!-- Check20 Roller -->
+                        <div class="roller-block" id="check-block">
+                            <h3>Check20 Roller</h3>
+                            <form id="d20-check-roller-form">
+                                <div class="flex-container">
+                                    <div class="flex-item">
+                                        <label>Modifier
+                                            <input type="number" id="check-modifier" value="0" style="width: 30px;">
+                                        </label>
+                                    </div>
+                                    <div class="flex-item">
+                                        <label>Advantage
+                                            <select id="check-advantage">
+                                                <option value="none">None</option>
+                                                <option value="advantage">Advantage</option>
+                                                <option value="disadvantage">Disadvantage</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="flex-item">
+                                        <button type="button" id="roll-d20-check">Roll</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <h4>Check History</h4>
+                            <ul id="check-history" class="roll-history"></ul>
+                        </div>
+
+                        <!-- Standard Roller -->
+                        <div class="roller-block" id="standard-block">
+                            <h3>Standard Dice</h3>
+                            <form id="dice-roller-form">
+                                <div class="flex-container">
+                                    <div class="flex-item">
+                                        <label>Dice
+                                            <input type="number" id="number-of-dice" value="1" min="1">
+                                        </label>
+                                        <label>Type
+                                            <select id="dice-type">
+                                                <option value="4">d4</option>
+                                                <option value="6" selected>d6</option>
+                                                <option value="8">d8</option>
+                                                <option value="10">d10</option>
+                                                <option value="12">d12</option>
+                                                <option value="20">d20</option>
+                                                <option value="100">d100</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="flex-item">
+                                        <label>Mod
+                                            <input type="number" id="modifier" value="0">
+                                        </label>
+                                    </div>
+                                    <div class="flex-item">
+                                        <label>Advantage
+                                            <select id="advantage">
+                                                <option value="none">None</option>
+                                                <option value="advantage">Advantage</option>
+                                                <option value="disadvantage">Disadvantage</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="flex-item">
+                                        <button type="button" id="roll-dice">Roll</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <h4>Roll History</h4>
+                            <ul id="roll-history" class="roll-history"></ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+</body>
+
+</html>

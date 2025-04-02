@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armored Noir - Check20</title>
+    <link rel="stylesheet" href="styles/main.css"> <!-- Custom styles -->
+    <script src="scripts/main.js" defer></script>
+
+</head>
+
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="main-header">
+        <div class="header-container">
+            <h1 class="header-title" style="border-bottom: none;">Armored Noir</h1>
+            <h2 class="header-subtitle">A Check20 Roleplaying Theme</h2>
+            <p class="header-description">
+                Immerse yourself in the shadows and steel of the Armored Noir, a Check20 Roleplaying System that merges
+                intrigue, danger, and tactical depth.
+            </p>
+        </div>
+        <div class="flex-container">
+
+            <!-- Character Dropdown -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">Character Options</summary>
+                    <nav>
+                        <a href="class.html">Class</a>
+                        <a href="species.html">Species</a>
+                        <a href="tables.html">Tables</a>
+                        <a href="curse.html">Curses & Diseases</a>
+                    </nav>
+                </details>
+            </div>
+
+            <!-- Gear and Items -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">Gear</summary>
+                    <nav>
+                        <a href="armor.html">Armor</a>
+                        <a href="weapons.html">Weapons</a>
+                        <a href="items.html">Items</a>
+                        <a href="crafting.html">Crafting</a>
+                    </nav>
+                </details>
+            </div>
+
+            <!-- How to Play Dropdown -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">How To Play</summary>
+                    <nav>
+                        <a href="charsheet.html">Character Sheet</a>
+                        <a href="reference.html">Reference</a>
+                        <a href="damage.html">Damage & Damage Tables</a>
+                        <a href="spellcasting.html">Spellcasting</a>
+                        <a href="downtime.html">Downtime</a>
+                    </nav>
+                </details>
+            </div>
+
+            <!-- Narrator Dropdown -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">Storyteller's Almanac</summary>
+                    <nav>
+                        <a href="worldbuilding.html">Worldbuilding</a>
+                        <a href="enchanted.html">Enchanted Items & Progression</a>
+                        <a href="vehicles.html">Vehicles & Mounts</a>
+                        <a href="lore.html">Lore</a>
+                    </nav>
+                </details>
+            </div>
+
+            <!-- Marketing Dropdown -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">Marketing</summary>
+                    <nav>
+                        <a href="downloads.html">Downloads</a>
+                        <a href="support.html">Donate/Support</a>
+                    </nav>
+                </details>
+            </div>
+        </div>
+    </header>
+
+
+    <img src="assets/images/frontsplash.jpg" alt="Character Creation Splash" class="splash-screen">
+
+    <!-- Content Display Section -->
+    <div class="thanks">
+        <!-- thank you -->
+        <p class="faint">I want to extend a heartfelt thank you to Troll, Builder, Knightstar, Kilian, Chris, Sam, and
+            Aaron for all
+            their hard work and dedication in helping me create an enjoyable TTRPG experience. Your creativity and
+            willingness to collaborate made the process so much more enjoyable and the final outcome truly exceeded my
+            expectations. Thank you for being a part of this journey and for all the laughter, ideas and support. I
+            couldn't have done it without you.
+        </p>
+        <p class="faint">
+            Check20 is an original tabletop role-playing game system created by me, Mr. Shrekles. Any similarities or
+            resemblance to existing game systems, mechanics, or content is purely coincidental and unintentional. We
+            have strived to create a unique and enjoyable gaming experience with Check20 while still providing a
+            familiar feel for RPG enthusiasts. However, if any similarities or overlaps are found, please know that they
+            were not intended and we apologize for any confusion. Thank you for choosing Check20 as your gaming system
+            of choice.
+
+        </p>
+    </div>
+    <section id="content">
+        <p>Select a section to begin.</p>
+    </section>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="closed">
+        <button id="toggle-sidebar">Tools</button>
+        <div id="sidebar-content">
+            <div class="roller-switch">
+                <!-- Radio Toggles -->
+                <input type="radio" name="roller-mode" id="check-mode" checked>
+                <input type="radio" name="roller-mode" id="standard-mode">
+
+                <!-- Toggle Buttons -->
+                <label for="check-mode">Check20 Roller</label>
+                <label for="standard-mode">Standard Roller</label>
+
+                <!-- Rollers -->
+                <div class="roller-content">
+                    <!-- Check20 Roller -->
+                    <div class="roller-block" id="check-block">
+                        <h3>Check20 Roller</h3>
+                        <form id="d20-check-roller-form">
+                            <div class="flex-container">
+                                <div class="flex-item">
+                                    <label>Modifier
+                                        <input type="number" id="check-modifier" value="0" style="width: 30px;">
+                                    </label>
+                                </div>
+                                <div class="flex-item">
+                                    <label>Advantage
+                                        <select id="check-advantage">
+                                            <option value="none">None</option>
+                                            <option value="advantage">Advantage</option>
+                                            <option value="disadvantage">Disadvantage</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="flex-item">
+                                    <button type="button" id="roll-d20-check">Roll</button>
+                                </div>
+                            </div>
+                        </form>
+                        <h4>Check History</h4>
+                        <ul id="check-history" class="roll-history"></ul>
+                    </div>
+
+                    <!-- Standard Roller -->
+                    <div class="roller-block" id="standard-block">
+                        <h3>Standard Dice</h3>
+                        <form id="dice-roller-form">
+                            <div class="flex-container">
+                                <div class="flex-item">
+                                    <label>Dice
+                                        <input type="number" id="number-of-dice" value="1" min="1">
+                                    </label>
+                                    <label>Type
+                                        <select id="dice-type">
+                                            <option value="4">d4</option>
+                                            <option value="6" selected>d6</option>
+                                            <option value="8">d8</option>
+                                            <option value="10">d10</option>
+                                            <option value="12">d12</option>
+                                            <option value="20">d20</option>
+                                            <option value="100">d100</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="flex-item">
+                                    <label>Mod
+                                        <input type="number" id="modifier" value="0">
+                                    </label>
+                                </div>
+                                <div class="flex-item">
+                                    <label>Advantage
+                                        <select id="advantage">
+                                            <option value="none">None</option>
+                                            <option value="advantage">Advantage</option>
+                                            <option value="disadvantage">Disadvantage</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="flex-item">
+                                    <button type="button" id="roll-dice">Roll</button>
+                                </div>
+                            </div>
+                        </form>
+                        <h4>Roll History</h4>
+                        <ul id="roll-history" class="roll-history"></ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

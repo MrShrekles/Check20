@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Tables</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="scripts/character.js" defer></script>
+</head>
+
+<body class="species">
+    <header class="main-header">
+        <h1 class="header-title">Player Tables</h1>
+        <div class="flex-container">
+
+            <!-- Character Dropdown -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">Character Options</summary>
+                    <nav>
+                        <a href="class.html">Class</a>
+                        <a href="species.html">Species</a>
+                        <a href="tables.html">Tables</a>
+                        <a href="curse.html">Curses & Diseases</a>
+                    </nav>
+                </details>
+            </div>
+
+            <!-- Gear and Items -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">Gear</summary>
+                    <nav>
+                        <a href="armor.html">Armor</a>
+                        <a href="weapons.html">Weapons</a>
+                        <a href="items.html">Items</a>
+                        <a href="crafting.html">Crafting</a>
+                    </nav>
+                </details>
+            </div>
+
+            <!-- How to Play Dropdown -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">How To Play</summary>
+                    <nav>
+                        <a href="charsheet.html">Character Sheet</a>
+                        <a href="reference.html">Reference</a>
+                        <a href="damage.html">Damage & Damage Tables</a>
+                        <a href="spellcasting.html">Spellcasting</a>
+                        <a href="downtime.html">Downtime</a>
+                    </nav>
+                </details>
+            </div>
+
+            <!-- Narrator Dropdown -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">Storyteller's Almanac</summary>
+                    <nav>
+                        <a href="worldbuilding.html">Worldbuilding</a>
+                        <a href="enchanted.html">Enchanted Items & Progression</a>
+                        <a href="vehicles.html">Vehicles & Mounts</a>
+                        <a href="lore.html">Lore</a>
+                    </nav>
+                </details>
+            </div>
+
+            <!-- Marketing Dropdown -->
+            <div class="flex-item">
+                <details>
+                    <summary class="nav-button">Marketing</summary>
+                    <nav>
+                        <a href="downloads.html">Downloads</a>
+                        <a href="support.html">Donate/Support</a>
+                    </nav>
+                </details>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="flex-container">
+            <div class="flex-item">
+                <!-- motivation -->
+                <section id="motivations">
+                    <h2>Motivations</h2>
+                    <p>
+                        Character motivation refers to the driving force behind a character's actions and
+                        decisions
+                        in a
+                        story. Roll a d100 to choose a motivation or select one from the list below.
+                    </p>
+                    <!-- Motivation Controls -->
+                    <div class="features">
+                        <p id="selected-motivation">Your motivation will appear here.</p>
+
+                    </div>
+                    <button id="rollMotivationButton">Roll for Motivation</button>
+                </section>
+            </div>
+
+            <div class="flex-item">
+                <!-- Additional Equipemtn -->
+                <section id="additional-equipment">
+                    <h2>Additinal Equipment</h2>
+                    <p>
+                        You'll need this where you are going. Roll 2d20 to choose additional equipment or
+                        pick
+                        from
+                        the
+                        list
+                        below.
+                    </p>
+
+                    <div class="features">
+                        <p id="selected-equipment">Your equipment will appear here.</p>
+                    </div>
+                    <div class="controls">
+                        <button id="roll-equipment">Roll for Equipment</button>
+                    </div>
+
+
+                </section>
+            </div>
+
+            <div class="flex-item">
+                <section id="trinkets">
+                    <h2>Trinkets</h2>
+                    <p>
+                        A trinket is something that doesn't define your character but adds to their
+                        backstory or
+                        creates
+                        an
+                        interesting idea about who they might be.
+                        Roll a d100 to choose a trinket or pick from the list below.
+                    </p>
+
+                    <!-- Button for Random Selection -->
+                    <div class="features">
+                        <p id="selected-trinket">Your trinket will appear here.</p>
+                    </div>
+                    <div class="controls">
+                        <button id="roll-trinket">Roll for Trinket</button>
+                    </div>
+
+
+                </section>
+            </div>
+        </div>
+
+        <section>
+            <!-- Motivations  -->
+            <details>
+                <summary>All Motivations</summary>
+                <div class="features">
+                    <ol class="motivation-list">
+                        <li>Achieving dominion over another</li>
+                        <li>Achieving spiritual enlightenment</li>
+                        <li>Avoiding certain death</li>
+                        <li>Avoiding financial ruin</li>
+                        <li>Beating a diagnosis or condition</li>
+                        <li>Becoming a leader of others</li>
+                        <li>Becoming the sole power or authority</li>
+                        <li>Being a philanthropist</li>
+                        <li>Being accepted by others</li>
+                        <li>Gaining family recognition</li>
+                        <li>Being the best at something</li>
+                        <li>Shaking someone's beliefs</li>
+                        <li>Caring for an aging parent</li>
+                        <li>Carrying on a legacy</li>
+                        <li>Catching a villain</li>
+                        <li>Causing someone pain</li>
+                        <li>Coming to grips with a mental disorder</li>
+                        <li>Controlling others</li>
+                        <li>Coping with a learning disability or illness</li>
+                        <li>Correcting a perceived mistake</li>
+                        <li>Discovering something important</li>
+                        <li>Dealing with bullies</li>
+                        <li>Defying expectations</li>
+                        <li>Discovering one's true self</li>
+                        <li>Having it all</li>
+                        <li>Aiding a self-destructive loved one</li>
+                        <li>Keeping what one has no matter what</li>
+                        <li>Learning to trust</li>
+                        <li>Making someone proud</li>
+                        <li>Navigating a changing family situation</li>
+                        <li>Obliterating an enemy</li>
+                        <li>Obsessively pursuing a relationship</li>
+                        <li>Obtaining glory whatever the cost</li>
+                        <li>Obtaining shelter from the elements</li>
+                        <li>Overcoming a debilitating fear</li>
+                        <li>Overcoming a fear</li>
+                        <li>Overcoming abuse and learning to trust</li>
+                        <li>Overcoming addiction</li>
+                        <li>Overthrowing good with evil</li>
+                        <li>Preserving a cultural heritage</li>
+                        <li>Profiteering</li>
+                        <li>Promoting chaos</li>
+                        <li>Protecting a loved one</li>
+                        <li>Protecting one's home or property</li>
+                        <li>Providing for one's family</li>
+                        <li>Providing security for future generations</li>
+                        <li>Proving someone wrong</li>
+                        <li>Pursuing a passion</li>
+                        <li>Doing the right thing</li>
+                        <li>Embracing a personal identity</li>
+                        <li>Escaping a dangerous life</li>
+                        <li>Escaping a killer</li>
+                        <li>Escaping confinement</li>
+                        <li>Escaping danger</li>
+                        <li>Escaping homelessness</li>
+                        <li>Escaping invaders</li>
+                        <li>Escaping widespread disaster</li>
+                        <li>Establishing a sense of belonging</li>
+                        <li>Evading responsibility</li>
+                        <li>Exploring one's biological roots</li>
+                        <li>Finding a lifelong partner</li>
+                        <li>Finding friendship or companionship</li>
+                        <li>Finding one's purpose</li>
+                        <li>Finding something lost</li>
+                        <li>Fitting in</li>
+                        <li>Forcing a big change</li>
+                        <li>Forcing conversion</li>
+                        <li>Forgiving oneself</li>
+                        <li>Gaining control over one's own life</li>
+                        <li>Getting revenge</li>
+                        <li>Giving up a child</li>
+                        <li>Having a child</li>
+                        <li>Pursuing a toxic desire</li>
+                        <li>Pursuing justice for oneself or others</li>
+                        <li>Pursuing knowledge</li>
+                        <li>Pursuing mastery of a skill or talent</li>
+                        <li>Realizing a dream</li>
+                        <li>Reclaiming personal power</li>
+                        <li>Reuniting with distant family</li>
+                        <li>Repaying a debt</li>
+                        <li>Rescuing a loved one from a captor</li>
+                        <li>Resisting peer pressure</li>
+                        <li>Restoring one's name or reputation</li>
+                        <li>Righting a deep wrong</li>
+                        <li>Ruining someone's life</li>
+                        <li>Ruining someone's reputation</li>
+                        <li>Saving the world</li>
+                        <li>Seeking adventure</li>
+                        <li>Seeking death</li>
+                        <li>Serving others</li>
+                        <li>Solving a problem</li>
+                        <li>Stopping an event from happening</li>
+                        <li>Supporting oneself financially</li>
+                        <li>Surviving loss</li>
+                        <li>Surviving the death of a loved one</li>
+                        <li>Taking what one is owed</li>
+                        <li>Trying something new</li>
+                        <li>Overcoming past failures</li>
+                        <li>Winning a competition</li>
+                    </ol>
+                </div>
+            </details>
+
+            <!-- Additional equips -->
+            <details>
+                <summary>Additional Equipment</summary>
+                <!-- Equipment List -->
+                <div class="features">
+                    <p>Roll 2d20 to choose additional equipment or choose from the list from below
+                    </p>
+                    <ol class="motivation-list">
+                        <li>A bandolier of shotgun shells, a gun cleaning kit, a holster for quick
+                            draw
+                        </li>
+                        <li>Brewing equipment, a selection of rare herbs and magical ingredients, a
+                            few
+                            bottles
+                            of
+                            'moonshine'</li>
+                        <li>A book of abyssal texts, a set of writing tools and ink, a small
+                            collection
+                            of
+                            scrolls
+                            and manuscripts, and a silver holy symbol</li>
+                        <li>Collection jars (for the leeches), a medical kit (with basic supplies)
+                        </li>
+                        <li>A broken porcelain mask affixed to your face, a set of manacles (for
+                            apprehending
+                            the
+                            guilty), and a locked spellbook (which you still hold dear)</li>
+                        <li>A grappling hook (for scaling trees and buildings), a water-skin (for
+                            emergency
+                            fire
+                            suppression), and a small first-aid kit (for treating burns and
+                            injuries)
+                        </li>
+                        <li>A ledger (for keeping track of finances), a set of fine writing
+                            implements
+                            (for
+                            drafting
+                            contracts and letters), and a collection of valuable coins (from various
+                            nations
+                            and
+                            time periods)</li>
+                        <li>A portable taco-making kit, a book on taco divination, a collection of
+                            exotic
+                            taco
+                            ingredients</li>
+                        <li>A set of cheese-making tools, a selection of fine cheeses, a guide to
+                            cheese
+                            varieties,
+                            an intelligent cheese</li>
+                        <li>A set of keys to the library, a lantern with a small supply of oil, a
+                            set of
+                            cleaning
+                            supplies, and a small collection of arcane tomes</li>
+                        <li>A set of tattooing tools (needles, inks, etc.), a sketchbook (for
+                            designing
+                            tattoos),
+                            and a few magical inks with unique properties</li>
+                        <li>A set of torture tools, a manual on painless interrogation techniques, a
+                            government
+                            badge</li>
+                        <li>A set of wooden stakes (for dispatching strigoi foes), a vial of holy
+                            water
+                            (for
+                            use
+                            against fiends and other malevolent entities), and a guide to
+                            supernatural
+                            creatures
+                            (detailing their weaknesses and vulnerabilities)</li>
+                        <li>A shoe-making kit, a selection of magical leathers and materials, a
+                            catalog
+                            of
+                            shoe
+                            designs</li>
+                        <li>A small pouch of magical components (used for casting spells), a
+                            spellbook
+                            (containing
+                            your first spells), and a scroll case (for storing important documents)
+                        </li>
+                        <li>A sturdy belt with multiple pouches for carrying small items, a canvas
+                            bag
+                            for
+                            carrying
+                            larger items, and a small pocket knife</li>
+                        <li>A tool kit with magical and mundane tools, a manual on supernatural
+                            handyman
+                            tasks,
+                            a
+                            set of keys to various dimensions</li>
+                        <li>A whetstone (for sharpening your weapon), a set of weapon maintenance
+                            tools,
+                            and
+                            a
+                            training manual (with notes from your past instructors)</li>
+                        <li>Acrobat's tools (juggling pins, tightrope, etc.), a small makeup kit
+                            (for
+                            touch-ups
+                            before performances), and a set of costume props (for disguising
+                            yourself)
+                        </li>
+                        <li>Amulet of your divinity, a divine shard, a broken crown of fallen stars
+                        </li>
+                        <li>Animal Handling tools (leash, muzzle, etc.), a portable cage (for
+                            temporarily
+                            holding
+                            creatures), and a collection of treats (to gain the trust of animals)
+                        </li>
+                        <li>Bedroll (for sleeping during long journeys), a map of the region, and a
+                            signal
+                            whistle
+                            (for alerting fellow guards)</li>
+                        <li>Brewing equipment, a selection of rare herbs and magical ingredients, a
+                            few
+                            bottles
+                            of
+                            'moonshine'</li>
+                        <li>Collection jars (for the leeches), a medical kit (with basic supplies)
+                        </li>
+                        <li>Dentist's tools, vampire teeth molds, a book on vampire dental anatomy
+                        </li>
+                        <li>Elemental gemstones (used as a focus for channeling elemental energies),
+                            a
+                            collection of
+                            scrolls (detailing various elemental spells and rituals), and a small,
+                            elemental
+                            creature (such as a salamander, water weird, or stone elemental) bound
+                            to
+                            your
+                            service
+                        </li>
+                        <li>Enchanted makeup kit, mirror, small case of various potions</li>
+                        <li>Golem maintenance kit (includes oils, runes, and miniature tools), a
+                            manual
+                            on
+                            golem
+                            anatomy, and a golem making kit for a PL [[1d4]] golem takes 6 hours of
+                            crafting
+                        </li>
+                        <li>Gunsmith tools, a few spectral bullets, an old diary with spectral
+                            firearm
+                            designs
+                        </li>
+                        <li>Handcuffs (engraved with your initials), a notepad and a magnifying
+                            glass
+                            (in a
+                            leather
+                            case)</li>
+                        <li>Healer's kit (containing various herbs and bandages), a wooden staff
+                            (used
+                            for
+                            walking
+                            and channeling healing magic), and a collection of potions (for various
+                            ailments)
+                        </li>
+                        <li>Light Hammer (with a handle wrapped in soft leather for a better grip),
+                            Flask
+                            filled
+                            with liquor, and a lighter</li>
+                        <li>Mechanics' tools (a set of wrenches, pliers, and other essentials), a
+                            portable
+                            workshop
+                            (for on-the-go repairs and inventions), and a few spare parts (gears,
+                            springs,
+                            and
+                            other
+                            components for quick fixes)</li>
+                        <li>Musical instrument (with intricate carvings) or set of juggling balls
+                            (made
+                            of
+                            fine
+                            materials), Performer’s Flourish (+1 Influence)</li>
+                        <li>Old miner's helmet (with functioning lantern), a collection of precious
+                            stones
+                        </li>
+                        <li>Pocket watch, a city map, a book on city architecture</li>
+                        <li>Recipe book (for different sodas), a portable soda dispenser</li>
+                        <li>Rope, grappling hook, and lockpicks (in a compact pouch)</li>
+                        <li>Ruined Spellbook (pages made from the bark of a magical tree), magical
+                            focus
+                            (a
+                            crystal
+                            pulsating with elemental energy), and a pouch of magical reagents
+                            (gathered
+                            from
+                            the
+                            wild)</li>
+                        <li>Scale (for weighing and measuring goods), a ledger (for keeping track of
+                            inventory
+                            and
+                            profits), and a set of merchant's tools (for crafting and repairing
+                            items),
+                            Additional
+                            50 gp</li>
+                        <li>Several bottles of milk (for customer deliveries and emergency
+                            sustenance),
+                            a
+                            large
+                            canvas sack (for carrying dairy products)</li>
+                        <li>Thieves' Tools (concealed in a hidden wrist compartment), a grappling
+                            hook
+                            (collapsible
+                            for easy storage), and a set of lockpicks (disguised as cufflinks)</li>
+                    </ol>
+                </div>
+            </details>
+
+            <!-- All trinkets  -->
+            <details>
+                <summary>All Trinkets</summary>
+                <!-- Trinket List -->
+                <div class="features">
+                    <p>Roll a d100 to choose a trinket or choose from the list from below
+                    </p>
+                    <ol class="motivation-list">
+                        <li>Shotgun shell that was once shot at you, kept as a lucky charm</li>
+                        <li>A broken practice weapon, a reminder of your past failures and
+                            determination
+                            to
+                            improve</li>
+                        <li>A tarnished, silver badge that once belonged to a criminal you captured
+                        </li>
+                        <li>A pocket watch with a cryptic inscription on the back</li>
+                        <li>A coin from the organization you once worked for, stamped with a
+                            mysterious
+                            emblem
+                        </li>
+                        <li>A broken amulet, once a symbol of your divine authority</li>
+                        <li>A taco charm, said to bring good luck</li>
+                        <li>A small, enchanted vial containing your former essence</li>
+                        <li>A small, intricately carved figurine of your original form, a reminder
+                            of
+                            where
+                            you
+                            came from</li>
+                        <li>A small token of protection, given to you by a friend before your exile
+                        </li>
+                        <li>A small, silver medallion bearing the symbol of your order, a constant
+                            reminder
+                            of
+                            your sworn duty</li>
+                        <li>A small, enchanted crystal that changes color and emits faint elemental
+                            energy,
+                            a
+                            gift from your elemental master</li>
+                        <li>A small, ornate box containing a mysterious, abyssal artifact</li>
+                        <li>A dried flower from a rare and dangerous plant you once grew</li>
+                        <li>A spent bullet casing from the first spirit you ever bound to a weapon
+                        </li>
+                        <li>A favorite soda spoon, slightly bent but still useful</li>
+                        <li>A small, intricately carved bone used to mix your inks</li>
+                        <li>A miniature shoe charm, said to bring good luck to its owner</li>
+                        <li>A small, perfectly aged cheese that seems to have a personality of its
+                            own
+                        </li>
+                        <li>An old miner's whistle, said to ward off evil spirits</li>
+                        <li>An old railroad spike, a reminder of your first day on the job</li>
+                        <li>A tiny, perfectly articulated golem hand, a memento from a successful
+                            repair
+                            job
+                        </li>
+                        <li>A small doll, a reminder of your desire to change</li>
+                        <li>A leech preserved in a small glass vial</li>
+                        <li>A mysterious key with an emblem of an unknown organization</li>
+                        <li>A small, unmarked box that contains an unknown substance</li>
+                        <li>A playing card with an ever-shifting face</li>
+                        <li>A small, intricately carved figurine of a mythical creature that you
+                            once
+                            cared
+                            for
+                        </li>
+                        <li>A lucky coin, said to bring fortune to those who carry it</li>
+                        <li>A small charm in the shape of your favorite animal from the menagerie
+                        </li>
+                        <li>A poster from one of your most memorable performances</li>
+                        <li>A small, worn carving of a caravan, a gift from a grateful merchant</li>
+                        <li>A broken chain, a symbol of your newfound freedom from the arena</li>
+                        <li>A golden pocket watch, engraved with your family's crest, a symbol of
+                            your
+                            past
+                            success and a reminder of the fortune you seek to regain</li>
+                        <li>A small, intricate clockwork contraption you built as a testament to
+                            your
+                            skill
+                        </li>
+                        <li>A small vial of "holy water" that's actually infused with dark energy
+                        </li>
+                        <li>A small, carved wooden ship you found among the cargo</li>
+                        <li>A cowbell, a memento from your favorite dairy cow</li>
+                        <li>A badge from your old fire department, bearing the symbol of a phoenix
+                            rising
+                            from
+                            the ashes</li>
+                        <li>A small, worn key that once opened the door to your old guardhouse</li>
+                        <li>A recipe for a particularly potent brew, passed down through generations
+                        </li>
+                        <li>A small stone from the foundation of the city's oldest building</li>
+                        <li>A set of vampire fangs you've replaced</li>
+                        <li>A screw from a piece of celestial machinery</li>
+                        <li>An old makeup case containing a mysterious magical substance</li>
+                        <li>A small, enchanted stone that emits a faint, eerie glow</li>
+                        <li>A glass orb that glows slightly when held, no known origin</li>
+                        <li>A small, mechanical bird that occasionally chirps, despite lacking
+                            visible
+                            power
+                            sources</li>
+                        <li>A book with blank pages that sometimes display faint writing</li>
+                        <li>A stone that is always warm to the touch</li>
+                        <li>A wooden puzzle box that has never been opened</li>
+                        <li>A mirror shard that shows a mysterious shadow in the reflection</li>
+                        <li>An old compass that points to something other than magnetic north</li>
+                        <li>A handkerchief embroidered with an unfamiliar coat of arms</li>
+                        <li>A piece of driftwood shaped like a sea creature</li>
+                        <li>A candle that cannot be lit, it emits a faint, sweet smell when warm
+                        </li>
+                        <li>A deck of cards where all the kings are missing</li>
+                        <li>A bell that makes no sound when rung</li>
+                        <li>A diary written in an unknown language</li>
+                        <li>A set of old locksmith tools with one pick inexplicably bent</li>
+                        <li>A whistle that only animals can hear</li>
+                        <li>A locket that refuses to open, sounds like something is moving inside
+                        </li>
+                        <li>A piece of chalk that writes on air</li>
+                        <li>A feather that falls like a stone when dropped</li>
+                        <li>A glove that absorbs light, making the hand invisible when worn</li>
+                        <li>A bottle of ink that changes color daily</li>
+                        <li>A monocle that shows an arcane symbol when looking at the moon</li>
+                        <li>A scarf that cannot get wet</li>
+                        <li>A comb that makes hair stand on end when used</li>
+                        <li>A matchbox with matches that light when snapped</li>
+                        <li>A pebble that skips on dry land</li>
+                        <li>A coin that always lands on its edge</li>
+                        <li>A key that gets colder as it gets closer to locks</li>
+                        <li>A nail that never rusts</li>
+                        <li>A tooth from an unknown beast, it vibrates slightly in thunderstorms
+                        </li>
+                        <li>A map with a place that no one can find</li>
+                        <li>A hat that always returns to its owner when lost</li>
+                        <li>A small box that hums a melody at night</li>
+                        <li>A painting of a door that seems to change in detail</li>
+                        <li>A soap that never lathers</li>
+                        <li>A button that detaches and reattaches itself from clothes</li>
+                        <li>A quill that only writes in rhymes</li>
+                        <li>A pair of glasses that show constellations at night</li>
+                        <li>A bookmark that prevents the book from ever finishing</li>
+                        <li>A flask that doubles the taste of any liquid inside</li>
+                        <li>A lantern with a flame that flickers in the presence of spirits</li>
+                        <li>A spoon that makes any meal taste delicious</li>
+                        <li>A pair of boots that leave footprints of a different creature</li>
+                        <li>A whistle that only works at sunrise and sunset</li>
+                        <li>A ring that feels heavier with lies</li>
+                        <li>A bottle that refills with sea water</li>
+                        <li>A glove that softly glows in the presence of magic</li>
+                        <li>A brush that paints only in shades of blue</li>
+                        <li>A belt that always fits the wearer perfectly</li>
+                        <li>A scarf that smells like the forest after rain</li>
+                        <li>A yarn ball that never tangles</li>
+                        <li>A small statue that slowly turns towards the nearest gold</li>
+                        <li>A pen that writes on its own when left alone</li>
+                        <li>A coin that jumps slightly when near treasure</li>
+                        <li>A feather that acts as a magnet for paper</li>
+                    </ol>
+                </div>
+            </details>
+        </section>
+
+        <!-- Sidebar -->
+        <div id="sidebar" class="closed">
+            <button id="toggle-sidebar">Tools</button>
+            <div id="sidebar-content">
+                <div class="roller-switch">
+                    <!-- Radio Toggles -->
+                    <input type="radio" name="roller-mode" id="check-mode" checked>
+                    <input type="radio" name="roller-mode" id="standard-mode">
+
+                    <!-- Toggle Buttons -->
+                    <label for="check-mode">Check20 Roller</label>
+                    <label for="standard-mode">Standard Roller</label>
+
+                    <!-- Rollers -->
+                    <div class="roller-content">
+                        <!-- Check20 Roller -->
+                        <div class="roller-block" id="check-block">
+                            <h3>Check20 Roller</h3>
+                            <form id="d20-check-roller-form">
+                                <div class="flex-container">
+                                    <div class="flex-item">
+                                        <label>Modifier
+                                            <input type="number" id="check-modifier" value="0" style="width: 30px;">
+                                        </label>
+                                    </div>
+                                    <div class="flex-item">
+                                        <label>Advantage
+                                            <select id="check-advantage">
+                                                <option value="none">None</option>
+                                                <option value="advantage">Advantage</option>
+                                                <option value="disadvantage">Disadvantage</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="flex-item">
+                                        <button type="button" id="roll-d20-check">Roll</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <h4>Check History</h4>
+                            <ul id="check-history" class="roll-history"></ul>
+                        </div>
+
+                        <!-- Standard Roller -->
+                        <div class="roller-block" id="standard-block">
+                            <h3>Standard Dice</h3>
+                            <form id="dice-roller-form">
+                                <div class="flex-container">
+                                    <div class="flex-item">
+                                        <label>Dice
+                                            <input type="number" id="number-of-dice" value="1" min="1">
+                                        </label>
+                                        <label>Type
+                                            <select id="dice-type">
+                                                <option value="4">d4</option>
+                                                <option value="6" selected>d6</option>
+                                                <option value="8">d8</option>
+                                                <option value="10">d10</option>
+                                                <option value="12">d12</option>
+                                                <option value="20">d20</option>
+                                                <option value="100">d100</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="flex-item">
+                                        <label>Mod
+                                            <input type="number" id="modifier" value="0">
+                                        </label>
+                                    </div>
+                                    <div class="flex-item">
+                                        <label>Advantage
+                                            <select id="advantage">
+                                                <option value="none">None</option>
+                                                <option value="advantage">Advantage</option>
+                                                <option value="disadvantage">Disadvantage</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="flex-item">
+                                        <button type="button" id="roll-dice">Roll</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <h4>Roll History</h4>
+                            <ul id="roll-history" class="roll-history"></ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</body>
+</html>
