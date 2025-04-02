@@ -2,6 +2,17 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM fully loaded. Initializing tooltips...");
 
     const tooltipLibrary = {
+        // Actions
+        'Attack': 'Make a melee, ranged, or spell attack against a creature or object within range.',
+
+        "Reaction": "A special action taken out of turn, like an opportunity attack.",
+        "Opportunity Attacks": "Attack creatures leaving your melee range without disengaging.",
+        "Drink Something": "Use an Off-Action to drink or hand off a potion.",
+        "Disrupt": "Impose disadvantage on an enemy's attack with a successful check.",
+        "Block": "Reduce melee damage by half using a shield.",
+        "Demoralize": "Force enemies to make a morale check with an Influence (Intimidate) roll.",
+        "Stealth": "Attempt to hide from creatures to gain an advantage on your next Attack. Attacking reveals your position.",
+
         // Ranges
         "Melee Range": "Within 5ft",
         "reach range": "10ft",
@@ -33,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Unconscious": "Unable to act; vulnerable to critical hits and Finishers.",
         "Stunned": "Disadvantage on all checks; movement halved.",
         "Exhaustion": "Disadvantage on all checks; movement halved.",
+        "Exhausted": "Disadvantage on all checks; movement halved.",
         "Constrained": "Cannot make attack actions; attacks against have advantage.",
         "Exposed": "Take double damage.",
         "Injured": "At 0 wounds, any further damage causes immediate Death.",
@@ -440,51 +452,67 @@ document.querySelectorAll(".dice-button").forEach(button => {
     });
 });
 
+document.getElementById("roll-d20-check").addEventListener("click", () => {
+    const modifier = parseInt(document.getElementById("check-modifier").value, 10);
+    const advantage = document.getElementById("check-advantage").value;
 
-document.getElementById("roll-dice").addEventListener("click", () => {
-    const numberOfDice = parseInt(document.getElementById("number-of-dice").value, 10);
-    const diceType = parseInt(document.getElementById("dice-type").value, 10);
-    const modifier = parseInt(document.getElementById("modifier").value, 10);
-    const advantage = document.getElementById("advantage").value;
+    const roll1 = Math.floor(Math.random() * 20) + 1;
+    const roll2 = Math.floor(Math.random() * 20) + 1;
 
-    if (numberOfDice <= 0 || diceType <= 0) {
-        alert("Please enter valid values for dice and modifiers.");
-        return;
-    }
-
-    let rolls = [];
-    let secondaryRolls = [];
-
-    for (let i = 0; i < numberOfDice; i++) {
-        const roll = Math.floor(Math.random() * diceType) + 1;
-        rolls.push(roll);
-        if (advantage !== "none") {
-            // Roll secondary dice for advantage/disadvantage
-            const secondaryRoll = Math.floor(Math.random() * diceType) + 1;
-            secondaryRolls.push(secondaryRoll);
-        }
-    }
-
-    let finalResult = rolls.reduce((sum, roll) => sum + roll, 0) + modifier;
+    let adjustedRoll1 = roll1;
+    let chosenRaw;
 
     if (advantage === "advantage") {
-        const advantageResult = secondaryRolls.reduce((sum, roll) => sum + roll, 0);
-        finalResult = Math.max(finalResult, advantageResult + modifier);
-        rolls = rolls.map((roll, i) => `${roll}/${secondaryRolls[i]}`);
+        adjustedRoll1 += 4;
+        chosenRaw = Math.max(adjustedRoll1, roll2);
     } else if (advantage === "disadvantage") {
-        const disadvantageResult = secondaryRolls.reduce((sum, roll) => sum + roll, 0);
-        finalResult = Math.min(finalResult, disadvantageResult + modifier);
-        rolls = rolls.map((roll, i) => `${roll}/${secondaryRolls[i]}`);
+        adjustedRoll1 -= 4;
+        chosenRaw = Math.min(adjustedRoll1, roll2);
+    } else {
+        chosenRaw = roll1;
     }
 
-    // Add roll history with color coding for min/max
+    const finalResult = chosenRaw + modifier;
     const historyItem = document.createElement("li");
-    historyItem.innerHTML = `Rolled: ${numberOfDice}d${diceType} (${rolls.map(roll => highlightRoll(roll, diceType)).join(", ")}) + ${modifier} = ${finalResult}`;
-    rollHistory.prepend(historyItem);
+    historyItem.classList.add("styled-roll");
+    
+    // Determine success count
+    let successCount = 0;
+    if (finalResult >= 15) {
+      successCount = Math.floor((finalResult - 15) / 5) + 1;
+    }
+    
+    // Optional highlight
+    if (finalResult >= 15) {
+      historyItem.classList.add("roll-success");
+    }
+    
+    historyItem.innerHTML = `
+      <div class="roll-line">
+        <span class="roll-label">🎲 Rolled:</span> 
+        d20: <span class="roll-val">${highlightRoll(roll1)}</span>
+        ${advantage !== "none" ? `→ <span class="roll-val">${adjustedRoll1}</span> / <span class="roll-val">${highlightRoll(roll2)}</span>` : ""}
+        <hr>
+      </div>
+      <div class="mod-line">
+        <span class="roll-label"> Modifier:</span> <span class="roll-mod">${modifier >= 0 ? "+" : ""}${modifier}</span>
+      </div>
+      <div class="total-line">
+        <hr>
+        <span class="roll-label"> Total:</span> <strong class="roll-total">${finalResult}</strong>
+        ${successCount > 0 ? `<span class="success-count">(${successCount} success${successCount > 1 ? "es" : ""})</span>` : ""}
+      </div>
+      <div class="choice-line">
+        <span class="roll-label"> Chose:</span> <em class="roll-chosen">${chosenRaw}</em>
+      </div>
+    `;
+    
+    document.getElementById("check-history").prepend(historyItem);
 
-    // Limit history to the last 10 rolls
-    if (rollHistory.children.length > 10) {
-        rollHistory.removeChild(rollHistory.lastChild);
+    // Limit history to 10 entries
+    const historyList = document.getElementById("check-history");
+    if (historyList.children.length > 5) {
+        historyList.removeChild(historyList.lastChild);
     }
 });
 
@@ -502,43 +530,6 @@ function highlightRoll(roll, diceType) {
         : highlight(primary); // Normal roll
 }
 
-document.getElementById("roll-d20-check").addEventListener("click", () => {
-    const modifier = parseInt(document.getElementById("check-modifier").value, 10);
-    const advantage = document.getElementById("check-advantage").value;
-
-    const roll1 = Math.floor(Math.random() * 20) + 1; // First d20 roll
-    const roll2 = Math.floor(Math.random() * 20) + 1; // Second d20 roll
-    let chosenValue; // To track which value is chosen
-    let finalRoll; // The final result after applying modifiers
-
-    if (advantage === "advantage") {
-        const higherRoll = Math.max(roll1, roll2); // Higher roll
-        const adjustedRoll = roll1 + 4; // Add +4 to the first roll
-        chosenValue = Math.max(higherRoll, adjustedRoll); // Choose the best value
-        finalRoll = chosenValue + modifier;
-    } else if (advantage === "disadvantage") {
-        const lowerRoll = Math.min(roll1, roll2); // Lower roll
-        const adjustedRoll = roll1 + 4; // Add +4 to the first roll
-        chosenValue = Math.max(lowerRoll, adjustedRoll); // Choose the best value
-        finalRoll = chosenValue + modifier;
-    } else {
-        chosenValue = roll1; // No advantage/disadvantage
-        finalRoll = roll1 + modifier;
-    }
-
-    // Add result to history
-    const historyItem = document.createElement("li");
-    historyItem.innerHTML = `
-        Rolled: d20 (${highlightRoll(roll1)}${advantage !== "none" ? `/${highlightRoll(roll2)}` : ""}) + ${modifier} = ${finalRoll} [Chose: ${chosenValue}]
-    `;
-    document.getElementById("check-history").prepend(historyItem);
-
-    // Limit history to the last 10 rolls
-    if (document.getElementById("check-history").children.length > 10) {
-        document.getElementById("check-history").removeChild(document.getElementById("check-history").lastChild);
-    }
-});
-
 // Highlight rolls based on value
 function highlightRoll(value) {
     if (value === 20) {
@@ -549,3 +540,29 @@ function highlightRoll(value) {
         return `<span class="roll-normal">${value}</span>`; // Default roll
     }
 }
+
+document.getElementById("toggle-roller").addEventListener("click", () => {
+    document.getElementById("dice-roller").classList.remove("active");
+    document.getElementById("d20-check-roller").classList.add("active");
+    document.getElementById("toggle-roller").classList.add("active");
+    document.getElementById("toggle-dice").classList.remove("active");
+});
+
+document.getElementById("toggle-dice").addEventListener("click", () => {
+    document.getElementById("dice-roller").classList.add("active");
+    document.getElementById("d20-check-roller").classList.remove("active");
+    document.getElementById("toggle-dice").classList.add("active");
+    document.getElementById("toggle-roller").classList.remove("active");
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".responsive-table").forEach((wrapper) => {
+        const headers = Array.from(wrapper.querySelectorAll("thead th")).map(th => th.textContent.trim());
+        wrapper.querySelectorAll("tbody tr").forEach(row => {
+            Array.from(row.children).forEach((td, index) => {
+                td.setAttribute("data-label", headers[index] || "");
+            });
+        });
+    });
+});

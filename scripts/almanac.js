@@ -930,14 +930,18 @@ class Monster {
         }
 
         this.baseKey = document.getElementById("randomize-base").checked
-            ? randomItem(Object.keys(monsterData.base))
-            : document.getElementById("base-type").value;
-        this.addKey = document.getElementById("randomize-additional").checked
-            ? randomItem(Object.keys(monsterData.additional))
-            : document.getElementById("additional-type").value;
-        this.modKey = document.getElementById("randomize-mod").checked
-            ? randomItem(Object.keys(monsterData.mod))
-            : document.getElementById("mod-type").value;
+        ? randomItem(Object.keys(monsterData.base).sort())
+        : document.getElementById("base-type").value;
+    
+    this.addKey = document.getElementById("randomize-additional").checked
+        ? randomItem(Object.keys(monsterData.additional).sort())
+        : document.getElementById("additional-type").value;
+    
+    this.modKey = document.getElementById("randomize-mod").checked
+        ? randomItem(Object.keys(monsterData.mod).sort())
+        : document.getElementById("mod-type").value;
+    
+
 
         this.base = monsterData.base[this.baseKey];
         this.mergedBaseFeatures = [...(this.base.features || [])];
@@ -981,7 +985,7 @@ class Monster {
 
 const createMonsterCard = (monster) => {
     if (!monster) return;
-    
+
     const monsterDiv = document.createElement("div");
     monsterDiv.className = "monster-card";
 
@@ -1015,23 +1019,37 @@ function toTitleCase(str) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
 }
-
 function populateDropdowns() {
     ["base", "additional", "mod"].forEach(type => {
         const select = document.getElementById(`${type}-type`);
         if (!select) return;
 
         select.innerHTML = "";
-        Object.keys(monsterData[type]).forEach(key => {
-            const option = document.createElement("option");
-            option.value = key;
-            option.textContent = toTitleCase(key);
-            select.appendChild(option);
-        });
+        Object.keys(monsterData[type])
+            .sort() // sort alphabetically
+            .forEach(key => {
+                const option = document.createElement("option");
+                option.value = key;
+                option.textContent = toTitleCase(key);
+                select.appendChild(option);
+            });
     });
 }
 
+
 document.addEventListener("DOMContentLoaded", function () {
+    if (monsterData?.base && monsterData?.additional && monsterData?.mod) {
+        populateDropdowns();
+    } else {
+        // Retry when monsterData is ready (if it's loaded asynchronously)
+        const interval = setInterval(() => {
+            if (monsterData?.base && monsterData?.additional && monsterData?.mod) {
+                populateDropdowns();
+                clearInterval(interval);
+            }
+        }, 100);
+    }
+
     document.getElementById("generate-monster").addEventListener("click", function () {
         const monster = new Monster();
         if (monster) {
@@ -1039,6 +1057,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+
+
 
 // TOOLTIPS
 document.addEventListener("DOMContentLoaded", () => {
@@ -1120,4 +1141,152 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     applyTooltips();
+});
+
+// Sidebar toggle functionality
+document.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.getElementById("sidebar");
+    const toggleButton = document.getElementById("toggle-sidebar");
+
+    toggleButton.addEventListener("click", function () {
+        if (sidebar.classList.contains("closed")) {
+            sidebar.classList.remove("closed");
+            sidebar.classList.add("open");
+        } else {
+            sidebar.classList.remove("open");
+            sidebar.classList.add("closed");
+        }
+    });
+});
+
+// Dice roller functionality
+let selectedDiceType = 6; // Default dice type (d6)
+const rollHistory = document.getElementById("roll-history");
+
+// Update dice type on button click
+document.querySelectorAll(".dice-button").forEach(button => {
+    button.addEventListener("click", () => {
+        document.querySelectorAll(".dice-button").forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        selectedDiceType = parseInt(button.dataset.dice, 10);
+    });
+});
+
+document.getElementById("roll-d20-check").addEventListener("click", () => {
+    const modifier = parseInt(document.getElementById("check-modifier").value, 10);
+    const advantage = document.getElementById("check-advantage").value;
+
+    const roll1 = Math.floor(Math.random() * 20) + 1;
+    const roll2 = Math.floor(Math.random() * 20) + 1;
+
+    let adjustedRoll1 = roll1;
+    let chosenRaw;
+
+    if (advantage === "advantage") {
+        adjustedRoll1 += 4;
+        chosenRaw = Math.max(adjustedRoll1, roll2);
+    } else if (advantage === "disadvantage") {
+        adjustedRoll1 -= 4;
+        chosenRaw = Math.min(adjustedRoll1, roll2);
+    } else {
+        chosenRaw = roll1;
+    }
+
+    const finalResult = chosenRaw + modifier;
+    const historyItem = document.createElement("li");
+    historyItem.classList.add("styled-roll");
+
+    // Determine success count
+    let successCount = 0;
+    if (finalResult >= 15) {
+        successCount = Math.floor((finalResult - 15) / 5) + 1;
+    }
+
+    // Optional highlight
+    if (finalResult >= 15) {
+        historyItem.classList.add("roll-success");
+    }
+
+    historyItem.innerHTML = `
+      <div class="roll-line">
+        <span class="roll-label">🎲 Rolled:</span> 
+        d20: <span class="roll-val">${highlightRoll(roll1)}</span>
+        ${advantage !== "none" ? `→ <span class="roll-val">${adjustedRoll1}</span> / <span class="roll-val">${highlightRoll(roll2)}</span>` : ""}
+        <hr>
+      </div>
+      <div class="mod-line">
+        <span class="roll-label"> Modifier:</span> <span class="roll-mod">${modifier >= 0 ? "+" : ""}${modifier}</span>
+      </div>
+      <div class="total-line">
+        <hr>
+        <span class="roll-label"> Total:</span> <strong class="roll-total">${finalResult}</strong>
+        ${successCount > 0 ? `<span class="success-count">(${successCount} success${successCount > 1 ? "es" : ""})</span>` : ""}
+      </div>
+      <div class="choice-line">
+        <span class="roll-label"> Chose:</span> <em class="roll-chosen">${chosenRaw}</em>
+      </div>
+    `;
+
+
+
+    document.getElementById("check-history").prepend(historyItem);
+
+    // Limit history to 10 entries
+    const historyList = document.getElementById("check-history");
+    if (historyList.children.length > 5) {
+        historyList.removeChild(historyList.lastChild);
+    }
+});
+
+
+
+// Highlight rolls based on value
+function highlightRoll(roll, diceType) {
+    const [primary, secondary] = roll.toString().split("/").map(Number); // Support for advantage/disadvantage
+    const highlight = value => {
+        if (value === diceType) return `<span class="roll-max">${value}</span>`; // Max roll
+        if (value === 1) return `<span class="roll-min">${value}</span>`; // Min roll
+        return `<span class="roll-normal">${value}</span>`; // Default
+    };
+
+    return secondary
+        ? `${highlight(primary)}/${highlight(secondary)}` // Advantage/Disadvantage case
+        : highlight(primary); // Normal roll
+}
+
+// Highlight rolls based on value
+function highlightRoll(value) {
+    if (value === 20) {
+        return `<span class="roll-max">${value}</span>`; // Natural 20
+    } else if (value === 1) {
+        return `<span class="roll-min">${value}</span>`; // Natural 1
+    } else {
+        return `<span class="roll-normal">${value}</span>`; // Default roll
+    }
+}
+
+document.getElementById("toggle-roller").addEventListener("click", () => {
+    document.getElementById("dice-roller").classList.remove("active");
+    document.getElementById("d20-check-roller").classList.add("active");
+    document.getElementById("toggle-roller").classList.add("active");
+    document.getElementById("toggle-dice").classList.remove("active");
+});
+
+document.getElementById("toggle-dice").addEventListener("click", () => {
+    document.getElementById("dice-roller").classList.add("active");
+    document.getElementById("d20-check-roller").classList.remove("active");
+    document.getElementById("toggle-dice").classList.add("active");
+    document.getElementById("toggle-roller").classList.remove("active");
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".responsive-table").forEach((wrapper) => {
+        const headers = Array.from(wrapper.querySelectorAll("thead th")).map(th => th.textContent.trim());
+        wrapper.querySelectorAll("tbody tr").forEach(row => {
+            Array.from(row.children).forEach((td, index) => {
+                td.setAttribute("data-label", headers[index] || "");
+            });
+        });
+    });
 });
