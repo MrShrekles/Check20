@@ -48,6 +48,7 @@
                         <a href="charsheet.html">Character Sheet</a>
                         <a href="reference.html">Reference</a>
                         <a href="damage.html">Damage & Damage Tables</a>
+                        <a href="conditions.html">Conditions</a>
                         <a href="spellcasting.html">Spellcasting</a>
                         <a href="downtime.html">Downtime</a>
                     </nav>
@@ -81,100 +82,363 @@
     </header>
 
     <main>
+        <section>
+            <h1>Enchanted items</h1>
+            <p>
+                You may find in your adventures and mysteries items that have been enchanted or crafted with special
+                power. Each one carries a story. What force was used to forge it? Who created it? A forgotten mage, a
+                desperate soul, or something older? And for what purpose: protection, vengeance, or something darker?
+            </p>
+            <p>
+                Unlike standard gear, these relics may evolve, whisper secrets, or alter fate itself. Some resonate with
+                specific users. Others demand sacrifice or influence your dreams. They might be remnants of fallen gods,
+                cursed inventions, or soul-bound curiosities that grow as you do. Every enchanted item is a piece of the
+                world, and the more you learn about it, the more it might learn about you.
+            </p>
+            <div class="item-cards">
 
-
-        <!-- Sidebar -->
-        <div id="sidebar" class="closed">
-            <button id="toggle-sidebar">Tools</button>
-            <div id="sidebar-content">
-                <div class="roller-switch">
-                    <!-- Radio Toggles -->
-                    <input type="radio" name="roller-mode" id="check-mode" checked>
-                    <input type="radio" name="roller-mode" id="standard-mode">
-
-                    <!-- Toggle Buttons -->
-                    <label for="check-mode">Check20 Roller</label>
-                    <label for="standard-mode">Standard Roller</label>
-
-                    <!-- Rollers -->
-                    <div class="roller-content">
-                        <!-- Check20 Roller -->
-                        <div class="roller-block" id="check-block">
-                            <h3>Check20 Roller</h3>
-                            <form id="d20-check-roller-form">
-                                <div class="flex-container">
-                                    <div class="flex-item">
-                                        <label>Modifier
-                                            <input type="number" id="check-modifier" value="0" style="width: 30px;">
-                                        </label>
-                                    </div>
-                                    <div class="flex-item">
-                                        <label>Advantage
-                                            <select id="check-advantage">
-                                                <option value="none">None</option>
-                                                <option value="advantage">Advantage</option>
-                                                <option value="disadvantage">Disadvantage</option>
-                                            </select>
-                                        </label>
-                                    </div>
-                                    <div class="flex-item">
-                                        <button type="button" id="roll-d20-check">Roll</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <h4>Check History</h4>
-                            <ul id="check-history" class="roll-history"></ul>
-                        </div>
-
-                        <!-- Standard Roller -->
-                        <div class="roller-block" id="standard-block">
-                            <h3>Standard Dice</h3>
-                            <form id="dice-roller-form">
-                                <div class="flex-container">
-                                    <div class="flex-item">
-                                        <label>Dice
-                                            <input type="number" id="number-of-dice" value="1" min="1">
-                                        </label>
-                                        <label>Type
-                                            <select id="dice-type">
-                                                <option value="4">d4</option>
-                                                <option value="6" selected>d6</option>
-                                                <option value="8">d8</option>
-                                                <option value="10">d10</option>
-                                                <option value="12">d12</option>
-                                                <option value="20">d20</option>
-                                                <option value="100">d100</option>
-                                            </select>
-                                        </label>
-                                    </div>
-                                    <div class="flex-item">
-                                        <label>Mod
-                                            <input type="number" id="modifier" value="0">
-                                        </label>
-                                    </div>
-                                    <div class="flex-item">
-                                        <label>Advantage
-                                            <select id="advantage">
-                                                <option value="none">None</option>
-                                                <option value="advantage">Advantage</option>
-                                                <option value="disadvantage">Disadvantage</option>
-                                            </select>
-                                        </label>
-                                    </div>
-                                    <div class="flex-item">
-                                        <button type="button" id="roll-dice">Roll</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <h4>Roll History</h4>
-                            <ul id="roll-history" class="roll-history"></ul>
-                        </div>
-                    </div>
+                <div class="item-card">
+                    <h2>Jawbone Knuckles</h2>
+                    <img src="assets/images/jawbone_knuckles.jpg" alt="Jawbone Knuckles" />
+                    <p class="item-desc">The jawbone of a serial killer. Grants the user spirit and brutal force... but
+                        it
+                        whispers. Constantly. (Uses the Haunt mechanic)</p>
                 </div>
 
+                <div class="item-card">
+                    <h2>Bruiser Gauntlets</h2>
+                    <img src="assets/images/bruiser_gauntlets.jpg" alt="Bruiser Gauntlets" />
+                    <p class="item-desc">These gauntlets harness the user's strength for close combat, amplifying each
+                        punch
+                        with raw force.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Elemental Sockets – Add fire, ice, or lightning
+                        damage
+                        once per short rest.</p>
+                </div>
+
+                <div class="item-card">
+                    <h2>Skeletal Dagger</h2>
+                    <img src="assets/images/skeletal_dagger.jpg" alt="Skeletal Dagger" />
+                    <p class="item-desc">Deals 2 Eclipse damage. On hit against a living creature, summons a PL0
+                        spectral
+                        skeleton for 1 minute.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Spectral Chain – Skeletons may replicate when they
+                        kill, forming a brief ghostly horde.</p>
+                </div>
+
+                <div class="item-card">
+                    <h2>Extra Arm Mutation</h2>
+                    <img src="assets/images/extra_arm_mutation.jpg" alt="Extra Arm Mutation" />
+                    <p class="item-desc">Grow an additional arm, able to hold a small weapon and grant an extra off-action attack.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Enhanced Mutation – The arm can now wield a one-handed weapon and has an additional 1d4 strength, enhancing both damage and versatility.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Bag of Beasts</h2>
+                    <img src="assets/images/bag_of_beasts.jpg" alt="Bag of Beasts" />
+                    <p class="item-desc">This enchanted bag spawns a creature from a d6 category table, allowing some choice. The creature's Power Level (PL) is determined by rolling 1d4-1.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Expanded Bestiary – The bag now has a d8 table of creatures and allows the player to roll 1d6-1 for PL, increasing the variety and potential strength of summoned creatures.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Tracker Glasses</h2>
+                    <img src="assets/images/tracker_glasses.jpg" alt="Tracker Glasses" />
+                    <p class="item-desc">These glasses allow the wearer to mark a target within medium range, tracking them across the same plane for up to 7 days. Only one target can be tracked at a time.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Long-Range Vision – The glasses’ range is extended, and the user can now track two targets at once, marking each with a different colored glow only visible to the wearer.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Multiclass Gear</h2>
+                    <img src="assets/images/multiclass_gear.jpg" alt="Multiclass Gear" />
+                    <p class="item-desc">Equipment that adapts and enhances abilities across multiple classes, designed to grow with the character.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Adaptive Module – The gear can now gain one additional feature from a second class each time it is upgraded, allowing full integration of a secondary class into the wearer’s skill set.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Cursed Gear</h2>
+                    <img src="assets/images/cursed_gear.jpg" alt="Cursed Gear" />
+                    <p class="item-desc">Items with powerful effects but significant drawbacks or conditions for use.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Controlled Curse – The user learns to control the curse, gaining advantage on rolls to avoid its negative effects. They can also attempt to temporarily remove the curse’s drawback once per day.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Template for Progression Magic Items</h2>
+                    <img src="assets/images/progression_template.jpg" alt="Template for Progression Magic Items" />
+                    <p class="item-desc">A framework for magical items that grow and evolve with the user.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Soulbound Template – Items using this template gain personalized traits and abilities based on the user’s experiences, ensuring that each item remains unique and continuously relevant.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Mutant Serum</h2>
+                    <img src="assets/images/mutant_serum.jpg" alt="Mutant Serum" />
+                    <p class="item-desc">A vial of liquid that grants the user a random mutant ability for one hour, chosen from a d6 table (healing, strength, resistance, etc.).</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Permanent Mutation – With repeated use, the serum begins to have permanent effects, allowing the user to roll twice on the mutation table and choose one each time they drink it.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Demon Blood</h2>
+                    <img src="assets/images/demon_blood.jpg" alt="Demon Blood" />
+                    <p class="item-desc">When infused into an alchemical drink, demon blood grants extra damage resistance but requires a survival check to avoid terrifying demon screeches.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Demonic Fortitude – The user gains the ability to withstand the screeches without checks, and the blood provides temporary hit points along with its resistance.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Eclipse Cloak</h2>
+                    <img src="assets/images/eclipse_cloak.jpg" alt="Eclipse Cloak" />
+                    <p class="item-desc">This cloak grants +2 stealth bonus and allows the wearer to turn invisible for 1 minute. In The Eclipse, it enables the user to teleport as an action through shadows within short range.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Phoenix Feather Amulet</h2>
+                    <img src="assets/images/phoenix_feather_amulet.jpg" alt="Phoenix Feather Amulet" />
+                    <p class="item-desc">Grants immunity to fire damage and resurrects the wearer to 1 hit point upon death, destroying the amulet in the process.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Eternal Flame – The amulet’s resurrection effect can now be used twice before destruction, and it grants a small fire aura that deals minor damage to enemies within 5 feet.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Elemental Gauntlet</h2>
+                    <img src="assets/images/elemental_gauntlet.jpg" alt="Elemental Gauntlet" />
+                    <p class="item-desc">These gloves allow the user to release an elemental blast three times per day, with damage type chosen by the wearer.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Focused Burst – The gauntlet’s elemental blast now deals extra 1d4 damage, and it recharges on a short rest instead of once per day.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Mirror Shard Pendant</h2>
+                    <img src="assets/images/mirror_shard_pendant.jpg" alt="Mirror Shard Pendant" />
+                    <p class="item-desc">The wearer can create a temporary mirror clone once per day with half their health, useful for distractions or basic attacks.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Reflective Shield – The pendant can now create two clones, each lasting for up to 5 minutes, and they can defend the user, redirecting attacks with a slight reduction in damage.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Void Lantern</h2>
+                    <img src="assets/images/void_lantern.jpg" alt="Void Lantern" />
+                    <p class="item-desc">Captures small souls or spirits, releasing them to summon a spectral ally or access their memories.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Ethereal Warden – The lantern now holds up to two spirits at once, granting stronger allies or insights, and it glows with a protective aura that provides slight resistance to dark magic.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Ethereal Bandolier</h2>
+                    <img src="assets/images/ethereal_bandolier.jpg" alt="Ethereal Bandolier" />
+                    <p class="item-desc">Holds three vials of gas that create illusions when thrown, lasting 1d4 minutes.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Dream Mirage – The bandolier can now hold five vials, and the illusions gain limited physical form, able to distract or lightly restrain enemies for a brief period.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Harbinger’s Horn</h2>
+                    <img src="assets/images/harbingers_horn.jpg" alt="Harbinger’s Horn" />
+                    <p class="item-desc">Summons a spectral horse, with a stronger steed when used in The Eclipse.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Herald of the Eclipse – The horn now allows the steed to travel at incredible speed, and the rider becomes intangible for a brief time while mounted.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Jewel of the Deep</h2>
+                    <img src="assets/images/jewel_of_the_deep.jpg" alt="Jewel of the Deep" />
+                    <p class="item-desc">Grants underwater breathing and allows communication with aquatic creatures, as well as summoning a water elemental.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Tidal Surge – The wearer can now summon two water elementals once per long rest, and they gain the ability to swim at double speed.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Moonstone Circlet</h2>
+                    <img src="assets/images/moonstone_circlet.jpg" alt="Moonstone Circlet" />
+                    <p class="item-desc">Grants +1 to wisdom and allows visions of the past under moonlight.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Lunar Vision – The circlet now provides +2 to wisdom, and the user can receive prophetic dreams, glimpsing possible future events in addition to past ones.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Chimeric Bracers</h2>
+                    <img src="assets/images/chimeric_bracers.jpg" alt="Chimeric Bracers" />
+                    <p class="item-desc">These bracers allow the wearer to adopt an animalistic trait, such as claws, enhanced hearing, or night vision, for one hour, once per day.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Beastmaster Bond – The wearer can now activate two traits at once, and the bracers’ effect lasts up to two hours. Additionally, they may take on the form of a single powerful creature for 10 minutes, once per long rest.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Soulkeeper Blade</h2>
+                    <img src="assets/images/soulkeeper_blade.jpg" alt="Soulkeeper Blade" />
+                    <p class="item-desc">A blade that absorbs the souls of those it kills, granting +1 Strength per soul absorbed (up to 5 souls). The wielder can release the souls in a powerful attack, dealing 3d10 damage but causing fatigue.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Soul Harvest – The blade now holds up to 10 souls, granting +2 Strength per soul (max +10). Releasing the souls now has a chance to heal the wielder by 1d6 per soul released.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Essence Infuser</h2>
+                    <img src="assets/images/essence_infuser.jpg" alt="Essence Infuser" />
+                    <p class="item-desc">A mystical gem embedded into a bracer or necklace that amplifies the user’s elemental energy. The player selects a damage type (fire, ice, lightning, etc.) aligned with their personal story, which lasts for a brief time.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Resonant Crystal – Activate twice per encounter and switch elements between uses. Damage bonus increased and grants slight resistance to the chosen element while active.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Shapeshifter’s Cloak</h2>
+                    <img src="assets/images/shapeshifters_cloak.jpg" alt="Shapeshifter’s Cloak" />
+                    <p class="item-desc">This cloak grants temporary resistance to an environmental damage type, such as fire, ice, or lightning, depending on the wearer’s surroundings.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Elemental Ward – Grants full immunity to the chosen element and allows one element switch per day to adapt to changing conditions.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Weapon of Memories</h2>
+                    <img src="assets/images/weapon_of_memories.jpg" alt="Weapon of Memories" />
+                    <p class="item-desc">A weapon that lets the wielder channel a memory tied to an element, imbuing attacks with that elemental energy for the duration of a battle.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Echo of the Past – Each memory grants unique elemental effects. Choose between two memories on activation. Store more memories as experiences are collected.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Stormcaller Gauntlets</h2>
+                    <img src="assets/images/stormcaller_gauntlets.jpg" alt="Stormcaller Gauntlets" />
+                    <p class="item-desc">These gauntlets allow the wearer to channel elemental energy based on their emotions, such as fire for anger or ice for calm.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Storm’s Fury – Channel two elements at once. Creates a lingering aura that deals minor ongoing elemental damage to nearby enemies.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Elemental Prism</h2>
+                    <img src="assets/images/elemental_prism.jpg" alt="Elemental Prism" />
+                    <p class="item-desc">A crystalline prism that absorbs energy from the user’s surroundings, allowing them to select an elemental type for added effects in spellcasting or attacks.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Prismatic Core – Can hold two elements simultaneously, combining them for hybrid damage and special effects against creatures vulnerable to either.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Bonded Totem</h2>
+                    <img src="assets/images/bonded_totem.jpg" alt="Bonded Totem" />
+                    <p class="item-desc">This totem stores elemental energy based on places the user has visited or creatures encountered, infusing their attacks with the chosen element.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Totem of the Ancients – Stores up to three elements and cycles between them during an encounter. Switching emits a pulse that briefly stuns nearby enemies.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Warrior’s Ember</h2>
+                    <img src="assets/images/warriors_ember.jpg" alt="Warrior’s Ember" />
+                    <p class="item-desc">A flame within a piece of jewelry that responds to the wearer’s intent, imbuing their attacks with an element of their choice.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Inferno Heart – Split the flame to apply two elemental effects with increased damage. Gain temporary resistance to one chosen element during use.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Spellbinder’s Staff</h2>
+                    <img src="assets/images/spellbinders_staff.jpg" alt="Spellbinder’s Staff" />
+                    <p class="item-desc">A staff that attunes to different elements based on the caster’s alignment, enhancing spells and adapting to various styles of magic.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Arcanist’s Resonance – Stores up to three elemental types and switches freely. Spells gain bonus effects like increased range or minor area-of-effect.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Whispering Blade</h2>
+                    <img src="assets/images/whispering_blade.jpg" alt="Whispering Blade" />
+                    <p class="item-desc">A weapon that resonates with the user’s spirit, channeling an elemental energy of their choice.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Voice of the Elements – Grants temporary mastery over the element, summoning creatures or creating hazards. Effects last the encounter and shape the battlefield.</p>
+                </div>
+                
+                <div class="item-card">
+                    <h2>Traveler’s Lantern</h2>
+                    <img src="assets/images/travelers_lantern.jpg" alt="Traveler’s Lantern" />
+                    <p class="item-desc">A lantern that collects elemental energy from the user’s travels, casting a glow that empowers allies or damages enemies.</p>
+                    <p class="item-feature"><strong>Upgrade:</strong> Wayfarer’s Light – Holds two types of elemental energy. Its glow now also grants minor healing or movement bonuses to allies.</p>
+                </div>
+                
+
             </div>
-        </div>
+
+        </section>
+
+
+        <script>
+            const observer = new MutationObserver(() => {
+                document.querySelectorAll(".item-card img").forEach(img => {
+                    if (!img.complete || img.naturalWidth === 0) {
+                        img.src = "assets/images/no-image-pixel-sword.png";
+                    }
+                });
+            });
+
+            observer.observe(document.body, { childList: true, subtree: true });
+        </script>
+
     </main>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="closed">
+        <button id="toggle-sidebar">Tools</button>
+        <div id="sidebar-content">
+            <div class="roller-switch">
+                <!-- Radio Toggles -->
+                <input type="radio" name="roller-mode" id="check-mode" checked>
+                <input type="radio" name="roller-mode" id="standard-mode">
+
+                <!-- Toggle Buttons -->
+                <label for="check-mode">Check20 Roller</label>
+                <label for="standard-mode">Standard Roller</label>
+
+                <!-- Rollers -->
+                <div class="roller-content">
+                    <!-- Check20 Roller -->
+                    <div class="roller-block" id="check-block">
+                        <h3>Check20 Roller</h3>
+                        <form id="d20-check-roller-form">
+                            <div class="flex-container">
+                                <div class="flex-item">
+                                    <label>Modifier
+                                        <input type="number" id="check-modifier" value="0" style="width: 30px;">
+                                    </label>
+                                </div>
+                                <div class="flex-item">
+                                    <label>Advantage
+                                        <select id="check-advantage">
+                                            <option value="none">None</option>
+                                            <option value="advantage">Advantage</option>
+                                            <option value="disadvantage">Disadvantage</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="flex-item">
+                                    <button type="button" id="roll-d20-check">Roll</button>
+                                </div>
+                            </div>
+                        </form>
+                        <h4>Check History</h4>
+                        <ul id="check-history" class="roll-history"></ul>
+                    </div>
+
+                    <!-- Standard Roller -->
+                    <div class="roller-block" id="standard-block">
+                        <h3>Standard Dice</h3>
+                        <form id="dice-roller-form">
+                            <div class="flex-container">
+                                <div class="flex-item">
+                                    <label>Dice
+                                        <input type="number" id="number-of-dice" value="1" min="1">
+                                    </label>
+                                    <label>Type
+                                        <select id="dice-type">
+                                            <option value="4">d4</option>
+                                            <option value="6" selected>d6</option>
+                                            <option value="8">d8</option>
+                                            <option value="10">d10</option>
+                                            <option value="12">d12</option>
+                                            <option value="20">d20</option>
+                                            <option value="100">d100</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="flex-item">
+                                    <label>Mod
+                                        <input type="number" id="modifier" value="0">
+                                    </label>
+                                </div>
+                                <div class="flex-item">
+                                    <label>Advantage
+                                        <select id="advantage">
+                                            <option value="none">None</option>
+                                            <option value="advantage">Advantage</option>
+                                            <option value="disadvantage">Disadvantage</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="flex-item">
+                                    <button type="button" id="roll-dice">Roll</button>
+                                </div>
+                            </div>
+                        </form>
+                        <h4>Roll History</h4>
+                        <ul id="roll-history" class="roll-history"></ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 
 </body>

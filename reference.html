@@ -50,6 +50,7 @@
                         <a href="charsheet.html">Character Sheet</a>
                         <a href="reference.html">Reference</a>
                         <a href="damage.html">Damage & Damage Tables</a>
+                        <a href="conditions.html">Conditions</a>
                         <a href="spellcasting.html">Spellcasting</a>
                         <a href="downtime.html">Downtime</a>
                     </nav>
@@ -947,159 +948,10 @@
 
         </section>
 
-        <!-- Conditions -->
-        <section id="conditions">
-            <h1>Conditions</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Condition</th>
-                        <th>Effect</th>
-                        <th>Duration / Description</th>
-                    </tr>
-                </thead>
-                <tbody id="conditions">
-                    <!-- Corpus Conditions -->
-                    <tr>
-                        <td colspan="3" class="category-row">Corpus Conditions</td>
-                    </tr>
-                    <tr>
-                        <td>Bleeding</td>
-                        <td>Cannot recover wounds or receive healing.</td>
-                        <td>Lasts 1 minute</td>
-                    </tr>
-                    <tr>
-                        <td>Broken</td>
-                        <td>Physical Disadvantage</td>
-                        <td>Lasts 6 weeks</td>
-                    </tr>
-                    <tr>
-                        <td>Concussion</td>
-                        <td>Mental Disadvantage, Spellcasting Disadvantage</td>
-                        <td>Until a Long Rest</td>
-                    </tr>
-                    <tr>
-                        <td>Coughing</td>
-                        <td>Mental Disadvantage</td>
-                        <td>Until a Press On or irritant removed</td>
-                    </tr>
-                    <tr>
-                        <td>Dislocation</td>
-                        <td>Physical Disadvantage</td>
-                        <td>Until a Long Rest, or Survival Check</td>
-                    </tr>
-                    <tr>
-                        <td>Slowed</td>
-                        <td>Movement halved</td>
-                        <td>Until source removed</td>
-                    </tr>
-                    <tr>
-                        <td>Pinned</td>
-                        <td>Cannot move; restrained by an object or creature.</td>
-                        <td>Until source removed, or Off-Action removal</td>
-                    </tr>
-                    <tr>
-                        <td>Prone</td>
-                        <td>Disadvantage on ranged attacks; advantage for melee attacks against you.</td>
-                        <td>Requires 15 ft of movement to stand.</td>
-                    </tr>
 
-                    <!-- Cognition Conditions -->
-                    <tr>
-                        <td colspan="3" class="category-row">Cognition Conditions</td>
-                    </tr>
-                    <tr>
-                        <td>Blind</td>
-                        <td>Disadvantage on attack checks; attacks against you have advantage.</td>
-                        <td>Off-Action removal if possible or permanent effects require a healer</td>
-                    </tr>
-                    <tr>
-                        <td>Charmed</td>
-                        <td>Mental Disadvantage; cannot attack the source of the charm.</td>
-                        <td>Ends based on the charm's source</td>
-                    </tr>
-                    <tr>
-                        <td>Confused</td>
-                        <td>Mental Disadvantage, attacks against you have advantage.</td>
-                        <td>Until end of next turn or Press On</td>
-                    </tr>
-                    <tr>
-                        <td>Deaf</td>
-                        <td>Stealth disadvantage; Spellcasting disadvantage</td>
-                        <td>Lasts 1 minute or source removed</td>
-                    </tr>
-                    <tr>
-                        <td>Fear</td>
-                        <td>Must dash away or hide until the end of your next turn.</td>
-                        <td>Ends if you cannot see the source for a full round; typically cannot be the same source
-                            twice.</td>
-                    </tr>
-
-                    <!-- Special Conditions -->
-                    <tr>
-                        <td colspan="3" class="category-row">Special Conditions</td>
-                    </tr>
-                    <tr>
-                        <td>Intangible</td>
-                        <td>Immune to physical damage; cannot attack; movement halved.</td>
-                        <td>Ends after the effect's duration or through magical disruption. Cannot move through inorganic material.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Invisible</td>
-                        <td>Cannot be targeted by opportunity attacks; attacks against have disadvantage.</td>
-                        <td>Ends after making an aggressive action or when revealed by substances like powder or oil.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Unconscious</td>
-                        <td>Unable to act; vulnerable to critical hits and Finishers.</td>
-                        <td>Ends after a set duration, damage taken, or Off-Action ally assistance.</td>
-                    </tr>
-
-                    <!-- Major Conditions -->
-                    <tr>
-                        <td colspan="3" class="category-row">Major Conditions</td>
-                    </tr>
-                    <tr>
-                        <td>Stunned</td>
-                        <td>Disadvantage on all checks; movement halved.</td>
-                        <td>Until end of next turn or Press On</td>
-                    </tr>
-                    <tr>
-                        <td>Exhaustion</td>
-                        <td>Disadvantage on all checks; movement halved.</td>
-                        <td>Persists until a long rest, magical recovery, or specific intervention (e.g., caffeine).
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Constrained</td>
-                        <td>Cannot make attack actions; attacks against have advantage</td>
-                        <td>Off-Action removal if possible, escape check from restraints</td>
-                    </tr>
-                    <tr>
-                        <td>Exposed</td>
-                        <td>Take double damage</td>
-                        <td>Until end of next turn or Press On</td>
-                    </tr>
-                    <tr>
-                        <td>Injured</td>
-                        <td>At 0 wounds, any further damage causes immediate Death.</td>
-                        <td>Healing removes the condition. Excess damage beyond reducing wounds to 0 is ignored and does
-                            not carry over and cause death</td>
-                    </tr>
-                    <tr>
-                        <td>Death</td>
-                        <td>Character dies and cannot interact with the living world.</td>
-                        <td>Only resurrection magic can remove this condition.</td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </section>
 
         <!-- Additonal Character Information -->
-        <section class="character-section">
+        <section class="character-section" id="size">
             <h2>Additional Character Information</h2>
             <!-- Character information -->
             <div class="two-column">

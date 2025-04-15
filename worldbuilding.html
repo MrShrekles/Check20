@@ -48,6 +48,7 @@
                         <a href="charsheet.html">Character Sheet</a>
                         <a href="reference.html">Reference</a>
                         <a href="damage.html">Damage & Damage Tables</a>
+                        <a href="conditions.html">Conditions</a>
                         <a href="spellcasting.html">Spellcasting</a>
                         <a href="downtime.html">Downtime</a>
                     </nav>
@@ -80,75 +81,64 @@
         </div>
     </header>
 
-    <section>
-        <div class="two-column">
-            <div class="column">
-                <h2>NPC Generator</h2>
-                <!-- NPC Generator 1 -->
-                <div class="flex-container">
-                    <div class="flex-gen" id="generator-1">
-                        <div class="flex-pop">
-                            <button id="generate-name-btn-1">Name</button>
-                            <div id="generated-name-1" class="display-box">[Generated Name]</div>
-                        </div>
-                        <div class="flex-pop">
-                            <button id="generate-species-btn-1">Species</button>
-                            <div id="generated-species-1" class="display-box">[Generated Species]</div>
-                        </div>
-                        <div class="flex-pop">
-                            <button id="generate-history-btn-1">Affinity</button>
-                            <div id="generated-history-1" class="display-box">[Generated Affinity]</div>
-                        </div>
-                        <div class="flex-pop">
-                            <button id="generate-religion-btn-1">Religion</button>
-                            <div id="generated-religion-1" class="display-box">[Generated Religion]</div>
-                        </div>
-                        <div class="flex-pop">
-                            <button id="generate-item-btn-1">Signature Item</button>
-                            <div id="generated-item-1" class="display-box">[Generated Item]</div>
-                        </div>
-                        <div class="flex-pop">
-                            <button id="generate-motivation-btn-1">Motivation</button>
-                            <div id="generated-motivation-1" class="display-box">[Generated Motivation]</div>
-                        </div>
-                        <div class="flex-pop full-width">
-                            <button id="generate-all-btn-1">Generate All</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Left -->
+    <section class="generator-row">
+        <div class="flex-gen">
+            <h2>NPC Generator</h2>
+            <div class="flex-pop">
+                <button id="generate-name-btn-1">Name</button>
+                <div id="generated-name-1" class="display-box">[Generated Name]</div>
             </div>
-            <div class="column">
-                <h2>Business Generator</h2>
-                <div class="flex-container">
-                    <div class="flex-gen business-generator">
-                        <div class="flex-pop">
-                            <button class="generate-business-name-btn">Business Name</button>
-                            <div class="display-box generated-business-name">[Generated Business Name]</div>
-                        </div>
-                        <div class="flex-pop">
-                            <button class="generate-owner-btn">Owner</button>
-                            <div class="display-box generated-owner">[Generated Owner]</div>
-                        </div>
-                        <div class="flex-pop">
-                            <button class="generate-reputation-btn">Reputation</button>
-                            <div class="display-box generated-reputation">[Generated Reputation]</div>
-                        </div>
-                        <div class="flex-pop">
-                            <button class="generate-secret-btn">Secret</button>
-                            <div class="display-box generated-secret">[Generated Secret]</div>
-                        </div>
-                        <div class="flex-pop full-width">
-                            <button class="generate-all-business-btn">Generate All</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Right -->
+            <div class="flex-pop">
+                <button id="generate-species-btn-1">Species</button>
+                <div id="generated-species-1" class="display-box">[Generated Species]</div>
             </div>
-    </section>
+            <div class="flex-pop">
+                <button id="generate-history-btn-1">Affinity</button>
+                <div id="generated-history-1" class="display-box">[Generated Affinity]</div>
+            </div>
+            <div class="flex-pop">
+                <button id="generate-religion-btn-1">Religion</button>
+                <div id="generated-religion-1" class="display-box">[Generated Religion]</div>
+            </div>
+            <div class="flex-pop">
+                <button id="generate-item-btn-1">Signature Item</button>
+                <div id="generated-item-1" class="display-box">[Generated Item]</div>
+            </div>
+            <div class="flex-pop">
+                <button id="generate-motivation-btn-1">Motivation</button>
+                <div id="generated-motivation-1" class="display-box">[Generated Motivation]</div>
+            </div>
+            <div class="flex-pop">
+                <button id="generate-all-btn-1" style="width: 100%">Generate All</button>
+            </div>
+        </div>
 
-    <section>
-        <div class="flex-gen" id="character-question-generator">
+        <div class="flex-gen">
+            <div class="business-generator">
+                <h2>Business Generator</h2>
+                <div class="flex-pop">
+                    <button class="generate-business-name-btn">Business Name</button>
+                    <div class="display-box generated-business-name">[Generated Business Name]</div>
+                </div>
+                <div class="flex-pop">
+                    <button class="generate-owner-btn">Owner</button>
+                    <div class="display-box generated-owner">[Generated Owner]</div>
+                </div>
+                <div class="flex-pop">
+                    <button class="generate-reputation-btn">Reputation</button>
+                    <div class="display-box generated-reputation">[Generated Reputation]</div>
+                </div>
+                <div class="flex-pop">
+                    <button class="generate-secret-btn">Secret</button>
+                    <div class="display-box generated-secret">[Generated Secret]</div>
+                </div>
+                <div class="flex-pop">
+                    <button class="generate-all-business-btn" style="width: 100%">Generate All</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-gen">
             <h2>Character Roleplay Question</h2>
             <div class="flex-pop">
                 <button id="generate-question-btn">Generate Question</button>
@@ -156,7 +146,6 @@
             </div>
         </div>
     </section>
-
 
     <section>
         <h2>Monster Creator</h2>
@@ -613,222 +602,6 @@
             </div>
         </div>
     </section>
-
-    <!-- merchant stuff  -->
-    <section>
-        <div class="two-column">
-            <div class="column">
-                <h2>Merchant: Masters of Downtime</h2>
-                <p>The Merchant class thrives not in battle, but in the spaces between. Downtime is their domain,
-                    where
-                    they build empires, craft unique goods, and influence the game world through cunning negotiation
-                    and
-                    resource management. Their impact on the narrative comes from creating opportunities, solving
-                    problems with commerce, and shaping the economy around them.</p>
-
-                <h3>Merchant Conflict Hooks</h3>
-                <p>As a merchant grows in power, their actions may disrupt local economies or provoke powerful
-                    factions.
-                    Here are potential challenges and hooks:</p>
-                <ul>
-                    <li><strong>Criminal Syndicates:</strong> A faction sabotages operations with extortion or
-                        espionage, targeting trade routes or assets.</li>
-                    <li><strong>Merchant Guilds:</strong> Rival merchants or guilds lobby to impose regulations
-                        or
-                        dismantle monopolies.</li>
-                    <li><strong>Economic Collapse:</strong> Rapid expansion causes market instability, leading
-                        to
-                        price
-                        crashes or resource shortages.</li>
-                    <li><strong>Rebellion:</strong> Workers or customers revolt against unethical practices,
-                        requiring
-                        the merchant to address labor disputes or PR crises.</li>
-                    <li><strong>Political Intrigue:</strong> Nobles or governing bodies court the merchant for
-                        alliances, seeking influence over their wealth and network.</li>
-                </ul>
-
-                <h3>Merchant Reputation System</h3>
-                <p>A merchant’s reputation shapes their interactions with the world, from loyal customers to
-                    envious
-                    rivals. Reputation can be tracked as a tiered system:</p>
-                <ul>
-                    <li><strong>Tier 1 (Neutral):</strong> No special bonuses or penalties; standard market
-                        interactions.</li>
-                    <li><strong>Tier 2 (Respected):</strong> Merchants and buyers trust the player, offering
-                        minor
-                        discounts or favors.</li>
-                    <li><strong>Tier 3 (Trusted):</strong> Access to restricted markets, exclusive goods, or
-                        secret
-                        trade deals.</li>
-                    <li><strong>Tier 4 (Influential):</strong> Political figures or guilds seek alliances;
-                        rivals
-                        become
-                        increasingly hostile.</li>
-                    <li><strong>Tier 5 (Legendary):</strong> The merchant becomes a household name, influencing
-                        economies, nations, and even world events.</li>
-                </ul>
-                <h3>Merchant-Themed Quests</h3>
-                <p>Merchants often drive quests that revolve around their goals or conflicts:</p>
-                <ul>
-                    <li><strong>Supply Chain Disruption:</strong> Bandits or monsters block a critical trade
-                        route,
-                        halting business.</li>
-                    <li><strong>Hostile Takeover:</strong> A rival attempts to seize control of a merchant’s
-                        assets,
-                        requiring investigation or sabotage to counter.</li>
-                    <li><strong>Black Market Deals:</strong> The merchant must decide whether to engage in risky
-                        or
-                        illegal trade for immense profits.</li>
-                    <li><strong>Economic War:</strong> Compete against another merchant to dominate a market,
-                        leading to
-                        intrigue, sabotage, or alliances.</li>
-                    <li><strong>Crafting Challenge:</strong> A high-profile client commissions a unique item,
-                        requiring
-                        rare materials and tight deadlines.</li>
-                </ul>
-
-                <h3>Merchant Role in Party Dynamics</h3>
-                <p>Merchants contribute to their party in diverse ways, emphasizing creativity and
-                    collaboration:
-                </p>
-                <ul>
-                    <li><strong>Resource Management:</strong> Merchants can provide access to rare items,
-                        healing
-                        potions, or magical gear.</li>
-                    <li><strong>Economic Leverage:</strong> Their wealth can bribe enemies, fund operations, or
-                        sway
-                        political outcomes.</li>
-                    <li><strong>Social Connections:</strong> Merchants often have extensive networks, offering
-                        the
-                        party
-                        access to information, favors, or safe havens.</li>
-                    <li><strong>Non-Combat Options:</strong> Merchants excel in resolving conflicts through
-                        negotiation,
-                        trade, or cunning schemes.</li>
-                </ul>
-            </div>
-            <div class="column">
-                <h3>Merchant Downtime Activities</h3>
-                <p>During downtime, merchants can engage in activities that enrich the narrative and offer
-                    unique
-                    gameplay opportunities:</p>
-                <ul>
-                    <li><strong>Market Expansion:</strong> Establish new trade routes or expand operations into
-                        untapped
-                        regions. Success opens up new resources but may draw competition or attention from rival
-                        factions.</li>
-                    <li><strong>Crafting:</strong> Use skills like alchemy or blacksmithing to create unique
-                        items.
-                        High-quality or rare goods could attract buyers, leading to side quests or encounters.
-                    </li>
-                    <li><strong>Negotiation:</strong> Broker deals, forge alliances, or settle disputes.
-                        Successful
-                        negotiations might provide discounts, rare materials, or political favor.</li>
-                    <li><strong>Speculation:</strong> Invest in goods or businesses to manipulate the economy.
-                        Risk-reward scenarios can lead to significant profits—or devastating losses.</li>
-                    <li><strong>Infrastructure Projects:</strong> Build facilities like warehouses, workshops,
-                        or
-                        trade
-                        hubs. These structures provide tangible benefits, such as faster crafting or increased
-                        inventory
-                        capacity.</li>
-                    <li><strong>Merchant Intrigue:</strong> Hire spies or informants to gather intel on
-                        competitors,
-                        governments, or criminal organizations. This information could be leveraged for personal
-                        gain or
-                        to avoid conflict.</li>
-                </ul>
-
-                <h3>Guild Motivations Table</h3>
-                <p>Merchants frequently interact with guilds, whose motivations shape the economic and social
-                    landscape:
-                </p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Guild Type</th>
-                            <th>Motivation</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Artisan Guild</td>
-                            <td>Preserve tradition and innovation.</td>
-                        </tr>
-                        <tr>
-                            <td>Alchemist Guild</td>
-                            <td>Ensure safety and ethical trade of potions.</td>
-                        </tr>
-                        <tr>
-                            <td>Thieves Guild</td>
-                            <td>Undermine powerful merchants for profit.</td>
-                        </tr>
-                        <tr>
-                            <td>Merchant Alliance</td>
-                            <td>Protect markets from monopolies or exploitation.</td>
-                        </tr>
-                        <tr>
-                            <td>Explorers Guild</td>
-                            <td>Open new trade routes and access rare resources.</td>
-                        </tr>
-                        <tr>
-                            <td>Bankers Guild</td>
-                            <td>Control the flow of wealth and ensure financial stability.</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Downtime -->
-    <section>
-        <h2>Downtime Activities</h2>
-        <p>Roll 1d8 to determine resource yield for fishing, hunting, or crafting:</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Roll</th>
-                    <th>Outcome</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Catch nothing.</td>
-                </tr>
-                <tr>
-                    <td>2-3</td>
-                    <td>Small catch; minor materials.</td>
-                </tr>
-                <tr>
-                    <td>4-5</td>
-                    <td>Moderate; usable in crafting.</td>
-                </tr>
-                <tr>
-                    <td>6-7</td>
-                    <td>Rare find; worth [[2d10]] gold.</td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>Exotic/Legendary material.</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <!-- Lore Section -->
-    <details>
-        <summary>Lore</summary>
-        <section>
-            <h2>Deities</h2>
-            <p>The world of Check20 is shaped by a pantheon of gods and deities. Each represents unique
-                aspects
-                of
-                existence and influences the world through their followers and myths.</p>
-        </section>
-    </details>
 
     <!-- Sidebar -->
     <div id="sidebar" class="closed">

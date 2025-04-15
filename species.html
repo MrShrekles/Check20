@@ -48,6 +48,7 @@
                         <a href="charsheet.html">Character Sheet</a>
                         <a href="reference.html">Reference</a>
                         <a href="damage.html">Damage & Damage Tables</a>
+                        <a href="conditions.html">Conditions</a>
                         <a href="spellcasting.html">Spellcasting</a>
                         <a href="downtime.html">Downtime</a>
                     </nav>
@@ -193,7 +194,7 @@
             <h1>Species Options</h1>
 
             <!-- Humans -->
-            <details>
+            <details id="human">
                 <summary>
                     Humans
                 </summary>
@@ -2637,7 +2638,7 @@
             </details>
 
             <!-- Goblijjins -->
-            <details>
+            <details id="goblin">
                 <summary>Goblijjins</summary>
                 <section id="goblijjins" class="species">
                     <h3>Goblijjins</h3>
@@ -2972,7 +2973,7 @@
             </details>
 
             <!-- Jotun -->
-            <details>
+            <details id="jotun">
                 <summary>Jotun</summary>
                 <section id="giants" class="species">
                     <h3>Jotun</h3>
@@ -3088,7 +3089,7 @@
             </details>
 
             <!-- Dragons -->
-            <details>
+            <details id="dragon">
                 <summary>Dragons</summary>
                 <section id="dragons" class="species">
                     <h3>Dragons</h3>
@@ -3149,12 +3150,9 @@
                                     To create your dragon, follow these simple steps:
                                 </p>
                                 <ol>
-                                    <li><strong>Pick a Dragon Type:</strong> Choose the type of dragon, such as an
-                                        Elemental, Planar, or Neutral Dragon.</li>
-                                    <li><strong>Pick a Dragon Option:</strong> Select the stage of your dragon:
-                                        Whelpling, Adult, or Ancient.</li>
-                                    <li><strong>Combine Features:</strong> Merge your chosen type and option to define
-                                        your dragon's abilities and traits.</li>
+                                    <li><strong>Pick a Dragon Type:</strong> Choose the type of dragon that correlates to a damage type</li>
+                                    <li><strong>Pick an Option: </strong> You can be either a Drakonari which is a humanoid dragon or a Kobari which is a smaller humanoid dragon.</li>
+                                    <li><strong>Combine Features:</strong> You gain a feature from your <code>Type</code> and from your <code>Option</code>.</li>
                                 </ol>
                                 <p>
                                     Work with your narrator to customize your dragon's appearance, personality, and
@@ -3593,80 +3591,6 @@
                 <div class="dragon-options">
                     <h4>Dragon Options</h4>
 
-                    <!-- Dragon Whelpling -->
-                    <details>
-                        <summary>Dragon Whelpling</summary>
-                        <p>
-                            As a Dragon Whelpling, you are a tiny beacon of wonder and potential. Your scales
-                            are still soft, your wings not yet fully developed,
-                            and your eyes hold a spark of innocence and curiosity. Despite being quite small,
-                            your presence holds an inherent dignity and sense of awe
-                            that few can resist. You are an enigma, your lineage unknown, your future uncertain.
-                            Whether you're a descendant of a mighty Elemental, a
-                            mystical Planar, the tenacious Neutral, the revered Metallic, or even the majestic
-                            Gem dragons, only time will reveal.
-                        </p>
-
-                        <!-- Two-Column Flexbox Layout -->
-                        <div class="flex-container">
-                            <div class="flex-item">
-                                <h4>Average Size</h4>
-                                <p>5-6 ft</p>
-                            </div>
-                            <div class="flex-item">
-                                <h4>Lifespan</h4>
-                                <p>Immortal</p>
-                            </div>
-                            <div class="flex-item">
-                                <h4>Language</h4>
-                                <p>Imperial, Drak</p>
-                            </div>
-                            <div class="flex-item">
-                                <h4>Diet</h4>
-                                <p>Omnivore</p>
-                            </div>
-                            <div class="flex-item">
-                                <h4>Rarity</h4>
-                                <p>Legendary</p>
-                            </div>
-                        </div>
-
-                        <div class="features">
-                            <h3>Features:</h3>
-                            <ul>
-                                <li><strong>Full Dragon:</strong> You have large wings that fold how you wish, Fly speed
-                                    equal to your movement speed or half as much while wearing armor. You need a hoard
-                                    that you keep with you. This can be books, friends, trophies, money, bones, plants,
-                                    or wherever works for your dragon. You innately sense all pieces of your hoard, if
-                                    you lose any of your hoard you must make an Intellect check or become Feral for a
-                                    short time. While feral you cannot think rationally and may attack creatures or
-                                    buildings around you, say lies or inconvenient truths, or fly as far and as fast as
-                                    you can. After your short time you might regain your mind, if this happens again you
-                                    make the check again at disadvantage, if it happens a third time you are locked out
-                                    and remain in a feral state. You must start as a whelpling unless you and your
-                                    narrator agree to start you older but you will need a developed hoard.
-                                    <ul>
-                                        <li><strong>Whelpling:</strong> Your age is less than 200 years of age, you have
-                                            -1 to all checks.</li>
-                                        <li><strong>Adulthood:</strong> Around 500 years of age you are an adult dragon.
-                                            Your breath weapon deals double damage and you have +2 to all stats. You
-                                            also gain the ability to polymorph into a dragonborn humanoid form as an
-                                            Action.
-                                        </li>
-                                        <li><strong>Ancient Status:</strong> Over 1000 years of age you are an ancient
-                                            dragon. Your breath weapon deals triple damage and you have an additional +4
-                                            to all stats. You must have claim to a territory and you have altered your
-                                            territory to fit your needs. You can polymorph into any humanoid form you
-                                            please as an off-action. </li>
-                                    </ul>
-                                </li>
-                                <li><strong>Breath Weapon:</strong> As an action, target creatures in a 30 ft
-                                    cone dealing [[1d10]] damage of your type based on your dragon type.</li>
-                            </ul>
-                        </div>
-
-                    </details>
-
                     <!-- Drakonari and Kobari -->
                     <div class="species-options">
                         <!-- Drakonari -->
@@ -3701,7 +3625,7 @@
                                     </div>
                                     <div class="flex-item">
                                         <h4>Lifespan</h4>
-                                        <p>Average 60-90 years</p>
+                                        <p>200-400 years</p>
                                     </div>
                                     <div class="flex-item">
                                         <h4>Language</h4>
@@ -3811,7 +3735,7 @@
             </details>
 
             <!-- Symbiotes -->
-            <details>
+            <details id="symbiote">
                 <summary>Symbiotes</summary>
                 <section id="symbiotes" class="species">
                     <h3>Symbiotes</h3>
@@ -3951,7 +3875,10 @@
                         <div class="features">
                             <h3>Features:</h3>
                             <ul>
-                                <li><strong>Memory Transfer:</strong> When the host and symbiote merge, their souls become deeply intertwined; sharing thoughts, emotions, and memories on an intimate level. Choose a single starting feature from any class, path or talent. You gain only that starting feature, not future progression from that class.</li>
+                                <li><strong>Memory Transfer:</strong> When the host and symbiote merge, their souls
+                                    become deeply intertwined; sharing thoughts, emotions, and memories on an intimate
+                                    level. Choose a single starting feature from any class, path or talent. You gain
+                                    only that starting feature, not future progression from that class.</li>
                     </details>
 
             </details>
@@ -4428,7 +4355,7 @@
                 <h4>Beastmen Options</h4>
 
                 <!-- Zooanthropes -->
-                <details>
+                <details id="shifter">
                     <summary>
                         Zoanthropes
                     </summary>
@@ -4812,7 +4739,7 @@
                 </details>
 
                 <!-- Araknakin Subspecies -->
-                <details>
+                <details id="araknakin">
                     <summary>Araknakin</summary>
                     <section id="araknakin">
                         <p>
@@ -5017,7 +4944,7 @@
                 </details>
 
                 <!-- Avian -->
-                <details>
+                <details id="avian">
                     <summary>
                         Avians
                     </summary>
@@ -5385,7 +5312,7 @@
                 </details>
 
                 <!-- Beruklians -->
-                <details>
+                <details id="beruklian">
                     <summary>Beruklians 🐒🦧</summary>
                     <section id="beruklians" class="species">
                         <h3>Beruklians</h3>
@@ -5552,7 +5479,7 @@
                 </details>
 
                 <!-- Caniform -->
-                <details>
+                <details id="caniform">
                     <summary>Caniform 🐺🐻🦊</summary>
                     <section id="caniform" class="species">
                         <h3>Caniform</h3>
@@ -5808,7 +5735,7 @@
                 </details>
 
                 <!-- Cloven -->
-                <details>
+                <details id="cloven">
                     <summary>Cloven 🐮🦌</summary>
                     <section id="cloven" class="species">
                         <h3>Cloven</h3>
@@ -6204,7 +6131,7 @@
                 </details>
 
                 <!-- Felidae -->
-                <details>
+                <details id="felidae">
                     <summary>Felidae 😺</summary>
                     <section id="felidae" class="species">
                         <h3>Felidae</h3>
@@ -6453,7 +6380,7 @@
                 </details>
 
                 <!-- Half Cloven -->
-                <details>
+                <details id="half-cloven">
                     <summary>Half Cloven</summary>
                     <section id="half-cloven" class="species">
                         <h3>Half Cloven</h3>
@@ -6669,7 +6596,7 @@
                 </details>
 
                 <!-- Gliers -->
-                <details>
+                <details id="gliers">
                     <summary>Gliers</summary>
                     <section id="gliers" class="species">
                         <h3>Gliers</h3>
@@ -6991,13 +6918,7 @@
                                     <div class="features">
                                         <h4>Features</h4>
                                         <ul>
-                                            <li><strong>Bat Flight:</strong> Has a fly speed equal to movement when
-                                                wearing light armor or less. Heavy gear
-                                                makes flight impossible, leading many to forgo flight completely.</li>
-                                            <li><strong>Echo:</strong> As an off-action, emit a high-pitched sound to
-                                                sense targets within 120 ft if not
-                                                obstructed or behind cover.</li>
-                                            <li><strong>Blind Fighting:</strong> Immune to the blind condition.</li>
+                                            <li><strong>Winged Nightmare: </strong> You have flight speed equal to movement unless you are wearing heavy armor. As an Action emit a high pitched sound that allows you to sense all creatures within medium range if they have a physical form.</li>
                                         </ul>
                                     </div>
                                 </section>
@@ -7094,7 +7015,7 @@
                 </details>
 
                 <!-- Reptilia -->
-                <details>
+                <details id="reptile">
                     <summary>Reptilia 🦎</summary>
                     <section id="reptilia" class="species">
                         <h3>Reptilia</h3>
@@ -7334,6 +7255,31 @@
                             filled with stories of survival, ingenuity, and familial bonds, serving as a
                             testament to their enduring spirit.
                         </p>
+
+                        <!-- Flexbox for Traits -->
+                        <div class="flex-container">
+                            <div class="flex-item">
+                                <h4>Average Size</h4>
+                                <p>6-8 ft</p>
+                            </div>
+                            <div class="flex-item">
+                                <h4>Lifespan</h4>
+                                <p>60-90 years</p>
+                            </div>
+                            <div class="flex-item">
+                                <h4>Language</h4>
+                                <p>Imperial, Naech (Beast)</p>
+                            </div>
+                            <div class="flex-item">
+                                <h4>Diet</h4>
+                                <p>Omnivore, Vegetarian</p>
+                            </div>
+                            <div class="flex-item">
+                                <h4>Rarity</h4>
+                                <p>Common</p>
+                            </div>
+                        </div>
+
                     </section>
 
                     <h4>Marsupial Options</h4>
@@ -7415,6 +7361,30 @@
                             beings are revered as symbols of power, wisdom, or fear, embodying the traits of the
                             creatures that inspired them.
                         </p>
+
+                        <!-- Flexbox for Traits -->
+                        <div class="flex-container">
+                            <div class="flex-item">
+                                <h4>Average Size</h4>
+                                <p>6-8 ft</p>
+                            </div>
+                            <div class="flex-item">
+                                <h4>Lifespan</h4>
+                                <p>120-240 years</p>
+                            </div>
+                            <div class="flex-item">
+                                <h4>Language</h4>
+                                <p>Imperial, Naech (Beast)</p>
+                            </div>
+                            <div class="flex-item">
+                                <h4>Diet</h4>
+                                <p>Omnivore, Vegetarian</p>
+                            </div>
+                            <div class="flex-item">
+                                <h4>Rarity</h4>
+                                <p>Unique</p>
+                            </div>
+                        </div>
                     </section>
 
 

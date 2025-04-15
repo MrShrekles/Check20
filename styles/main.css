@@ -14,7 +14,7 @@
     --hate: rgb(95, 45, 25);
     --border-radius: 10px;
     --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    --box-hover: 0 2px 8px rgba(0, 0, 0, 0.7);
+    --box-hover: red;
     --padding: .5vw;
 }
 
@@ -607,63 +607,140 @@ nav ul li a:hover {
     box-shadow: 0 0 16px rgba(255, 120, 30, 0.3);
 }
 
+.generator-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1%;
+}
 
-/* Generator Layout */
+/* Worldbuilding Generators */
 .flex-gen {
-    flex: 1 1 300px;
+    width: 30%;
+    background-color: var(--theme-dark);
+    border-radius: var(--border-radius);
     display: flex;
     flex-direction: column;
-    gap: var(--padding);
-    padding: var(--padding);
-    background-color: var(--theme-dark);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    box-sizing: border-box;
 }
 
-/* Generator Popups */
+.flex-gen h2 {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--white);
+}
+
 .flex-pop {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: var(--padding);
-    background-color: var(--theme);
+    background-color: var(--hate);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
 }
 
-/* Buttons inside Flex Pop */
-.flex-pop button {
-    background-color: var(--theme-dark);
-    padding: var(--padding);
-    border-radius: var(--border-radius);
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-/* Button Hover Effect */
 .flex-pop button:hover {
     background-color: var(--darkgold);
 }
 
-/* Display Box (for generated content) */
 .display-box {
     flex-grow: 1;
-    padding: var(--padding);
-    background: var(--medium);
+    background-color: var(--medium);
     color: var(--white);
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.85rem;
     border-radius: var(--border-radius);
+    overflow-x: auto;
+}
+
+.generator-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.card-generator {
+    width: 280px;
+    min-height: 360px;
+    background-color: var(--theme-dark);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.gen-title {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+}
+
+.gen-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.gen-row {
+    display: flex;
+    gap: 0.5rem;
+    background-color: var(--hate);
+    padding: 0.25rem;
+    border-radius: var(--border-radius);
+    align-items: center;
+}
+
+.gen-button {
+    background-color: var(--theme);
+    color: var(--white);
+    border: none;
+    padding: 0.4rem 0.5rem;
+    border-radius: var(--border-radius);
+    font-size: 0.85rem;
+    white-space: nowrap;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 0.2s ease;
+}
+
+.gen-button:hover {
+    background-color: var(--darkgold);
+}
+
+.gen-display {
+    flex-grow: 1;
+    background-color: var(--medium);
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--white);
+    overflow-x: auto;
+}
+
+.full-width {
+    justify-content: center;
+    flex-direction: column;
     text-align: center;
 }
 
+.full-btn {
+    width: 100%;
+}
+
+
 /* Code highlight for dice rolls */
 code {
-    background-color: var(--dark);
+    background-color: black;
     color: var(--gold);
-    padding: var(--padding);
-    border-radius: 5px;
-    font-family: monospace;
-    font-size: 0.9rem;
+    border-radius: var(--border-radius);
+    padding: 3px;
+    margin: 3px;
 }
 
 /* Section General Styling */
@@ -672,6 +749,12 @@ section {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     color: var(--white);
+    padding: var(--padding);
+    transition: filter 0.5s ease;
+}
+
+section:hover {
+    filter: brightness(.96);
 }
 
 /* Headers */
@@ -693,15 +776,6 @@ h4 {
     text-transform: uppercase;
     border-bottom: 2px solid var(--gold);
     padding-bottom: 5px;
-}
-
-code {
-    background-color: var(--dark);
-    color: var(--gold);
-    padding: var(--padding);
-    border-radius: 5px;
-    font-family: monospace;
-    font-size: 0.9rem;
 }
 
 em {
@@ -1153,6 +1227,10 @@ nav a:hover {
     color: var(--darkgold);
 }
 
+a {
+    color: var(--gold);
+}
+
 .tabs {
     list-style-type: none;
     padding: 0;
@@ -1216,7 +1294,6 @@ nav a:hover {
     border-radius: var(--border-radius);
     font-size: 1.2rem;
     box-shadow: var(--box-shadow);
-    padding: var(--padding);
     transition: box-shadow 1.15s ease-in-out;
 }
 
@@ -1403,6 +1480,64 @@ nav a:hover {
     box-shadow: var(--gold);
 }
 
+.donate-button {
+    background-color: var(--theme);
+    color: var(--white);
+    font-size: 2rem;
+    padding: var(--padding);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.donate-button:hover {
+    background-color: var(--theme-hover);
+    box-shadow: var(--box-hover);
+}
+
+.donate-button:active {
+    background-color: var(--theme-dark);
+}
+
+.item-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.item-card {
+    background-color: var(--theme-dark);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    color: var(--white);
+    width: 20%;
+    text-align: left;
+    border: 1px solid var(--gold);
+    padding: 5px;
+    margin: 5px;
+}
+
+.item-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 0.5rem 0;
+}
+
+.item-feature {
+    background-color: var(--theme-alt);
+    padding: 0.5rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--gold);
+}
+
+
 /* 📌 Mobile-Friendly Adjustments */
 @media (max-width: 650px) {
 
@@ -1412,7 +1547,10 @@ nav a:hover {
         padding-bottom: 10px;
     }
 
-    .flex-gen,
+    .flex-gen {
+        width: 100%;
+    }
+
     .column {
         flex: 1 1 100%;
     }
@@ -1481,6 +1619,10 @@ nav a:hover {
         color: var(--gold);
         font-weight: bold;
         text-transform: uppercase;
+    }
+
+    .item-card {
+        width: 44%;
     }
 
 }
