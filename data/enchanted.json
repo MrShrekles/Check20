@@ -1,0 +1,406 @@
+[
+    {
+        "name": "Jewel of the Deep",
+        "type": "Amulet",
+        "Damage, Armor": "",
+        "check": "Spirit",
+        "description": "A fist‑sized sapphire set in living coral; tiny currents swirl inside.",
+        "effect": "Aquatic Affinity: breathe underwater and gain the ability telepathically converse with sea life in short range.",
+        "upgrade": "Tidal Bond: Once per day as an action summon a PL4 water elemental",
+        "tags": [
+            "Summon",
+            "Action",
+            "Enhance",
+            "Amulet",
+            "Amulet",
+            "Spirit",
+            "Action",
+            "Once Per Day"
+        ]
+    },
+    {
+        "name": "Mirror Shard Pendant",
+        "type": "Amulet",
+        "Damage, Armor": "",
+        "check": "Spirit",
+        "description": "A cracked silver pendant clutching a jagged mirror crystal that catches phantom reflections.",
+        "effect": "Mirror Self: As an action create a mirrored version of yourself, it acts in mirror of you, meaning it cannot perform the same action as you on its turn",
+        "upgrade": "Mirror Realm: As an Off-Action before taking damage show the mirror to a creature, they must make a spirit check or be sent into the mirror. When you do this the mirror is broken and they remain in the mirror, living a mirrored life to the one they knew before",
+        "tags": [
+            "Summon",
+            "Mirror",
+            "Amulet",
+            "Spirit",
+            "Action",
+            "Off-Action"
+        ]
+    },
+    {
+        "name": "Moonstone Circlet",
+        "type": "Amulet",
+        "Damage, Armor": "–",
+        "check": "Observation",
+        "description": "A thin silver headband set with a black‑veined moonstone that only glimmers for beings able to glimpse the hidden moon—Vozian creatures, demons, goblins, and certain wolf‑cults.",
+        "effect": "Umbral Insight: While the unseen moon is above the horizon, attuned wearers gain +1 Observation and advantage on Survival checks made at night. As an action you may focus for 1 minute on a spot in dim light or darkness to read sinister echoes of events that occurred there within the last 24 hours",
+        "upgrade": "Eclipse Augury. Once per long rest, if you can perceive the moon, enter a 10‑minute trance. For the next hour you may reroll one failed check and automatically sense illusions or shape‑shifted creatures within short range. After the hour you gain the Haunted condition until you finish a long rest.",
+        "tags": [
+            "Moon",
+            "Vozian",
+            "Amulet",
+            "Observation",
+            "Action"
+        ]
+    },
+    {
+        "name": "Phoenix Feather Amulet",
+        "type": "Amulet",
+        "Damage, Armor": "",
+        "check": "Spirit",
+        "description": "A golden torque suspending a still‑smoldering scarlet feather; faint embers drift around it.",
+        "effect": "Rebirth: When you would take the Death condition, instead remove the death conditions and the injured condition and set your current wounds to 1, you burst into light dealing 1 fire damage to all creatures within reach range and this amulet is destroyed",
+        "upgrade": "Second Flame: You are immune to heat damage.",
+        "tags": [
+            "Resurrection",
+            "Amulet",
+            "Spirit",
+            "Death"
+        ]
+    },
+    {
+        "name": "Eclipse Cloak",
+        "type": "Armor",
+        "Damage, Armor": "",
+        "check": "Stealth",
+        "description": "A dark cloak stitched with eclipse-thread, light-absorbing and frayed.",
+        "effect": "Stealth Bonus +2\nAction: Turn invisible for 1 minute. While in The Eclipse, Shadowstep to a visible point in short range.",
+        "upgrade": "Enhanced Cloak: Shadowstep becomes a half-action. Gain resistance to physical damage while invisible.",
+        "tags": [
+            "Enhance",
+            "Eclipse",
+            "Teleport",
+            "Utility",
+            "Armor",
+            "Stealth",
+            "Action"
+        ]
+    },
+    {
+        "name": "Shapeshifter’s Cloak",
+        "type": "Armor",
+        "Damage, Armor": "8 Armor (Light)",
+        "check": "Survival",
+        "description": "Iridescent mantle threaded with elemental essence; colours ripple with ambient energy.",
+        "effect": "Shapeshift: Once per day as an action shift into the form of another creature or object your general size and shape for 1 hour",
+        "upgrade": "Protective Shift: When you shapeshift you gain +10 armor until the end of your next turn",
+        "tags": [
+            "Defense",
+            "Elemental",
+            "Armor",
+            "Survival",
+            "Action",
+            "Once Per Day"
+        ]
+    },
+    {
+        "name": "Stormcaller Gauntlets",
+        "type": "Armor",
+        "Damage, Armor": "1d6 damage, +3 armor",
+        "check": "Agility, Spirit, Strength",
+        "description": "Polished orichalcum gloves buzzing with static.",
+        "effect": "Tempest Aura: As an action cause a flurry of wind to erupt around you and swirl until the end of your next turn, creatures within reach range have disadvantage to hit you and you have advantage on any of those creatures.",
+        "upgrade": "Your Tempest Aura caused the Blind and Deaf condition to all creatures in reach range",
+        "tags": [
+            "Elemental",
+            "Storm",
+            "Armor",
+            "Agility",
+            "Spirit",
+            "Strength",
+            "Action"
+        ]
+    },
+    {
+        "name": "Chimeric Bracers",
+        "type": "Gear",
+        "Damage, Armor": "",
+        "check": "Spirit",
+        "description": "Articulated bronze cuffs inlaid with shifting bestial glyphs.",
+        "effect": "Beastmelding: Once per day as an action, choose one animal trait to enhance yourself with for 1 hour (night‑vision long range, swim speed +20 ft, climb speed +20 ft, observation advantage).",
+        "upgrade": "Gain 2 traits when you use Beastmelding",
+        "tags": [
+            "Enhance",
+            "Fey",
+            "Beast",
+            "Gear",
+            "Spirit",
+            "Action",
+            "Once Per Day"
+        ]
+    },
+    {
+        "name": "Ethereal Bandolier",
+        "type": "Gear",
+        "Damage, Armor": "",
+        "check": "",
+        "description": "The bandolier only appears to others in darkness under Eclipse light",
+        "effect": "Your weapons naturally reload as if aided by an unseen force.\nHollow Point: As an Off-Action once per day, infuse your next weapon attack with +5 eclipse damage",
+        "upgrade": "You can use hollow point 3 times per day",
+        "tags": [
+            "Eclipse",
+            "Utility",
+            "Gear",
+            "Off-Action"
+        ]
+    },
+    {
+        "name": "Bag of Beasts",
+        "type": "Item",
+        "Damage, Armor": "",
+        "check": "",
+        "description": "a large brown leather bag with the face of an animal etched into the side.",
+        "effect": "Summon: As an action summon a [[1d4-1]] PL animal spirit that remains for 1 hour. You can have a number of forest spirits equal to half your Spirit Check",
+        "upgrade": "When you summon a animal spirit, double its PL",
+        "tags": [
+            "Summon",
+            "Fey",
+            "Item",
+            "Action"
+        ]
+    },
+    {
+        "name": "Elemental Prism",
+        "type": "Item",
+        "Damage, Armor": "Adds +1d4 chosen element",
+        "check": "Intellect",
+        "description": "Palm‑sized crystalline tetrahedron refracting raw planar energies.",
+        "effect": "Absorb: As an Off-Action in response to taking elemental damage, take half and store that amount in the prism for 1 minute. You can imbue a spell or weapon with the elemental damage as an Off-Action, it remains until the end of your next turn or until used",
+        "upgrade": "You can store the damage indefinitely, when you take elemental damage you gain +10 armor until the end of your next turn once per day",
+        "tags": [
+            "Elemental",
+            "Reaction",
+            "Enhance",
+            "Armor",
+            "Item",
+            "Intellect",
+            "Off-Action"
+        ]
+    },
+    {
+        "name": "Harbinger’s Horn",
+        "type": "Item",
+        "Damage, Armor": "",
+        "check": "Spirit",
+        "description": "Ebony hunting horn carved with necromantic motifs, a skeleton hand curls around the horn.",
+        "effect": "Spectral Steed: Once per day as an action summon PL 3 spectral skeletal horse for 1 hour that has double your movement speed",
+        "upgrade": "Umbral Fear: When you summon the steed creatures within short range that hear the horn must make an intellect check or take the fear condition",
+        "tags": [
+            "Summon",
+            "Eclipse",
+            "Fear",
+            "Skeleton",
+            "Item",
+            "Spirit",
+            "Action",
+            "Once Per Day"
+        ]
+    },
+    {
+        "name": "Traveler’s Lantern",
+        "type": "Lantern",
+        "Damage, Armor": "1d4+1 fire",
+        "check": "Spirit",
+        "description": "Copper road‑lamp that absorbs wandering motes.",
+        "effect": "Ignite (Action): Unleash stored flame. All creatures you choose in short range take 1d4 + 1 fire. Creatures of the Eclipse take double damage.",
+        "upgrade": "Flashing Ignite: Every creature damaged by Ignite must pass an Observation check or be blind until the end of your next turn.",
+        "tags": [
+            "Fire",
+            "Lantern",
+            "Spirit",
+            "Action"
+        ]
+    },
+    {
+        "name": "Void Lantern",
+        "type": "Lantern",
+        "Damage, Armor": "–",
+        "check": "Spirit",
+        "description": "Black iron lamp engraved with soul‑binding sigils.",
+        "effect": "Soul Cage: Target one lesser spirit (PL 1 or lower) within short range and make a Spirit check. On a success, the spirit is sealed in the lantern. Later, as an Off-action, you may release it to summon a demon version of it for 1 minute, it may follow your commands",
+        "upgrade": "Twin Cage (Passive): The lantern can hold two spirits at once. While at least one spirit is sealed you have Resistance 2 against Eclipse damage.",
+        "tags": [
+            "Summon",
+            "Vozian",
+            "Demon",
+            "Lantern",
+            "Spirit",
+            "Action"
+        ]
+    },
+    {
+        "name": "Hearth‑Beacon",
+        "type": "Lantern",
+        "Damage, Armor": "",
+        "check": "",
+        "description": "Brass carriage lantern glowing with homely fire.",
+        "effect": "Guiding Flame: Your light cuts through magical darkness . Additionally you and your allies have advantage on intellect and survival checks to navigate",
+        "upgrade": "Beacon’s Shelter: Allies who finish a Press On or Rest inside the light heal an extra +10 wounds and repair +10 more armor",
+        "tags": [
+            "Press-On",
+            "Healing",
+            "Repair",
+            "Lantern",
+            "Passive"
+        ]
+    },
+    {
+        "name": "Stellar Reliquary",
+        "type": "Lantern",
+        "Damage, Armor": "",
+        "check": "",
+        "description": "Crystal lantern flecked with stardust.",
+        "effect": "Starlight Pulse: Once per day as an action, heal allies for +5 and remove a cognition condition.",
+        "upgrade": "When you use Starlight Pulse, undead and demons must make a spirit check or take the fear condition",
+        "tags": [
+            "Heal",
+            "Lantern",
+            "Action",
+            "Once Per Day"
+        ]
+    },
+    {
+        "name": "Crucible Lamp",
+        "type": "Lantern",
+        "Damage, Armor": "",
+        "check": "",
+        "description": "Rotating cage of molten glass.",
+        "effect": "Flux Burst: Once per day as an action, choose Fire, Ice, or Lightning. All creatures you choose in short range take 1d6 of the chosen element.",
+        "upgrade": "Echo Burst: Immediately after Flux Burst you may repeat the same damage as an off‑action (once per use).",
+        "tags": [
+            "Elemental",
+            "Aura",
+            "Lantern",
+            "Action",
+            "Once Per Day"
+        ]
+    },
+    {
+        "name": "Somnolent Sconce",
+        "type": "Lantern",
+        "Damage, Armor": "",
+        "check": "Spirit",
+        "description": "Seashell lantern that hums with dream‑notes.",
+        "effect": "Lullaby: Once per day as an action, Every creature in short range hears soft chimes. Each must make a Spirit check; on a failure the creature takes the Unconsious condition until the start of their turn",
+        "upgrade": "Dream Shackles: A creature that wakes from Lullaby has disadvantage on its first attack or check.",
+        "tags": [
+            "Dreamsea",
+            "Sleep",
+            "Unconsious",
+            "Lantern",
+            "Spirit",
+            "Action",
+            "Once Per Day"
+        ]
+    },
+    {
+        "name": "Axiom Beacon",
+        "type": "Lantern",
+        "Damage, Armor": "",
+        "check": "",
+        "description": "Geometric steel frame humming with runes of law.",
+        "effect": "Silence of Law: As an action, Until the end of your next turn, spells cast within short range are made at disadvantage.",
+        "upgrade": "Inviolate Form: When you use Silence of Law you also gain a spell immune shield that negates the next spell cast on you.",
+        "tags": [
+            "Ordealis",
+            "Antimagic",
+            "Lantern",
+            "Action"
+        ]
+    },
+    {
+        "name": "Willowglow Lamp",
+        "type": "Lantern",
+        "Damage, Armor": "",
+        "check": "",
+        "description": "Living‑wood cage sprouting tiny blossoms.",
+        "effect": "Verdant Leap: As a half-action, until the end of your next turn, each non-draconic ally that starts its turn within reach range  of your light can teleport short range to a space they can can see within range (once per creature).",
+        "upgrade": "Blooming Ward: A creature that teleports with Verdant Leap gains +10 armor until the end of its next turn.",
+        "tags": [
+            "Fey",
+            "Teleport",
+            "Lantern",
+            "Action"
+        ]
+    },
+    {
+        "name": "Elemental Gauntlet",
+        "type": "Weapon",
+        "Damage, Armor": "Damage equal to Spirit Check",
+        "check": "Spirit",
+        "description": "A rune-etched gauntlet that channels unstable elemental force.",
+        "effect": "Elemental Blast: Once per day as an action, target a creature in short range and make a Spirit check, on a success deal damage equal to your spirit check, You can choose fire, ice, thunder, or lighting.",
+        "upgrade": "Has 3 charges, recovers 1 charge the first time you enter a storm",
+        "tags": [
+            "Elemental",
+            "Weapon",
+            "Storm",
+            "Weapon",
+            "Spirit",
+            "Action",
+            "Once Per Day"
+        ]
+    },
+    {
+        "name": "Jawbone Knuckles",
+        "type": "Weapon",
+        "Damage, Armor": "1d4 Impact + 2 Eclipse",
+        "check": "Agility, Spirit, Strength",
+        "description": "Hardened jawbones bound in copper wire, taken from a serial killer and etched with binding glyphs.",
+        "effect": "While worn, you gain Bonus +2 to attack checks and hear whispers when near the dying or recently dead.",
+        "upgrade": "Once per day, reroll a failed Spirit check. Success or fail, you gain the Fear condition as you are haunted by the dead.",
+        "tags": [
+            "Weapon",
+            "Eclipse",
+            "Spirit",
+            "Weapon",
+            "Agility",
+            "Spirit",
+            "Strength"
+        ]
+    },
+    {
+        "name": "Skeletal Dagger",
+        "type": "Weapon",
+        "Damage, Armor": "1d4 Slashing or Piercing + 2 Eclipse",
+        "check": "Agility, Spirit, Strength",
+        "description": "A jagged dagger carved from a humanoid spine, bound with eclipse twine and dripping faint mist.",
+        "effect": "Summon: As an action summon a PL1 Spectral Skeleton that remains for 1 hour. Can have a maximum number of Spectral Skeletons equal to half your Spirit Check",
+        "upgrade": "If a skeleton kills a creature it gain +1 PL and remains and does not dissipate after 1 hour.",
+        "tags": [
+            "Eclipse",
+            "Summon",
+            "Skeleton",
+            "Weapon",
+            "Agility",
+            "Spirit",
+            "Strength",
+            "Action"
+        ]
+    },
+    {
+        "name": "Soulkeeper Blade",
+        "type": "Weapon",
+        "Damage, Armor": "1d6",
+        "check": "Strength",
+        "description": "Ebony steel whose channels trap wisps of violet light.",
+        "effect": "Harvest: When a living creature dies within short range of you, you can, as an off-action, Harvest their soul with your soul keeper blade. When you harvest a soul your weapon gain +1 bonus to checks and damage, to a maximum of +3",
+        "upgrade": "Soul Fury: You can expend a soul from your soul keeper blade and immediately make an attack against a creature in your range with the soulkeeper blade",
+        "tags": [
+            "Enhance",
+            "Weapon",
+            "Eclipse",
+            "Weapon",
+            "Strength",
+            "Action"
+        ]
+    }
+]

@@ -1,21 +1,16 @@
 {
   "species": [
     {
-      "id": "primarch",
       "name": "Primarch",
-      "description": "Primarchs, often referred to as 'True Humans' by some cultures, represent a rare and enigmatic strain of humanity that embodies the full spectrum of human potential and ambition.",
-      "size": "5-6 ft",
-      "lifespan": "60-90 years",
-      "language": [
-        "Imperial"
-      ],
+      "lineage": "human",
+      "option": "",
+      "description": "Primarchs, often referred to as \"True Humans\" by some cultures, represent a rare and enigmatic strain of humanity that embodies the full spectrum of human potential and ambition. They are distinguished by their commanding presence and potent influence, often occupying positions of power where their natural authority can sway the will of others.\nFeared and revered in equal measure, their very existence shapes the course of history, with their actions often heralding significant change and leaving an enduring legacy in their wake. Despite their rarity, Primarchs reflect the diversity inherent to humanity, encompassing a vast array of cultural, philosophical, and moral leanings.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial",
       "diet": "Omnivore",
-      "rarity": "Very Rare",
-      "tags": [
-        "human",
-        "leader",
-        "command"
-      ],
+      "rarity": "very rare",
+      "region": "global",
       "features": [
         {
           "name": "Command",
@@ -42,750 +37,1182 @@
       ]
     },
     {
-      "id": "changeling-elemental",
-      "name": "Elemental Changeling",
-      "base_species": "Changeling",
-      "description": "Elemental Changelings are born from unions between mortals and elemental spirits. Their tribes and clans are scattered across harsh landscapes, where they master the forces of nature and serve as mediators between civilizations and the wilds.",
-      "size": "5-6 ft",
-      "lifespan": "60-90 years",
-      "language": [
-        "Imperial"
-      ],
+      "name": "Greyling",
+      "lineage": "human",
+      "option": "changeling",
+      "description": "Changelings are quiet imposters. They are creatures that replace themselves in the life of someone else. While the old stories speak of fey mischief and forest spirits, most changelings don't know where they came from. They are almost human: their voice slightly wrong, their smile too still, their movements rehearsed. Found in villages, orphanages, or city gutters, they blend into society until someone looks too closely. Raised in place of the real child, they often become wanderers or con artists, driven by a subtle sense of displacement. Some seek truth. Others play the role they were given. Many are hunted by those who believe the switch can be undone.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial",
       "diet": "Omnivore",
       "rarity": "Very Rare",
-      "tags": [
-        "changeling",
-        "elemental",
-        "nature",
-        "shapeshifter"
-      ],
-      "features": [
-        {
-          "name": "Faceshift",
-          "description": "As an action, shift your facial structure into that of another creature that you have studied within the past 24 hours, that you know intimately, or have loyalty with."
-        },
-        {
-          "name": "Elemental Immunity",
-          "description": "Once per long rest, as an action, gain immunity to an elemental damage type for 1 minute.",
-          "options": [
-            {
-              "name": "Fire",
-              "effect": "Become immune to Fire damage for 1 minute."
-            },
-            {
-              "name": "Cold",
-              "effect": "Become immune to Cold damage for 1 minute."
-            },
-            {
-              "name": "Lightning",
-              "effect": "Become immune to Lightning damage for 1 minute."
-            }
-          ]
-        }
-      ]
+      "region": "global",
+      "features": "Faceshift: As an action, shift your facial structure into that of another creature you have studied within the past 24 hours, know intimately, or have loyalty with. When you do this and you can see the creature you gain the surface thoughts of the creature, voice, and mannerisms."
     },
     {
-      "id": "changeling-vozian",
-      "name": "Vozian Changeling",
-      "base_species": "Changeling",
-      "description": "Vozian Changelings bear the legacy of infernal pacts and forbidden magic. Some serve as agents of destruction, while others seek redemption, using their power to protect instead of terrorize.",
-      "size": "5-6 ft",
-      "lifespan": "60-90 years",
-      "language": [
-        "Imperial"
-      ],
+      "name": "Elemental",
+      "lineage": "human",
+      "option": "changeling",
+      "description": "In the heart of the world's wild frontiers, where nature’s forces rage unchecked, the Elemental Changelings were born. Their origins are the stuff of ancient myths, tales of the world's formation and the spirits that shaped it.\nIt is said that an Elemental Changeling can listen to the whispers of the winds, converse with the babbling brooks, and coax the very mountains to shift. Their ceremonies are spectacles of elemental mastery, where fire and water dance, stone and air embrace, and the spirits of nature join in a harmonious chorus.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial",
       "diet": "Omnivore",
       "rarity": "Very Rare",
-      "tags": [
-        "changeling",
-        "vozian",
-        "infernal",
-        "shapeshifter"
-      ],
-      "features": [
-        {
-          "name": "Dreadful Faceshift",
-          "description": "As an action, shift your facial structure into that of a horrifying visage or a monster. Choose an intelligent creature within reach range and make an Influence check. On a success, they gain the Fear condition and immunity to this effect."
-        },
-        {
-          "name": "Vozian Defense",
-          "description": "As a half-action, assume a Vozian Defense stance. While in this stance, the next time you take damage, the total is halved and you leave the stance."
-        }
-      ]
+      "region": "global, void",
+      "features": "Environmental Shifter: As an action blend into any surface like a wooden wall, stone, or even a campfire or water. While in this form you have the Invisible condition. When you are shifted you can make attacks with a stealth check, adding your Stealth check to the damage once per creature."
     },
     {
-      "id": "changeling-nemuri",
-      "name": "Nemuri Changeling",
-      "base_species": "Changeling",
-      "description": "Nemuri Changelings trace their origins to the Dreamsea, born from the convergence of dream spirits and mortals. Their ethereal grace allows them to blur the lines between reality and illusion, acting as both wanderers and guardians of the dream realm.",
-      "size": "5-6 ft",
-      "lifespan": "60-90 years",
-      "language": [
-        "Imperial"
-      ],
+      "name": "haunted",
+      "lineage": "human",
+      "option": "changeling",
+      "description": "Beneath the veil of the mortal realm, in places tainted by darkness and flame, the Vozian Changelings emerged. Their genesis is intertwined with tales of forbidden pacts and infernal bargains. Driven by a hunger for power or desperation, their ancestors sought out the infernal entities of the Vozian depths, forging bonds that would change the course of their lineage forever.\rNow, these changelings walk the world bearing both the gift and curse of their infernal heritage. With the ability to assume forms that mirror the nightmares of many, they are both feared and revered. Settlements speak of the Vozian emissaries who can turn the tide of battles with their fiery presence, while whispered campfire stories warn of their wrath. But not all Vozians are agents of destruction; some seek redemption, hoping to use their formidable abilities to protect, rather than to terrorize.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial",
       "diet": "Omnivore",
       "rarity": "Very Rare",
-      "tags": [
-        "changeling",
-        "dreamsea",
-        "shapeshifter",
-        "ethereal"
-      ],
-      "features": [
-        {
-          "name": "Intangible Shifting",
-          "description": "As an action, shift your facial structure into that of another creature that you have studied within the past 24 hours, that you know intimately, or have loyalty with."
-        },
-        {
-          "name": "Phasing",
-          "description": "As an action, become intangible until the start of your next turn. Additionally, while you are intangible, you are also invisible."
-        }
-      ]
+      "region": "global, ordealis",
+      "features": "Dreadful: As an action, shift your facial structure into that of a horrifying visage, monster or illusion. Creatures within reach range and make a mental check, on a failure they gain the fear condition and immunity to this effect."
     },
     {
-      "id": "dwarf-hill",
-      "name": "Hill Dwarf",
-      "base_species": "Dwarf",
-      "description": "Hill Dwarves have adapted to life above ground, known for their dark, sun-kissed skin and thick black hair. They excel in farming, stone-cutting, and brewing, carrying their Dwarven heritage with unwavering determination.",
-      "size": "3-5 ft",
-      "lifespan": "200-400 years",
-      "language": [
-        "Imperial",
-        "Dwarga"
-      ],
-      "diet": [
-        "Omnivore",
-        "Dirt & Soil"
-      ],
-      "rarity": "Common",
-      "tags": [
-        "dwarf",
-        "hill",
-        "hardy",
-        "brewer"
-      ],
-      "features": [
-        {
-          "name": "Stonecast Liver",
-          "description": "As an off-action, if you are missing wounds, drink any alcoholic drink to regain [[1d4]] wounds but gain the Confused condition for 1 minute."
-        }
-      ]
+      "name": "uncanny",
+      "lineage": "human",
+      "option": "changeling",
+      "description": "The Nemuri are not born, but instead they are dreamed. Slipping from the Dreamsea into cradles and lives that were not meant for them, Nemuri Changelings replace the ones who were supposed to be. Their presence is uncanny: calm, graceful, soft-spoken, yet never fully here. Many don't even know they're not the original until a dream reminds them. Some fade into society. Others awaken to what they are and return to walk the Dreamsea, keeping watch over its fragile boundary. They are protectors by instinct, guarding reality from the bleed of nightmares. It’s said you can see a true changeling by looking into their eyes and realizing they're somewhere else.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial",
+      "diet": "Omnivore",
+      "rarity": "Very Rare",
+      "region": "global, dreamsea",
+      "features": "Dreamshift: Once per long rest as an off-action, you may swap places with a willing creature within Short range. If it's before you are to be attacked, the attacker still resolves the action, but now against the new target."
     },
     {
-      "id": "dwarf-mountain",
-      "name": "Mountain Dwarf",
-      "base_species": "Dwarf",
-      "description": "Mountain Dwarves are the traditionalists of their kind, living in vast underground cities beneath towering peaks. They are natural warriors and master craftsmen, revered for their skill in forging and resilience against toxins.",
-      "size": "3-5 ft",
-      "lifespan": "200-400 years",
-      "language": [
-        "Imperial",
-        "Dwarga"
-      ],
-      "diet": [
-        "Omnivore",
-        "Dirt & Soil"
-      ],
-      "rarity": "Common",
-      "tags": [
-        "dwarf",
-        "mountain",
-        "warrior",
-        "craftsman"
-      ],
-      "features": [
-        {
-          "name": "Poison Drinker",
-          "description": "Immune to poison effects."
-        },
-        {
-          "name": "Stone Skin",
-          "description": "As a half-action, gain +5 armor until the end of your next turn."
-        }
-      ]
-    },
-    {
-      "id": "dwarf-flamebeard",
-      "name": "Flamebeard Dwarf",
-      "base_species": "Dwarf",
-      "description": "Flamebeard Dwarves are a fiery and enigmatic lineage, hailing from volcanic regions of the Dwelfmire. Their ashen skin and burning hair reflect their affinity for fire and heat, making them legendary craftsmen of elemental-infused weaponry.",
-      "size": "3-5 ft",
-      "lifespan": "200-400 years",
-      "language": [
-        "Imperial",
-        "Dwarga"
-      ],
-      "diet": [
-        "Omnivore",
-        "Dirt & Soil"
-      ],
-      "rarity": "Rare",
-      "tags": [
-        "dwarf",
-        "fire",
-        "volcanic",
-        "craftsman"
-      ],
-      "features": [
-        {
-          "name": "Molten Core",
-          "description": "As an off-action, gain fire damage immunity until the end of your next turn."
-        },
-        {
-          "name": "Heat Iron",
-          "description": "As a half-action, give a weapon +3 fire damage for 1 minute."
-        }
-      ]
-    },
-    {
-      "id": "dwarf-breaker",
-      "name": "Breaker Dwarf",
-      "base_species": "Dwarf",
-      "description": "The Breaker Dwarves, an ancient lineage, are known for their rigid traditions and controversial history of indentured servitude. Marked by pale skin and intricate red tattoos symbolizing their rank, they are both feared and respected. While many embrace their role as enforcers of order, others have abandoned their heritage, seeking a life beyond the rule of the Tyrant Lord.",
-      "size": "3-5 ft",
-      "lifespan": "200-400 years",
-      "language": [
-        "Imperial",
-        "Dwarga"
-      ],
-      "diet": [
-        "Omnivore",
-        "Dirt & Soil"
-      ],
+      "name": "tinker",
+      "lineage": "human",
+      "option": "gnome",
+      "description": "The banishment never disturbed their work. They continue with experiments that have helped and hurt creatures all throughout the world. Their homelands are often sprawling cities of moving parts, practically living traps.",
+      "size": "3-4",
+      "lifespan": "120-200",
+      "language": "Imperial (Complicated Elvish)",
+      "diet": "Omnivore, Vegetarian",
       "rarity": "Uncommon",
-      "tags": [
-        "dwarf",
-        "breaker",
-        "oppressive",
-        "renegade"
-      ],
-      "features": [
-        {
-          "name": "Breaker Gear",
-          "description": "You have a Breaker Pistol: 1-hand, medium range, [[1d4]] piercing damage, and automatically hits without a check."
-        }
-      ]
+      "region": "global",
+      "features": "Tinker-ish: You start with an interesting invention that was yours or one of your family’s creations. You keep it with you at all times, and it is very important. Choose from the following list:\rThe Impossible Pocket: A pocket 6 inches wide that can fit up to 100 lbs.\rLight Switch: Flick the switch to turn lights on or off.\rThe Chemical Transmuter: Pour in one potion and get out another. Make a luck check to determine if it gets better or worse.\rTikky Tim: A clockwork little guy (PL 1) that can be repaired as an action.\rTemporary Teleport: Click the device to teleport up to medium range for 1 minute. Afterward, you are violently teleported back.\rTinker Wings: Allow you to fly equal to your movement, but you fall to the ground at the end of your turn."
     },
     {
-      "id": "elf-gloom",
-      "name": "Gloom Elf",
-      "base_species": "Elf",
-      "description": "Gloom Elves have adapted to life in shadowy, subterranean environments where light is scarce. Their keen senses make them skilled hunters and scouts, allowing them to detect unseen threats with ease. Though their appearance is often somber, they are fiercely loyal and resourceful.",
-      "size": "5-6 ft",
-      "lifespan": "200-400 years",
-      "language": [
-        "Imperial",
-        "Eln"
-      ],
-      "diet": [
-        "Omnivore",
-        "Vegetarian"
-      ],
+      "name": "hearthless",
+      "lineage": "human",
+      "option": "gnome",
+      "description": "Hearthless Gnomes are wanderers who no longer seek belonging. Once part of the vibrant Feywild, something in them faded long ago. Now, they drift from place to place, setting up pockets of comfort in ruined homes, dead forests, and forgotten tunnels. They are soft-spoken and strangely serene, often tending to others without emotion or judgment. They don't protect because it’s right. They do it because it’s what they do. Their presence quiets the mind, dulls Fear, and warms the bones, even if nothing behind their eyes reflects it. Wherever they stop feels like home… but only while they're there.",
+      "size": "3-4",
+      "lifespan": "120-200",
+      "language": "Imperial (Complicated Elvish)",
+      "diet": "Omnivore, Vegetarian",
       "rarity": "Uncommon",
-      "tags": [
-        "elf",
-        "shadow",
-        "underground",
-        "stealth"
-      ],
-      "features": [
-        {
-          "name": "Poison Stinger",
-          "description": "Unarmed strikes deal an additional [[1d4]] toxic damage."
-        },
-        {
-          "name": "Vibration Sense",
-          "description": "Your feet are sensitive to ground vibrations. As an off-action, detect the approach of any creature making contact with the ground within medium range."
-        }
-      ]
+      "region": "global",
+      "features": "Quality Comforts: When you and your party Press On, give everyone a +2 to anything they recover or repair. Additionally, when you stop somewhere you are able to create a comfortable environment. Increased rest healing and safety, it's unlikely that creatures will invade your comfortable space, and if they do it's unlikely that they will attack."
     },
     {
-      "id": "elf-forest",
-      "name": "Forest Elf",
-      "base_species": "Elf",
-      "description": "Forest Elves maintain the closest connection to the original elven lineage, living in harmony with nature and the Feywild. Their hidden homes are woven into vast forests, and they are seen as guardians of the natural world, using their bond with the land to protect it.",
-      "size": "5-6 ft",
-      "lifespan": "200-400 years",
-      "language": [
-        "Imperial",
-        "Eln",
-        "Naech"
-      ],
-      "diet": [
-        "Omnivore",
-        "Vegetarian"
-      ],
-      "rarity": "Common",
-      "tags": [
-        "elf",
-        "nature",
-        "fey",
-        "guardian"
-      ],
-      "features": [
-        {
-          "name": "Tree Step",
-          "description": "As part of your movement, move into a tree and exit another within medium range."
-        },
-        {
-          "name": "Tree Speech",
-          "description": "You can fluently speak Naech and communicate with plants and animals."
-        }
-      ]
-    },
-    {
-      "id": "elf-noble",
-      "name": "Noble Elf",
-      "base_species": "Elf",
-      "description": "Also known as High Elves, Noble Elves pride themselves on their mastery of magic and their long-standing heritage as rulers and scholars. Many once resided in the Feywild, but some have returned to the material plane, seeking to reclaim their influence over mortal kingdoms.",
-      "size": "5-6 ft",
-      "lifespan": "200-400 years",
-      "language": [
-        "Imperial",
-        "Eln"
-      ],
-      "diet": [
-        "Omnivore",
-        "Vegetarian"
-      ],
-      "rarity": "Common",
-      "tags": [
-        "elf",
-        "magic",
-        "aristocrat",
-        "arcane"
-      ],
-      "features": [
-        {
-          "name": "Mind Spike",
-          "description": "As an action, reach into the mind of a creature within medium range. On a successful Intellect check, the creature takes [[1d4]] psychic damage."
-        }
-      ]
-    },
-    {
-      "id": "elf-eclipse",
-      "name": "Eclipse Elf",
-      "base_species": "Elf",
-      "description": "Eclipse Elves are enigmatic beings born in the Eclipse, a shadowy realm between worlds. Their smoky, ethereal appearance reflects their nature as wanderers of the void, often serving as guides or guardians of planar boundaries.",
-      "size": "5-6 ft",
-      "lifespan": "200-400 years",
-      "language": [
-        "Imperial",
-        "Eln"
-      ],
-      "diet": [
-        "Omnivore",
-        "Vegetarian"
-      ],
-      "rarity": "Rare",
-      "tags": [
-        "elf",
-        "shadow",
-        "planar",
-        "mystic"
-      ],
-      "features": [
-        {
-          "name": "Eclipse Born",
-          "description": "As a half-action, gain the Invisible condition while in darkness until the end of your next turn."
-        }
-      ]
-    },
-    {
-      "id": "elf-vozian",
-      "name": "Vozian Elf",
-      "base_species": "Elf",
-      "description": "Vozian Elves have adapted to life near demons, devils, and the ashlands of the far north. Their eerie violet-toned skin and aura make them feared and misunderstood, with their magical abilities reflecting the suffering and chaos of their surroundings.",
-      "size": "5-6 ft",
-      "lifespan": "200-400 years",
-      "language": [
-        "Imperial",
-        "Eln"
-      ],
-      "diet": [
-        "Live creatures (for suffering)"
-      ],
-      "rarity": "Rare",
-      "tags": [
-        "elf",
-        "infernal",
-        "dark magic",
-        "twisted"
-      ],
-      "features": [
-        {
-          "name": "Vozian Blast",
-          "description": "As an action, create twisted magic targeting a creature within medium range. On a successful Spirit check, the creature takes [[1d4]] psychic damage."
-        }
-      ]
-    },
-    {
-      "id": "elf-water",
-      "name": "Water Elf",
-      "base_species": "Elf",
-      "description": "Water Elves have adapted to amphibious life, forming close-knit communities with merfolk and aquatic creatures. Their connection to water allows them to harness its magic for protection and healing.",
-      "size": "5-6 ft",
-      "lifespan": "200-400 years",
-      "language": [
-        "Imperial",
-        "Eln"
-      ],
-      "diet": [
-        "Omnivore",
-        "Vegetarian"
-      ],
-      "rarity": "Uncommon",
-      "tags": [
-        "elf",
-        "water",
-        "amphibious",
-        "healer"
-      ],
-      "features": [
-        {
-          "name": "Water Armor",
-          "description": "At the start of your turn, gain 1 armor. You can only have 5 armor max from this source."
-        }
-      ]
-    },
-    {
-      "id": "elf-nemuri",
-      "name": "Nemuri Elf",
-      "base_species": "Elf",
-      "description": "Nemuri Elves dwell in the Dreamsea, where they act as spiritual guides, helping others navigate the realm of dreams. Their ghostly appearance and ability to influence subconscious minds make them both revered and enigmatic.",
-      "size": "5-6 ft",
-      "lifespan": "200-400 years",
-      "language": [
-        "Imperial",
-        "Eln"
-      ],
-      "diet": [
-        "Omnivore",
-        "Vegetarian"
-      ],
-      "rarity": "Rare",
-      "tags": [
-        "elf",
-        "dream",
-        "spiritual",
-        "mystic"
-      ],
-      "features": [
-        {
-          "name": "Ethereal Movement",
-          "description": "As an action, gain the Intangible condition until the end of your next turn."
-        }
-      ]
-    },
-    {
-      "id": "elf-fungal",
-      "name": "Fungal Elf",
-      "base_species": "Elf",
-      "description": "Fungal Elves have formed a symbiotic relationship with their environment, living within dense fungal networks. They are deeply connected to the slow, interwoven intelligence of fungal colonies, using their spores to defend their homes.",
-      "size": "5-6 ft",
-      "lifespan": "200-400 years",
-      "language": [
-        "Imperial",
-        "Eln",
-        "Naech"
-      ],
-      "diet": [
-        "Omnivore",
-        "Vegetarian"
-      ],
-      "rarity": "Rare",
-      "tags": [
-        "elf",
-        "fungus",
-        "nature",
-        "spore magic"
-      ],
-      "features": [
-        {
-          "name": "Spore Burst",
-          "description": "As an action, release a burst of spores. Creatures within reach range must make a Survival check or take the Confused condition until the end of their next turn."
-        }
-      ]
-    },
-    {
-      "id": "gnome",
-      "name": "Gnome",
-      "description": "Gnomes are inventive and endlessly curious, known for their boundless imagination and risk-taking in pursuit of knowledge. Once thriving in the Feywild, their ingenuity led to a dark chapter with the rise of Tinker Gnomes, who harvested dryad hearts for powerful constructs. This led to their banishment by Mother Nature, forcing all Gnomes into exile. Since then, Gnomes have split into those seeking redemption and those embracing progress at any cost.",
-      "size": "3-4 ft",
-      "lifespan": "120-200 years",
-      "language": [
-        "Imperial (Complicated Elvish)"
-      ],
-      "diet": [
-        "Omnivore",
-        "Vegetarian"
-      ],
-      "rarity": "Somewhat Common",
-      "tags": [
-        "gnome",
-        "inventive",
-        "exile",
-        "curious"
-      ],
-      "features": []
-    },
-    {
-      "id": "gnome-tinker",
-      "name": "Tinker Gnome",
-      "base_species": "Gnome",
-      "description": "The banishment never disturbed the work of the Tinker Gnomes. They continue their experiments, creating innovations that have helped and harmed creatures throughout the world. Their cities are mechanical wonders, filled with moving parts and self-operating traps.",
-      "size": "3-4 ft",
-      "lifespan": "120-200 years",
-      "language": [
-        "Imperial (Complicated Elvish)"
-      ],
-      "diet": [
-        "Omnivore",
-        "Vegetarian"
-      ],
-      "rarity": "Common",
-      "tags": [
-        "gnome",
-        "tinkerer",
-        "engineer",
-        "mechanical"
-      ],
-      "features": [
-        {
-          "name": "Tinker-ish",
-          "description": "You start with an interesting invention, an item that was created by you or your family and is very important to you. Choose one:",
-          "options": [
-            {
-              "name": "The Impossible Pocket",
-              "effect": "A pocket that is 6in wide and can fit up to 100 lbs."
-            },
-            {
-              "name": "Light Switch",
-              "effect": "Can flick the switch and turn lights on or off."
-            },
-            {
-              "name": "The Chemical Transmuter",
-              "effect": "Pour in one potion and get another; make a Luck check to determine if it improves or worsens."
-            },
-            {
-              "name": "Tikky Tim",
-              "effect": "A clockwork companion (PL 1), can be repaired as an action."
-            },
-            {
-              "name": "Temporary Teleport",
-              "effect": "Click the device to teleport up to medium range for 1 minute, then you are violently teleported back."
-            },
-            {
-              "name": "Tinker Wings",
-              "effect": "Allows flight equal to movement but you fall at the end of your turn."
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "gnome-gloom",
-      "name": "Gloom Gnome",
-      "base_species": "Gnome",
-      "description": "Gloom Gnomes are fun-loving creatures who have sought a new home in the Dwelfmire after leaving the Feywild’s grassy mountains. They struggle to find a permanent place, but wherever they settle, they create a welcoming and cozy atmosphere for themselves and those around them.",
-      "size": "3-4 ft",
-      "lifespan": "120-200 years",
-      "language": [
-        "Imperial (Complicated Elvish)"
-      ],
-      "diet": [
-        "Omnivore",
-        "Vegetarian"
-      ],
-      "rarity": "Uncommon",
-      "tags": [
-        "gnome",
-        "comfort",
-        "hospitality",
-        "survival"
-      ],
-      "features": [
-        {
-          "name": "Quality Comforts",
-          "description": "When you and your party Press On, give everyone a +1 to anything they recover or repair. Additionally, when you stop somewhere, you create a comfortable environment, increasing rest healing and safety. It's unlikely that creatures will invade, and if they do, they are unlikely to attack."
-        }
-      ]
-    },
-    {
-      "id": "gnome-vozian",
-      "name": "Vozian Gnome",
-      "base_species": "Gnome",
-      "description": "Vozian Gnomes have formed pacts with infernal entities, granting them immense power at a terrible cost. Their reddish skin and fiery red eyes make them stand out among other Gnomes, and they are often feared for their connections to the infernal realm.",
-      "size": "3-4 ft",
-      "lifespan": "120-200 years",
-      "language": [
-        "Imperial (Complicated Elvish)"
-      ],
-      "diet": [
-        "Omnivore",
-        "Vegetarian"
-      ],
-      "rarity": "Rare",
-      "tags": [
-        "gnome",
-        "infernal",
-        "pact",
-        "dark magic"
-      ],
-      "features": [
-        {
-          "name": "Infernal Pact",
-          "description": "As an action, summon a PL 2 demon that follows your commands but resents doing so. It remains for 1 minute or until killed."
-        }
-      ]
-    },
-    {
-      "id": "gnome-nemuri",
-      "name": "Nemuri Gnome",
-      "base_species": "Gnome",
-      "description": "Nemuri Gnomes have forged a connection with the Dreamsea, gaining increased magical abilities and an affinity for Dreamsea travel. Their ethereal glow and dreamlike nature make them sought after for their skills in divination and mental manipulation.",
-      "size": "3-4 ft",
-      "lifespan": "120-200 years",
-      "language": [
-        "Imperial (Complicated Elvish)"
-      ],
-      "diet": [
-        "Omnivore",
-        "Vegetarian"
-      ],
-      "rarity": "Rare",
-      "tags": [
-        "gnome",
-        "dreamsea",
-        "telepathic",
-        "mystic"
-      ],
-      "features": [
-        {
-          "name": "Nemuri Connection",
-          "description": "You can telepathically connect with a creature over the course of 1 hour. Once linked, you can always speak to this creature regardless of distance or plane. You can only link to 1 creature at a time."
-        },
-        {
-          "name": "Nemuri Manipulation",
-          "description": "+2 Spell Points."
-        }
-      ]
-    },
-    {
-      "id": "kleinkind",
       "name": "Kleinkind",
-      "description": "Small in stature but grand in spirit, the Kleinkind are a species as cozy as a well-worn quilt and as surprising as a jack-in-the-box. Often referred to as 'Halflings' by outsiders, they believe they were the first intelligent beings on the planet. Their knack for blending into the background kept them safe in early history, allowing them to survive while larger creatures fought. They are known for their love of community, comfort, and hospitality, creating villages filled with warmth, feasts, and laughter. However, some Kleinkind feel the pull of adventure, becoming Barnstormers who travel the world bringing joy, stories, and a touch of chaos.",
-      "size": "1-2 ft",
-      "lifespan": "60-90 years",
-      "language": ["Imperial"],
-      "diet": ["Comfort food"],
-      "rarity": "Somewhat Common",
-      "tags": ["kleinkind", "halfling", "hospitality", "wanderer"],
-      "features": [
-        {
-          "name": "Pleasant Aura",
-          "description": "If a creature is willing to listen, you can regale them with a story for 1 minute. Afterward, you and the creature gain +2 loyalty with one another. Creatures with positive loyalty toward you cannot willingly attack you."
-        },
-        {
-          "name": "Warmbones",
-          "description": "Your connection to home and hearth grants you an aura of calm that makes others feel safe."
-        },
-        {
-          "name": "Barnstormer",
-          "description": "When you travel for more than 1 week without settling in one place, you gain advantage on Luck checks until you remain in the same location for 1 week but lose your Warmbones aura."
-        }
-      ]
-    },
-    {
-      "id": "orc-desert",
-      "name": "Desert Orc",
-      "base_species": "Orc",
-      "description": "Desert Orcs used stone-moving magic and relentless effort to construct dome-like stone structures, where they live in large packs. However, frequent conflict led to a tradition where leadership is decided by combat—whoever can fight their way to dominance earns the right to rule. Desert Orcs prefer overwhelming force in battle, coordinating multiple attackers to bring down opponents.",
-      "size": "6-8 ft",
-      "lifespan": "60-90 years",
-      "language": ["Imperial", "Orkid"],
-      "diet": ["Omnivore", "Vegetarian"],
+      "lineage": "human",
+      "option": "",
+      "description": "Small in stature but grand in spirit, the Kleinkind are a species as cozy as a well-worn quilt and as surprising as a jack-in-the-box. Often referred to as \"Halflings\" by outsiders, these delightful people weave a narrative claiming they were the first intelligent beings to grace the planet. Whether this is true or just a tale spun over a warm mug of cider, the Kleinkind hold their belief with pride (and no small amount of charm).\nThe Kleinkind hallmark is their love of community and comfort. Their villages are havens of merriment, where doors are always open, feasts are abundant, and every stranger is a friend waiting to be made. Their lives are painted with warmth and laughter, their hearths glowing as brightly as their spirits. But not all Kleinkind are content to stay within the snug borders of their idyllic enclaves. Some feel the pull of the road, a wanderlust that drives them to become Barnstormers—restless travelers who bring joy, stories, and just a touch of chaos wherever they go.\nPhysically, Kleinkind are marvels of density. Standing no taller than 2 feet, they are far heavier than their size suggests, with compact musculature that makes them unexpectedly sturdy. A 1-foot Kleinkind can weigh up to 60 pounds, leading to many a startled adventurer who underestimated their strength. Despite their heft, they move with surprising nimbleness, like a stone rolling downhill—steady and unstoppable.",
+      "size": "1-2",
+      "lifespan": "60-90",
+      "language": "Imperial",
+      "diet": "Comfort food",
       "rarity": "Uncommon",
-      "tags": ["orc", "desert", "warrior", "pack tactics"],
-      "features": [
-        {
-          "name": "Desert Striker",
-          "description": "+2 to Unarmed Attack checks and damage."
-        }
-      ]
+      "region": "global",
+      "features": "Pleasant Aura:You have a knack for spinning tales and warming hearts. Once per day as an off-action, make a Luck check at a creature attacking you. On success the creature is Charmed and gains +3 loyalty with you. Creatures with positive Loyalty toward you cannot willingly attack you."
     },
     {
-      "id": "orc-mountain",
-      "name": "Mountain Orc",
-      "base_species": "Orc",
-      "description": "In the mountains of the Orclands, the pale-skinned Mountain Orcs reign supreme. They possess mastery over stone and metalwork, rivaling even the Dwarves in craftsmanship. Their civilization remains largely isolated, with their existence shrouded in mystery. Those who leave their temples are bound by powerful magical tattoos to keep their secrets.",
-      "size": "6-8 ft",
-      "lifespan": "60-90 years",
-      "language": ["Imperial", "Orkid"],
-      "diet": ["Omnivore", "Vegetarian"],
-      "rarity": "Rare",
-      "tags": ["orc", "mountain", "craftsman", "stoic"],
-      "features": [
-        {
-          "name": "Weapon Connection",
-          "description": "+2 to Attack Checks and Damage with weapons."
-        }
-      ]
-    },
-    {
-      "id": "orc-jungle",
-      "name": "Jungle Orc",
-      "base_species": "Orc",
-      "description": "The Green Jungle Orcs were the original rulers of the Orclands, known for their written language, which evolved from knotted threads to scarification tattoos. Their diet of superfoods allowed them to grow to immense sizes and develop seemingly endless endurance. This strength helped them establish a vast empire, dominating their territory for generations.",
-      "size": "6-8 ft",
-      "lifespan": "60-90 years",
-      "language": ["Imperial", "Orkid"],
-      "diet": ["Omnivore", "Vegetarian"],
+      "name": "desert",
+      "lineage": "human",
+      "option": "orc",
+      "description": "These desert orcs used stone moving magics and hard work to create stone dome structures in which they would live as large packs within. However there was constant fighting and the leader of the tribe would need to fight everyone to calm them down, thus how leadership was attained. Desert Orcs prefer to fight in large numbers with several creatures attacking at once",
+      "size": "6-8",
+      "lifespan": "60-90",
+      "language": "Imperial (Orkid)",
+      "diet": "Omnivore, Vegetarian",
       "rarity": "Common",
-      "tags": ["orc", "jungle", "strong", "strategist"],
+      "region": "Global, Multiplanar",
+      "features": "Desert Striker: Gain +2 to Unarmed Attack checks and damage."
+    },
+    {
+      "name": "mountain",
+      "lineage": "human",
+      "option": "orc",
+      "description": "In the mountains of the Orclands, the pale orcs reign supreme. They possess a mastery of stone and metal that rivals even the dwarves. These rare orcs are not often seen outside of their mountain temples and little is known about their culture or society. They are known for their impressive architectural feats and their skill in working with stone and metal is said to be unmatched. When these orcs leave their lands they are bound magically to secrecy by powerful tattoos.",
+      "size": "6-8",
+      "lifespan": "60-90",
+      "language": "Imperial (Orkid)",
+      "diet": "Omnivore, Vegetarian",
+      "rarity": "Common",
+      "region": "Global, Multiplanar",
+      "features": "Weapon Connection: Gain +2 to Attack Checks and Damage with weapons."
+    },
+    {
+      "name": "jungle",
+      "lineage": "human",
+      "option": "orc",
+      "description": "The Green Jungle Orc is the most prevalent Orc option throughout the world. These tribes originally roamed and controlled the Orclands, being the first to develop a written language. Starting with knotted threads, their language evolved into scarification and tattoos, used for tracking time, marking landmarks, and agricultural purposes.\nDue to their diet of superfoods, Jungle Orcs grew to impressive sizes and developed the ability to shrug off pain and maintain limitless reserves of energy. These traits allowed them to build an empire based on strength, stamina, and strategic thinking. They are fierce warriors and skilled strategists who once controlled vast portions of the Orclands.",
+      "size": "6-8",
+      "lifespan": "60-90",
+      "language": "Imperial (Orkid)",
+      "diet": "Omnivore, Vegetarian",
+      "rarity": "Common",
+      "region": "Global, Multiplanar",
+      "features": "Rushing Charge: If you move toward a creature within 20 ft and make an attack, gain advantage on the attack."
+    },
+    {
+      "name": "maldios",
+      "lineage": "human",
+      "option": "orc",
+      "description": "The orcs are not untouched by the corruption of the Vozian flame. In truth, they may have been its first victims. Orc legends whisper that the first orc born became Maldios, a war-driven soul who descended into the burning depths of Ordealis and thrived. There, among the rivers of blood and sandstorms of ash, he rose not just as a survivor, but as a conqueror. Now known as a greater demon of war, Maldios stands over twenty feet tall, his wings scorched and leathery, his armor built from the bones of Rotalisks; terrifying creatures that devour demons. Maldios is wrath embodied, a being of perfect violence and control.\nThose orcs who carry Maldios’ blood or have been tainted by his legacy are unmistakable. Their skin burns a bright infernal orange, and their eyes glisten with an internal fire that never dims. They are not savages however, they are tacticians bred in flame. Every movement is calculated. Every reaction is deadly. They do not hesitate. They strike back.",
+      "size": "6-8",
+      "lifespan": "60-90",
+      "language": "Imperial (Orkid)",
+      "diet": "Omnivore, Vegetarian",
+      "rarity": "Common",
+      "region": "Global, Multiplanar",
+      "features": "Infernal Skin: As a reaction to being hit with a melee attack, you may unleash the stored heat beneath your skin. The creature that hit you takes [[1d4]] Vozian damage. If they are a demon, or possess infernal traits or curses, they instead take [[1d6]] and have disadvantage on their next attack."
+    },
+    {
+      "name": "oceanic",
+      "lineage": "human",
+      "option": "orc",
+      "description": "Oceanic Orcs are a rugged seafaring culture born in the archipelagos and reef-spined coastlines of the world. Their skin ranges from deep slate to sea-glass green, often mottled with barnacle-like textures or salt-etched markings. Their long limbs, powerful lungs, and strong backs make them natural divers, pearl harvesters, reef scouts, and wave-splitters.\rThough often mistaken for solitary wanderers, Oceanic Orcs live by a deep code of tidal kinship. Family is fluid but sacred, and every crewmember is a sibling once the salt has bonded them. Their lives are shaped by the rhythm of waves, storm seasons, and the calls of massive sea beasts. They hunt leviathans, ride ocean currents, and sing old songs to calm the waters.\rOceanic Orcs are known for their wave-bound adaptability, moving with purpose both above and below water, and for forging gear from coral, whale bone, or shipwreck iron",
+      "size": "6-8",
+      "lifespan": "60-90",
+      "language": "Imperial (Orkid)",
+      "diet": "Omnivore, Vegetarian",
+      "rarity": "Common",
+      "region": "Global, Multiplanar",
+      "features": "Tidal Crash:As an off-action, when you hit a creature with a melee weapon, you may unleash a surge of stored momentum. The target must succeed on a Strength or Agility check (their choice) against your Strength check or be knocked back 10 feet and fall Prone. If they collide with terrain or another creature, both take -2 impact damage."
+    },
+    {
+      "name": "Arcane Core",
+      "lineage": "human",
+      "option": "core bound",
+      "description": "Arcane Core constructs are powered by pure magical energy, their cores brimming with arcane power. These constructs are often adorned with intricate runes and symbols etched into their bodies, marking their deep connection to magic. Designed to wield potent magical abilities, Arcane Core constructs possess heightened intellect and an unparalleled understanding of the arcane arts. They are known for their resilience, able to regenerate and repair themselves through their mastery of magical crafting. Fuel Source - Mana Crystals: These are dense stones imbued with pure magical energy, mined from regions thick with arcane power.",
+      "size": "3-9",
+      "lifespan": "60 years per cycle",
+      "language": "Imperial",
+      "diet": "Fuel Source - Mana Crystals: Dense stones imbued with pure magical energy, mined from regions thick with arcane power.",
+      "rarity": "Rare",
+      "region": "global",
+      "features": "Arcane Core: At the end of character creation, convert all your wounds into armor. Your armor regenerates at a rate of 1 point per hour. As an action, you may spend 1 spell point to repair yourself, restoring [[1d10]] armor. If your armor is ever reduced to 0, you enter a dormant state where you cannot act or respond, but your regeneration continues until fully restored when you awake again. Removing the core during the dormant state resets your personality and erases all memories. If the core is damaged in this state, it can become permanently inoperable."
+    },
+    {
+      "name": "Dryad Core",
+      "lineage": "human",
+      "option": "core bound",
+      "description": "Dryad Core constructs are imbued with the life essence of nature itself, granting them a deep connection to the natural world. Their bodies are often entwined with vines and leaves, and their agility and perception make them as swift and adaptive as the forests they resemble. Created originally by gnome tinkerers, these constructs carry within them the echoes of ancient dryads, allowing them to manipulate plants and tap into ancient knowledge locked deep within their cores. Fuel Source - Photosynthate Gel: A biologically engineered substance that replicates the effects of photosynthesis in plants.",
+      "size": "3-9",
+      "lifespan": "60 years per cycle",
+      "language": "Imperial",
+      "diet": "Fuel Source - Photosynthate Gel: A biologically engineered substance that replicates the effects of photosynthesis in plants.",
+      "rarity": "Rare",
+      "region": "global, fey",
+      "features": "Dryad Core: You have an additional +5 armor. Your armor regenerates at a rate of 1 point per hour. When you have no armor enter a Rootform state, while in this state you have advantage on Physical Checks and disadvantage on Mental Checks. If you take the Injured condition you are no longer in Rootform state until you Press On or Long Rest."
+    },
+    {
+      "name": "Vozian Core",
+      "lineage": "human",
+      "option": "core bound",
+      "description": "Vozian Core constructs are powered by infernal energy, their cores infused with the smoldering flames of the damned. Their bodies are often scorched and cracked, with flickering embers dancing across their frames, a testament to the dark power they wield. Designed for strength and endurance, these constructs channel their infernal essence into raw power, making them unstoppable in combat. Vozian Core constructs thrive in destruction, embodying the residual energy of their infernal origins. Fuel Source - Ashes of the Damned: The cremated remains of powerful undead creatures, which continue to smolder with a residual life force.",
+      "size": "4 - 11",
+      "lifespan": "60 years per cycle",
+      "language": "Imperial",
+      "diet": "Fuel Source - Ashes of the Damned: The cremated remains of powerful undead creatures, which continue to smolder with residual life force.",
+      "rarity": "Rare",
+      "region": "global, ordealis",
+      "features": "Vozian Core: Once per turn, you may burn your core. Choose one of your checks to take a –1 penalty until your next Press On or Long Rest. In exchange, you gain advantage on all checks until the end of your next turn. You may only burn your core once per turn. The first time you take the death condition, take -1 to all checks and remove the condition. You have a -1 to all checks until your next Long Rest"
+    },
+    {
+      "name": "Hill",
+      "lineage": "human",
+      "option": "dwarf",
+      "description": "Hill Dwarves are proud surface-dwellers with sun-bronzed skin and soot-streaked hands. Spending much of their time under the open sky, they are known for their dark, sun-kissed skin and thick black hair, often tied back or braided. Hill Dwarves are practical and hardworking people, skilled in engineering, stone-cutting, and brewing. Despite spending less time underground, they retain a strong connection to their Dwarven heritage and bring their unyielding determination to all aspects of their lives.",
+      "size": "3-5",
+      "lifespan": "200-400",
+      "language": "Imperial (Dwarga)",
+      "diet": "Omnivore with dirt & soil as spices",
+      "rarity": "Common below ground",
+      "region": "dwelfmire",
+      "features": "Armorborn: While wearing armor you have +10 movement speed, you repair your armor to the maximum while taking a long rest"
+    },
+    {
+      "name": "Mountain",
+      "lineage": "human",
+      "option": "dwarf",
+      "description": "Mountain Dwarves are the traditionalists of their kind, born and raised in the massive peaks and deep caverns beneath the surface. With light skin tones and hair ranging from blonde to rich browns, Mountain Dwarves are natural warriors and master craftsmen. They are deeply tied to their subterranean homes, where they mine precious gems and metals and create artifacts of unmatched durability. Mountain Dwarves have a reputation for being stoic, disciplined, and fiercely loyal to their clans. Their skills in forging and their resistance to toxins make them valuable allies and formidable foes.",
+      "size": "3-5",
+      "lifespan": "200-400",
+      "language": "Imperial (Dwarga)",
+      "diet": "Omnivore with dirt & soil as spices",
+      "rarity": "Common below ground",
+      "region": "global, dwelfmire",
+      "features": "Metalshaper: Once per day during a long rest, you can instantly repair one piece of gear like armor or a weapon"
+    },
+    {
+      "name": "Flamebeard",
+      "lineage": "human",
+      "option": "dwarf",
+      "description": "Flamebeard Dwarves are a fiery and enigmatic subrace, born deep within the volcanic regions of the Dwelfmire. Their molten environment has forged them into a unique people, with skin often tinged with an ashen hue and hair resembling living flames. As they age, some Flamebeards even display molten veins glowing beneath their skin. They are known for their affinity with heat and fire, and their ability to craft weapons infused with elemental energy is legendary. Flamebeards possess a fiery temperament to match their environment, but their passion and loyalty make them invaluable allies in times of need.",
+      "size": "3-5",
+      "lifespan": "200-400",
+      "language": "Imperial (Dwarga)",
+      "diet": "Omnivore with dirt & soil as spices",
+      "rarity": "Uncommon",
+      "region": "dwelfmire",
+      "features": "Molten: Once per day, As an action gain immunity to fire damage and your melee weapons deal an additional +3 fire damage for 1 minute"
+    },
+    {
+      "name": "Breaker",
+      "lineage": "human",
+      "option": "dwarf",
+      "description": "The Breaker dwarves, a distinct lineage of dwarves, have long resided in the depths of the Dwelfmire. With pale skin that contrasts starkly against vivid red tattoos, they present an imposing figure. Notably, the higher the rank and status of a Breaker dwarf, the more extensive their tattoo coverage, with leaders often fully inked in red.\rA Controversial Legacy: Historically, the Breaker dwarves have been staunch traditionalists. They've instituted a system where many creatures find themselves bound in a form of indentured servitude. These individuals are obligated to serve until they've completed their education and repaid all debts. This practice, while ensuring a steady workforce for the Breaker dwarves, has earned them a reputation of being master manipulators and oppressors. While many view the Breaker dwarves as malevolent due to their enslavement practices, it's essential to note the internal dissent within their ranks. Many Breaker dwarves, disillusioned by the stringent rules and the oppressive reign of the Tyrant Lord, have chosen to abandon their subterranean cities. They seek simpler, more peaceful lives on the surface, hoping to distance themselves from the controversial legacy of their ancestors.\rAppearance and Identity: A Breaker dwarf's appearance is a testament to their heritage and beliefs. Their pale complexion is often offset by hair shades ranging from rich bronze to fiery red. The red tattoos adorning their bodies are not mere decorations; they are symbols of status, experience, and in many cases, allegiance to the Tyrant Lord.",
+      "size": "3-5",
+      "lifespan": "200-400",
+      "language": "Imperial (Dwarga)",
+      "diet": "Omnivore with dirt & soil as spices",
+      "rarity": "Common below ground",
+      "region": "dwelfmire",
+      "features": "Breaker Gear: You have a Breaker Pistol. 1 hand, medium range, [[1d4]] piercing damage and automatically hits without a check."
+    },
+    {
+      "name": "breaker",
+      "lineage": "human",
+      "option": "elf",
+      "description": "Long ago, the ancestors of the Breaker Elves sought refuge in the underground realms to escape a cataclysmic event on the surface. Over the centuries, their physiology adapted to the darkness, resulting in the evolution of their distinctive skin tone and hair. Born in the depths and bred for endurance, Breaker Elves are not delicate or free. They were shaped by centuries of indentured servitude beneath the breaker dwarves, pressed into labor, pit fighting, and enforcement. Over time, their bodies adapted, becoming bulkier than surface kin, their skin bears hues of mauve, clay red, and bruised pinks, blending with rusted stone and torchlight. Their hair, always blood-red, is braided or shorn tight for utility, not beauty. Their eyes are adapted to see in the infrared spectrum, allowing them to perceive temperature differences in their environment, which can be especially handy in detecting living beings or working machines",
+      "size": "5-6",
+      "lifespan": "200-400",
+      "language": "Imperial (Eln)",
+      "diet": "Omnivore, Vegetarian",
+      "rarity": "Common",
+      "region": "Global, Multiplanar",
+      "features": "Pinpoint Crash: When you hit a medium sized creature with a melee attack, you may use an off-action to drive them into the ground or wall. The target must succeed a Physical check of their choice against your Strength or Agility check or be knocked Prone and Pinned until the end of their next turn."
+    },
+    {
+      "name": "duskwither",
+      "lineage": "human",
+      "option": "elf",
+      "description": "Duskwither Elves thrive where others falter, in deep caves, shadowed forests, and forgotten fungal groves. Their bodies, often pale or patterned with living lichen, are shaped by symbiosis with the shadowy world around them. Some grow bioluminescent spores along their shoulders. Others have spider-silk white hair and eyes that shimmer in dim light. They walk quietly, feel vibrations beneath their bare feet, and hear the whispers of the spore networks like ancient radio signals. Among themselves, they speak in soft tones or not at all, often communicating through motion, spores, or shared silences. Outsiders find them eerie, but those who earn their trust discover a community bound by empathy, instinct, and ancestral memory.",
+      "size": "5-6",
+      "lifespan": "200-400",
+      "language": "Imperial (Eln)",
+      "diet": "Omnivore, Vegetarian",
+      "rarity": "Common",
+      "region": "Global, Multiplanar",
+      "features": "Duskwither Bloom: As an action once per day, expand your senses through the fine spores that drift from your hair and skin. For one round, you are aware of all creatures within Short range, even if they are hidden, obscured, or behind cover. One creature must make a Survival check or gain the Coughing condition for 1 minute as spores settle in their lungs."
+    },
+    {
+      "name": "shadow",
+      "lineage": "human",
+      "option": "elf",
+      "description": "Shadow Elves are enigmatic beings born in the Eclipse, a shadowy realm that lies between worlds. Their smoky, ethereal appearance reflects the nature of their homeland, where light and darkness intertwine. These elves are natural wanderers between dimensions, often acting as guides, spies, or guardians of planar boundaries. Their connection to shadow and their ability to move unseen make them mysterious figures in the eyes of other species groups. Despite their otherworldly demeanor, Shadow Elves are deeply thoughtful and often wrestle with the duality of their existence.",
+      "size": "5-6",
+      "lifespan": "200-400",
+      "language": "Imperial (Eln)",
+      "diet": "Omnivore, Vegetarian",
+      "rarity": "Common",
+      "region": "Global, Multiplanar",
+      "features": "Eclipse Born:As a half-action, gain the Invisible condition while in darkness until the end of your next turn."
+    },
+    {
+      "name": "forest",
+      "lineage": "human",
+      "option": "elf",
+      "description": "Forest Elves consider themselves the truest connection to the original elven lineage, living harmoniously with nature and the Feywild. Their homes are often hidden deep within vast forests, where trees not only provide shelter but act as allies, moving to protect their elven caretakers. Forest Elves are graceful and serene, their songs and rituals strengthening the bond between the natural world and their kind. They are often seen as guardians of nature, defending their homes and wildlife from outside threats with a fierceness that belies their delicate appearance.",
+      "size": "5-6",
+      "lifespan": "200-400",
+      "language": "Imperial (Eln)",
+      "diet": "Omnivore, Vegetarian",
+      "rarity": "Common",
+      "region": "Global, Multiplanar",
+      "features": "Tree Step: Once per day, you may step into a living tree and emerge from another tree within Medium range and make an attack on a creature at advantage. Both trees must be at least your size. After doing so, you learn simple secrets from the nearby flora or fauna, like their basic emotions, warnings, or recent disturbances."
+    },
+    {
+      "name": "noble",
+      "lineage": "human",
+      "option": "elf",
+      "description": "Also known as High Elves, Noble Elves pride themselves on their mastery of magic and their long-standing heritage as rulers and scholars. They once formed grand kingdoms in the Feywild, their courts steeped in arcane tradition and timeless beauty. Though many remain in the Feywild, some Noble Elves have returned to the global material plane, eager to reclaim their dominance over mortal kingdoms. Noble Elves are graceful and regal, often exuding an air of superiority, but their intellect and magical prowess make them valuable allies.",
+      "size": "5-6",
+      "lifespan": "200-400",
+      "language": "Imperial (Eln)",
+      "diet": "Omnivore, Vegetarian",
+      "rarity": "Common",
+      "region": "Global, Multiplanar",
+      "features": "Manafused: Start with an additional +2 spell points. When you cast spells you have a +1 to the check and damage"
+    },
+    {
+      "name": "water",
+      "lineage": "human",
+      "option": "elf",
+      "description": "Water Elves are amphibious beings who have adapted to life near and in the water. With gills that allow them to breathe both air and water, they are natural swimmers and divers. These elves often form close-knit communities with aquatic races like merfolk, living in harmony with the seas and rivers they call home. Known for their calm and fluid personalities, Water Elves often carry magical water from their homelands, using it to protect and heal. Their connection to the tides and their mastery of water magic make them invaluable in maritime endeavors.",
+      "size": "5-6",
+      "lifespan": "200-400",
+      "language": "Imperial (Eln)",
+      "diet": "Omnivore, Vegetarian",
+      "rarity": "Common",
+      "region": "Global, Multiplanar",
+      "features": "Mana Water: You carry enchanted water from your homeland in a jug, gourd, or vessel. At the start of your turn, the water swirls around you, granting +1 armor (max 5). Once per day, as an action, you may release the water to either heal an ally within reach for [[1d6]] or grant them +3 armor. If your vessel is destroyed, you lose this feature until you return to a source of sacred water."
+    },
+    {
+      "name": "air",
+      "lineage": "realmsplit",
+      "option": "ensuri",
+      "description": "The Air Ensuri are ethereal wanderers, drifting wherever the winds of fate carry them. With their airy conversations and light-hearted demeanor, they are the quintessential free spirits. Drawn to the mystical and powerful, they often find themselves in the company of dragons and dragonborn, believing that the wind is the breath of Khalas. Their culture is rich with music and dance that mimic the movements of the wind, and their nomadic tribes are known for their storytelling and vibrant festivals. They prefer light, airy foods such as soufflés, whipped cream, and fresh fruits, embodying their connection to the sky and freedom.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Etheros",
+      "diet": "Elemental",
+      "rarity": "common",
+      "region": "global, void",
+      "features": "One with the Wind: You have a fly movement speed equal to your movement speed but must end your movement on solid ground or else fall to solid ground at the end of your turn.."
+    },
+    {
+      "name": "fire",
+      "lineage": "realmsplit",
+      "option": "ensuri",
+      "description": "The Fire Ensuri are passionate and fierce, with a fiery temperament to match their scorching abilities. Hailing from the Crumbling Void, they live alongside powerful fire elementals and are led by an immortal fire giant. Their culture is one of strength and defiance, celebrating fire in all its forms through grand festivals and rituals. They are known for their stunning heat dances and pyrotechnic displays. Their diet consists of spicy, grilled, and roasted foods, including charred meats and curries, reflecting their burning intensity and zest for life.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Etheros",
+      "diet": "Elemental",
+      "rarity": "common",
+      "region": "global, void",
+      "features": "Fire Control: When you deal fire damage, it deals +3 additional damage. Once per short rest, as a half-action, you may cause flames within Short range to surge or shrink, allowing you to either ignite or extinguish a flame or draw it into your hand as a flickering ember. This ember sheds light and warmth, and may be hurled as an off-action to deal [[1d4]] fire damage."
+    },
+    {
+      "name": "frost",
+      "lineage": "realmsplit",
+      "option": "ensuri",
+      "description": "The Frost Ensuri are as cold as the ice they command, yet their hearts are warm and protective. They inhabit the frozen tundras, creating magnificent ice castles and sculptures. Their culture is steeped in tales of bravery and endurance, celebrating the harsh beauty of winter. They are master craftsmen of ice, creating both weapons and art from their frozen domain. Their diet consists of chilled and frozen foods like ice cream and hearty winter stews, reflecting their icy surroundings and the comfort of warmth in cold times.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Etheros",
+      "diet": "Elemental",
+      "rarity": "common",
+      "region": "global, void",
+      "features": "Ice Weaponry: As a half-action, you may instantly form a melee weapon of solid ice. This weapon functions as a standard melee weapon of your choice dealing physical damage or Frost. If you fail an attack with it, the weapon shatters and must be remade. Additionally as a different half-action, you may summon a shield of ice as a half-action, granting +5 armor and dealing 1 cold damage to melee attackers that lasts for 1 minute"
+    },
+    {
+      "name": "lightning",
+      "lineage": "realmsplit",
+      "option": "ensuri",
+      "description": "The Lightning Ensuri are electrifying in both presence and personality. Known for their quick wit and agility, they are always the life of the party. Their culture is dynamic and fast-paced, with a love for jazz music and dance, embodying the spirit of the Roaring Twenties. They are skilled inventors and tinkerers, often creating gadgets powered by their own electricity. Their diet is full of energizing foods like citrus fruits and caffeine-rich beverages, reflecting their vibrant and energetic nature.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Etheros",
+      "diet": "Elemental",
+      "rarity": "common",
+      "region": "global, void",
+      "features": "Blink Travel: Once per Press On or Long rest, As an action teleport within short range dealing 1 lightning damage to all creatures in reach range of where you arrive and you have immunity to lighting damage until the end of your next turn."
+    },
+    {
+      "name": "smoke",
+      "lineage": "realmsplit",
+      "option": "ensuri",
+      "description": "The Smoke Ensuri are enigmatic and elusive, masters of shadows and illusions. Their pitch-black skin emits a perpetual smoke, allowing them to vanish and reappear at will. They are deeply connected to the Umbral Eclipse, drawing their power from the darkness. Their culture is one of mystery and subtlety, with rituals and traditions shrouded in secrecy. They are skilled in espionage and stealth, often serving as spies or assassins. Their diet includes smoked and grilled foods, echoing the smoky ambiance of hidden speakeasies during Prohibition.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Etheros",
+      "diet": "Elemental",
+      "rarity": "common",
+      "region": "global, void",
+      "features": "Smoke Shroud: When you take a half-action stance, everything within reach range of you is enveloped in smoke. Creatures in the smoke have the blind condition but you do not."
+    },
+    {
+      "name": "stone",
+      "lineage": "realmsplit",
+      "option": "ensuri",
+      "description": "The Stone Ensuri are the epitome of strength and stability. With skin like stone, gems, or crystals, they are rugged and resilient, embodying the essence of the earth. They are hardworking, loyal, and deeply connected to the land. Their culture values craftsmanship and endurance, often reflected in their elaborate stone carvings and architecture. Their communities are built into mountains and caves, creating breathtaking underground cities. They consume hearty, mineral-rich foods like root vegetables and hearty stews, reminiscent of the sustenance required by miners and laborers, symbolizing their grounded nature.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Etheros",
+      "diet": "Elemental",
+      "rarity": "common",
+      "region": "global, void",
+      "features": "Stone Glide: You can submerge into stone, rock, or stone like water as an action and have half movement speed while submerged in the rock. You can be heard and felt in the stone but not seen unless you bring yourself to the surface."
+    },
+    {
+      "name": "toxic",
+      "lineage": "realmsplit",
+      "option": "ensuri",
+      "description": "Often misunderstood and feared, the Toxic Ensuri thrive in the shadows of society. Their toxic clouds are both their defense and their curse, driving them to live in swamps and sewers. Despite this, they have a rich culture of resilience and survival. They are adept at alchemy and herbalism, creating potent remedies and poisons. Their homes are often hidden and fortified, making use of natural camouflage. Their diet includes strong-flavored and fermented foods, symbolizing their ability to thrive in harsh conditions and turn adversity into strength.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Etheros",
+      "diet": "Elemental",
+      "rarity": "common",
+      "region": "global, void",
+      "features": "Toxic Cloud: You are surrounded by a subtle toxic haze. When a creature enters or starts their turn within Melee Range of you, they must succeed on a Survival check or take [[1d4]] toxic damage and gain the Coughing condition until the end of their next turn. You are immune to toxic damage"
+    },
+    {
+      "name": "water",
+      "lineage": "realmsplit",
+      "option": "ensuri",
+      "description": "The Water Ensuri are fluid and adaptable, with a serene and calming presence. Their semi-translucent skin shimmers like the surface of a clear lake. They live in harmony with the aquatic world, often residing in underwater cities made of coral and glass. Their culture revolves around the ebb and flow of the tides, with ceremonies and traditions tied to the lunar cycles. They enjoy seafood and freshwater plants, with meals that are light and refreshing, such as ceviche and sushi, mirroring the coastal cuisine and their connection to the ocean's tranquility.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Etheros",
+      "diet": "Elemental",
+      "rarity": "common",
+      "region": "global, void",
+      "features": "Water Control: As a half-action, you may draw and suspend up to 1 gallon of nearby water within shart range, manipulating it around you. While holding this water, you may, as an action, release a slashing fluid strike that deals [[1d6]] fluid damage and consumes part of the mass. Additionally, once per rest, you may listen to the memory held within water from the past 5 minutes, revealing sounds and movement it has touched."
+    },
+    {
+      "name": "desolate",
+      "lineage": "realmsplit",
+      "option": "helborn",
+      "description": "The Desolate are shaped by silence. Born from the layer of the Ordealis known as the Fields of Desolation, their souls were forged in endless stillness beneath pale, unmoving skies. In that realm, there are no voices, no comfort, no reprieve. Only time, wind, and the long erosion of self. Those who carry its mark often grow into quiet observers, hardened by the absence of connection. They are drawn to company but struggle to feel part of it. This contradiction defines their lives.\nTheir skin resembles cracked stone and dusted ash, and small jagged horns grow like Broken earth from their brow. Desolate Helborn form large families or communal groups to push back against the isolation burned into their souls. Within these circles, they are deeply loyal and fiercely protective. They are not cold. They are simply waiting to feel warm again.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Dealig",
+      "diet": "Carnivore, Living, and Pain",
+      "rarity": "Common",
+      "region": "global, ordealis",
+      "features": "Endure: When you would gain a Cognition condition, you may use your reaction to make a Survival check against the triggering difficulty. On a success, the condition is prevented. Once you use this ability successfully, you must complete a rest before using it again."
+    },
+    {
+      "name": "rustfiend",
+      "lineage": "realmsplit",
+      "option": "helborn",
+      "description": "The Rustfiend are born of the Iron Dominion, a brutal layer of the Ordealis where pain is function and identity is replaced with utility. In this realm, souls are tested through work, repetition, and the stripping of will. The Rustfiend emerged from this place fused with its lessons. Their flesh is touched by cursed metal, and their horns curve like wrought iron left too long in rain.\rThey speak in short sentences, favor precision over flair, and often find peace in structure or labor. Many are drawn to machines, forges, and the work of the hands. They are not emotionless, but their feelings have learned to move beneath the surface, waiting for something worth igniting them. A Rustfiend is slow to trust, but unshakable once they do.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Dealig",
+      "diet": "Carnivore, Living, and Pain",
+      "rarity": "Common",
+      "region": "global, ordealis",
+      "features": "Iron Embrace: As an action, you may summon the will of the Iron Dominion. Your body hardens with cursed metal, you gain armor equal to your Strength check. This armor lasts for 1 minute. You may use this ability once per rest."
+    },
+    {
+      "name": "soulshade",
+      "lineage": "realmsplit",
+      "option": "helborn",
+      "description": "The Soulshade Helborn are born from the Clockwork Abyss, a layer of the Ordealis where time fractures and spirits drift between ticking gears and frozen echoes. In that place, the soul is tested not by pain or power, but by memory. Voices of the dead linger like dust in a machine, whispering regrets and forgotten truths. The Soulshade emerged from these echoes touched by the unseen, their bodies thinned by spirit interaction, their eyes dimmed by all they've seen.\rThey are quiet, perceptive, and strangely calming. Others speak of how time slows around them. They rarely lie but rarely speak the whole truth either. Soulshades are natural mediums, drawing spirits not through ritual, but by proximity. Many work as guides, interpreters, or grief-bearers. Some become obsessed with the dead, while others see themselves as their protectors. Their skin is faint and cool, and their horns curl like smoke caught in windless rooms.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Dealig",
+      "diet": "Carnivore, Living, and Pain",
+      "rarity": "Common",
+      "region": "global, ordealis",
+      "features": "Spirit Whisperer: You can perceive and speak with nearby spirits, even if they are invisible or bound. This includes lingering souls, echoes, or residual haunts within Short range. Once per rest, you may allow a spirit to briefly channel through you, granting you advantage on a single Mental check. The spirit must be willing or present in the area."
+    },
+    {
+      "name": "ink shadow",
+      "lineage": "realmsplit",
+      "option": "helborn",
+      "description": "The Inkshadow are the offspring of the Library of Demons, a realm where knowledge is hoarded like gold and memory becomes obsession. The trials of Inkshadow are not physical. They are cerebral, built to seduce with curiosity until the soul forgets itself in pursuit of answers. Helborn from this layer are born with memories that do not belong to them. They dream in languages they have never heard and often carry the weight of questions with no answers.\nTheir skin is marked with living ink, shifting slightly with mood or memory. Their horns are smooth and curved, lined with etched script that pulses softly when near magic. Inkshadows are drawn to language, secrets, and forbidden texts. Many isolate themselves, fearing their addiction to information. Others live without books entirely, reciting their knowledge aloud to forget it more quickly. They are teachers, wanderers, and sometimes dangerous archivists.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Dealig",
+      "diet": "Carnivore, Living, and Pain",
+      "rarity": "Common",
+      "region": "global, ordealis",
+      "features": "Tomebound Knowledge: You can read and understand any written language or arcane script upon seeing it, even if it is lost, encoded, or forgotten. Once per rest, you may recall a piece of obscure knowledge related to a creature, place, or spell as if you had studied it, even if you have never encountered it before. This knowledge may be partial or distorted, especially if it is dangerous or forbidden."
+    },
+    {
+      "name": "echo horn",
+      "lineage": "realmsplit",
+      "option": "helborn",
+      "description": "Echo Horn Helborn are born from the Discordant Symphony, a realm in the Ordealis where sound itself is sacred and volatile. In that layer, harmony is law and dissonance is punishment. Souls are tested not through silence, but through overwhelming noise, choruses of memory, shrieking regret, and the sharp, perfect pitch of divine truth. Those who survive do not forget the music. It echoes in their bones.\rEcho Horns carry that resonance with them. Their horns spiral like clefs or tuning forks, and their skin bears flowing patterns like staves or vibrating waveforms. They speak rhythmically without meaning to. Their voices can calm a crowd or shatter glass, depending on the cadence. Some choose to live as wandering musicians or diplomats. Others isolate themselves to avoid their own destructive potential.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Dealig",
+      "diet": "Carnivore, Living, and Pain",
+      "rarity": "Common",
+      "region": "global, ordealis",
+      "features": "Sonic Resonance: As an action, you may manipulate surrounding sound waves. Choose one: either project your voice clearly to a creature within long range regardless of obstacles, or emit a sharp burst that forces a creature within Short range to make a Survival check or become Confused until the end of their next turn."
+    },
+    {
+      "name": "ice reaver",
+      "lineage": "realmsplit",
+      "option": "helborn",
+      "description": "Icereavers are shaped in the Silent Void, a frozen layer of the Ordealis where even the soul’s voice can be entombed in ice. In this realm, trials take the form of stillness and solitude. Time does not pass in warmth but in breath that crystallizes and falls. Emotion becomes a liability. Speech invites shattering. The Helborn who emerge from this place do so cloaked in frost and silence.\rTheir presence chills the air around them. Their crystalline horns glint like frozen spears, and their eyes reflect the cold eternity they carry inside. They speak rarely, and when they do, their words cut with clarity. Icereavers are often drawn to sentinel roles, guardianship, or quiet vengeance. Their culture values restraint and endurance, and many live far from cities, surrounded by snow or quiet stone.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Dealig",
+      "diet": "Carnivore, Living, and Pain",
+      "rarity": "Common",
+      "region": "global, ordealis",
+      "features": "Frost Touch: As an action, you may place your hand on a creature within reach and impose or remove the Slowed or Pinned condition until the end of their next turn.."
+    },
+    {
+      "name": "mistfire",
+      "lineage": "realmsplit",
+      "option": "helborn",
+      "description": "Mistfire Helborn are shaped by the River of Forgotten Souls, a drifting layer of the Ordealis where memory unravels and identity dissolves like breath on cold glass. This realm carries whispers that once belonged to names now lost, and the souls that pass through it often forget who they were before they reach the other side. Those who carry its mark into the waking world are elusive by nature, difficult to pin down and harder to remember.\rTheir horns appear as drifting trails of smoke or pale fog, and their bodies shimmer with soft edges like a figure seen through frosted glass. Mistfire Helborn speaks softly and often says little, but their presence lingers long after they are gone. Some become couriers or spies, others serve as caretakers of the dying, guiding final moments into peace. They are calm, unreadable, and difficult to truly know.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Dealig",
+      "diet": "Carnivore, Living, and Pain",
+      "rarity": "Common",
+      "region": "global, ordealis",
+      "features": "Mistform: As an action gain the Intangible or invisible condition until the end of your next turn."
+    },
+    {
+      "name": "warshade",
+      "lineage": "realmsplit",
+      "option": "helborn",
+      "description": "The Warshade are forged in the Fields of Torment, a realm in the Ordealis where conflict never ends. Souls here are pitted against each other in endless cycles of trial and bloodshed, forced to fight not for purpose but for survival. From this place come the Helborn who embody pain refined into skill, rage tempered by discipline, and fury harnessed into clarity.\rTheir horns are thick and notched like Broken weapons, and their skin carries the hues of charred stone and blood-washed iron. Warshades speak plainly and hold few illusions. Their trust must be earned through battle or sacrifice. Many serve as bodyguards, champions, or ruthless tacticians. Some try to escape the violence in their blood, but most accept it and find meaning through it.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Dealig",
+      "diet": "Carnivore, Living, and Pain",
+      "rarity": "Common",
+      "region": "global, ordealis",
+      "features": "War Fury: When you take the attack action, you may make one additional melee attack at disadvantage. You may use this ability once per turn."
+    },
+    {
+      "name": "moraltus",
+      "lineage": "realmsplit",
+      "option": "helborn",
+      "description": "The Moraltus are Helborn touched not by the wild layers of the Ordealis, but by its highest order. They descend from the Temple of Asmodeus, a bastion of law and control seated deep in the infernal planes. Within this temple, contracts are sacred and morality is measured in structure rather than emotion. Moraltus Helborn are shaped by a force that values order above all else, and their presence reflects this unnatural balance.\rTheir skin glows faintly, like polished marble warmed from within, and their horns spiral upward with an almost architectural grace. They walk with quiet confidence and often serve as leaders, judges, or mediators. While others Fear the demonic within, the Moraltus embrace the discipline it provides, using it as a framework to build lives of precision and resolve. Their culture emphasizes honor, loyalty, and a rigid sense of duty.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Dealig",
+      "diet": "Carnivore, Living, and Pain",
+      "rarity": "Common",
+      "region": "global, ordealis",
+      "features": "Serene Command: As a half-action, you may touch a creature within reach and remove one Cognition condition affecting them"
+    },
+    {
+      "name": "vozian",
+      "lineage": "realmsplit",
+      "option": "helborn",
+      "description": "Vozian Helborn were not born in the Ordealis. They were born in the blood-soaked aftermath of VoZo’s descent. When the blood of that primordial god spilled across the prime material, it did not merely corrupt. It reshaped. Where it touched mortals, some fell. Others rose twisted and new. These became the Vozian Helborn, creatures not of twisted souls, but of poisoned creation.\rTheir skin appears faded and drained of color, and their eyes hold the lifeless glint of something that remembers too much. Their horns are fractured, reptilian, and scatter across their bodies like bone plating. They do not speak of pain, but it follows them. While elves embraced the magic of VoZo with purpose, humans soaked in it became something unstable and dangerous. Villains, martyrs, and monsters alike may trace their roots to this event.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Dealig",
+      "diet": "Carnivore, Living, and Pain",
+      "rarity": "Common",
+      "region": "global, ordealis",
+      "features": "Skin of Hate: When a spell targets you directly, you may make a Luck check. On a success, reflect half the damage or primary effect of the spell back at the caster."
+    },
+    {
+      "name": "abyssal",
+      "lineage": "realmsplit",
+      "option": "helborn",
+      "description": "The Abyssal Helborn is a creature of darkness and otherworldly power. Its skin glows with the ethereal hues of twilight, and its body is adorned with sharp and asymmetrical horns. They are feared and shunned by society due to their otherworldly origins, but they possess a culture that is rich and mysterious. They are known to be powerful and formidable, but also quite reclusive, choosing to keep to themselves and their own kind.\rThey believe in the power of the abyss and are said to possess the ability to ensnare the souls of those they grapple with, drawing them into the abyss. Often viewed as loners, they can also be part of a tight-knit community. They are very protective of their own kind and will fiercely defend them if threatened. Some are quite wise and knowledgeable, possessing ancient secrets not shared with outsiders. They have a strong sense of pride and honor, with unwavering loyalty to their own.\rPhysical Traits:\rHorn Type: Similar to moose antlers but sharper.\rPhysical Description: Much larger than others, with skin that looks like the night sky.",
+      "size": "5-6",
+      "lifespan": "60-90",
+      "language": "Imperial, Dealig",
+      "diet": "Carnivore, Living, and Pain",
+      "rarity": "Common",
+      "region": "global, ordealis",
+      "features": "Lost in Your Abyss: When you have a creature grappled, you can force them to look into your eyes. They must make a Survival, Observation, or Spirit check, or their soul is lost into your abyss. This is marked on your skin as a galaxy or scar of some sort. The lost creature can make another check at the start of their next turn, but if they fail again, they are lost to your abyss, and you gain +1 Spirit."
+    },
+    {
+      "name": "Shackleborn (Brakkus)",
+      "lineage": "realmsplit",
+      "option": "seraphim",
+      "description": "Shackleborn are not forged in glory, but in judgment. They are the hands of Brakkus, the god who does not speak of freedom but of order. He is the god of Power, Control, Domination, Ability, and Leadership. His angels descend in silence, their limbs wrapped in celestial chains, their eyes fixed on those who would disrupt the natural weight of consequence.\rBrakkus is not cruel, but he is exacting. He does not punish emotion or rebellion, only the failure to bear the burden of choice. The Shackleborn exist to remind the world that justice does not kneel. Their presence is a sentence. Their wings do not lift them skyward, instead they drag behind like relics from an older war, whispering the names of those already judged. Each Shackleborn carries a portion of divine restraint, etched into their form. To see one is to know that something has gone too far. To hear their chains is to know it has been noticed.",
+      "size": "5-6",
+      "lifespan": "100-200",
+      "language": "Imperial, Holy",
+      "diet": "Prayer, wine, and bread",
+      "rarity": "Rare",
+      "region": "global, celestial",
+      "features": "Wings of Authority: You have heavy metallic chain wings that provide no flight but give +10 armor that regenerates on a Long Rest. As an action you can summon ethereal chains to bind an enemy within reach range The target must make a Strength check or take the pinned condition until the end of your next turn."
+    },
+    {
+      "name": "Chronal Wardens (Chronus)",
+      "lineage": "realmsplit",
+      "option": "seraphim",
+      "description": "Chronal Wardens are temporal sentinels, angels born not of time, but from the precise tension between what was and what could be. They serve Chronus, the god of Time, Progress, Reality, Mass, and Magic. These angels do not dream. They remember. Their forms shimmer with the static of moments too quick to name. Faces blur between expressions, hands move a fraction too fast, and their wings pulse like frozen lightning. They are the archivists of reality’s shape, correcting timelines not with blades, but with presence. A look, a word, a step too soon. They undo what should not have happened.\rChronal Wardens do not interfere with fate. They preserve the edge between fate and chaos. When they appear, it is rarely to fight, but always to intervene. Where they pass, time bends, and those near them feel the weight of every mistake they never made.",
+      "size": "5-6",
+      "lifespan": "100-200",
+      "language": "Imperial, Holy",
+      "diet": "Prayer, wine, and bread",
+      "rarity": "Rare",
+      "region": "global, celestial",
+      "features": "Temporal Wings: Shimmering translucent hard light wings that give flight speed equal to movement speed or half as much while wearing hefty armor. Once per day as an off-action give a creature within short range advantage on an attack check."
+    },
+    {
+      "name": "Resonance (Dumda)",
+      "lineage": "realmsplit",
+      "option": "seraphim",
+      "description": "Resonance angels are the echoes of Dumda’s will, formed from layered vibration and boundless tone. They do not walk. They hum. Their presence bends the air, their wings shimmer as distortions in reality. They are not messengers. They are the message. Where they move, silence gives way to harmony, and disharmony is shattered. Dumda is the god of Sound, Frequency, Connection, Bonds, and Music. Sound is their language, but also their weapon. The voice of a Resonance carries the weight of order, not through volume but through clarity. One perfect note can bring down deception, draw truth to the surface, or reduce confusion to stillness.",
+      "size": "5-6",
+      "lifespan": "100-200",
+      "language": "Imperial, Holy",
+      "diet": "Prayer, wine, and bread",
+      "rarity": "Rare",
+      "region": "global, celestial",
+      "features": "Harmonic Wings: Your wings are made of vibrating force that ripple through the air, you have no flight speed. Once per day as an action, you may activate a burst of sonic momentum. You immediately gain flight speed equal to twice your movement until the end of your next turn and all hostile creatures within Short range must succeed an Observation check or gain the Deaf condition until the end of their next turn."
+    },
+    {
+      "name": "Empyreans (Exembar)",
+      "lineage": "realmsplit",
+      "option": "seraphim",
+      "description": "Empyreans do not appear. They arrive. They do not shine. They are simply felt. Serving Exembar, god of Balance, Order, Matter, Ideals, and Ambition, these angels are the divine balance of warmth and clarity. Their wings are unseen, but those near them feel them as comfort, like standing beside a hearth or beneath a peaceful sky. Their purpose is not to dominate or destroy. It is to restore, to guide, and to rebalance what has been bent. An Empyrean does not speak loudly, but when they touch you, the truth comes forward. They do not heal because they pity. They heal because the world must continue.",
+      "size": "5-6",
+      "lifespan": "100-200",
+      "language": "Imperial, Holy",
+      "diet": "Prayer, wine, and bread",
+      "rarity": "Rare",
+      "region": "global, celestial",
+      "features": "Wings of Judgement: Your wings are a warm breeze or benevolent aura and do not grant flight. Once per day As an action, you may touch a creature within reach and it must make a Spirit check or be compelled to speak only the truth until the start of its next turn. Or if you choose, they instead take +10 healing and remove one Cognition condition."
+    },
+    {
+      "name": "Silent Guardians (Jesha)",
+      "lineage": "realmsplit",
+      "option": "seraphim",
+      "description": "The Silent Guardians serve Jesha, the god of Silence, Wisdom, Ignorance, and Prophecy. In the halls of Jesha's realm, there is no voice, no footfall, no sound at all. The Guardians move like living shadows, wings vast and dark, cloaking the world around them in oppressive silence. They do not speak. They do not warn. They arrive when the balance of noise and chaos has tipped too far. To witness a Silent Guardian is to feel the weight of destiny turning without a sound. Their silence is not absence, but order. Their wings pull the world inward and leave nothing but breath, heartbeat, and knowing.",
+      "size": "5-6",
+      "lifespan": "100-200",
+      "language": "Imperial, Holy",
+      "diet": "Prayer, wine, and bread",
+      "rarity": "Rare",
+      "region": "global, celestial",
+      "features": "Silence: You have large wings of black flesh or feathers that silence the air around you. You may fly at half your movement speed while not wearing hefty armor. As an action, you may create a field of silence in your reach range until the end of your next turn. Creatures entering the area must make a Survival check or gain the Deaf condition until they leave. Spells that require verbal components cannot be cast within this field."
+    },
+    {
+      "name": "Librarians (Signessen)",
+      "lineage": "realmsplit",
+      "option": "seraphim",
+      "description": "Librarians are the angels of Signessen, the god of Understanding, Intelligence, Reason, and Skills. Each carries within them a living index of reality’s secrets. Their wings rustle like turning pages, each feather marked with an unreadable script. They guide scholars, protect lost knowledge, and retrieve what should never have been forgotten.\rLibrarians do not hoard what they know. They lend it. A glance from one can stir understanding in a stranger. A word whispered from their lips may unlock memories someone never knew they had. Their presence feels like opening the right book at the exact right time.",
+      "size": "5-6",
+      "lifespan": "100-200",
+      "language": "Imperial, Holy",
+      "diet": "Prayer, wine, and bread",
+      "rarity": "Rare",
+      "region": "global, celestial",
+      "features": "Wings of Understanding: Your wings are weathered scrolls and stitched bindings that grant you flight equal to your movement speed, or half that while wearing hefty armor. Once per day as an action, you may focus your knowledge into a single phrase. Choose one creature within short range. That creature gains +10 on their next check made before the end of their turn then take the Stunned condition until the end of their next turn/li>"
+    },
+    {
+      "name": "Emissary (Zuinmuir)",
+      "lineage": "realmsplit",
+      "option": "seraphim",
+      "description": "The Emissary of Zuinmuir is not a destroyer. It is a collector. It moves without sound, a shadow in the light, a whisper in a sealed tomb. Where it walks, warmth fades. Clocks slow. Breath turns cold. It does not force Death. It simply arrives when the soul can no longer resist its own weight. Zuinmuir is not the god of endings, but the river that carries all things beyond. The Emissary is its hand. Its wings are vast structures of polished bone and marrow, folding like cathedral gates and echoing with the memory of prayers long since spoken. It wears no expression, and it offers no comfort. But in its presence, all lies are stripped away.",
+      "size": "5-6",
+      "lifespan": "100-200",
+      "language": "Imperial, Holy",
+      "diet": "Prayer, wine, and bread",
+      "rarity": "Rare",
+      "region": "global, celestial",
+      "features": "Wings of Finality: You have towering skeletal wings that carry the silence of the grave. You may fly at your movement speed, or half that in hefty armor. As an action, choose one creature within Short range. That creature must make a Spirit check or gain the Fear condition"
+    },
+    {
+      "name": "Drakonari",
+      "lineage": "dragon",
+      "option": "",
+      "description": "As a Drakonari, you embody a mystifying fusion of man and dragon. Your existence is a riddle, a phenomenon that baffles many, born from the improbable union of the mundane and the mythical. You bear features of both lineages—scales glinting like armor, eyes glowing with ancient wisdom, and a humanoid form that stands tall and proud. Your voice carries an echo of draconic roars, and your breath hints at the elemental power inherited from your draconic parentage.\rWith this awe-inspiring blend comes Fear and unease. People are wary of your dragon lineage, and dragons are skeptical of your human side. But the potential within you is undeniable. How you wield this power, whether for good or ill, is your choice. Prove to the world that being a \"bad dragon\" means being extraordinarily formidable, not feared.",
+      "size": "5-6",
+      "lifespan": "200-400",
+      "language": "Imperial, Drak",
+      "diet": "Omnivore",
+      "rarity": "Common",
+      "region": "global",
+      "features": "Obsession: You may claim a single item as your obsession. While using this item for an appropriate purpose, gain a +3 bonus to related checks. The item must suit the check: glasses for Observation, a hammer for Crafting, a trinket for Luck, etc. You may only have one obsession at a time. Changing it requires one week of focused, uninterrupted use and attachment"
+    },
+    {
+      "name": "Kobari",
+      "lineage": "dragon",
+      "option": "",
+      "description": "As a Kobbie, you're an adorable little bundle of mischief and ingenuity. You have a knack for turning everyday items into contraptions of wonder and delight, earning you the affectionate name of Kobari, the ingenious tinkerers of the world. Your petite size and cute dragon-like features often disarm those who underestimate you, allowing you to engage in your playful tricks with little suspicion. You're a curious creature, always on the hunt for new ideas, mechanisms to build, and problems to solve. A loose screw is a call to adventure. A locked door is a personal challenge. Whether in the labyrinthine sewers or among towering bookshelves in a dusty library, you're content and at your inventive best. Each environment is a playground of possibility, perfect for constructing intricate traps, whimsical machines, or ridiculous (but effective) gadgets.\rKobbies live in small, scattered groups, often forming tight-knit communities of loud ideas and louder inventions. Despite your people’s chaotic energy, Kobari are celebrated for their creativity and adaptability. But among all Kobbies, one story lingers like a half-sprung trap—the tale of King Karl.\rLong ago, Kobbie King Karl, the greatest inventor of all Kobari, disappeared into the Northern mountains after claiming he’d built the perfect trap. One so clever, so complex, that even he could not escape it. Some say he meant to vanish. Others believe he’s still trying to find the release lever. Wherever he is, it’s said that any Kobbie clever enough to find and free Karl will be granted immortality, along with a crown made from the first ever Kobbie gear.\rMost think it’s a myth.\rMost Kobbies are already looking.",
+      "size": "2-4",
+      "lifespan": "20-30",
+      "language": "Imperial, Drak",
+      "diet": "Omnivore",
+      "rarity": "Common",
+      "region": "global",
+      "features": "Improvisational: Once per rest, you can create a temporary tool, contraption, or gadget using nearby scraps. It functions as a basic item of your choice (e.g., grappling hook, timer, small trap, fake key, musical lure) for 1 hour, or until Broken."
+    },
+    {
+      "name": "raskalz",
+      "lineage": "goblijjin",
+      "option": "goblin",
+      "description": "In the vast stretches of Shek's untamed wilderness, the Wild Goblins thrive. These little rascals, often named with playful and bizarre monikers like \"Gigglemud\" or \"Plopfoot\", live in transient communities that rise and fall with the seasons. Their lives are a blend of mischief and survival, as they harness their innate cunning to navigate the challenges of the wild. Wild Goblins are known for their unyielding spirit and an uncanny ability to adapt quickly to their surroundings, making them elusive adversaries and curious allies.",
+      "size": "2-4",
+      "lifespan": "15-20",
+      "language": "Imperial (Gutter)",
+      "diet": "Everything",
+      "rarity": "Common",
+      "region": "global, eclipse, dreamsea, ordealis, void",
+      "features": "Coward: You have advantage on Influence checks when begging, bargaining, or playing dead. If you succeed, the target creature is Charmed by you. If you fail, you take the Fear condition until the end of your next turn."
+    },
+    {
+      "name": "coin'err",
+      "lineage": "goblijjin",
+      "option": "goblin",
+      "description": "The bustling streets of Shek's cities are home to a different breed of goblins - the City Goblins. They have traded the vast open wilderness for the intricate labyrinths of urban life. Dressed in whatever finery they can acquire, often with an eccentric flair, these goblins are savvy traders, skilled artisans, and street-smart entrepreneurs. Their names often reflect their trades or peculiar habits, leading to goblins called \"Silkthread\" or \"Dingledangle\". Even in the cities, their mischievous nature shines, but it's tempered with a keen sense of business acumen.",
+      "size": "2-4",
+      "lifespan": "15-20",
+      "language": "Imperial (Gutter)",
+      "diet": "Everything",
+      "rarity": "Common",
+      "region": "global, eclipse, dreamsea, ordealis, void",
+      "features": "Streetwise: You have an ear to the cobblestones. In any urban area, once per day, you can find a hidden entrance, shady contact, or potentially a lost item. This can only be used if you’ve spent at least 10 minutes wandering alone or mingling."
+    },
+    {
+      "name": "ashling",
+      "lineage": "goblijjin",
+      "option": "goblin",
+      "description": "A darker, more enigmatic offshoot of the goblin lineage, the Vozian Goblins trace their roots directly to the heart of VoZo's malevolent power. Often found in the haunting landscapes of the Ashlands, they stand taller and exude an aura of mysterious energy. Their matte violet skin sets them apart, and their names, often more ominous like \"Shadowgleam\" or \"Gloomwhisper\", hint at their deeper connection to the ancient evil. These goblins are a wild force, driven by an insatiable curiosity and a desire to reclaim the legacy of their forebears.",
+      "size": "2-4",
+      "lifespan": "15-20",
+      "language": "Imperial (Gutter)",
+      "diet": "Everything",
+      "rarity": "Common",
+      "region": "global, eclipse, dreamsea, ordealis, void",
+      "features": "Ashform: Once per day as an Off-Action gain the Intangible condition until the end of your next turn. While Intangible you are immune to spellcasting effects."
+    },
+    {
+      "name": "Wild",
+      "lineage": "goblijjin",
+      "option": "hojjoblin",
+      "description": "The red-skinned Hojjoblins of the frontier are not beasts. They are tacticians without blueprints, warlords without cities, and engineers of violence shaped by nature’s fury. Known only as the Wild Hojjoblins by outsiders, they call themselves nothing. They don’t need names to know who leads or who kills best. Born from goblins impaled by Faulkaust’s ruby spires, these Hojjoblins did not stay near the ruins of their creation. They fled into the unclaimed lands, Bleeding intellect and instinct. The crimson stain never left them. It darkened their skin, sharpened their bones, and burned precision into their instincts. Where others survive, they dominate. Where others build, they overtake.\rTheir black hair grows thick and tangled, often braided with bone or wire. Their eyes are reflective pools of blood and calculation. Wild Hojjoblins do not speak in ranks or politics. They speak in angles, trajectories, and probability. Every raid is planned for, to the second. Every retreat is bait. Every Death serves the next kill. They feel no need to return to civilization. Why go back to the towers, when the forest is already theirs? Why serve a king, when you can build a warpath that never ends? To face a Wild Hojjoblin is not to fight a person. It is to challenge a living stratagem that has already accounted for your next five moves.",
+      "size": "5-6",
+      "lifespan": "30-50",
+      "language": "Imperial (Gutter)",
+      "diet": "Everything",
+      "rarity": "Common",
+      "region": "global, eclipse, dreamsea, ordealis, void",
+      "features": "Consistent Striker: When you hit a creature with a melee or ranged weapon attack, you may choose to forgo rolling damage and instead deal flat damage equal to the average +1"
+    },
+    {
+      "name": "Falken",
+      "lineage": "goblijjin",
+      "option": "hojjoblin",
+      "description": "When the towers fell and the red light faded, not all Hojjoblins ran into the wilds. Some stayed behind in the Broken cities Faulkaust once ruled, digging into the ruins and rewriting the blueprints. These became the Falken. Refined, relentless, and quietly ambitious, they remember who made them and see no reason to forget. Falken are tall for goblinkind, with smooth violet or lavender skin that gives them an almost regal quality. Unlike their wild kin, whose black hair grows coarse and wild, Falken often have fine, silken strands they style, sometimes straight, sometimes curled tight, and sometimes barely growing at all. Their eyes shimmer faintly with internal calculation, always scanning, always measuring.\rIn cities, they are architects of influence. Some design bridges or rail systems, others design networks of information or power. Their minds move in patterns others struggle to see, always seeking efficiency, elevation, and legacy. Falken are often known by a single name or title, their identity tied not to clan but to accomplishments. They rarely show emotion, but their passion lies just under the surface. To them, every flaw is a challenge, every system a puzzle. They do not dream of perfection. They engineer it.",
+      "size": "5-6",
+      "lifespan": "30-50",
+      "language": "Imperial (Gutter)",
+      "diet": "Everything",
+      "rarity": "Common",
+      "region": "global, eclipse, dreamsea, ordealis, void",
+      "features": "Raw Power: You do not make guesses. You make decisions. Gain +1 to all checks."
+    },
+    {
+      "name": "Vozian",
+      "lineage": "goblijjin",
+      "option": "hojjoblin",
+      "description": "The Vozian Hojgoblins are the shadowy enforcers of the night, born of an ancient lineage that despises arcane forces. Their very presence is a bane to spellcasters, as they have honed their abilities to counter and disrupt magic. With skin tones reminiscent of either ash or twilight, they stalk the night, hunting down those who wield magic with malevolent intent. Their hatred for magic is as much a part of them as their very blood, making them both revered and feared among those who know of their reputation.",
+      "size": "5-6",
+      "lifespan": "30-50",
+      "language": "Imperial (Gutter)",
+      "diet": "Everything",
+      "rarity": "Common",
+      "region": "global, eclipse, dreamsea, ordealis, void",
+      "features": "Unluck on That: As a reaction to a creature casting a spell, make a luck check. On a success, lower their check by -5."
+    },
+    {
+      "name": "Muśkila",
+      "lineage": "jotun",
+      "option": "",
+      "description": "In the ethereal depths of ancient woodlands reside the Muśkila, a gentle giant-kin, whispering secrets with the wind. Lavender skin blending with the mystical forest hues, they become one with nature, guardians to all woodland beings, providing refuge in their lush beards to tiny creatures seeking sanctuary. Although their appearance is formidable, their eyes gleam with kindness and mischief. The Muśkila, with their innate ability to vanish into the leafy embrace of their surroundings, safeguard the ancient, unspoken pact between the realms of Fey and mortal, all while maintaining a playful twinkle in their mystical endeavors.",
+      "size": "10-15",
+      "lifespan": "300-500",
+      "language": "Imperial, Jotun",
+      "diet": "Omnivore",
+      "rarity": "Very Rare",
+      "region": "fey",
+      "features": "Nature Bound: You can speak with plants and animals, they always speak in riddles. As an action you turn Invisible until the end of your next turn."
+    },
+    {
+      "name": "Visala",
+      "lineage": "jotun",
+      "option": "",
+      "description": "High upon the towering peaks, where the air is thin and the stone speaks in echoes of ancient battles, the Visala stand unyielded. Giants of formidable strength and stoic resolve, their society thrives upon the unrelenting pursuit of physical prowess, etching tales of their feats into the very stone they tread upon. Their eyes, intense and unyielding, tell stories of challenges met and adversaries conquered. Yet, beneath the robust exteriors and amidst the roars of their challenges, whispers of a prophecy stir, entwining their fate with threads of heroism and downfall.",
+      "size": "10-15",
+      "lifespan": "300-500",
+      "language": "Imperial, Jotun",
+      "diet": "Omnivore",
+      "rarity": "Very Rare",
+      "region": "global",
+      "features": "Combat Kings: You have +10 wounds. Once per day an action, remove a Corpus Condition."
+    },
+    {
+      "name": "gloomspawn",
+      "lineage": "symbiotes",
+      "option": "",
+      "description": "Parasitic Symbiotes are a mysterious and ancient species that have evolved to form powerful and aggressive symbiotic relationships with various hosts. Found deep within the darkest corners of the world, they are drawn to strong and capable creatures, forming bonds to enhance their host's abilities while feeding on their energy. They are known for their ability to shape their host's appearance and form temporary weapons and armor out of their own substance.",
+      "size": "host size",
+      "lifespan": "60-90",
+      "language": "imperial",
+      "diet": "host life essence",
+      "rarity": "legendary",
+      "region": "eclipse",
       "features": [
         {
-          "name": "Rushing Charge",
-          "description": "If you move toward a creature within 20 ft and make an attack, gain advantage on the attack."
+          "name": "Goop Shifter",
+          "description": "As a half-action, you can create a melee weapon of your choice. It immediately dissolves after hitting an object when thrown and doesn't hold its shape unless held by you. You also have the ability to shift the size of your body slightly larger or smaller. Choose how you would like to bond with your host:",
+          "options": [
+            {
+              "name": "Symbiosis",
+              "effect": "A host bonded through Symbiosis lasts up to one year or until the host dies. To bond, the symbiote must succeed on an Influence Check to convince the host of the mutual benefits of their relationship. Once bonded, the symbiote grants the host the ability to double a check once per Long Rest."
+            },
+            {
+              "name": "Devourer",
+              "effect": "A host bonded through Devourer lasts for one month or until the host dies. To bond, the symbiote must win a contested Strength Check to forcibly overtake the host's body. On a failure, the host is immune to the Devourer while alive. Once bonded, the symbiote enhances the host’s combat capabilities, granting +1 to melee attack checks and damage. Additionally, the host gains the ability to heal themselves as an action for [[6 Healing]] or remove one Corpus Condition as an action, usable once per Long Rest."
+            },
+            {
+              "name": "Passenger",
+              "effect": "A host bonded through Passenger lasts indefinitely, as the symbiote thrives in secrecy without overtly harming the host. To bond, the symbiote must succeed on a Stealth Check to infiltrate the host’s body without their knowledge. Once bonded, the Passenger can, as an action, grant the host Invisibility until the end of their next turn or until they take an aggressive action. This bond allows the Passenger to act as a silent companion, leveraging the host’s body for its own goals while avoiding detection."
+            }
+          ]
         }
       ]
     },
     {
-      "id": "orc-maldios",
-      "name": "Maldios Orc",
-      "base_species": "Orc",
-      "description": "The Orcs are not untouched by Vozian influence. Legend states that the first Orc to walk the land was also the first to turn to darkness. Maldios, a mad guardian of the infernal sands, left behind descendants marked by his infernal heritage. These Orcs, with bright orange skin and fiery eyes, wield twisted magic and are feared for their unpredictable nature.",
-      "size": "6-8 ft",
-      "lifespan": "60-90 years",
-      "language": ["Imperial", "Orkid"],
-      "diet": ["Omnivore", "Vegetarian"],
-      "rarity": "Rare",
-      "tags": ["orc", "infernal", "dark magic", "twisted"],
-      "features": [
-        {
-          "name": "Infernal Skin",
-          "description": "As a reaction to being hit with a melee attack, deal [[1d4]] Vozian damage to the creature that hit you."
-        }
-      ]
+      "name": "eternal worm",
+      "lineage": "symbiotes",
+      "option": "",
+      "description": "Eternal Worms are a wise and ancient species of symbiote that have lived for centuries within various hosts. They are found in the sacred groves and ancient ruins where the barriers between the planes are thin. They have the ability to transfer their memories and experiences to their host, allowing them to benefit from a wealth of knowledge and skills, and even the ability to access ancient and forgotten magic.",
+      "size": "host size",
+      "lifespan": "immortal",
+      "language": "Imperial",
+      "diet": "host life essence",
+      "rarity": "legendary",
+      "region": "global",
+      "features": "Memory Transfer: When the host and symbiote merge, their souls become deeply intertwined; sharing thoughts, emotions, and memories on an intimate level. Choose a single starting feature from any class, path or talent. You gain only that starting feature, not future progression from that class."
     },
     {
-      "id": "orc-oceanic",
-      "name": "Oceanic Orc",
-      "base_species": "Orc",
-      "description": "Oceanic Orcs, native to the Dreamsea, possess an ethereal, translucent glow. Their elongated limbs and fingers allow them to move effortlessly in the weightless currents. These peaceful creatures act as spiritual guides, communicating with the spirits of the dead and guiding lost travelers through the Dreamsea.",
-      "size": "6-8 ft",
-      "lifespan": "60-90 years",
-      "language": ["Imperial", "Orkid"],
-      "diet": ["Omnivore", "Vegetarian"],
-      "rarity": "Rare",
-      "tags": ["orc", "dreamsea", "spiritual", "mystic"],
-      "features": [
-        {
-          "name": "Nemuri Manipulation",
-          "description": "As a half-action, imbue a weapon with Dreamsea water, changing its damage type to water and dealing an additional +4 damage for 1 minute."
-        }
-      ]
+      "name": "Firstborn",
+      "lineage": "firstborn",
+      "option": "",
+      "description": "Firstborn resemble dark-skinned elves with a few distinct features. They have tendrils in place of hair and insect-like wing appendages. Their skin tones range from deep, earthy shades to darker hues that shimmer with an almost metallic sheen under direct light, reflecting their resilient nature and powerful gifts. Firstborn can use their tendrils for various tasks, offering them unique interaction possibilities with the environment and during combat. Firstborn have a natural resistance to both physical and magical damage, reflecting their toughened nature.",
+      "size": "5-6",
+      "lifespan": "100-150",
+      "language": "Imperial (Kingslands)",
+      "diet": "omnivore",
+      "rarity": "legendary",
+      "region": "kingslands",
+      "features": "Tendril Skills: You have +5 armor from your shifting tendrils. As an Action or Off-Action use your tendrils to make an attack dealing [[1d4]] slashing damage."
+    },
+    {
+      "name": "Tristeţe",
+      "lineage": "strigoi",
+      "option": "",
+      "description": "In the spectral hierarchy of strigoi, the Tristeţe are the outcasts, the forsaken. Their name, translating to 'sadness', poignantly mirrors their existence. These unfortunate vampires, transformed into lesser beings by disease, foul magic, or tragic incidents, bear grotesque deformities. Their skin, weak and light-sensitive, compels them to lurk in the shadows, away from the sun's harsh judgment and society's scorn. Immortal, their existence is an endless nocturnal cycle.\rShunned and often slain on sight, the Tristeţe survive by adopting disguises, their true forms concealed beneath layers of illusion. Despite their tragic circumstances, they outnumber their nobler counterparts, their prevalence a harsh testament to the vampire world's realities. Their deformed bodies, grotesquely resilient, can regenerate wounds unless Exposed to sunlight or holy water. However, their light sensitivity is a severe weakness, with the sun's rays inflicting wounds that their bodies labor to heal. Holy symbols and radiant damage are particularly harmful, their unholy nature rendering them vulnerable to such forces.\rThe Tristeţe embody the vampire legend's darker side, a stark contrast to the nobility and allure often associated with their kind. They are the forsaken, the deformed, the sorrowful, their existence a haunting reminder of the tragic possibilities lurking in the vampire world's shadows.",
+      "size": "5-6",
+      "lifespan": "400-800",
+      "language": "Imperial, Night",
+      "diet": "Hematophagy",
+      "rarity": "rare",
+      "region": "kingslands",
+      "features": "Vampiric Regeneration: Gain the Exhausted condition while in sunlight and take [[1d4]] solar damage every round. As an off-action, heal for 1 healing if you aren't in sunlight or running water, take solar damage, damage from holy water, take damage from silvered weapons, or have any major conditions.\rDeformation: The Tristeţe have mutations that, while grotesque, lend them advantages. Choose one of the following:\rMassive Arm: Gain Strength +5. Attacks with this arm deal an additional +3 damage.\rStench: Creatures within 5ft have -5 on attack checks if they can smell. Does not work on constructs, undead, or vampires.\rBrain Sacs: Large pustule sacs hang from the back of your head that contain additional brain matter. Gain +5 Intellect.\rSecond Heart: As an off-action when you take a Corpus condition, you can make a Survival check and remove it on a success."
+    },
+    {
+      "name": "Avuţie",
+      "lineage": "strigoi",
+      "option": "",
+      "description": "In the shadowy realm of the undead, the Avuţie stand as the epitome of vampire nobility. They are the embodiment of the timeless allure and chilling dread that has become synonymous with the vampire legend. The Avuţie are not mere predators of the night, but sophisticated rulers who have held the reins of power for centuries. They have been kings and queens, lords and ladies, their rule extending over vast lands shrouded in Fear and mystery. Their wealth is as ancient as they are, accrued over countless lifetimes, a testament to their cunning and influence. Despite their elegance and charm, the Avuţie are a chilling reminder of the true nature of the strigoi. They are as dangerous as they are alluring, their wealth and influence making them a formidable force in the world of the undead.",
+      "size": "5-6",
+      "lifespan": "400-800",
+      "language": "Imperial, Night",
+      "diet": "Hematophagy",
+      "rarity": "rare",
+      "region": "kingslands",
+      "features": "Vampiric Regeneration: Gain the Exhausted condition while in sunlight and take [[1d4]] solar damage every round. As an off-action, heal for 1 healing if you aren't in sunlight or running water, take solar damage, damage from holy water, take damage from silvered weapons, or have any major conditions.\rSwindler's Charm:Speak to a creature for 1 minute and make a social check (Influence, Influence, or Influence). On a success, charm the creature for 1 hour. The creature is not under your control, and if they take damage or feel threatened, they break from the charm. After the charm is Broken, they know that they have been charmed and will be hostile towards you. While charmed in this way, the creature will:\rAlways tell the truth.\rFollow you if the path is safe.\rGive a minor amount of their wealth.\rAllow blood to be drawn (1 pint), after which they will take the Concussion condition for 1 minute."
+    },
+    {
+      "name": "Tărie",
+      "lineage": "strigoi",
+      "option": "",
+      "description": "The Tărie, the embodiment of raw, unyielding strength, are a formidable sight to behold. These Dravin-kin are the epitome of physical prowess among the strigoi, their bodies honed to perfection through centuries of relentless training and battle. Their skin, ashen and cold, is a stark contrast to the vibrant crimson of the blood that sustains them. Their eyes, a piercing silver, radiate an intimidating presence, a clear warning to any who dare to cross their path.\rTheir wings, massive and powerful, are not just for show. They are fully functional, capable of carrying the Tărie into the sky. But these wings serve another purpose. They are strong and dexterous enough to wield additional simple melee weapons, turning the Tărie into a whirlwind of steel and fury on the battlefield. This unique ability allows them to engage multiple enemies at once.",
+      "size": "6-7",
+      "lifespan": "300-600",
+      "language": "Imperial, Night",
+      "diet": "Hematophagy",
+      "rarity": "rare",
+      "region": "kingslands",
+      "features": "Vampiric Regeneration: Gain the Exhausted condition while in sunlight and take [[1d4]] solar damage every round. As an off-action, heal for 1 healing if you aren't in sunlight or running water, take solar damage, damage from holy water, take damage from silvered weapons, or have any major conditions.\rFlight: You have massive wings that give fly speed equal to your movement or half as much if you are wearing heavy armor."
+    },
+    {
+      "name": "Înviere",
+      "lineage": "strigoi",
+      "option": "",
+      "description": "The Înviere are a haunting testament to the power of the undying, a species born from failed resurrections and ancient, mystical connections. Their existence is a paradox, caught between life and Death, yet belonging to neither. They are the children of the Undying King and the Lord of Winter, Kharn, embodying the chilling touch of Death and the relentless endurance of the cold.\rTheir bodies bear the marks of their Death and resurrection, making each Înviere a unique tapestry of life's end and its defiance. Their eyes glow with an eerie light, a beacon in the darkness they navigate so well. They move with purpose and intent, their actions driven by inscrutable goals known only to them and their undying deities.\rThe Înviere are a striking sight to behold, their forms a chilling echo of the life they once lived. They bear the visage of their former humanoid selves, yet their skin is pallid and cold, ranging in tones from the lightest alabaster to the deepest ebony. Their bodies are often marked by the circumstances of their Death, with scars, wounds, and other signs of their mortal end etched permanently into their flesh.",
+      "size": "5-6",
+      "lifespan": "400-800",
+      "language": "Imperial, Night",
+      "diet": "Hematophagy",
+      "rarity": "rare",
+      "region": "kingslands",
+      "features": "Gift of Death:Gain the Exhausted condition while in sunlight and take [[1d4]] solar damage every round. You do not need to eat, drink, sleep, or breathe, and you are immune to disease and magic can't put you to sleep. When you take the Death condition, remove it but it leaves a wound, scar, or disfigurement. This can be done once a month\rStench: You have the smell of Death, your body is rotten and cold. You have disadvantage on Social checks (Influence), but you have advantage to Disrupt"
+    },
+    {
+      "name": "Celestial (Marble)",
+      "lineage": "Gargoyle",
+      "option": "",
+      "description": "The Celestial Gargoyles are a symbol of divine power and protection. Their ancestors were chosen by the angels to guard the great temples of the world, a duty they carry out with unwavering dedication. Their skin is as smooth and polished as marble, and their golden eyes and hair shine with a heavenly light. They are capable of sustained flight, a gift bestowed upon them by the angels to aid in their sacred duty. They are also capable of releasing a burst of radiant energy, a manifestation of their divine power that can harm those who threaten the peace of their temples. They are a rare and revered species, seen as a beacon of hope and a symbol of divine protection.",
+      "size": "5-6",
+      "lifespan": "200-400",
+      "language": "Imperial (Kingslands)",
+      "diet": "ashlar",
+      "rarity": "uncommon",
+      "region": "kingslands",
+      "features": "Radiant Wings: You have wings that give fly speed equal to your movement or half as much if you are wearing heavy armor. As an action create a burst of radiant energy dealing [[1d4]] Solar damage to all creatures within reach range"
+    },
+    {
+      "name": "Infernal (Lavastone)",
+      "lineage": "Gargoyle",
+      "option": "",
+      "description": "Born from the fiery depths of the underworld, the Infernal Gargoyles are a testament to the power of dark rituals and ancient magic. Their ancestors were created by demonic forces, designed to be the ultimate weapon against their enemies. Their skin is as coarse and rugged as lava stone, and their eyes glow with an infernal light that strikes Fear into the hearts of their foes. They are known for their intimidating presence, often using their terrifying appearance to their advantage in battle. Despite their heavy build, they are capable of short flights, a skill they use to surprise their enemies and gain the upper hand in combat. Their bodies are naturally armored, providing them with a level of protection that few can match. They are a rare and formidable species, feared and respected in equal measure.",
+      "size": "7-8",
+      "lifespan": "200-400",
+      "language": "Imperial (Kingslands)",
+      "diet": "ashlar",
+      "rarity": "uncommon",
+      "region": "kingslands",
+      "features": "Hefty Wings: Gain +5 armor that can be healed or repaired. You have a fly speed equal to half your movement speed while not wearing heavy armor."
+    },
+    {
+      "name": "Nemuri (Mind Stone)",
+      "lineage": "Gargoyle",
+      "option": "",
+      "description": "The Nemuri Gargoyles are a unique and mysterious species, born from the stone of the Nemuri sea. Their bodies glow with a strange luminescence, a reflection of their connection to dreams and memories. They are capable of flight, a skill they use to traverse the Nemuri plane and explore the mysteries of the universe. They are also capable of releasing a burst of radiant energy, a manifestation of their Nemuri power that can harm those who threaten their peace. They are a rare and enigmatic species, seen as the keepers of dreams and the guardians of the Nemuri plane.",
+      "size": "5-6",
+      "lifespan": "200-400",
+      "language": "Imperial (Kingslands)",
+      "diet": "ashlar",
+      "rarity": "uncommon",
+      "region": "kingslands",
+      "features": "Dreamstate Flight: You have wings that give fly speed equal to your movement or half as much if you are wearing hefty armor. As an action, touch a creature and make a Spirit check. On a success you may ask one question about their thoughts, memory, or past."
+    },
+    {
+      "name": "Stone (Greystone)",
+      "lineage": "Gargoyle",
+      "option": "",
+      "description": "The Greystone Gargoyles are the embodiment of ancient tradition and natural power. They are the descendants of the original gargoyle bloodline, born from the very stone of the earth. Their skin is as hard and unyielding as granite, and their bodies are built for endurance and strength. Despite their heavy build, they are capable of flight, a skill they use to patrol their territories and protect their kin. They have the unique ability to regenerate their bodies, healing wounds and injuries at a remarkable rate when they remain still. They are a rare and respected species, seen as the guardians of ancient traditions and the protectors of their kind.",
+      "size": "6-7",
+      "lifespan": "200-400",
+      "language": "Imperial (Kingslands)",
+      "diet": "ashlar",
+      "rarity": "uncommon",
+      "region": "kingslands",
+      "features": "Stone Flight: You have wings that give fly speed equal to your movement or half as much if you are wearing hefty armor. As an action, heal for [[1d6]] but you take the Slowed and pinned conditions until the end of your next turn."
     }
-    
+  ],
+  "dragonTypes": [
+    {
+      "name": "Viridian Bile (Acid)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Bile Dragons are the smallest among the elemental dragons, they have streamlined bodies built for slinking through narrow spaces and are often found in caves or marshes. Their scales are smooth, olive-green, transitioning to yellow on their underbelly, and they have forward-curving horns like a ram. Bile Dragons are cunning, territorial, and can be fiercely protective of their habitats.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Vile Bite: As an action make a bite attack that deals [[1d8]] acid damage"
+    },
+    {
+      "name": "Crimson Pyre (Fire)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Pyre Dragons are of average size and have muscular bodies. Those with wings have broad wings to help lift their heavy frames. They are covered in red scales that resemble smoldering coals. Their large, curved horns and spines running along their backs give them an intimidating appearance. They are boisterous, proud, and are quick to challenge intruders, which reflects their fiery temperament.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Fiery Presence: Your mere presence causes the air around you to superheat. As an action each creature within reach takes 1 Fire damage, and any creature that starts their turn within reach takes 1 Fire damage"
+    },
+    {
+      "name": "Glacial Shard (Ice)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Shard Dragons are slightly larger than Pyre Dragons and have more elongated bodies built for speed. They have crystalline, white scales that shimmer like ice in the sun, and their long, spiraled horns are reminiscent of icicles. These dragons are cool-tempered, elusive, and prefer to avoid unnecessary fights, but their piercing ice breath makes them formidable when cornered.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Winter’s Freeze: As an action target a large or smaller creature within reach, using your icy breathe they take the Slowed condition until the end of their next turn"
+    },
+    {
+      "name": "Cloudburst (Thunder)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Cloudburst Dragons are among the largest of the elemental dragons. They have strong, lean bodies built for enduring long flights, and those that have wings possess sturdy wings to brave the strongest storms. Their black scales are almost metallic, gleaming with an ethereal white along their underbelly. They have a love for music and are known to join in the chorus of a thunderstorm with their deep, resonant roars.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Sonic Roar: As an action, you can unleash a devastating roar. Each creature within reach range must succeed a Survival check or take the Deaf condition until the end of their next turn./li>"
+    },
+    {
+      "name": "Aquarion (Water)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Tsunami Dragons are of average size with sleek bodies and fins replacing the usual horns, allowing them to maneuver swiftly in water. Their light blue scales are reminiscent of the ocean, and their pearl bellies shimmer like calm waters. Generally peaceful, they often help sailors navigate, but they can unleash a fearsome torrent of water when provoked.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Tidal Breath:As an action, belch a wave of water at a target within reach range. The target must succeed a Strength check or be pushed 10ft or -5ft per success."
+    },
+    {
+      "name": "Venom Cloud (Toxic)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Venom Dragons are larger than most, their bodies built for strength and resilience. Their scales are black, transitioning into a sickly lime-yellow along their underbelly. With sharp horns and spines dripping with venom, these dragons often position themselves in power, using their toxic breath to maintain control.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Foul Claws: Your Unarmed Attacks deal an additional [[1d4]] toxic damage."
+    },
+    {
+      "name": "Zephyr Voltstryke (Lightning)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Bolt Dragons are the leanest among their kind, built for speed and agility. Their scales are dark blue or black, with a contrasting light blue underbelly. Their horns arc backward like lightning bolts. Quick to react and quicker to anger, they are known for their unpredictable and explosive tempers.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Lightning Reflexes: You are beyond speed and cannot be stopped. You cannot be locked out of Agility checks and have +1 Agility"
+    },
+    {
+      "name": "Solarflare (Solar)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "The Solarflare Dragons, often revered as the luminous gold dragons, are a rare and splendid sight in the prime material realm. Whispers say they are relentlessly pursued by the empire, their lustrous golden scales coveted for their unmatched purity. These dragons display a magnificent contrast between their gleaming gold scales and the vibrant hues of their underbellies, ranging from the deepest twilight to the brightest dawn. Their breath weapon is a devastating beam of concentrated solar energy, embodying the sun's fury and scorching all in its path.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Solar Powered: As an action, gain +3 spell points until the end of your next turn."
+    },
+    {
+      "name": "Ashen Wisp (Eclipse)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Wisp Dragons are slightly larger than Bile Dragons, with bodies built for stealth. Their nearly translucent black scales and dark grey belly scales allow them to blend into the shadows. Despite their solitary nature, they're known to assist travelers in need, guiding them safely away from wildfires with their smoke breath.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Smoke Cloak: As a half-action, you exhale a veil of smoke that lingers around you until the end of your next turn. While shrouded, gain advantage on Stealth checks and creatures have disadvantage to hit you with ranged attacks."
+    },
+    {
+      "name": "Verdant Whisper (Nature)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Whisper Dragons are of average size. Their scales are rough and resemble bark, and they bear numerous branches and foliage that grow from their bodies, serving as additional protection. They are quiet, thoughtful creatures that enjoy the company of flora and fauna and often play the role of protectors of the forest.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Draconic Barkskin: You can speak with plants and animals, they always speak in riddles. You have +5 armor that can be healed or repaired."
+    },
+    {
+      "name": "Shadowraith (Eclipse)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Shadowraiths drift like sorrow through twilight, their massive wings trailing plumage made of living smoke. They are the largest of the Planar dragons. Their scales reflect nothing. Their voices carry the hush of funerals and the final breath of old kings. Born in the stillness of the Eclipse, they are not agents of Death, but witnesses to its truth. Gentle by nature, they speak softly and act only when the boundary between life and what waits beyond is disrespected. To look into their eyes is to feel the weight of memories not your own.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Deathspeaker: You can communicate freely with undead creatures. If an undead is uncommanded, it recognizes you as a rightful guide and will follow your will. If the undead is under another’s command, it must speak the name of its master to you when addressed"
+    },
+    {
+      "name": "Radiance (Solar)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Radiance Dragons are the smallest among the planar dragons. Their scales shimmer with a pearlescent sheen, radiating a soft glow that's comforting to behold. They bear an aloof attitude and often exhibit a sense of superiority over others. Despite their arrogance, their divine heritage cannot be denied, and they often intervene to maintain balance and peace.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Divine Shield: As an action, give a creature a radiant shield that protects them from the next instance of damage, it lasts for 1 minute and glows in the dark."
+    },
+    {
+      "name": "Astraleon (Psychic)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Flux Dragons are larger than most dragons. Their scales shift in color, reflecting their mood and the energy around them. They are free-spirited and inquisitive, often encroaching on personal boundaries. However, their charismatic demeanor often results in them being forgiven for their lack of tact.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Nemuri Shift: As an action becomes semi-ethereal taking half damage and attacks against you have disadvantage until the end of your next turn but you have disadvantage on attacks as well."
+    },
+    {
+      "name": "Vozurion (Vozian)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Vozian Dragons are the most robust among the planar dragons. They are adorned with numerous large horns, their scales a kaleidoscope of red, purple, and orange hues. Fiercely loyal to those of Vozian heritage, their fiery wrath is a thing to be feared by those who cross them.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Nightmare Scream:As an action howl at a target, they must make a Spirit check or take the Fear condition. On a success they are immune to this effect"
+    },
+    {
+      "name": "Thornspike (Piercing)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Barb Dragons are bigger than average dragons and have bulkier bodies. They are covered in muted-hued, thorny scales that not only serve as armor but also as a weapon. These dragons have limited intellect and are driven primarily by instinct and hunger. They are territorial and aggressive towards intruders, who often find themselves faced with a cloud of sharp spikes when encroaching on a Barb Dragon's domain. These dragons have a mouth full of barbs, the large dragon's breath weapon is a spray of these barbs.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Spiked Hide: When a creature hits you with a melee attack, they take 2 piercing damage."
+    },
+    {
+      "name": "Auric Reaver (Slashing)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "Reaver Dragons are the largest of all these dragon types, their massive bodies covered in metallic scales that gleam in the sunlight. They have large, curved horns and a thick, bladed tail that's as deadly as any weapon. Despite their imposing size and strength, they possess a noble spirit and often intervene to maintain harmony in their territory.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Reaper’s Tail: As an Action or Off-Action use your bladed tail to make an attack dealing [[1d6]] slashing damage."
+    },
+    {
+      "name": "Crystal Wyrms (Impact)",
+      "lineage": "dragonType",
+      "option": "",
+      "description": "The largest of all dragons, the Crystal Wyrms are magnificent creatures with scales that resemble an array of gemstones, not limited to emeralds but including sapphires, rubies, and diamonds. These scales glint and shimmer with an ethereal light, casting colorful reflections. Their horns are like crystallized sculptures, and their tails are thick and blunted, used as a powerful weapon. Crystal formations adorn their bodies, adding to their mystical appearance. Known for their wisdom and patience, these creatures often align themselves with the forces of balance and nature.",
+      "size": "",
+      "lifespan": "",
+      "language": "",
+      "diet": "",
+      "rarity": "",
+      "region": "",
+      "features": "Boulder Bash: You have +3 Armor, when you deal Impact damage, deal an additional +3 damage"
+    }
   ]
 }

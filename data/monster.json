@@ -2090,6 +2090,19 @@
                 "walk": 5
             }
         },
+        "Defender": {
+            "description": "Creature with perfect defense or preperation against all damage types except one",
+            "names": [
+                "Immune",
+                "Mana Guarded"
+            ],
+            "features": [
+                {
+                    "name": "Perfect Defense",
+                    "effect": "All damage types deal only 1 damage per attack except one chosen damage type"
+                }
+            ]
+        },
         "Weak": {
             "description": " a weak creature, seems frail and barely able to stand",
             "names": [

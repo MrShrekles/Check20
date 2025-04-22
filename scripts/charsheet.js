@@ -10,13 +10,13 @@ function loadOptions(filePath, dropdownId, descriptionId, featureListId, equipme
         .then(response => response.json())
         .then(data => {
             const dropdown = document.getElementById(dropdownId);
-            const description = document.getElementById(descriptionId);
             const featureList = document.getElementById(featureListId);
             const pathDropdown = pathDropdownId ? document.getElementById(pathDropdownId) : null;
             const talentDropdown = talentDropdownId ? document.getElementById(talentDropdownId) : null;
 
+
             // Clear and populate dropdown
-            dropdown.innerHTML = `<option value="">Select ${capitalizeFirstLetter(dropdownId)}</option>`;
+            dropdown.innerHTML = `<option value=""></option>`;
             const dataKey = dropdownId === "species" ? "species" : "classes";
 
             data[dataKey].forEach(item => {
@@ -31,10 +31,26 @@ function loadOptions(filePath, dropdownId, descriptionId, featureListId, equipme
                 const selectedItem = data[dataKey].find(item => item.name === dropdown.value);
                 if (!selectedItem) return;
 
-                description.textContent = selectedItem.description || "No description available.";
-                featureList.innerHTML = selectedItem.features?.map(feature =>
-                    `<li><strong>${feature.name}:</strong> ${feature.description}</li>`
-                ).join('') || "<li>No features available.</li>";
+                // Inside dropdown.addEventListener('change', ...)
+                if (equipmentListId && selectedItem.equipment) {
+                    const equipmentList = document.getElementById(equipmentListId);
+                    equipmentList.innerHTML =
+                        `<h4>Starting Equipment</h4>` +
+                        selectedItem.equipment.map(item => {
+                            const choices = item.choices?.map(choice =>
+                                `<li><em>${choice.name}:</em> ${choice.description}</li>`
+                            ).join('') || '';
+                
+                            return `
+                                <li>
+                                    <strong>${item.name}:</strong> ${item.description}
+                                    ${choices ? `<ul>${choices}</ul>` : ''}
+                                </li>
+                            `;
+                        }).join('');
+                }
+                
+
 
                 if (dropdownId === "class") {
                     populateDropdown(pathDropdown, selectedItem.paths, "Select a Path");
@@ -78,8 +94,6 @@ function loadPathDetails(selectedPath) {
     if (!pathContainer) return;
     pathContainer.innerHTML = `
         <h4>${selectedPath.name}</h4>
-        <p>${selectedPath.description}</p>
-        <h4>Features</h4>
         ${selectedPath.features?.map(feature => `<p><strong>${feature.name}:</strong> ${feature.description}</p>`).join('') || "<p>No special features available.</p>"}
         <details>
             <summary>Progression</summary>
@@ -96,8 +110,6 @@ function loadTalentDetails(selectedTalent) {
     if (!talentContainer) return;
     talentContainer.innerHTML = `
         <h4>${selectedTalent.name}</h4>
-        <p>${selectedTalent.description}</p>
-        <h4>Features</h4>
         ${selectedTalent.features?.map(feature => `<p><strong>${feature.name}:</strong> ${feature.description}</p>`).join('') || "<p>No special features available.</p>"}
         <details>
             <summary>Progression</summary>
@@ -123,7 +135,6 @@ function loadSpeciesOptions(filePath, speciesDropdownId, descriptionId, featureL
         .then(response => response.json())
         .then(data => {
             const speciesDropdown = document.getElementById(speciesDropdownId);
-            const description = document.getElementById(descriptionId);
             const featureList = document.getElementById(featureListId);
             const subspeciesDropdown = document.getElementById(subspeciesDropdownId);
 
@@ -145,7 +156,6 @@ function loadSpeciesOptions(filePath, speciesDropdownId, descriptionId, featureL
                 if (!selectedSpecies) return;
 
                 // Update species details
-                description.textContent = selectedSpecies.description || "No description available.";
                 featureList.innerHTML = selectedSpecies.features?.map(feature =>
                     `<li><strong>${feature.name}:</strong> ${feature.description}</li>`
                 ).join('') || "<li>No features available.</li>";
@@ -192,8 +202,6 @@ function loadSubspeciesDetails(selectedSubspecies) {
 
     subspeciesContainer.innerHTML = `
         <h4>${selectedSubspecies.name}</h4>
-        <p>${selectedSubspecies.description}</p>
-
         <div class="features">
             <h4>Traits</h4>
             ${selectedSubspecies.traits?.map(trait => `<p><strong>${trait.name}:</strong> ${trait.description}</p>`).join('') || "<p>No special traits available.</p>"}
@@ -230,8 +238,6 @@ function loadSpeciesDetails(selectedSpecies) {
 
     speciesContainer.innerHTML = `
         <h4>${selectedSpecies.name}</h4>
-        <p>${selectedSpecies.description}</p>
-
             ${selectedSpecies.features?.map(feature => `
                 <p><strong>${feature.name}:</strong> ${feature.description}</p>
                 ${feature.options ? formatFeatureOptions(feature.options) : ""}
@@ -272,7 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(response => response.json())
         .then(data => {
             const speciesList = document.getElementById("species-list");
-            
+
             // Populate datalist options dynamically
             data.species.forEach(species => {
                 let option = document.createElement("option");
@@ -472,4 +478,29 @@ function clearAllTotals() {
 document.addEventListener('DOMContentLoaded', calculateTotalChecksSum);
 document.querySelectorAll('.checks-table input[name$="Total"]').forEach(input => {
     input.addEventListener('input', calculateTotalChecksSum);
+});
+
+document.getElementById('species').addEventListener('input', toggleNotesSections);
+function toggleNotesSections() {
+    const speciesInput = document.getElementById('species')?.value?.trim().toLowerCase();
+    const classSelect = document.getElementById('class')?.value?.trim();
+    const pathSelect = document.getElementById('path')?.value?.trim();
+    const talentSelect = document.getElementById('talent')?.value?.trim();
+
+    const speciesValid = Array.from(document.querySelectorAll('#species-list option'))
+        .some(opt => opt.value.toLowerCase() === speciesInput);
+
+    document.querySelector('.notes-species')?.classList.toggle('hidden', speciesValid);
+    document.querySelector('.notes-class')?.classList.toggle('hidden', classSelect || pathSelect || talentSelect);
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('species')?.addEventListener('input', toggleNotesSections);
+    document.getElementById('class')?.addEventListener('change', toggleNotesSections);
+    document.getElementById('path')?.addEventListener('change', toggleNotesSections);
+    document.getElementById('talent')?.addEventListener('change', toggleNotesSections);
+
+    // Run once on load to hide already filled ones
+    toggleNotesSections();
 });

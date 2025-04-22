@@ -1,383 +1,185 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // Name Generator Components
-    const start = ["A", "Ba", "Ci", "Da", "El", "Fa", "Ga", "Gre", "He", "Hi", "In", "Ik", "Jo", "Jor", "Ka", "Lo",
-        "Lun", "Om", "Ok", "Pa", "Ma", "Mu", "Na", "Pho", "Qu", "Ra", "Shi", "Tha", "Tra", "Uth",
-        "Vi", "Vo", "Wi", "Wu", "Xe", "Xo", "Yu", "Ze", "Zyn", "Za"];
-    const core = ["ar", "en", "il", "or", "um", "el", "ix", "an", "os", "iv",
-        "ath", "eus", "mir", "dor", "rin", "var", "zel", "tur", "cra", "phy",
-        "dyn", "ver", "mal", "zar", "gel", "qui", "nok", "syl", "tov", "zid", "jj", "ii"];
-    const end = ["a", "is", "on", "us", "eth", "ian", "el", "or", "yx",
-        "al", "ric", "dar", "mon", "ren", "vor", "las", "zun", "ther", "wyn",
-        "tog", "ran", "dris", "lix", "sen", "oth", "quar", "pha", "nid", "xir"];
+let npcData = {};
+let speciesData = { species: [], dragonTypes: [] };
 
-    function generateName() {
-        let first = start[Math.floor(Math.random() * start.length)];
-        let middle = core[Math.floor(Math.random() * core.length)];
-        let last = end[Math.floor(Math.random() * end.length)];
+// Load both JSONs
+Promise.all([
+    fetch("data/worldbuilding.json").then(res => res.json()),
+    fetch("data/species.json").then(res => res.json())
+]).then(([worldbuilding, species]) => {
+    npcData = worldbuilding;
+    speciesData = species;
+}).catch(err => console.error("❌ Error loading data:", err));
 
-        // Smooth transitions (avoid duplicate vowels/consonants)
-        if (first.endsWith(middle[0])) middle = middle.substring(1);
-        if (middle.endsWith(last[0])) middle = middle.substring(0, middle.length - 1);
+// Rarity-weighted selector
+const rarityWeight = (species) => {
+    switch ((species.rarity || "").toLowerCase()) {
+        case "now": return 100;
+        case "common": return 30;
+        case "uncommon": return 16;
+        case "rare": return 8;
+        case "very rare": return 4;
+        case "legendary": return 2;
+        case "unique": return 1;
+        default: return 5;
+    }
+};
+const weightedRandom = (list, weightFn) => {
+    const pool = [];
+    list.forEach(item => {
+        const weight = Math.floor(weightFn(item) * 10); // support decimals
+        for (let i = 0; i < weight; i++) pool.push(item);
+    });
+    return pool.length ? pool[Math.floor(Math.random() * pool.length)] : list[Math.floor(Math.random() * list.length)];
+};
 
-        return first + middle + last;
+const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
+
+function formatTextWithBreaks(str) {
+    return (str || "").replace(/\n/g, "<br>");
+}
+
+function formatSpecies(s) {
+    const name = s.name || "Unknown";
+    const lineage = s.lineage || "";
+    const option = s.option || "";
+
+    if (option && lineage) return `${capitalize(option)} ${name}`;
+    if (lineage && lineage.toLowerCase() !== name.toLowerCase()) return `${capitalize(lineage)} - ${name}`;
+    return name;
+}
+
+function extractFeature(species) {
+    if (!species.features) return [];
+
+    // If it's an array of features
+    if (Array.isArray(species.features)) {
+        return species.features.flatMap(f => {
+            const baseDesc = `${f.name}: ${f.description}`;
+            const optionLines = Array.isArray(f.options)
+                ? f.options.map(opt => `<b> ${opt.name}:</b> ${opt.effect}`)
+                : [];
+
+            return [baseDesc, ...optionLines];
+        });
     }
 
-    // Primary Species Categories
-    const speciesGroups = {
-        "Human": ["Primarch", "Klienkin", "Changeling"],
-        "Dwarf": ["Breaker Banished", "Breaker", "Flamebeard", "Hill", "Mountain"],
-        "Elf": ["Fire/Sun", "Noble", "Shadow/Smoke", "Undark/Fungal", "Water/Ice", "Wood/Ashlar", "Wood/Earth"],
-        "Breaker Dwarf": ["Fully Red", "Heavily Red", "No Red", "Some Red"],
-        "Orc": ["Desert", "Mountain", "Jungle", "Maldios", "Oceanic"],
-        "Core Bound": ["Arcane", "Dryad", "Vozian", "Rusty"],
-        "Gnome": ["Tinker", "Gloom", "Vozian", "Nemuri"],
-        "Changeling": ["Elemental", "Vozian", "Nemuri"],
+    // Fallback for simple string-style feature blocks
+    return [species.features];
+}
 
-        "Realm Split": {
-            "Ensuri": ["Air", "Stone", "Fire", "Water", "Toxic", "Frost", "Lightning", "Smoke", "Empath"],
-            "Helborn": ["Desolate", "Rustfiend", "Soulshade", "Ink Shadow", "Echo Horn", "Icereaver", "Mistfire", "Warshade", "Mortaltus", "Vozian", "Abyssal"],
-            "Seraphim": ["Shackleborn (Brakkus)", "Chronal Warden (Chronus)", "Resonance (Dumda)", "Empyreans (Exembar)", "Silent (Jesha)", "Librarian (Signissen)", "Emissary (Zuinmuir)", "Ancestral"],
-            "Etherian": ["Dreamborn", "Nightmare Brood"]
-        },
-        "Goblijjins": {
-            "Goblin": ["Wild", "City", "Vozian"],
-            "Hojjoblin": ["Wild", "City", "Vozian"]
-        },
-        "Giant": {
-            "Muśkila": ["Tricky"],
-            "Visala": ["Half-Giant"],
-            "Rākṣasa": ["Demon"],
-            "Nirvāsita": ["Banished"]
-        },
-        "Dragon": [
-            "Viridian", "Crimson Pyre", "Glacial", "Cloudburst", "Aquarion", "Venom", "Voltstryke",
-            "Solarflare", "Ashen", "Verdant", "Shadowwraith", "Radiance", "Astraleon", "Vozurian",
-            "Thornspike", "Reaver", "Crystal"
-        ],
-        "Kobari": [
-            "Viridian", "Crimson Pyre", "Glacial", "Cloudburst", "Aquarion", "Venom", "Voltstryke",
-            "Solarflare", "Ashen", "Verdant", "Shadowwraith", "Radiance", "Astraleon", "Vozurian",
-            "Thornspike", "Reaver", "Crystal"
-        ],
-        "Drakonari": [
-            "Viridian", "Crimson Pyre", "Glacial", "Cloudburst", "Aquarion", "Venom", "Voltstryke",
-            "Solarflare", "Ashen", "Verdant", "Shadowwraith", "Radiance", "Astraleon", "Vozurian",
-            "Thornspike", "Reaver", "Crystal"
-        ],
-        "Greenborn": {
-            "Otoata": ["Thorn", "Venin", "Husk"],
-            "Ciuperca": ["Psychedelic", "Deadly", "Ghost"],
-        },
-        "Symbiotes": ["Gloomspawn", "Eternal Worm"],
-        "Firstborn": [],
-        "Strigoi": ["Tristeţe (Lesser Vampire)", "Avuţie (Viscount)", "Tărie (Winged Vampire)", "Înviere (Undead)"],
-        "Gargoyle": ["Infernal (Lavastone)", "Celestial (Marble)", "Stone (Greystone)", "Nemuri (Mind Stone)"],
-        "Zoanthropes": ["Predatory Heritage", "Avian Heritage", "Cervidae Heritage", "Aquatic Heritage", "Satyr Heritage", "Centaur Heritage"],
-        "Araknakin": ["Scorpikin", "Spiderkin", "Tikkin"],
-        "Avians": ["Corvus", "Crane", "Hawk", "Owl", "Passerine", "Penguin", "Phoenix"],
-        "Beruklians": ["Gorilla", "Mono Grito", "Oranggian", "Papio (Baboon)"],
-        "Caniform": ["Lupine (Alpha)", "Lupine (Sovereign)", "Ursakin", "Foxxin", "Coyote"],
-        "Cloven": ["Caprakin (Goatmen)", "Minotaur (Hellhorn)", "Minotaur (Labyrinthine)", "Cervidae (Deerfolk)", "Equinor (Horsefolk)", "Bovinus (Bisonfolk)"],
-        "Felidae": ["Paka (Cat-Folk)", "Shujaa (Lion-Folk)", "Kivuli (Panthari)", "Cheetari (Mwendokasi)"],
-        "Half Cloven": ["Hippokin", "Elephantine", "Roxodon", "Camelon (Camelfolk)"],
-        "Gliers": ["Leporidae (Rabbikin)", "Opossum", "Raccoon", "Squirrel", "Beaver", "Platypus", "Porcupine (Quillkin)", "Chippoterian (Bat Folk)", "Molefolk (Diggers)", "Pangolin", "Armadillo"],
-        "Reptilia": ["Savra (Lizard-Greek)", "She-Ren (Snake Men-Chinese)", "Rua (Turtle-Vietnamese)", "Crokagator"],
-        "Marsupial": ["Kangarans (Kangaroo Folk)", "Wombarn (Wombat Folk)"],
-        "Mythic Beast": ["Kirin (Chimeric Deer/Dragon)", "Ammit (Chimeric Lion/Crocodile)", "Jackalope (Horned Rabbit)", "Griffin (Lion/Eagle)", "Tarasque (Behemoth)"],
-        "Plagued One": ["Gnoll", "Scourge", "Scavenger"]
-    };
+class NPC {
+    constructor() {
+        const species = weightedRandom(speciesData.species, rarityWeight);
+        this.speciesName = formatSpecies(species);
+        this.features = extractFeature(species);
 
+        const dragonLineages = ["kobari", "drakonari"];
+        const lowerName = species.name?.toLowerCase();
 
-    function getRandomItem(array) {
-        return array[Math.floor(Math.random() * array.length)];
-    }
+        if (dragonLineages.includes(lowerName)) {
+            const dragon = getRandomItem(speciesData.dragonTypes);
+            this.speciesName += ` (${dragon.name})`;
 
-    function generateSpecies() {
-        // Pick a random species category
-        const categoryKeys = Object.keys(speciesGroups);
-        let category = getRandomItem(categoryKeys);
-        let species;
-
-        if (Array.isArray(speciesGroups[category])) {
-            // If category has a simple array (like Drakonari or Avians)
-            species = getRandomItem(speciesGroups[category]);
-        } else {
-            // If category is an object with subcategories
-            const subCategoryKeys = Object.keys(speciesGroups[category]);
-            let subCategory = getRandomItem(subCategoryKeys);
-
-            if (speciesGroups[category][subCategory].length > 0) {
-                let subSpecies = getRandomItem(speciesGroups[category][subCategory]);
-                species = `${subCategory} - ${subSpecies}`;
-            } else {
-                species = subCategory;
+            // Add the dragon feature too
+            if (dragon.features) {
+                this.features.push(`🐉 ${dragon.features}`);
             }
         }
 
-        return `${category}: ${species}`;
+        this.name = generateName();
+        this.affinity = `${getRandomItem(npcData.affinities)} from ${getRandomItem(npcData.habitats)}`;
+        this.religion = getRandomItem(npcData.gods);
+        this.item = getRandomItem(npcData.signatureItems);
+        this.motivation = getRandomItem(npcData.motivations);
     }
+}
 
-    // Affinity & Habitat Generator Components
-    const affinityOptions = [
-        "Artisan", "Merchant", "Scholar", "Warrior", "Rogue", "Healer", "Hunter", "Scout", "Performer",
-        "Fireborne", "Frostbinder", "Stormcaller", "Stonebound", "Windstrider", "Toxicblood",
-        "Lightforged", "Shadowtouched", "Abyssalflame", "Glacialheart", "Thundershaper",
-        "Eclipse Revenant", "Wraithborn", "Hollowshade", "Phantomwalker", "Spectral Sentinel", "Ghostbound",
-        "Dreamweaver", "Sleepwalker", "Nightmare Touched", "Oneiromancer", "Lucidborn",
-        "Hellforged", "Infernal Pactbearer", "Flamefiend", "Ashenblood", "Doombringer", "Voidmarked",
-        "Celestial Ward", "Sunblessed", "Dawnforged", "Starborne", "Seraphic Blade", "Divine Speaker",
-        "Wildheart", "Feralborn", "Thornbloom", "Forestwarden", "Spiritwalker", "Shapebinder",
-        "Drakeblood", "Wyrmtouched", "Scaled Fury", "Skyborn", "Moltenfang", "Venomfang", "Elderwing",
-        "Clockwork Soul", "Manacrafted", "Golemforged", "Runebound", "Machinelord", "Etherframe",
-        "Fleshsculpted", "Chimeric Experiment", "Twistedborn", "Plaguekin", "Mutantborn", "Aberrant Flesh",
-        "Stone Titan", "Skystrider", "Frost Colossus", "Thunderborn", "Stormbringer", "Adventurer",
-        "Aerial Acrobat", "Alchemist", "Alchemist", "Ancestral Guardian", "Ancient Bloodline", "Apothecary", "Arcane Archer", "Arcane Trickster", "Archaeologist", "Archaeologist", "Archivist", "Aristocrat", "Art Deco Architect", "Art Therapist", "Artisan's Child", "Assassin", "Astral Traveler", "Astrologer", "Astronomer", "Accountant", "Adept", "Administrative Assistant", "Adventurer", "Adventurer", "Asylum Inmate", "Athlete", "Auditing Clerk", "Automobile Manufacturer", "Aviator", "Aviator", "Aviator Pioneer", "Baker", "Baker", "Banker", "Banker", "Banker", "Barbarian", "Barber", "Barber/urgeon", "Bard", "Barnstormer", "Barnstormer Pilot", "Barrister", "Barroom Brawler", "Bartender", "Battle Master", "Beast", "Beast Master", "Beast Tamer", "Beast Whisperer", "Benefits Coordinator", "Berserker", "Biomedical Engineer", "Black Furies", "Blacksmith", "Blacksmith", "Bladebound", "Bladesinging", "Blues Harmonist", "Boarding School Pupil", "Boardwalk Entrepreneur", "Bodyguard", "Bookkeeper", "Bookkeeper", "Bootlegger", "Bootlegger", "Botanist", "Bounty Hunter", "Boxing Promoter", "Brawler", "Breadmaker", "Brothel Madam/Mister", "Brujah", "Budget Coordinator", "Butcher", "Butcher", "Carpenter", "Cattle Rustler", "Cavalier", "Cavalry Officer",
-        "Celestial Messenger", "Champion", "Chaplain", "Chef", "Chemist", "Chimney Sweep", "Chimney Sweep", "Circle of Dreams", "Circle of Spores", "Circle of Stars", "Circle of the Land", "Circle of the Moon", "Circle of the Shepherd", "Clergy", "Cleric", "Clockwork Soul", "Coachman", "Coal Miner", "Coal Miner", "Cobbler", "Cobbler/Shoemaker", "College of Eloquence", "College of Glamour", "College of Lore", "College of Swords", "College of Valor", "College of Whispers", "Colonial Explorer", "Commoner", "Cook", "Country Gentleman/Lady", "Crime Boss", "Crime Syndicate Member", "Crystal Seer", "Cult Escapee", "Cultist", "Curator", "Cursed Enchanter/Enchantress", "Cursed Wanderer", "Dance Marathon Competitor", "Dancer", "Dark Ritualist", "Data Entry Operator", "Demon Binder", "Desert Nomad", "Desert cout", "Deserted Soldier", "Detective", "Dew Collector", "Dietary Aide", "Diplomat", "Disgraced Knight", "Diversity and Inclusion Manager", "Divine Soul", "Dock Hand", "Dock Worker", "Dock Worker", "Dockhand", "Doctor/Dentist", "Draconic Bloodline", "Dragon's Disciple", "Drayman (Horse-Drawn Cart Driver)", "Dreamweaver", "Dressmaker", "Druid", "Druidic Initiate", "Echo Knight", "Eldritch Knight", "Elemental Adept's Apprentice", "Elemental Binder", "Employee", "Enchanted Forager", "Enchanted Stream Fisher", "Entertainer", "Ethereal Artist", "Evangelist", "Event Planner", "Exiled Pixie", "Exiled Prince/Princess", "Factory Foreman", "Factory Worker", "Factory Worker", "Factory Worker", "Factory Worker", "Fae Ambassador", "Fae Beast Tamer", "Fae Court Advisor", "Fae Court Jester", "Fae Court Noble", "Fae-Touched", "Fae-Touched Wanderer", "Faith Healer", "Farmer", "Farmer", "Fighter", "Financial nalyst", "Firefighter", "Fisherman", "Fisherman", "Fitness Trainer", "Flapper", "Flapper Dancer", "Food Service", "Food Service", "Food Service", "Food Service Manager", "Forest Guardian", "Forest Guardian", "Forest Warden", "Forge Domain", "Forklift Operator", "Front Desk Receptionist", "Frontier Pioneer", "Gambler", "Gangster", "Gaslighter (street lamp lighter)", "Gladiator Champion", "Gloom Stalker", "Gold Rush Prospector", "Governess/Tutor", "Government Official", "Grave Domain", "Green Witch/Herbalist", "Grenadier", "Grocer", "Grove Keeper's Child", "Grove Tender", "Guardian of Ancient Secrets", "Guide", "Guild Artisan", "Haberdasher", "Harlem Renaissance Poet", "Herbalist Alchemist", "Hexcrafter",
-        "Homesteader/Farmer", "Horizon Walker", "Housekeeping Supervisor", "Housemaid", "Hunter", "Immigrant", "Innkeeper", "Inquisitive", "Inventor", "Inventor's Apprentice", "Janitor", "Jazz Age Novelist", "Jazz Bard", "Jazz Club Singer", "Jazz Musician", "Jazz Musician", "Jeweler", "Journalist", "Journalist/eporter", "Just a Worker", "Labor Relations Specialist", "Labor Union Organizer", "Laundry Attendant", "Laundry orker", "Lawyer", "Librarian", "Librarian", "Librarian", "Life Domain", "Light Domain", "Lighthouse Keeper", "Logger", "Logistics Analyst", "Lonesome Drifter", "Lost Scholar", "Madame", "Mage", "Magus", "Mail Carrier", "Mason", "Mason", "Mason", "Mastermind", "Matchstick Girl", "Mayor", "Mechanic", "Merchant", "Merchant", "Miller", "Milliner (Hat Maker)", "Milliner (hat maker)", "Mining Camp Foreman", "Missionary Preacher", "Mob Enforcer", "Mob Enforcer", "Monk", "Monster layer", "Moonbeam Dancer", "Moonlit Clearing Dancer", "Mountain Hermit", "Mountain Trapper", "Music Therapist", "Mystic", "Mystic Seer", "Mystical Archivist", "Mystical Glade Dweller", "Native Tribe Shaman", "Native Tribe Warrior", "Nature Diviner", "Nature Domain", "Nectar Brewer", "Newsboy", "Newsboy/ewsie", "Newspaper Reporter", "Newspaper Reporter", "Noble Heir", "Novelist", "Nurse", "Oath of Conquest", "Oath of Devotion", "Oath of Glory", "Oath of Redemption", "Oath of the Ancients", "Oath of engeance", "Office Manager", "Opera Singer", "Order Domain", "Orphaned Street Urchin", "Outcast Witch", "Outlaw Bandit",
-        "Paladin", "Payroll Specialist", "Performer", "Personal Assistant", "Petal Alchemist", "Pharmacist", "Philanthropist", "Photographer", "Photographer", "Physician", "Pirate of the High Seas", "Playwright", "Plumber", "Policeman", "Policeman/Bobby", "Politician", "Preacher", "Private Eye", "Private Investigator", "Prohibition Agent", "Prohibition Agent", "Prohibition Brute", "Psychic", "Radio Announcer", "Radio Broadcaster", "Railroad Worker", "Railroad Worker", "Railway Worker",
-        "Rancher's Heir",
-        "Ranger",
-        "Relic Hunter",
-        "Rigger",
-        "Ritual Celebrant",
-        "Riverboat Gambler",
-        "Rodeo Star", "Rogue",
-        "Rune Carver",
-        "Rune Enchanter",
-        "Sacred Glade Keeper", "Sacred Grove Protector",
-        "Saloon Owner",
-        "Samurai",
-        "Scholar",
-        "School of Abjuration", "School of Conjuration",
-        "School of Divination",
-        "School of Enchantment",
-        "School of Evocation", "School of Illusion",
-        "School of Necromancy",
-        "School of Transmutation",
-        "School of War Magic",
-        "School Teacher",
-        "Schoolteacher",
-        "Scribe",
-        "Sea Prophet",
-        "Seamstress/Tailor",
-        "Seamstress/Tailor",
-        "Security Guard",
-        "Servant/Maid",
-        "Service industry", "Service industry",
-        "Service industry",
-        "Sewer Soldier",
-        "Shadow Magic",
-        "Shadow Mender",
-        "Ship's Captain",
-        "Shipping and Receiving Clerk",
-        "Shipwright",
-        "Shop Assistant", "Silent Film Star",
-        "Silent Film Star",
-        "Silent Movie Director",
-        "Silent Striders",
-        "Snake Oil Salesman",
-        "Sorcerer",
-        "Soulknife",
-        "Speakeasy Owner",
-        "Speakeasy Owner",
-        "Speakeasy Protector",
-        "Spirit Medium",
-        "Spirit Talker", "Spiritualist/Medium",
-        "Stable Hand",
-        "Stagecoach Driver",
-        "Starlight Harpist",
-        "Stationmaster", "Steam Engine Operator", "Stock Market Speculator",
-        "Stockbroker",
-        "Stone Shaper",
-        "Storm Herald",
-        "Storm Sorcery",
-        "Street Cleaner",
-        "Street Samurai", "Street Urchin", "Street Vendor",
-        "Streetcar Driver",
-        "Suffragette",
-        "Suffragette",
-        "Suffragette (activist for women's voting rights)",
-        "Summoner",
-        "Sunlight Chaser",
-        "Swarmkeeper", "Swashbuckler",
-        "Swing Singer",
-        "Sylvan Emissary",
-        "Synthesist",
-        "Tavernkeeper",
-        "Taxi Driver", "Technomancer",
-        "Telegraph Operator", "Telegraph Operator", "Telegraph Operator",
-        "Telephone Operator",
-        "Tempest Domain",
-        "Temple Acolyte",
-        "The Archfey",
-        "The Celestial", "The Fathomless",
-        "The Fiend",
-        "The Great Old One", "Soulblade",
-        "Thief",
-        "Thorn Knight", "Tomb Raider",
-        "Toreador",
-        "Totem Warrior", "Town Sheriff",
-        "Train Conductor",
-        "Train Robber",
-        "Training and Development Manager", "Translator",
-        "Traveling Salesman", "Traveling Showman", "Tree Singer", "Trickery Domain", "Twilight Domain", "Uktena", "Undead Wrangler", "Undercover Agent", "Mountain Walker"
-    ];
+function generateName() {
+    const first = getRandomItem(npcData.names.start);
+    const core = getRandomItem(npcData.names.core);
+    const last = getRandomItem(npcData.names.end);
 
-    const habitatOptions = [
-        // **Urban & Civilized Locations**
-        "Bustling Market", "Cobblestone Streets", "Industrial District", "Seedy Back Alley", "Noble Estates",
-        "Sprawling Suburbs", "Quiet Hamlet", "Small Fishing Village", "Remote Farmstead", "Merchant Docks",
-        "Crowded Train Station", "Railroad Town", "Mining Settlement", "Roadside Inn", "Wayfarer’s Tavern",
-        "Underground Catacombs", "Theater District", "High Society Ballroom", "Speakeasy Lounge", "Abandoned Factory",
+    let middle = core;
+    if (first.endsWith(middle[0])) middle = middle.substring(1);
+    if (middle.endsWith(last[0])) middle = middle.slice(0, -1);
 
-        // **Nature & Wilderness**
-        "Rolling Grasslands", "Open Farmlands", "Sunflower Fields", "Wind-Swept Hills", "Pine Forest",
-        "Maple Grove", "Cherry Blossom Orchard", "Snowy Woods", "Golden Wheat Fields", "Lonely Meadow",
-        "Crystal Clear Lake", "Rocky Highlands", "Ancient Redwood Grove", "Echoing Cliffs", "Murky Swamplands",
-        "Jagged Ravines", "Glacial Ice Fields", "Sand Dunes", "Bamboo Thicket", "Riverbank Outpost",
+    return first + middle + last;
+}
 
-        // **Underground & Hidden Locales**
-        "Forgotten Crypt", "Collapsing Mine Shaft", "Echoing Cave System", "Underground Reservoir", "Root-Tangled Tunnels",
-        "Buried Temple", "Lost Catacombs", "Hidden Bunker", "Witch’s Hollow", "Ancient Sewers", "Ruined Subway Tunnels",
-
-        // **Fantasy & Otherworldly**
-        "Underdark", "Astral Plane", "Abyssal Depths", "Boreal Wilds", "Cavern Dwellings", "Sky Cities",
-        "Dreamscape", "Fungal Wastes", "Gloom Forest", "Jungle Ruins", "Oceanic Depths", "Twilight Glade",
-        "Mountain Stronghold", "Infernal Wastes", "Starborn Citadel", "Rainforest Canopy", "Tundra Expanse",
-        "Marshlands", "Sinking Mire", "Desert Outlands", "Seabound Cliffs", "Stormlands", "Feywild Enclaves",
-        "Haunted Manor", "Eldritch Swamp", "Time-Lost Ruins", "Crystal Caves", "Ever-burning Wastes"
-    ];
+function splitFeaturesString(str) {
+    const [name, ...rest] = str.split(":");
+    const effect = rest.join(":").trim();
+    return {
+        name: name.trim(),
+        effect: effect || ""
+    };
+}
 
 
-    const gods = [
-        "Behemoth {Treachery}", "Beinvinger", "Bonkfyre", "Bøsk", "Brakkus", "Brycotarian", "Caishen",
-        "Chronus", "Daruuk", "Diabolus", "Dumda", "Dynasty", "Enou", "Exembar", "Falkaust", "Araneae",
-        "Azmon (Asmodeus)", "Baset", "Beggar", "Felsmoke", "Fenrir", "Gash {Heresy}", "Hamsa", "Hav",
-        "Hpem (Titania)", "Huginn & Muninn", "Jera", "Jesha", "Johanna, The Bear", "Karne", "Khalas God-Dragon",
-        "Kistar", "Maldios (Maldios)", "Mephisto", "Meris", "Nag Panchami", "Nassus", "Noble", "Nocha",
-        "Noh (Loki)", "Odure", "Ohm (Yggdrasill)", "Pazulu {Lust}", "Pluto {Limbo}", "Ponyta", "Principle Fun",
-        "Queldethenarous", "Signessen", "Sov", "Stormbane", "Tala", "Temprusk", "The Dark Edict", "The Dawn",
-        "The Elements", "The Emperor", "The Silence", "The Watcher", "Thor (Elemental)", "Toe Fungus",
-        "Tortugreg", "Tuchulcha {Fraud}", "Tyrant Lord Breaker", "Undying", "Vassago {Violence}", "Ventress of Iron",
-        "Vozo", "Vultus", "Whisper", "Yeeshnu", "Yurmundas", "Zuinmuir", "The 7even"
-    ];
+function createNpcCard(npc) {
+    const div = document.createElement("div");
+    div.className = "monster-card";
 
-    const signatureItems = [
-        "Arcane Staff", "Assault Rifle", "Battering Ram", "Battle Axe", "Blackjack Sap",
-        "Blowgun", "Blunderbuss", "Bolas", "Bolt-Action Rifle", "Boomerang", "Bootlegger's Sawed-Off Shotgun",
-        "Brass Knuckles", "Broadsword", "Claymore", "Club", "Composite Bow", "Crossbow", "Crossbow, Hand",
-        "Crossbow, Heavy", "Crossbow, Light", "Dagger", "Dart", "Derringer Pocket Pistol", "Dirigible Bomb",
-        "Doel Daggers", "Dueling Sabre", "Falchion", "Flail", "Flapper's Purse Pistol", "Flintlock Pistol",
-        "Gangster's Cudgel", "Gas Grenade (riot control)", "Ghost Blade", "Gladius", "Glaive", "Greataxe",
-        "Greatclub", "Greatsword", "Halberd", "Hand Cannon", "Hand Crossbow", "Handaxe", "Heavy Staff",
-        "Heavy Whip", "Javelin", "Katana", "Kukri", "Lance", "Lever-Action Rifle", "Light Hammer", "Light Whip",
-        "Longbow", "Longsword", "Luger P08", "Mace", "Machete", "Machine Gun", "Magic Staff", "Magic Wand",
-        "Mangonel", "Maul", "Molotov Cocktail", "Morning Star", "Morningstar", "Mosin-Nagant", "Musket",
-        "Naval Cutlass", "Net", "Nunchaku", "Oathbow", "Pike", "Police Baton", "Quarterstaff", "Railway Rifle",
-        "Rapier", "Razor Blade (hidden)", "Recurve Bow", "Revolver", "Rune Axe", "Sabre", "Sai", "Sapper's Shovel",
-        "Scimitar", "Semi-Automatic Pistol", "Shortbow", "Shortsword", "Shotgun", "Shuriken (Ninja Stars)",
-        "Sickle", "Siege Crossbow", "Signal Pistol", "Silvered Dagger", "Sling", "Slingshot", "Sniper Rifle",
-        "Speakeasy Dagger", "Spear", "Stielhandgranate (Stick Grenade)", "Submachine Gun", "Sword",
-        "Throwing Axe", "Throwing Knife", "Throwing Sword", "Thunder Hammer", "Trident", "Vickers Machine Gun",
-        "Walther PPK", "War Hammer", "War Pick", "War Scythe", "Warhammer", "Whip"
-    ];
+    const featureHTML = npc.features.map(f => {
+        const { name, effect } = splitFeaturesString(f);
+        return `<p><strong>${name}</strong>: ${formatTextWithBreaks(effect)}</p>`;
+    }).join("");
 
-    const motivations = [
-        "Achieving dominion over another", "Achieving spiritual enlightenment", "Aiding a self-destructive loved one",
-        "Avoiding certain death", "Avoiding financial ruin", "Beating a diagnosis or condition",
-        "Becoming a leader of others", "Becoming the sole power or authority", "Being accepted by others",
-        "Being a philanthropist", "Being the best at something", "Caring for an aging parent",
-        "Carrying on a legacy", "Catching a villain", "Causing someone pain",
-        "Coming to grips with a mental disorder", "Controlling others", "Coping with a learning disability or illness",
-        "Correcting a perceived mistake", "Dealing with bullies", "Defying expectations",
-        "Discovering one's true self", "Discovering something important", "Doing the right thing",
-        "Embracing a personal identity", "Embracing chaos", "Escaping a dangerous life",
-        "Escaping a killer", "Escaping confinement", "Escaping danger",
-        "Escaping homelessness", "Escaping invaders", "Escaping widespread disaster",
-        "Establishing a sense of belonging", "Evading responsibility", "Exploring one's biological roots",
-        "Finding a lifelong partner", "Finding friendship or companionship", "Finding one's purpose",
-        "Finding something lost", "Fitting in", "Forcing a big change",
-        "Forcing conversion", "Forgiving oneself", "Gaining control over one's own life",
-        "Gaining family recognition", "Getting revenge", "Giving up a child",
-        "Having a child", "Having it all", "Keeping what one has no matter what",
-        "Learning to trust", "Making someone proud", "Navigating a changing family situation",
-        "Obliterating an enemy", "Obsessively pursuing a relationship", "Obtaining glory whatever the cost",
-        "Obtaining shelter from the elements", "Overcoming a debilitating fear", "Overcoming a fear",
-        "Overcoming abuse and learning to trust", "Overcoming addiction", "Overcoming past failures",
-        "Overthrowing good with evil", "Preserving a cultural heritage", "Profiteering",
-        "Promoting chaos", "Protecting a loved one", "Protecting one's home or property",
-        "Providing for one's family", "Providing security for future generations", "Proving someone wrong",
-        "Pursuing a passion", "Pursuing a toxic desire", "Pursuing justice for oneself or others",
-        "Pursuing knowledge", "Pursuing mastery of a skill or talent", "Realizing a dream",
-        "Reclaiming personal power", "Reuniting with distant family", "Repaying a debt",
-        "Rescuing a loved one from a captor", "Resisting peer pressure", "Restoring one's name or reputation",
-        "Righting a deep wrong", "Ruining someone's life", "Ruining someone's reputation",
-        "Saving the world", "Seeking adventure", "Seeking death",
-        "Serving others", "Shaking someone's beliefs", "Solving a problem",
-        "Stopping an event from happening", "Supporting oneself financially", "Surviving loss",
-        "Surviving the death of a loved one", "Taking what one is owed", "Trying something new",
-        "Winning a competition"
-    ];
+    div.innerHTML = `
+        <h1 contenteditable="true">${npc.name}</h1>
+        <b>${npc.speciesName}</b>
+        ${featureHTML}
+        <hr>
+        <p><strong>Affinity:</strong> ${npc.affinity}</p>
+        <p><strong>Religion:</strong> ${npc.religion}</p>
+        <p><strong>Signature Item:</strong> ${npc.item}</p>
+        <p><strong>Motivation:</strong> ${npc.motivation}</p>
+        <button class="copy-npc">Copy</button>
+        <button class="delete-monster">Remove</button>
+    `;
 
+    // Remove button
+    div.querySelector(".delete-monster").addEventListener("click", () => div.remove());
 
-    function generateAffinity() {
-        return `${affinityOptions[Math.floor(Math.random() * affinityOptions.length)]} from ${habitatOptions[Math.floor(Math.random() * habitatOptions.length)]}`;
-    }
-    function generateReligion() {
-        return gods[Math.floor(Math.random() * gods.length)];
-    }
-    function generateSignatureItem() {
-        return signatureItems[Math.floor(Math.random() * signatureItems.length)];
-    }
-    function generateMotivation() {
-        return motivations[Math.floor(Math.random() * motivations.length)];
-    }
+    // Copy button
+    div.querySelector(".copy-npc").addEventListener("click", () => {
+        const copyBtn = div.querySelector(".copy-npc");
+        const deleteBtn = div.querySelector(".delete-monster");
 
-    function generateAll(npcId) {
-        document.getElementById(`generated-name-${npcId}`).textContent = generateName();
-        document.getElementById(`generated-species-${npcId}`).textContent = generateSpecies();
-        document.getElementById(`generated-history-${npcId}`).textContent = generateAffinity();
-        document.getElementById(`generated-item-${npcId}`).textContent = generateSignatureItem();
-        document.getElementById(`generated-religion-${npcId}`).textContent = generateReligion();
-        document.getElementById(`generated-motivation-${npcId}`).textContent = generateMotivation();
-    }
+        // Temporarily hide buttons during copy
+        copyBtn.style.display = "none";
+        deleteBtn.style.display = "none";
 
-    // Function to attach listeners to NPC Generator 1
-    function attachEventListeners(npcId) {
-        document.getElementById(`generate-name-btn-${npcId}`).addEventListener("click", () => {
-            document.getElementById(`generated-name-${npcId}`).textContent = generateName();
+        // Grab just the visible text without buttons
+        const text = div.innerText.trim();
+
+        // Restore buttons
+        copyBtn.style.display = "";
+        deleteBtn.style.display = "";
+
+        // Copy text
+        navigator.clipboard.writeText(text).then(() => {
+            copyBtn.textContent = "Copied!";
+            setTimeout(() => (copyBtn.textContent = "Copy"), 1500);
         });
 
-        document.getElementById(`generate-species-btn-${npcId}`).addEventListener("click", () => {
-            document.getElementById(`generated-species-${npcId}`).textContent = generateSpecies();
+        navigator.clipboard.writeText(text).then(() => {
+            const copyBtn = div.querySelector(".copy-npc");
+            copyBtn.textContent = "Copied!";
+            setTimeout(() => (copyBtn.textContent = "Copy"), 1500);
         });
+    });
 
-        document.getElementById(`generate-history-btn-${npcId}`).addEventListener("click", () => {
-            document.getElementById(`generated-history-${npcId}`).textContent = generateAffinity();
-        });
+    return div;
+}
 
-        document.getElementById(`generate-item-btn-${npcId}`).addEventListener("click", () => {
-            document.getElementById(`generated-item-${npcId}`).textContent = generateSignatureItem();
-        });
-
-        document.getElementById(`generate-religion-btn-${npcId}`).addEventListener("click", () => {
-            document.getElementById(`generated-religion-${npcId}`).textContent = generateReligion();
-        });
-
-        document.getElementById(`generate-motivation-btn-${npcId}`).addEventListener("click", () => {
-            document.getElementById(`generated-motivation-${npcId}`).textContent = generateMotivation();
-        });
-
-        // Attach the "Generate All" button for this NPC
-        document.getElementById(`generate-all-btn-${npcId}`).addEventListener("click", () => {
-            generateAll(npcId);
-        });
-    }
-
-    // Initialize first NPC
-    attachEventListeners(1);
-
-
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("generate-npc").addEventListener("click", () => {
+        const npc = new NPC();
+        const card = createNpcCard(npc);
+        document.getElementById("npc-output").prepend(card);
+    });
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -930,17 +732,17 @@ class Monster {
         }
 
         this.baseKey = document.getElementById("randomize-base").checked
-        ? randomItem(Object.keys(monsterData.base).sort())
-        : document.getElementById("base-type").value;
-    
-    this.addKey = document.getElementById("randomize-additional").checked
-        ? randomItem(Object.keys(monsterData.additional).sort())
-        : document.getElementById("additional-type").value;
-    
-    this.modKey = document.getElementById("randomize-mod").checked
-        ? randomItem(Object.keys(monsterData.mod).sort())
-        : document.getElementById("mod-type").value;
-    
+            ? randomItem(Object.keys(monsterData.base).sort())
+            : document.getElementById("base-type").value;
+
+        this.addKey = document.getElementById("randomize-additional").checked
+            ? randomItem(Object.keys(monsterData.additional).sort())
+            : document.getElementById("additional-type").value;
+
+        this.modKey = document.getElementById("randomize-mod").checked
+            ? randomItem(Object.keys(monsterData.mod).sort())
+            : document.getElementById("mod-type").value;
+
 
 
         this.base = monsterData.base[this.baseKey];
@@ -1057,9 +859,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-
-
-
 
 // TOOLTIPS
 document.addEventListener("DOMContentLoaded", () => {

@@ -226,6 +226,12 @@ table td {
     white-space: normal;
 }
 
+hr {
+    border: none;
+    border-top: 2px solid darkgoldenrod;
+}
+
+
 .dark {
     background-color: var(--dark);
     font-size: large;
@@ -258,6 +264,10 @@ nav ul li a {
 nav ul li a:hover {
     color: var(--darkgold);
     transition: 0.3s ease;
+}
+
+b {
+    color: var(--gold);
 }
 
 /* Navigation Panel */
@@ -1417,7 +1427,6 @@ a {
     box-shadow: var(--box-shadow);
     transition: transform 0.2s ease;
     width: 300px;
-
 }
 
 /* Make text editable */
@@ -1537,6 +1546,97 @@ a {
     color: var(--gold);
 }
 
+/* grid stays the same */
+.item-card {
+    background: var(--theme-dark);
+    border: 1px solid var(--gold);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 25vw;
+    margin: 5px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-title {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.item-type {
+    font-size: 0.85rem;
+    color: var(--gold);
+}
+
+.item-desc {
+    margin: 0.25rem 0 0.5rem;
+}
+
+.item-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin: 0.5rem 0;
+}
+
+.item-stats {
+    font-size: 0.85rem;
+    background: var(--theme-alt);
+    padding: 2px 4px;
+    border-radius: 4px;
+    margin-bottom: 0.4rem;
+    text-align: center;
+}
+
+.item-stats .sep {
+    color: var(--gold);
+}
+
+.item-text {
+    padding: var(--padding);
+    background-color: var(--theme-alt);
+    color: var(--white);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--gold);
+    margin: 0;
+}
+
+
+/* push tags to bottom */
+.item-tag {
+    background: var(--theme-alt);
+    color: var(--gold);
+    border-radius: var(--border-radius);
+    padding: 5px;
+    margin: 5px;
+    display: inline-block;
+}
+
+.sort-wrap {
+    margin-left: auto;
+    color: var(--gold);
+}
+
+#tag-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.tag-chip {
+    background: var(--theme-alt);
+    color: var(--gold);
+    padding: 5px;
+    margin: 5px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+.tag-chip.active {
+    background: var(--gold);
+    color: var(--theme-dark);
+}
 
 /* 📌 Mobile-Friendly Adjustments */
 @media (max-width: 650px) {
@@ -1622,7 +1722,16 @@ a {
     }
 
     .item-card {
-        width: 44%;
+        width: 40%;
+    }
+
+    .monster-card {
+        width: 100%;
+        margin: 3px;
+    }
+
+    .monster-card:hover {
+        transform: scale(1);
     }
 
 }

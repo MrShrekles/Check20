@@ -435,7 +435,7 @@
           "features": [
             {
               "name": "Ocean Spray",
-              "description": "As an off-action, when you attack an enemy with a melee weapon, deal half the total damage in water damage to all creatures in melee range."
+              "description": "As an off-action, when you attack an enemy with a melee weapon, deal half the total damage in Fluid damage to all creatures in melee range."
             },
             {
               "name": "Arcane Devour",
@@ -464,7 +464,7 @@
             },
             {
               "name": "Riptide",
-              "description": "Summon a tide water, and as a half-action, your weapon becomes imbued with the tide waters and deals water damage for 1 minute, dealing an additional +1 damage."
+              "description": "Summon a tide water, and as a half-action, your weapon becomes imbued with the tide waters and deals Fluid damage for 1 minute, dealing an additional +1 damage."
             },
             {
               "name": "Call of the Deep",
@@ -488,7 +488,7 @@
             },
             {
               "name": "Oceanic Dominion",
-              "description": "For your ultimate ability, gain control over all water within a large radius for 1 minute. You can manipulate water to form barriers, propel allies forward, or crash against enemies as waves, each wave dealing [[6d6]] water damage."
+              "description": "For your ultimate ability, gain control over all water within a large radius for 1 minute. You can manipulate water to form barriers, propel allies forward, or crash against enemies as waves, each wave dealing [[6d6]] Fluid damage."
             }
           ]
         },
@@ -719,11 +719,7 @@
           "features": [
             {
               "name": "Hard-Boiled",
-              "description": "When you wear armor, that armor has +5 armor"
-            },
-            {
-              "name": "Sherlock's Gaze",
-              "description": "Your keen eye for detail and deductive reasoning is a powerful asset. As a Half-Action, spend a Champion Point to reveal vital clues or hidden information in your surroundings if there is any."
+              "description": "You have +5 Armor. Your keen eye for detail and deductive reasoning is a powerful asset. As a Half-Action, spend a Champion Point to reveal vital clues or hidden information in your surroundings if there is any."
             }
           ],
           "progressionSteps": [
@@ -1033,7 +1029,7 @@
     },
     {
       "name": "Professional",
-      "description": "The Professional is a seasoned individual, having faced the tumultuous tides of time and emerging as a beacon of resilience and expertise. Whether they've survived the brutal trenches of war or navigated the intricate politics of the big city, their experiences have crafted them into unparalleled specialists in their fields",
+      "description": "The Professional is a seasoned individual, having faced the tumultuous tides of time and emerging as a beacon of resilience and expertise. Whether they've survived the brutal trenches of war or navigated the intricate politics of the big city, their experiences have crafted them into unparalleled specialists in their fields. They are the ex-military tacticians employing strategies in the boardroom, the seasoned detectives with an uncanny ability to read a crime scene, or the old-time engineers who've seen the rise of the modern age. Their scars, both visible and hidden, are a testament to their enduring spirit, their stories etched in every line on their face.",
       "features": [
         {
           "name": "Professional Knowledge",
@@ -1103,7 +1099,7 @@
           "name": "Pirate",
           "description": "Navigators of the high seas, Pirates are adept in aquatic combat and maritime skills, often employing unconventional tactics and a flair for the dramatic.",
           "featureName": "Seafarer's Endurance",
-          "featureDescription": "You can operate any aquatic vehicle and have the ability to navigate by strange means that others don't understand. Additionally, you can either hold your breath or breathe underwater for 1 hour. You also have a Breath attack: Action, Survival Check, reach range, deals 3 Water damage."
+          "featureDescription": "You can operate any aquatic vehicle and have the ability to navigate by strange means that others don't understand. Additionally, you can either hold your breath or breathe underwater for 1 hour. You also have a Breath attack: Action, Survival Check, reach range, deals 3 Fluid damage."
         },
         {
           "name": "Negotiator",
@@ -2065,25 +2061,39 @@
     },
     {
       "name": "Support",
-      "description": "A healer and tactician who bolsters allies during battle.",
+      "description": "As the quintessential support specialist, this class is the embodiment of both the moral compass guiding their allies toward righteous victories and the sinner's wingman, offering redemption and support in their quest for atonement. This character thrives in the role of empowering and protecting their comrades, utilizing a keen understanding of both the battlefield and the human spirit.",
       "features": [
         {
-          "name": "Healing Touch",
-          "description": "Spend 1 Support Point to heal an ally."
+          "name": "Inspiration",
+          "description": "You have a Class Resource of 5 Inspirations that recover 1 on a Press On or all of them on a long rest. These can also be recovered through significant role-playing moments, critical successes in support actions, or achieving personal or group milestones related to your character or party. As an action spending 1 point or a half-action/off-action for 2 points, you can touch a creature and choose an effect. However, you cannot remove a permanent condition or effect: Give a creature up to 10 points of healing. Give a creature 10 armor that remains until the end of their next turn. Remove 1 condition. Grant advantage to their next check. Reduce a curse or disease."
         },
         {
-          "name": "Moral Boost",
-          "description": "Grant allies advantage on morale checks for 1 minute."
+          "name": "Unhindered Movement",
+          "description": "Needing the ability to get to those you care for, your movement does not provoke opportunity attacks, and you can also fall from a Short range without taking damage."
         }
       ],
       "equipment": [
         {
-          "name": "Medic Bag",
-          "description": "Contains healing supplies for emergency use."
+          "name": "Traveler's Cloak",
+          "description": "(7 armor, Observation +1, Survival +1)"
         },
         {
-          "name": "Medium Armor",
-          "description": "Grants 18 armor."
+          "name": "Choose",
+          "description": "Select a weapon:",
+          "choices": [
+            {
+              "name": "Standard Weapon",
+              "description": "(Agi or Str; 1 hand, Light; [[1d6]] Physical)"
+            },
+            {
+              "name": "Standard Pistol",
+              "description": "(Check (Agi, Lck, Str, Obs); medium range, 1 hand, light; [[1d4!]] Piercing)"
+            },
+            {
+              "name": "Small Weapon",
+              "description": "(Agility; 1 Hand, Light, Hidden, Throwing Range: Short; [[1d4]] Physical)"
+            }
+          ]
         }
       ],
       "paths": [
@@ -2231,7 +2241,7 @@
             },
             {
               "name": "Dream Inducement II",
-              "description": "While a creature is stunned by your Dream Inducement, you can spend an additional Inspiration and cause [[2d6]] water damage or cause a Cognition condition."
+              "description": "While a creature is stunned by your Dream Inducement, you can spend an additional Inspiration and cause [[2d6]] Fluid damage or cause a Cognition condition."
             },
             {
               "name": "Nightmare Weapon III",
@@ -2903,25 +2913,53 @@
     },
     {
       "name": "Merchant",
-      "description": "A savvy entrepreneur who uses wealth and cunning to gain an advantage.",
+      "description": "A shrewd and resourceful individual who knows how to make a profit no matter the circumstances. The Merchant is a master of trade and commerce, always looking for new opportunities to expand their business and increase their wealth. They are not content to simply rely on combat and adventuring to earn a living. Instead, they think beyond these traditional means and use their wits and cunning to get ahead. Whether it's looking for valuable items to sell or stealing from a dragon's hoard to further a political campaign, the Merchant of Adventure is always one step ahead.",
       "features": [
         {
-          "name": "Market Mastery",
-          "description": "Gain advantage on trade-related checks."
+          "name": "Starting Wealth",
+          "description": "Start with 500 gp or 2d100 x5, and 4 Merchant Tokens that are powerful and magical representations of your wealth. These tokens can take any shape you wish, such as a coin, tattoo, or ring. You can spend these tokens on different business opportunities to possibly gain more tokens. If you show your token to another merchant or those in power, they will identify you as a Merchant, which could open doors but also mark you as a target. The Merchant Investments section offers samples of how you can spend your merchant tokens."
         },
         {
           "name": "Quick Calculation",
-          "description": "Instantly estimate the value of goods."
+          "description": "In most well-populated areas, you have an ally, contact, or associate who might aid you with business endeavors, information, or finding the best deals. Make a social check of the narrator's choice (Influence, Luck, Spirit, or another based on the city's nature). On a success, you find your contact, who is connected in the town and can provide rumors, tips, and leads on whatever you might need. On a failure, you have an enemy in the area and should be on guard."
+        },
+        {
+          "name": "Appraisal",
+          "description": "Quickly assess item values, identify if they're magical (but not if they're cursed), and find items for sale at a 10-30% discount when shopping, based on a successful Luck or Observation check."
         }
       ],
       "equipment": [
         {
-          "name": "Ledger",
-          "description": "Tracks finances and transactions."
+          "name": "Choose",
+          "description": "Select Armor:",
+          "choices": [
+            {
+              "name": "Light Armor",
+              "description": "(6 armor; Stealth +1, Agility +1)"
+            },
+            {
+              "name": "Medium Armor",
+              "description": "(10 armor; Movement -10, Stealth -2, Magic -2, Agility +1)"
+            }
+          ]
         },
         {
-          "name": "Walking Cane",
-          "description": "1d4 bludgeoning damage; useful for self-defense."
+          "name": "Choose",
+          "description": "Select a weapon:",
+          "choices": [
+            {
+              "name": "Standard Weapon",
+              "description": "(Agi or Str; 1 hand, Light; [[1d6]] Physical)"
+            },
+            {
+              "name": "Revolver",
+              "description": "(Agi; Medium range, 1 hand;[[2d6!]] Piercing)"
+            },
+            {
+              "name": "Siege Crossbow",
+              "description": "(Str; 2 hand, Hefty, Medium range, Mechanical, Reload;[[2d6]] Piercing)"
+            }
+          ]
         }
       ],
       "paths": [
@@ -3926,25 +3964,41 @@
     },
     {
       "name": "Mage",
-      "description": "A spellcaster who manipulates arcane forces to unleash powerful effects.",
+      "description": "As a mage, you are a weaver of magic and a master of mysterious forces. Your power is formidable, but it's also unpredictable, and you'll need a creative mind to control it. Unlike other classes, your spellcasting doesn't rely on a pre-set list of spells. Instead, you combine magic words to create your own unique spells. This path is not without its risks and challenges. Your magic can have both positive and negative outcomes, and it's crucial to learn how to manage these ups and downs. One of the crucial aspects of being a mage is the practice of recording and sharing your knowledge. Whether you pass on your wisdom through spellbooks or spiritual knowledge transfer, your experiences and discoveries become a legacy for future characters you play because they all share your soul.",
       "features": [
         {
-          "name": "Arcane Mastery",
-          "description": "Spend 1 Mana Point to empower a spell."
-        },
-        {
-          "name": "Spellcraft",
-          "description": "Learn and cast spells from any school of magic."
+          "name": "Spells Known",
+          "description": "You gain +3 Spell Points. When you ‘Press On,’ recover an additional Spell Point."
         }
       ],
       "equipment": [
         {
-          "name": "Mage Robes",
-          "description": "Grants 12 armor."
+          "name": "Choose",
+          "description": "Select Armor:",
+          "choices": [
+            {
+              "name": "Arcane Robes",
+              "description": "15 Armor; Movement -20, Stealth -2, Survival -2."
+            },
+            {
+              "name": "Light Armor",
+              "description": "6 Armor; Stealth +1, Agility +1."
+            }
+          ]
         },
         {
-          "name": "Arcane Focus",
-          "description": "Allows spellcasting with 1d4 arcane damage if used as a weapon."
+          "name": "Choose",
+          "description": "Select Weapon:",
+          "choices": [
+            {
+              "name": "Staff",
+              "description": "Agility; Two-handed, Hefty; Agility as Bludgeoning Damage."
+            },
+            {
+              "name": "Small Weapon",
+              "description": "One-handed, Light, Hidden, Throwing Range: Short; 1d4 Physical Damage."
+            }
+          ]
         }
       ],
       "paths": [

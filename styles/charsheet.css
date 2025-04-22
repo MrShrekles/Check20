@@ -149,7 +149,7 @@ h2 {
 
 .health-table th,
 .checks-table th {
-    background-color: #d3d3d3;
+    background-color: var(--medium);
     font-weight: bold;
     text-transform: uppercase;
 
@@ -203,7 +203,7 @@ h2 {
 }
 
 .resources-table th {
-    background-color: #d3d3d3;
+    background-color: var(--medium);
     text-transform: uppercase;
 }
 
@@ -214,26 +214,13 @@ h2 {
 .resource-header {
     font-weight: bold;
     text-align: center;
-    background-color: #ccc;
+    background-color: var(--medium);
 }
 
 .centered {
     text-align: center;
     padding: 6px;
 }
-
-/* Print-friendly adjustments */
-@media print {
-    .resources-section {
-        box-shadow: none;
-        color: #000;
-    }
-
-    .resources-table th {
-        background-color: #e0e0e0;
-    }
-}
-
 
 /* Note Columns */
 .note-header,
@@ -325,65 +312,114 @@ h2 {
     border-bottom: 2px solid var(--medium);
 }
 
+.hide {
+    display: none;
+}
+
+.hidden {
+    display: none;
+  }
+  
+
 @media print {
-    /* Remove unnecessary elements */
-    .nav-button, .no-print {
+    .resources-section {
+        box-shadow: none;
+        color: #000;
+    }
+
+    .hide {
+        display: contents;
+    }
+
+    /* Hide interactive/online-only elements */
+    .nav-button,
+    .no-print,
+    .online-only,
+    button,
+    .recalc-button,
+    .add-resource,
+    .add-bonus,
+    #dice-roller,
+    #sidebar,
+    #open-sidebar,
+    #toggle-sidebar {
         display: none !important;
     }
 
-    /* Adjust layout for printing */
+    /* Layout adjustments */
+    html,
     body {
+        width: 100%;
+        height: 100%;
         margin: 0;
         padding: 0;
         font-size: 12px;
+        color: black;
     }
 
-    #char-sheet {
-        width: 100%;
-        height: auto;
-        page-break-inside: avoid;
-    }
-
-    /* Ensure content fits within a single page */
-    html, body {
-        width: 100%;
-        height: 100%;
-    }
-
-    /* Scale down the character sheet if necessary */
     @page {
-        size: auto; /* Adjusts to paper size */
-        margin: 0.5in; /* Small margin for printing */
+        size: auto;
+        margin: .30in;
+        width: 98%;
     }
 
-    /* Prevent elements from breaking between pages */
-    .feature-list, .description-text, .feature {
-        page-break-inside: avoid;
-    }
-
-    /* Ensure all sections are properly contained */
     #char-sheet {
         display: block;
         width: 100%;
-        max-width: 8.5in; /* Standard Letter Size */
-        max-height: 11in;
+        page-break-inside: avoid;
         overflow: hidden;
     }
 
-    /* Reduce font size for better fit */
-    h1, h2, h3, h4 {
+    h1,
+    h2,
+    h3,
+    h4 {
         font-size: smaller;
     }
 
-    /* Adjust table and grid layouts */
-    table {
-        width: 100%;
-        font-size: 10px;
-        border-collapse: collapse;
+    /* Avoid breaking important blocks */
+    .feature-list,
+    .description-text,
+    .feature {
+        page-break-inside: avoid;
     }
 
-    th, td {
+    /* Hide default select option */
+    select option:first-child {
+        display: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: transparent !important;
+    }
+
+    .print-notes {
+        margin-top: 1rem;
+    }
+
+    .grid-box {
+        height: 150px;
         border: 1px solid black;
-        padding: 4px;
+        background-image: linear-gradient(to right, var(--medium) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--medium) 1px, transparent 1px);
+        background-size: 10px 10px;
+        margin-bottom: 1rem;
+    }
+
+    .line-box {
+        margin-bottom: 1rem;
+    }
+
+    .line-box label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+    .lines {
+        height: 120px;
+        border: 1px solid black;
+        background-image: repeating-linear-gradient(to bottom, transparent, transparent 14px, black 15px);
     }
 }
