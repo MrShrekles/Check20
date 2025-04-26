@@ -16,7 +16,33 @@
     --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     --box-hover: red;
     --padding: .5vw;
+
+    /* Grayscale Desaturated Dark */
+    --dark-1: #0a0a0a;
+    --dark-2: #1e1e1e;
+    --dark-3: #3a3a3a;
+    /* Slate-Teal Theme (Darkslategrey-inspired) */
+    --theme-1: #1b2c2c;
+    --theme-2: #2f4f4f;
+    --theme-3: #4c6e6e;
+    /* Warm (earthy/red-brown tones) */
+    --warm-1: #5f2d19;
+    --warm-2: #8b4a2f;
+    --warm-3: #d9b382;
+    /* Gold (vibrant highlight tones) */
+    --gold-1: #664900;
+    --gold-2: #af8000;
+    --gold-3: #ffd700;
+    /* Green (natural, muted) */
+    --green-1: #121b12;
+    --green-2: #3a5f3a;
+    --green-3: #8fbf8f;
+    /* Text */
+    --text-plain: #fffaf0;
+    --text-gold: #ffd700;
+    --text-cream: #f0e5c5;
 }
+
 
 /* General Styles */
 body {
@@ -755,16 +781,17 @@ code {
 
 /* Section General Styling */
 section {
-    background-color: var(--theme-alt);
+    background-color: var(--theme-2);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     color: var(--white);
     padding: var(--padding);
     transition: filter 0.5s ease;
+    margin-bottom: 6px;
 }
 
 section:hover {
-    filter: brightness(.96);
+    filter: brightness(.90);
 }
 
 /* Headers */
@@ -825,6 +852,23 @@ em {
 .features ul li strong {
     color: var(--gold);
     font-weight: bold;
+}
+
+.spell-features {
+    padding: 0.5rem;
+    margin-bottom: -1rem;
+    background: linear-gradient(to bottom, var(--green-2), transparent);
+    border: 1px solid var(--green-3);
+    border-bottom: 0;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: var(--box-shadow);
+    position: relative;
+    z-index: 1;
+    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
 }
 
 .controls {
@@ -1409,27 +1453,40 @@ a {
     text-align: center;
 }
 
-/* Monster Output Grid (Ensures Proper Row Alignment) */
-.monster-grid {
+/* === Layout: Grid Wrappers === */
+.monster-grid,
+.item-cards {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--padding);
-    align-items: flex-start;
-    justify-content: flex-start;
-    max-width: 100%;
 }
 
-/* Monster Card Styling */
-.monster-card {
-    background: rgba(40, 40, 40, 0.9);
-    padding: var(--padding);
+/* === Card: Monster & Item === */
+.monster-card,
+.item-card {
+    background: var(--theme-dark);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
+    padding: var(--padding);
+    color: var(--white);
+    flex-direction: column;
+}
+
+.monster-card {
+    background: rgba(40, 40, 40, 0.9);
     transition: transform 0.2s ease;
     width: 300px;
 }
 
-/* Make text editable */
+.monster-card p {
+    margin: .5vw;
+}
+
+.item-card {
+    border: 1px solid var(--gold);
+    width: 25vw;
+}
+
+/* === Interactions: Editable Text === */
 .monster-card h3,
 .monster-card p span,
 .monster-card ul li {
@@ -1437,126 +1494,113 @@ a {
     transition: background 0.3s ease;
 }
 
-/* Highlight when editing */
 .monster-card h3:focus,
 .monster-card p span:focus,
 .monster-card ul li:focus {
     background: rgba(255, 255, 255, 0.1);
     outline: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
 }
 
-/* Hover Effect */
+/* === Hover Effect: Monster Card === */
 .monster-card:hover {
     background-color: var(--dark);
     box-shadow: var(--box-hover);
     transform: scale(1.05);
 }
 
-/* Remove Button */
+.button-row {
+    display: flex;
+    gap: var(--padding);
+    justify-content: space-between;
+}
+
+.copy-npc,
 .delete-monster {
-    background-color: #d9534f;
-    border: none;
+    flex: 1;
+    padding: var(--padding);
+    border-radius: var(--border-radius);
     color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* === Buttons (Shared Styling) === */
+.donate-button,
+#generate-monster {
+    border: none;
+    border-radius: var(--border-radius);
     padding: var(--padding);
     cursor: pointer;
-    border-radius: 3px;
-    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+/* === Delete Button === */
+.delete-monster {
+    background: #d9534f;
 }
 
 .delete-monster:hover {
-    background-color: #b52b27;
+    background: #b52b27;
 }
 
-/* 🔹 Generate Button */
+
+.copy-npc:hover {
+    background: #b52b27;
+}
+
+/* === Generate Monster Button === */
 #generate-monster {
     background: var(--hate);
     color: white;
     font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    padding: var(--padding);
-    cursor: pointer;
     font-size: 16px;
-    transition: all 0.3s ease-in-out;
-    width: 100%;
-    height: 100%;
+    width: 50%;
+    height: auto;
 }
 
-/* 🔹 Button Hover */
 #generate-monster:hover {
     background: var(--rust);
     box-shadow: var(--gold);
 }
 
+#generate-npc {
+    background-color: var(--hate);
+    width: 100%;
+    font-size: 2rem;
+}
+
+#generate-npc:hover {
+    filter: brightness(90%);
+}
+
+/* === Donate Button === */
 .donate-button {
-    background-color: var(--theme);
+    background: var(--theme);
     color: var(--white);
     font-size: 2rem;
-    padding: var(--padding);
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
     font-family: sans-serif;
     text-transform: uppercase;
     letter-spacing: 10px;
     box-shadow: var(--box-shadow);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .donate-button:hover {
-    background-color: var(--theme-hover);
+    background: var(--theme-hover);
     box-shadow: var(--box-hover);
 }
 
 .donate-button:active {
-    background-color: var(--theme-dark);
+    background: var(--theme-dark);
 }
 
-.item-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-}
-
-.item-card {
-    background-color: var(--theme-dark);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    color: var(--white);
-    width: 20%;
-    text-align: left;
-    border: 1px solid var(--gold);
-    padding: 5px;
-    margin: 5px;
-}
-
+/* === Item Card Elements === */
 .item-card img {
     width: 100%;
     height: auto;
-    border-radius: 8px;
-    margin: 0.5rem 0;
-}
-
-.item-feature {
-    background-color: var(--theme-alt);
-    padding: 0.5rem;
     border-radius: 6px;
-    font-size: 0.85rem;
-    color: var(--gold);
-}
-
-/* grid stays the same */
-.item-card {
-    background: var(--theme-dark);
-    border: 1px solid var(--gold);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    width: 25vw;
-    margin: 5px;
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
+    margin: 0.5rem 0;
 }
 
 .item-title {
@@ -1571,13 +1615,6 @@ a {
 
 .item-desc {
     margin: 0.25rem 0 0.5rem;
-}
-
-.item-card img {
-    width: 100%;
-    height: auto;
-    border-radius: 6px;
-    margin: 0.5rem 0;
 }
 
 .item-stats {
@@ -1595,22 +1632,22 @@ a {
 
 .item-text {
     padding: var(--padding);
-    background-color: var(--theme-alt);
+    background: var(--theme-alt);
+    border: 1px solid var(--gold);
     color: var(--white);
     border-radius: var(--border-radius);
-    border: 1px solid var(--gold);
     margin: 0;
 }
 
-
-/* push tags to bottom */
-.item-tag {
+.item-tag,
+.item-feature {
     background: var(--theme-alt);
     color: var(--gold);
-    border-radius: var(--border-radius);
-    padding: 5px;
-    margin: 5px;
+    padding: 0.5rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
     display: inline-block;
+    margin: 5px;
 }
 
 .sort-wrap {
@@ -1637,6 +1674,118 @@ a {
     background: var(--gold);
     color: var(--theme-dark);
 }
+
+.spell-grid {
+    display: flex;
+    flex-wrap: wrap;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    padding: var(--padding);
+    gap: var(--padding);
+    margin: var(--padding);
+}
+
+.spell-card {
+    width: 300px;
+    padding: var(--padding);
+    border: 1px solid var(--green-3);
+    border-radius: var(--border-radius);
+    background-color: var(--green-1);
+    color: var(--text-cream);
+    font-weight: bold;
+    box-shadow: 0 0 6px var(--green-3);
+    cursor: default;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, filter 0.5s ease;
+}
+
+.spell-effect summary {
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    background: linear-gradient(to bottom, var(--green-2), transparent);
+    text-align: center;
+    border-bottom: 1px solid var(--green-3);
+}
+
+.spell-effect[open] {
+    background: var(--green-1);
+    color: white;
+}
+
+
+.spell-card:hover {
+    box-shadow: 0 0 6px var(--green-1);
+    filter: brightness(110%);
+    color: var(--text-cream);
+}
+
+.spell-card p {
+    color: var(--white);
+    margin: 10px;
+}
+
+.spell-card strong {
+    color: var(--gold);
+}
+
+.spell-card h4 {
+    font-size: 1.5rem;
+}
+
+.spell-info {
+    font-size: .7rem;
+    margin-bottom: 0;
+}
+
+/* Spell Point Badge */
+.sp-cost {
+    background: var(--dark-2);
+    padding: 5px;
+    border-radius: var(--border-radius);
+    margin: 40px;
+}
+
+/* Manner / Transmission Tags */
+.spell-tags span {
+    color: var(--white);
+    padding: 6px;
+    margin: 10px;
+    border-radius: var(--border-radius);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.manner,
+#manner {
+    background-color: var(--warm-2);
+}
+
+.transmission,
+#transmission {
+    background-color: var(--green-2);
+}
+
+.copy-spell {
+    margin-top: auto;
+    margin-bottom: 0.5rem;
+    background: var(--dark-2);
+    color: var(--text-cream);
+    border: none;
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  
+  .copy-spell:hover {
+    background: var(--green-3);
+  }
+  
+  .copy-spell.copied {
+    background: var(--gold);
+    color: var(--dark-2);
+  }
+  
 
 /* 📌 Mobile-Friendly Adjustments */
 @media (max-width: 650px) {

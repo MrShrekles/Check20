@@ -551,6 +551,12 @@ document.addEventListener("DOMContentLoaded", () => {
     rollButton.addEventListener("click", rollTrinket);
 });
 
+document.getElementById("roll-wealth").addEventListener("click", function () {
+    const roll = Math.floor(Math.random() * 100) + 1 + 50;
+    document.getElementById("starting-wealth-amount").textContent = `You begin with ${roll} gp.`;
+});
+
+
 // Sidebar toggle functionality
 document.addEventListener("DOMContentLoaded", function () {
     const sidebar = document.getElementById("sidebar");
@@ -698,3 +704,4 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+

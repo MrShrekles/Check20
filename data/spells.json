@@ -1,0 +1,678 @@
+[
+  {
+    "name": "Barrier",
+    "manner": "Manifest",
+    "transmission": "Material",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Short",
+        "area": "",
+        "target": "area",
+        "duration": "Until destroyed",
+        "effect": "Spend 1 spell point to create a barrier in an unoccupied space within Short range. The barrier is 5 ft by 10 ft (horizontal or vertical), has 15 armor, and can take the shape of a straight wall. It lasts until destroyed."
+      },
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "area": "",
+        "target": "area",
+        "duration": "Until destroyed",
+        "effect": "Spend 3 spell points to create a barrier in an unoccupied space within Short range. The barrier is 10 ft by 20 ft and can take the shape of a square, arc, or wall. It has 45 armor and lasts until destroyed."
+      },
+      {
+        "intent": "Shout",
+        "range": "Short",
+        "area": "",
+        "target": "area",
+        "duration": "Until destroyed",
+        "effect": "Spend 6 spell points to create a large barrier in an unoccupied space within Short range. The barrier may be a 40 ft dome, arch, wall, or fortified square. It has 90 armor and lasts until destroyed"
+      }
+    ]
+  },
+  {
+    "name": "counterspell",
+    "manner": "Domineer",
+    "transmission": "aether",
+    "effects": [
+      {
+        "intent": "Shout",
+        "range": "Short",
+        "area": "",
+        "target": "self",
+        "duration": "until the end of your next turn",
+        "effect": "Negate the next spell being cast within Short range until the end of your next turn. If no spell is cast, regain half the spell points spent."
+      },
+      {
+        "intent": "Shout",
+        "range": "Short",
+        "area": "",
+        "target": "self",
+        "duration": "until the end of your next turn",
+        "effect": "Cast silently (no verbal components). Costs an additional 3 SP."
+      }
+    ]
+  },
+  {
+    "name": "decay",
+    "manner": "decay",
+    "transmission": "corpus",
+    "effects": [
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "area": "",
+        "target": "one creature",
+        "duration": "until the end of their next turn",
+        "effect": "Spend 3 spell points, reduce the PL of a target within Short range by -1 until the end of their next turn."
+      }
+    ]
+  },
+  {
+    "name": "Defend",
+    "manner": "Manifest",
+    "transmission": "Material",
+    "effects": [
+      {
+        "intent": "Light Whisper",
+        "range": "Short",
+        "area": "",
+        "target": "One Creature",
+        "duration": "Until the end of your next turn",
+        "effect": "Give you or an ally [[1d4]] armor until the end of your next turn"
+      }
+    ]
+  },
+  {
+    "name": "Devastate",
+    "manner": "Manifest",
+    "transmission": "Material",
+    "effects": [
+      {
+        "intent": "Light Whisper",
+        "range": "Short",
+        "area": "",
+        "target": "",
+        "duration": "Instant",
+        "effect": "Make a Spellcasting check (Spirit) to deal [[1d4]] physical damage to a creature within Short range"
+      }
+    ]
+  },
+  {
+    "name": "discern",
+    "manner": "discern",
+    "transmission": "astral",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Short",
+        "area": "object",
+        "target": "area",
+        "duration": "instant",
+        "effect": "Spend 1 spell point to reveal a hidden object, creature, or illusion within Short range per success, if there are none this spell costs 0 sp."
+      },
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "area": "",
+        "target": "creature",
+        "duration": "instant",
+        "effect": "Spend 3 points to focus on a creature to sense its motivation, emotional state, or weaknesses."
+      },
+      {
+        "intent": "Shout",
+        "range": "known",
+        "area": "",
+        "target": "area",
+        "duration": "instant",
+        "effect": "Spend 6 points, observe a distant familiar location, object, or creature for up to 1 minute."
+      }
+    ]
+  },
+  {
+    "name": "dispel",
+    "manner": "decay",
+    "transmission": "aether",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Short",
+        "area": "reach",
+        "target": "area",
+        "duration": "instant",
+        "effect": "Spend 1 Spell Point to nullify a minor magical effect within a Short range like a weak illusion or simple ward in a reach range area. You can pool spell points with other casters to dispel even stronger magic"
+      },
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "area": "Short",
+        "target": "area",
+        "duration": "instant, until the end of your next turn",
+        "effect": "Spend 3 spell points, nullify magical effects within Short range cast by a mage, diving creature, or magical monsters in a Short range area. if it a powerful magical effect the nullify might only last until the end of your next turn."
+      },
+      {
+        "intent": "Shout",
+        "range": "Short",
+        "area": "",
+        "target": "one creature",
+        "duration": "permanent, until the end of your next turn",
+        "effect": "Spend 6 spell points to interrupt the function of magical constructs, undead, or elementals under the control of a mage potentially permanently or until the end of your next turn. If its a minion of a powerful creature the Dispel might prevent commands to the minion, allowing it to escape or fight back if it chooses."
+      }
+    ]
+  },
+  {
+    "name": "domineer",
+    "manner": "Domineer",
+    "transmission": "corpus",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "medium",
+        "area": "",
+        "target": "one creature",
+        "duration": "until the end of your next turn",
+        "effect": "Spend 1 spell point to read the surface thoughts of a creature within Medium range until the end of your next turn."
+      },
+      {
+        "intent": "Surge",
+        "range": "medium",
+        "area": "",
+        "target": "one creature",
+        "duration": "until the end of your next turn",
+        "effect": "Spend 3 spell points to charm a creature, hear their thoughts, and speak with them telepathically until the end of your next turn"
+      },
+      {
+        "intent": "Shout",
+        "range": "Short",
+        "area": "",
+        "target": "one creature",
+        "duration": "until they succeed on an intellect check",
+        "effect": "Spend 6 spell points to dominate the mind of a creature until the end of your next turn. They follow your commands on their turn. At the end of each of their turns they make an Intellect check, on a success they break your hold and are immune to your Domineer spell."
+      }
+    ]
+  },
+  {
+    "name": "Enhance",
+    "manner": "Domineer",
+    "transmission": "Corpus",
+    "effects": [
+      {
+        "intent": "Light Whisper",
+        "range": "Touch",
+        "area": "",
+        "target": "",
+        "duration": "Until the end of your next turn",
+        "effect": "Boost a creature's next check or weapon damage by +2 per success until the end of their next turn."
+      }
+    ]
+  },
+  {
+    "name": "Flicker",
+    "manner": "Manifest",
+    "transmission": "Aether",
+    "effects": [
+      {
+        "intent": "Light Whisper",
+        "range": "Short",
+        "area": "",
+        "target": "",
+        "duration": "Instant",
+        "effect": "Create a brief flash of light, sparkle of color, or faint sound within Short range. It lasts a few seconds and cannot mimic specific creatures or voices."
+      }
+    ]
+  },
+  {
+    "name": "Grip",
+    "manner": "Manifest",
+    "transmission": "Astral",
+    "effects": [
+      {
+        "intent": "Light Whisper",
+        "range": "Short",
+        "area": "",
+        "target": "",
+        "duration": "Instant",
+        "effect": "Tap an object, tug a string, or gently push a small item within reach. Can be used to knock or prod something lightly."
+      },
+      {
+        "intent": "Whisper",
+        "range": "Short",
+        "area": "",
+        "target": "",
+        "duration": "Instant",
+        "effect": "Remotely manipulate a small object (open latch, pick up cup, tilt a lever) within Short range."
+      }
+    ]
+  },
+  {
+    "name": "Grow",
+    "manner": "Domineer",
+    "transmission": "Material",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Touch",
+        "area": "",
+        "target": "Object",
+        "duration": "1 minute",
+        "effect": "Spend 1 spell point to touch an item and double its size for 1 minute. The item will grow but will not exceed the size of an area its in or cause damage to creatures in the range of the growing item"
+      }
+    ]
+  },
+  {
+    "name": "grow",
+    "manner": "domineer",
+    "transmission": "corpus",
+    "effects": [
+      {
+        "intent": "Surge",
+        "range": "touch",
+        "area": "",
+        "target": "one creature",
+        "duration": "1 minute",
+        "effect": "Spend 3 spell points to touch a willing creature and double its size for 1 minute. The creature grow but will not exceed the size of an area its in or cause damage to creatures in the range of the growing creature. The grown creature has advantage on strength checks but takes the confused condition"
+      }
+    ]
+  },
+  {
+    "name": "imprison",
+    "manner": "Domineer",
+    "transmission": "corpus",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Short",
+        "area": "",
+        "target": "one creature",
+        "duration": "until the end of their next turn",
+        "effect": "Spend 1 spell point and give a creature in Short range the pinned condition until the end of their next turn"
+      },
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "area": "",
+        "target": "one creature",
+        "duration": "until the end of their next turn",
+        "effect": "Spend 3 spell points to give a creature in Short range the pinned and prone conditions until the end of their next turn"
+      },
+      {
+        "intent": "Shout",
+        "range": "Short",
+        "area": "",
+        "target": "one creature",
+        "duration": "until the end of their next turn",
+        "effect": "Spend 6 spell points to give a creature in Short range the pinned and Constrained conditions until the end of their next turn"
+      }
+    ]
+  },
+  {
+    "name": "Light",
+    "manner": "Manifest",
+    "transmission": "Elemental",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Short",
+        "area": "Short",
+        "target": "creature, object, or location",
+        "duration": "1 hour",
+        "effect": "Spend 1 spell point to Create a source of light within Short range that illuminates a Short range and lasts for 1 hour."
+      },
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "area": "",
+        "target": "one creature",
+        "duration": "Instant",
+        "effect": "Spend 3 spell points deal 1d6 solar damage to a creature within Short range and cause the blind condition until the end of their next turn"
+      },
+      {
+        "intent": "Cataclysm",
+        "range": "Global",
+        "area": "global",
+        "target": "sun",
+        "duration": "Instant",
+        "effect": "Spend 24 spell points and shift day into night, or night into day"
+      }
+    ]
+  },
+  {
+    "name": "Lockdown",
+    "manner": "Domineer",
+    "transmission": "Astral",
+    "effects": [
+      {
+        "intent": "Surge",
+        "range": "Medium",
+        "area": "Short range",
+        "target": "area",
+        "duration": "1 minute",
+        "effect": "Spend 3 spell points and prevent the use of Astral spells in a Short range area for 1 minute. Any attempt to use Astral spells are prevented, the spell points are not spent, and you are made aware that an attempt was made"
+      },
+      {
+        "intent": "Storm",
+        "range": "Short",
+        "area": "medium",
+        "target": "area",
+        "duration": "permanent",
+        "effect": "Spend 12 spell points to lockdown an area and permanently prevent the use of Astral spells in a medium area. Any attempt to use Astral spells are prevented, the spell points are not spent, and you are made aware that an attempt was made. You are always aware of this area, when creatures enter this area you are made aware"
+      }
+    ]
+  },
+  {
+    "name": "Mark",
+    "manner": "Discern",
+    "transmission": "Astral",
+    "effects": [
+      {
+        "intent": "Light Whisper",
+        "range": "Touch",
+        "area": "",
+        "target": "",
+        "duration": "10 minutes",
+        "effect": "Create a faint glowing rune or smudge visible only to you for 10 minutes."
+      },
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "area": "",
+        "target": "Target",
+        "duration": "10 minutes",
+        "effect": "Make a mark on a target that you can sense up to 1 mile. You are alerted when it is destroyed."
+      }
+    ]
+  },
+  {
+    "name": "Minion",
+    "manner": "Manifest",
+    "transmission": "Variable",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Short",
+        "area": "",
+        "target": "PL 1 Creature",
+        "duration": "1 minute",
+        "effect": "Spend 1 spell point to summon a PL 1 creature within Short range for 1 minute. The creature acts on your turn and follows simple commands such as “attack,” “defend,” or “stay close.” It vanishes when the duration ends or if dismissed as an off-action.\nExamples: ember hound, wind sprite, crawling vine, tiny ooze, or bone imp."
+      },
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "area": "",
+        "target": "PL 4 Creature",
+        "duration": "1 minute",
+        "effect": "Spend 3 spell points to summon a PL 4 creature within Short range for 1 hour. The creature acts on your turn and follows your commands. It is intelligent enough to speak and reason, but not capable of complex deception, subtlety, or independent decision-making.\nExamples: ironbound construct, echo drake, bramble behemoth, or Storm crawler beetle. These are medium-sized creatures that feel magical, forged, or elemental"
+      },
+      {
+        "intent": "Shout",
+        "range": "Short",
+        "area": "",
+        "target": "PL 8 Creature",
+        "duration": "1 minute",
+        "effect": "Spend 6 spell points to summon a PL 8 creature within Short range that remains until dismissed as an off-action. It may possess a unique trait or ability, and may be equipped with standard weapons and armor of your choice. The creature has advanced tactical understanding and may act independently to defend allies or complete simple objectives. It can be sent on missions, communicate clearly, and carry out nuanced instructions.\nExamples: spectral dragon, chaos guardian, obsidian warbeast, or a stitched warjack. These are powerful, intelligent entities tied to magic, lost realms, or eldritch nightmares"
+      }
+    ]
+  },
+  {
+    "name": "Realm Shift",
+    "manner": "Domineer",
+    "transmission": "Astral",
+    "effects": [
+      {
+        "intent": "Surge",
+        "range": "Touch",
+        "area": "",
+        "target": "",
+        "duration": "1 hour",
+        "effect": "Spend 3 spell points to shift you or a willing creature from one realm to another. Some realms might have additional difficulty or mages might have a lockdown spell cast in the area that prevents Astral spells from being cast"
+      },
+      {
+        "intent": "Surge",
+        "range": "Touch",
+        "area": "",
+        "target": "",
+        "duration": "1 hour",
+        "effect": "Shift to an adjacent realm for 3 spell points. For 2 additional points per creature, bring others within reach range. Specify environmental or temporal changes based on the destination."
+      }
+    ]
+  },
+  {
+    "name": "Rejuvenate",
+    "manner": "Domineer",
+    "transmission": "Variable",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Touch",
+        "area": "",
+        "target": "Material or Creature",
+        "duration": "Instant",
+        "effect": "Spend 1 spell point to touch and repair materials or heal creatures for [[1d6]]"
+      }
+    ]
+  },
+  {
+    "name": "Resurrection",
+    "manner": "domineer",
+    "transmission": "corpus",
+    "effects": [
+      {
+        "intent": "Shout",
+        "range": "Touch",
+        "area": "",
+        "target": "Dead creature",
+        "duration": "Instant",
+        "effect": "Spend 6 spell points to remove the death condition from a creature that died within 1 hour and heal them for +1. This heals wounds but does not restore dismembered limbs, the body needs to be functionally complete, and not undead or construct for this to work. on a failed check the creature gains the Strigoi Curse"
+      },
+      {
+        "intent": "Roar",
+        "range": "Touch",
+        "area": "",
+        "target": "Dead creature",
+        "duration": "Instant",
+        "effect": "Spend 9 spell points to remove the death condition from a creature that died within 24 hours and heal them for +5. This heals wounds and restores dismembered limbs, the body needs only the head and heart and not an undead or construct for this to work. on a failed check the creature gains the Strigoi Curse with 3 steps complete"
+      },
+      {
+        "intent": "Roar",
+        "range": "Touch",
+        "area": "",
+        "target": "Dead creature",
+        "duration": "Instant",
+        "effect": "Spend 24 spell points to remove the death condition from a creature that died and you possess any part of the corpse. They recover their entire body and are healed to full wounds. on a failed check the creature gains the Strigoi Curse with 6 steps complete"
+      }
+    ]
+  },
+  {
+    "name": "Shrink",
+    "manner": "Domineer",
+    "transmission": "Material",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Touch",
+        "area": "",
+        "target": "large object",
+        "duration": "1 minute",
+        "effect": "Spend 1 spell point to touch an item and half its size for 1 minute. When the object regains its size it will not exceed the size of an area its in of cause damage to creatures within the expanding range unless the item is being prevented from expanding like in a bag or weak prison"
+      },
+      {
+        "intent": "Shout",
+        "range": "Touch",
+        "area": "",
+        "target": "creature",
+        "duration": "2 minute",
+        "effect": "Spend 3 spell points to touch a willing large or smaller sized creature and half its size for 1 minute. The creature has disadvantage on physical checks and half its movement speed but weighs the same amount. When it expands The creature will grow but will not exceed the size of an area its in or cause damage to creatures in the range of the growing creature unless the item is being prevented from expanding like in a bag or weak prison."
+      }
+    ]
+  },
+  {
+    "name": "Structure",
+    "manner": "Manifest",
+    "transmission": "Material",
+    "effects": [
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "area": "",
+        "target": "Unoccupied space on the ground",
+        "duration": "10 hours",
+        "effect": "Spend 3 spell points to create a small shelter or fortified room within Medium range in an unoccupied space on the ground. The structure occupies a 30-square-ft area. It may include doors, windows, or defensive walls in a style you choose. The structure lasts for 10 hours before it crumbles away."
+      },
+      {
+        "intent": "Roar",
+        "range": "Short",
+        "area": "",
+        "target": "Unoccupied space on the ground",
+        "duration": "Permanent",
+        "effect": "Spend 9 spell points to create a quaint cottage or reinforced structure within Medium range in an unoccupied space on the ground. The structure appears to occupy a 30-square-ft area, but its interior expands to up to 120 square feet, with rooms and levels of your choice and design. If destroyed from the outside, any creatures inside remain within. The structure is sealed, and the internal air lasts for 1 hour before becoming unbreathable."
+      },
+      {
+        "intent": "Cataclysm",
+        "range": "Short",
+        "area": "",
+        "target": "Unoccupied space on the ground",
+        "duration": "Permanent",
+        "effect": "Spend 24 spell points to create a small exterior structure, such as a door, arch, or police box, within Medium range in an unoccupied space on the ground. Stepping through reveals a vast and complex interior that may shift, defy geometry, or contain unknowable architecture. The maximum square ft is unknown. Some who build such realms have become lost inside them."
+      }
+    ]
+  },
+  {
+    "name": "Telekinesis",
+    "manner": "domineer",
+    "transmission": "Variable",
+    "effects": [
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "area": "",
+        "target": "Object or Creature",
+        "duration": "Instant",
+        "effect": "Spend 3 spell points to lift a medium or smaller creature within Short range into the air until the end of your next turn. You may move them up to Reach range on the turn you cast this spell and again on your next turn. At the end of your next turn, or earlier if you choose, the creature floats down to the ground or Short range. After that, they fall."
+      },
+      {
+        "intent": "Roar",
+        "range": "Short",
+        "area": "",
+        "target": "Object or Creature",
+        "duration": "Instant",
+        "effect": "Spend 6 spell points to lift a medium or smaller creature within Short range into the air, up to Short range height, until the end of your next turn. You may move them up to Short range on the turn you cast this spell and again on your next turn. At the end of your next turn, or earlier if you choose, the creature floats down to the ground or Short range. After that, they fall."
+      }
+    ]
+  },
+  {
+    "name": "Teleport",
+    "manner": "domineer",
+    "transmission": "astral",
+    "effects": [
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "area": "",
+        "target": "Self or Willing Creature",
+        "duration": "Instant",
+        "effect": "Spend 3 spell points to transport yourself or a willing creature you touch to an unoccupied point within medium range that you can see"
+      },
+      {
+        "intent": "Shout",
+        "range": "medium",
+        "area": "",
+        "target": "up to 3 creatures",
+        "duration": "Instant",
+        "effect": "Spend 6 spell points to transport up to 3 willing creatures within reach to an unoccupied point within long range that you can see"
+      },
+      {
+        "intent": "Storm",
+        "range": "known",
+        "area": "",
+        "target": "up to 9 creatures",
+        "duration": "Instant",
+        "effect": "Spend 12 spell points to transport up to 9 creatures within reach to an unoccupied space that you are aware of on this plane. On a failure you may end up anywhere on any plane"
+      },
+      {
+        "intent": "Cataclysm",
+        "range": "known",
+        "area": "long",
+        "target": "area",
+        "duration": "Instant",
+        "effect": "Spend 24 spell points to transport a long range area to an unoccupied space that you are aware of on this plane. On a failure the area is teleported to the Eclipse"
+      }
+    ]
+  },
+  {
+    "name": "Tend",
+    "manner": "Manifest",
+    "transmission": "Aether",
+    "effects": [
+      {
+        "intent": "Light Whisper",
+        "range": "Short",
+        "area": "Object",
+        "target": "",
+        "duration": "Instant",
+        "effect": "Clean or dry a small item within Short range (like a cup or collar), snuff a candle, or add a pleasant scent to a personal item."
+      },
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "area": "Radius",
+        "target": "",
+        "duration": "Instant",
+        "effect": "Spend 3 spell points to affect a Short range radius area with multiple effects: clean, heat, dry, or preserve several items at once."
+      }
+    ]
+  },
+  {
+    "name": "Translate",
+    "manner": "discern",
+    "transmission": "aether",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Touch",
+        "area": "",
+        "target": "Creature",
+        "duration": "1 hour",
+        "effect": "Spend 1 spell point to understand or allow an intelligent creature to understand any spoken language spoken by intelligent creatures within Short range for 1 hour"
+      },
+      {
+        "intent": "Surge",
+        "range": "Short range",
+        "area": "Short range",
+        "target": "area",
+        "duration": "1 hour",
+        "effect": "Spend 3 spell points to grant all intelligent creatures within Short range the understanding of each other's language for 1 hour. this allows for communication but not understanding of culture and phrasing. "
+      }
+    ]
+  },
+  {
+    "name": "Transmute",
+    "manner": "domineer",
+    "transmission": "Material",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Touch",
+        "area": "",
+        "target": "object",
+        "duration": "1 hour",
+        "effect": "Spend 1 spell point to change the shape, form, or state of a material you can see and touch, such as water to ice, clay to stone, or water to wine. The change lasts for 1 hour before the material attempts to revert to its original state."
+      },
+      {
+        "intent": "Surge",
+        "range": "Touch",
+        "area": "",
+        "target": "object",
+        "duration": "3 hours",
+        "effect": "Spend 3 spell points to drastically change the shape or composition of an object you can see and touch. Examples include shifting metal types, turning wood to stone, or changing water into sand. The change lasts for 3 hours before the object begins reverting to its original form."
+      },
+      {
+        "intent": "Shout",
+        "range": "Short",
+        "area": "",
+        "target": "Object or Creature",
+        "duration": "3 hours",
+        "effect": "Spend 6 spell points to alter the form or composition of a medium-sized creature within Short range. This can include turning a wolf into a lion, a tree into a bear, or a water elemental into a wine elemental. The new form must be viable for life and function. The creature retains its mind. The change lasts for 3 hours before the creature reverts to its original form."
+      }
+    ]
+  }
+]

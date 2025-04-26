@@ -7,6 +7,7 @@
     <title>Spellcasting | Armored Noir - Check20</title>
     <link rel="stylesheet" href="styles/main.css">
     <script src="scripts/main.js" defer></script>
+    <script src="scripts/spells.js"></script>
 </head>
 
 <body class="spellcasting-page">
@@ -109,221 +110,7 @@
             </div>
         </section>
 
-        <!-- basic spells -->
-        <section>
-            <h2>Basic Spells</h2>
-            <p id="basic-spells">
-                Wordless magic is a basic form of spellcasting ideal for non-spellcasters or casting low-cost
-                spells and illusions. It taps into an innate magical source without complex incantations,
-                suitable for subtle, immediate effects.
-            </p>
-            <div class="flex-container">
-                <div class="flex-item">
-                    <h4>Defend</h4>
-                    <p>Create a protective barrier around yourself or an ally within reach, granting
-                        <code>[[1d4]]</code>
-                        armor per success (increases by <code>[[1d6]]</code> per spell point) until the end of
-                        your next turn.
-                    </p>
-                    <p>
-                        Barriers can be stationary or mobile with the caster and can have their duration
-                        extended by 1 minute per spell point.</p>
-                </div>
-                <div class="flex-item">
-                    <h4>Devastate</h4>
-                    <p>Make a spell check (usually Spirit) to damage a creature within short range, dealing
-                        <code>[[1d4]]</code> damage (increasing by <code>[[1d6]]</code> per spell point).
-                    </p>
-                </div>
-                <div class="flex-item">
-                    <h4>Enhance</h4>
-                    <p>Boost a creature's next check by <code>[[1d4]]</code> per success (increase by
-                        <code>[[1d6]]</code>
-                        per spell point), or enhance a weapon's damage by +<code>[[1d4]] per success </code>
-                        until the end of
-                        their next turn.
-                    </p>
-                </div>
-                <div class="flex-item">
-                    <h4>Simple Spell</h4>
-                    <p>Perform a minor magical effect, such as warming, cleaning, a slight smell, or flourish. Increase
-                        effectiveness with additional spell points.</p>
-                </div>
-
-            </div>
-
-            <!-- Advanced Spells -->
-            <h2>Advanced Spells</h2>
-            <p id="adv-spells">
-                Advanced spells require significant spell points and are accessible only to skilled mages. These
-                spells can alter reality, counter powerful magics, or manipulate realms, making them ideal for
-                critical situations. They cannot be cast for free and often come with additional risks or
-                conditions.
-            </p>
-            <div class="flex-container" id="advanced">
-                <div class="flex-item">
-                    <h4>Counterspell</h4>
-                    <p>As a reaction to a spell or magical effect, spend 5 spell points and make a Spellcasting
-                        check at disadvantage (-4). Remove the disadvantage for an additional 3 points. On
-                        failure,
-                        the target spell’s effects are amplified.</p>
-                    <div class="features">
-                        Minimum Cost: 5 Spell point
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Decay</h4>
-                    <p>Reduce the PL of a target within short range by -1 per 2 spell points until the end of
-                        their
-                        next turn. At 5+ spell points, impose conditions like <em>Broken</em> or <em>Fear</em>
-                        on
-                        suitable targets.</p>
-                    <div class="features">
-                        Minimum Cost: 2 Spell point
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Discern</h4>
-                    <p> For 1 sp, Reveal a hidden object, creature, or illusion within short range per success, if there
-                        are none this spell cost 0 sp.
-                    </p>
-                    <p>
-                        For 2 points, focus on a creature to sense its motivation, emotional state, or weaknesses.
-                    </p>
-                    <p>
-                        For 5 points, observe a distant familiar location, object, or creature for up to 1 minute.</p>
-                    <div class="features">
-                        Minimum Cost: 1 Spell point
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Dispel</h4>
-                    <p>Spend points to nullify magical effects: 1 for minor, 5 for moderate, and 10 for powerful
-                        spells. Pool spell points with other casters to dispel even stronger magic.</p>
-                    <div class="features">
-                        Minimum Cost: 1 Spell point
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Domineer</h4>
-                    <p>Spend 1 spell point to read surface thoughts of a creature within medium range, 3 points
-                        to
-                        charm them for 1 minute, or 6 points to dominate and control their next turn. Add a
-                        telepathic link for +2 points.</p>
-                    <div class="features">
-                        Minimum Cost: 1 Spell point
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Imprison</h4>
-                    <p>Spend 3 spell points to give a creature within short range the <em>Pinned</em> condition
-                        until the end of their next turn. Extend duration to 1 minute for +2 points, with escape
-                        attempts at disadvantage.</p>
-                    <div class="features">
-                        Minimum Cost: 3 Spell point
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Light</h4>
-                    <p>For 1 sp, Create a source of light that illuminates short range. For 2 points as an
-                        action, blind a creature within
-                        short range if it fails an Observation check.</p>
-                    <div class="features">
-                        Minimum Cost: 1 Spell point
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Manifest</h4>
-                    <p>Summon or create a creature, object, or barrier within short range for 1 minute.
-                    </p>
-                    <p>
-                        Barriers have 5 armor, increasing by 5 per spell point.
-                    </p>
-                    <p>
-                        Summoned creatures start at PL 1 and increase by +1 PL per 2 spell points.</p>
-                    <div class="features">
-                        Minimum Cost: 1 Spell point
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Realm Shift</h4>
-                    <p>Shift to an adjacent realm for 3 spell points. For 2 additional points per creature,
-                        bring
-                        others within reach range. Specify environmental or temporal changes based on the
-                        destination.</p>
-                    <div class="features">
-                        Minimum Cost: 3 Spell point
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Rejuvenate</h4>
-                    <p>Spend 1 sp to touch and repair materials or heal creatures for <code>[[1d6]]</code> per spell
-                        point. </p>
-                    <div class="features">
-                        Minimum Cost: 1 Spell point
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Resurrection</h4>
-                    <p>Bring back the dead by spending spell points: 4 for deaths within 1 minute, 8 for an
-                        hour, 16
-                        for a day, and 24 for longer. On a failed check, the resurrected becomes undead.</p>
-                    <div class="features">
-                        Minimum Cost: 4 Spell points
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Structure</h4>
-                    <p>Create a durable structure (e.g., dome or house) for 5 spell points. The structure has
-                        100
-                        armor and lasts for 10 hours. Expand its scale or defenses with additional points.</p>
-                    <div class="features">
-                        Minimum Cost: 5 Spell points
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Telekinesis</h4>
-                    <p>For 2 sp, Lift and move a medium or smaller object or creature within short range, moving it up
-                        to reach range.
-                    </p>
-                    <p>
-                        Increase the size of the creature or move range with additional spell points</p>
-                    <div class="features">
-                        Minimum Cost: 2 Spell points
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Teleport</h4>
-                    <p> Spend 2 spell points to transport yourself or a willing creature you touch to a point within
-                        short range that you can see. Extend the range or add multiple creatures for additional points.</p>
-                    <div class="features">
-                        Minimum Cost: 2 Spell points
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Translate</h4>
-                    <p>For 1 spell point per creature, allow them to understand a common language for 1 hour.
-                        Translation is not perfect but enables basic communication.</p>
-                    <div class="features">
-                        Cost: 1 Spell point per creature
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <h4>Transmute</h4>
-                    <p>Transform a creature, object, or environment with a touch. Simple changes (e.g., water to
-                        ice) cost 1 point. Advanced or living transmutations require 3–10 points, with effects
-                        lasting until your next turn or permanently for 20 points.</p>
-                    <div class="features">
-                        Minimum Cost: 1 Spell points
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-
         <!-- intent spellcasting -->
-
         <section id="intent-spellcasting">
             <h3>Intent Spellcasting</h3>
             <p>
@@ -351,19 +138,19 @@
                     <!-- Manner -->
                     <h4>Manner</h4>
                     <div class="flex-container">
-                        <div class="flex-item">
+                        <div class="flex-item" id="manner">
                             <h5>Decay</h5>
                             <p>Pain, Damage, Erode, Deteriorate, Weaken, Disintegrate, Corrode</p>
                         </div>
-                        <div class="flex-item">
+                        <div class="flex-item" id="manner">
                             <h5>Discern</h5>
                             <p>Sense, Perceive, Detect, Insight, Awareness</p>
                         </div>
-                        <div class="flex-item">
+                        <div class="flex-item" id="manner">
                             <h5>Domineer</h5>
                             <p>Control, Influence, Command, Dominate, Overpower</p>
                         </div>
-                        <div class="flex-item">
+                        <div class="flex-item" id="manner">
                             <h5>Manifest</h5>
                             <p>Create, Craft, Summon, Shape, Build</p>
                         </div>
@@ -373,23 +160,23 @@
                     <!-- Transmission -->
                     <h4>Transmission</h4>
                     <div class="flex-container">
-                        <div class="flex-item">
+                        <div class="flex-item" id="transmission">
                             <h3>Aether</h3>
                             <p>Light, Spirit, Music, Vibration, Noise, Radiation, Solar, Vision, Shadows</p>
                         </div>
-                        <div class="flex-item">
+                        <div class="flex-item" id="transmission">
                             <h3>Astral</h3>
                             <p>Time, Portal, Speed, Slow, Chronology, Distance, Space, Teleportation</p>
                         </div>
-                        <div class="flex-item">
+                        <div class="flex-item" id="transmission">
                             <h3>Corpus</h3>
                             <p>Life, Harm, Blood, Emotion, Thought, Perception, Influence, Vitality, Soul</p>
                         </div>
-                        <div class="flex-item">
+                        <div class="flex-item" id="transmission">
                             <h3>Elemental</h3>
                             <p>Fire, Heat, Cold, Frost, Water, Ice, Steam, Acid, Poison, Earth, Lava, Wind</p>
                         </div>
-                        <div class="flex-item">
+                        <div class="flex-item" id="transmission">
                             <h3>Material</h3>
                             <p>Metal, Wood, Stone, Clay, Earth, Plants, Tools, Weapons, Structures, Minerals</p>
                         </div>
@@ -397,8 +184,6 @@
 
                 </div>
             </div>
-
-
 
             <!-- Spell Intent -->
             <h4>Spell Intent</h4>
@@ -408,10 +193,19 @@
                 specific amount of Spell Points and allows you to deal damage or inflict conditions categorized
                 as <strong>Corpus</strong>, <strong>Cognition</strong>, or <strong>Major Conditions</strong>.
             </p>
+            <ul>
+                <li>
+                    all spells require an action to cast
+                </li>
+                <li>
+                    all spells require a check, either a Spirit check or a relavent spellcasting check determined by
+                    your class
+                </li>
+            </ul>
 
             <!-- Intent Levels -->
-            <div class="flex-container">
-                <div class="flex-item">
+            <div class="spell-grid">
+                <div class="spell-card">
                     <h3>Whisper</h3>
                     <p><strong>Cost:</strong> 1 Spell Point</p>
                     <p>Small objects, tiny elemental effects, light damage, basic illusions, or lights.</p>
@@ -419,10 +213,10 @@
                         <li><strong>Spell Attack:</strong> Deal <code>1d6 + 1</code> damage or inflict a Corpus
                             condition.</li>
                         <li><strong>Spell Detonation:</strong> Deal half of <code>1d6 + 1</code> damage to all
-                            creatures within short range.</li>
+                            creatures within short range</li>
                     </ul>
                 </div>
-                <div class="flex-item">
+                <div class="spell-card">
                     <h3>Surge</h3>
                     <p><strong>Cost:</strong> 3 Spell Points</p>
                     <p>Move medium objects, open doors, create small elemental effects, or enhance abilities.
@@ -431,10 +225,10 @@
                         <li><strong>Spell Attack:</strong> Deal <code>2d6 + 3</code> damage or inflict a Corpus
                             condition and then deal the damage on a success+.</li>
                         <li><strong>Spell Detonation:</strong> Deal half of <code>2d6 + 3</code> damage to all
-                            creatures within short range.</li>
+                            creatures within short range</li>
                     </ul>
                 </div>
-                <div class="flex-item">
+                <div class="spell-card">
                     <h3>Shout</h3>
                     <p><strong>Cost:</strong> 6 Spell Points</p>
                     <p>Move large objects, break barriers, create medium elemental effects, moderate healing, or
@@ -443,10 +237,10 @@
                         <li><strong>Spell Attack:</strong> Deal <code>4d6 + 6</code> damage or inflict a Corpus
                             or Cognition condition and then deal the damage on a success+.</li>
                         <li><strong>Spell Detonation:</strong> Deal half of <code>4d6 + 6</code> damage to all
-                            creatures within short range.</li>
+                            creatures within short range</li>
                     </ul>
                 </div>
-                <div class="flex-item">
+                <div class="spell-card">
                     <h3>Roar</h3>
                     <p><strong>Cost:</strong> 9 Spell Points</p>
                     <p>Devastate battlefields, summon large creatures, moderate area healing, or topple walls.
@@ -455,10 +249,10 @@
                         <li><strong>Spell Attack:</strong> Deal <code>9d6 + 9</code> damage or inflict a Corpus
                             or Cognition condition and then deal the damage on a success+.</li>
                         <li><strong>Spell Detonation:</strong> Deal half of <code>9d6 + 9</code> damage to all
-                            creatures within short range.</li>
+                            creatures within short range</li>
                     </ul>
                 </div>
-                <div class="flex-item">
+                <div class="spell-card">
                     <h3>Storm</h3>
                     <p><strong>Cost:</strong> 12 Spell Points</p>
                     <p>Collapse buildings, summon powerful creatures, large-scale destruction, or long-lasting
@@ -471,7 +265,7 @@
                             creatures within medium range.</li>
                     </ul>
                 </div>
-                <div class="flex-item">
+                <div class="spell-card">
                     <h3>Cataclysm</h3>
                     <p><strong>Cost:</strong> 24 Spell Points</p>
                     <p>Affect expansive areas, summon immense storms, reshape terrain, raise the dead, or
@@ -487,184 +281,9 @@
             </div>
         </section>
 
-        <!-- spell calculation -->
-        <details>
-            <summary>Spell Calculations</summary>
-
-            <section id="spell-calculation">
-                <h3>Spell Calculation</h3>
-                <p>
-                    Some spellcasters prefer to calculate the true cost of a spell to develop a stronger connection
-                    with their magic. The intent system is fine, but they want precise control. Here are the tables
-                    and information for spell calculation.
-                </p>
-
-                <!-- Spells vs. Abilities -->
-                <h4>Spells vs. Abilities</h4>
-                <p>
-                    All magical effects aren't created equal. While some creatures are innately resistant or immune
-                    to certain spells, they might still be susceptible to others, depending on their inherent
-                    magical defenses or capabilities. The distinction between what constitutes a spell and what
-                    doesn't often lies in the essence of its origin.
-                    <br>
-                    For instance, a hag's enchantment or a lich's spell is undeniably magical. Conversely, a
-                    dragon's fiery breath or the enchantment of a magical sword isn't necessarily a "spell." It's
-                    crucial for the Narrator to discern these differences, tailoring their decisions to the
-                    situation at hand.
-                </p>
-
-                <div class="two-column">
-                    <div class="column">
-                        <h4>Spellcasting Notes</h4>
-                        <h5>Death Condition in Dynamic Magic</h5>
-                        <p>
-                            To impose the death condition via spellcasting, a significant investment of spell points is
-                            required. Costs are determined by the combination of high-cost Manner and Transmission
-                            words.
-                            Upon casting, the afflicted target can attempt a survival check to resist the spell's
-                            effects on
-                            their turn. Success depends on the difficulty set by the Narrator, potentially influenced by
-                            the
-                            target's attributes or the spell's strength.
-                        </p>
-                        <p>
-                            The use of the death condition spell is carefully regulated by the Narrator to maintain
-                            balance
-                            and narrative tension, particularly during pivotal encounters. It should not be a trivial or
-                            dominant strategy but a deliberate choice with appropriate risks and costs. The death
-                            condition
-                            may also result from zero wounds, subsequent injury, and further damage, creating a layered
-                            approach to combat and spellcasting consequences.
-                        </p>
-
-                        <!-- Spell Duration -->
-                        <h4>How Long a Magic Condition Lasts</h4>
-                        <p>
-                            In Dynamic Magic, spell duration is influenced by the nature of the spell and the caster's
-                            intent. Temporary spells, like those causing prone or pinned conditions, last until the
-                            target
-                            counters them, such as standing up or making a strength check. These spells can become a
-                            battle
-                            of wills, with the caster needing to concentrate to maintain their effect.
-                        </p>
-                        <p>
-                            More severe spells, like those causing broken bones, have longer-lasting impacts that
-                            require
-                            medical or magical healing. Permanent spells, like those altering terrain or creating
-                            objects,
-                            remain without ongoing caster focus. Spell duration reflects the caster's purpose, the
-                            spell's
-                            character, and the balance within the magical world, with some spells easily countered and
-                            others leaving lasting effects.
-                        </p>
-                    </div>
-                    <div class="column">
-                        <h4>Spellcasting</h4>
-                        <p>Use the following tables to calculate the cost and effectiveness of a spell:</p>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Category</th>
-                                    <th>Option</th>
-                                    <th>Cost</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Base Damage</td>
-                                    <td>1d4; +1d6 per Spell Point</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>Damage Types</td>
-                                    <td>Physical</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>Elemental</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>Realm</td>
-                                    <td>2</td>
-                                </tr>
-                                <tr>
-                                    <td>Action Cost</td>
-                                    <td>Action</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>Half-Action, Off Action</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>Distance</td>
-                                    <td>Short (Below 50ft)</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>Medium (50-200ft)</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>Long (200-1000ft)</td>
-                                    <td>2</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>Visible</td>
-                                    <td>4</td>
-                                </tr>
-                                <tr>
-                                    <td>To Cause a Condition</td>
-                                    <td>Non-Major</td>
-                                    <td>4</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>Major</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>Duration</td>
-                                    <td>Instant, End of Turn</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>Minute</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>Hour</td>
-                                    <td>3</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>Day</td>
-                                    <td>6</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>Permanent</td>
-                                    <td>10</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- Spellcasting Formula -->
-
-                <!-- Spellcasting Notes -->
-
-            </section>
-        </details>
+        <section>
+              <div class="spell-grid" id="spell-grid"></div>                          
+        </section>
 
         <!-- Sidebar -->
         <div id="sidebar" class="closed">

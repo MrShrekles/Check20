@@ -127,17 +127,20 @@ function createNpcCard(npc) {
     }).join("");
 
     div.innerHTML = `
-        <h1 contenteditable="true">${npc.name}</h1>
-        <b>${npc.speciesName}</b>
-        ${featureHTML}
-        <hr>
-        <p><strong>Affinity:</strong> ${npc.affinity}</p>
-        <p><strong>Religion:</strong> ${npc.religion}</p>
-        <p><strong>Signature Item:</strong> ${npc.item}</p>
-        <p><strong>Motivation:</strong> ${npc.motivation}</p>
+    <h1 contenteditable="true">${npc.name}</h1>
+    <b>${npc.speciesName}</b>
+    ${featureHTML}
+    <hr>
+    <p><strong>Affinity:</strong> ${npc.affinity}</p>
+    <p><strong>Religion:</strong> ${npc.religion}</p>
+    <p><strong>Signature Item:</strong> ${npc.item}</p>
+    <p><strong>Motivation:</strong> ${npc.motivation}</p>
+    <div class="button-row">
         <button class="copy-npc">Copy</button>
         <button class="delete-monster">Remove</button>
-    `;
+    </div>
+`;
+
 
     // Remove button
     div.querySelector(".delete-monster").addEventListener("click", () => div.remove());
