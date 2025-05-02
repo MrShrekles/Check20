@@ -6,6 +6,12 @@ async function loadSpells() {
 
 let cachedSpells = [];
 
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, (txt) => {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
 function renderSpells() {
     const container = document.getElementById('spell-grid');
     container.innerHTML = '';
@@ -15,7 +21,7 @@ function renderSpells() {
         card.className = 'spell-card';
 
         card.innerHTML = `
-  <h4>${spell.name}</h4>
+<h4>${toTitleCase(spell.name)}</h4>
   <div class="spell-tags">
     <span class="manner">${spell.manner}</span>
     <span class="transmission">${spell.transmission}</span>
@@ -26,16 +32,29 @@ function renderSpells() {
     <p>${effect.effect}</p>
   `).join('')}
 `;
+
         card.innerHTML += `
-  <button class="copy-spell" data-spell="${spell.name}">Copy Spell</button>
+  <div class="spell-buttons">
+    <button class="copy-spell" data-spell="${spell.name}">Copy Spell</button>
+    <button class="copy-macro" data-spell="${spell.name}">Copy Roll20</button>
+    <button class="copy-addspell" data-spell="${spell.name}">Copy to Sheet</button>
+  </div>
 `;
+const copyButton = card.querySelector('.copy-spell');
+const macroButton = card.querySelector('.copy-macro');
+const addSpellButton = card.querySelector('.copy-addspell');
 
-        card.querySelector('.copy-spell').addEventListener('click', (e) => {
-            copySpellText(spell, e.target);
-        });
+addSpellButton.addEventListener('click', (e) => {
+  copyAddSpellText(spell, e.target);
+});
 
+copyButton.addEventListener('click', (e) => {
+  copySpellText(spell, e.target);
+});
 
-
+macroButton.addEventListener('click', (e) => {
+  copyMacroText(spell, e.target);
+});
 
         container.appendChild(card);
     });
@@ -98,11 +117,12 @@ function getIntentCost(intent) {
 loadSpells();
 
 function copySpellText(spell, button) {
-    let text = `# **${spell.name}**
+    let text = `# **${toTitleCase(spell.name)}**
 *Manner*: ${spell.manner}
 *Transmission*: ${spell.transmission}
   
-${spell.effects.map(effect => { return `**${effect.intent} ** (${getIntentCost(effect.intent)} SP)
+${spell.effects.map(effect => {
+        return `**${effect.intent} ** (${getIntentCost(effect.intent)} SP)
 - Range: ${effect.range}
 - Duration: ${effect.duration}
 ${effect.target ? `- Target: ${effect.target}` : ''}
@@ -113,6 +133,47 @@ ${effect.effect}`;
 
     navigator.clipboard.writeText(text).then(() => {
         // Change button appearance temporarily
+        const originalText = button.textContent;
+        button.textContent = "Copied!";
+        button.classList.add("copied");
+
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.classList.remove("copied");
+        }, 1500);
+    });
+}
+
+function copyMacroText(spell, button) {
+    let macro = `&{template:shek} {{name=${toTitleCase(spell.name)}}}
+ {{Manner=${spell.manner}}} {{Transmission=${spell.transmission}}}`;
+  
+    spell.effects.forEach(effect => {
+      macro += ` {{${effect.intent} (${getIntentCost(effect.intent)} SP)=${effect.effect}}}`;
+    });
+  
+    navigator.clipboard.writeText(macro).then(() => {
+      const originalText = button.textContent;
+      button.textContent = "Copied!";
+      button.classList.add("copied");
+  
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.classList.remove("copied");
+      }, 1500);
+    });
+  }
+  
+  function copyAddSpellText(spell, button) {
+    let output = '';
+
+    spell.effects.forEach(effect => {
+        const intentFormatted = effect.intent.trim(); // Example: Whisper, Surge, Shout
+        const spellText = `!addspell ${toTitleCase(spell.name)}|${intentFormatted}|${effect.effect}`;
+        output += spellText + `\n`;
+    });
+
+    navigator.clipboard.writeText(output.trim()).then(() => {
         const originalText = button.textContent;
         button.textContent = "Copied!";
         button.classList.add("copied");

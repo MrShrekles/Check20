@@ -359,7 +359,7 @@
       "diet": "Omnivore, Vegetarian",
       "rarity": "Common",
       "region": "Global, Multiplanar",
-      "features": "Mana Water: You carry enchanted water from your homeland in a jug, gourd, or vessel. At the start of your turn, the water swirls around you, granting +1 armor (max 5). Once per day, as an action, you may release the water to either heal an ally within reach for [[1d6]] or grant them +3 armor. If your vessel is destroyed, you lose this feature until you return to a source of sacred water."
+      "features": "Mana Water: You carry enchanted water from your homeland in a jug, gourd, or vessel. At the start of your turn, the water swirls around you, granting +5 armor. Once per day, as an action, you may release the water to either heal an ally within reach for [[1d6]] or grant them +10 armor until the end of your next turn. If your vessel is destroyed, you lose this feature until you return to a source of sacred water."
     },
     {
       "name": "air",
@@ -762,7 +762,7 @@
       "diet": "Everything",
       "rarity": "Common",
       "region": "global, eclipse, dreamsea, ordealis, void",
-      "features": "Ashform: Once per day as an Off-Action gain the Intangible condition until the end of your next turn. While Intangible you are immune to spellcasting effects."
+      "features": "Ashform: Once per day as an Action gain the Intangible condition until the end of your next turn. While Intangible you are immune to spellcasting effects."
     },
     {
       "name": "Wild",
@@ -911,7 +911,17 @@
       "diet": "Hematophagy",
       "rarity": "rare",
       "region": "kingslands",
-      "features": "Vampiric Regeneration: Gain the Exhausted condition while in sunlight and take [[1d4]] solar damage every round. As an off-action, heal for 1 healing if you aren't in sunlight or running water, take solar damage, damage from holy water, take damage from silvered weapons, or have any major conditions.\rSwindler's Charm:Speak to a creature for 1 minute and make a social check (Influence, Influence, or Influence). On a success, charm the creature for 1 hour. The creature is not under your control, and if they take damage or feel threatened, they break from the charm. After the charm is Broken, they know that they have been charmed and will be hostile towards you. While charmed in this way, the creature will:\rAlways tell the truth.\rFollow you if the path is safe.\rGive a minor amount of their wealth.\rAllow blood to be drawn (1 pint), after which they will take the Concussion condition for 1 minute."
+      "features": [
+        {
+          "name": "Vampiric Regeneration",
+          "description": "Gain the Exhausted condition while in sunlight and take [[1d4]] solar damage every round. As an off-action, heal for 1 healing if you aren't in sunlight or running water, take solar damage, damage from holy water, take damage from silvered weapons, or have any major conditions."
+        },
+        {
+          "name": "Swindler's Charm",
+          "description": "Speak to a creature for 1 minute and make a social check (Influence, Influence, or Influence). On a success, charm the creature for 1 hour. The creature is not under your control, and if they take damage or feel threatened, they break from the charm. After the charm is Broken, they know that they have been charmed and will be hostile towards you. While charmed in this way, the creature will:\rAlways tell the truth.\rFollow you if the path is safe.\rGive a minor amount of their wealth.\rAllow blood to be drawn (1 pint), after which they will take the Concussion condition for 1 minute."
+        }
+
+      ]
     },
     {
       "name": "Tărie",
@@ -924,7 +934,17 @@
       "diet": "Hematophagy",
       "rarity": "rare",
       "region": "kingslands",
-      "features": "Vampiric Regeneration: Gain the Exhausted condition while in sunlight and take [[1d4]] solar damage every round. As an off-action, heal for 1 healing if you aren't in sunlight or running water, take solar damage, damage from holy water, take damage from silvered weapons, or have any major conditions.\rFlight: You have massive wings that give fly speed equal to your movement or half as much if you are wearing heavy armor."
+      "features": [
+        {
+          "name": "Vampiric Regeneration",
+          "description": "Gain the Exhausted condition while in sunlight and take [[1d4]] solar damage every round. As an off-action, heal for 1 healing if you aren't in sunlight or running water, take solar damage, damage from holy water, take damage from silvered weapons, or have any major conditions."
+        },
+        {
+          "name": "Flight",
+          "description": "You have massive wings that give fly speed equal to your movement or half as much if you are wearing hefty armor."
+        }
+        
+      ]
     },
     {
       "name": "Înviere",
@@ -937,7 +957,16 @@
       "diet": "Hematophagy",
       "rarity": "rare",
       "region": "kingslands",
-      "features": "Gift of Death:Gain the Exhausted condition while in sunlight and take [[1d4]] solar damage every round. You do not need to eat, drink, sleep, or breathe, and you are immune to disease and magic can't put you to sleep. When you take the Death condition, remove it but it leaves a wound, scar, or disfigurement. This can be done once a month\rStench: You have the smell of Death, your body is rotten and cold. You have disadvantage on Social checks (Influence), but you have advantage to Disrupt"
+      "features": [
+        {
+          "name": "Gift of Death",
+          "description": "Gain the Exhausted condition while in sunlight and take [[1d4]] solar damage every round. You do not need to eat, drink, sleep, or breathe, and you are immune to disease and magic can't put you to sleep. When you take the Death condition, remove it but it leaves a wound, scar, or disfigurement. This can be done once a month"
+        },
+        {
+          "name": "Stench",
+          "description": "You have the smell of Death, your body is rotten and cold. You have disadvantage on Social checks (Influence), but you have advantage to Disrupt"
+        }
+      ]
     },
     {
       "name": "Celestial (Marble)",
@@ -950,7 +979,7 @@
       "diet": "ashlar",
       "rarity": "uncommon",
       "region": "kingslands",
-      "features": "Radiant Wings: You have wings that give fly speed equal to your movement or half as much if you are wearing heavy armor. As an action create a burst of radiant energy dealing [[1d4]] Solar damage to all creatures within reach range"
+      "features": "Radiant Wings: You have wings that give fly speed equal to your movement or half as much if you are wearing hefty armor. As an action create a burst of radiant energy dealing [[1d4]] Solar damage to all creatures within reach range"
     },
     {
       "name": "Infernal (Lavastone)",
@@ -963,7 +992,7 @@
       "diet": "ashlar",
       "rarity": "uncommon",
       "region": "kingslands",
-      "features": "Hefty Wings: Gain +5 armor that can be healed or repaired. You have a fly speed equal to half your movement speed while not wearing heavy armor."
+      "features": "Hefty Wings: Gain +5 armor that can be healed or repaired. You have a fly speed equal to half your movement speed while not wearing hefty armor."
     },
     {
       "name": "Nemuri (Mind Stone)",

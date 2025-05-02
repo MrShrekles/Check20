@@ -2,11 +2,14 @@
   "classes": [
     {
       "name": "Tank",
-      "description": "A resilient frontliner who protects allies by absorbing damage.",
+      "description": " As a Tank, your character embodies the very essence of strength, resilience, and unyielding fortitude. You are the shield that safeguards your allies, the bulwark that stands firm in the face of the enemy onslaught. With every swing of your weapon, you command the battlefield, drawing the attention of foes and absorbing their blows that would otherwise kill your companions and many other creatures as well. Your unmatched stamina and formidable armor make you a veritable living fortress, capable of withstanding onslaughts that would obliterate the less hardy.",
       "features": [
         {
           "name": "Champion",
-          "description": "Gain +10 Wounds, suffer no penalties from wearing armor, and may carry 3 hefty items before becoming Pinned. You have 4 Champion Points. Regain 1 when you Press On, all on a long rest, when you kill an enemy, or force one to submit. You can use a champion point to either: When you attack gain [[1d6]] to the check and damage, or remove one condition and heal for +5"
+          "description": [
+            "As a Tank, your character embodies the very essence of strength, resilience, and unyielding fortitude. You are the shield that safeguards your allies, the bulwark that stands firm in the face of the enemy onslaught. With every swing of your weapon, you command the battlefield, drawing the attention of foes and absorbing their blows that would otherwise kill your companions and many other creatures as well. Your unmatched stamina and formidable armor make you a veritable living fortress, capable of withstanding onslaughts that would obliterate the less hardy.",
+            "However, the Tank's might in combat comes with a trade-off. In situations that require finesse, diplomacy, or arcane knowledge, you may find yourself akin to a fish out of water. While your strength and endurance are beyond question, tasks that involve subtlety, stealth, or intricate problem-solving might present a challenge. It's in these moments that you'll need to rely on your allies, just as they depend on your unwavering protection in battle. As a Tank, your role is not to master every situation, but to provide a rock-solid foundation from which your group can confront any danger. Always remember, true strength comes not just from physical power, but from knowing your limits and trusting in your comrades."
+          ]
         }
       ],
       "equipment": [
@@ -16,7 +19,6 @@
         },
         {
           "name": "Choose",
-          "description": "Select a melee weapon:",
           "choices": [
             {
               "name": "Standard Weapon",

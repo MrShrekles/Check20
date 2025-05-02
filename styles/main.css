@@ -549,6 +549,38 @@ b {
     transform: scale(1.1);
 }
 
+/* From Uiverse.io by arthur_6104 */
+.box-button {
+    cursor: pointer;
+    border: 4px solid var(--theme-1);
+    background-color: var(--dark-3);
+    padding-bottom: 10px;
+    transition: 0.1s ease-in-out;
+}
+
+.button {
+    background-color: var(--dark-3);
+    border: 4px solid var(--theme-3);
+    padding: 3px 8px;
+}
+
+.box-button:active {
+    padding: 0;
+    margin-bottom: 10px;
+    transform: translateY(10px);
+}
+
+#generate-npc {
+    background-color: var(--hate);
+    width: 100%;
+    font-size: 2rem;
+}
+
+#generate-npc:hover {
+    filter: brightness(90%);
+}
+
+
 .flex-item select {
     width: 100%;
     padding: var(--padding);
@@ -1565,16 +1597,6 @@ a {
     box-shadow: var(--gold);
 }
 
-#generate-npc {
-    background-color: var(--hate);
-    width: 100%;
-    font-size: 2rem;
-}
-
-#generate-npc:hover {
-    filter: brightness(90%);
-}
-
 /* === Donate Button === */
 .donate-button {
     background: var(--theme);
@@ -1775,17 +1797,65 @@ a {
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease;
-  }
-  
-  .copy-spell:hover {
+}
+
+.copy-spell:hover {
     background: var(--green-3);
-  }
-  
-  .copy-spell.copied {
+}
+
+.copy-spell.copied {
     background: var(--gold);
     color: var(--dark-2);
-  }
-  
+}
+
+.class-description p {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--white);
+}
+
+.class-section-title {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: var(--yellow-1);
+}
+
+.class-box {
+    background-color: var(--green-1);
+    border: 2px solid var(--yellow-1);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.class-box h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: var(--yellow-1);
+}
+
+.class-box ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.class-box li {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    color: var(--white);
+}
+
+.class-box code {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+
 
 /* 📌 Mobile-Friendly Adjustments */
 @media (max-width: 650px) {

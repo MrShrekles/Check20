@@ -7,83 +7,24 @@
     <title>Check20 Wiki</title>
     <link rel="stylesheet" href="styles/main.css">
     <script src="scripts/almanac.js" defer></script>
+    <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/npcGenerator.js"></script>
+    <script src="scripts/monsterGenerator.js"></script>
 </head>
 
-<body>
-    <header class="main-header">
-        <h1 class="header-title">Worldbuilding</h1>
-        <div class="flex-container">
-
-            <!-- Character Dropdown -->
-            <div class="flex-item">
-                <details>
-                    <summary class="nav-button">Character Options</summary>
-                    <nav>
-                        <a href="class.html">Class</a>
-                        <a href="species.html">Species</a>
-                        <a href="tables.html">Tables</a>
-                        <a href="curse.html">Curses & Diseases</a>
-                    </nav>
-                </details>
-            </div>
-
-            <!-- Gear and Items -->
-            <div class="flex-item">
-                <details>
-                    <summary class="nav-button">Gear</summary>
-                    <nav>
-                        <a href="armor.html">Armor</a>
-                        <a href="weapons.html">Weapons</a>
-                        <a href="items.html">Items</a>
-                        <a href="crafting.html">Crafting</a>
-                    </nav>
-                </details>
-            </div>
-
-            <!-- How to Play Dropdown -->
-            <div class="flex-item">
-                <details>
-                    <summary class="nav-button">How To Play</summary>
-                    <nav>
-                        <a href="charsheet.html">Character Sheet</a>
-                        <a href="reference.html">Reference</a>
-                        <a href="damage.html">Damage & Damage Tables</a>
-                        <a href="conditions.html">Conditions</a>
-                        <a href="spellcasting.html">Spellcasting</a>
-                        <a href="downtime.html">Downtime</a>
-                    </nav>
-                </details>
-            </div>
-
-            <!-- Narrator Dropdown -->
-            <div class="flex-item">
-                <details>
-                    <summary class="nav-button">Storyteller's Almanac</summary>
-                    <nav>
-                        <a href="worldbuilding.html">Worldbuilding</a>
-                        <a href="enchanted.html">Enchanted Items & Progression</a>
-                        <a href="vehicles.html">Vehicles & Mounts</a>
-                        <a href="lore.html">Lore</a>
-                    </nav>
-                </details>
-            </div>
-
-            <!-- Marketing Dropdown -->
-            <div class="flex-item">
-                <details>
-                    <summary class="nav-button">Marketing</summary>
-                    <nav>
-                        <a href="downloads.html">Downloads</a>
-                        <a href="support.html">Donate/Support</a>
-                    </nav>
-                </details>
-            </div>
-        </div>
-    </header>
+<body data-page-title="Worldbuilding"> 
+        <div id="header-placeholder"></div>
+      
 
     <section>
-        <button id="generate-npc">Generate NPC</button>
+        <div class="box-button">
+            <button class="button" id="generate-npc">Generate NPC</button>
+        </div>
         <div class="flex-container" id="npc-output"></div>
+        <button id="clear-npcs">Clear NPCs</button>
+
     </section>
 
     <section class="generator-row">
@@ -112,6 +53,8 @@
                 </div>
             </div>
         </div>
+
+
 
         <div class="flex-gen">
             <h2>Character Roleplay Question</h2>
@@ -578,97 +521,7 @@
         </div>
     </section>
 
-    <!-- Sidebar -->
-    <div id="sidebar" class="closed">
-        <button id="toggle-sidebar">Tools</button>
-        <div id="sidebar-content">
-            <div class="roller-switch">
-                <!-- Radio Toggles -->
-                <input type="radio" name="roller-mode" id="check-mode" checked>
-                <input type="radio" name="roller-mode" id="standard-mode">
-
-                <!-- Toggle Buttons -->
-                <label for="check-mode">Check20 Roller</label>
-                <label for="standard-mode">Standard Roller</label>
-
-                <!-- Rollers -->
-                <div class="roller-content">
-                    <!-- Check20 Roller -->
-                    <div class="roller-block" id="check-block">
-                        <h3>Check20 Roller</h3>
-                        <form id="d20-check-roller-form">
-                            <div class="flex-container">
-                                <div class="flex-item">
-                                    <label>Modifier
-                                        <input type="number" id="check-modifier" value="0" style="width: 30px;">
-                                    </label>
-                                </div>
-                                <div class="flex-item">
-                                    <label>Advantage
-                                        <select id="check-advantage">
-                                            <option value="none">None</option>
-                                            <option value="advantage">Advantage</option>
-                                            <option value="disadvantage">Disadvantage</option>
-                                        </select>
-                                    </label>
-                                </div>
-                                <div class="flex-item">
-                                    <button type="button" id="roll-d20-check">Roll</button>
-                                </div>
-                            </div>
-                        </form>
-                        <h4>Check History</h4>
-                        <ul id="check-history" class="roll-history"></ul>
-                    </div>
-
-                    <!-- Standard Roller -->
-                    <div class="roller-block" id="standard-block">
-                        <h3>Standard Dice</h3>
-                        <form id="dice-roller-form">
-                            <div class="flex-container">
-                                <div class="flex-item">
-                                    <label>Dice
-                                        <input type="number" id="number-of-dice" value="1" min="1">
-                                    </label>
-                                    <label>Type
-                                        <select id="dice-type">
-                                            <option value="4">d4</option>
-                                            <option value="6" selected>d6</option>
-                                            <option value="8">d8</option>
-                                            <option value="10">d10</option>
-                                            <option value="12">d12</option>
-                                            <option value="20">d20</option>
-                                            <option value="100">d100</option>
-                                        </select>
-                                    </label>
-                                </div>
-                                <div class="flex-item">
-                                    <label>Mod
-                                        <input type="number" id="modifier" value="0">
-                                    </label>
-                                </div>
-                                <div class="flex-item">
-                                    <label>Advantage
-                                        <select id="advantage">
-                                            <option value="none">None</option>
-                                            <option value="advantage">Advantage</option>
-                                            <option value="disadvantage">Disadvantage</option>
-                                        </select>
-                                    </label>
-                                </div>
-                                <div class="flex-item">
-                                    <button type="button" id="roll-dice">Roll</button>
-                                </div>
-                            </div>
-                        </form>
-                        <h4>Roll History</h4>
-                        <ul id="roll-history" class="roll-history"></ul>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
+    <div id="sidebar-placeholder"></div>
 </body>
 
 </html>

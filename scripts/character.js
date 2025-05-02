@@ -609,18 +609,18 @@ document.getElementById("roll-d20-check").addEventListener("click", () => {
     const finalResult = chosenRaw + modifier;
     const historyItem = document.createElement("li");
     historyItem.classList.add("styled-roll");
-    
+
     // Determine success count
     let successCount = 0;
     if (finalResult >= 15) {
-      successCount = Math.floor((finalResult - 15) / 5) + 1;
+        successCount = Math.floor((finalResult - 15) / 5) + 1;
     }
-    
+
     // Optional highlight
     if (finalResult >= 15) {
-      historyItem.classList.add("roll-success");
+        historyItem.classList.add("roll-success");
     }
-    
+
     historyItem.innerHTML = `
       <div class="roll-line">
         <span class="roll-label">🎲 Rolled:</span> 
@@ -640,9 +640,9 @@ document.getElementById("roll-d20-check").addEventListener("click", () => {
         <span class="roll-label"> Chose:</span> <em class="roll-chosen">${chosenRaw}</em>
       </div>
     `;
-    
-    
-    
+
+
+
     document.getElementById("check-history").prepend(historyItem);
 
     // Limit history to 10 entries
@@ -705,3 +705,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+async function loadClasses() {
+    const response = await fetch('data/classes.json');
+    const data = await response.json();
+    renderClassPage(data.classes[0]);
+}
+
+function renderClassPage(classData) {
+    const container = document.getElementById('class-content');
+    container.innerHTML = '';
+
+    const description = document.createElement('div');
+    description.innerHTML = `<p>${classData.description}</p>`;
+    container.appendChild(description);
+}
+
+// other helper functions...
+
+loadClasses(); // <- THIS IS CRITICAL
