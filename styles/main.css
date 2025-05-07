@@ -43,13 +43,13 @@
     --text-cream: #f0e5c5;
 }
 
-
 /* General Styles */
 body {
     font-family: "Candara", sans-serif;
     background-color: var(--dark);
     color: var(--white);
     margin: 0;
+    overflow-x: hidden;
 }
 
 header {
@@ -349,7 +349,7 @@ b {
 }
 
 .splash-screen {
-    width: 100vw;
+    width: 100%;
     height: auto;
     background-size: cover;
 }
@@ -570,16 +570,19 @@ b {
     transform: translateY(10px);
 }
 
-#generate-npc {
+#generate-npc,
+#generate-business,
+#generate-monster {
     background-color: var(--hate);
     width: 100%;
     font-size: 2rem;
 }
 
-#generate-npc:hover {
-    filter: brightness(90%);
+#generate-npc:hover,
+#generate-business:hover,
+#generate-monster:hover {
+    filter: brightness(110%);
 }
-
 
 .flex-item select {
     width: 100%;
@@ -684,7 +687,6 @@ b {
 
 /* Worldbuilding Generators */
 .flex-gen {
-    width: 30%;
     background-color: var(--theme-dark);
     border-radius: var(--border-radius);
     display: flex;
@@ -817,9 +819,9 @@ section {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     color: var(--white);
-    padding: var(--padding);
+    padding: 10px;
+    margin: 10px;
     transition: filter 0.5s ease;
-    margin-bottom: 6px;
 }
 
 section:hover {
@@ -1388,19 +1390,44 @@ a {
     border-color: var(--darkgold);
 }
 
-/* Two-Column Layout */
 .two-column {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
-/* Column Styling */
 .column {
     flex: 1 1 48%;
-    min-width: 300px;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
 }
+
+.two-column,
+.column,
+ul,
+li {
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+ul {
+    margin: 0;
+    padding-left: 1.1em;
+    /* slightly tighter */
+}
+
+li {
+    padding-left: 0.4em;
+    margin-bottom: 0.5em;
+}
+
 
 /* Section Styling */
 .section-container {
@@ -1559,8 +1586,7 @@ a {
 }
 
 /* === Buttons (Shared Styling) === */
-.donate-button,
-#generate-monster {
+.donate-button {
     border: none;
     border-radius: var(--border-radius);
     padding: var(--padding);
@@ -1580,21 +1606,6 @@ a {
 
 .copy-npc:hover {
     background: #b52b27;
-}
-
-/* === Generate Monster Button === */
-#generate-monster {
-    background: var(--hate);
-    color: white;
-    font-weight: bold;
-    font-size: 16px;
-    width: 50%;
-    height: auto;
-}
-
-#generate-monster:hover {
-    background: var(--rust);
-    box-shadow: var(--gold);
 }
 
 /* === Donate Button === */
@@ -1856,101 +1867,90 @@ a {
 }
 
 
-
-/* 📌 Mobile-Friendly Adjustments */
 @media (max-width: 650px) {
 
     button,
     .flex-pop button {
-        padding-top: 10px;
-        padding-bottom: 10px;
+      padding-block: 10px;
     }
-
-    .flex-gen {
-        width: 100%;
-    }
-
-    .column {
-        flex: 1 1 100%;
-    }
-
-    .two-column {
-        flex-direction: column;
-    }
-
-    /* 📌 Make Flex Items Full Width */
+  
+    .flex-gen,
+    .column,
     .flex-item,
     .flex-spell {
-        max-width: 100%;
-        min-width: 100%;
+      width: 100%;
+      max-width: 100%;
+      min-width: 100%;
+      box-sizing: border-box;
     }
-
-    /* Touch-Friendly Inputs */
+  
+    .two-column {
+      flex-direction: column;
+    }
+  
     .flex-item input[type="checkbox"] {
-        transform: scale(1.5);
+      transform: scale(1.5);
     }
-
+  
     table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
     }
-
+  
+    .responsive-table {
+      display: block;
+    }
+  
     .responsive-table table,
-    .responsive-table thead,
-    .responsive-table tbody,
-    .responsive-table th,
-    .responsive-table td,
-    .responsive-table tr {
-        display: block;
-        width: 100%;
-    }
-
     .responsive-table thead {
-        display: none;
+      display: none;
     }
-
+  
+    .responsive-table tbody,
     .responsive-table tr {
-        margin-bottom: 1rem;
-        border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow);
-        padding: var(--padding);
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: var(--padding);
     }
-
+  
     .responsive-table td {
-        width: 90%;
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid #5b514a;
-        font-size: 0.9rem;
-        line-height: 1.2;
+      display: flex;
+      justify-content: space-between;
+      width: 90%;
+      border-bottom: 1px solid #5b514a;
+      font-size: 0.9rem;
+      line-height: 1.2;
     }
-
+  
     .responsive-table td::before {
-        content: attr(data-label);
-        font-weight: bold;
-        color: var(--white);
-        text-transform: uppercase;
+      content: attr(data-label);
+      font-weight: bold;
+      color: var(--white);
+      text-transform: uppercase;
     }
-
+  
     .responsive-table td:first-child {
-        background-color: transparent;
-        color: var(--gold);
-        font-weight: bold;
-        text-transform: uppercase;
+      background: transparent;
+      color: var(--gold);
+      font-weight: bold;
+      text-transform: uppercase;
     }
-
+  
     .item-card {
-        width: 40%;
+      width: 40%;
     }
-
+  
     .monster-card {
-        width: 100%;
-        margin: 3px;
+      width: 100%;
+      margin: 3px;
     }
-
+  
     .monster-card:hover {
-        transform: scale(1);
+      transform: none;
     }
-
-}
+  }
+  

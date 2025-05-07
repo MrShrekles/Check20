@@ -116,7 +116,6 @@ function splitFeaturesString(str) {
     };
 }
 
-
 function createNpcCard(npc) {
     const div = document.createElement("div");
     div.className = "monster-card";

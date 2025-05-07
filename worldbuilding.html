@@ -12,50 +12,13 @@
     <script src="scripts/tooltips.js" defer></script>
     <script src="scripts/npcGenerator.js"></script>
     <script src="scripts/monsterGenerator.js"></script>
+    <script src="scripts/businessGenerator.js"></script>
 </head>
 
-<body data-page-title="Worldbuilding"> 
-        <div id="header-placeholder"></div>
-      
-
-    <section>
-        <div class="box-button">
-            <button class="button" id="generate-npc">Generate NPC</button>
-        </div>
-        <div class="flex-container" id="npc-output"></div>
-        <button id="clear-npcs">Clear NPCs</button>
-
-    </section>
+<body data-page-title="Worldbuilding">
+    <div id="header-placeholder"></div>
 
     <section class="generator-row">
-
-        <div class="flex-gen">
-            <div class="business-generator">
-                <h2>Business Generator</h2>
-                <div class="flex-pop">
-                    <button class="generate-business-name-btn">Business Name</button>
-                    <div class="display-box generated-business-name">[Generated Business Name]</div>
-                </div>
-                <div class="flex-pop">
-                    <button class="generate-owner-btn">Owner</button>
-                    <div class="display-box generated-owner">[Generated Owner]</div>
-                </div>
-                <div class="flex-pop">
-                    <button class="generate-reputation-btn">Reputation</button>
-                    <div class="display-box generated-reputation">[Generated Reputation]</div>
-                </div>
-                <div class="flex-pop">
-                    <button class="generate-secret-btn">Secret</button>
-                    <div class="display-box generated-secret">[Generated Secret]</div>
-                </div>
-                <div class="flex-pop">
-                    <button class="generate-all-business-btn" style="width: 100%">Generate All</button>
-                </div>
-            </div>
-        </div>
-
-
-
         <div class="flex-gen">
             <h2>Character Roleplay Question</h2>
             <div class="flex-pop">
@@ -66,52 +29,59 @@
     </section>
 
     <section>
-        <h2>Monster Creator</h2>
-        <section>
-            <div class="flex-container">
+        <div class="box-button">
+            <button class="button" id="generate-npc">Generate NPC</button>
+        </div>
+        <div class="flex-container" id="npc-output"></div>
+        <button id="clear-npcs">Clear NPCs</button>
+    </section>
 
-                <!-- Base Type -->
-                <div class="flex-item">
-                    <label>
-                        <input type="checkbox" id="randomize-base" checked> Randomize Base Type
-                    </label>
-                    <select id="base-type">
-                    </select>
-                </div>
+    <section>
+        <div class="box-button">
+            <button class="button" id="generate-business">Generate Business</button>
+        </div>
+        <div class="flex-container" id="business-output"></div>
+        <button id="clear-businesses">Clear Businesses</button>
+    </section>
 
-                <!-- Add Type -->
-                <div class="flex-item">
-                    <label>
-                        <input type="checkbox" id="randomize-additional" checked> Randomize Additional Type
-                    </label>
-                    <select id="additional-type">
-                    </select>
-                </div>
-
-                <!-- Mod Type -->
-                <div class="flex-item">
-                    <label>
-                        <input type="checkbox" id="randomize-mod" checked> Randomize Mod Type
-                    </label>
-                    <select id="mod-type">
-                    </select>
-                </div>
-
-                <!-- Generate Button -->
-                <div class="flex-item">
-                    <button id="generate-monster">Generate Monster</button>
-                </div>
-
+    <section>
+        <div class="flex-container">
+            <!-- Base Type -->
+            <div class="flex-item">
+                <label>
+                    <input type="checkbox" id="randomize-base" checked> Randomize Base Type
+                </label>
+                <select id="base-type">
+                </select>
             </div>
-        </section>
 
-        <!-- Output Section -->
-        <div class="column">
-            <h2>Generated Monsters</h2>
-            <div id="monster-output" class="monster-grid"></div>
+            <!-- Add Type -->
+            <div class="flex-item">
+                <label>
+                    <input type="checkbox" id="randomize-additional" checked> Randomize Additional Type
+                </label>
+                <select id="additional-type">
+                </select>
+            </div>
+
+            <!-- Mod Type -->
+            <div class="flex-item">
+                <label>
+                    <input type="checkbox" id="randomize-mod" checked> Randomize Mod Type
+                </label>
+                <select id="mod-type">
+                </select>
+            </div>
         </div>
 
-        <img src="assets/images/Monsta.png" alt="monster" style="width: 100%;">
+        <div class="box-button">
+            <button class="button" id="generate-monster">Generate Monster</button>
+        </div>
+        <div class="flex-container" id="business-output"></div>
+        <div id="monster-output" class="monster-grid"></div>
+        <button id="clear-monsters">Clear All</button>
+
+        <img src="assets/images/Monsta.png" alt="monster" style="width: 90%;">
     </section>
 
     <!-- Narrator Guide Section -->

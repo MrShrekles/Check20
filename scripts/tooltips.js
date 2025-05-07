@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM fully loaded. Initializing tooltips...");
+    console.log("✅ Tooltips active.");
 
     const tooltipLibrary = {
         // Actions
@@ -63,25 +63,20 @@ document.addEventListener("DOMContentLoaded", () => {
             const textNodes = Array.from(element.childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
 
             textNodes.forEach(node => {
-                let originalText = node.textContent.trim(); // Trim whitespace
+                let originalText = node.textContent.trim();
 
                 Object.keys(tooltipLibrary).forEach(term => {
-                    const regex = new RegExp(`\\b${term}\\b`, "gi"); // Match whole words, case-insensitive
+                    const regex = new RegExp(`\\b${term}\\b`, "gi");
 
-                    if (regex.test(originalText)) {
-                        console.log(`Match found for: "${term}" in text: "${originalText}"`); // Debugging
+                    if (regex.test(originalText) && element.contains(node)) {
                         const tooltipText = tooltipLibrary[term];
-
-                        // Ensure the node hasn't been replaced already
-                        if (element.contains(node)) {
-                            const html = originalText.replace(
-                                regex,
-                                `<span class="tooltip" data-tooltip="${tooltipText}">${term}</span>`
-                            );
-                            const wrapper = document.createElement("span");
-                            wrapper.innerHTML = html;
-                            element.replaceChild(wrapper, node);
-                        }
+                        const html = originalText.replace(
+                            regex,
+                            `<span class="tooltip" data-tooltip="${tooltipText}">${term}</span>`
+                        );
+                        const wrapper = document.createElement("span");
+                        wrapper.innerHTML = html;
+                        element.replaceChild(wrapper, node);
                     }
                 });
             });
@@ -91,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     applyTooltips();
 });
 
-// Highlight the current page in the nav
+// Highlight nav link
 document.querySelectorAll('nav a').forEach(link => {
     if (link.href === window.location.href) {
         link.style.fontWeight = 'bold';
