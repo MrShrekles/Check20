@@ -13,10 +13,10 @@
     <script src="scripts/tooltips.js" defer></script>
 </head>
 
-<body data-page-title="Spellcasting"> 
-        <div id="header-placeholder"></div>   
-
+<body data-page-title="Spellcasting">
+    <div id="header-placeholder"></div>
     <main>
+
 
         <!-- Spellcasting -->
         <section id="spellcasting">
@@ -216,7 +216,32 @@
         </section>
 
         <section>
-              <div class="spell-grid" id="spell-grid"></div>                          
+            <div class="spell-controls">
+  <select id="sort-options" class="control">
+    <option value="name">Sort by Name</option>
+    <option value="intent">Sort by Intent Cost</option>
+    <option value="manner">Sort by Manner</option>
+    <option value="transmission">Sort by Transmission</option>
+  </select>
+
+  <select id="filter-intent" class="control">
+    <option value="">All Intents</option>
+    <option value="Whisper">Whisper</option>
+    <option value="Surge">Surge</option>
+    <option value="Shout">Shout</option>
+    <option value="Roar">Roar</option>
+    <option value="Storm">Storm</option>
+    <option value="Cataclysm">Cataclysm</option>
+  </select>
+
+  <input type="text" id="spell-search" placeholder="Search spells..." class="control">
+
+  <button id="toggle-tags" class="control">Toggle Tags</button>
+  <button id="toggle-details" class="control">Toggle Spell Details</button>
+</div>
+
+
+            <div class="spell-grid" id="spell-grid"></div>
         </section>
 
     </main>

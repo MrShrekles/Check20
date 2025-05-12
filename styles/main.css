@@ -175,9 +175,8 @@ summary:hover {
 
 /* 🔹 When Open, Change Summary Button Style */
 details[open] summary {
-    background-color: var(--gold);
-    color: var(--dark);
     box-shadow: var(--box-hover);
+    background-color: var(--green-2);
 }
 
 select {
@@ -890,7 +889,6 @@ em {
 
 .spell-features {
     padding: 0.5rem;
-    margin-bottom: -1rem;
     background: linear-gradient(to bottom, var(--green-2), transparent);
     border: 1px solid var(--green-3);
     border-bottom: 0;
@@ -1711,49 +1709,32 @@ li {
 .spell-grid {
     display: flex;
     flex-wrap: wrap;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     padding: var(--padding);
-    gap: var(--padding);
     margin: var(--padding);
+    gap: var(--padding);
 }
 
 .spell-card {
-    width: 300px;
+    width: 90vw;
+    max-width: 400px;
     padding: var(--padding);
+    background-color: var(--green-1);
     border: 1px solid var(--green-3);
     border-radius: var(--border-radius);
-    background-color: var(--green-1);
+    box-shadow: 0 0 6px var(--green-3);
     color: var(--text-cream);
     font-weight: bold;
-    box-shadow: 0 0 6px var(--green-3);
     cursor: default;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, filter 0.5s ease;
 }
-
-.spell-effect summary {
-    padding: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    background: linear-gradient(to bottom, var(--green-2), transparent);
-    text-align: center;
-    border-bottom: 1px solid var(--green-3);
-}
-
-.spell-effect[open] {
-    background: var(--green-1);
-    color: white;
-}
-
 
 .spell-card:hover {
     box-shadow: 0 0 6px var(--green-1);
     filter: brightness(110%);
-    color: var(--text-cream);
 }
 
 .spell-card p {
-    color: var(--white);
     margin: 10px;
+    color: var(--white);
 }
 
 .spell-card strong {
@@ -1765,27 +1746,88 @@ li {
 }
 
 .spell-info {
-    font-size: .7rem;
+    font-size: 0.7rem;
     margin-bottom: 0;
+    list-style: none;
 }
 
-/* Spell Point Badge */
+.spell-effect summary {
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(to bottom, var(--green-2), transparent);
+}
+
+.spell-effect[open] {
+    background: var(--green-1);
+    color: white;
+}
+
+mark {
+  background-color: var(--gold-3);
+  color: black;
+  padding: 1px;
+  border-radius: 2px;
+}
+
+.spell-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+  align-items: center;
+}
+
+.control {
+  font-size: 1rem;
+  padding: 0.5rem;
+  min-width: 200px;
+  max-width: 300px;
+  border: 1px solid var(--warm-3);
+  border-radius: var(--border-radius);
+  background-color: var(--warm-1);
+  color: var(--text-cream);
+  box-shadow: 0 0 3px var(--warm-3);
+}
+
+.control::placeholder {
+  color: var(--text-cream);
+  opacity: 0.6;
+}
+
+.control:focus {
+  outline: none;
+  box-shadow: 0 0 5px var(--gold);
+  border-color: var(--gold);
+}
+
+
+/* Tags and Cost */
 .sp-cost {
     background: var(--dark-2);
     padding: 5px;
-    border-radius: var(--border-radius);
     margin: 40px;
+    border-radius: var(--border-radius);
 }
 
-/* Manner / Transmission Tags */
 .spell-tags span {
-    color: var(--white);
-    padding: 6px;
-    margin: 10px;
-    border-radius: var(--border-radius);
+    display: inline-block;
+    padding: 5px;
     font-size: 0.75rem;
+    color: var(--white);
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
     text-transform: uppercase;
     letter-spacing: 0.6px;
+    margin-left: 10px;
+    
+}
+
+.hidden {
+  display: none;
 }
 
 .manner,
@@ -1798,13 +1840,14 @@ li {
     background-color: var(--green-2);
 }
 
+/* Copy Button */
 .copy-spell {
     margin-top: auto;
     margin-bottom: 0.5rem;
+    padding: 0.5rem;
     background: var(--dark-2);
     color: var(--text-cream);
     border: none;
-    padding: 0.5rem;
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease;
@@ -1867,90 +1910,93 @@ li {
 }
 
 
-@media (max-width: 650px) {
+@media (max-width: 690px) {
 
     button,
     .flex-pop button {
-      padding-block: 10px;
+        padding-block: 10px;
     }
-  
+
     .flex-gen,
     .column,
     .flex-item,
     .flex-spell {
-      width: 100%;
-      max-width: 100%;
-      min-width: 100%;
-      box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+        box-sizing: border-box;
     }
-  
+
     .two-column {
-      flex-direction: column;
+        flex-direction: column;
     }
-  
+
     .flex-item input[type="checkbox"] {
-      transform: scale(1.5);
+        transform: scale(1.5);
     }
-  
+
     table {
-      display: block;
-      overflow-x: auto;
-      white-space: nowrap;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
     }
-  
+
     .responsive-table {
-      display: block;
+        display: block;
     }
-  
+
     .responsive-table table,
     .responsive-table thead {
-      display: none;
+        display: none;
     }
-  
+
     .responsive-table tbody,
     .responsive-table tr {
-      display: block;
-      width: 100%;
-      margin-bottom: 1rem;
-      border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
-      padding: var(--padding);
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        padding: var(--padding);
     }
-  
+
     .responsive-table td {
-      display: flex;
-      justify-content: space-between;
-      width: 90%;
-      border-bottom: 1px solid #5b514a;
-      font-size: 0.9rem;
-      line-height: 1.2;
+        display: flex;
+        justify-content: space-between;
+        width: 90%;
+        border-bottom: 1px solid #5b514a;
+        font-size: 0.9rem;
+        line-height: 1.2;
     }
-  
+
     .responsive-table td::before {
-      content: attr(data-label);
-      font-weight: bold;
-      color: var(--white);
-      text-transform: uppercase;
+        content: attr(data-label);
+        font-weight: bold;
+        color: var(--white);
+        text-transform: uppercase;
     }
-  
+
     .responsive-table td:first-child {
-      background: transparent;
-      color: var(--gold);
-      font-weight: bold;
-      text-transform: uppercase;
+        background: transparent;
+        color: var(--gold);
+        font-weight: bold;
+        text-transform: uppercase;
     }
-  
+
     .item-card {
-      width: 40%;
+        width: 40%;
     }
-  
+
     .monster-card {
-      width: 100%;
-      margin: 3px;
+        width: 100%;
+        margin: 3px;
     }
-  
+
     .monster-card:hover {
-      transform: none;
+        transform: none;
     }
-  }
-  
+
+    .spellcard {
+        width: 100%;
+    }
+}
