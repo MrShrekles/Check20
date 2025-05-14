@@ -1765,41 +1765,41 @@ li {
 }
 
 mark {
-  background-color: var(--gold-3);
-  color: black;
-  padding: 1px;
-  border-radius: 2px;
+    background-color: var(--gold-3);
+    color: black;
+    padding: 1px;
+    border-radius: 2px;
 }
 
 .spell-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 1rem 0;
-  align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem 0;
+    align-items: center;
 }
 
 .control {
-  font-size: 1rem;
-  padding: 0.5rem;
-  min-width: 200px;
-  max-width: 300px;
-  border: 1px solid var(--warm-3);
-  border-radius: var(--border-radius);
-  background-color: var(--warm-1);
-  color: var(--text-cream);
-  box-shadow: 0 0 3px var(--warm-3);
+    font-size: 1rem;
+    padding: 0.5rem;
+    min-width: 200px;
+    max-width: 300px;
+    border: 1px solid var(--warm-3);
+    border-radius: var(--border-radius);
+    background-color: var(--warm-1);
+    color: var(--text-cream);
+    box-shadow: 0 0 3px var(--warm-3);
 }
 
 .control::placeholder {
-  color: var(--text-cream);
-  opacity: 0.6;
+    color: var(--text-cream);
+    opacity: 0.6;
 }
 
 .control:focus {
-  outline: none;
-  box-shadow: 0 0 5px var(--gold);
-  border-color: var(--gold);
+    outline: none;
+    box-shadow: 0 0 5px var(--gold);
+    border-color: var(--gold);
 }
 
 
@@ -1823,11 +1823,11 @@ mark {
     text-transform: uppercase;
     letter-spacing: 0.6px;
     margin-left: 10px;
-    
+
 }
 
 .hidden {
-  display: none;
+    display: none;
 }
 
 .manner,
@@ -1941,11 +1941,6 @@ mark {
         white-space: nowrap;
     }
 
-    .responsive-table {
-        display: block;
-    }
-
-    .responsive-table table,
     .responsive-table thead {
         display: none;
     }
@@ -1954,7 +1949,7 @@ mark {
     .responsive-table tr {
         display: block;
         width: 100%;
-        margin-bottom: 1rem;
+        margin-bottom: 10px;
         border-radius: var(--border-radius);
         box-shadow: var(--box-shadow);
         padding: var(--padding);
@@ -1964,20 +1959,17 @@ mark {
         display: flex;
         justify-content: space-between;
         width: 90%;
-        border-bottom: 1px solid #5b514a;
+        border-bottom: 1px solid var(--theme-2);
         font-size: 0.9rem;
-        line-height: 1.2;
     }
 
     .responsive-table td::before {
         content: attr(data-label);
         font-weight: bold;
-        color: var(--white);
-        text-transform: uppercase;
+        color: var(--warm-3);
     }
 
     .responsive-table td:first-child {
-        background: transparent;
         color: var(--gold);
         font-weight: bold;
         text-transform: uppercase;
