@@ -69,7 +69,7 @@ function renderSpells() {
   let filteredSpells = cachedSpells.filter(spell => {
     const matchesIntent = filterIntent === '' || spell.effects.some(e => e.intent === filterIntent);
     const matchesSearch = spell.name.toLowerCase().includes(searchTerm) ||
-                          spell.effects.some(e => e.effect.toLowerCase().includes(searchTerm));
+      spell.effects.some(e => e.effect.toLowerCase().includes(searchTerm));
     return matchesIntent && matchesSearch;
   });
 
@@ -88,6 +88,8 @@ function renderSpells() {
   }
 
   container.innerHTML = '';
+  document.getElementById('spell-count').textContent = `${filteredSpells.length} Spells Found`;
+
 
   filteredSpells.forEach(spell => {
     const card = document.createElement('div');
@@ -95,10 +97,12 @@ function renderSpells() {
 
     card.innerHTML = `
 <h4>${highlightText(toTitleCase(spell.name), searchTerm)}</h4>
-      <div class="spell-tags">
-        <span class="manner">${spell.manner}</span>
-        <span class="transmission">${spell.transmission}</span>
-      </div>
+<div class="spell-tags">
+  <span class="origin">${spell.origin}</span>
+  <span class="manner">${spell.manner}</span>
+  <span class="transmission">${spell.transmission}</span>
+</div>
+
       ${spell.effects.map(effect => `
         <details class="spell-effect" open>
           <summary class="spell-features">${effect.intent} <span class="sp-cost">${getIntentCost(effect.intent)} SP</span></summary>
@@ -123,8 +127,9 @@ function renderSpells() {
 
 function copySpellText(spell, button) {
   let text = `# **${toTitleCase(spell.name)}**
-*Manner*: ${spell.manner}
-*Transmission*: ${spell.transmission}
+  *Origin*: ${spell.origin}
+  *Manner*: ${spell.manner}
+  *Transmission*: ${spell.transmission}
 
 ${spell.effects.map(effect => {
     return `**${effect.intent}** (${getIntentCost(effect.intent)} SP)
@@ -150,6 +155,7 @@ function copyMacroText(spell, button) {
   const parts = [
     '&{template:shek}',
     `{{name=${toTitleCase(spell.name)}}}`,
+    `{{Origin=${spell.origin}}}`,
     `{{Manner=${spell.manner}}}`,
     `{{Transmission=${spell.transmission}}}`
   ];

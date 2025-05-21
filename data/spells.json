@@ -2,6 +2,8 @@
 [
   {
     "name": "Barrier",
+    "origin": "basic",
+    "type": "spell",
     "manner": "Manifest",
     "transmission": "Material",
     "effects": [
@@ -9,8 +11,8 @@
         "intent": "Whisper",
         "cost": null,
         "range": "Short",
-        "area": "5 ft by 10 ft",
         "target": "Area",
+        "area": "5 ft by 10 ft",
         "duration": "Until Destroyed",
         "effect": "Create a barrier in an unoccupied space within short range. The barrier is 5 ft by 10 ft (horizontal or vertical), has 15 armor, and takes the shape of a straight wall. It lasts until destroyed."
       },
@@ -18,8 +20,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Short",
-        "area": "10 ft by 20 ft",
         "target": "Area",
+        "area": "10 ft by 20 ft",
         "duration": "Until Destroyed",
         "effect": "Create a barrier in an unoccupied space within short range. The barrier is 10 ft by 20 ft and can take the shape of a square, arc, or wall. It has 45 armor and lasts until destroyed."
       },
@@ -27,8 +29,8 @@
         "intent": "Shout",
         "cost": null,
         "range": "Short",
-        "area": "40ft",
         "target": "Area",
+        "area": "40ft",
         "duration": "Until Destroyed",
         "effect": "Create a large barrier in an unoccupied space within short range. The barrier may be a 40 ft dome, arch, wall, or fortified square. It has 90 armor and lasts until destroyed."
       }
@@ -36,6 +38,8 @@
   },
   {
     "name": "Spellbreak",
+    "origin": "arcane",
+    "type": "spell",
     "manner": "Domineer",
     "transmission": "Aether",
     "effects": [
@@ -43,8 +47,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "Self",
+        "area": "",
         "duration": "Until The End Of Your Next Turn",
         "effect": "Negate the next spell cast within short range until the end of your next turn. If no spell is cast, regain half the spell points spent."
       },
@@ -52,8 +56,8 @@
         "intent": "Shout",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "Self",
+        "area": "",
         "duration": "Until The End Of Your Next Turn",
         "effect": "Silently negate the next spell cast within medium range until the end of your next turn. If no spell is cast, regain half the spell points spent."
       }
@@ -61,6 +65,8 @@
   },
   {
     "name": "Decay",
+    "origin": "vozian",
+    "type": "spell",
     "manner": "Decay",
     "transmission": "Corpus",
     "effects": [
@@ -68,8 +74,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "One Creature",
+        "area": "",
         "duration": "Until The End Of Their Next Turn",
         "effect": "Reduce the PL of a target within short range by 1 until the end of their next turn."
       }
@@ -77,6 +83,8 @@
   },
   {
     "name": "Defend",
+    "origin": "basic",
+    "type": "spell",
     "manner": "Manifest",
     "transmission": "Material",
     "effects": [
@@ -84,8 +92,8 @@
         "intent": "Light Whisper",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "One Creature",
+        "area": "",
         "duration": "Until The End Of Your Next Turn",
         "effect": "Grant yourself or an ally [[1d4]] armor until the end of your next turn."
       }
@@ -93,6 +101,8 @@
   },
   {
     "name": "Devastate",
+    "origin": "basic",
+    "type": "spell",
     "manner": "Manifest",
     "transmission": "Material",
     "effects": [
@@ -100,8 +110,8 @@
         "intent": "Light Whisper",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "",
+        "area": "",
         "duration": "Instant",
         "effect": "Make a spellcasting check (Spirit) to deal [[1d4]] physical damage to a creature within short range."
       }
@@ -109,6 +119,8 @@
   },
   {
     "name": "Discern",
+    "origin": "basic",
+    "type": "spell",
     "manner": "Discern",
     "transmission": "Astral",
     "effects": [
@@ -116,8 +128,8 @@
         "intent": "Whisper",
         "cost": null,
         "range": "Short",
-        "area": "Object",
         "target": "Area",
+        "area": "Object",
         "duration": "Instant",
         "effect": "Reveal a hidden object, creature, or illusion within short range per success. If none are found, this spell costs 0 SP."
       },
@@ -125,8 +137,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "Creature",
+        "area": "",
         "duration": "Instant",
         "effect": "Focus on a creature to sense its motivation, emotional state, or weaknesses."
       },
@@ -134,8 +146,8 @@
         "intent": "Shout",
         "cost": null,
         "range": "Known",
-        "area": "",
         "target": "Area",
+        "area": "",
         "duration": "Instant",
         "effect": "Observe a familiar distant location, object, or creature for up to 1 minute."
       }
@@ -143,6 +155,8 @@
   },
   {
     "name": "Dispel",
+    "origin": "arcane",
+    "type": "spell",
     "manner": "Decay",
     "transmission": "Aether",
     "effects": [
@@ -150,8 +164,8 @@
         "intent": "Whisper",
         "cost": null,
         "range": "Short",
-        "area": "Reach",
         "target": "Area",
+        "area": "Reach",
         "duration": "Instant",
         "effect": "Nullify a minor magical effect within short range, such as a weak illusion or simple ward, in a reach-range area. You can pool spell points with other casters to dispel stronger magic."
       },
@@ -159,8 +173,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Short",
-        "area": "Short",
         "target": "Area",
+        "area": "Short",
         "duration": "Instant, Until The End Of Your Next Turn",
         "effect": "Nullify magical effects within short range cast by a mage, divine creature, or magical monster, in a short-range area. If the effect is powerful, the nullification may last only until the end of your next turn."
       },
@@ -168,8 +182,8 @@
         "intent": "Shout",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "One Creature",
+        "area": "",
         "duration": "Permanent, Until The End Of Your Next Turn",
         "effect": "Interrupt the function of magical constructs, undead, or elementals under the control of a mage—either permanently or until the end of your next turn. If it is a minion of a powerful creature, the dispel may prevent further commands, allowing the minion to escape or fight back if it chooses."
       }
@@ -177,6 +191,8 @@
   },
   {
     "name": "Domineer",
+    "origin": "vozian",
+    "type": "spell",
     "manner": "Domineer",
     "transmission": "Corpus",
     "effects": [
@@ -184,8 +200,8 @@
         "intent": "Whisper",
         "cost": null,
         "range": "Medium",
-        "area": "",
         "target": "One Creature",
+        "area": "",
         "duration": "Until The End Of Your Next Turn",
         "effect": "Read the surface thoughts of a creature within medium range until the end of your next turn."
       },
@@ -193,8 +209,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Medium",
-        "area": "",
         "target": "One Creature",
+        "area": "",
         "duration": "Until The End Of Your Next Turn",
         "effect": "Charm a creature, hear its thoughts, and speak with it telepathically until the end of your next turn."
       },
@@ -202,8 +218,8 @@
         "intent": "Shout",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "One Creature",
+        "area": "",
         "duration": "Until They Succeed On An Intellect Check",
         "effect": "Dominate the mind of a creature until the end of your next turn. They follow your commands on their turn. At the end of each of their turns, they make an Intellect check. On a success, they break your hold and become immune to your Domineer spell."
       }
@@ -211,6 +227,8 @@
   },
   {
     "name": "Enhance",
+    "origin": "tech",
+    "type": "spell",
     "manner": "Domineer",
     "transmission": "Corpus",
     "effects": [
@@ -218,8 +236,8 @@
         "intent": "Light Whisper",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "",
+        "area": "",
         "duration": "Until The End Of Your Next Turn",
         "effect": "Boost a creature's next check or weapon damage by +2 per success until the end of their next turn."
       }
@@ -227,6 +245,8 @@
   },
   {
     "name": "Flicker",
+    "origin": "basic",
+    "type": "spell",
     "manner": "Manifest",
     "transmission": "Aether",
     "effects": [
@@ -234,8 +254,8 @@
         "intent": "Light Whisper",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "",
+        "area": "",
         "duration": "Instant",
         "effect": "Create a brief flash of light, sparkle of color, or faint sound within short range. It lasts a few seconds and cannot mimic specific creatures or voices."
       }
@@ -243,6 +263,8 @@
   },
   {
     "name": "Grip",
+    "origin": "basic",
+    "type": "spell",
     "manner": "Manifest",
     "transmission": "Astral",
     "effects": [
@@ -250,8 +272,8 @@
         "intent": "Light Whisper",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "",
+        "area": "",
         "duration": "Instant",
         "effect": "Tap an object, tug a string, or gently push a small item within reach. Can be used to knock or prod something lightly."
       },
@@ -259,8 +281,8 @@
         "intent": "Whisper",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "",
+        "area": "",
         "duration": "Instant",
         "effect": "Remotely manipulate a small object (open latch, pick up cup, tilt a lever) within short range."
       }
@@ -268,6 +290,8 @@
   },
   {
     "name": "Grow",
+    "origin": "nature",
+    "type": "spell",
     "manner": "Domineer",
     "transmission": "Material",
     "effects": [
@@ -275,8 +299,8 @@
         "intent": "Whisper",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "Object",
+        "area": "",
         "duration": "1 Minute",
         "effect": "Touch an item and double its size for 1 minute. The item will grow but will not exceed the size of the area it's in or cause damage to creatures nearby."
       },
@@ -284,8 +308,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "One Creature",
+        "area": "",
         "duration": "1 Minute",
         "effect": "Touch a willing creature and double its size for 1 minute. The creature will grow but will not exceed the size of the area it's in or cause damage to creatures nearby. The grown creature has advantage on Strength checks but gains the Confused condition."
       }
@@ -293,6 +317,8 @@
   },
   {
     "name": "Imprison",
+    "origin": "chrono",
+    "type": "spell",
     "manner": "Domineer",
     "transmission": "Corpus",
     "effects": [
@@ -300,8 +326,8 @@
         "intent": "Whisper",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "One Creature",
+        "area": "",
         "duration": "Until The End Of Their Next Turn",
         "effect": "Give a creature in short range the Pinned condition until the end of their next turn."
       },
@@ -309,8 +335,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "One Creature",
+        "area": "",
         "duration": "Until The End Of Their Next Turn",
         "effect": "Give a creature in short range the Pinned and Prone conditions until the end of their next turn."
       },
@@ -318,8 +344,8 @@
         "intent": "Shout",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "One Creature",
+        "area": "",
         "duration": "Until The End Of Their Next Turn",
         "effect": "Give a creature in short range the Pinned and Constrained conditions until the end of their next turn."
       }
@@ -327,6 +353,8 @@
   },
   {
     "name": "Light",
+    "origin": "celestial",
+    "type": "solar",
     "manner": "Manifest",
     "transmission": "Elemental",
     "effects": [
@@ -334,8 +362,8 @@
         "intent": "Whisper",
         "cost": null,
         "range": "Short",
-        "area": "Short",
         "target": "Creature, Object, Or Location",
+        "area": "Short",
         "duration": "1 Hour",
         "effect": "Create a source of light within short range that illuminates a short range and lasts for 1 hour."
       },
@@ -343,8 +371,17 @@
         "intent": "Surge",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "One Creature",
+        "area": "",
+        "duration": "Instant",
+        "effect": "You conjure a javelin of light and hurl it at a target within medium range. On a hit, it deals solar damage equal to your spellcasting check (Default Spirit). If the attack misses, the javelin detonates in a flare, forcing all creatures in reach range of the target to make a Survival check or take the blind condition until the end of their next turn."
+      },
+      {
+        "intent": "Shout",
+        "cost": null,
+        "range": "Short",
+        "target": "One Creature",
+        "area": "",
         "duration": "Instant",
         "effect": "Deal [[1d6]] solar damage to a creature within short range and cause the Blind condition until the end of their next turn."
       },
@@ -352,8 +389,8 @@
         "intent": "Cataclysm",
         "cost": null,
         "range": "Global",
-        "area": "Global",
         "target": "Sun",
+        "area": "Global",
         "duration": "Instant",
         "effect": "Shift day into night, or night into day."
       }
@@ -361,6 +398,8 @@
   },
   {
     "name": "Lockdown",
+    "origin": "",
+    "type": "spell",
     "manner": "Domineer",
     "transmission": "Astral",
     "effects": [
@@ -368,8 +407,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Medium",
-        "area": "Short Range",
         "target": "Area",
+        "area": "Short Range",
         "duration": "1 Minute",
         "effect": "Prevent the use of astral spells in a short-range area for 1 minute. Any attempt to use astral spells is prevented, spell points are not spent, and you are made aware of the attempt."
       },
@@ -377,8 +416,8 @@
         "intent": "Storm",
         "cost": null,
         "range": "Short",
-        "area": "Medium",
         "target": "Area",
+        "area": "Medium",
         "duration": "Permanent",
         "effect": "Lock down an area and permanently prevent the use of astral spells in a medium-range area. Any attempt to use astral spells is prevented, spell points are not spent, and you are made aware of the attempt. You are always aware of this area and alerted when creatures enter it."
       }
@@ -386,6 +425,8 @@
   },
   {
     "name": "Mark",
+    "origin": "arcane",
+    "type": "spell",
     "manner": "Discern",
     "transmission": "Astral",
     "effects": [
@@ -393,8 +434,8 @@
         "intent": "Light Whisper",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "",
+        "area": "",
         "duration": "10 Minutes",
         "effect": "Create a faint glowing rune or smudge visible only to you for 10 minutes."
       },
@@ -402,8 +443,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "Target",
+        "area": "",
         "duration": "10 Minutes",
         "effect": "Make a mark on a target that you can sense up to 1 mile away. You are alerted when it is destroyed"
       }
@@ -411,6 +452,8 @@
   },
   {
     "name": "Minion",
+    "origin": "",
+    "type": "spell",
     "manner": "Manifest",
     "transmission": "Variable",
     "effects": [
@@ -418,8 +461,8 @@
         "intent": "Whisper",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "Pl 1 Creature",
+        "area": "",
         "duration": "1 Minute",
         "effect": "Summon a PL 1 creature within short range for 1 minute. The creature acts on your turn and follows simple commands such as “attack,” “defend,” or “stay close.” It vanishes when the duration ends or if dismissed as an off-action. Examples: ember hound, wind sprite, crawling vine, tiny ooze, or bone imp."
       },
@@ -427,8 +470,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "Pl 4 Creature",
+        "area": "",
         "duration": "1 Minute",
         "effect": "Summon a PL 4 creature within short range for 1 hour. The creature acts on your turn and follows your commands. It is intelligent enough to speak and reason, but not capable of complex deception, subtlety, or independent decision-making. Examples: ironbound construct, echo drake, bramble behemoth, or storm crawler beetle. These are medium-sized creatures that feel magical, forged, or elemental."
       },
@@ -436,8 +479,8 @@
         "intent": "Shout",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "Pl 8 Creature",
+        "area": "",
         "duration": "1 Minute",
         "effect": "Summon a PL 8 creature within short range that remains until dismissed as an off-action. It may possess a unique trait or ability, and may be equipped with standard weapons and armor of your choice. The creature has advanced tactical understanding and may act independently to defend allies or complete simple objectives. It can be sent on missions, communicate clearly, and carry out nuanced instructions. Examples: spectral dragon, chaos guardian, obsidian warbeast, or a stitched warjack. These are powerful, intelligent entities tied to magic, lost realms, or eldritch nightmares."
       }
@@ -445,6 +488,8 @@
   },
   {
     "name": "Realm Shift",
+    "origin": "",
+    "type": "spell",
     "manner": "Domineer",
     "transmission": "Astral",
     "effects": [
@@ -452,8 +497,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "",
+        "area": "",
         "duration": "1 Hour",
         "effect": "Shift yourself or a willing creature from one realm to another. Some realms might have additional difficulty, or mages may have lockdown spells cast in the area that prevent astral travel."
       },
@@ -461,8 +506,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "",
+        "area": "",
         "duration": "1 Hour",
         "effect": "Shift to an adjacent realm for 3 spell points. For 2 additional points per creature, bring others within reach range. Specify environmental or temporal changes based on the destination."
       }
@@ -470,6 +515,8 @@
   },
   {
     "name": "Rejuvenate",
+    "origin": "celestial",
+    "type": "spell",
     "manner": "Domineer",
     "transmission": "Variable",
     "effects": [
@@ -477,8 +524,8 @@
         "intent": "Whisper",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "Material Or Creature",
+        "area": "",
         "duration": "Instant",
         "effect": "Touch and repair materials or heal creatures for [[1d6]]."
       }
@@ -486,6 +533,8 @@
   },
   {
     "name": "Resurrection",
+    "origin": "celestial",
+    "type": "spell",
     "manner": "Domineer",
     "transmission": "Corpus",
     "effects": [
@@ -493,8 +542,8 @@
         "intent": "Shout",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "Dead Creature",
+        "area": "",
         "duration": "Instant",
         "effect": "Remove the Death condition from a creature that died within 1 hour and heal them for +1. This heals wounds but does not restore dismembered limbs. The body must be functionally complete and not undead or a construct. On a failed check, the creature gains the Strigoi curse."
       },
@@ -502,8 +551,8 @@
         "intent": "Roar",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "Dead Creature",
+        "area": "",
         "duration": "Instant",
         "effect": "Remove the Death condition from a creature that died within 24 hours and heal them for +5. This heals wounds and restores dismembered limbs. The body only needs a head and heart and cannot be undead or a construct. On a failed check, the creature gains the Strigoi curse with 3 steps complete."
       },
@@ -511,8 +560,8 @@
         "intent": "Roar",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "Dead Creature",
+        "area": "",
         "duration": "Instant",
         "effect": "Remove the Death condition from a creature if you possess any part of the corpse. They recover their entire body and are fully healed. On a failed check, the creature gains the Strigoi curse with 6 steps complete."
       }
@@ -520,6 +569,8 @@
   },
   {
     "name": "Shrink",
+    "origin": "nature",
+    "type": "spell",
     "manner": "Domineer",
     "transmission": "Material",
     "effects": [
@@ -527,8 +578,8 @@
         "intent": "Whisper",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "Large Object",
+        "area": "",
         "duration": "1 Minute",
         "effect": "Touch an item and halve its size for 1 minute. When the item regains its size, it will not exceed the area it's in or cause damage to nearby creatures unless it is being forcibly contained, such as in a bag or weak prison."
       },
@@ -536,8 +587,8 @@
         "intent": "Shout",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "Creature",
+        "area": "",
         "duration": "2 Minute",
         "effect": "Touch a willing Large or smaller creature and halve its size for 1 minute. The creature has disadvantage on physical checks and half movement speed, but retains the same weight. When it regains its size, it will not exceed the area it's in or cause damage to nearby creatures unless it is being forcibly contained, such as in a bag or weak prison."
       }
@@ -545,6 +596,8 @@
   },
   {
     "name": "Structure",
+    "origin": "arcane",
+    "type": "spell",
     "manner": "Manifest",
     "transmission": "Material",
     "effects": [
@@ -552,8 +605,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "Structure",
+        "area": "",
         "duration": "10 Hours",
         "effect": "Create a small shelter or fortified room within medium range in an unoccupied space on the ground. The structure occupies a 30-square-foot area. It may include doors, windows, or defensive walls in a style you choose. The structure lasts for 10 hours before it crumbles away."
       },
@@ -561,8 +614,8 @@
         "intent": "Roar",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "Bunker",
+        "area": "",
         "duration": "Permanent",
         "effect": "Create a quaint cottage or reinforced structure within medium range in an unoccupied space on the ground. The structure appears to occupy a 30-square-foot area, but its interior expands to up to 120 square feet, with rooms and levels of your choice and design. If destroyed from the outside, any creatures inside remain within. The structure is sealed, and the internal air lasts for 1 hour before becoming unbreathable."
       },
@@ -570,8 +623,8 @@
         "intent": "Cataclysm",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "Fort Or Tower",
+        "area": "",
         "duration": "Permanent",
         "effect": "Create a small exterior structure, such as a door, arch, or police box, within medium range in an unoccupied space on the ground. Stepping through reveals a vast and complex interior that may shift, defy geometry, or contain unknowable architecture. The maximum square footage is unknown. Some who build such realms have become lost inside them."
       }
@@ -579,6 +632,8 @@
   },
   {
     "name": "Telekinesis",
+    "origin": "",
+    "type": "spell",
     "manner": "Domineer",
     "transmission": "Variable",
     "effects": [
@@ -586,24 +641,17 @@
         "intent": "Surge",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "Object Or Creature",
+        "area": "",
         "duration": "Instant",
         "effect": "Lift a Medium or smaller creature within short range into the air until the end of your next turn. You may move them up to reach range on the turn you cast this spell and again on your next turn. At the end of your next turn, or earlier if you choose, the creature floats to the ground or short range. After that, they fall."
-      },
-      {
-        "intent": "Roar",
-        "cost": null,
-        "range": "Short",
-        "area": "",
-        "target": "Object Or Creature",
-        "duration": "Instant",
-        "effect": "Lift a Medium or smaller creature within short range into the air, up to short-range height, until the end of your next turn. You may move them up to short range on the turn you cast this spell and again on your next turn. At the end of your next turn, or earlier if you choose, the creature floats to the ground or short range. After that, they fall."
       }
     ]
   },
   {
     "name": "Teleport",
+    "origin": "",
+    "type": "spell",
     "manner": "Domineer",
     "transmission": "Astral",
     "effects": [
@@ -611,42 +659,44 @@
         "intent": "Surge",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "Self Or Willing Creature",
+        "area": "",
         "duration": "Instant",
-        "effect": "Teleport yourself or a willing creature you touch to an unoccupied point within medium range that you can see."
+        "effect": "Transport yourself or a willing creature you touch to an unoccupied point within medium range that you can see."
       },
       {
         "intent": "Shout",
         "cost": null,
         "range": "Medium",
-        "area": "",
         "target": "Up To 3 Creatures",
+        "area": "",
         "duration": "Instant",
-        "effect": "Teleport up to 3 willing creatures within reach to an unoccupied point within medium range that you can see."
+        "effect": "Transport up to 3 willing creatures within reach to an unoccupied point within medium range that you can see."
       },
       {
         "intent": "Storm",
         "cost": null,
         "range": "Long",
-        "area": "",
         "target": "Up To 9 Creatures",
+        "area": "",
         "duration": "Instant",
-        "effect": "Teleport up to 9 willing creatures within short range to an unoccupied space you are aware of or can see within Long Range. On a failure, you may end up anywhere on any plane."
+        "effect": "Transport up to 9 willing creatures within short range to an unoccupied space you are aware of or can see within Long Range. On a failure, you may end up anywhere on any plane."
       },
       {
         "intent": "Cataclysm",
         "cost": null,
         "range": "Known",
-        "area": "Long",
         "target": "Area",
+        "area": "Long",
         "duration": "Instant",
-        "effect": "Teleport a long-range area to an unoccupied space you are aware of on this plane. On a failure, the area is teleported to the Eclipse or the Ordealis"
+        "effect": "Transport a long-range area to an unoccupied space you are aware of on this plane. On a failure, the area is teleported to the Eclipse or the Ordealis"
       }
     ]
   },
   {
     "name": "Tend",
+    "origin": "",
+    "type": "spell",
     "manner": "Manifest",
     "transmission": "Aether",
     "effects": [
@@ -654,8 +704,8 @@
         "intent": "Light Whisper",
         "cost": null,
         "range": "Short",
-        "area": "Object",
         "target": "",
+        "area": "Object",
         "duration": "Instant",
         "effect": "Clean or dry a small item within short range (like a cup or collar), snuff a candle, or add a pleasant scent to a personal item."
       },
@@ -663,8 +713,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Short",
-        "area": "Radius",
         "target": "",
+        "area": "Radius",
         "duration": "Instant",
         "effect": "Affect a short-range radius area with multiple effects: clean, heat, dry, or preserve several items at once."
       }
@@ -672,6 +722,8 @@
   },
   {
     "name": "Translate",
+    "origin": "arcane",
+    "type": "spell",
     "manner": "Discern",
     "transmission": "Aether",
     "effects": [
@@ -679,8 +731,8 @@
         "intent": "Whisper",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "Creature",
+        "area": "",
         "duration": "1 Hour",
         "effect": "Understand or allow an intelligent creature to understand any spoken language by other intelligent creatures within short range for 1 hour."
       },
@@ -688,8 +740,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Short Range",
-        "area": "Short Range",
         "target": "Area",
+        "area": "Short Range",
         "duration": "1 Hour",
         "effect": "Grant all intelligent creatures within short range the understanding of each other's language for 1 hour. This allows for communication but not cultural or idiomatic understanding."
       }
@@ -697,6 +749,8 @@
   },
   {
     "name": "Transmute",
+    "origin": "crystal",
+    "type": "spell",
     "manner": "Domineer",
     "transmission": "Material",
     "effects": [
@@ -704,8 +758,8 @@
         "intent": "Whisper",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "Object",
+        "area": "",
         "duration": "1 Hour",
         "effect": "Change the shape, form, or state of a material you can see and touch, such as water to ice, clay to stone, or water to wine. The change lasts for 1 hour before the material attempts to revert to its original state."
       },
@@ -713,8 +767,8 @@
         "intent": "Surge",
         "cost": null,
         "range": "Touch",
-        "area": "",
         "target": "Object",
+        "area": "",
         "duration": "3 Hours",
         "effect": "Drastically change the shape or composition of an object you can see and touch. Examples include shifting metal types, turning wood to stone, or changing water into sand. The change lasts for 3 hours before the object begins reverting to its original form."
       },
@@ -722,10 +776,487 @@
         "intent": "Shout",
         "cost": null,
         "range": "Short",
-        "area": "",
         "target": "Object Or Creature",
+        "area": "",
         "duration": "3 Hours",
         "effect": "Alter the form or composition of a Medium-sized creature within short range. This can include turning a wolf into a lion, a tree into a bear, or a water elemental into a wine elemental. The new form must be viable for life and function. The creature retains its mind. The change lasts for 3 hours before the creature reverts to its original form."
+      }
+    ]
+  },
+  {
+    "name": "Needle",
+    "origin": "basic",
+    "type": "Piercing",
+    "manner": "manifest",
+    "transmission": "material",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "cost": null,
+        "range": "short",
+        "target": "one creature",
+        "area": "",
+        "duration": "instant",
+        "effect": "Summon a single needle in midair and with a flick hit a target within short range, the target must make an Agility check and take 1d6 piercing damage reducing the damage by half per success."
+      },
+      {
+        "intent": "Surge",
+        "cost": null,
+        "range": "short",
+        "target": "line",
+        "area": "",
+        "duration": "instant",
+        "effect": "Summon a volley of glimmering shards tears down a straight path, targets within a short range line make an Agility check and take 3d6  piercing damage or half as much per success"
+      },
+      {
+        "intent": "Shout",
+        "cost": null,
+        "range": "medium",
+        "target": "3 creatures",
+        "area": "",
+        "duration": "instant",
+        "effect": "Summon 3 deadly needles that you control, target 1 to 3 creatures within medium range and flick the deadly needles at the targets, each target must make an Agility check and take 3d6 piercing damage or half as much per success"
+      }
+    ]
+  },
+  {
+    "name": "Razor ",
+    "origin": "basic",
+    "type": "slashing",
+    "manner": "domineer",
+    "transmission": "aether",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "cost": null,
+        "range": "short",
+        "target": "one creature",
+        "area": "",
+        "duration": "instant",
+        "effect": "Compress the air to a razor edge and slash a target within short range dealing 1d4 slashing damage on a success and pushes the target 5ft"
+      },
+      {
+        "intent": "Surge",
+        "cost": null,
+        "range": "reach",
+        "target": "area",
+        "area": "reach",
+        "duration": "until the end of your next turn",
+        "effect": "Creates blades that spin around you for 1 minute, any creatures you choose that enter reach range or start their turn in your range take 1d6 slashing damage"
+      },
+      {
+        "intent": "Whisper",
+        "cost": null,
+        "range": "short",
+        "target": "one creature",
+        "area": "",
+        "duration": "instant",
+        "effect": "conjure a shrieking disc of cutting wind that slices through everything in a straight path. All creatures and objects within the medium range line must make an Agility check. The razor causes 6d6 slashing damage, or half as much per success."
+      }
+    ]
+  },
+  {
+    "name": "Gravity",
+    "origin": "basic",
+    "type": "impact",
+    "manner": "domineer",
+    "transmission": "astral",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "cost": null,
+        "range": "short",
+        "target": "area",
+        "area": "melee",
+        "duration": "instant",
+        "effect": "increase or reduce gravity in a melee range up to a short range away. Make objects fall faster, pin objects to the ground, crush an enemy, or reduce the fall damage to a creature. Crushing enemies or reducing fall damage deals 1d4 per success."
+      },
+      {
+        "intent": "Surge",
+        "cost": null,
+        "range": "short",
+        "target": "area",
+        "area": "reach",
+        "duration": "instant",
+        "effect": "create a heavy gravity field in a reach range area within short range. All creatures you choose within the area must make an Agility check or be pulled reach range toward the center and take 1d6 impact damage, or half as much per success."
+      },
+      {
+        "intent": "Shout",
+        "cost": null,
+        "range": "self",
+        "target": "area",
+        "area": "medium",
+        "duration": "instant",
+        "effect": "collapse gravity around you within medium range. All creatures in the area must make a Physical check or be slammed to the ground taking 3d6 impact damage or half as much per success. Flying creatures fall unless they succeed their Physical Check"
+      }
+    ]
+  },
+  {
+    "name": "Corrosive ",
+    "origin": "elemental",
+    "type": "acid",
+    "manner": "decay",
+    "transmission": "elemental",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "cost": null,
+        "range": "short",
+        "target": "one target",
+        "area": "",
+        "duration": "intant",
+        "effect": "spray acid and dissolve a lock, section of metal, or deal 3 acid damage to armor or twice as much to wounds"
+      },
+      {
+        "intent": "Surge",
+        "cost": null,
+        "range": "medium",
+        "target": "area",
+        "area": "reach",
+        "duration": "1 minute",
+        "effect": "coat a reach range zone in acid for 1 minute up to medium range away. Any creature or object that enters or ends their turn in the area takes 3d6 acid damage and takes it again at the start of their turn. Anyone who touches the acid without protection develops a minor but persistent burn, and all metal objects in the zone corrode visibly. The area becomes difficult terrain and emits a sickly glow that ruins stealth and attracts vermin or scavenger beasts.\nThe ground bubbles like it’s alive. A smell of bile seeps into everything. Even the stone tries to shrink away."
+      }
+    ]
+  },
+  {
+    "name": "Shadows",
+    "origin": "",
+    "type": "eclipse",
+    "manner": "domineer",
+    "transmission": "aether",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "cost": null,
+        "range": "short",
+        "target": "one target",
+        "area": "",
+        "duration": "until the end of their next turn",
+        "effect": "shroud a creature in shadows, granting them advantage on stealth checks until the end of their next turn"
+      },
+      {
+        "intent": "Surge",
+        "cost": null,
+        "range": "short",
+        "target": "one target",
+        "area": "",
+        "duration": "until the end of their next turn",
+        "effect": "Create tendrils of inky blackness that can either deal 1d6 eclipse damage to up to 3 targets of your choice or cause the pinned condition until the end of the targets next turn."
+      },
+      {
+        "intent": "Storm",
+        "cost": null,
+        "range": "medium",
+        "target": "area",
+        "area": "medium",
+        "duration": "until the end of their next turn",
+        "effect": "create an area of darkness around you within medium range that lasts until the end of your next turn. Creatures cannot see into the darkness. creatures within the darkness can ole see a reach range distance. You sense all creatures in the darkness and have the invisibility condition while in the darkness.. As a half action on your next turn you can create 3 shadows that deal 3d6 eclipse damage to creatures in your darkness, you heal for 1 for each shadow that deals damage"
+      }
+    ]
+  },
+  {
+    "name": "Ignition",
+    "origin": "elemental",
+    "type": "fire",
+    "manner": "manifest",
+    "transmission": "elemental",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "cost": null,
+        "range": "short",
+        "target": "one target",
+        "area": "",
+        "duration": "instant",
+        "effect": "Ignite a creature within short range, dealing 4 fire damage immediately. At the start of each of their turns, they take 1 less fire damage than the previous round (3, then 2, etc.) until the burn fades. They can spend an Off-Action to reduce the remaining burn by 4, ending the effect early if it drops to 0."
+      },
+      {
+        "intent": "Surge",
+        "cost": null,
+        "range": "short",
+        "target": "one target",
+        "area": "",
+        "duration": "instant",
+        "effect": "Create a whip of flame that lashes out at a creature within short range dealing 3d6 fire damage and drags them 5ft towards you per success if they are a medium or smaller creature. If they are already in melee range they are knocked prone"
+      },
+      {
+        "intent": "Roar",
+        "cost": null,
+        "range": "medium",
+        "target": "one target",
+        "area": "",
+        "duration": "until the end of your next turn",
+        "effect": "Ignite the ground in a searing ring of white-hot flame. All creatures you choose within the area take 4d6 fire damage at the start of their turn. While inside the area, if a creature moves, it takes 1d6 fire damage per movement. If a creature ends its turn in the area, it takes an additional 1d6 fire damage."
+      }
+    ]
+  },
+  {
+    "name": "Frostbind",
+    "origin": "elemental",
+    "type": "ice",
+    "manner": "manifest",
+    "transmission": "elemental",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "cost": null,
+        "range": "short",
+        "target": "area",
+        "area": "reach",
+        "duration": "until the end of their next turn",
+        "effect": "Create a sudden blast of frost across a reach-range area. All creatures in the area must make an Agility check. On failure, they take 2 frost damage and gain the Pinned condition until the end of their next turn."
+      },
+      {
+        "intent": "Surge",
+        "cost": null,
+        "range": "short",
+        "target": "unoccupied space",
+        "area": "",
+        "duration": "1 hour",
+        "effect": "Summon a Large ice elemental (PL 3) in an unoccupied space within short range. It follows your commands but acts independently at the end of your turn. Any creature that hits the elemental with a melee attack takes 2 ice damage, and any creature that starts its turn adjacent to it takes 1 frost damage."
+      },
+      {
+        "intent": "Storm",
+        "cost": null,
+        "range": "medium",
+        "target": "area",
+        "area": "medium",
+        "duration": "1 minute",
+        "effect": "Summon a howling blizzard that blankets a medium range area in biting winds and snowfall. All creatures in the initial area take 6d6 ice damage and make a Survival check, reducing the damage by half per success. While the blizzard persists all non-magical fires are suppressed until the blizzard ends. All ground and flight terrain becomes difficult terrain, and ranged attacks have Disadvantage."
+      }
+    ]
+  },
+  {
+    "name": "Voltus",
+    "origin": "elemental",
+    "type": "lightning",
+    "manner": "manifest",
+    "transmission": "elemental",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "cost": null,
+        "range": "short",
+        "target": "one target",
+        "area": "",
+        "duration": "instant",
+        "effect": "Release a bolt of lightning that hits a target within short range dealing 4 lightning damage, and dealing half that damage to another target within reach range"
+      },
+      {
+        "intent": "Surge",
+        "cost": null,
+        "range": "short",
+        "target": "one object",
+        "area": "melee",
+        "duration": "1 hour",
+        "effect": "Choose a metal object within short range to imbue with lightning. When any creature enters the melee range or touches the trap, it discharges, dealing 4d6 lightning damage and they must make a Survival check or take the Stunned condition until the end of their next turn. The trap remains active for 1 hour or until triggered."
+      },
+      {
+        "intent": "Storm",
+        "cost": null,
+        "range": "medium",
+        "target": "area",
+        "area": "medium",
+        "duration": "instant",
+        "effect": "Summon a localized lightning storm in a medium range area that pulses of static and roaring thunder. All creatures take 9d6 lightning damage and must make a Survival check to halve the damage per success unless the target is wet or in water"
+      }
+    ]
+  },
+  {
+    "name": "Fallout",
+    "origin": "elemental",
+    "type": "toxic",
+    "manner": "manifest",
+    "transmission": "elemental",
+    "effects": [
+      {
+        "intent": "Surge",
+        "cost": null,
+        "range": "reach",
+        "target": "area",
+        "area": "reach",
+        "duration": "start of their next turn",
+        "effect": "You release a beam of concentrated radiation in front of you up to reach range. All creatures in the line take 3 toxic damage immediately. At the start of their next turn, they take 3 more toxic damage, and must make a Survival check. On failure, the process repeats on the following turn."
+      },
+      {
+        "intent": "Storm",
+        "cost": null,
+        "range": "short",
+        "target": "one target",
+        "area": "",
+        "duration": "instant",
+        "effect": "You overload the cellular structure of a creature within short range with unstable radiation. They take 6d6 toxic damage and must make a Survival check. On a failure, they roll 1d6 and gain one of the following permanent mutations:\n1. Extra Limb (Nonfunctional): No mechanical benefit; causes discomfort and mild social penalties.\n2. Irritated Lesions: Constant pain and skin tearing; suffer -1 to all checks.\n3. Nervous Decay: You suffer -2 to all Spellcasting checks.\n4. Bone Softening: You suffer -2 Strength.\n5. Irradiated Glow: You emit a sickly light and cannot hide, even in magical darkness.\n6. Overhealth Degeneration: You heal 1 Wound at the start of each round. While at full health, you instead lose 1 permanent Wound every minute."
+      }
+    ]
+  },
+  {
+    "name": "Aquata",
+    "origin": "elemental",
+    "type": "fluid",
+    "manner": "domineer",
+    "transmission": "elemental",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "cost": null,
+        "range": "short",
+        "target": "area",
+        "area": "melee",
+        "duration": "instant",
+        "effect": "You manipulate a melee range area of water within short range. You can create or evaporate up to 1 gallon of water, filter dirty water, shift water to extinguish flames, clean surfaces, or fill containers"
+      },
+      {
+        "intent": "Surge",
+        "cost": null,
+        "range": "short",
+        "target": "area",
+        "area": "melee",
+        "duration": "instant",
+        "effect": "You conjure a wave of water that crashes forward in a short range line, dealing 2d6 fluid damage to each creature in the line. They must make a Physical check or be knocked 20ft back, or half as much per success. The area becomes difficult terrain and extinguishes any fires or exposed light sources until the end of your next turn."
+      }
+    ]
+  },
+  {
+    "name": "Exsanguinate",
+    "origin": "life",
+    "type": "fluid",
+    "manner": "domineer",
+    "transmission": "corpus",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "cost": null,
+        "range": "reach",
+        "target": "one target",
+        "area": "",
+        "duration": "instant",
+        "effect": "Draw a thin line of blood from you to a creature within reach range. They must make a Physical check or take 2 damage that ignores armor and you heal for 1 healing"
+      },
+      {
+        "intent": "Roar",
+        "cost": null,
+        "range": "reach",
+        "target": "one target",
+        "area": "",
+        "duration": "instant",
+        "effect": "You seize control of the blood of one creature within medium range, wrenching their body like a puppet. The target must make a Survival check or become Pinned and Constrained. You can use your Off-Action each round to force them to take a movement or non-magical action of your choice. Creatures with no blood are immune."
+      }
+    ]
+  },
+  {
+    "name": "Verdancy ",
+    "origin": "nature",
+    "type": "nature",
+    "manner": "domineer",
+    "transmission": "verdance",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "cost": null,
+        "range": "short",
+        "target": "plants",
+        "area": "reach",
+        "duration": "instant",
+        "effect": "You coax nearby plant life to grow rapidly or bloom. Small vines curl along walls, moss spreads, flowers bloom, or crops are enriched. Can clean air, provide food, or soften terrain."
+      },
+      {
+        "intent": "Surge",
+        "cost": null,
+        "range": "reach",
+        "target": "plants",
+        "area": "",
+        "duration": "1 minute",
+        "effect": "You grant plants in a reach range sentience and the ability to speak your language for 1 minute. All nearby creatures can hear them. The plants can reveal past events, describe nearby threats, or offer advice based on their limited perception."
+      },
+      {
+        "intent": "Roar",
+        "cost": null,
+        "range": "short",
+        "target": "area",
+        "area": "short",
+        "duration": "1 minute",
+        "effect": "Root systems surge upward across short range, grabbing creatures of your choice and anchoring them in place if they fail an Agility check. They gain the Grappled and Slowed conditions. The area becomes difficult terrain for 1 minute. Trees bend protectively, vines lash, and thorned walls rise to block passage."
+      }
+    ]
+  },
+  {
+    "name": "Cogitatus",
+    "origin": "crystal",
+    "type": "psychic",
+    "manner": "domineer",
+    "transmission": "corpus",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "cost": null,
+        "range": "short",
+        "target": "one target",
+        "area": "",
+        "duration": "until the end of your next turn",
+        "effect": "Send distracting noise into a creature’s mind. They take Disadvantage on their next check, if they do not make a check gain the spell points used back"
+      },
+      {
+        "intent": "Surge",
+        "cost": null,
+        "range": "short",
+        "target": "one target",
+        "area": "",
+        "duration": "instant",
+        "effect": "Cause a creature to relive a recent memory painfully. Deal [[3d6]] psychic damage"
+      },
+      {
+        "intent": "Shout",
+        "cost": null,
+        "range": "short",
+        "target": "area",
+        "area": "short",
+        "duration": "until the end of your next turn",
+        "effect": "Create a field where all communication and concentration are distorted within short range and you have the ability to alter anything that is said or remembered until the end of your next turn unless targeted creatures make an Intellect check. Spells that require targeting or sustained focus suffer Disadvantage."
+      }
+    ]
+  },
+  {
+    "name": "Bloodsteel",
+    "origin": "vozian",
+    "type": "vozian",
+    "manner": "manifest",
+    "transmission": "astral",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "cost": null,
+        "range": "melee",
+        "target": "weapon or ammunition",
+        "area": "",
+        "duration": "until the end of your next turn",
+        "effect": "Twist the essence of a weapon or ammunition. Until the end of your next turn, it deals Vozian damage instead of its normal type and causes the bleeding condition on successful hits"
+      },
+      {
+        "intent": "Shout",
+        "cost": null,
+        "range": "melee",
+        "target": "weapon",
+        "area": "",
+        "duration": "1 minute",
+        "effect": "Your strikes open rifts. For the next minute hits with a weapon, summon a hostile PL 2 demon adjacent to the target (random type, bound to the ordealis). Demons vanish in 1 minute or when slain. Each rift weakens your soul take [[1d4]] vozian damage per demon summoned."
+      }
+    ]
+  },
+  {
+    "name": "Malform",
+    "origin": "vozian",
+    "type": "vozian",
+    "manner": "domineer",
+    "transmission": "corpus",
+    "effects": [
+      {
+        "intent": "Roar",
+        "cost": null,
+        "range": "melee",
+        "target": "self",
+        "area": "",
+        "duration": "1 minute",
+        "effect": "You become infused with Vozian mana, your skin hardens and darkens into a hard shell and your eyes shifts colors rapidly. You gain 100 armor, immune to Cognition conditions and +2 to all checks, but you take double damage."
       }
     ]
   }

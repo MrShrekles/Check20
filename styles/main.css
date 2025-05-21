@@ -527,8 +527,7 @@ b {
     transition: transform 1s ease, background 0.3s ease;
 }
 
-.flex-item:hover,
-.flex-spell:hover {
+.flex-item:hover {
     background-color: var(--dark);
     transform: scale(1.01);
     box-shadow: var(--box-shadow);
@@ -567,20 +566,6 @@ b {
     padding: 0;
     margin-bottom: 10px;
     transform: translateY(10px);
-}
-
-#generate-npc,
-#generate-business,
-#generate-monster {
-    background-color: var(--hate);
-    width: 100%;
-    font-size: 2rem;
-}
-
-#generate-npc:hover,
-#generate-business:hover,
-#generate-monster:hover {
-    filter: brightness(110%);
 }
 
 .flex-item select {
@@ -887,21 +872,7 @@ em {
     font-weight: bold;
 }
 
-.spell-features {
-    padding: 0.5rem;
-    background: linear-gradient(to bottom, var(--green-2), transparent);
-    border: 1px solid var(--green-3);
-    border-bottom: 0;
-    border-top-left-radius: var(--border-radius);
-    border-top-right-radius: var(--border-radius);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    box-shadow: var(--box-shadow);
-    position: relative;
-    z-index: 1;
-    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-}
+
 
 .controls {
     display: flex;
@@ -1510,102 +1481,6 @@ li {
     text-align: center;
 }
 
-/* === Layout: Grid Wrappers === */
-.monster-grid,
-.item-cards {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-/* === Card: Monster & Item === */
-.monster-card,
-.item-card {
-    background: var(--theme-dark);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    padding: var(--padding);
-    color: var(--white);
-    flex-direction: column;
-}
-
-.monster-card {
-    background: rgba(40, 40, 40, 0.9);
-    transition: transform 0.2s ease;
-    width: 300px;
-}
-
-.monster-card p {
-    margin: .5vw;
-}
-
-.item-card {
-    border: 1px solid var(--gold);
-    width: 25vw;
-}
-
-/* === Interactions: Editable Text === */
-.monster-card h3,
-.monster-card p span,
-.monster-card ul li {
-    cursor: text;
-    transition: background 0.3s ease;
-}
-
-.monster-card h3:focus,
-.monster-card p span:focus,
-.monster-card ul li:focus {
-    background: rgba(255, 255, 255, 0.1);
-    outline: none;
-    border-radius: var(--border-radius);
-}
-
-/* === Hover Effect: Monster Card === */
-.monster-card:hover {
-    background-color: var(--dark);
-    box-shadow: var(--box-hover);
-    transform: scale(1.05);
-}
-
-.button-row {
-    display: flex;
-    gap: var(--padding);
-    justify-content: space-between;
-}
-
-.copy-npc,
-.delete-monster {
-    flex: 1;
-    padding: var(--padding);
-    border-radius: var(--border-radius);
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-/* === Buttons (Shared Styling) === */
-.donate-button {
-    border: none;
-    border-radius: var(--border-radius);
-    padding: var(--padding);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-/* === Delete Button === */
-.delete-monster {
-    background: #d9534f;
-}
-
-.delete-monster:hover {
-    background: #b52b27;
-}
-
-
-.copy-npc:hover {
-    background: #b52b27;
-}
-
 /* === Donate Button === */
 .donate-button {
     background: var(--theme);
@@ -1706,160 +1581,9 @@ li {
     color: var(--theme-dark);
 }
 
-.spell-grid {
-    display: flex;
-    flex-wrap: wrap;
-    padding: var(--padding);
-    margin: var(--padding);
-    gap: var(--padding);
-}
-
-.spell-card {
-    width: 90vw;
-    max-width: 400px;
-    padding: var(--padding);
-    background-color: var(--green-1);
-    border: 1px solid var(--green-3);
-    border-radius: var(--border-radius);
-    box-shadow: 0 0 6px var(--green-3);
-    color: var(--text-cream);
-    font-weight: bold;
-    cursor: default;
-}
-
-.spell-card:hover {
-    box-shadow: 0 0 6px var(--green-1);
-    filter: brightness(110%);
-}
-
-.spell-card p {
-    margin: 10px;
-    color: var(--white);
-}
-
-.spell-card strong {
-    color: var(--gold);
-}
-
-.spell-card h4 {
-    font-size: 1.5rem;
-}
-
-.spell-info {
-    font-size: 0.7rem;
-    margin-bottom: 0;
-    list-style: none;
-}
-
-.spell-effect summary {
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    cursor: pointer;
-    background: linear-gradient(to bottom, var(--green-2), transparent);
-}
-
-.spell-effect[open] {
-    background: var(--green-1);
-    color: white;
-}
-
-mark {
-    background-color: var(--gold-3);
-    color: black;
-    padding: 1px;
-    border-radius: 2px;
-}
-
-.spell-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin: 1rem 0;
-    align-items: center;
-}
-
-.control {
-    font-size: 1rem;
-    padding: 0.5rem;
-    min-width: 200px;
-    max-width: 300px;
-    border: 1px solid var(--warm-3);
-    border-radius: var(--border-radius);
-    background-color: var(--warm-1);
-    color: var(--text-cream);
-    box-shadow: 0 0 3px var(--warm-3);
-}
-
-.control::placeholder {
-    color: var(--text-cream);
-    opacity: 0.6;
-}
-
-.control:focus {
-    outline: none;
-    box-shadow: 0 0 5px var(--gold);
-    border-color: var(--gold);
-}
-
-
-/* Tags and Cost */
-.sp-cost {
-    background: var(--dark-2);
-    padding: 5px;
-    margin: 40px;
-    border-radius: var(--border-radius);
-}
-
-.spell-tags span {
-    display: inline-block;
-    padding: 5px;
-    font-size: 0.75rem;
-    color: var(--white);
-    border-top-left-radius: var(--border-radius);
-    border-top-right-radius: var(--border-radius);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin-left: 10px;
-
-}
 
 .hidden {
     display: none;
-}
-
-.manner,
-#manner {
-    background-color: var(--warm-2);
-}
-
-.transmission,
-#transmission {
-    background-color: var(--green-2);
-}
-
-/* Copy Button */
-.copy-spell {
-    margin-top: auto;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem;
-    background: var(--dark-2);
-    color: var(--text-cream);
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
-}
-
-.copy-spell:hover {
-    background: var(--green-3);
-}
-
-.copy-spell.copied {
-    background: var(--gold);
-    color: var(--dark-2);
 }
 
 .class-description p {
@@ -1919,8 +1643,7 @@ mark {
 
     .flex-gen,
     .column,
-    .flex-item,
-    .flex-spell {
+    .flex-item {
         width: 100%;
         max-width: 100%;
         min-width: 100%;
@@ -1973,22 +1696,5 @@ mark {
         color: var(--gold);
         font-weight: bold;
         text-transform: uppercase;
-    }
-
-    .item-card {
-        width: 40%;
-    }
-
-    .monster-card {
-        width: 100%;
-        margin: 3px;
-    }
-
-    .monster-card:hover {
-        transform: none;
-    }
-
-    .spellcard {
-        width: 100%;
     }
 }

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check20 Wiki</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/monster.css">
     <script src="scripts/almanac.js" defer></script>
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
@@ -18,7 +19,7 @@
 <body data-page-title="Worldbuilding">
     <div id="header-placeholder"></div>
 
-    <section class="generator-row">
+    <section id="question" class="generator-row">
         <div class="flex-gen">
             <h2>Character Roleplay Question</h2>
             <div class="flex-pop">
@@ -28,7 +29,7 @@
         </div>
     </section>
 
-    <section>
+    <section id="npc">
         <div class="box-button">
             <button class="button" id="generate-npc">Generate NPC</button>
         </div>
@@ -36,7 +37,7 @@
         <button id="clear-npcs">Clear NPCs</button>
     </section>
 
-    <section>
+    <section id="business">
         <div class="box-button">
             <button class="button" id="generate-business">Generate Business</button>
         </div>
@@ -44,7 +45,8 @@
         <button id="clear-businesses">Clear Businesses</button>
     </section>
 
-    <section>
+    <section id="monster">
+
         <div class="flex-container">
             <!-- Base Type -->
             <div class="flex-item">
@@ -81,7 +83,6 @@
         <div id="monster-output" class="monster-grid"></div>
         <button id="clear-monsters">Clear All</button>
 
-        <img src="assets/images/Monsta.png" alt="monster" style="width: 90%;">
     </section>
 
     <!-- Narrator Guide Section -->

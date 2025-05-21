@@ -6,17 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Armor and Defense</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/armor.css">
     <script src="scripts/main.js" defer></script>
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/armor.js" defer></script>
 </head>
 
-<body data-page-title="Armor"> 
-        <div id="header-placeholder"></div>
+<body data-page-title="Armor">
+    <div id="header-placeholder"></div>
 
     <main>
-        <!-- Armor -->
         <section id="armor">
             <div class="two-column">
                 <div class="column">
@@ -61,157 +62,12 @@
                     </div>
                 </div>
             </div>
-
-        </section>
-
-        <!-- Armor -->
-        <section>
-            <!-- Armor Table -->
             <h1>Types of Mundane Armor</h1>
             <p><strong>Armor Penalties: </strong> If a check's modifier is negative, it is considered a penalty.
                 Features that negate penalties can remove these effects.
             </p>
             <p><strong>Magic Penalty:</strong> This is in reference to your spellcasting check, whatever it might be for
                 your Class, Path, Talent, and so on</p>
-            <div class="responsive-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Armor</th>
-                            <th>Amount</th>
-                            <th>Movement Penalty</th>
-                            <th>Check Penalty</th>
-                            <th>Check Bonus</th>
-                            <th>Hefty</th>
-                            <th>Cost</th>
-                            <th>Bulk</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Light Armor</td>
-                            <td>5</td>
-                            <td>none</td>
-                            <td>none</td>
-                            <td>Stealth +1, Agility +1</td>
-                            <td>No</td>
-                            <td>$10</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>Traveler's Cloak</td>
-                            <td>7</td>
-                            <td>none</td>
-                            <td>none</td>
-                            <td>Survival +1, Observation +1</td>
-                            <td>No</td>
-                            <td>$20</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>Scout's Armor</td>
-                            <td>8</td>
-                            <td>none</td>
-                            <td>Magic -1</td>
-                            <td>Stealth +1</td>
-                            <td>No</td>
-                            <td>$50</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>Medium Armor</td>
-                            <td>10</td>
-                            <td>-5</td>
-                            <td>Stealth -1, Magic -2</td>
-                            <td>none</td>
-                            <td>No</td>
-                            <td>$100</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>Arcane Robes</td>
-                            <td>15</td>
-                            <td>-10</td>
-                            <td>Stealth -2, Survival -2</td>
-                            <td>none</td>
-                            <td>Yes</td>
-                            <td>$100</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>Heavy Armor</td>
-                            <td>20</td>
-                            <td>-20</td>
-                            <td>Stealth -4, Magic -4</td>
-                            <td>none</td>
-                            <td>Yes</td>
-                            <td>$500</td>
-                            <td>4</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </section>
-
-        <!-- Shields -->
-        <section>
-            <!-- Shields -->
-            <h1>Shields</h1>
-            <div class="responsive-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Armor</th>
-                            <th>Amount</th>
-                            <th>Penalty</th>
-                            <th>Bonus</th>
-                            <th>Hefty</th>
-                            <th>Cost</th>
-                            <th>Bulk</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Light Shield</td>
-                            <td>3</td>
-                            <td>none</td>
-                            <td>none</td>
-                            <td>No</td>
-                            <td>$5</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>Standard Shield</td>
-                            <td>6</td>
-                            <td>Stealth -1, Magic -1</td>
-                            <td>none</td>
-                            <td>Yes</td>
-                            <td>$10</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>Spellcaster's Shield</td>
-                            <td>5</td>
-                            <td>Stealth -1</td>
-                            <td>Spirit +1</td>
-                            <td>No</td>
-                            <td>$20</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>Heavy Shield</td>
-                            <td>10</td>
-                            <td>Stealth -2, Magic -2</td>
-                            <td>none</td>
-                            <td>Yes</td>
-                            <td>$30</td>
-                            <td>3</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
 
             <!-- Shield Bash -->
             <h4>Shield Bash</h4>
@@ -219,7 +75,22 @@
                 Use your shield as a weapon. Make a Strength check as an off-action to deal <code> [[1d4]] </code>
                 impact damage to an enemy.
             </p>
-            </div>
+
+        </section>
+        <!-- Filter/Sort Controls -->
+        <div class="armor-controls">
+            <select id="armor-sort-options" style="width: 300px;">
+                <option value="name">Sort by Name</option>
+                <option value="armor">Sort by Armor</option>
+                <option value="bulk">Sort by Bulk</option>
+                <option value="cost">Sort by Cost</option>
+            </select>
+            <input type="text" id="armor-search" style="width: 300px;" placeholder="Search armor..." />
+        </div>
+
+        <section>
+            <!-- Armor Grid Container -->
+            <div id="armor-grid" class="armor-grid"></div>
         </section>
 
     </main>

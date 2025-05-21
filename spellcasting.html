@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spellcasting | Armored Noir - Check20</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/spells.css">
     <script src="scripts/main.js" defer></script>
     <script src="scripts/spells.js"></script>
     <script src="scripts/sidebar.js" defer></script>
@@ -112,8 +113,13 @@
                         </div>
                         <div class="flex-item" id="transmission">
                             <h3>Material</h3>
-                            <p>Metal, Wood, Stone, Clay, Earth, Plants, Tools, Weapons, Structures, Minerals</p>
+                            <p>Metal, Wood, Stone, Clay, Tools, Weapons, Structures, Minerals, Constructs, Gears</p>
                         </div>
+                        <div class="flex-item" id="transmission">
+                            <h3>Verdance</h3>
+                            <p>Growth, Crops, Plants, Roots, Vines, Fungi, Terrain, Seasons, Animals, Mold</p>
+                        </div>
+
                     </div>
 
                 </div>
@@ -217,28 +223,30 @@
 
         <section>
             <div class="spell-controls">
-  <select id="sort-options" class="control">
-    <option value="name">Sort by Name</option>
-    <option value="intent">Sort by Intent Cost</option>
-    <option value="manner">Sort by Manner</option>
-    <option value="transmission">Sort by Transmission</option>
-  </select>
+                <select id="sort-options" class="control">
+                    <option value="name">Sort by Name</option>
+                    <option value="intent">Sort by Intent Cost</option>
+                    <option value="manner">Sort by Manner</option>
+                    <option value="transmission">Sort by Transmission</option>
+                </select>
 
-  <select id="filter-intent" class="control">
-    <option value="">All Intents</option>
-    <option value="Whisper">Whisper</option>
-    <option value="Surge">Surge</option>
-    <option value="Shout">Shout</option>
-    <option value="Roar">Roar</option>
-    <option value="Storm">Storm</option>
-    <option value="Cataclysm">Cataclysm</option>
-  </select>
+                <select id="filter-intent" class="control">
+                    <option value="">All Intents</option>
+                    <option value="Whisper">Whisper</option>
+                    <option value="Surge">Surge</option>
+                    <option value="Shout">Shout</option>
+                    <option value="Roar">Roar</option>
+                    <option value="Storm">Storm</option>
+                    <option value="Cataclysm">Cataclysm</option>
+                </select>
 
-  <input type="text" id="spell-search" placeholder="Search spells..." class="control">
+                <input type="text" id="spell-search" placeholder="Search spells..." class="control">
 
-  <button id="toggle-tags" class="control">Toggle Tags</button>
-  <button id="toggle-details" class="control">Toggle Spell Details</button>
-</div>
+                <button id="toggle-tags" class="control">Toggle Tags</button>
+                <button id="toggle-details" class="control">Toggle Spell Details</button>
+            </div>
+            <p id="spell-count" class="spell-count"></p>
+
 
 
             <div class="spell-grid" id="spell-grid"></div>
