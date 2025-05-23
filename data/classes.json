@@ -1278,12 +1278,8 @@
           "description": "The Luminary is a living beacon of bioluminescent power and reactive evolution, embodying the raw potential of life itself. Whether inspiring allies with radiant energy, shielding them with adaptive defenses, or disorienting foes with dazzling transformations, the Luminary thrives as a dynamic force on the battlefield. Their ever-changing abilities reflect their connection to the primal forces of nature, adapting to challenges in real-time. Beyond combat, their glowing presence captivates and influences, making them both a formidable protector and an awe-inspiring figure. The Luminary doesn’t just survive—they evolve, illuminating the path for others while reshaping the world around them.",
           "features": [
             {
-              "name": "Catalyst Aid",
-              "description": "As a half-action, target an ally and give them +3 on their next attack check until the end of their next turn."
-            },
-            {
-              "name": "Armored Carapace",
-              "description": "As a half-action, gain armor equal to your Strength until the end of your next turn."
+              "name": "Catalyst",
+              "description": "As a half-action, target an ally and give them +3 on their next attack check until the end of their next turn or gain armor equal to your Strength until the end of your next turn"
             }
           ],
           "progression": "Path progression is linear; you will select these progression steps in order. At levels 1, 3, 6, and 9, gain an increase of +3 points to put into your checks, but no check can exceed 15. Additionally, gain +1 Spell Point at each of these levels as well.",
@@ -1397,7 +1393,7 @@
             },
             {
               "name": "Reaper's Breath",
-              "description": "If a creature has not seen you, acted in combat, or is unaware of your position, gain [[2d6]] to the attack roll and deal that much additional damage."
+              "description": "On your first turn in combat, gain [[2d6]] to the attack roll and deal that much additional damage."
             }
           ],
           "progression": "Path progression is linear; you will select these progression steps in order. At levels 1, 3, 6, and 9, gain an increase of +3 points to put into your checks, but no check can exceed 15.",

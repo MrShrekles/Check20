@@ -41,6 +41,10 @@
     --text-plain: #fffaf0;
     --text-gold: #ffd700;
     --text-cream: #f0e5c5;
+    /* Red */
+    --red-1: red;
+    --red-2: rgb(255, 100, 100);
+    --red-3: pink;
 }
 
 /* General Styles */
@@ -48,6 +52,7 @@ body {
     font-family: "Candara", sans-serif;
     background-color: var(--dark);
     color: var(--white);
+    text-shadow: 1px 1px 1px black;
     margin: 0;
     overflow-x: hidden;
 }
@@ -364,10 +369,11 @@ b {
     margin: 0 auto;
 }
 
-.img-standard {
-    max-width: 100%;
-    height: auto;
-    transform: scalex(-1);
+#how-to {
+    background-image: url('../assets/images/con-mage.png');
+    background-size: 50vw;
+    background-position-x: right;
+    background-repeat: no-repeat;
 }
 
 #flip {
@@ -377,6 +383,10 @@ b {
     height: auto;
     transform: scalex(1);
     pointer-events: none;
+}
+
+.img-standard {
+    max-width: 50vw;
 }
 
 .img-back {
@@ -524,7 +534,7 @@ b {
     background-color: var(--medium);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    transition: transform 1s ease, background 0.3s ease;
+    transition: transform .3s ease, background 0.3s ease;
 }
 
 .flex-item:hover {
@@ -633,33 +643,6 @@ b {
 .flex-item ol li::marker {
     color: var(--theme-alt);
     font-weight: bold;
-}
-
-
-/* Curse Blocks - Wider with Warm, Scary Aesthetic */
-.flex-curse {
-    flex: 1 1 45%;
-    min-width: 350px;
-    max-width: 590px;
-    background-color: #2c1a14;
-    padding: var(--padding);
-    border-radius: var(--border-radius);
-    box-shadow: 0 0 12px rgba(255, 80, 30, 0.2);
-    color: #f8e3c5;
-    transition: transform 1s ease, background 0.3s ease;
-    border: 1px solid #442014;
-}
-
-/* Inner section titles */
-.flex-curse h3 {
-    color: #f79a63;
-}
-
-/* Curse hover effect */
-.flex-curse:hover {
-    background-color: #3b1e16;
-    transform: scale(1.015);
-    box-shadow: 0 0 16px rgba(255, 120, 30, 0.3);
 }
 
 .generator-row {
@@ -805,7 +788,7 @@ section {
     color: var(--white);
     padding: 10px;
     margin: 10px;
-    transition: filter 0.5s ease;
+    transition: filter 0.3s ease;
 }
 
 section:hover {
@@ -1249,7 +1232,7 @@ form {
 .tooltip:hover::after {
     opacity: 1;
     visibility: visible;
-    transition-delay: 0s;
+    transition-delay: .3s;
 }
 
 .tooltip::after {
@@ -1351,7 +1334,7 @@ a {
     border-radius: var(--border-radius);
     font-size: 1.2rem;
     box-shadow: var(--box-shadow);
-    transition: box-shadow 1.15s ease-in-out;
+    transition: box-shadow .3s ease-in-out;
 }
 
 .display-box:hover {
@@ -1376,27 +1359,9 @@ a {
     box-sizing: border-box;
 }
 
-.two-column,
-.column,
-ul,
-li {
-    max-width: 100%;
-    box-sizing: border-box;
-    overflow-wrap: break-word;
-    word-break: break-word;
+.how-to {
+    width: 50%;
 }
-
-ul {
-    margin: 0;
-    padding-left: 1.1em;
-    /* slightly tighter */
-}
-
-li {
-    padding-left: 0.4em;
-    margin-bottom: 0.5em;
-}
-
 
 /* Section Styling */
 .section-container {
@@ -1509,6 +1474,13 @@ li {
     margin: 0.5rem 0;
 }
 
+/* === Layout: Grid Wrappers === */
+.monster-grid,
+.item-cards {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .item-title {
     font-size: 1.1rem;
     margin: 0;
@@ -1581,56 +1553,83 @@ li {
     color: var(--theme-dark);
 }
 
-
 .hidden {
     display: none;
 }
 
-.class-description p {
-    margin-bottom: 10px;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--white);
-}
-
-.class-section-title {
-    margin-top: 30px;
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-    color: var(--yellow-1);
-}
-
-.class-box {
-    background-color: var(--green-1);
-    border: 2px solid var(--yellow-1);
+#movement {
+    position: relative;
+    padding: var(--padding);
+    background-color: #1a0d08;
+    background-image: url('../assets/images/Sewer\ 2.png');
+    background-repeat: repeat-x;
+    background-position: bottom;
+    background-size: 100%;
+    /* adjust size as needed */
     border-radius: var(--border-radius);
-    padding: 15px;
-    margin-bottom: 20px;
 }
 
-.class-box h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
+#action {
+    position: relative;
+    padding: var(--padding);
+    background-color: #1a0d08;
+    background-image: url('../assets/images/Pathfinder.png');
+    background-repeat: repeat-x;
+    background-position: bottom right;
+    background-size: 50%;
+    /* adjust size as needed */
+    border-radius: var(--border-radius);
+}
+
+#dim {
+    background: rgba(30, 50, 30, 0.8);
+    border-radius: var(--border-radius);
+    padding: 10px;
+}
+
+#gender {
+    width: 115%;
+    border-radius: var(--border-radius);
+    margin: -10px;
+}
+
+.size-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.size-list li {
+    margin-bottom: 4px;
+    padding: 10px;
+    background: var(--theme-1);
+    border-left: 4px solid var(--warm-3);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    transition: background 0.3s ease;
+}
+
+/* Gradual font-size scaling */
+.size-tiny {
+    font-size: 0.85rem;
+}
+.size-small {
+    font-size: 0.9rem;
+}
+.size-medium {
+    font-size: 1rem;
+}
+.size-large {
+    font-size: 1.1rem;
+}
+.size-giant {
     font-size: 1.2rem;
-    color: var(--yellow-1);
 }
-
-.class-box ul {
-    list-style-type: disc;
-    padding-left: 20px;
+.size-monolithic {
+    font-size: 1.3rem;
 }
-
-.class-box li {
-    margin-bottom: 8px;
-    font-size: 0.95rem;
-    color: var(--white);
-}
-
-.class-box code {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: monospace;
+.size-environmental {
+    font-size: 1.4rem;
 }
 
 
@@ -1697,4 +1696,15 @@ li {
         font-weight: bold;
         text-transform: uppercase;
     }
+
+    #how-to {
+        background-size: 100vw;
+        text-decoration: solid;
+        text-shadow: 2px 2px 6px black;
+    }
+
+    .img-standard {
+        max-width: 100%;
+    }
+
 }

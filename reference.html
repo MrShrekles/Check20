@@ -12,8 +12,8 @@
     <script src="scripts/tooltips.js" defer></script>
 </head>
 
-<body data-page-title="Reference"> 
-        <div id="header-placeholder"></div>   
+<body data-page-title="Reference">
+    <div id="header-placeholder"></div>
 
     <main>
         <!-- How to play -->
@@ -727,7 +727,7 @@
         </section>
 
         <!-- Movement -->
-        <section>
+        <section id="movement">
             <h2>Movement</h2>
             <div class="two-column">
                 <div class="column">
@@ -755,7 +755,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="column">
+                <div class="column" id="dim">
                     <h4>Types of Movement</h4>
                     <ul>
                         <li><strong>Difficult Terrain:</strong> Requires twice as much movement to navigate, so every 5
@@ -795,10 +795,10 @@
         </section>
 
         <!-- Actions -->
-        <section>
+        <section id="action">
             <h1>Types of Actions</h1>
             <div class="two-column">
-                <div class="column">
+                <div class="column" id="dim">
                     <h2>Actions</h2>
                     <p>
                         Actions are activities that take only a few seconds to complete. They are distinct from
@@ -851,30 +851,35 @@
                     </ul>
                 </div>
                 <div class="column">
-                    <h3>Off-Actions</h3>
-                    <p>Off-Actions don't require an Action or Half-Action and include quick reactions or minor
-                        activities.</p>
-                    <ul>
-                        <li><strong>Reaction:</strong> A special action taken out of turn, like an opportunity attack.
-                        </li>
-                        <li><strong>Opportunity Attacks:</strong> Attack creatures leaving your melee range without
-                            disengaging.</li>
-                        <li><strong>Drink Something:</strong> Use an Off-Action to drink or hand off a potion.</li>
-                        <li><strong>Disrupt:</strong> Impose disadvantage on an enemy's attack with a successful check.
-                        </li>
-                        <li><strong>Block:</strong> Reduce melee damage by half using a shield.</li>
-                        <li><strong>Demoralize:</strong> Force enemies to make a morale check with an Influence
-                            (Intimidate) roll.</li>
-                    </ul>
+                    <div class="features">
+                        <h3>Off-Actions</h3>
+                        <p>Off-Actions don't require an Action or Half-Action and include quick reactions or minor
+                            activities. They also dont need to be preformed on your turn.</p>
+                        <ul>
+                            <li><strong>Reaction:</strong> A special action taken out of turn, like an opportunity
+                                attack.
+                            </li>
+                            <li><strong>Opportunity Attacks:</strong> Attack creatures leaving your melee range without
+                                disengaging.</li>
+                            <li><strong>Drink Something:</strong> Use an Off-Action to drink or hand off a potion.</li>
+                            <li><strong>Disrupt:</strong> Impose disadvantage on an enemy's attack with a successful
+                                check.
+                            </li>
+                            <li><strong>Block:</strong> Reduce melee damage by half using a shield.</li>
+                            <li><strong>Demoralize:</strong> Force enemies to make a morale check with an Influence
+                                (Intimidate) roll.</li>
+                        </ul>
 
-                    <h3>Non-Actions</h3>
-                    <p>Non-Actions don't consume any part of your action economy but may be limited by the narrator.</p>
-                    <ul>
-                        <li><strong>Switch Weapons:</strong> Drop a weapon and draw another.</li>
-                        <li><strong>Stress Push:</strong> Take 4 stress damage to gain a +3 bonus on a low roll.</li>
-                        <li><strong>Roleplay:</strong> Briefly communicate or give orders without consequence.</li>
-                    </ul>
-
+                        <h3>Non-Actions</h3>
+                        <p>Non-Actions don't consume any part of your action economy but may be limited by the narrator.
+                        </p>
+                        <ul>
+                            <li><strong>Switch Weapons:</strong> Drop a weapon and draw another.</li>
+                            <li><strong>Stress Push:</strong> Take 4 stress damage to gain a +3 bonus on a low roll.
+                            </li>
+                            <li><strong>Roleplay:</strong> Briefly communicate or give orders without consequence.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -904,37 +909,40 @@
                         and might, understanding size is crucial for survival and success.
                     </p>
 
-                    <div class="flex-container">
-                        <div class="flex-item">
-                            <h4>Tiny</h4>
-                            <p>Below 1 ft – Examples: Insects, small birds, coins, potion bottles.</p>
-                        </div>
-                        <div class="flex-item">
-                            <h4>Small</h4>
-                            <p>1-4 ft – Examples: Cats, small dogs, scroll cases, books.</p>
-                        </div>
-                        <div class="flex-item">
-                            <h4>Medium</h4>
-                            <p>5-7 ft – Examples: Humans, elves, armor sets, single weapons.</p>
-                        </div>
-                        <div class="flex-item">
-                            <h4>Large</h4>
-                            <p>8-15 ft – Examples: Ogres, bears, large shields, small boats.</p>
-                        </div>
-                        <div class="flex-item">
-                            <h4>Giant</h4>
-                            <p>15-25 ft – Examples: Elephants, siege towers, large trees.</p>
-                        </div>
-                        <div class="flex-item">
-                            <h4>Monolithic</h4>
-                            <p>25-100 ft – Examples: Large statues, grand castles, airships.</p>
-                        </div>
-                        <div class="flex-item">
-                            <h4>Environmental</h4>
-                            <p>100-300 ft – Examples: Mountains, massive ancient trees, celestial landmarks.
-                            </p>
-                        </div>
-                    </div>
+                    <ul class="size-list">
+                        <li class="size-tiny">
+                            <strong>Tiny:</strong> Less than 1 ft – Insects, pixies, pocket watches, potion bottles,
+                            radio, rings, wind-up familiars, frogs, canary birds, magical acorns.
+                        </li>
+                        <li class="size-small">
+                            <strong>Small:</strong> 1–4 ft – Gnomes, Klienkin, wild cats, gas lanterns, typewriters,
+                            violin cases, bootleg barrels, goblins, garden statues.
+                        </li>
+                        <li class="size-medium">
+                            <strong>Medium:</strong> 5–7 ft – Humans, Beastfolk, trench-coated detectives, phonograph
+                            cabinets, armor stands, coffins, altar tables, claw-foot bathtubs, cabaret stage props.
+                        </li>
+                        <li class="size-large">
+                            <strong>Large:</strong> 8–15 ft – Ogres, dire bears, streetlamps, arcane engines, cars and
+                            trucks, reinforced vault doors, golem enforcers, dockside cranes, patrol boats, siege
+                            barricades.
+                        </li>
+                        <li class="size-giant">
+                            <strong>Giant:</strong> 15–25 ft – Clockwork titans, building-sized automatons, firewatch
+                            towers, billboard rigs, massive organ pipes, elevated rail segments, airship mooring frames.
+                        </li>
+                        <li class="size-monolithic">
+                            <strong>Monolithic:</strong> 25–100 ft – Skyscraper façades, cathedral domes, war zeppelins,
+                            tower golems, arcano-generators, coastal artillery, subterranean elevators, great bells,
+                            dirigible hangars.
+                        </li>
+                        <li class="size-environmental">
+                            <strong>Environmental:</strong> Over 100 ft – Floating citadels, crashed skyliners, mountain
+                            elementals, world-tree, sleeping colossi, arcane power grids, misty fogbanks, buried
+                            industrial deities.
+                        </li>
+                    </ul>
+
                 </div>
 
                 <div class="column">
@@ -951,7 +959,11 @@
                         being
                         who walks its path.
                     </p>
+
+                    <img src="assets/images/Goblin 2.png" id="gender">
                 </div>
+
+
 
             </div>
         </section>
@@ -1131,7 +1143,7 @@
 
         </section>
 
-        
+
 
     </main>
     <div id="sidebar-placeholder"></div>

@@ -54,10 +54,10 @@ function renderArmor() {
       <ul class="armor-info">
         <li><strong>Armor:</strong> ${item.armor}</li>
         <li><strong>Bulk:</strong> ${item.bulk}</li>
-        <li><strong>Cost:</strong> ${item.cost} gp</li>
-        ${item.movePenalty ? `<li><strong>Move Penalty:</strong> ${item.movePenalty}</li>` : ''}
-        ${item.checkPenalty ? `<li><strong>Check Penalty:</strong> ${item.checkPenalty}</li>` : ''}
-        ${item.checkBonus ? `<li><strong>Check Bonus:</strong> ${item.checkBonus}</li>` : ''}
+        <li><strong class="cost-text">Cost:</strong> ${item.cost} gp</li>
+        ${item.checkBonus ? `<li><strong class="bonus-text">Check Bonus:</strong> ${item.checkBonus}</li>` : ''}
+        ${item.movePenalty ? `<li><strong class="penalty-text">Move Penalty:</strong> ${item.movePenalty}</li>` : ''}
+        ${item.checkPenalty ? `<li><strong class="penalty-text">Check Penalty:</strong> ${item.checkPenalty}</li>` : ''}
       </ul>
       ${item.description ? `<p>${item.description}</p>` : ''}
       <div class="armor-buttons">

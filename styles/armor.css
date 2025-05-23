@@ -1,52 +1,51 @@
 .armor-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  justify-content: center;
-  padding: var(--padding);
-  margin: var(--padding);
-  gap: var(--padding);
+  gap: 1rem;
 }
 
 .armor-card {
   background: var(--theme-1);
-  border: 2px solid var(--theme-2);
+  max-width: 30%;
+  border: 1px solid var(--theme-2);
   border-radius: var(--border-radius);
-  padding: var(--padding);
-  min-width: fit-content;
   box-shadow: var(--box-shadow);
   color: var(--text-plain);
   transition: transform 0.2s ease, border-color 0.3s ease;
-  position: relative;
+  padding: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .armor-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   border-color: var(--gold-2);
 }
 
 .armor-card h4 {
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
   color: var(--gold-3);
 }
 
 .armor-tags {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
 }
 
 .armor-tags span {
   display: inline-block;
-  padding: 5px;
-  font-size: 0.75rem;
+  padding: 2px 5px;
+  font-size: 0.65rem;
   color: var(--white);
   border-radius: var(--border-radius);
   text-transform: uppercase;
-  letter-spacing: 0.6px;
-  margin-left: 10px;
+  letter-spacing: 0.5px;
 }
 
-/* Color variants */
 .armor {
   background-color: var(--green-2);
 }
@@ -61,33 +60,67 @@
 
 .armor-info {
   list-style: none;
-  padding-left: 0;
-  margin: 0.5rem 0 1rem;
-  font-size: 0.9rem;
+  margin: 0;
+  padding: 0;
 }
 
 .armor-info li {
-  margin-bottom: 0.25rem;
-  color: var(--text-plain);
+  margin-bottom: 0.2rem;
+  line-height: 1.2;
 }
 
 .armor-card p {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--text-cream);
-  margin-bottom: 1rem;
+  margin: 0.5rem 0;
+  line-height: 1.3;
 }
 
 .copy-armor {
   background: var(--theme-2);
   color: var(--text-plain);
-  padding: 0.4rem 0.75rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
+  padding: 4px 6px;
   transition: background 0.2s ease;
 }
 
 .copy-armor:hover {
   background: var(--theme-hover);
+}
+
+.penalty-text,
+.penalty-text strong {
+  color: var(--red-2);
+}
+
+.cost-text,
+.cost-text strong {
+  color: var(--gold-3);
+}
+
+.bonus-text,
+.bonus-text strong {
+  color: var(--green-3);
+}
+
+#armor {
+    position: relative;
+    padding: var(--padding);
+    background-color: #1a0d08;
+    background-image: url('../assets/images/Smith.png');
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    background-size: 25%; /* adjust size as needed */
+    border-radius: var(--border-radius);
+}
+
+
+@media (max-width: 690px) {
+  .armor-card {
+    max-width: 100%;
+  }
+
 }

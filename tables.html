@@ -6,73 +6,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player Tables</title>
     <link rel="stylesheet" href="styles/main.css">
-    <script src="scripts/character.js" defer></script>
+    <script src="scripts/tables.js" defer></script>
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
 </head>
 
-<body data-page-title="Tables"> 
-        <div id="header-placeholder"></div>   
+<body data-page-title="Tables">
+    <div id="header-placeholder"></div>
 
     <main>
+        <section id="Adventure">
+            <div class="flex-container">
+                <div class="flex-item" id="motivations">
+                    <h2>Motivations</h2>
+                    <p>
+                        Character motivation refers to the driving force behind a character's actions and decisions in a
+                        story. Roll a d100 to choose a motivation or select one from the list below.
+                    </p>
+                    <div class="features">
+                        <p id="selected-motivation">Your motivation will appear here.</p>
+                    </div>
+                    <button id="rollMotivationButton">Roll for Motivation</button>
+                    <p id="selected-motivation"></p>
+                    <button class="copy-button" data-target="selected-motivation">Copy</button>
 
-        <div class="flex-container">
-            <div class="flex-item" id="motivations">
-                <h2>Motivations</h2>
-                <p>
-                    Character motivation refers to the driving force behind a character's actions and decisions in a
-                    story. Roll a d100 to choose a motivation or select one from the list below.
-                </p>
-                <div class="features">
-                    <p id="selected-motivation">Your motivation will appear here.</p>
                 </div>
-                <button id="rollMotivationButton">Roll for Motivation</button>
-            </div>
 
-            <div class="flex-item" id="additional-equipment">
-                <h2>Additional Equipment</h2>
-                <p>
-                    You'll need this where you are going. Roll 2d20 to choose additional equipment or pick from the list
-                    below.
-                </p>
-                <div class="features">
-                    <p id="selected-equipment">Your equipment will appear here.</p>
-                </div>
-                <div class="controls">
-                    <button id="roll-equipment">Roll for Equipment</button>
-                </div>
-            </div>
+                <div class="flex-item" id="additional-equipment">
+                    <h2>Additional Equipment</h2>
+                    <p>
+                        You'll need this where you are going. Roll 2d20 to choose additional equipment or pick from the
+                        list
+                        below.
+                    </p>
+                    <div class="features">
+                        <p id="selected-equipment">Your equipment will appear here.</p>
+                    </div>
+                    <div class="controls">
+                        <button id="roll-equipment">Roll for Equipment</button>
+                    </div>
+                    <p id="selected-equipment"></p>
+                    <button class="copy-button" data-target="selected-equipment">Copy</button>
 
-            <div class="flex-item" id="trinkets">
-                <h2>Trinkets</h2>
-                <p>
-                    A trinket is something that doesn't define your character but adds to their backstory or creates an
-                    interesting idea about who they might be. Roll a d100 to choose a trinket or pick from the list
-                    below.
-                </p>
-                <div class="features">
-                    <p id="selected-trinket">Your trinket will appear here.</p>
                 </div>
-                <div class="controls">
-                    <button id="roll-trinket">Roll for Trinket</button>
-                </div>
-            </div>
 
-            <div class="flex-item" id="starting-wealth">
-                <h2>Starting Wealth</h2>
-                <p>
-                    At the beginning of your journey, you start with <strong>1d100 + 50 gold pieces</strong>. You can
-                    roll or let the Narrator decide based on background or class.
-                </p>
-                <div class="features">
-                    <p id="starting-wealth-amount">Your starting wealth will appear here.</p>
+                <div class="flex-item" id="trinkets">
+                    <h2>Trinkets</h2>
+                    <p>
+                        A trinket is something that doesn't define your character but adds to their backstory or creates
+                        an
+                        interesting idea about who they might be. Roll a d100 to choose a trinket or pick from the list
+                        below.
+                    </p>
+                    <div class="features">
+                        <p id="selected-trinket">Your trinket will appear here.</p>
+                    </div>
+                    <div class="controls">
+                        <button id="roll-trinket">Roll for Trinket</button>
+                    </div>
+                    <p id="selected-trinket"></p>
+                    <button class="copy-button" data-target="selected-trinket">Copy</button>
                 </div>
-                <div class="controls">
-                    <button id="roll-wealth">Roll for Wealth</button>
+
+                <div class="flex-item" id="starting-wealth">
+                    <h2>Starting Wealth</h2>
+                    <p>
+                        At the beginning of your journey, you start with <strong>1d100 + 50 gold pieces</strong>. You
+                        can
+                        roll or let the Narrator decide based on background or class.
+                    </p>
+                    <div class="features">
+                        <p id="starting-wealth-amount">Your starting wealth will appear here.</p>
+                    </div>
+                    <div class="controls">
+                        <button id="roll-wealth">Roll for Wealth</button>
+                    </div>
+                    <p id="starting-wealth-amount"></p>
+                    <button class="copy-button" data-target="starting-wealth-amount">Copy</button>
                 </div>
+
+                <img src="assets/images/Adventure.png" style="width: 101%; border-radius: var(--border-radius);transform: scale(102%);" alt="">
+
             </div>
-        </div>
+        </section>
+
+
 
 
         <section>

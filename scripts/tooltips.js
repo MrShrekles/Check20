@@ -63,10 +63,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const textNodes = Array.from(element.childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
 
             textNodes.forEach(node => {
-                let originalText = node.textContent.trim();
+                let originalText = node.textContent;
 
                 Object.keys(tooltipLibrary).forEach(term => {
-                    const regex = new RegExp(`\\b${term}\\b`, "gi");
+                    const regex = new RegExp(`(?<![\\w>])(${term})(?![\\w<])`, "gi");
 
                     if (regex.test(originalText) && element.contains(node)) {
                         const tooltipText = tooltipLibrary[term];

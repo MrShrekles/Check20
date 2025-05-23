@@ -1,0 +1,61 @@
+.class-description p {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--white);
+}
+
+.class-section-title {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: var(--yellow-1);
+}
+
+.class-box {
+    background-color: var(--green-1);
+    border: 2px solid var(--yellow-1);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.class-box h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: var(--yellow-1);
+}
+
+.class-box ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.class-box li {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    color: var(--white);
+}
+
+.class-box code {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+#support {
+    background-image: url('../assets/images/Hospital.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-y: top;
+}
+
+#merchant {
+    background-image: url('../assets/images/skyline.png');
+    background-size: 90%;
+    background-repeat: repeat-x;
+    background-position-y: bottom;
+    background-position-x: right;
+}

@@ -1,0 +1,38 @@
+.flex-curse {
+    flex: 1 1 45%;
+    min-width: 350px;
+    max-width: 590px;
+    background-color: #2c1a14;
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 12px rgba(255, 80, 30, 0.2);
+    color: #f8e3c5;
+    transition: transform 0.2s ease, background 0.3s ease;
+    border: 1px solid #442014;
+    
+    background-image: url('../assets/images/Ordealis2.png');
+    background-size: cover;
+    background-repeat: repeat;
+    background-position: right;
+}
+
+
+/* Inner section titles */
+.flex-curse h3 {
+    color: #f79a63;
+}
+
+/* Curse hover effect */
+.flex-curse:hover {
+    background-color: #3b1e16;
+    transform: scale(1.015);
+    box-shadow: 0 0 16px rgba(255, 120, 30, 0.3);
+}
+
+section {
+    background-image: url('../assets/images/Ordealis2.png');
+    background-size: 100%;
+    background-repeat: repeat-x;
+    background-position-y: bottom;
+    background-position-x: right;
+}

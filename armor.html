@@ -7,7 +7,6 @@
     <title>Armor and Defense</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/armor.css">
-    <script src="scripts/main.js" defer></script>
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
@@ -35,8 +34,23 @@
                         effective. Be cautious, as wearing too much heavy gear can impose the 'pinned' condition,
                         hindering your movement.
                     </p>
+                    <h1>Types of Mundane Armor</h1>
+                    <p><strong>Armor Penalties: </strong> If a check's modifier is negative, it is considered a penalty.
+                        Features that negate penalties can remove these effects.
+                    </p>
+                    <p><strong>Magic Penalty:</strong> This is in reference to your spellcasting check, whatever it
+                        might be for
+                        your Class, Path, Talent, and so on</p>
+
+                    <!-- Shield Bash -->
+                    <h4>Shield Bash</h4>
+                    <p>
+                        Use your shield as a weapon. Make a Strength check as an off-action to deal
+                        <code> [[1d4]] </code>
+                        impact damage to an enemy.
+                    </p>
                 </div>
-                <div class="column">
+                <div class="column" id="smith">
                     <!-- Repair Methods -->
                     <div class="features">
                         <h4>Repair Methods</h4>
@@ -62,19 +76,6 @@
                     </div>
                 </div>
             </div>
-            <h1>Types of Mundane Armor</h1>
-            <p><strong>Armor Penalties: </strong> If a check's modifier is negative, it is considered a penalty.
-                Features that negate penalties can remove these effects.
-            </p>
-            <p><strong>Magic Penalty:</strong> This is in reference to your spellcasting check, whatever it might be for
-                your Class, Path, Talent, and so on</p>
-
-            <!-- Shield Bash -->
-            <h4>Shield Bash</h4>
-            <p>
-                Use your shield as a weapon. Make a Strength check as an off-action to deal <code> [[1d4]] </code>
-                impact damage to an enemy.
-            </p>
 
         </section>
         <!-- Filter/Sort Controls -->
