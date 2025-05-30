@@ -1,21 +1,27 @@
 .armor-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 5px;
 }
 
 .armor-card {
   background: var(--theme-1);
-  max-width: 30%;
   border: 1px solid var(--theme-2);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   color: var(--text-plain);
   transition: transform 0.2s ease, border-color 0.3s ease;
   padding: 3px;
+  width: 230px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+@media (max-width: 690px) {
+  .armor-card {
+    width: 45%;
+  }
 }
 
 .armor-card:hover {
@@ -30,20 +36,18 @@
 }
 
 .armor-tags {
-  margin-bottom: 0.25rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: 10px;
 }
 
 .armor-tags span {
   display: inline-block;
-  padding: 2px 5px;
-  font-size: 0.65rem;
+  padding: 5px;
+  font-size: 0.7rem;
   color: var(--white);
   border-radius: var(--border-radius);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .armor {
@@ -64,13 +68,7 @@
   padding: 0;
 }
 
-.armor-info li {
-  margin-bottom: 0.2rem;
-  line-height: 1.2;
-}
-
 .armor-card p {
-  font-size: 0.75rem;
   color: var(--text-cream);
   margin: 0.5rem 0;
   line-height: 1.3;
@@ -82,7 +80,6 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.75rem;
   padding: 4px 6px;
   transition: background 0.2s ease;
 }
@@ -117,10 +114,24 @@
     border-radius: var(--border-radius);
 }
 
+.armor-buttons {
+  display: flex;
+  gap: 4px;
+}
 
-@media (max-width: 690px) {
-  .armor-card {
-    max-width: 100%;
-  }
+.copy-armor,
+.copy-addarmor {
+  flex: 1;
+  padding: var(--padding);
+  border-radius: var(--border-radius);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: var(--theme-2);
+}
 
+.copy-armor:hover,
+.copy-addarmor:hover {
+  background-color: var(--theme-hover);
 }

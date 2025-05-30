@@ -7,48 +7,27 @@
     <title>Character Sheet</title>
     <link rel="stylesheet" href="styles/charsheet.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+    <script src="scripts/char_class.js" defer></script>
+    <script src="scripts/char_species.js" defer></script>
     <script src="scripts/charsheet.js" defer></script>
+    <script src="scripts/char_save.js" defer></script>
+
+
 </head>
 
 <body>
+    <button class="nav-button" onclick="location.href='index.html'">Homepage</button>
     <form id="character-sheet">
         <section class="two-column" id="charsheet">
             <div class="column">
 
                 <div class="character-header">
-                    <div class="char-name">
+                    <div class="character-header">
                         <label for="charName">Character Name:</label>
                         <input type="text" id="charName" name="charName">
+
                     </div>
 
-                    <div class="flex-container">
-                        <div class="flex-item">
-                            <label for="language">Language:</label>
-                            <input type="text" id="language" name="language">
-                        </div>
-                        <div class="flex-item">
-                            <label for="age">Age:</label>
-                            <input type="number" id="age" name="age">
-                        </div>
-                        <div class="flex-item">
-                            <label for="size">Size:</label>
-                            <input type="text" id="size" name="size">
-                        </div>
-                        <div class="flex-item">
-                            <label for="diet">Diet:</label>
-                            <input type="text" id="diet" name="diet">
-                        </div>
-                    </div>
-                    <div class="flex-container">
-                        <div class="flex-item">
-                            <label for="trinket">Trinket:</label>
-                            <textarea name="trinket" id="trinket"></textarea>
-                        </div>
-                        <div class="flex-item">
-                            <label for="motivation">Motivation:</label>
-                            <textarea name="motivation" id="motivation"></textarea>
-                        </div>
-                    </div>
 
                     <div class="health-section">
 
@@ -73,8 +52,7 @@
                                         <input type="number" name="woundsTotal" class="circle-input" id="wounds">
                                     </td>
                                     <td>
-                                        <input type="number" name="woundsCurrent" class="circle-input"
-                                            id="woundsCurrent">
+                                        <input type="number" name="woundsCurrent" class="circle-input" id="woundsCurrent">
                                     </td>
                                 </tr>
 
@@ -128,8 +106,7 @@
                             <!-- Row 1 -->
                             <tr>
                                 <td>Agility</td>
-                                <td><input type="number" name="agilityTotal" class="circle-input" id="agilityTotal"
-                                        onchange="calculateDerivedStats()"></td>
+                                <td><input type="number" name="agilityTotal" class="circle-input" id="agilityTotal" onchange="calculateDerivedStats()"></td>
                                 <td><input type="number" name="agilityBonus" class="circle-input"></td>
                                 <td>Influence</td>
                                 <td><input type="number" name="influenceTotal" class="circle-input"></td>
@@ -156,12 +133,10 @@
                             <!-- Row 4 -->
                             <tr>
                                 <td>Strength</td>
-                                <td><input type="number" name="strengthTotal" class="circle-input" id="strength"
-                                        onchange="calculateDerivedStats()"></td>
+                                <td><input type="number" name="strengthTotal" class="circle-input" id="strength" onchange="calculateDerivedStats()"></td>
                                 <td><input type="number" name="strengthBonus" class="circle-input"></td>
                                 <td>Observation</td>
-                                <td><input type="number" name="observationTotal" class="circle-input" id="observation"
-                                        onchange="calculateDerivedStats()"></td>
+                                <td><input type="number" name="observationTotal" class="circle-input" id="observation" onchange="calculateDerivedStats()"></td>
                                 <td><input type="number" name="observationBonus" class="circle-input"></td>
                             </tr>
                             <!-- Row 5 -->
@@ -180,8 +155,7 @@
                                     <button type="button" onclick="clearAllTotals()">Clear All</button>
                                 </td>
                                 <td colspan="3">
-                                    Total Checks: <input type="number" id="totalChecksSum" class="circle-input"
-                                        readonly>
+                                    Total Checks: <input type="number" id="totalChecksSum" class="circle-input" readonly>
                                 </td>
                             </tr>
 
@@ -189,6 +163,35 @@
                     </table>
                 </div>
 
+                <ul class="char-details-inline">
+                    <li>
+                        <label for="language">Language:</label>
+                        <input type="text" id="language" name="language">
+                    </li>
+                    <li>
+                        <label for="age">Age:</label>
+                        <input type="number" id="age" name="age">
+                    </li>
+                    <li>
+                        <label for="size">Size:</label>
+                        <input type="text" id="size" name="size">
+                    </li>
+                    <li>
+                        <label for="diet">Diet:</label>
+                        <input type="text" id="diet" name="diet">
+                    </li>
+                </ul>
+
+                <ul class="char-notes-inline">
+                    <li>
+                        <label for="trinket">Trinket:</label>
+                        <textarea id="trinket" name="trinket"></textarea>
+                    </li>
+                    <li>
+                        <label for="motivation">Motivation:</label>
+                        <textarea id="motivation" name="motivation"></textarea>
+                    </li>
+                </ul>
 
                 <h2>Resources</h2>
                 <div class="resources-section">
@@ -212,8 +215,7 @@
                             <!-- Class Resource -->
                             <tr>
                                 <td>Class Resource</td>
-                                <td><input type="number" id="class-resource_max" name="class-resource_max"
-                                        class="circle-input"></td>
+                                <td><input type="number" id="class-resource_max" name="class-resource_max" class="circle-input"></td>
                                 <td><input type="number" id="class-resource" name="class-resource" class="circle-input">
                                 </td>
                             </tr>
@@ -221,127 +223,79 @@
                             <!-- Spell Points -->
                             <tr>
                                 <td>Spell Points</td>
-                                <td><input type="number" id="spell-points_max" name="spell-points_max"
-                                        class="circle-input"></td>
+                                <td><input type="number" id="spell-points_max" name="spell-points_max" class="circle-input"></td>
                                 <td><input type="number" id="spell-points" name="spell-points" class="circle-input">
-                                </td>
-                            </tr>
-                        </tbody>
-
-                        <!-- Online-only dynamic resources -->
-                        <tbody class="online-only" id="other-resources">
-                            <tr>
-                                <td colspan="3" class="resource-header">Other Resources</td>
-                            </tr>
-                            <!-- Dynamic rows will be added here by JS -->
-                            <tr>
-                                <td colspan="3" class="centered">
-                                    <button type="button" id="addOtherResource" onclick="addOtherResource()">+ Add Other
-                                        Resource</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <div class="hide">
-                        <div class="grid-box"></div>
-                    </div>
                 </div>
-
-
             </div>
 
-            </div>
+
             <div class="column">
+                <!-- Species Selection -->
                 <div class="flex-item">
                     <label for="species">Species:</label>
-                    <input list="species-list" id="species" name="species" placeholder="Type to search...">
-                    <datalist id="species-list"></datalist>
+                    <select id="species" name="species">
+                        <option value="">Select Species</option>
+                    </select>
+
+                    <select id="subspecies" name="subspecies" style="display: none;"></select>
+
+                    <ul id="species-details" class="feature-list"></ul>
+                    <div id="subspecies-details"></div>
+
                 </div>
+
+                <!-- Class Selection -->
                 <div class="flex-item">
                     <label for="class">Class:</label>
                     <select name="class" id="class">
+                        <option value="">Select Class</option>
                     </select>
                 </div>
+
+                <!-- Path, Talent, Specialization -->
                 <div class="flex-container">
                     <div class="flex-item">
                         <label for="path">Path:</label>
                         <select name="path" id="path">
-                            <option></option>
+                            <option value="">Select Path</option>
                         </select>
                     </div>
                     <div class="flex-item">
                         <label for="talent">Talent:</label>
                         <select name="talent" id="talent">
-                            <option></option>
+                            <option value="">Select Talent</option>
                         </select>
                     </div>
-                    <div class="flex-item">
+                    <div class="flex-item specialization-wrapper hidden" id="specialization-wrapper">
                         <label for="special">Specialization:</label>
-                        <input type="text" name="special">
+                        <select id="special" name="special">
+                            <option value="">Select Specialization</option>
+                        </select>
                     </div>
                 </div>
-                <!-- FEATURES, EQUIPMENT & NOTES -->
+
+                <!-- Details Outputs -->
+                <div id="specialization-details" class="details-box"></div>
                 <div id="char-details">
-                    <!-- Species Details -->
                     <div id="species-details"></div>
-
-                    <!-- Include the script -->
-                    <script src="species.js"></script>
-
-                    <!-- Species Features -->
                     <div class="feature">
                         <div id="class-description" class="description-text"></div>
                         <ul id="class-features" class="feature-list"></ul>
                         <ul id="class-equipment" class="feature-list"></ul>
-
                         <div id="path-details" class="feature-list"></div>
                         <div id="talent-details" class="feature-list"></div>
-
                     </div>
                 </div>
-
-                <div class="hide">
-                    <h2>Character Notes</h2>
-                    <div class="print-notes">
-
-                        <div class="line-box notes-class">
-                            <label>Class | Path | Talent</label>
-                            <div class="lines"></div>
-                        </div>
-
-                        <div class="line-box notes-species">
-                            <label>Species</label>
-                            <div class="lines"></div>
-                        </div>
-
-                        <div class="line-box">
-                            <label>Additional Features</label>
-                            <div class="lines"></div>
-                        </div>
-
-                        <div class="line-box">
-                            <label>Inventory</label>
-                            <div class="lines"></div>
-                        </div>
-
-
-                    </div>
-                </div>
-
             </div>
 
-
-            </div>
-
-            <div id="repeating-section" hidden>
-                <button type="button" id="addItemBtn" onclick="addItem()">+ Add Item</button>
-            </div>
-            </div>
         </section>
 
     </form>
-    <button class="nav-button" onclick="location.href='index.html'">Homepage</button>
 
 </body>
 

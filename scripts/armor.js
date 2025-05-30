@@ -61,15 +61,15 @@ function renderArmor() {
       </ul>
       ${item.description ? `<p>${item.description}</p>` : ''}
       <div class="armor-buttons">
-        <button class="copy-armor" data-macro="/me equips ${item.name} gaining ${item.armor} armor.">${item.category === "shield" ? "Copy Shield Macro" : "Copy Armor Macro"}</button>
-        <button class="copy-addarmor">Copy to Sheet</button>
+        <button class="copy-armor" data-macro="/me equips ${item.name} gaining ${item.armor} armor.">${item.category === "shield" ? "Roll20 Copy" : "Chat Copy"}</button>
+        <button class="copy-addarmor">Sheet Copy</button>
       </div>
     `;
 
     card.querySelector('.copy-armor').addEventListener('click', e => {
       navigator.clipboard.writeText(e.target.dataset.macro);
       e.target.textContent = "Copied!";
-      setTimeout(() => e.target.textContent = "Copy Armor Macro", 1500);
+      setTimeout(() => e.target.textContent = "Roll20 Copy", 1500);
     });
 
     card.querySelector('.copy-addarmor').addEventListener('click', e => {

@@ -1259,45 +1259,38 @@ form {
 
 /* -------------Tooltip Container-------------- */
 .tooltip {
-    position: relative;
-    cursor: help;
-    color: var(--cream);
-    display: inline-block;
+  position: relative;
+  cursor: help;
+  color: var(--cream);
+  display: inline-block;
 }
 
-/* Tooltip Text */
 .tooltip::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 125%;
-    left: 150%;
-    transform: translateX(-50%);
-    background-color: var(--hate);
-    color: var(--white);
-    padding: var(--padding);
-    border-radius: var(--border-radius);
-    font-size: 0.9rem;
-    white-space: normal;
-    max-width: 250px;
-    box-shadow: var(--box-shadow);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-    z-index: 9999;
-    word-wrap: normal;
-    width: 200px;
-    pointer-events: none;
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translate(-80%, 0);
+  background-color: var(--hate);
+  color: var(--white);
+  padding: var(--padding);
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  width: 200px;
+  box-shadow: var(--box-shadow);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  z-index: 9999;
+  pointer-events: none;
 }
 
 .tooltip:hover::after {
-    opacity: 1;
-    visibility: visible;
-    transition-delay: .3s;
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0.3s;
 }
 
-.tooltip::after {
-    transition-delay: 0.3s;
-}
 
 /* Dropdown Navigation */
 nav {

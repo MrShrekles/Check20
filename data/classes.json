@@ -2,13 +2,12 @@
   "classes": [
     {
       "name": "Tank",
-      "description": " As a Tank, your character embodies the very essence of strength, resilience, and unyielding fortitude. You are the shield that safeguards your allies, the bulwark that stands firm in the face of the enemy onslaught. With every swing of your weapon, you command the battlefield, drawing the attention of foes and absorbing their blows that would otherwise kill your companions and many other creatures as well. Your unmatched stamina and formidable armor make you a veritable living fortress, capable of withstanding onslaughts that would obliterate the less hardy.",
+      "description": "As a Tank, your character embodies the very essence of strength, resilience, and unyielding fortitude. You are the shield that safeguards your allies, the bulwark that stands firm in the face of the enemy onslaught. With every swing of your weapon, you command the battlefield, drawing the attention of foes and absorbing their blows that would otherwise kill your companions and many other creatures as well. Your unmatched stamina and formidable armor make you a veritable living fortress, capable of withstanding onslaughts that would obliterate the less hardy. However, the Tank's might in combat comes with a trade-off. In situations that require finesse, diplomacy, or arcane knowledge, you may find yourself akin to a fish out of water. While your strength and endurance are beyond question, tasks that involve subtlety, stealth, or intricate problem-solving might present a challenge. It's in these moments that you'll need to rely on your allies, just as they depend on your unwavering protection in battle. As a Tank, your role is not to master every situation, but to provide a rock-solid foundation from which your group can confront any danger. Always remember, true strength comes not just from physical power, but from knowing your limits and trusting in your comrades.",
       "features": [
         {
-          "name": "Champion",
+          "name": "Bolster",
           "description": [
-            "As a Tank, your character embodies the very essence of strength, resilience, and unyielding fortitude. You are the shield that safeguards your allies, the bulwark that stands firm in the face of the enemy onslaught. With every swing of your weapon, you command the battlefield, drawing the attention of foes and absorbing their blows that would otherwise kill your companions and many other creatures as well. Your unmatched stamina and formidable armor make you a veritable living fortress, capable of withstanding onslaughts that would obliterate the less hardy.",
-            "However, the Tank's might in combat comes with a trade-off. In situations that require finesse, diplomacy, or arcane knowledge, you may find yourself akin to a fish out of water. While your strength and endurance are beyond question, tasks that involve subtlety, stealth, or intricate problem-solving might present a challenge. It's in these moments that you'll need to rely on your allies, just as they depend on your unwavering protection in battle. As a Tank, your role is not to master every situation, but to provide a rock-solid foundation from which your group can confront any danger. Always remember, true strength comes not just from physical power, but from knowing your limits and trusting in your comrades."
+            "Gain +10 Wounds, suffer no penalties from wearing armor, and may carry 3 hefty items before becoming Pinned. You have 4 Bolster Points. Regain 1 when you Press On, all on a long rest, when you kill an enemy, or force one to submit. You can use a Bolster to either: When you Attack gain [[1d6]] to the check and damage, or remove one condition and heal for +5"
           ]
         }
       ],
@@ -82,7 +81,7 @@
             },
             {
               "name": "Battle Roar",
-              "description": "Spending a Champion Point lets all allies within short range make a melee attack as a free action."
+              "description": "Spending a Bolster lets all allies within short range make a melee attack as a free action."
             },
             {
               "name": "Rallying Cry",
@@ -94,7 +93,7 @@
             },
             {
               "name": "Unstoppable Champion",
-              "description": "Spend 4 Champion Points to become immune to damage and conditions until the end of your next turn."
+              "description": "Spend 4 Bolster to become immune to damage and conditions until the end of your next turn."
             }
           ]
         },
@@ -170,7 +169,7 @@
             },
             {
               "name": "Echo",
-              "description": "When you deal elemental damage, spend a Champion Point to deal the elemental damage to a secondary target within short range (only the elemental damage, not the total damage)."
+              "description": "When you deal elemental damage, spend a Bolster to deal the elemental damage to a secondary target within short range (only the elemental damage, not the total damage)."
             },
             {
               "name": "Overture",
@@ -194,7 +193,7 @@
             },
             {
               "name": "Elemental Rebirth",
-              "description": "When you are reduced to 0 wounds, instead of taking the injured condition, you can spend 2 Champion Points to regain 10 wounds and release a burst of elemental energy, dealing [[3d6]] elemental damage to enemies within reach range."
+              "description": "When you are reduced to 0 wounds, instead of taking the injured condition, you can spend 2 Bolster to regain 10 wounds and release a burst of elemental energy, dealing [[3d6]] elemental damage to enemies within reach range."
             },
             {
               "name": "Elemental Storm",
@@ -224,11 +223,11 @@
           "progressionSteps": [
             {
               "name": "Divine Emissary",
-              "description": "As an action spending a Champion Point, you can channel divine energy to heal a creature within short range, restoring [[2d6]] wounds. Additionally, you can enter a meditative state for 1 minute, gaining advantage on your next Observation check."
+              "description": "As an action spending a Bolster, you can channel divine energy to heal a creature within short range, restoring [[2d6]] wounds. Additionally, you can enter a meditative state for 1 minute, gaining advantage on your next Observation check."
             },
             {
               "name": "Divine Beacon",
-              "description": "As an action spending 1 Champion Point, illuminate yourself with divine light, healing your allies and damaging enemies for [[2d6]]. The light can also dispel darkness spells and fear effects, symbolizing your role as a beacon of hope."
+              "description": "As an action spending 1 Bolster, illuminate yourself with divine light, healing your allies and damaging enemies for [[2d6]]. The light can also dispel darkness spells and fear effects, symbolizing your role as a beacon of hope."
             },
             {
               "name": "Enhanced Shifting Resolve",
@@ -236,7 +235,7 @@
             },
             {
               "name": "True Unity",
-              "description": "As a Free Action spending a Champion Point, you can activate both Strength of God and Strength of Self simultaneously for 1 minute. While this is active, allies within medium range have +1 to their checks."
+              "description": "As a Free Action spending a Bolster, you can activate both Strength of God and Strength of Self simultaneously for 1 minute. While this is active, allies within medium range have +1 to their checks."
             },
             {
               "name": "Celestial Insight",
@@ -252,11 +251,11 @@
             },
             {
               "name": "Avatar Ascendant (Partial)",
-              "description": "As an action spending 2 Champion Points, you become an avatar of your god until the end of your next turn. You gain immunity to Corpus conditions, and your attacks deal additional damage equal to your Spirit check."
+              "description": "As an action spending 2 Bolster, you become an avatar of your god until the end of your next turn. You gain immunity to Corpus conditions, and your attacks deal additional damage equal to your Spirit check."
             },
             {
               "name": "Divine Arbitration",
-              "description": "As an action spending a Champion Point, call upon your deity to intervene directly in a moment of great need. This could manifest as a powerful smite against foes for [[20]] Solar damage, a mass healing wave of [[10]] healing to all allies within medium range, or an irrefutable command issued with divine authority to an enemy of your choice."
+              "description": "As an action spending a Bolster, call upon your deity to intervene directly in a moment of great need. This could manifest as a powerful smite against foes for [[20]] Solar damage, a mass healing wave of [[10]] healing to all allies within medium range, or an irrefutable command issued with divine authority to an enemy of your choice."
             },
             {
               "name": "Avatar Ascendant (Full)",
@@ -276,7 +275,7 @@
           "progressionSteps": [
             {
               "name": "Vengeful Defiance",
-              "description": "While making an attack action, spend a Champion Point to deal an additional [[1d6]] damage and gain the total damage as armor until the end of your next turn."
+              "description": "While making an attack action, spend a Bolster to deal an additional [[1d6]] damage and gain the total damage as armor until the end of your next turn."
             },
             {
               "name": "Rite of the Godslayer",
@@ -296,7 +295,7 @@
             },
             {
               "name": "Aura of Defiance",
-              "description": "As an action spending a Champion Point, activate an Aura of Defiance, granting all allies within short range +10 armor. Their attacks deal an additional [[1d6]] Vozian damage until the end of their next turn."
+              "description": "As an action spending a Bolster, activate an Aura of Defiance, granting all allies within short range +10 armor. Their attacks deal an additional [[1d6]] Vozian damage until the end of their next turn."
             },
             {
               "name": "Rite of the Godslayer II",
@@ -427,7 +426,7 @@
             },
             {
               "name": "The Spell Breaker",
-              "description": "Spending a champion point as an action, you become immune to any words of power or magical abilities unless cast by a god for 1 minute."
+              "description": "Spending a Bolster as an action, you become immune to any words of power or magical abilities unless cast by a god for 1 minute."
             }
           ]
         },
@@ -470,7 +469,7 @@
             },
             {
               "name": "Call of the Deep",
-              "description": "As an action, use a champion point to call upon sea creatures for assistance. Summon a swarm of PL4 small crabs or a giant octopus for a turn, which will attack your enemies or create obstacles."
+              "description": "As an action, use a Bolster to call upon sea creatures for assistance. Summon a swarm of PL4 small crabs or a giant octopus for a turn, which will attack your enemies or create obstacles."
             },
             {
               "name": "Hydro-Illusion",
@@ -513,7 +512,7 @@
           "progressionSteps": [
             {
               "name": "Tremor Shield",
-              "description": "Whenever you are hit by a melee attack, you can spend 1 Champion Point as an off-action to release a tremor, forcing all enemies within reach range to succeed on a Physical check or fall prone. This reaction can be used while in Titanic Growth without spending Champion Points."
+              "description": "Whenever you are hit by a melee attack, you can spend 1 Bolster as an off-action to release a tremor, forcing all enemies within reach range to succeed on a Physical check or fall prone. This reaction can be used while in Titanic Growth without spending Bolster."
             },
             {
               "name": "Colossus",
@@ -721,29 +720,29 @@
           "features": [
             {
               "name": "Hard-Boiled",
-              "description": "You have +5 Armor. Your keen eye for detail and deductive reasoning is a powerful asset. As a Half-Action, spend a Champion Point to reveal vital clues or hidden information in your surroundings if there is any."
+              "description": "You have +5 Armor. Your keen eye for detail and deductive reasoning is a powerful asset. As a Half-Action, spend a Bolster to reveal vital clues or hidden information in your surroundings if there is any."
             }
           ],
           "progressionSteps": [
             {
               "name": "Interrogator",
-              "description": "You know how to get information out of people. Spend a Champion Point to make an Influence check with advantage when trying to persuade someone to reveal information. This could help you get a confession from a suspect, persuade a witness to talk, or intimidate a thug into revealing his boss's plans."
+              "description": "You know how to get information out of people. Spend a Bolster to make an Influence check with advantage when trying to persuade someone to reveal information. This could help you get a confession from a suspect, persuade a witness to talk, or intimidate a thug into revealing his boss's plans."
             },
             {
               "name": "Quick Reflexes",
-              "description": "Your detective instincts allow you to react quickly to danger. Spend a Champion Point to take an additional off-action (reaction) during a round. This could allow you to dodge an unexpected attack, catch a falling object, or react to a sudden change in the situation."
+              "description": "Your detective instincts allow you to react quickly to danger. Spend a Bolster to take an additional off-action (reaction) during a round. This could allow you to dodge an unexpected attack, catch a falling object, or react to a sudden change in the situation."
             },
             {
               "name": "Master of Disguise",
-              "description": "You can blend into any crowd. Spend a Champion Point to make a Stealth or Influence Check with advantage when trying to disguise yourself or blend into a crowd."
+              "description": "You can blend into any crowd. Spend a Bolster to make a Stealth or Influence Check with advantage when trying to disguise yourself or blend into a crowd."
             },
             {
               "name": "Tactical Analysis",
-              "description": "You can quickly assess a situation and devise a plan. Spend a Champion Point to give all allies a +2 bonus on their next check or attack."
+              "description": "You can quickly assess a situation and devise a plan. Spend a Bolster to give all allies a +2 bonus on their next check or attack."
             },
             {
               "name": "Unseen Strike",
-              "description": "You know how to hit where it hurts. Spend a Champion Point to make an additional attack with advantage and deal an additional [[1d4]] damage on a hit."
+              "description": "You know how to hit where it hurts. Spend a Bolster to make an additional attack with advantage and deal an additional [[1d4]] damage on a hit."
             },
             {
               "name": "Healthy Heart",
@@ -751,15 +750,15 @@
             },
             {
               "name": "Dirty Fighter",
-              "description": "You know how to fight dirty to gain the upper hand. Spend a Champion Point on an attack to cause one of these Conditions: Bleeding, Coughing, Pinned, Prone, or Blind."
+              "description": "You know how to fight dirty to gain the upper hand. Spend a Bolster on an attack to cause one of these Conditions: Bleeding, Coughing, Pinned, Prone, or Blind."
             },
             {
               "name": "Knockout Punch",
-              "description": "You can deliver a powerful punch that can knock an enemy unconscious. Spend a Champion Point and make a melee attack action that, on a hit, forces the target to succeed on a Strength or Survival check or take the Stunned condition until the end of their next turn."
+              "description": "You can deliver a powerful punch that can knock an enemy unconscious. Spend a Bolster and make a melee attack action that, on a hit, forces the target to succeed on a Strength or Survival check or take the Stunned condition until the end of their next turn."
             },
             {
               "name": "Desperation Strike",
-              "description": "When the odds are against you, you can make a desperate attack that hits no matter what. Spend a Champion Point to make an additional melee or ranged attack that automatically hits, but only deals 1 damage."
+              "description": "When the odds are against you, you can make a desperate attack that hits no matter what. Spend a Bolster to make an additional melee or ranged attack that automatically hits, but only deals 1 damage."
             },
             {
               "name": "Quantum Pocket Watch",
@@ -779,23 +778,23 @@
           "progressionSteps": [
             {
               "name": "Impenetrable Defense",
-              "description": "You can bolster your defenses to withstand powerful attacks. As an action, use a champion point to double your Armor Points until the end of your next turn."
+              "description": "You can bolster your defenses to withstand powerful attacks. As an action, use a Bolster to double your Armor Points until the end of your next turn."
             },
             {
               "name": "Iron Sanctuary",
-              "description": "As an action, use a champion point to create a sanctuary of reach range that lasts for 1 minute. Allies while in the sanctuary gain +2 armor at the start of their turn to a maximum of 10 while in the sanctuary. The bonus armor remains while the sanctuary is active."
+              "description": "As an action, use a Bolster to create a sanctuary of reach range that lasts for 1 minute. Allies while in the sanctuary gain +2 armor at the start of their turn to a maximum of 10 while in the sanctuary. The bonus armor remains while the sanctuary is active."
             },
             {
               "name": "Inspiring Command",
-              "description": "Radiating an aura of confidence and bravery, inspire allies to fight with greater ferocity. As an action, spend a champion point; for 1 minute, all allies within short range receive a +2 bonus to attack checks and damage."
+              "description": "Radiating an aura of confidence and bravery, inspire allies to fight with greater ferocity. As an action, spend a Bolster; for 1 minute, all allies within short range receive a +2 bonus to attack checks and damage."
             },
             {
               "name": "Champion Rest",
-              "description": "You can meditate to regain your prowess. During a Press On, make a Spirit check to regain [[1d6]] champion points per success."
+              "description": "You can meditate to regain your prowess. During a Press On, make a Spirit check to regain [[1d6]] Bolster per success."
             },
             {
               "name": "Iron Resolve",
-              "description": "As an action spending a champion point, fortify your mental and physical resolve, gaining immunity to Cognitive Conditions for the next minute."
+              "description": "As an action spending a Bolster, fortify your mental and physical resolve, gaining immunity to Cognitive Conditions for the next minute."
             },
             {
               "name": "Dual Stance",
@@ -807,11 +806,11 @@
             },
             {
               "name": "Ironclad Rally",
-              "description": "As an action spending a champion point, let out a battlecry. Allies within short range gain [[1d6]] armor, and enemies must make a Spirit check at advantage or take the fear condition."
+              "description": "As an action spending a Bolster, let out a battlecry. Allies within short range gain [[1d6]] armor, and enemies must make a Spirit check at advantage or take the fear condition."
             },
             {
               "name": "Defender's Rebuke",
-              "description": "When a creature makes an attack against you, spend a champion point and deal [[1d6]] physical damage without a check against the attacking creature."
+              "description": "When a creature makes an attack against you, spend a Bolster and deal [[1d6]] physical damage without a check against the attacking creature."
             }
           ]
         },
@@ -832,7 +831,7 @@
             },
             {
               "name": "Champion Attack",
-              "description": "Spend a Champion Point to gain one additional unarmed attack."
+              "description": "Spend a Bolster to gain one additional unarmed attack."
             },
             {
               "name": "Endurance Fighter",
@@ -927,7 +926,7 @@
           "features": [
             {
               "name": "Frenzy",
-              "description": "On your turn in combat, you can choose to go into a frenzy. When you choose to do so, spend a Champion Point and roll [[1d4]]. You gain that many additional attacks. After your attacks, you take the Exhaustion condition until the end of your next turn."
+              "description": "On your turn in combat, you can choose to go into a frenzy. When you choose to do so, spend a Bolster and roll [[1d4]]. You gain that many additional attacks. After your attacks, you take the Exhaustion condition until the end of your next turn."
             }
           ],
           "progression": "You may freely select talent progression steps in any order. With each step, gain a +1 bonus to any one of your checks, though no check can exceed a maximum of 15.",
@@ -962,15 +961,15 @@
             },
             {
               "name": "Wild Instincts",
-              "description": "(Gain 1 Champion Point). As a reaction to taking damage, use a Champion Point to tap into your primal instincts and reduce its damage by half."
+              "description": "(Gain 1 Bolster). As a reaction to taking damage, use a Bolster to tap into your primal instincts and reduce its damage by half."
             },
             {
               "name": "Primal Roar",
-              "description": "(Gain 1 Champion Point). As an action, spend a Champion Point and unleash a roar affecting all creatures within short range. They must make a Spirit check or take the Fear condition with you as the source. You have advantage on attack checks against creatures with the Fear condition with you as the source."
+              "description": "(Gain 1 Bolster). As an action, spend a Bolster and unleash a roar affecting all creatures within short range. They must make a Spirit check or take the Fear condition with you as the source. You have advantage on attack checks against creatures with the Fear condition with you as the source."
             },
             {
               "name": "Rampage",
-              "description": "(Gain 1 Champion Point). As an action, use a Champion Point to go on a rampage. Your movement speed is doubled, and you can make an unarmed attack against each enemy you pass during your movement."
+              "description": "(Gain 1 Bolster). As an action, use a Bolster to go on a rampage. Your movement speed is doubled, and you can make an unarmed attack against each enemy you pass during your movement."
             }
           ]
         },
@@ -1393,10 +1392,9 @@
             },
             {
               "name": "Reaper's Breath",
-              "description": "On your first turn in combat, gain [[2d6]] to the attack roll and deal that much additional damage."
+              "description": "If it’s your first turn in coimbat or the target is unaware of your postition, gain [[2d6]] to the attack check and damage"
             }
           ],
-          "progression": "Path progression is linear; you will select these progression steps in order. At levels 1, 3, 6, and 9, gain an increase of +3 points to put into your checks, but no check can exceed 15.",
           "progressionSteps": [
             {
               "name": "Death’s Armor",
@@ -1449,7 +1447,6 @@
               "description": "You can apply a rune as an action, and if it requires activation, it takes an off-action and lasts for 1 minute. You can have a number of active runes equal to your Intellect. You start with the ability to make simple +1 runes that give a +1 to what you choose. You can only put 1 rune on a single piece of gear."
             }
           ],
-          "progression": "Path progression is linear; you will select these progression steps in order. At levels 1, 3, 6, and 9, gain an increase of +3 points to put into your checks, but no check can exceed 15.",
           "progressionSteps": [
             {
               "name": "Wind Rune",
@@ -1506,7 +1503,6 @@
               "description": "As a half-action, target a creature within short range with a burst of light. They must make an Observation check or take the Blind condition until the start of their next turn."
             }
           ],
-          "progression": "Path progression is linear; you will select these progression steps in order. At levels 1, 3, 6, and 9, gain an increase of +3 points to put into your checks, but no check can exceed 15.",
           "progressionSteps": [
             {
               "name": "New Dawn",
@@ -1559,7 +1555,6 @@
               "description": "Equipped with enchanted weapons and alchemical concoctions, you gain [[6]] additional damage against spellcasters or magically enhanced creatures. Additionally, you can use a half-action to apply a poison that deals [[3]] additional toxic damage on your next attack."
             }
           ],
-          "progression": "Path progression is linear; you will select these progression steps in order. At levels 1, 3, 6, and 9, gain an increase of +3 points to put into your checks, but no check can exceed 15.",
           "progressionSteps": [
             {
               "name": "Arcane Disruptor",
