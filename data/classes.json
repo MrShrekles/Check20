@@ -18,6 +18,7 @@
         },
         {
           "name": "Choose",
+          "description": "Select a melee weapon:",
           "choices": [
             {
               "name": "Standard Weapon",
@@ -1392,7 +1393,7 @@
             },
             {
               "name": "Reaper's Breath",
-              "description": "If it’s your first turn in coimbat or the target is unaware of your postition, gain [[2d6]] to the attack check and damage"
+              "description": "If it’s your first turn in combat or the target is unaware of your postition, gain [[2d6]] to the attack check and damage"
             }
           ],
           "progressionSteps": [

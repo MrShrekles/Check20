@@ -3,32 +3,43 @@
     --medium: #e6e6e6;
     --white: #fff;
     --border-radius: 8px;
-    --box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    --box-hover: 0 2px 8px rgba(0,0,0,0.7);
+    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    --box-hover: 0 2px 8px rgba(0, 0, 0, 0.7);
     --padding: 5px;
-    --body-font: 0.85em;
+    --body-font: 0.7em;
 }
 
 body {
-    margin: 0.2in;
-    width: 8.5in;
-    height: 11in;
-    font: var(--body-font) 'Lucida Sans', sans-serif;
-    font-size: .7em;
+    font: var(--body-font) 'verdana', sans-serif;
     color: var(--black);
     background: none;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
     width: 97%;
     padding: 5px;
     border: 1px solid var(--black);
     border-radius: var(--border-radius);
     background: none;
     color: var(--black);
+    text-align: left;
 }
 
-input:focus, select:focus {
+.char-page {
+    padding: 0.2in;
+    box-sizing: border-box;
+    background: var(--white);
+    page-break-after: always;
+}
+
+.char-page:last-of-type {
+    page-break-after: auto;
+}
+
+input:focus,
+select:focus {
     background-color: var(--medium);
 }
 
@@ -41,7 +52,8 @@ label {
     font-weight: bold;
 }
 
-h2, h4 {
+h2,
+h4 {
     text-transform: uppercase;
     margin-bottom: 0;
 }
@@ -62,13 +74,14 @@ table {
     margin-bottom: 0.5em;
 }
 
-th, td {
+th,
+td {
     padding: 4px;
     border: 1px solid var(--black);
-    text-align: left;
 }
 
-.flex-container, .two-column {
+.flex-container,
+.two-column {
     display: flex;
     flex-wrap: wrap;
     gap: var(--padding);
@@ -76,16 +89,20 @@ th, td {
     align-items: start;
 }
 
-.column, .flex-item {
+.column,
+.flex-item {
     flex: 1;
     padding: var(--padding);
 }
 
-.flex-item input, .flex-item select, .flex-item textarea {
+.flex-item input,
+.flex-item select,
+.flex-item textarea {
     width: 100%;
 }
 
-.char-details-inline, .char-notes-inline {
+.char-details-inline,
+.char-notes-inline {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
@@ -94,37 +111,44 @@ th, td {
     padding: 0;
 }
 
-.char-details-inline li, .char-notes-inline li {
+.char-details-inline li,
+.char-notes-inline li {
     display: flex;
     flex: 1 1 300px;
     gap: 0.5rem;
-    align-items: center;
 }
 
-.char-details-inline input, .char-notes-inline textarea {
+.char-details-inline input,
+.char-notes-inline textarea {
     flex: 1;
 }
 
-.health-section, .checks-section, .resources-section {
+.health-section,
+.checks-section,
+.resources-section {
     padding: 0;
     border-radius: var(--border-radius);
     page-break-inside: avoid;
 }
 
-.health-table, .checks-table, .resources-table {
+.health-table,
+.checks-table,
+.resources-table {
     width: 100%;
-    text-align: center;
     border-collapse: collapse;
 }
 
-.health-table th, .checks-table th, .resources-table th {
+.health-table th,
+.checks-table th,
+.resources-table th {
     background-color: var(--medium);
     font-weight: bold;
     text-transform: uppercase;
 }
 
-.health-table td input, .checks-table input.circle-input, .resources-table input.circle-input {
-    text-align: center;
+.health-table td input,
+.checks-table input.circle-input,
+.resources-table input.circle-input {
     box-sizing: border-box;
     border-radius: var(--border-radius);
 }
@@ -154,7 +178,6 @@ th, td {
 
 .resource-item input[type="number"] {
     width: 100%;
-    text-align: center;
 }
 
 .resources {
@@ -204,7 +227,8 @@ th, td {
     cursor: pointer;
 }
 
-.hide, .hidden {
+.hide,
+.hidden {
     display: none;
 }
 
@@ -220,19 +244,151 @@ th, td {
     background-color: darkcyan;
 }
 
+#conditions {
+    page-break-inside: avoid;
+}
+
+#conditions h1 {
+    border-bottom: 1px solid var(--black);
+    margin: 0;
+}
+
+#conditions table {
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+#conditions th,
+#conditions td {
+    border: 1px solid var(--black);
+    padding: 2px 4px;
+    vertical-align: top;
+}
+
+#conditions th {
+    background-color: var(--medium);
+    text-transform: uppercase;
+}
+
+#conditions .category-row {
+    background-color: #ccc;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.damage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    margin: 0;
+    padding: 0;
+    gap: 0;
+}
+
+.damage-box {
+    border: 1px solid var(--black);
+    border-radius: var(--border-radius);
+    background: var(--white);
+    margin: 0;
+    padding: 0;
+    gap: 0;
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+.damage-box h3 {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+    border-bottom: 1px solid var(--medium);
+}
+
+.damage-box ol {
+    list-style: decimal inside;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+}
+
+.reference-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+  page-break-inside: avoid;
+}
+
+.ref-card {
+  border: 1px solid var(--black);
+  border-radius: 6px;
+  padding: 0.15in;
+  background: var(--white);
+  box-shadow: var(--box-shadow);
+}
+
+.ref-card h3 {
+  margin-top: 0;
+  border-bottom: 1px solid var(--black);
+}
+
+.ref-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ref-card li {
+  padding: 0.05in 0;
+}
+
+.ref-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ref-list li {
+  padding: 0;
+}
+
+#movement, #half-action, #size {
+    font-size: smaller;
+}
+
+
+
 @media print {
-    .resources-section {
-        box-shadow: none;
-        color: #000;
+    #page2 {
+        transform-origin: top left;
+        width: 100%;
+        height: auto;
+        page-break-after: avoid;
     }
 
-    .hide, .nav-button, .no-print, .online-only,
-    button, .recalc-button, .add-resource, .add-bonus,
-    #dice-roller, #sidebar, #open-sidebar, #toggle-sidebar {
+    .char-page {
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+}
+
+@media print {
+
+    .hide,
+    .nav-button,
+    .no-print,
+    .online-only,
+    button,
+    .recalc-button,
+    .add-resource,
+    .add-bonus,
+    #dice-roller,
+    #sidebar,
+    #open-sidebar,
+    #toggle-sidebar {
         display: none !important;
     }
 
-    html, body {
+    html,
+    body {
         width: 100%;
         height: 100%;
         margin: 0;
@@ -244,13 +400,9 @@ th, td {
         width: 98%;
     }
 
-    #char-sheet {
-        display: block;
-        width: 100%;
-        page-break-inside: avoid;
-    }
 
-    input::placeholder, textarea::placeholder {
+    input::placeholder,
+    textarea::placeholder {
         color: transparent !important;
     }
 }

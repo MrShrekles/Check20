@@ -18,282 +18,788 @@
 <body>
     <button class="nav-button" onclick="location.href='index.html'">Homepage</button>
     <form id="character-sheet">
-        <section class="two-column" id="charsheet">
-            <div class="column">
+        <div class="char-page" id="page1">
+            <section class="two-column" id="charsheet">
+                <div class="two-column">
+                    <div class="column" id="left">
 
-                <div class="character-header">
-                    <div class="character-header">
-                        <label for="charName">Character Name:</label>
-                        <input type="text" id="charName" name="charName">
+                        <div class="character-header">
+                            <div class="character-header">
+                                <label for="charName">Character Name:</label>
+                                <input type="text" id="charName" name="charName">
+
+                            </div>
+
+
+                            <div class="health-section">
+
+                                <h2>Health</h2>
+                                <table class="health-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Attribute</th>
+                                            <th>Total</th>
+                                            <th>Current</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Armor</td>
+                                            <td><input type="number" name="armorTotal" class="circle-input" id="armor"></td>
+                                            <td><input type="number" name="armorCurrent" class="circle-input"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Wounds</td>
+                                            <td>
+                                                <input type="number" name="woundsTotal" class="circle-input" id="wounds">
+                                            </td>
+                                            <td>
+                                                <input type="number" name="woundsCurrent" class="circle-input" id="woundsCurrent">
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Movement Speed</td>
+                                            <td>
+                                                <input type="number" name="moveTotal" class="circle-input" id="movement">
+                                            </td>
+                                            <td>
+                                                <input type="number" name="moveCurrent" class="circle-input" id="moveCurrent">
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Low Light Vision</td>
+                                            <td>
+                                                <input type="number" name="llvTotal" class="circle-input" id="llv">
+                                            </td>
+                                            <td>
+                                                <input type="number" name="llvCurrent" class="circle-input" id="llvCurrent">
+                                            </td>
+                                        </tr>
+
+                                        <!-- Single button to recalculate all derived stats -->
+                                        <tr class="online-only">
+                                            <td colspan="3" class="centered">
+                                                <button type="button" onclick="recalculateAllStats()">Recalculate Stats</button>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <h2>Checks</h2>
+                        <div class="checks-section">
+                            <table class="checks-table">
+                                <thead>
+                                    <tr>
+                                        <th>Physical Checks</th>
+                                        <th>Total</th>
+                                        <th>Bonus</th>
+                                        <th>Mental Checks</th>
+                                        <th>Total</th>
+                                        <th>Bonus</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Row 1 -->
+                                    <tr>
+                                        <td>Agility</td>
+                                        <td><input type="number" name="agilityTotal" class="circle-input" id="agilityTotal" onchange="calculateDerivedStats()"></td>
+                                        <td><input type="number" name="agilityBonus" class="circle-input"></td>
+                                        <td>Influence</td>
+                                        <td><input type="number" name="influenceTotal" class="circle-input"></td>
+                                        <td><input type="number" name="influenceBonus" class="circle-input"></td>
+                                    </tr>
+                                    <!-- Row 2 -->
+                                    <tr>
+                                        <td>Crafting</td>
+                                        <td><input type="number" name="craftingTotal" class="circle-input"></td>
+                                        <td><input type="number" name="craftingBonus" class="circle-input"></td>
+                                        <td>Intellect</td>
+                                        <td><input type="number" name="intellectTotal" class="circle-input"></td>
+                                        <td><input type="number" name="intellectBonus" class="circle-input"></td>
+                                    </tr>
+                                    <!-- Row 3 -->
+                                    <tr>
+                                        <td>Stealth</td>
+                                        <td><input type="number" name="stealthTotal" class="circle-input"></td>
+                                        <td><input type="number" name="stealthBonus" class="circle-input"></td>
+                                        <td>Luck</td>
+                                        <td><input type="number" name="luckTotal" class="circle-input"></td>
+                                        <td><input type="number" name="luckBonus" class="circle-input"></td>
+                                    </tr>
+                                    <!-- Row 4 -->
+                                    <tr>
+                                        <td>Strength</td>
+                                        <td><input type="number" name="strengthTotal" class="circle-input" id="strength" onchange="calculateDerivedStats()"></td>
+                                        <td><input type="number" name="strengthBonus" class="circle-input"></td>
+                                        <td>Observation</td>
+                                        <td><input type="number" name="observationTotal" class="circle-input" id="observation" onchange="calculateDerivedStats()"></td>
+                                        <td><input type="number" name="observationBonus" class="circle-input"></td>
+                                    </tr>
+                                    <!-- Row 5 -->
+                                    <tr>
+                                        <td>Survival</td>
+                                        <td><input type="number" name="survivalTotal" class="circle-input"></td>
+                                        <td><input type="number" name="survivalBonus" class="circle-input"></td>
+                                        <td>Spirit</td>
+                                        <td><input type="number" name="spiritTotal" class="circle-input"></td>
+                                        <td><input type="number" name="spiritBonus" class="circle-input"></td>
+                                    </tr>
+                                    <tr class="online-only">
+                                        <td colspan="3" class="total-sum-row">
+                                            <button type="button" onclick="adjustAllTotals(1)">+1 to All</button>
+                                            <button type="button" onclick="adjustAllTotals(-1)">-1 to All</button>
+                                            <button type="button" onclick="clearAllTotals()">Clear All</button>
+                                        </td>
+                                        <td colspan="3">
+                                            Total Checks: <input type="number" id="totalChecksSum" class="circle-input" readonly>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <ul class="char-details-inline">
+                            <li>
+                                <label for="language">Language:</label>
+                                <input type="text" id="language" name="language">
+                                <!-- br -->
+                                <label for="diet">Diet:</label>
+                                <input type="text" id="diet" name="diet">
+                            </li>
+                            <li>
+                                <label for="age">Age:</label>
+                                <input type="number" id="age" name="age" style="width: 120px;">
+                                <!-- br -->
+                                <label for="size">Size:</label>
+                                <select id="size" name="size">
+                                    <option value="">-- Select Size --</option>
+                                    <option value="Tiny">Tiny (under 1 ft)</option>
+                                    <option value="Small">Small (1–4 ft)</option>
+                                    <option value="Medium">Medium (5–7 ft)</option>
+                                    <option value="Large">Large (8–15 ft)</option>
+                                    <option value="Giant">Giant (15–25 ft)</option>
+                                </select>
+
+                            </li>
+
+                        </ul>
+
+                        <ul class="char-notes-inline">
+                            <li>
+                                <label for="trinket">Trinket:</label>
+                                <textarea id="trinket" name="trinket"></textarea>
+                            </li>
+                            <li>
+                                <label for="motivation">Motivation:</label>
+                                <textarea id="motivation" name="motivation"></textarea>
+                            </li>
+                        </ul>
+
+                        <h2>Resources</h2>
+                        <div class="resources-section">
+                            <table class="resources-table">
+                                <thead>
+                                    <tr>
+                                        <th>Resource</th>
+                                        <th>Total</th>
+                                        <th>Current</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- GP/Currency -->
+                                    <tr>
+                                        <td>GP/Currency</td>
+                                        <td colspan="2">
+                                            <input type="number" id="gp" name="gp" class="circle-input" style="width: 100%;">
+                                        </td>
+                                    </tr>
+
+                                    <!-- Class Resource -->
+                                    <tr>
+                                        <td>Class Resource</td>
+                                        <td><input type="number" id="class-resource_max" name="class-resource_max" class="circle-input"></td>
+                                        <td><input type="number" id="class-resource" name="class-resource" class="circle-input">
+                                        </td>
+                                    </tr>
+
+                                    <!-- Spell Points -->
+                                    <tr>
+                                        <td>Spell Points</td>
+                                        <td><input type="number" id="spell-points_max" name="spell-points_max" class="circle-input"></td>
+                                        <td><input type="number" id="spell-points" name="spell-points" class="circle-input">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                                        <div class="ref-card">
+                    <h3>Check Result Outcomes</h3>
+                    <ul class="ref-list">
+                        <li><strong>1–4:</strong> Fail + — Opportunity Attack @ Advantage</li>
+                        <li><strong>5–9:</strong> Fail — Opportunity Attack</li>
+                        <li><strong>10–14:</strong> Minor Failure — Opportunity Attack @ Disadvantage</li>
+                        <li><strong>15–19:</strong> Success — No attack</li>
+                        <li><strong>20–24:</strong> Success + — 1 roll</li>
+                        <li><strong>25–29:</strong> Success ++ — 2 rolls</li>
+                        <li><strong>30–34:</strong> Success +++ — 3 rolls</li>
+                    </ul>
+
+                </div>
+                    </div>
+                    <div class="column" id="right">
+                        <!-- Species Selection -->
+                        <div class="flex-item">
+                            <label for="species">Species:</label>
+                            <select id="species" name="species">
+                                <option value="">Select Species</option>
+                            </select>
+
+                            <select id="subspecies" name="subspecies" style="display: none;"></select>
+
+                            <ul id="species-details" class="feature-list"></ul>
+                            <div id="subspecies-details"></div>
+
+                        </div>
+
+                        <!-- Class Selection -->
+                        <div class="flex-item">
+                            <label for="class">Class:</label>
+                            <select name="class" id="class">
+                                <option value="">Select Class</option>
+                            </select>
+                            <div id="class-description" class="description-text"></div>
+                            <ul id="class-features" class="feature-list"></ul>
+                            <ul id="class-equipment" class="feature-list"></ul>
+                        </div>
+
+                        <!-- Path, Talent, Specialization -->
+                        <div class="flex-container">
+                            <div class="flex-item">
+                                <label for="path">Path:</label>
+                                <select name="path" id="path">
+                                    <option value="">Select Path</option>
+                                </select>
+                            </div>
+                            <div class="flex-item">
+                                <label for="talent">Talent:</label>
+                                <select name="talent" id="talent">
+                                    <option value="">Select Talent</option>
+                                </select>
+                            </div>
+                            <div class="flex-item specialization-wrapper hidden" id="specialization-wrapper">
+                                <label for="special">Specialization:</label>
+                                <select id="special" name="special">
+                                    <option value="">Select Specialization</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Details Outputs -->
+                        <div id="specialization-details" class="details-box"></div>
+                        <div id="char-details">
+                            <div id="species-details"></div>
+                            <div class="feature">
+
+                                <div id="path-details" class="feature-list"></div>
+                                <div id="talent-details" class="feature-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="char-page" id="page2">
+            <!-- Conditions -->
+            <section id="conditions">
+                <table>
+                    <colgroup>
+                        <col style="width: 10%;">
+                        <col style="width: 40%;">
+                        <col style="width: 40%;">
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                            <th>Condition</th>
+                            <th>Effect</th>
+                            <th>Duration / Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="conditions">
+                        <!-- Corpus Conditions -->
+                        <tr>
+                            <td colspan="3" class="category-row">Corpus Conditions</td>
+                        </tr>
+                        <tr>
+                            <td>Bleeding</td>
+                            <td>Cannot recover wounds or receive healing.</td>
+                            <td>Lasts 1 minute</td>
+                        </tr>
+                        <tr>
+                            <td>Broken</td>
+                            <td>Physical Disadvantage</td>
+                            <td>Lasts 6 weeks</td>
+                        </tr>
+                        <tr>
+                            <td>Concussion</td>
+                            <td>Mental Disadvantage, Spellcasting Disadvantage</td>
+                            <td>Until a Long Rest</td>
+                        </tr>
+                        <tr>
+                            <td>Coughing</td>
+                            <td>Mental Disadvantage</td>
+                            <td>Until a Press On or irritant removed</td>
+                        </tr>
+                        <tr>
+                            <td>Dislocation</td>
+                            <td>Physical Disadvantage</td>
+                            <td>Until a Long Rest, or Survival Check</td>
+                        </tr>
+                        <tr>
+                            <td>Slowed</td>
+                            <td>Movement halved</td>
+                            <td>Until source removed</td>
+                        </tr>
+                        <tr>
+                            <td>Pinned</td>
+                            <td>Cannot move; restrained by an object or creature.</td>
+                            <td>Until source removed, or Off-Action removal</td>
+                        </tr>
+                        <tr>
+                            <td>Prone</td>
+                            <td>Disadvantage on ranged attacks; advantage for melee attacks against you.</td>
+                            <td>Requires 15 ft of movement to stand.</td>
+                        </tr>
+
+                        <!-- Cognition Conditions -->
+                        <tr>
+                            <td colspan="3" class="category-row">Cognition Conditions</td>
+                        </tr>
+                        <tr>
+                            <td>Blind</td>
+                            <td>Disadvantage on attack checks; attacks against you have advantage.</td>
+                            <td>Off-Action removal if possible or permanent effects require a healer</td>
+                        </tr>
+                        <tr>
+                            <td>Charmed</td>
+                            <td>Mental Disadvantage; cannot attack the source of the charm.</td>
+                            <td>Ends based on the charm's source</td>
+                        </tr>
+                        <tr>
+                            <td>Confused</td>
+                            <td>Mental Disadvantage, attacks against you have advantage.</td>
+                            <td>Until end of next turn or Press On</td>
+                        </tr>
+                        <tr>
+                            <td>Deaf</td>
+                            <td>Stealth disadvantage; Spellcasting disadvantage</td>
+                            <td>Lasts 1 minute or source removed</td>
+                        </tr>
+                        <tr>
+                            <td>Fear</td>
+                            <td>Must dash away or hide until the end of your next turn.</td>
+                            <td>Ends if you cannot see the source for a full round; typically cannot be the same source
+                                twice.</td>
+                        </tr>
+
+                        <!-- Special Conditions -->
+                        <tr>
+                            <td colspan="3" class="category-row">Special Conditions</td>
+                        </tr>
+                        <tr>
+                            <td>Intangible</td>
+                            <td>Immune to physical damage; cannot attack; movement halved.</td>
+                            <td>Ends after the effect's duration or through magical disruption. Cannot move through
+                                inorganic material.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Invisible</td>
+                            <td>Cannot be targeted by opportunity attacks; attacks against have disadvantage.</td>
+                            <td>Ends after making an aggressive action or when revealed by substances like powder or oil.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Unconscious</td>
+                            <td>Unable to act; vulnerable to critical hits and Finishers.</td>
+                            <td>Ends after a set duration, damage taken, or Off-Action ally assistance.</td>
+                        </tr>
+
+                        <!-- Major Conditions -->
+                        <tr>
+                            <td colspan="3" class="category-row">Major Conditions</td>
+                        </tr>
+                        <tr>
+                            <td>Stunned</td>
+                            <td>Disadvantage on all checks; movement halved.</td>
+                            <td>Until end of next turn or Press On</td>
+                        </tr>
+                        <tr>
+                            <td>Exhaustion</td>
+                            <td>Disadvantage on all checks; movement halved.</td>
+                            <td>Persists until a long rest, magical recovery, or specific intervention (e.g., caffeine).
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Constrained</td>
+                            <td>Cannot make attack actions; attacks against have advantage</td>
+                            <td>Off-Action removal if possible, escape check from restraints</td>
+                        </tr>
+                        <tr>
+                            <td>Exposed</td>
+                            <td>Take double damage</td>
+                            <td>Until end of next turn or Press On</td>
+                        </tr>
+                        <tr>
+                            <td>Injured</td>
+                            <td>At 0 wounds, any further damage causes immediate Death.</td>
+                            <td>Healing removes the condition. Excess damage beyond reducing wounds to 0 is ignored and does
+                                not carry over and cause death</td>
+                        </tr>
+                        <tr>
+                            <td>Death</td>
+                            <td>Character dies and cannot interact with the living world.</td>
+                            <td>Only resurrection magic can remove this condition.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="damage-effects">
+                <h2>Damage Tables</h2>
+                <div class="damage-grid">
+                    <!-- Physical -->
+                    <div class="damage-box">
+                        <h3>Impact</h3>
+                        <ol>
+                            <li>Broken</li>
+                            <li>Concussion</li>
+                            <li>Coughing</li>
+                            <li>Dislocation</li>
+                            <li>Prone</li>
+                            <li>Knockback (10ft)</li>
+                        </ol>
+                    </div>
+                    <div class="damage-box">
+                        <h3>Piercing</h3>
+                        <ol>
+                            <li>Additional +1</li>
+                            <li>Additional +2</li>
+                            <li>Additional +3</li>
+                            <li>Additional +4</li>
+                            <li>Additional +5</li>
+                            <li>Pinned</li>
+                        </ol>
+                    </div>
+                    <div class="damage-box">
+                        <h3>Slashing</h3>
+                        <ol>
+                            <li>Additional +2</li>
+                            <li>Additional +3</li>
+                            <li>Bleeding</li>
+                            <li>Cleave</li>
+                            <li>Disarm</li>
+                            <li>Feint (Take Stance)</li>
+                        </ol>
+                    </div>
+                    <!-- Eleemtnal -->
+                    <div class="damage-box">
+                        <h3>Acid</h3>
+                        <ol>
+                            <li>Additional +1</li>
+                            <li>Additional +2</li>
+                            <li>Additional +3</li>
+                            <li>Exposed</li>
+                            <li>Slowed</li>
+                            <li>Coughing</li>
+                        </ol>
+                    </div>
+                    <div class="damage-box">
+                        <h3>Eclipse</h3>
+                        <ol>
+                            <li>Additional +1</li>
+                            <li>Additional +2</li>
+                            <li>Blind</li>
+                            <li>Deaf</li>
+                            <li>Raise upon Death</li>
+                            <li>Fear</li>
+                        </ol>
+                    </div>
+                    <div class="damage-box">
+                        <h3>Fire</h3>
+                        <ol>
+                            <li>Additional +1</li>
+                            <li>Additional +2</li>
+                            <li>Additional +3</li>
+                            <li>Exposed</li>
+                            <li>Blind</li>
+                            <li>Coughing</li>
+                        </ol>
+                    </div>
+                    <div class="damage-box">
+                        <h3>Fluid</h3>
+                        <ol>
+                            <li>Blind</li>
+                            <li>Coughing</li>
+                            <li>Deaf</li>
+                            <li>Broken</li>
+                            <li>Concussion</li>
+                            <li>Prone</li>
+                        </ol>
+                    </div>
+                    <div class="damage-box">
+                        <h3>Ice</h3>
+                        <ol>
+                            <li>Additional +1</li>
+                            <li>Additional +2</li>
+                            <li>Constrained</li>
+                            <li>Dislocation</li>
+                            <li>Slowed (End Next)</li>
+                            <li>Pinned</li>
+                        </ol>
+                    </div>
+                    <div class="damage-box">
+                        <h3>Lightning</h3>
+                        <ol>
+                            <li>Additional +1</li>
+                            <li>Additional +2</li>
+                            <li>Additional +3</li>
+                            <li>Blind</li>
+                            <li>Confusion</li>
+                            <li>Pinned</li>
+                        </ol>
+                    </div>
+                    <div class="damage-box">
+                        <h3>Solar</h3>
+                        <ol>
+                            <li>Additional +1</li>
+                            <li>Additional +2</li>
+                            <li>Additional +3</li>
+                            <li>Blind</li>
+                            <li>Pinned</li>
+                            <li>Evil Banishment</li>
+                        </ol>
+                    </div>
+                    <div class="damage-box">
+                        <h3>Thunder</h3>
+                        <ol>
+                            <li>Additional +1</li>
+                            <li>Cleave</li>
+                            <li>Confusion</li>
+                            <li>Deaf</li>
+                            <li>Disarm</li>
+                            <li>Knockback (20ft)</li>
+                        </ol>
+                    </div>
+                    <div class="damage-box">
+                        <h3>Toxic</h3>
+                        <ol>
+                            <li>Additional +1</li>
+                            <li>Additional +2</li>
+                            <li>Blind</li>
+                            <li>Confusion</li>
+                            <li>Coughing</li>
+                            <li>Fear</li>
+                        </ol>
+                    </div>
+                    <!-- realm -->
+                    <div class="damage-box">
+                        <h3>Nature</h3>
+                        <ol>
+                            <li>Additional +1</li>
+                            <li>Constrained</li>
+                            <li>Confusion</li>
+                            <li>Coughing</li>
+                            <li>Disease (Verdant Fever)</li>
+                            <li>Pinned</li>
+                        </ol>
+                    </div>
+                    <div class="damage-box">
+                        <h3>Psychic</h3>
+                        <ol>
+                            <li>Additional +1</li>
+                            <li>Blind</li>
+                            <li>Charmed</li>
+                            <li>Concussion</li>
+                            <li>Confusion</li>
+                            <li>Fear</li>
+                        </ol>
+                    </div>
+                    <div class="damage-box">
+                        <h3>Vozian</h3>
+                        <ol>
+                            <li>Siphon (Half Damage)</li>
+                            <li>Blind</li>
+                            <li>Coughing</li>
+                            <li>Disease (Infernal Skritches)</li>
+                            <li>Intangible (1 round)</li>
+                            <li>Double Damage</li>
+                        </ol>
 
                     </div>
+                </div>
+            </section>
 
-
-                    <div class="health-section">
-
-                        <h2>Health</h2>
-                        <table class="health-table">
-                            <thead>
-                                <tr>
-                                    <th>Attribute</th>
-                                    <th>Total</th>
-                                    <th>Current</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Armor</td>
-                                    <td><input type="number" name="armorTotal" class="circle-input" id="armor"></td>
-                                    <td><input type="number" name="armorCurrent" class="circle-input"></td>
-                                </tr>
-                                <tr>
-                                    <td>Wounds</td>
-                                    <td>
-                                        <input type="number" name="woundsTotal" class="circle-input" id="wounds">
-                                    </td>
-                                    <td>
-                                        <input type="number" name="woundsCurrent" class="circle-input" id="woundsCurrent">
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Movement Speed</td>
-                                    <td>
-                                        <input type="number" name="moveTotal" class="circle-input" id="movement">
-                                    </td>
-                                    <td>
-                                        <input type="number" name="moveCurrent" class="circle-input" id="moveCurrent">
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Low Light Vision</td>
-                                    <td>
-                                        <input type="number" name="llvTotal" class="circle-input" id="llv">
-                                    </td>
-                                    <td>
-                                        <input type="number" name="llvCurrent" class="circle-input" id="llvCurrent">
-                                    </td>
-                                </tr>
-
-                                <!-- Single button to recalculate all derived stats -->
-                                <tr class="online-only">
-                                    <td colspan="3" class="centered">
-                                        <button type="button" onclick="recalculateAllStats()">Recalculate Stats</button>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-
+        </div>
+        <div class="char-page" id="page3">
+            <section class="reference-grid">
+                <div class="ref-card">
+                    <h3>Action Types</h3>
+                    <ul>
+                        <li><strong>Move:</strong> Up to your Speed</li>
+                        <li><strong>Action:</strong> The primary activity you perform, like attacking or casting a spell. Generally, you get one action per turn, though certain abilities may offer more.</li>
+                        <li><strong>Half-Action:</strong> Instead of an action. Stance</li>
+                        <li><strong>Off-Action:</strong> Reaction, opprotunity attack, or an action taken off your turn</li>
+                        <li><strong>Non-Action:</strong> Talk, switch items, other</li>
+                        <li><strong>Finisher:</strong> Eliminate locked foes</li>
+                    </ul>
+                </div>
+                <div class="ref-card" id="movement">
+                    <h3>Movement</h3>
+                    <ul>
+                        <li><strong>Difficult Terrain:</strong> Halved speed</li>
+                        <li><strong>Jump:</strong> 5ft × Strength</li>
+                        <li><strong>Climb/Swim:</strong> Counts as difficult terrain</li>
+                        <li><strong>Prone:</strong> Disadv on range attacks; adv for melee attacks against you. Stand costs 15ft</li>
+                        <li><strong>Moving Past Creatures:</strong> Can only move past smaller creature</li>
+                        <li><strong>Dash:</strong> Double distance (Action)</li>
+                        <li><strong>Fall:</strong> 5 dmg per 10ft</li>
+                        <li><strong>Extreme Hazard:</strong> 10 dmg/sec</li>
+                        <li><strong>Burrowing:</strong> are unseen,. Can't target nor breathe</li>
+                        <li><strong>Teleport:</strong> unoccupied space, no opportunity attacks.</li>
+                    </ul>
+                </div>
+                <div class="ref-card">
+                    <h3>Actions</h3>
+                    <ul>
+                        <li><strong>Attack:</strong> Make a melee or ranged attack. Unarmed deal 1 dmg</li>
+                        <li>Grab or Hold (STR vs Physical)</li>
+                        <li><strong>Cast Spell:</strong> Requires seeing and perceiving the target, and having free hands.</li>
+                        <li><strong>Administer Potion:</strong> Use an action to give a potion to a downed ally. Drinking it yourself is a Half-Action.</li>
+                        <li><strong>Stealth: </strong>Attempt to hide for advantage on the next attack.</li>
+                    </ul>
+                </div>
+                <div class="ref-card" id="half-action">
+                    <h3>Half-Actions</h3>
+                    <ul>
+                        <li><strong>Stances:</strong> Choose a stance to remain in until your next turn.
+                        </li>
+                        <li><strong>Disarm:</strong> Make an opposed Strength or Agility check to disarm a creature.
+                        </li>
+                        <li><strong>Help:</strong> Assist another creature, giving them advantage on a check.</li>
+                        <li><strong>Pick up an Item:</strong> Picking up an item is a Half-Action.</li>
+                        <li><strong>Use an Object:</strong> Interact with objects like levers or buttons.</li>
+                        <li><strong>Disengage:</strong> Move out of a creature's range without provoking opportunity
+                            attacks.</li>
+                    </ul>
+                </div>
+                <div class="ref-card">
+                    <h3>Stances</h3>
+                    <ul>
+                        <li><strong>Advantage Stance:</strong> Gain advantage on your next attack.</li>
+                        <li><strong>Disadvantage Stance:</strong> Give disadvantage to enemies attacking you
+                            or
+                            allies in range.
+                        </li>
+                        <li><strong>Offensive Stance:</strong> Use a reaction for an opportunity attack if
+                            attacked.</li>
+                        <li><strong>Reaction Stance:</strong> React to failed attacks against you.</li>
+                    </ul>
+                </div>
+                <div class="ref-card">
+                    <h3>Off-Actions</h3>
+                    <ul>
+                        <li>Opportunity Attack / Reaction</li>
+                        <li><strong>Block:</strong> Reduce melee damage by half using a shield.</li>
+                        <li><strong>Demoralize:</strong> Force enemies to make a morale check with an Influence (Intimidate) roll.</li>
+                    </ul>
+                </div>
+                <div class="ref-card">
+                    <h3>Non-Actions</h3>
+                    <ul>
+                        <li><strong>Switch Weapons:</strong> Drop a weapon and draw another.</li>
+                        <li><strong>Stress Push:</strong> Take 4 stress damage to gain a +3 bonus on a low roll.
+                        </li>
+                        <li><strong>Roleplay:</strong> Briefly communicate or give orders without consequence.</li>
+                    </ul>
+                </div>
+                <div class="ref-card">
+                    <h3>Special</h3>
+                    <ul>
+                        <li><strong>Called Shot:</strong> −10 for condition</li>
+                        <li><strong>Surprise:</strong> additional action</li>
+                        <li><strong>Cover:</strong> Disadv. to be hit</li>
+                    </ul>
+                </div>
+                <div class="ref-card" id="size">
+                    <h3>Size Scale</h3>
+                    <ul>
+                        <li><strong>Tiny:</strong>
+                            < 1 ft – pixies, potions</li>
+                        <li><strong>Small:</strong> 1–4 ft – goblins</li>
+                        <li><strong>Medium:</strong> 5–7 ft – humans</li>
+                        <li><strong>Large:</strong> 8–15 ft – ogres</li>
+                        <li><strong>Giant:</strong> 15–25 ft – siege gear</li>
+                        <li><strong>Monolithic:</strong> 25–100 ft</li>
+                    </ul>
                 </div>
 
-                <h2>Checks</h2>
-                <div class="checks-section">
-                    <table class="checks-table">
-                        <thead>
-                            <tr>
-                                <th>Physical Checks</th>
-                                <th>Total</th>
-                                <th>Bonus</th>
-                                <th>Mental Checks</th>
-                                <th>Total</th>
-                                <th>Bonus</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Row 1 -->
-                            <tr>
-                                <td>Agility</td>
-                                <td><input type="number" name="agilityTotal" class="circle-input" id="agilityTotal" onchange="calculateDerivedStats()"></td>
-                                <td><input type="number" name="agilityBonus" class="circle-input"></td>
-                                <td>Influence</td>
-                                <td><input type="number" name="influenceTotal" class="circle-input"></td>
-                                <td><input type="number" name="influenceBonus" class="circle-input"></td>
-                            </tr>
-                            <!-- Row 2 -->
-                            <tr>
-                                <td>Crafting</td>
-                                <td><input type="number" name="craftingTotal" class="circle-input"></td>
-                                <td><input type="number" name="craftingBonus" class="circle-input"></td>
-                                <td>Intellect</td>
-                                <td><input type="number" name="intellectTotal" class="circle-input"></td>
-                                <td><input type="number" name="intellectBonus" class="circle-input"></td>
-                            </tr>
-                            <!-- Row 3 -->
-                            <tr>
-                                <td>Stealth</td>
-                                <td><input type="number" name="stealthTotal" class="circle-input"></td>
-                                <td><input type="number" name="stealthBonus" class="circle-input"></td>
-                                <td>Luck</td>
-                                <td><input type="number" name="luckTotal" class="circle-input"></td>
-                                <td><input type="number" name="luckBonus" class="circle-input"></td>
-                            </tr>
-                            <!-- Row 4 -->
-                            <tr>
-                                <td>Strength</td>
-                                <td><input type="number" name="strengthTotal" class="circle-input" id="strength" onchange="calculateDerivedStats()"></td>
-                                <td><input type="number" name="strengthBonus" class="circle-input"></td>
-                                <td>Observation</td>
-                                <td><input type="number" name="observationTotal" class="circle-input" id="observation" onchange="calculateDerivedStats()"></td>
-                                <td><input type="number" name="observationBonus" class="circle-input"></td>
-                            </tr>
-                            <!-- Row 5 -->
-                            <tr>
-                                <td>Survival</td>
-                                <td><input type="number" name="survivalTotal" class="circle-input"></td>
-                                <td><input type="number" name="survivalBonus" class="circle-input"></td>
-                                <td>Spirit</td>
-                                <td><input type="number" name="spiritTotal" class="circle-input"></td>
-                                <td><input type="number" name="spiritBonus" class="circle-input"></td>
-                            </tr>
-                            <tr class="online-only">
-                                <td colspan="3" class="total-sum-row">
-                                    <button type="button" onclick="adjustAllTotals(1)">+1 to All</button>
-                                    <button type="button" onclick="adjustAllTotals(-1)">-1 to All</button>
-                                    <button type="button" onclick="clearAllTotals()">Clear All</button>
-                                </td>
-                                <td colspan="3">
-                                    Total Checks: <input type="number" id="totalChecksSum" class="circle-input" readonly>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
+                <div class="ref-card">
+                    <h3>Press On</h3>
+                    <p>
+                        After a combat encounter, characters can "Press On" to regain 1 class resource, 1
+                        spell point,
+                        repair armor for
+                        <code>[[1d6]]</code> + Crafting, heal for <code>[[1d6]]</code> + Survival, and
+                        remove all
+                        conditions and effects lasting
+                        for 1 minute or
+                        less. This option can be used twice per day, but not consecutively without engaging
+                        in another
+                        combat.
+                    </p>
+                </div>
+                <div class="ref-card">
+                    <h3>Long Rest</h3>
+                    <p>
+                        A long rest requires 10 hours of uninterrupted downtime, fully restoring all wounds,
+                        recharging
+                        class resources,
+                        repairing all armor to at least half, and removing any conditions that last one day
+                        or less.
+                        Characters can only
+                        take a long rest once per long rest and must be in a safe environment.
+                    </p>
+                </div>
+                <div class="ref-card">
+                    <h3>Languages Overview</h3>
+                    <ul class="ref-list">
+                        <li><strong>Imperial:</strong> Common tongue</li>
+                        <li><strong>Naech:</strong> Speak to animals</li>
+                        <li><strong>Dealig:</strong> Oreadlis, Infernal</li>
+                        <li><strong>Etheros:</strong> Elemental magic</li>
+                        <li><strong>Night:</strong> Undead & Darkness</li>
+                        <li><strong>Clunk:</strong> Tech/mechanical</li>
+                        <li><strong>Yar:</strong> Maritime  & Dreamsea.</li>
+                        <li><strong>Drak:</strong> Draconic</li>
+                        <li><strong>Holy:</strong> Divine language.</li>
+                        <li><strong>Jotun:</strong> Giant & ancient</li>
+                    </ul>
                 </div>
 
-                <ul class="char-details-inline">
-                    <li>
-                        <label for="language">Language:</label>
-                        <input type="text" id="language" name="language">
-                    </li>
-                    <li>
-                        <label for="age">Age:</label>
-                        <input type="number" id="age" name="age">
-                    </li>
-                    <li>
-                        <label for="size">Size:</label>
-                        <input type="text" id="size" name="size">
-                    </li>
-                    <li>
-                        <label for="diet">Diet:</label>
-                        <input type="text" id="diet" name="diet">
-                    </li>
-                </ul>
-
-                <ul class="char-notes-inline">
-                    <li>
-                        <label for="trinket">Trinket:</label>
-                        <textarea id="trinket" name="trinket"></textarea>
-                    </li>
-                    <li>
-                        <label for="motivation">Motivation:</label>
-                        <textarea id="motivation" name="motivation"></textarea>
-                    </li>
-                </ul>
-
-                <h2>Resources</h2>
-                <div class="resources-section">
-                    <table class="resources-table">
-                        <thead>
-                            <tr>
-                                <th>Resource</th>
-                                <th>Total</th>
-                                <th>Current</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- GP/Currency -->
-                            <tr>
-                                <td>GP/Currency</td>
-                                <td colspan="2">
-                                    <input type="number" id="gp" name="gp" class="circle-input" style="width: 100%;">
-                                </td>
-                            </tr>
-
-                            <!-- Class Resource -->
-                            <tr>
-                                <td>Class Resource</td>
-                                <td><input type="number" id="class-resource_max" name="class-resource_max" class="circle-input"></td>
-                                <td><input type="number" id="class-resource" name="class-resource" class="circle-input">
-                                </td>
-                            </tr>
-
-                            <!-- Spell Points -->
-                            <tr>
-                                <td>Spell Points</td>
-                                <td><input type="number" id="spell-points_max" name="spell-points_max" class="circle-input"></td>
-                                <td><input type="number" id="spell-points" name="spell-points" class="circle-input">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
+            </section>
 
 
-            <div class="column">
-                <!-- Species Selection -->
-                <div class="flex-item">
-                    <label for="species">Species:</label>
-                    <select id="species" name="species">
-                        <option value="">Select Species</option>
-                    </select>
+        </div>
 
-                    <select id="subspecies" name="subspecies" style="display: none;"></select>
-
-                    <ul id="species-details" class="feature-list"></ul>
-                    <div id="subspecies-details"></div>
-
-                </div>
-
-                <!-- Class Selection -->
-                <div class="flex-item">
-                    <label for="class">Class:</label>
-                    <select name="class" id="class">
-                        <option value="">Select Class</option>
-                    </select>
-                </div>
-
-                <!-- Path, Talent, Specialization -->
-                <div class="flex-container">
-                    <div class="flex-item">
-                        <label for="path">Path:</label>
-                        <select name="path" id="path">
-                            <option value="">Select Path</option>
-                        </select>
-                    </div>
-                    <div class="flex-item">
-                        <label for="talent">Talent:</label>
-                        <select name="talent" id="talent">
-                            <option value="">Select Talent</option>
-                        </select>
-                    </div>
-                    <div class="flex-item specialization-wrapper hidden" id="specialization-wrapper">
-                        <label for="special">Specialization:</label>
-                        <select id="special" name="special">
-                            <option value="">Select Specialization</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Details Outputs -->
-                <div id="specialization-details" class="details-box"></div>
-                <div id="char-details">
-                    <div id="species-details"></div>
-                    <div class="feature">
-                        <div id="class-description" class="description-text"></div>
-                        <ul id="class-features" class="feature-list"></ul>
-                        <ul id="class-equipment" class="feature-list"></ul>
-                        <div id="path-details" class="feature-list"></div>
-                        <div id="talent-details" class="feature-list"></div>
-                    </div>
-                </div>
-            </div>
-
-        </section>
 
     </form>
 
