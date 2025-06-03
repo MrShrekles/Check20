@@ -5,16 +5,34 @@ function highlightText(text, term) {
   return text.replace(regex, '<mark>$1</mark>');
 }
 
+let activeIntents = [];
 let cachedSpells = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('sort-options').addEventListener('change', renderSpells);
-  document.getElementById('filter-intent').addEventListener('change', renderSpells);
-  document.getElementById('spell-search').addEventListener('input', renderSpells);
-
-  document.getElementById('toggle-tags').addEventListener('click', () => {
-    document.querySelectorAll('.spell-tags').forEach(el => el.classList.toggle('hidden'));
+  document.querySelectorAll('#sort-toggles button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#sort-toggles button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // Store selected sort in a hidden input or a global variable
+      selectedSort = btn.dataset.sort;
+      renderSpells();
+    });
   });
+document.querySelectorAll('#intent-toggles button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const intent = btn.dataset.intent;
+    btn.classList.toggle('active');
+
+    if (activeIntents.includes(intent)) {
+      activeIntents = activeIntents.filter(i => i !== intent);
+    } else {
+      activeIntents.push(intent);
+    }
+
+    renderSpells();
+  });
+});
+  document.getElementById('spell-search').addEventListener('input', renderSpells);
 
   document.getElementById('toggle-details').addEventListener('click', () => {
     document.querySelectorAll('.spell-effect').forEach(el => {
@@ -62,30 +80,46 @@ function renderEffectInfo(effect) {
 
 function renderSpells() {
   const container = document.getElementById('spell-grid');
-  const sortKey = document.getElementById('sort-options')?.value || 'name';
-  const filterIntent = document.getElementById('filter-intent')?.value || '';
+  const sortKey = typeof selectedSort !== 'undefined' ? selectedSort : 'name';
   const searchTerm = document.getElementById('spell-search')?.value.toLowerCase() || '';
 
-  let filteredSpells = cachedSpells.filter(spell => {
-    const matchesIntent = filterIntent === '' || spell.effects.some(e => e.intent === filterIntent);
-    const matchesSearch = spell.name.toLowerCase().includes(searchTerm) ||
-      spell.effects.some(e => e.effect.toLowerCase().includes(searchTerm));
-    return matchesIntent && matchesSearch;
-  });
+  const rangeOrder = {
+    'self': 1,
+    'touch': 2,
+    'reach': 3,
+    'melee': 4,
+    'short': 5,
+    'medium': 6,
+    'long': 7,
+    'visible': 8,
+    'known': 9
+  };
+
+let filteredSpells = cachedSpells.filter(spell => {
+  const matchesIntent = activeIntents.length === 0 || spell.effects.some(e =>
+    activeIntents.includes(e.intent)
+  );
+  const matchesSearch = spell.name.toLowerCase().includes(searchTerm) ||
+    spell.effects.some(e => e.effect.toLowerCase().includes(searchTerm));
+  return matchesIntent && matchesSearch;
+});
 
   if (sortKey === 'name') {
     filteredSpells.sort((a, b) => a.name.localeCompare(b.name));
-  } else if (sortKey === 'intent') {
+  } else if (sortKey === 'range') {
     filteredSpells.sort((a, b) => {
-      const aCost = getIntentCost(a.effects?.[0]?.intent ?? '');
-      const bCost = getIntentCost(b.effects?.[0]?.intent ?? '');
-      return aCost - bCost;
+      const aRange = rangeOrder[a.effects?.[0]?.range?.toLowerCase()] || 999;
+      const bRange = rangeOrder[b.effects?.[0]?.range?.toLowerCase()] || 999;
+      return bRange - aRange;
     });
-  } else if (sortKey === 'manner') {
-    filteredSpells.sort((a, b) => a.manner.localeCompare(b.manner));
-  } else if (sortKey === 'transmission') {
-    filteredSpells.sort((a, b) => a.transmission.localeCompare(b.transmission));
+  } else if (sortKey === 'duration') {
+    filteredSpells.sort((a, b) =>
+      (a.effects?.[0]?.duration || '').localeCompare(b.effects?.[0]?.duration || '')
+    );
+  } else if (sortKey === 'origin') {
+    filteredSpells.sort((a, b) => a.origin.localeCompare(b.origin));
   }
+
 
   container.innerHTML = '';
   document.getElementById('spell-count').textContent = `${filteredSpells.length} Spells Found`;
@@ -103,13 +137,16 @@ function renderSpells() {
   <span class="transmission">${spell.transmission}</span>
 </div>
 
-      ${spell.effects.map(effect => `
-        <details class="spell-effect" open>
-          <summary class="spell-features">${effect.intent} <span class="sp-cost">${getIntentCost(effect.intent)} SP</span></summary>
-          ${renderEffectInfo(effect)}
-<p>${highlightText(effect.effect, searchTerm)}</p>
-        </details>
-      `).join('')}
+${spell.effects
+  .filter(effect => activeIntents.length === 0 || activeIntents.includes(effect.intent))
+  .map(effect => `
+    <details class="spell-effect" open>
+      <summary class="spell-features">${effect.intent} <span class="sp-cost">${getIntentCost(effect.intent)} SP</span></summary>
+      ${renderEffectInfo(effect)}
+      <p>${highlightText(effect.effect, searchTerm)}</p>
+    </details>
+  `).join('')}
+
       <div class="spell-buttons">
         <button class="copy-spell" data-spell="${spell.name}">Copy Spell</button>
         <button class="copy-macro" data-spell="${spell.name}">Copy Roll20</button>

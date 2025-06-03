@@ -33,6 +33,8 @@
     color: var(--text-cream);
     font-weight: bold;
     cursor: default;
+    flex-wrap: wrap;
+    word-break: break-word;
 }
 
 .spell-card:hover {
@@ -71,45 +73,6 @@
     background: var(--green-1);
     color: white;
 }
-
-mark {
-    background-color: var(--gold-3);
-    color: black;
-    padding: 1px;
-    border-radius: 2px;
-}
-
-.spell-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin: 1rem 0;
-    align-items: center;
-}
-
-.control {
-    font-size: 1rem;
-    padding: 0.5rem;
-    min-width: 200px;
-    max-width: 300px;
-    border: 1px solid var(--warm-3);
-    border-radius: var(--border-radius);
-    background-color: var(--warm-1);
-    color: var(--text-cream);
-    box-shadow: 0 0 3px var(--warm-3);
-}
-
-.control::placeholder {
-    color: var(--text-cream);
-    opacity: 0.6;
-}
-
-.control:focus {
-    outline: none;
-    box-shadow: 0 0 5px var(--gold);
-    border-color: var(--gold);
-}
-
 
 /* Tags and Cost */
 .sp-cost {
@@ -176,6 +139,95 @@ mark {
 
 #intent-spellcasting p {
     width: 75%;
+}
+
+/* Controls Container */
+.control {
+  padding: var(--padding);
+  border: 1px solid var(--green-3);
+  border-radius: var(--border-radius);
+  background-color: var(--green-1);
+  box-shadow: 0 0 3px var(--green-3);
+}
+
+/* Sort Toggles */
+#sort-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: var(--padding) 0;
+}
+
+#sort-toggles button {
+  padding: 0.4rem 0.8rem;
+  background: var(--theme-dark);
+  color: var(--cream);
+  border: 1px solid var(--theme-2);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#sort-toggles button.active {
+  background: var(--green-2);
+  font-weight: bold;
+}
+
+/* Intent Toggles */
+#intent-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: var(--padding) 0;
+}
+
+#intent-toggles button {
+  padding: 0.3rem 0.6rem;
+  background: var(--dark-2);
+  color: var(--cream);
+  border: 1px solid var(--theme-2);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#intent-toggles button.active {
+  background: var(--green-2);
+  font-weight: bold;
+}
+
+/* Floating Search */
+#floating-search {
+  position: fixed;
+  top: var(--padding);
+  right: var(--padding);
+  background: var(--theme-1);
+  padding: 0.4rem;
+  border-radius: var(--border-radius);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: var(--box-shadow);
+}
+
+#floating-search input,
+#floating-search button {
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--dark-1);
+  color: var(--text-cream);
+}
+
+#floating-search input {
+  font-size: 1rem;
+  padding: 0.3rem 0.5rem;
+}
+
+#floating-search button {
+  background: none;
+  font-size: 1.1rem;
+  cursor: pointer;
 }
 
 

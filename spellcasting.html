@@ -19,7 +19,6 @@
     <div id="header-placeholder"></div>
     <main>
 
-
         <!-- Spellcasting -->
         <section id="spellcasting">
 
@@ -222,39 +221,40 @@
             </div>
         </section>
 
-        <section>
-            <div class="spell-controls">
-                <select id="sort-options" class="control">
-                    <option value="name">Sort by Name</option>
-                    <option value="intent">Sort by Intent Cost</option>
-                    <option value="manner">Sort by Manner</option>
-                    <option value="transmission">Sort by Transmission</option>
-                </select>
-
-                <select id="filter-intent" class="control">
-                    <option value="">All Intents</option>
-                    <option value="Whisper">Whisper</option>
-                    <option value="Surge">Surge</option>
-                    <option value="Shout">Shout</option>
-                    <option value="Roar">Roar</option>
-                    <option value="Storm">Storm</option>
-                    <option value="Cataclysm">Cataclysm</option>
-                </select>
-
-                <input type="text" id="spell-search" placeholder="Search spells..." class="control">
-
-                <button id="toggle-tags" class="control">Toggle Tags</button>
-                <button id="toggle-details" class="control">Toggle Spell Details</button>
+        <section id="spells">
+            <div id="sort-toggles" class="control">
+                <h2>Sorting Options</h2>
+                <button data-sort="name">Name</button>
+                <button data-sort="range">Range</button>
+                <button data-sort="duration">Duration</button>
+                <button data-sort="origin">Origin</button>
             </div>
+
+            <div id="intent-toggles" class="control">
+                <h2>Intent Filters</h2>
+                <button data-intent="Light Whisper">Light Whisper</button>
+                <button data-intent="Whisper">Whisper</button>
+                <button data-intent="Surge">Surge</button>
+                <button data-intent="Shout">Shout</button>
+                <button data-intent="Roar">Roar</button>
+                <button data-intent="Storm">Storm</button>
+                <button data-intent="Cataclysm">Cataclysm</button>
+            </div>
+
+            <button id="toggle-details" class="control">Toggle Spell Details</button>
             <p id="spell-count" class="spell-count"></p>
-
-
 
             <div class="spell-grid" id="spell-grid"></div>
         </section>
 
     </main>
     <div id="sidebar-placeholder"></div>
+    <div id="floating-search">
+        <a href="#spells" class="jump-link">⮯</a>
+        <input id="spell-search" placeholder="Search Spells..." />
+    </div>
+
+
 </body>
 
 </html>
