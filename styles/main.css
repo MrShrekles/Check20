@@ -652,6 +652,13 @@ b {
     gap: 1%;
 }
 
+#npc-output, #business-output, #monster-output {
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: var(--padding);
+}
+
 /* Worldbuilding Generators */
 .flex-gen {
     background-color: var(--theme-dark);
@@ -1181,114 +1188,114 @@ form {
 }
 
 .dice-adjust {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
 
 .dice-input-group {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .dice-input-group input[type="number"] {
-  width: 50px;
-  text-align: center;
-  font-size: 1.2rem;
-  padding: 0.25rem;
-  margin: 0 0.5rem;
-  border-radius: var(--border-radius);
-  border: 1px solid var(--medium);
-  background: var(--dark);
-  color: var(--white);
+    width: 50px;
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 0.25rem;
+    margin: 0 0.5rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--medium);
+    background: var(--dark);
+    color: var(--white);
 }
 
 .dice-button {
-  font-size: 1.5rem;
-  padding: 0.25rem 0.75rem;
-  background: var(--theme);
-  color: var(--white);
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: background 0.3s ease;
+    font-size: 1.5rem;
+    padding: 0.25rem 0.75rem;
+    background: var(--theme);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 .dice-button:hover {
-  background: var(--theme-hover);
+    background: var(--theme-hover);
 }
 
 .mod-adjust {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
 
 .mod-input-group {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .mod-input-group input[type="number"] {
-  width: 50px;
-  text-align: center;
-  font-size: 1.2rem;
-  padding: 0.25rem;
-  margin: 0 0.5rem;
-  border-radius: var(--border-radius);
-  border: 1px solid var(--medium);
-  background: var(--dark);
-  color: var(--white);
+    width: 50px;
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 0.25rem;
+    margin: 0 0.5rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--medium);
+    background: var(--dark);
+    color: var(--white);
 }
 
 .mod-button {
-  font-size: 1.5rem;
-  padding: 0.25rem 0.75rem;
-  background: var(--theme);
-  color: var(--white);
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: background 0.3s ease;
+    font-size: 1.5rem;
+    padding: 0.25rem 0.75rem;
+    background: var(--theme);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 .mod-button:hover {
-  background: var(--theme-hover);
+    background: var(--theme-hover);
 }
 
 
 /* -------------Tooltip Container-------------- */
 .tooltip {
-  position: relative;
-  cursor: help;
-  color: var(--cream);
-  display: inline-block;
+    position: relative;
+    cursor: help;
+    color: var(--cream);
+    display: inline-block;
 }
 
 .tooltip::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 125%;
-  left: 50%;
-  transform: translate(-80%, 0);
-  background-color: var(--hate);
-  color: var(--white);
-  padding: var(--padding);
-  border-radius: var(--border-radius);
-  font-size: 0.9rem;
-  width: 200px;
-  box-shadow: var(--box-shadow);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-  z-index: 9999;
-  pointer-events: none;
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translate(-80%, 0);
+    background-color: var(--hate);
+    color: var(--white);
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    width: 200px;
+    box-shadow: var(--box-shadow);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    z-index: 9999;
+    pointer-events: none;
 }
 
 .tooltip:hover::after {
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0.3s;
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0.3s;
 }
 
 
@@ -1691,6 +1698,37 @@ a {
     font-size: 1.4rem;
 }
 
+.copy-roll20 {
+    margin-left: 0.5rem;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background: var(--theme-alt);
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+li {
+    position: relative;
+}
+
+.lore-copy {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.2rem;
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    color: var(--theme-3);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+li:hover .lore-copy {
+    opacity: 1;
+}
 
 @media (max-width: 690px) {
 

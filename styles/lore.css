@@ -1,0 +1,23 @@
+.moment-card {
+  background: var(--theme-1);
+  border: 1px solid var(--theme-3);
+  border-radius: var(--border-radius);
+  padding: var(--padding);
+  box-shadow: var(--bow-shadow);
+  width: 45vw;
+}
+
+.card-image {
+  float: right;
+  max-width: 25vw;
+  margin-left: 1rem;
+  border-radius: 8px;
+}
+
+.card-points ul {
+  margin-left: 1rem;
+}
+
+.magic-eyes-list li {
+  margin-bottom: 0.3rem;
+}

@@ -83,13 +83,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Render saved cards
   savedBusinesses.forEach(b => {
     const card = createBusinessCard(b);
-    outputContainer.appendChild(card);
+    outputContainer.prepend(card);
   });
 
   generateBtn.addEventListener("click", () => {
     const business = generateBusiness();
     const card = createBusinessCard(business);
-    outputContainer.appendChild(card);
+    outputContainer.prepend(card);
 
     savedBusinesses.push(business);
     localStorage.setItem("check20-business-cards", JSON.stringify(savedBusinesses));
