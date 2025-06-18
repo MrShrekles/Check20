@@ -68,157 +68,84 @@
                 your spell, scaling from 1 to 24 Spell Points.
             </p>
 
-            <div class="two-column">
-                <div class="column">
-                    <!-- Manner -->
-                    <h4>Manner</h4>
-                    <div class="flex-container">
-                        <div class="flex-item" id="manner">
-                            <h5>Decay</h5>
-                            <p>Pain, Damage, Erode, Deteriorate, Weaken, Disintegrate, Corrode</p>
-                        </div>
-                        <div class="flex-item" id="manner">
-                            <h5>Discern</h5>
-                            <p>Sense, Perceive, Detect, Insight, Awareness</p>
-                        </div>
-                        <div class="flex-item" id="manner">
-                            <h5>Domineer</h5>
-                            <p>Control, Influence, Command, Dominate, Overpower</p>
-                        </div>
-                        <div class="flex-item" id="manner">
-                            <h5>Manifest</h5>
-                            <p>Create, Craft, Summon, Shape, Build</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <!-- Transmission -->
-                    <h4>Transmission</h4>
-                    <div class="flex-container">
-                        <div class="flex-item" id="transmission">
-                            <h3>Aether</h3>
-                            <p>Light, Spirit, Music, Vibration, Noise, Radiation, Solar, Vision, Shadows</p>
-                        </div>
-                        <div class="flex-item" id="transmission">
-                            <h3>Astral</h3>
-                            <p>Time, Portal, Speed, Slow, Chronology, Distance, Space, Teleportation</p>
-                        </div>
-                        <div class="flex-item" id="transmission">
-                            <h3>Corpus</h3>
-                            <p>Life, Harm, Blood, Emotion, Thought, Perception, Influence, Vitality, Soul</p>
-                        </div>
-                        <div class="flex-item" id="transmission">
-                            <h3>Elemental</h3>
-                            <p>Fire, Heat, Cold, Frost, Water, Ice, Steam, Acid, Poison, Earth, Lava, Wind</p>
-                        </div>
-                        <div class="flex-item" id="transmission">
-                            <h3>Material</h3>
-                            <p>Metal, Wood, Stone, Clay, Tools, Weapons, Structures, Minerals, Constructs, Gears</p>
-                        </div>
-                        <div class="flex-item" id="transmission">
-                            <h3>Verdance</h3>
-                            <p>Growth, Crops, Plants, Roots, Vines, Fungi, Terrain, Seasons, Animals, Mold</p>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Spell Intent -->
-            <h4>Spell Intent</h4>
-            <p>
-                After declaring the Manner and Transmission of your spell, you must select its Intent Level,
-                which determines the spell's potency and the depth of its impact. Each Intent Level requires a
-                specific amount of Spell Points and allows you to deal damage or inflict conditions categorized
-                as <strong>Corpus</strong>, <strong>Cognition</strong>, or <strong>Major Conditions</strong>.
-            </p>
+            <h2>
+                Spell Rules
+            </h2>
             <ul>
-                <li>
-                    all spells require an action to cast
-                </li>
-                <li>
-                    all spells require a check, either a Spirit check or a relavent spellcasting check determined by
-                    your class
-                </li>
+                <li><strong>Summoning:</strong> You cannot summon an amount of creatures higher than half your spellcsting check</li>
+                <li><strong>Where to Conjure: </strong>You can only Manifest or target spells that bring in struuctures in an unnoccupied space. You cannot conjure in flying space unless its a flying creature.</li>
             </ul>
 
-            <!-- Intent Levels -->
-            <div class="spell-grid">
-                <div class="spell-card">
-                    <h3>Whisper</h3>
-                    <p><strong>Cost:</strong> 1 Spell Point</p>
-                    <p>Small objects, tiny elemental effects, light damage, basic illusions, or lights.</p>
-                    <ul>
-                        <li><strong>Spell Attack:</strong> Deal <code>1d6 + 1</code> damage or inflict a Corpus
-                            condition.</li>
-                        <li><strong>Spell Detonation:</strong> Deal half of <code>1d6 + 1</code> damage to all
-                            creatures within short range</li>
+            <div class="two-column">
+                <div class="column">
+                    <!-- manner -->
+                    <h4>Manner</h4>
+                    <ul class="manner">
+                        <li><strong>Decay: </strong> Pain, Damage, Erode, Deteriorate, Weaken, Disintegrate, Corrode</li>
+                        <li><strong>Discern: </strong>Sense, Perceive, Detect, Insight, Awareness</li>
+                        <li><strong>Domineer: </strong>Control, Influence, Command, Dominate, Overpower</li>
+                        <li><strong>Manifest: </strong>Create, Craft, Summon, Shape, Build</li>
+                    </ul>
+
+                    <!-- transmission -->
+                    <h4>Transmission</h4>
+                    <ul class="transmission">
+                        <li><strong>Aether: </strong>Light, Spirit, Music, Vibration, Noise, Radiation, Solar, Vision, Shadows</li>
+                        <li><strong>Astral: </strong>Time, Portal, Speed, Slow, Chronology, Distance, Space, Teleportation</li>
+                        <li><strong>Corpus: </strong>Life, Harm, Blood, Emotion, Thought, Perception, Influence, Vitality, Soul</li>
+                        <li><strong>Elemental: </strong>Fire, Heat, Cold, Frost, Water, Ice, Steam, Acid, Poison, Earth, Lava, Wind</li>
+                        <li><strong>Material: </strong>Metal, Wood, Stone, Clay, Tools, Weapons, Structures, Minerals, Constructs, Gears</li>
+                        <li><strong>Verdance: </strong>Growth, Crops, Plants, Roots, Vines, Fungi, Terrain, Seasons, Animals, Mold</li>
                     </ul>
                 </div>
-                <div class="spell-card">
-                    <h3>Surge</h3>
-                    <p><strong>Cost:</strong> 3 Spell Points</p>
-                    <p>Move medium objects, open doors, create small elemental effects, or enhance abilities.
+                <div class="column" id="intent-list">
+
+                    <h4>Spell Intent</h4>
+                    <p>
+                        Each spell uses <strong>Manner</strong>, <strong>Transmission</strong>, and <strong>Intent</strong>. After choosing Manner and Transmission, select an Intent Level to determine the spell's power, scale, and cost.
                     </p>
-                    <ul>
-                        <li><strong>Spell Attack:</strong> Deal <code>2d6 + 3</code> damage or inflict a Corpus
-                            condition and then deal the damage on a success+.</li>
-                        <li><strong>Spell Detonation:</strong> Deal half of <code>2d6 + 3</code> damage to all
-                            creatures within short range</li>
+
+                    <ul class="spell-rules">
+                        <li>All spells require an <strong>action</strong> to cast.</li>
+                        <li>All spells require a <strong>check</strong> (Spirit or your class's spellcasting check).</li>
+                        <li>Spells may deal <strong>damage</strong> or inflict <strong>Corpus</strong>, <strong>Cognition</strong>, or <strong>Major Conditions</strong>.</li>
+                    </ul>
+
+                    <h5>Spell Point Costs</h5>
+                    <ul class="spell-costs">
+                        <li><strong>Whisper</strong>: 1 SP</li>
+                        <li><strong>Surge</strong>: 3 SP</li>
+                        <li><strong>Shout</strong>: 6 SP</li>
+                        <li><strong>Roar</strong>: 9 SP</li>
+                        <li><strong>Storm</strong>: 12 SP</li>
+                        <li><strong>Cataclysm</strong>: 24 SP</li>
+                    </ul>
+
+                    <h5>Damage Template</h5>
+                    <ul class="spell-template">
+                        <li><strong>Spell Attack:</strong> <code>xd6 + x</code> damage or apply a condition</li>
+                        <li><strong>Spell Detonation:</strong> Half of <code>xd6 + x</code> damage to all in range</li>
+                        <li><em>X = Intent Level</em></li>
+                    </ul>
+
+                    <h5>Effect Scale by Intent</h5>
+                    <ul class="intent-scale">
+                        <li><Strong>Whisper: </Strong>Small objects, tiny elemental effects, light damage, basic illusions, or lights.</li>
+                        <li><Strong>Surge: </Strong>Move medium objects, open doors, create small elemental effects, or enhance abilities</li>
+                        <li><Strong>Shout: </Strong>Move large objects, break barriers, create medium elemental effects, moderate healing, or
+                            protection.</li>
+                        <li><Strong>Roar: </Strong>Devastate battlefields, summon large creatures, moderate area healing, or topple walls.</li>
+                        <li><Strong>Storm: </Strong>Collapse buildings, summon powerful creatures, large-scale destruction, or long-lasting
+                            barriers.</li>
+                        <li><Strong>Cataclysm: </Strong>Affect expansive areas, summon immense storms, reshape terrain, raise the dead, or
+                            potentially grant wishes.</li>
                     </ul>
                 </div>
-                <div class="spell-card">
-                    <h3>Shout</h3>
-                    <p><strong>Cost:</strong> 6 Spell Points</p>
-                    <p>Move large objects, break barriers, create medium elemental effects, moderate healing, or
-                        protection.</p>
-                    <ul>
-                        <li><strong>Spell Attack:</strong> Deal <code>4d6 + 6</code> damage or inflict a Corpus
-                            or Cognition condition and then deal the damage on a success+.</li>
-                        <li><strong>Spell Detonation:</strong> Deal half of <code>4d6 + 6</code> damage to all
-                            creatures within short range</li>
-                    </ul>
-                </div>
-                <div class="spell-card">
-                    <h3>Roar</h3>
-                    <p><strong>Cost:</strong> 9 Spell Points</p>
-                    <p>Devastate battlefields, summon large creatures, moderate area healing, or topple walls.
-                    </p>
-                    <ul>
-                        <li><strong>Spell Attack:</strong> Deal <code>9d6 + 9</code> damage or inflict a Corpus
-                            or Cognition condition and then deal the damage on a success+.</li>
-                        <li><strong>Spell Detonation:</strong> Deal half of <code>9d6 + 9</code> damage to all
-                            creatures within short range</li>
-                    </ul>
-                </div>
-                <div class="spell-card">
-                    <h3>Storm</h3>
-                    <p><strong>Cost:</strong> 12 Spell Points</p>
-                    <p>Collapse buildings, summon powerful creatures, large-scale destruction, or long-lasting
-                        barriers.</p>
-                    <ul>
-                        <li><strong>Spell Attack:</strong> Deal <code>12d6 + 12</code> damage and inflict a
-                            Corpus condition or inflict a Major condition then deal the damage on a success+.
-                        </li>
-                        <li><strong>Spell Detonation:</strong> Deal half of <code>12d6 + 12</code> damage to all
-                            creatures within medium range.</li>
-                    </ul>
-                </div>
-                <div class="spell-card">
-                    <h3>Cataclysm</h3>
-                    <p><strong>Cost:</strong> 24 Spell Points</p>
-                    <p>Affect expansive areas, summon immense storms, reshape terrain, raise the dead, or
-                        potentially grant wishes.</p>
-                    <ul>
-                        <li><strong>Spell Attack:</strong> Deal <code>24d6 + 24</code> damage and inflict a
-                            Corpus or Cognition condition or inflict a Major condition and then deal the damage
-                            on a success+.</li>
-                        <li><strong>Spell Detonation:</strong> Deal half of <code>24d6 + 24</code> damage to all
-                            creatures within long range.</li>
-                    </ul>
-                </div>
-            </div>
+        </section>
+
+        </div>
+        </div>
+
         </section>
 
         <section id="spells">

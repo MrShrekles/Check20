@@ -11,8 +11,6 @@
     <script src="scripts/char_species.js" defer></script>
     <script src="scripts/charsheet.js" defer></script>
     <script src="scripts/char_save.js" defer></script>
-
-
 </head>
 
 <body>
@@ -27,12 +25,9 @@
                             <div class="character-header">
                                 <label for="charName">Character Name:</label>
                                 <input type="text" id="charName" name="charName">
-
                             </div>
 
-
                             <div class="health-section">
-
                                 <h2>Health</h2>
                                 <table class="health-table">
                                     <thead>
@@ -49,46 +44,28 @@
                                             <td><input type="number" name="armorCurrent" class="circle-input"></td>
                                         </tr>
                                         <tr>
-                                            <td>Wounds</td>
-                                            <td>
-                                                <input type="number" name="woundsTotal" class="circle-input" id="wounds">
-                                            </td>
-                                            <td>
-                                                <input type="number" name="woundsCurrent" class="circle-input" id="woundsCurrent">
-                                            </td>
+                                            <td>Wounds<br><small class="formula">Agi + Str</small></td>
+                                            <td><input type="number" name="woundsTotal" class="circle-input" id="wounds"></td>
+                                            <td><input type="number" name="woundsCurrent" class="circle-input" id="woundsCurrent"></td>
                                         </tr>
-
                                         <tr>
-                                            <td>Movement Speed</td>
-                                            <td>
-                                                <input type="number" name="moveTotal" class="circle-input" id="movement">
-                                            </td>
-                                            <td>
-                                                <input type="number" name="moveCurrent" class="circle-input" id="moveCurrent">
-                                            </td>
+                                            <td>Movement Speed<br><small class="formula">30 + 5 per 2 Agi</small></td>
+                                            <td><input type="number" name="moveTotal" class="circle-input" id="movement"></td>
+                                            <td><input type="number" name="moveCurrent" class="circle-input" id="moveCurrent"></td>
                                         </tr>
-
                                         <tr>
-                                            <td>Low Light Vision</td>
-                                            <td>
-                                                <input type="number" name="llvTotal" class="circle-input" id="llv">
-                                            </td>
-                                            <td>
-                                                <input type="number" name="llvCurrent" class="circle-input" id="llvCurrent">
-                                            </td>
+                                            <td>Low Light Vision<br><small class="formula">30 + 5 per 2 Obs</small></td>
+                                            <td><input type="number" name="llvTotal" class="circle-input" id="llv"></td>
+                                            <td><input type="number" name="llvCurrent" class="circle-input" id="llvCurrent"></td>
                                         </tr>
-
-                                        <!-- Single button to recalculate all derived stats -->
                                         <tr class="online-only">
                                             <td colspan="3" class="centered">
                                                 <button type="button" onclick="recalculateAllStats()">Recalculate Stats</button>
                                             </td>
                                         </tr>
-
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
 
                         <h2>Checks</h2>
@@ -170,15 +147,14 @@
                                 <label for="language">Language:</label>
                                 <input type="text" id="language" name="language">
                                 <!-- br -->
-                                <label for="diet">Diet:</label>
-                                <input type="text" id="diet" name="diet">
+                                <label for="age">Age:</label>
+                                <input type="number" id="age" name="age">
                             </li>
                             <li>
-                                <label for="age">Age:</label>
-                                <input type="number" id="age" name="age" style="width: 120px;">
-                                <!-- br -->
+                                <label for="diet">Diet:</label>
+                                <input type="text" id="diet" name="diet">
                                 <label for="size">Size:</label>
-                                <select id="size" name="size">
+                                <select id="size" name="size" style="width: auto;">
                                     <option value="">-- Select Size --</option>
                                     <option value="Tiny">Tiny (under 1 ft)</option>
                                     <option value="Small">Small (1–4 ft)</option>
@@ -186,73 +162,95 @@
                                     <option value="Large">Large (8–15 ft)</option>
                                     <option value="Giant">Giant (15–25 ft)</option>
                                 </select>
-
                             </li>
-
                         </ul>
 
-                        <ul class="char-notes-inline">
-                            <li>
+                        <!-- Trink, Motive, Add Equip -->
+                        <div class="two-column" id="extras">
+                            <div class="column">
                                 <label for="trinket">Trinket:</label>
                                 <textarea id="trinket" name="trinket"></textarea>
-                            </li>
-                            <li>
+                            </div>
+                            <div class="column">
                                 <label for="motivation">Motivation:</label>
                                 <textarea id="motivation" name="motivation"></textarea>
-                            </li>
-                        </ul>
+                            </div>
+                            <div class="column">
+                                <label for="addEquip">Additional:</label>
+                                <textarea id="addEquip" name="addEquip"></textarea>
+                            </div>
+                        </div>
 
-                        <h2>Resources</h2>
-                        <div class="resources-section">
-                            <table class="resources-table">
-                                <thead>
-                                    <tr>
-                                        <th>Resource</th>
-                                        <th>Total</th>
-                                        <th>Current</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- GP/Currency -->
-                                    <tr>
-                                        <td>GP/Currency</td>
-                                        <td colspan="2">
-                                            <input type="number" id="gp" name="gp" class="circle-input" style="width: 100%;">
-                                        </td>
-                                    </tr>
+                        <div class="reference-grid small-resources">
+                            <!-- GP/Currency Card -->
+                            <div class="ref-card">
+                                <h3>Wealth</h3>
+                                <div class="input-row">
+                                    <input type="number" id="gp" name="gp" class="square-input" placeholder="Amount">
+                                </div>
+                            </div>
 
-                                    <!-- Class Resource -->
-                                    <tr>
-                                        <td>Class Resource</td>
-                                        <td><input type="number" id="class-resource_max" name="class-resource_max" class="circle-input"></td>
-                                        <td><input type="number" id="class-resource" name="class-resource" class="circle-input">
-                                        </td>
-                                    </tr>
+                            <!-- Class Resource Card -->
+                            <div class="ref-card">
+                                <h3 style="font-size: 10px;">Class Rescource</h3>
+                                <div class="input-row">
+                                    <input type="number" id="class-resource_max" name="class-resource_max" class="square-input">
+                                    <input type="number" id="class-resource" name="class-resource" class="square-input">
+                                </div>
+                            </div>
 
-                                    <!-- Spell Points -->
-                                    <tr>
-                                        <td>Spell Points</td>
-                                        <td><input type="number" id="spell-points_max" name="spell-points_max" class="circle-input"></td>
-                                        <td><input type="number" id="spell-points" name="spell-points" class="circle-input">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <!-- Spell Points Card -->
+                            <div class="ref-card">
+                                <h3>Spell Points</h3>
+                                <div class="input-row">
+                                    <input type="number" id="spell-points_max" name="spell-points_max" class="square-input">
+                                    <input type="number" id="spell-points" name="spell-points" class="square-input">
+                                </div>
+                            </div>
 
                         </div>
-                                        <div class="ref-card">
-                    <h3>Check Result Outcomes</h3>
-                    <ul class="ref-list">
-                        <li><strong>1–4:</strong> Fail + — Opportunity Attack @ Advantage</li>
-                        <li><strong>5–9:</strong> Fail — Opportunity Attack</li>
-                        <li><strong>10–14:</strong> Minor Failure — Opportunity Attack @ Disadvantage</li>
-                        <li><strong>15–19:</strong> Success — No attack</li>
-                        <li><strong>20–24:</strong> Success + — 1 roll</li>
-                        <li><strong>25–29:</strong> Success ++ — 2 rolls</li>
-                        <li><strong>30–34:</strong> Success +++ — 3 rolls</li>
-                    </ul>
 
-                </div>
+                        <div class="two-column">
+                            <div class="column">
+                                <div class="ref-card">
+                                    <ul class="notes">
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ref-card">
+                                    <ul class="notes">
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                        <li>&nbsp;</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="column" id="right">
                         <!-- Species Selection -->
@@ -316,6 +314,7 @@
                 </div>
             </section>
         </div>
+
         <div class="char-page" id="page2">
             <!-- Conditions -->
             <section id="conditions">
@@ -662,7 +661,7 @@
                         <li><strong>Finisher:</strong> Eliminate locked foes</li>
                     </ul>
                 </div>
-                <div class="ref-card" id="movement">
+                <div class="ref-card" id="movement-desc">
                     <h3>Movement</h3>
                     <ul>
                         <li><strong>Difficult Terrain:</strong> Halved speed</li>
@@ -739,7 +738,7 @@
                         <li><strong>Cover:</strong> Disadv. to be hit</li>
                     </ul>
                 </div>
-                <div class="ref-card" id="size">
+                <div class="ref-card" id="size-desc">
                     <h3>Size Scale</h3>
                     <ul>
                         <li><strong>Tiny:</strong>
@@ -788,10 +787,67 @@
                         <li><strong>Etheros:</strong> Elemental magic</li>
                         <li><strong>Night:</strong> Undead & Darkness</li>
                         <li><strong>Clunk:</strong> Tech/mechanical</li>
-                        <li><strong>Yar:</strong> Maritime  & Dreamsea.</li>
+                        <li><strong>Yar:</strong> Maritime & Dreamsea.</li>
                         <li><strong>Drak:</strong> Draconic</li>
                         <li><strong>Holy:</strong> Divine language.</li>
                         <li><strong>Jotun:</strong> Giant & ancient</li>
+                    </ul>
+                </div>
+                <div class="ref-card">
+                    <h3>Check Result Outcomes</h3>
+                    <ul class="ref-list">
+                        <li><strong>1–4:</strong> Fail+ Provoke @Adv</li>
+                        <li><strong>5–9:</strong> Fail: Provoke</li>
+                        <li><strong>10–14:</strong> Fail: Provoke @Dis</li>
+                        <li><strong>15–19:</strong> Success</li>
+                        <li><strong>20–24:</strong> Success + — 1 roll</li>
+                        <li><strong>25–29:</strong> Success ++ — 2 rolls</li>
+                        <li><strong>30–34:</strong> Success +++ — 3 rolls</li>
+                    </ul>
+                </div>
+                <div class="ref-card">
+                    <ul class="notes">
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                    </ul>
+                </div>
+                <div class="ref-card">
+                    <ul class="notes">
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                    </ul>
+                </div>
+                <div class="ref-card">
+                    <ul class="notes">
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
                     </ul>
                 </div>
 

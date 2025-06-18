@@ -103,6 +103,48 @@
     background-color: var(--green-2);
 }
 
+ul.manner,
+ul.transmission {
+  list-style-type: none;
+  padding-left: 0;
+  border: 1px solid var(--theme-3);
+  border-radius: var(--border-radius);
+  box-shadow: 0 0 5px var(--theme-3);
+  font-size: 81%;
+}
+
+ul.manner li,
+ul.transmission li {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--theme-2);
+}
+
+ul.manner li:last-child,
+ul.transmission li:last-child {
+  border-bottom: none;
+}
+
+ul.manner strong,
+ul.transmission strong {
+  color: var(--cream);
+  font-style: oblique;
+}
+
+#intent-list {
+  font-size: 90%;
+  margin: 0;
+  padding: 0;
+}
+
+#intent-list h5 {
+line-height: 0;
+}
+
+#intent-list li {
+  margin: 0;
+  padding: 0; 
+}
+
 .spell-tags .origin {
     background-color: var(--theme-1);
 }
@@ -129,17 +171,6 @@
     color: var(--dark-2);
 }
 
-#intent-spellcasting {
-    background-image: url('../assets/images/Street2.png');
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position-y: bottom;
-    background-position-x: right;
-}
-
-#intent-spellcasting p {
-    width: 75%;
-}
 
 /* Controls Container */
 .control {

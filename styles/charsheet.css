@@ -27,6 +27,7 @@ textarea {
     text-align: left;
 }
 
+
 .char-page {
     padding: 0.2in;
     box-sizing: border-box;
@@ -84,7 +85,9 @@ td {
 .two-column {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--padding);
+    gap: 5px;
+    padding: 0;
+    margin: 0;
     justify-content: space-between;
     align-items: start;
 }
@@ -92,7 +95,11 @@ td {
 .column,
 .flex-item {
     flex: 1;
-    padding: var(--padding);
+    padding: 5px;
+}
+
+#extras textarea {
+    height: 50px;
 }
 
 .flex-item input,
@@ -160,7 +167,22 @@ td {
 
 .checks-table input.circle-input {
     width: 50px;
-    height: 24px;
+    height: 30px;
+}
+
+.health-table input.circle-input {
+    width: 90%;
+}
+
+.health-table td:first-child, 
+.health-table th:first-child {
+  width: 30%; /* Adjust this value as needed */
+}
+
+.formula {
+    font-size: 10px;
+    color: gray;
+    display: block;
 }
 
 .resource-item {
@@ -311,64 +333,99 @@ td {
 }
 
 .reference-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
-  page-break-inside: avoid;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    page-break-inside: avoid;
 }
 
 .ref-card {
-  border: 1px solid var(--black);
-  border-radius: 6px;
-  padding: 0.15in;
-  background: var(--white);
-  box-shadow: var(--box-shadow);
+    border: 1px solid var(--black);
+    border-radius: 6px;
+    padding: 0.15in;
+    background: var(--white);
+    box-shadow: var(--box-shadow);
 }
 
 .ref-card h3 {
-  margin-top: 0;
-  border-bottom: 1px solid var(--black);
+    margin-top: 0;
+    border-bottom: 1px solid var(--black);
 }
 
 .ref-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .ref-card li {
-  padding: 0.05in 0;
+    padding: 0.05in 0;
 }
 
 .ref-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .ref-list li {
-  padding: 0;
+    padding: 0;
 }
 
-#movement, #half-action, #size {
+.small-resources {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25in;
+    /* or smaller gap if preferred */
+}
+
+.ref-card {
+    border: 1px solid var(--black);
+    border-radius: 6px;
+    padding: 0.1in;
+    background: var(--white);
+    box-shadow: var(--box-shadow);
+}
+
+.small-resources {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.2in;
+}
+
+.input-row {
+    display: flex;
+    gap: 0.1in;
+    justify-content: start;
+}
+
+.square-input {
+    width: 90%;
+    height: 20px;
+    text-align: start;
+    padding: 3px;
+}
+
+#movement-desc,
+#half-action,
+#size-desc {
     font-size: smaller;
 }
 
-
-
-@media print {
-    #page2 {
-        transform-origin: top left;
-        width: 100%;
-        height: auto;
-        page-break-after: avoid;
-    }
-
-    .char-page {
-        page-break-after: avoid !important;
-        page-break-inside: avoid !important;
-    }
-
+.notes {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    font-family: monospace;
+    font-size: 10px;
 }
+
+.notes li {
+    border-bottom: 1px solid lightgray;
+    padding: 2px 0;
+    height: 1em;
+    color: #ccc;
+}
+
 
 @media print {
 
