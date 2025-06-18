@@ -851,7 +851,7 @@
             },
             {
               "name": "Devourer",
-              "effect": "A host bonded through Devourer lasts for one month or until the host dies. To bond, the symbiote must win a contested Strength Check to forcibly overtake the host's body. On a failure, the host is immune to the Devourer while alive. Once bonded, the symbiote enhances the host’s combat capabilities, granting +1 to melee attack checks and damage. Additionally, the host gains the ability to heal themselves as an action for [[6 Healing]] or remove one Corpus Condition as an action, usable once per Long Rest."
+              "effect": "You attempt to devour a medium sized creature. You make contested physical checks to overtake a creature's body, on a success you take the form and are sustained for the day. When you devour a medium sized creature you gain +1 to attack checks and damage until a long rest"
             },
             {
               "name": "Passenger",
@@ -1176,7 +1176,7 @@
       "diet": "",
       "rarity": "",
       "region": "",
-      "features": "Divine Shield: As an action, give a creature a radiant shield that protects them from the next instance of damage, it lasts for 1 minute and glows in the dark."
+      "features": "Divine Shield: As an action, give a creature within short range a radiant shield that protects them from the next instance of damage, it lasts for 1 minute and glows in the dark."
     },
     {
       "name": "Astraleon (Psychic)",

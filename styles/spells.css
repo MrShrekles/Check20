@@ -227,6 +227,29 @@ line-height: 0;
   font-weight: bold;
 }
 
+#origin-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: var(--padding) 0;
+}
+
+#origin-toggles button {
+  padding: 0.3rem 0.6rem;
+  background: var(--dark-2);
+  color: var(--cream);
+  border: 1px solid var(--theme-2);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#origin-toggles button.active {
+  background: var(--green-2);
+  font-weight: bold;
+}
+
+
 /* Floating Search */
 #floating-search {
   position: fixed;

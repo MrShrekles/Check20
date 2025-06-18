@@ -7,6 +7,7 @@ function highlightText(text, term) {
 
 let activeIntents = [];
 let cachedSpells = [];
+let activeOrigins = [];
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('#sort-toggles button').forEach(btn => {
@@ -18,20 +19,34 @@ document.addEventListener('DOMContentLoaded', () => {
       renderSpells();
     });
   });
-document.querySelectorAll('#intent-toggles button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const intent = btn.dataset.intent;
-    btn.classList.toggle('active');
+  document.querySelectorAll('#intent-toggles button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const intent = btn.dataset.intent;
+      btn.classList.toggle('active');
 
-    if (activeIntents.includes(intent)) {
-      activeIntents = activeIntents.filter(i => i !== intent);
-    } else {
-      activeIntents.push(intent);
-    }
+      if (activeIntents.includes(intent)) {
+        activeIntents = activeIntents.filter(i => i !== intent);
+      } else {
+        activeIntents.push(intent);
+      }
 
-    renderSpells();
+      renderSpells();
+    });
   });
-});
+  document.querySelectorAll('#origin-toggles button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const origin = btn.dataset.origin.toLowerCase();
+      btn.classList.toggle('active');
+
+      if (activeOrigins.includes(origin)) {
+        activeOrigins = activeOrigins.filter(o => o !== origin);
+      } else {
+        activeOrigins.push(origin);
+      }
+
+      renderSpells();
+    });
+  });
   document.getElementById('spell-search').addEventListener('input', renderSpells);
 
   document.getElementById('toggle-details').addEventListener('click', () => {
@@ -99,9 +114,13 @@ let filteredSpells = cachedSpells.filter(spell => {
   const matchesIntent = activeIntents.length === 0 || spell.effects.some(e =>
     activeIntents.includes(e.intent)
   );
+
+  const matchesOrigin = activeOrigins.length === 0 || activeOrigins.includes((spell.origin || '').toLowerCase());
+
   const matchesSearch = spell.name.toLowerCase().includes(searchTerm) ||
     spell.effects.some(e => e.effect.toLowerCase().includes(searchTerm));
-  return matchesIntent && matchesSearch;
+
+  return matchesIntent && matchesOrigin && matchesSearch;
 });
 
   if (sortKey === 'name') {
@@ -138,8 +157,8 @@ let filteredSpells = cachedSpells.filter(spell => {
 </div>
 
 ${spell.effects
-  .filter(effect => activeIntents.length === 0 || activeIntents.includes(effect.intent))
-  .map(effect => `
+        .filter(effect => activeIntents.length === 0 || activeIntents.includes(effect.intent))
+        .map(effect => `
     <details class="spell-effect" open>
       <summary class="spell-features">${effect.intent} <span class="sp-cost">${getIntentCost(effect.intent)} SP</span></summary>
       ${renderEffectInfo(effect)}
