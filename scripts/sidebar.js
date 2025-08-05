@@ -23,12 +23,35 @@ function initSidebar() {
     sidebar.classList.toggle("closed");
     sidebar.classList.toggle("open");
   });
+document.getElementById("toggle-spellbook")?.addEventListener("click", () => {
+  window.location.href = "spellcasting.html#spells";
+});
 
-  // Roller tab toggle via radio buttons
-  const checkRadio = document.getElementById("check-mode");
-  const standardRadio = document.getElementById("standard-mode");
-  const checkBlock = document.getElementById("check-block");
-  const standardBlock = document.getElementById("standard-block");
+
+
+// Dynamically connect all radios to their matching blocks
+const radios = document.querySelectorAll('input[type="radio"][name="roller-mode"]');
+const blocks = document.querySelectorAll('.roller-block');
+
+radios.forEach(radio => {
+  radio.addEventListener("change", () => {
+    if (radio.checked) {
+      const mode = radio.id.replace("-mode", ""); // e.g., check, standard, reference
+      blocks.forEach(block => {
+        block.classList.toggle("active", block.id === `${mode}-block`);
+      });
+    }
+  });
+
+  // Set initial state
+  if (radio.checked) {
+    const mode = radio.id.replace("-mode", "");
+    blocks.forEach(block => {
+      block.classList.toggle("active", block.id === `${mode}-block`);
+    });
+  }
+});
+
 
   // Set initial block visibility
   if (checkRadio?.checked) {

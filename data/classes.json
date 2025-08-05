@@ -373,88 +373,14 @@
           ]
         },
         {
-          "name": "Spell Breaker",
-          "description": "Having been shunned by traditional spell schools, the Spell Breaker has delved into the dark and forbidden arts of anti-magic. They have sworn to rid the world of the dangers of magic and those who wield it without restraint. With a somber and gloomy demeanor, the Spell Breaker walks a lonely path, haunted by the atrocities unleashed by reckless spellcasters.",
-          "features": [
-            {
-              "name": "Arcane Devour",
-              "description": "As a reaction to a spell being cast within short range gain 1 spell point and move 5ft. You can store a number of spell points equal to your Survival, you cannot cast spells with your spell points. "
-            },
-            {
-              "name": "Spell Eater",
-              "description": "As an off-action, spend any number of spell points and deal that much damage on your next successful hit with a weapon you empower or gain twice as much as armor for 1 minute."
-            }
-          ],
-          "progression": {
-            "description": "Path progression is linear; you will select these progression steps in order. At levels 1, 3, 6, and 9:",
-            "bonuses": [
-              "Gain an increase of +3 points to put into your checks (no check can exceed 15).",
-              "Gain +1 Class Resource at each of these levels."
-            ]
-          },
-          "progressionSteps": [
-            {
-              "name": "Magic Disruption",
-              "description": "You have advantage on checks against spells and magical effects. When subjected to a condition from a spell or magical effect, make an Intellect check to prevent it."
-            },
-            {
-              "name": "Anti-Magic Knight",
-              "description": "When making a weapon attack, you can spend a spell point to increase either the check or the damage by +3. Alternatively, as an action using a spell point, gain [[6]] armor per spell point used."
-            },
-            {
-              "name": "Magical Insight",
-              "description": "Gain the ability to detect the presence and intensity of magical effects within your vicinity. This does not require spell points but provides valuable information about magical traps, enchantments, or artifacts, enhancing investigation and lore discovery."
-            },
-            {
-              "name": "Stance Hold",
-              "description": "When you take the Saving Grace Stance as a half-action, you can take an additional stance at the same time, receiving the benefits of both until the end of your next turn."
-            },
-            {
-              "name": "Anti-Mage",
-              "description": "Gain spell points equal to your Intellect."
-            },
-            {
-              "name": "Counter-Cast Parry",
-              "description": "After using Anti-Magic Knight and a creature attacks you after your turn, you can spend a spell point to reduce the damage by half as an off-action."
-            },
-            {
-              "name": "Mirror Spell",
-              "description": "You can cast any spells you have seen within the last minute as an action with an Intellect check, using half the number of spell points used but must be cast within short range."
-            },
-            {
-              "name": "Anti-Mage Recovery",
-              "description": "As an action spending 2 spell points, you can heal for +4 or remove a Corpus condition."
-            },
-            {
-              "name": "Disenchanter",
-              "description": "As a 10-minute action spending 6 spell points, you can remove negative effects from items like curses or tainted magic."
-            },
-            {
-              "name": "The Spell Breaker",
-              "description": "Spending a Bolster as an action, you become immune to any words of power or magical abilities unless cast by a god for 1 minute."
-            }
-          ]
-        },
-        {
           "name": "Tide Sentinel",
           "description": "The Tide Sentinel embodies the unyielding power and grace of the ocean, wielding water as both a shield and a weapon. They channel the boundless energy of the tides to heal allies, manipulate the battlefield, and summon aquatic allies to aid in combat. Whether calming the chaos or unleashing a torrent of destruction, the Tide Sentinel is a master of adaptability, making them an invaluable force both in battle and beyond.",
           "features": [
             {
               "name": "Ocean Spray",
               "description": "As an off-action, when you attack an enemy with a melee weapon, deal half the total damage in Fluid damage to all creatures in melee range."
-            },
-            {
-              "name": "Arcane Devour",
-              "description": "As a reaction to a spell being cast within short range gain 1 spell point and move 5ft. You can store a number of spell points equal to your Survival, you cannot cast spells with your spell points. "
             }
           ],
-          "progression": {
-            "description": "Path progression is linear; you will select these progression steps in order. At levels 1, 3, 6, and 9:",
-            "bonuses": [
-              "Gain an increase of +3 points to put into your checks (no check can exceed 15).",
-              "Gain +1 Class Resource at each of these levels."
-            ]
-          },
           "progressionSteps": [
             {
               "name": "Ocean's Lorekeeper",
@@ -507,13 +433,6 @@
               "description": "As an action, create a shockwave by slamming the ground, dealing [[1d4]] Impact damage to creatures within reach range. Affected creatures must make a Strength check or take the Prone condition."
             }
           ],
-          "progression": {
-            "description": "Path progression is linear; you will select these progression steps in order. At levels 1, 3, 6, and 9:",
-            "bonuses": [
-              "Gain an increase of +3 points to put into your checks (no check can exceed 15).",
-              "Gain +1 Class Resource at each of these levels."
-            ]
-          },
           "progressionSteps": [
             {
               "name": "Tremor Shield",
@@ -559,7 +478,7 @@
         },
         {
           "name": "Plaguebringer",
-          "description": "The Plaguebringer is a master of disease, decay, and the darker aspects of nature. They understand the delicate balance between life and death and can manipulate it to their advantage. This talent is perfect for players who enjoy using cunning and strategy over brute force, affecting entire battlefields with debilitating diseases, controlling vermin and insects, and wielding the fear of contagion as a weapon.",
+          "description": "The Plaguebringer is a master of disease, decay, and the darker aspects of nature. They understand the delicate balance between life and death and can manipulate it to their advantage. This path is perfect for players who enjoy using cunning and strategy over brute force, affecting entire battlefields with debilitating diseases and wielding the fear of contagion as a weapon.",
           "features": [
             {
               "name": "Plagued One",
@@ -828,7 +747,6 @@
               "description": "Your Unarmed Attacks deal an additional [[1d6]] physical damage of your choice."
             }
           ],
-          "progression": "You may freely select talent progression steps in any order. With each step, gain a +1 bonus to any one of your checks, though no check can exceed a maximum of 15.",
           "progressionSteps": [
             {
               "name": "Master of the Ring",
@@ -934,7 +852,6 @@
               "description": "On your turn in combat, you can choose to go into a frenzy. When you choose to do so, spend a Bolster and roll [[1d4]]. You gain that many additional attacks. After your attacks, you take the Exhaustion condition until the end of your next turn."
             }
           ],
-          "progression": "You may freely select talent progression steps in any order. With each step, gain a +1 bonus to any one of your checks, though no check can exceed a maximum of 15.",
           "progressionSteps": [
             {
               "name": "Predator's Pounce",
@@ -966,15 +883,15 @@
             },
             {
               "name": "Wild Instincts",
-              "description": "(Gain 1 Bolster). As a reaction to taking damage, use a Bolster to tap into your primal instincts and reduce its damage by half."
+              "description": "As a reaction to taking damage, use a Bolster to tap into your primal instincts and reduce its damage by half."
             },
             {
               "name": "Primal Roar",
-              "description": "(Gain 1 Bolster). As an action, spend a Bolster and unleash a roar affecting all creatures within short range. They must make a Spirit check or take the Fear condition with you as the source. You have advantage on attack checks against creatures with the Fear condition with you as the source."
+              "description": "As an action, spend a Bolster and unleash a roar affecting all creatures within short range. They must make a Spirit check or take the Fear condition with you as the source. You have advantage on attack checks against creatures with the Fear condition with you as the source."
             },
             {
               "name": "Rampage",
-              "description": "(Gain 1 Bolster). As an action, use a Bolster to go on a rampage. Your movement speed is doubled, and you can make an unarmed attack against each enemy you pass during your movement."
+              "description": "As an action, use a Bolster to go on a rampage. Your movement speed is doubled, and you can make an unarmed attack against each enemy you pass during your movement."
             }
           ]
         },
@@ -987,7 +904,6 @@
               "description": "As an action, emit a bone-chilling howl that can demoralize enemies, sounding like familiar voices. Creatures must make an Intellect check or take the Fear condition. If they succeed on the check, they become immune to your Mimic Howl."
             }
           ],
-          "progression": "You may freely select talent progression steps in any order. With each step, gain a +1 bonus to any one of your checks, though no check can exceed a maximum of 15.",
           "progressionSteps": [
             {
               "name": "Creeping Form",
@@ -1162,7 +1078,6 @@
               "description": "As an action, you can invoke a demonic essence within you, spending 5 Demonic Essence and transforming yourself into a demonic form for a limited time. In this state, you gain +2 to all attack rolls, armor equal to double your Intellect, and deal an extra [[1d4]] Vozian damage with your attacks. This transformation lasts for 1 minute. When the transformation ends, you take the Blind, Confused, and Exhausted conditions for 1 minute due to the immense strain on your body and soul."
             }
           ],
-          "progression": "Path progression is linear, you will select these progression steps in order. At levels 1, 3, 6, and 9, gain an increase of +3 points to put into your checks, but no check can exceed 15. Additionally, gain +1 Class Resource at each of these levels as well.",
           "progressionSteps": [
             {
               "name": "Demonic Resilience",
@@ -1215,7 +1130,6 @@
               "description": "When you make an unarmed strike (fist, claw, tentacle, etc.) as an action, you may make one additional unarmed strike on your turn."
             }
           ],
-          "progression": "Path progression is linear; you will select these progression steps in order. At levels 1, 3, 6, and 9, gain an increase of +3 points to put into your checks, but no check can exceed 15. Additionally, gain +1 Class Resource at each of these levels as well.",
           "progressionSteps": [
             {
               "name": "Demon’s Frenzy",
@@ -1286,7 +1200,6 @@
               "description": "As a half-action, target an ally and give them +3 on their next attack check until the end of their next turn or gain armor equal to your Strength until the end of your next turn"
             }
           ],
-          "progression": "Path progression is linear; you will select these progression steps in order. At levels 1, 3, 6, and 9, gain an increase of +3 points to put into your checks, but no check can exceed 15. Additionally, gain +1 Spell Point at each of these levels as well.",
           "progressionSteps": [
             {
               "name": "Hyper-Reactive",
@@ -1343,7 +1256,6 @@
               "description": "Create an illusion within short range, fooling senses (sight, sound, etc.) up to 1 minute (extended by 1 min per additional spell point). If you spend 3 spell points, you can alter perceptions and make real objects that last for 1 hour (extended by 1 hour per additional spell point)."
             }
           ],
-          "progression": "Path progression is linear; you will select these progression steps in order. At levels 1, 3, 6, and 9, gain an increase of +3 points to put into your checks, but no check can exceed 15. Additionally, gain +1 Spell Point at each of these levels as well.",
           "progressionSteps": [
             {
               "name": "Telekinetic Hands",
@@ -1487,7 +1399,7 @@
             },
             {
               "name": "Rune of the Phoenix",
-              "description": "(Intellect +3, Influence +3, Spirit +3, Observation +3) When the wearer is reduced to 0 wounds, the rune activates, giving [[1d8]] healing before the injured condition is applied."
+              "description": "When the wearer is reduced to 0 wounds, the rune activates, giving [[1d8]] healing before the injured condition is applied."
             },
             {
               "name": "Master Runebinder",
@@ -1511,7 +1423,7 @@
           "progressionSteps": [
             {
               "name": "New Dawn",
-              "description": "(Agility +1, Stealth +1, Spirit +1, Observation +1) As a half-action, touch a creature to transfer a condition from a target to yourself."
+              "description": "As a half-action, touch a creature to transfer a condition from a target to yourself."
             },
             {
               "name": "Duality Strike",
@@ -1527,7 +1439,7 @@
             },
             {
               "name": "Umbra Step",
-              "description": "(Agility +2, Stealth +2, Spirit +2, Observation +2) Enhance your Eclipse Dash. Now, when teleporting, leave behind a shadow clone that distracts attacking creatures within reach, granting disadvantage on their next attack."
+              "description": "Enhance your Eclipse Dash. Now, when teleporting, leave behind a shadow clone that distracts attacking creatures within reach, granting disadvantage on their next attack."
             },
             {
               "name": "Dark Dash",
@@ -1543,7 +1455,7 @@
             },
             {
               "name": "Lunar Guidance",
-              "description": "(Agility +3, Stealth +3, Spirit +3, Observation +3) When you use your Tactical Awareness on a creature at night, you give them a glow, granting all allies advantage on strikes against them for 1 minute. If you maintain Tactical Awareness on a creature and they flee, you can easily track them until you take a short or long rest."
+              "description": "When you use your Tactical Awareness on a creature at night, you give them a glow, granting all allies advantage on strikes against them for 1 minute. If you maintain Tactical Awareness on a creature and they flee, you can easily track them until you take a short or long rest."
             },
             {
               "name": "Eclipse Resurgence",
@@ -1553,7 +1465,7 @@
         },
         {
           "name": "Witch Hunter",
-          "description": "The Witch Hunter, or Arcane Inquisitor, is a guardian against the misuse of magic. They are the shadow that haunts rogue spellcasters, the unseen fear that grips the hearts of those who dare to corrupt the arcane. Their path is one of relentless pursuit, armed with the knowledge and tools to dismantle any magical threat. A successful mission for a Witch Hunter is a whisper in the night, a sign that magic's dark tide has been stemmed once more, without fanfare or recognition.",
+          "description": "The Witch Hunter, or Inquisitor, is a guardian against the misuse of magic. They are the shadow that haunts rogue spellcasters, the unseen fear that grips the hearts of those who dare to corrupt the arcane. Their path is one of relentless pursuit, armed with the knowledge and tools to dismantle any magical threat. A successful mission for a Witch Hunter is a whisper in the night, a sign that magic's dark tide has been stemmed once more, without fanfare or recognition.",
           "features": [
             {
               "name": "Witch Hunter's Arsenal",
@@ -1663,7 +1575,7 @@
           "features": [
             {
               "name": "Ethereal Travel",
-              "description": "As an action, gain the Intangible condition. If you pass through a creature while in this condition, the creature takes [[1d4]] Thunder damage. As an action on a following turn, you can remove the Intangible condition."
+              "description": "As an action, gain the Intangible condition. If you pass through a creature while in this condition, the creature takes [[1d4]] Thunder damage."
             }
           ],
           "progressionSteps": [
@@ -2593,7 +2505,7 @@
         },
         {
           "name": "Flapper",
-          "description": "The Elemental Flapper is a vivacious force of nature, seamlessly blending charm and charisma with elemental powers that reflect their dazzling personality and volatile spirit. Whether in the urbane settings of high society or the raw wilderness, they manipulate fire, water, air, or earth to enhance their movements, deceive foes, and captivate allies with elemental flair.",
+          "description": "The Flapper is a vivacious force of nature, seamlessly blending charm and charisma with elemental powers that reflect their dazzling personality and volatile spirit. Whether in the urbane settings of high society or the raw wilderness, they manipulate fire, water, air, or earth to enhance their movements, deceive foes, and captivate allies with elemental flair.",
           "features": [
             {
               "name": "Elemental Flourish",

@@ -1,17 +1,27 @@
 <!-- Sidebar -->
 <div id="sidebar" class="closed">
     <button id="toggle-sidebar">Tools</button>
+    <button id="toggle-spellbook" title="Open Spellbook"></button>
+
     <div id="sidebar-content">
         <div class="roller-switch">
             <!-- Radio Toggles -->
             <input type="radio" name="roller-mode" id="check-mode" checked>
-            <input type="radio" name="roller-mode" id="standard-mode">
-
-            <!-- Toggle Buttons -->
             <label for="check-mode">Check20 Roller</label>
+
+            <input type="radio" name="roller-mode" id="standard-mode">
             <label for="standard-mode">Standard Roller</label>
 
-            <!-- Rollers -->
+            <input type="radio" name="roller-mode" id="reference-mode">
+            <label for="reference-mode">Reference</label>
+
+            <input type="radio" name="roller-mode" id="condition-mode">
+            <label for="condition-mode">Conditions</label>
+
+            <input type="radio" name="roller-mode" id="lore-mode">
+            <label for="lore-mode">Lore</label>
+
+            <!-- Sidebar -->
             <div class="roller-content">
                 <!-- Check20 Roller -->
                 <div class="roller-block" id="check-block">
@@ -99,6 +109,288 @@
                     </form>
                     <h4>Roll History</h4>
                     <ul id="roll-history" class="roll-history"></ul>
+                </div>
+
+                <!-- Reference -->
+                <div class="roller-block" id="reference-block">
+                    <!-- Reference Section-->
+                    <div class="references">
+                        <details>
+                            <summary><strong>What to do on your turn</strong></summary>
+                            <ul>
+                                <li><strong>Move:</strong> Move any distance up to your speed during your turn.</li>
+                                <li><strong>Action:</strong> Perform main abilities like attack or cast a spell.</li>
+                                <li><strong>Half-Action:</strong> Perform two minor actions instead of 1 action, like switching stances.</li>
+                                <li><strong>Off-Action (Reaction):</strong> Additional attacks with light weapons or reaction to a missed attack.</li>
+                                <li><strong>Non-Action:</strong> Quick tasks like talking that require minimal effort.</li>
+                                <li><strong>Finisher:</strong> Eliminate defenseless opponents locked from combat.</li>
+                                <h3>Positioning in Combat</h3>
+                                <li><strong>Cover:</strong> Disadvantage to hit. Full cover cannot be targeted.</li>
+                                <li><strong>Range:</strong> Melee, reach (10ft), short (under 50ft), medium (50–200ft), long (200+ft).</li>
+                            </ul>
+                        </details>
+
+                        <details>
+                            <summary><strong>Types of Movement</strong></summary>
+                            <ul>
+                                <li><strong>Regular:</strong> Move up to your speed.</li>
+                                <li><strong>Dash:</strong> Move double distance as an action.</li>
+                                <li><strong>Jumping:</strong> 5ft per check (2× with running start).</li>
+                                <li><strong>Climbing:</strong> Requires agility checks; risk of falling.</li>
+                                <li><strong>Difficult Terrain / Swimming:</strong> Halves movement speed.</li>
+                                <li><strong>Prone:</strong> Standing up uses 15ft movement.</li>
+                                <li><strong>Moving Past Creatures:</strong> Only allies or small enemies.</li>
+                                <li><strong>Falling:</strong> 5 impact damage per 10ft.</li>
+                                <li><strong>Extreme Conditions:</strong> Hazardous environments deal 10 damage per second.</li>
+                                <li><strong>Burrowing:</strong> Full cover while burrowed, but no breathing.</li>
+                            </ul>
+                        </details>
+
+                        <details>
+                            <summary><strong>Actions</strong></summary>
+                            <ul>
+                                <li><strong>Attack:</strong> Make a combat attack.</li>
+                                <li><strong>Unarmed Strike:</strong> Deal minor damage without weapons.</li>
+                                <li><strong>Grab or Hold:</strong> Grapple, contested Strength or Agility.</li>
+                                <li><strong>Stealth:</strong> Hide or conceal presence.</li>
+                                <li><strong>Cast a Spell:</strong> Perform magical actions.</li>
+                                <li><strong>Dash:</strong> Move double distance as an action.</li>
+                                <li><strong>Administer a Potion:</strong> Heal or aid an ally.</li>
+                            </ul>
+                        </details>
+
+                        <details>
+                            <summary><strong>Half-Actions & Stances</strong></summary>
+                            <ul>
+                                <h3>Stances:</h3>
+                                <li><strong>Advantage Stance:</strong> Give your next attack advantage.</li>
+                                <li><strong>Disadvantage Stance:</strong> Enemies have disadvantage to hit you and nearby allies.</li>
+                                <li><strong>Offensive Stance:</strong> React with an opportunity attack when attacked.</li>
+                                <li><strong>Reaction Stance:</strong> React to any failed attacks against you.</li>
+                                <hr>
+                                <h3>Half Actions:</h3>
+                                <li><strong>Pick up an Item:</strong> Retrieve something in combat.</li>
+                                <li><strong>Use an Object:</strong> Interact with your environment.</li>
+                                <li><strong>Escape:</strong> Break free from restraints or conditions.</li>
+                                <li><strong>Disarm:</strong> Remove an opponent's weapon.</li>
+                                <li><strong>Help:</strong> Grant advantage to one ally on a check.</li>
+                                <li><strong>Disengage:</strong> Avoid opportunity attacks.</li>
+                                <li><strong>Shove:</strong> Knock a creature prone via contest.</li>
+                                <li><strong>Taunt:</strong> Force a check; failure compels enemy to target you.</li>
+                            </ul>
+                        </details>
+
+                        <details>
+                            <summary><strong>Off Actions</strong></summary>
+                            <ul>
+                                <li><strong>Reaction:</strong> In response to another action.</li>
+                                <li><strong>Opportunity Attacks:</strong> Strike when enemies drop their guard.</li>
+                                <li><strong>Drink Something:</strong> Quickly consume something for benefit.</li>
+                                <li><strong>Disrupt:</strong> Give disadvantage on a successful check.</li>
+                                <li><strong>Block:</strong> If shielded, halve melee damage with a reaction.</li>
+                                <li><strong>Demoralize:</strong> Intimidate to force morale check or flee.</li>
+                            </ul>
+                        </details>
+
+                        <details>
+                            <summary><strong>Non-Actions</strong></summary>
+                            <ul>
+                                <li>Limited to 1 per turn. Minimal effort actions.</li>
+                                <li><strong>Stress Push:</strong> Take 4 stress to boost a failed check up to 15.</li>
+                                <li><strong>Switch Weapons:</strong> Swap gear in combat.</li>
+                                <li><strong>Roleplay:</strong> Speak or act in character briefly.</li>
+                                <li><strong>Shouting Orders:</strong> Command allies or intimidate foes.</li>
+                            </ul>
+                        </details>
+
+                        <details>
+                            <summary><strong>Special Actions</strong></summary>
+                            <ul>
+                                <li><strong>Called Shots:</strong> Take -10 to apply a condition.</li>
+                                <li><strong>Surprise Turns:</strong> Gain extra action in specific conditions.</li>
+                                <li><strong>Targeting:</strong> Use senses to engage enemies (part of an action).</li>
+                                <li><strong>Cover:</strong> Use cover for protection (part of movement).</li>
+                            </ul>
+                        </details>
+
+                        <details>
+                            <summary><strong>Size</strong></summary>
+                            <ul>
+                                <li><strong>Tiny:</strong> Under 1 ft (insects, potion bottles).</li>
+                                <li><strong>Small:</strong> 1–4 ft (cats, scrolls).</li>
+                                <li><strong>Medium:</strong> 5–7 ft (humanoids, armor).</li>
+                                <li><strong>Large:</strong> 8–15 ft (bears, shields).</li>
+                                <li><strong>Giant:</strong> 15–25 ft (elephants, siege engines).</li>
+                                <li><strong>Monolithic:</strong> 25–100 ft (castles, airships).</li>
+                                <li><strong>Environmental:</strong> 100–300 ft (mountains, landmarks).</li>
+                            </ul>
+                        </details>
+
+                    </div>
+                </div>
+
+                <!-- Conditions -->
+                <div class="roller-block" id="condition-block">
+                    <!-- Conditions -->
+                    <section id="conditions">
+                        <h1>Conditions</h1>
+                        <table class="condition">
+                            <thead>
+                                <tr>
+                                    <th>Condition</th>
+                                    <th>Effect</th>
+                                    <th>Duration / Description</th>
+                                </tr>
+                            </thead>
+                            <tbody id="conditions">
+                                <!-- Corpus Conditions -->
+                                <tr>
+                                    <td colspan="3" class="category-row">Corpus Conditions</td>
+                                </tr>
+                                <tr>
+                                    <td>Bleeding</td>
+                                    <td>Cannot recover wounds or receive healing.</td>
+                                    <td>Lasts 1 minute</td>
+                                </tr>
+                                <tr>
+                                    <td>Broken</td>
+                                    <td>Physical Disadvantage</td>
+                                    <td>Lasts 6 weeks</td>
+                                </tr>
+                                <tr>
+                                    <td>Concussion</td>
+                                    <td>Mental Disadvantage, Spellcasting Disadvantage</td>
+                                    <td>Until a Long Rest</td>
+                                </tr>
+                                <tr>
+                                    <td>Coughing</td>
+                                    <td>Mental Disadvantage</td>
+                                    <td>Until a Press On or irritant removed</td>
+                                </tr>
+                                <tr>
+                                    <td>Dislocation</td>
+                                    <td>Physical Disadvantage</td>
+                                    <td>Until a Long Rest, or Survival Check</td>
+                                </tr>
+                                <tr>
+                                    <td>Slowed</td>
+                                    <td>Movement halved</td>
+                                    <td>Until source removed</td>
+                                </tr>
+                                <tr>
+                                    <td>Pinned</td>
+                                    <td>Cannot move; restrained by an object or creature.</td>
+                                    <td>Until source removed, or Off-Action removal</td>
+                                </tr>
+                                <tr>
+                                    <td>Prone</td>
+                                    <td>Disadvantage on ranged attacks; advantage for melee attacks against you.</td>
+                                    <td>Requires 15 ft of movement to stand.</td>
+                                </tr>
+
+                                <!-- Cognition Conditions -->
+                                <tr>
+                                    <td colspan="3" class="category-row">Cognition Conditions</td>
+                                </tr>
+                                <tr>
+                                    <td>Blind</td>
+                                    <td>Disadvantage on attack checks; attacks against you have advantage.</td>
+                                    <td>Off-Action removal if possible or permanent effects require a healer</td>
+                                </tr>
+                                <tr>
+                                    <td>Charmed</td>
+                                    <td>Mental Disadvantage; cannot attack the source of the charm.</td>
+                                    <td>Ends based on the charm's source</td>
+                                </tr>
+                                <tr>
+                                    <td>Confused</td>
+                                    <td>Mental Disadvantage, attacks against you have advantage.</td>
+                                    <td>Until end of next turn or Press On</td>
+                                </tr>
+                                <tr>
+                                    <td>Deaf</td>
+                                    <td>Stealth disadvantage; Spellcasting disadvantage</td>
+                                    <td>Lasts 1 minute or source removed</td>
+                                </tr>
+                                <tr>
+                                    <td>Fear</td>
+                                    <td>Must dash away or hide until the end of your next turn.</td>
+                                    <td>Ends if you cannot see the source for a full round; typically cannot be the same source
+                                        twice.</td>
+                                </tr>
+
+                                <!-- Special Conditions -->
+                                <tr>
+                                    <td colspan="3" class="category-row">Special Conditions</td>
+                                </tr>
+                                <tr>
+                                    <td>Intangible</td>
+                                    <td>Immune to physical damage; cannot attack; movement halved.</td>
+                                    <td>Ends after the effect's duration or through magical disruption. Cannot move through
+                                        inorganic material.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Invisible</td>
+                                    <td>Cannot be targeted by opportunity attacks; attacks against have disadvantage.</td>
+                                    <td>Ends after making an aggressive action or when revealed by substances like powder or oil.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Unconscious</td>
+                                    <td>Unable to act; vulnerable to critical hits and Finishers.</td>
+                                    <td>Ends after a set duration, damage taken, or Off-Action ally assistance.</td>
+                                </tr>
+
+                                <!-- Major Conditions -->
+                                <tr>
+                                    <td colspan="3" class="category-row">Major Conditions</td>
+                                </tr>
+                                <tr>
+                                    <td>Stunned</td>
+                                    <td>Disadvantage on all checks; movement halved.</td>
+                                    <td>Until end of next turn or Press On</td>
+                                </tr>
+                                <tr>
+                                    <td>Exhaustion</td>
+                                    <td>Disadvantage on all checks; movement halved.</td>
+                                    <td>Persists until a long rest, magical recovery, or specific intervention (e.g., caffeine).
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Constrained</td>
+                                    <td>Cannot make attack actions; attacks against have advantage</td>
+                                    <td>Off-Action removal if possible, escape check from restraints</td>
+                                </tr>
+                                <tr>
+                                    <td>Exposed</td>
+                                    <td>Take double damage</td>
+                                    <td>Until end of next turn or Press On</td>
+                                </tr>
+                                <tr>
+                                    <td>Injured</td>
+                                    <td>At 0 wounds, any further damage causes immediate Death.</td>
+                                    <td>Healing removes the condition. Excess damage beyond reducing wounds to 0 is ignored and does
+                                        not carry over and cause death</td>
+                                </tr>
+                                <tr>
+                                    <td>Death</td>
+                                    <td>Character dies and cannot interact with the living world.</td>
+                                    <td>Only resurrection magic can remove this condition.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+
+                <!-- lore -->
+                <div class="roller-block" id="lore-block">
+                    Major species types, and common subtypes
+                    magic origins
+                    unions
+                    languages
+                    realm rules
+
                 </div>
 
             </div>
