@@ -253,3 +253,22 @@ function copyAddSpellText(spell, button) {
     }, 1500);
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const searchBox = document.getElementById("floating-search");
+  const toggleBtn = document.getElementById("toggle-search");
+  const currentPage = window.location.pathname;
+
+  // Only show on spellcasting.html
+  if (currentPage.includes("spellcasting.html")) {
+    searchBox.style.display = "flex";
+  } else {
+    searchBox.style.display = "none";
+  }
+
+  // Toggle expanded/collapsed state
+  toggleBtn.addEventListener("click", () => {
+    searchBox.classList.toggle("expanded");
+    searchBox.classList.toggle("collapsed");
+  });
+});

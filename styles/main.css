@@ -84,11 +84,16 @@ header {
 
 .header-title {
     font-size: 6vw;
-    /* adjusts with screen width */
     color: var(--gold);
     text-transform: uppercase;
     margin: 0;
     letter-spacing: 10px;
+}
+
+@media (max-width: 690px) {
+    .header-title {
+        text-align: right;
+    }
 }
 
 .header-subtitle {
@@ -648,20 +653,6 @@ b {
     font-weight: bold;
 }
 
-.generator-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1%;
-}
-
-#npc-output, #business-output, #monster-output {
-    max-height: 500px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: var(--padding);
-}
-
 /* Worldbuilding Generators */
 .flex-gen {
     background-color: var(--theme-dark);
@@ -829,6 +820,8 @@ em {
     color: var(--rust);
     font-size: 110%;
 }
+
+
 
 /* FEATURES */
 .features {

@@ -45,21 +45,18 @@
     content: "🎲";
     font-size: 1rem;
     display: block;
-    line-height: 36px;
     text-align: center;
 }
 
 /* 📖 Spellbook Button */
 #toggle-spellbook {
-    top: 42px;
-    /* Positioned directly below dice */
+    top: 40px;
 }
 
 #toggle-spellbook::before {
     content: "📖";
     font-size: 1.2rem;
     display: block;
-    line-height: 36px;
     text-align: center;
 }
 
