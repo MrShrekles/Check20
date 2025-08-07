@@ -1,217 +1,213 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    highlightNav();
-    labelResponsiveTables();
+  const [baseClasses, classOptions] = await fetchClassData();
+  if (!Object.keys(classOptions).length) return;
 
-    const classesData = await fetchClassesData();
-    if (!classesData.length) return;
+  const tabContainer = document.getElementById("class-tabs");
+  const contentContainer = document.getElementById("class-content");
 
-    // Build Class Tabs
-    const tabContainer = document.getElementById("class-tabs");
-    const contentContainer = document.getElementById("class-content");
+  Object.keys(classOptions).forEach((classType, index) => {
+    const tab = document.createElement("button");
+    tab.className = "tab";
+    tab.textContent = classType;
+    if (index === 0) tab.classList.add("active");
 
-    classesData.forEach((cls, index) => {
-        const tab = document.createElement("button");
-        tab.className = "tab";
-        tab.textContent = cls.name;
-        if (index === 0) tab.classList.add("active");
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
 
-        tab.addEventListener("click", () => {
-            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-            tab.classList.add("active");
+      const baseClass = baseClasses.find(c => c.name.toLowerCase() === classType.toLowerCase()) || { name: classType };
+      const entries = classOptions[classType] || [];
 
-            // Render class section
-            contentContainer.innerHTML = `
-            <section class="class-section" data-class="${cls.name.toLowerCase()}">
-                <h2>${cls.name}</h2>
-                <p>${cls.description || ""}</p>
+      contentContainer.innerHTML = `
+        ${renderBaseClassInfo(baseClass)}
+        ${renderPathTalentUI(entries)}
+      `;
 
-                ${cls.name.toLowerCase() === "professional" && cls.specializations?.length ? `
-                <div class="selectors specialization-block">
-                <label>Specialization:
-                    <select class="specialization-selection"></select>
-                </label>
-                <div class="specialization-info"></div>
-                </div>` : ""}
-
-                <div class="two-column">
-                <div class="column">
-                    <div class="selectors">
-                    <label><h2>Path:</h2>
-                        <select class="path-selection"></select>
-                    </label>
-                    </div>
-                    <div class="class-info"></div>
-                </div>
-
-                <div class="column">
-                    <div class="selectors">
-                    <label><h2>Talent:</h2>
-                        <select class="talent-selection"></select>
-                    </label>
-                    </div>
-                    <div class="talent-info"></div>
-                </div>
-                </div>
-            </section>
-            `;
-
-            const newSection = contentContainer.querySelector(".class-section");
-            initClassSection(newSection, classesData);
-        });
-
-        tabContainer.appendChild(tab);
+      setupDropdownHandlers(entries);
     });
 
-    // Trigger first class render
-    tabContainer.querySelector(".tab")?.click();
+    tabContainer.appendChild(tab);
+  });
+
+  tabContainer.querySelector(".tab")?.click();
 });
 
-// --- Data Fetch ---
-async function fetchClassesData() {
-    try {
-        const res = await fetch("data/classes.json");
-        const data = await res.json();
-        return data.classes || [];
-    } catch (err) {
-        console.error("Error loading classes.json:", err);
-        return [];
-    }
+async function fetchClassData() {
+  try {
+    const [baseRes, optRes] = await Promise.all([
+      fetch("data/classes.json"),
+      fetch("data/class-new.json")
+    ]);
+    const base = await baseRes.json();
+    const opt = await optRes.json();
+    return [base.classes || [], opt.classes || {}];
+  } catch (err) {
+    console.error("Error loading class data:", err);
+    return [[], {}];
+  }
 }
 
-// --- Section Init ---
-function initClassSection(section, classesData) {
-    const className = section.dataset.class?.toLowerCase();
-    const classData = classesData.find(c => c.name.toLowerCase() === className);
+function renderBaseClassInfo(cls) {
+  return `
+    <section class="class-info">
+      <h2>${cls.name}</h2>
+      <p>${cls.description || "No description available."}</p>
 
-    if (!classData) {
-        section.innerHTML = `<p>Class "${className}" not found.</p>`;
-        return;
-    }
-
-    const [specDropdown, specInfo] = [".specialization-selection", ".specialization-info"].map(sel => section.querySelector(sel));
-    const pathSel = section.querySelector(".path-selection");
-    const classInfo = section.querySelector(".class-info");
-    const talentSel = section.querySelector(".talent-selection");
-    const talentInfo = section.querySelector(".talent-info");
-
-    populateDropdown(pathSel, classData.paths, "Select a Path");
-    populateDropdown(talentSel, classData.talents, "Select a Talent");
-  if (className === "professional" && classData.specializations)
-    populateDropdown(specDropdown, classData.specializations, "Select a Specialization");
-
-  pathSel?.addEventListener("change", e => {
-    const path = classData.paths.find(p => p.name === e.target.value);
-    loadPathDetails(path, classInfo);
-  });
-
-  talentSel?.addEventListener("change", e => {
-    const talent = classData.talents.find(t => t.name === e.target.value);
-    loadTalentDetails(talent, talentInfo);
-  });
-
-  specDropdown?.addEventListener("change", e => {
-    const spec = classData.specializations.find(s => s.name === e.target.value);
-    loadSpecializationDetails(spec, specInfo);
-  });
-
-  // ✅ Set default selections BEFORE dispatching events
-  if (pathSel && classData.paths?.length) pathSel.value = classData.paths[0].name;
-  if (talentSel && classData.talents?.length) talentSel.value = classData.talents[0].name;
-  if (specDropdown && classData.specializations?.length) specDropdown.value = classData.specializations[0].name;
-
-  // ✅ THEN dispatch events
-  pathSel?.dispatchEvent(new Event("change"));
-  talentSel?.dispatchEvent(new Event("change"));
-  specDropdown?.dispatchEvent(new Event("change"));
-
-}
-
-// --- UI Builders ---
-function populateDropdown(dropdown, items, defaultText) {
-    if (!dropdown) return;
-    dropdown.innerHTML = `<option value="">${defaultText}</option>` +
-        items.map(item => `<option value="${item.name}">${item.name}</option>`).join('');
-}
-
-function formatFeatures(features = []) {
-    if (!features.length) return "<p>No features available.</p>";
-    return `<div class="features"><h3>Features</h3><ul>${features.map(f => `
-      <li><strong>${f.name}:</strong> ${f.description}
-      ${f.options ? formatFeatureOptions(f.options) : ''}</li>
-    `).join('')
-        }</ul></div>`;
-}
-
-function formatFeatureOptions(options = []) {
-    return `<ul class="feature-options">${options.map(o => `<li><strong>${o.name}:</strong> ${o.effect}</li>`).join('')
-        }</ul>`;
-}
-
-// --- Loaders ---
-function loadPathDetails(path, container) {
-    if (!path || !container) return;
-
-    container.innerHTML = `
-    <h4>${path.name}</h4>
-    <p>${path.description}</p>
-    ${formatFeatures(path.features)}
-    <h3>Progression</h3>
-    <p><strong>Path progression</strong> is linear, you will select these steps in order. You can choose to take +1 Spell point or +1 Class resource at eachstep</p>
-    <div class="features">
-      <h4>Progression Steps</h4>
-      <ol>${path.progressionSteps.map(s => `
-        <li><strong>${s.name}:</strong> ${s.description}
-        ${s.options ? formatFeatureOptions(s.options) : ''}</li>`).join('')}
-      </ol>
-    </div>
-  `;
-}
-
-function loadTalentDetails(talent, container) {
-    if (!container) return;
-
-    container.innerHTML = `
-    <h4>${talent.name}</h4>
-    <p>${talent.description}</p>
-    ${formatFeatures(talent.features)}
-    <h3>Progression</h3>
-    <p><strong>Talent progression</strong> is not linear, you can select these steps in any order. With each step, gain a +1 to any one of your checks, but no check can exceed 15</p>
-    <div class="features"><h4>Progression Steps</h4><ul>
-      ${talent.progressionSteps.map(s => `<li><strong>${s.name}:</strong> ${s.description}</li>`).join('')}
-    </ul></div>
-  `;
-}
-
-function loadSpecializationDetails(spec, container) {
-    if (!spec || !container) return;
-    container.innerHTML = `
-    <div class="two-column" id="special">
-      <div class="column">
-        <h4>${spec.name}</h4>
-        <p>${spec.description}</p>
-      </div>
-      <div class="column">
+      ${cls.features?.length ? `
         <div class="features">
-          <h3>Feature</h3>
-          <p><strong>${spec.featureName}:</strong> ${spec.featureDescription}</p>
+          <h3>Features</h3>
+          <ul>
+            ${cls.features.map(f => `
+              <li><strong>${f.name}</strong>: ${Array.isArray(f.description) ? f.description.join(" ") : f.description}</li>
+            `).join("")}
+          </ul>
         </div>
+      ` : ""}
+
+      ${cls.equipment?.length ? `
+        <div class="features">
+          <h3>Starting Equipment</h3>
+          <ul>
+            ${cls.equipment.map(eq => `
+              <li>
+                <strong>${eq.name}</strong>: ${eq.description || ""}
+                ${eq.choices ? `
+                  <ul>
+                    ${eq.choices.map(choice => `
+                      <li><strong>${choice.name}</strong>: ${choice.description}</li>
+                    `).join("")}
+                  </ul>
+                ` : ""}
+              </li>
+            `).join("")}
+          </ul>
+        </div>
+      ` : ""}
+    </section>
+  `;
+}
+
+function renderPathTalentUI(entries = []) {
+  const paths = entries.filter(e => e.path?.steps?.length);
+  const talents = entries.filter(e => e.talent?.steps?.length);
+
+return `
+  <section class="path-talent-section">
+    <div class="two-column">
+      <div class="column">
+        <h1>Path</h1>
+        <label>Select a Path:
+          <select class="path-dropdown">
+            <option disabled selected>Select...</option>
+            ${paths.map(p => `<option value="${p.name}">${p.name}</option>`).join("")}
+          </select>
+        </label>
+        <div class="path-info"></div>
+      </div>
+
+      <div class="column">
+        <h1>Talent</h1>
+        <label>Select a Talent:
+          <select class="talent-dropdown">
+            <option disabled selected>Select...</option>
+            ${talents.map(t => `<option value="${t.name}">${t.name}</option>`).join("")}
+          </select>
+        </label>
+        <div class="talent-info"></div>
+      </div>
+    </div>
+  </section>
+`;
+
+}
+
+function setupDropdownHandlers(entries) {
+  const pathSelect = document.querySelector(".path-dropdown");
+  const talentSelect = document.querySelector(".talent-dropdown");
+  const pathInfo = document.querySelector(".path-info");
+  const talentInfo = document.querySelector(".talent-info");
+
+  pathSelect?.addEventListener("change", () => {
+    const chosen = entries.find(e => e.name === pathSelect.value && e.path?.steps?.length);
+    pathInfo.innerHTML = chosen ? renderPathTalentDetails(chosen, true) : "<p>No path found.</p>";
+  });
+
+  talentSelect?.addEventListener("change", () => {
+    const chosen = entries.find(e => e.name === talentSelect.value && e.talent?.steps?.length);
+    talentInfo.innerHTML = chosen ? renderPathTalentDetails(chosen, false) : "<p>No talent found.</p>";
+  });
+}
+
+function renderPathTalentDetails(entry, isPath = true) {
+  const data = isPath ? entry.path : entry.talent;
+  const initialSteps = data?.steps?.filter(s => Number(s.step) === 0) || [];
+  const rest = data?.steps?.filter(s => Number(s.step) !== 0);
+
+  return `
+    <div class="feature-block">
+      <div class="feature-header">
+        <h1>${entry.name}</h1>
+        <span class="origin-tag ${entry.origin?.toLowerCase() || "none"}">${entry.origin || "None"}</span>
+      </div>
+      <p>${entry.desc || "No description available."}</p>
+
+${initialSteps.length ? `
+  <div class="features">
+    <h3>Initial Feature</h3>
+    <ul class="step-list">
+      ${initialSteps.map(renderStep).join("")}
+    </ul>
+  </div>
+` : ""}
+      ${rest?.length ? renderStepList(rest, isPath) : ""}
+    </div>
+  `;
+}
+
+
+function renderFeature(label, step) {
+  return `
+    <div class="features">
+      <h3>${label}</h3>
+      <div class="initial-feature">
+        <strong>${step.name}</strong>
+        ${renderInlineTags(step)}
+        <p>${step.description}</p>
       </div>
     </div>
   `;
 }
 
-// --- Utility ---
-function highlightNav() {
-    document.querySelectorAll("nav a").forEach(link => {
-        if (link.href === window.location.href) link.style.fontWeight = "bold";
-    });
+function renderStepList(steps = [], isPath = false) {
+  const Tag = isPath ? "ol" : "ul";
+  return `
+    <div class="features">
+      <h3>Progression</h3>
+      <${Tag} class="step-list">
+        ${steps.map(renderStep).join("")}
+      </${Tag}>
+    </div>
+  `;
 }
 
-function labelResponsiveTables() {
-    document.querySelectorAll(".responsive-table").forEach(wrapper => {
-        const headers = Array.from(wrapper.querySelectorAll("thead th")).map(th => th.textContent.trim());
-        wrapper.querySelectorAll("tbody tr").forEach(row => {
-            Array.from(row.children).forEach((td, i) => td.setAttribute("data-label", headers[i] || ""));
-        });
-    });
+function renderStep(step) {
+  return `
+    <li>
+      <strong>${step.name}</strong>
+      ${renderInlineTags(step)}
+      <p>${step.description}</p>
+    </li>
+  `;
+}
+
+function renderInlineTags(step) {
+  const tags = [];
+  if (step.action) tags.push(`<span class="tag tag-action">${step.action}</span>`);
+  if (step.check) tags.push(`<span class="tag tag-check">Check: ${step.check}</span>`);
+  if (step.range) tags.push(`<span class="tag tag-range">Range: ${step.range}</span>`);
+  if (step.duration) tags.push(`<span class="tag tag-duration">Duration: ${step.duration}</span>`);
+  if (step.damage) tags.push(`<span class="tag tag-damage">Damage: ${step.damage}${step.damageType ? ` (${step.damageType})` : ""}</span>`);
+  if (step.armor) tags.push(`<span class="tag tag-armor">Armor: ${step.armor}</span>`);
+  if (step.condition) tags.push(`<span class="tag tag-condition">Condition: ${step.condition}</span>`);
+  return tags.join(" ");
 }

@@ -7,6 +7,7 @@
   <title>Character Classes</title>
   <link rel="stylesheet" href="styles/main.css" />
   <link rel="stylesheet" href="styles/class.css" />
+  <link rel="stylesheet" href="styles/class-render.css">
   <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
   <script src="scripts/sidebar.js" defer></script>
   <script src="scripts/header.js" defer></script>
@@ -18,155 +19,160 @@
   <div id="header-placeholder"></div>
 
   <main>
-    <!-- How to -->
-    <section class="character-section" id="how-to">
+    <details class="collapsible-box" >
+      <summary>
+        <h1>How To Make A Character</h1>
+      </summary>
+      <!-- How to -->
+      <section class="character-section" id="how-to">
 
-      <div class="two-column">
-        <div class="column">
-          <h2>How to Make a Character</h2>
-          <ol>
-            <li>
-              <strong>Choose a Class:</strong> Begin by selecting a class that
-              will define your character's core abilities.
-            </li>
-            <li>
-              <strong>Select a Path & Talents of your Class:</strong> Refine your
-              character's abilities and potential growth with a path and
-              associated talents.
-            </li>
-            <li>
-              <strong>Class Path Progression:</strong> Reflects the overall growth
-              in a character's chosen class. It's linear and sequential, with each
-              step unlocking new class-specific abilities.
-            </li>
-            <li>
-              <strong>Talent Progression:</strong> Focuses on specialized skills
-              or unique capabilities within a class. Steps within a Talent can be
-              chosen and advanced in any order, allowing for customization and you
-              gain +1 per talent chosen.
-            </li>
-            <li>
-              <strong><a href="species.html">Determine your species</a>:</strong>
-              Choose a species type for your character and apply the corresponding
-              features to your sheet.
-            </li>
-            <li>
-              <strong><a href="reference.html#checks">Fill Out Checks (Stats):</a></strong>
-              Finalize your character's stats, ensuring you've covered all
-              essential attributes.
-              <ul>
-                <li>
-                  You have 20 points to put into your checks with a maximum of 10.
-                </li>
-                <li>
-                  It's recommended that you put a 10, 5, 3, and 2 with some slight
-                  variations.
-                </li>
-              </ul>
-            </li>
-            <li>
-              <strong><a href="tables.html">Roll or Pick from each of these tables:</a></strong>
-              <ul>
-                <li><strong>Motivation:</strong> Determine their main goals.</li>
-                <li>
-                  <strong>Additional Equipment:</strong> A pack of equipment.
-                </li>
-                <li>
-                  <strong>Trinket:</strong> Trinkets are a fun item that can spark
-                  ideas and backstory about your character.
-                </li>
-              </ul>
-            </li>
-            <li>
-              <strong>Personalize Your Character:</strong>
-              <ul>
-                <li><strong>Name:</strong> Reflect your character's spirit.</li>
-                <li>
-                  <strong><a href="reference.html#size">Size:</a></strong> Default
-                  is medium, but your species options may specify height.
-                </li>
-                <li>
-                  <strong><a href="reference.html#size">Gender:</a></strong>
-                  Define your character's pronouns.
-                </li>
-                <li><strong>Age:</strong> Decide if they're young or old.</li>
-                <li><strong>Diet:</strong> Define their eating habits.</li>
-                <li>
-                  <strong>Speed:</strong> Base speed is 30ft, + 5ft per 2 points
-                  of agility.
-                </li>
-                <li>
-                  <strong><a href="tables.html">Gold:</a></strong> Start with
-                  1d100 + 50 gp.
-                </li>
-              </ul>
-            </li>
-          </ol>
+        <div class="two-column">
+          <div class="column">
+            <ol>
+              <li>
+                <strong>Choose a Class:</strong> Begin by selecting a class that
+                will define your character's core abilities.
+              </li>
+              <li>
+                <strong>Select a Path & Talents of your Class:</strong> Refine your
+                character's abilities and potential growth with a path and
+                associated talents.
+              </li>
+              <li>
+                <strong>Class Path Progression:</strong> Reflects the overall growth
+                in a character's chosen class. It's linear and sequential, with each
+                step unlocking new class-specific abilities.
+              </li>
+              <li>
+                <strong>Talent Progression:</strong> Focuses on specialized skills
+                or unique capabilities within a class. Steps within a Talent can be
+                chosen and advanced in any order, allowing for customization and you
+                gain +1 per talent chosen.
+              </li>
+              <li>
+                <strong><a href="species.html">Determine your species</a>:</strong>
+                Choose a species type for your character and apply the corresponding
+                features to your sheet.
+              </li>
+              <li>
+                <strong><a href="reference.html#checks">Fill Out Checks (Stats):</a></strong>
+                Finalize your character's stats, ensuring you've covered all
+                essential attributes.
+                <ul>
+                  <li>
+                    You have 20 points to put into your checks with a maximum of 10.
+                  </li>
+                  <li>
+                    It's recommended that you put a 10, 5, 3, and 2 with some slight
+                    variations.
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong><a href="tables.html">Roll or Pick from each of these tables:</a></strong>
+                <ul>
+                  <li><strong>Motivation:</strong> Determine their main goals.</li>
+                  <li>
+                    <strong>Additional Equipment:</strong> A pack of equipment.
+                  </li>
+                  <li>
+                    <strong>Trinket:</strong> Trinkets are a fun item that can spark
+                    ideas and backstory about your character.
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>Personalize Your Character:</strong>
+                <ul>
+                  <li><strong>Name:</strong> Reflect your character's spirit.</li>
+                  <li>
+                    <strong><a href="reference.html#size">Size:</a></strong> Default
+                    is medium, but your species options may specify height.
+                  </li>
+                  <li>
+                    <strong><a href="reference.html#size">Gender:</a></strong>
+                    Define your character's pronouns.
+                  </li>
+                  <li><strong>Age:</strong> Decide if they're young or old.</li>
+                  <li><strong>Diet:</strong> Define their eating habits.</li>
+                  <li>
+                    <strong>Speed:</strong> Base speed is 30ft, + 5ft per 2 points
+                    of agility.
+                  </li>
+                  <li>
+                    <strong><a href="tables.html">Gold:</a></strong> Start with
+                    1d100 + 50 gp.
+                  </li>
+                </ul>
+              </li>
+            </ol>
 
-        </div>
-        <div class="column">
-          <h4>Classes</h4>
-          <ul>
-            <li>
-              <strong><a href="#tank">Tank:</a></strong> The frontline
-              defender with high health and defensive skills. Specializes in
-              absorbing damage.
-            </li>
-            <li>
-              <strong><a href="#professional">Professional:</a></strong> The
-              versatile problem-solver, skilled in areas like lock-picking and
-              engineering.
-            </li>
-            <li>
-              <strong><a href="#support">Support:</a></strong> The medic,
-              focused on healing allies through magic or herbalism.
-            </li>
-            <li>
-              <strong><a href="#merchant">Merchant:</a></strong> The master of
-              trade, specializing in negotiation, crafting, and commerce.
-            </li>
-            <li>
-              <strong><a href="#mage">Mage:</a></strong> A spellcaster with a
-              wide range of magical abilities, from offense to healing.
-            </li>
-          </ul>
-
-          <div class="features">
-            <h4>Paths & Talents</h4>
-            <p>
-              <strong>Path:</strong> Represents your character’s progression
-              and growth in power. Gaining new skills and enhancing existing
-              ones shapes your character’s journey.
-            </p>
-            <li>
-              Path progression is linear, unlocking new class abilities.
-            </li>
-
-            <p>
-              <strong>Talents:</strong> Customizable skills and abilities that
-              add unique aspects to your character. These allow for
-              personalized development and specialization.
-            </p>
-            <li>
-              Talent progression allows players to choose from a pool of
-              skills.
-            </li>
-
-            <h4>Experience & Progression</h4>
+          </div>
+          <div class="column">
+            <h4>Classes</h4>
             <ul>
               <li>
-                <strong>Experience Points (XP):</strong> Earned through
-                adventures, XP is used to improve your character.
+                <strong><a href="#tank">Tank:</a></strong> The frontline
+                defender with high health and defensive skills. Specializes in
+                absorbing damage.
               </li>
               <li>
-                <strong>Progression:</strong> Each class path has 10 steps,
-                requiring 20 XP per step to advance.
+                <strong><a href="#professional">Professional:</a></strong> The
+                versatile problem-solver, skilled in areas like lock-picking and
+                engineering.
+              </li>
+              <li>
+                <strong><a href="#support">Support:</a></strong> The medic,
+                focused on healing allies through magic or herbalism.
+              </li>
+              <li>
+                <strong><a href="#merchant">Merchant:</a></strong> The master of
+                trade, specializing in negotiation, crafting, and commerce.
+              </li>
+              <li>
+                <strong><a href="#mage">Mage:</a></strong> A spellcaster with a
+                wide range of magical abilities, from offense to healing.
               </li>
             </ul>
+
+            <div class="features">
+              <h4>Paths & Talents</h4>
+              <p>
+                <strong>Path:</strong> Represents your character’s progression
+                and growth in power. Gaining new skills and enhancing existing
+                ones shapes your character’s journey.
+              </p>
+              <li>
+                Path progression is linear, unlocking new class abilities.
+              </li>
+
+              <p>
+                <strong>Talents:</strong> Customizable skills and abilities that
+                add unique aspects to your character. These allow for
+                personalized development and specialization.
+              </p>
+              <li>
+                Talent progression allows players to choose from a pool of
+                skills.
+              </li>
+
+              <h4>Experience & Progression</h4>
+              <ul>
+                <li>
+                  <strong>Experience Points (XP):</strong> Earned through
+                  adventures, XP is used to improve your character.
+                </li>
+                <li>
+                  <strong>Progression:</strong> Each class path has 10 steps,
+                  requiring 20 XP per step to advance.
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </details>
+
 
     <div id="class-tabs" class="tab-container"></div>
     <div id="class-content">
