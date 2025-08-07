@@ -1,6 +1,6 @@
 <!-- Sidebar -->
 <div id="sidebar" class="closed">
-    <button id="toggle-sidebar">Tools</button>
+    <button id="toggle-sidebar"></button>
     <button id="toggle-spellbook" title="Open Spellbook"></button>
 
     <div id="sidebar-content">
@@ -232,8 +232,7 @@
                 <!-- Conditions -->
                 <div class="roller-block" id="condition-block">
                     <!-- Conditions -->
-                    <section id="conditions">
-                        <h1>Conditions</h1>
+                    <div class="condition">
                         <table class="condition">
                             <thead>
                                 <tr>
@@ -380,16 +379,192 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </section>
+                    </div>
                 </div>
 
                 <!-- lore -->
                 <div class="roller-block" id="lore-block">
-                    Major species types, and common subtypes
-                    magic origins
-                    unions
-                    languages
-                    realm rules
+                    <div class="references">
+                        <!-- Language -->
+                        <details>
+                            <summary>Languages</summary>
+                            <section class="section-container">
+                                <h3>🗣️ Languages</h3>
+                                <p>In Shek, language shapes culture, magic, and machines.</p>
+
+                                <ul class="dragon-list" style="list-style: none;">
+                                    <li><strong>Imperial</strong> – Common tongue of diplomacy & trade.</li>
+                                    <li><strong>Orcish/Elvish</strong> – Heritage accents of orcs and elves.</li>
+                                    <li><strong>Naech</strong> – Animal dialects: predator, prey, flier.</li>
+                                    <li><strong>Dealig</strong> – Oreadlis speech for the otherworldly.</li>
+                                    <li><strong>Etheros</strong> – Elemental commands for magic.</li>
+                                    <li><strong>Night</strong> – Necromantic speech of the undead.</li>
+                                    <li><strong>Clunk</strong> – Language of constructs and tech.</li>
+                                    <li><strong>Yar</strong> – Nautical language of seafarers.</li>
+                                    <li><strong>Drak</strong> – Draconic tongue of ancient magic.</li>
+                                    <li><strong>Holy</strong> – Divine speech of celestial beings.</li>
+                                    <li><strong>Jotun</strong> – Giant-tongue of old stone lore.</li>
+                                </ul>
+                            </section>
+                        </details>
+
+                        <!-- Dragons -->
+                        <details>
+                            <summary>Types of Dragons</summary>
+
+                            <section class="dragon-section">
+                                <h3>🌋 Elemental Dragons</h3>
+                                <ul class="dragon-list">
+                                    <li>Bile (Acid)</li>
+                                    <li>Pyre (Fire)</li>
+                                    <li>Shard (Ice)</li>
+                                    <li>Cloudburst (Thunder)</li>
+                                    <li>Aquarion (Water)</li>
+                                    <li>Venom (Toxic)</li>
+                                    <li>Voltstryke (Lightning)</li>
+                                    <li>Solarflare (Solar)</li>
+                                    <li>Ashen (Eclipse)</li>
+                                </ul>
+                            </section>
+
+                            <section class="dragon-section">
+                                <h3>💫 Planar Dragons</h3>
+                                <ul class="dragon-list">
+                                    <li>Shadowraith (Eclipse)</li>
+                                    <li>Radiance (Solar)</li>
+                                    <li>Astraleon (Psychic)</li>
+                                    <li>Vozurion (Vozian)</li>
+                                </ul>
+                            </section>
+
+                            <section class="dragon-section">
+                                <h3>⚔️ Neutral Dragons</h3>
+                                <ul class="dragon-list">
+                                    <li>Thornspike (Piercing)</li>
+                                    <li>Reaver (Slashing)</li>
+                                    <li>Crystal (Impact)</li>
+                                </ul>
+                            </section>
+                        </details>
+
+                        <!-- Eleemtnal Types -->
+                        <details>
+                            <summary>
+                                Elemental Types
+                            </summary>
+                            <section class="elemental-section">
+                                <h3>🌱 Elemental Types</h3>
+                                <ul class="dragon-list">
+                                    <li>💨 Air</li>
+                                    <li>🔥 Fire</li>
+                                    <li>❄️ Frost</li>
+                                    <li>⚡ Lightning</li>
+                                    <li>🚬 Smoke</li>
+                                    <li>🪨 Stone</li>
+                                    <li>☢️ Toxic</li>
+                                    <li>💧 Water</li>
+                                </ul>
+                            </section>
+                        </details>
+
+                        <!-- Magic Origin -->
+                        <details>
+                            <summary>
+                                Magical Origins
+                            </summary>
+                            <section class="section-container">
+                                <section class="compatibility-group">
+                                    <h4>⚔️ Conflicted <small>(hostile, volatile)</small></h4>
+                                    <p><strong>Celestial 🪽 </strong> vs <strong>Vozian😈</strong></p>
+                                </section>
+
+                                <section class="compatibility-group">
+                                    <h4>🧿 Opposed <small>(interfering, negating)</small></h4>
+                                    <p><strong>Nature 🌿</strong> vs <strong>Dragon 🐉</strong></p>
+                                </section>
+
+                                <section class="compatibility-group">
+                                    <h4>🚫 Incompatible <small>(cannot be combined)</small></h4>
+                                    <ul>
+                                        <li><strong>Arcane 📘</strong> × <strong>Chaos ⚡</strong></li>
+                                        <li><strong>Basic 🟣</strong> × <strong>Chrono ⏳</strong></li>
+                                    </ul>
+                                </section>
+
+                                <section class="compatibility-group">
+                                    <h4>🤝 Indifferent <small>(coexists, but lacks synergy)</small></h4>
+                                    <ul>
+                                        <li><strong>Life ❤️💀</strong> + <strong>Tech 🔧</strong></li>
+                                        <li><strong>Crystal 🔺</strong> + <strong>Elemental 🪨💨🔥💧</strong></li>
+                                    </ul>
+                                </section>
+                        </details>
+
+                        <!-- Unions -->
+                        <details>
+                            <summary>
+                                Unions
+                            </summary>
+                            <ul class="union-list">
+                                <li><strong>Fabrication</strong> – Smiths, crafters, machinists (<strong>Opposes</strong>: Culture)</li>
+                                <li><strong>Refinement</strong> – Alchemists, augmenters, tinkerers (<strong>Opposes</strong>: Mysticism)</li>
+                                <li><strong>Commerce</strong> – Traders, brokers, financial control (<strong>Opposes</strong>: Scholarship)</li>
+                                <li><strong>Transport</strong> – Pilots, freight runners, route controllers (<strong>Opposes</strong>: Stewardship)</li>
+                                <li><strong>Scholarship</strong> – Academics, researchers, lorekeepers (<strong>Opposes</strong>: Commerce)</li>
+                                <li><strong>Mysticism</strong> – Mages, relic examiners, arcane regulators (<strong>Opposes</strong>: Refinement)</li>
+                                <li><strong>Politics</strong> – Lawmakers, clerks, administrators (<strong>Opposes</strong>: Harvest)</li>
+                                <li><strong>Culture</strong> – Performers, media, influencers (<strong>Opposes</strong>: Fabrication)</li>
+                                <li><strong>Martial</strong> – Enforcers, bounty hunters, guards (<strong>Opposes</strong>: Subversion)</li>
+                                <li><strong>Subversion</strong> – Smugglers, spies, counterfeiters (<strong>Opposes</strong>: Martial)</li>
+                                <li><strong>Harvest</strong> – Farmers, miners, gatherers (<strong>Opposes</strong>: Politics)</li>
+                                <li><strong>Stewardship</strong> – Civil engineers, utility workers (<strong>Opposes</strong>: Transport)</li>
+                            </ul>
+                        </details>
+
+                        <!-- Realm Rules -->
+                        <details>
+                            <summary>Realm Rules</summary>
+                            <section class="section-container">
+                                <h3>🌍 Realm Rules <em>(Work in Progress)</em></h3>
+                                <p>These realm-specific effects shape rest, travel, magic, and resistance. This list is a living draft—expect updates as planar rules expand.</p>
+
+                                <ul class="realm-list">
+                                    <li><strong>Prime Realm 🌐</strong><br>
+                                        The natural world. Standard mechanics apply. Rests, Realm Shifting, and spellcasting function normally.
+                                    </li>
+
+                                    <li><strong>Fey Realm ✨</strong><br>
+                                        Long Rests require 32 hours. Charm effects cannot be resisted or saved against.
+                                    </li>
+
+                                    <li><strong>Eclipse 🌑</strong><br>
+                                        You may Realm Shift <em>into</em> the Eclipse, but may only exit into <strong>Ordealis</strong>.
+                                    </li>
+
+                                    <li><strong>Ordealis 🔥</strong><br>
+                                        Realm Shift is only possible <em>from the Eclipse</em>. You cannot leave unless granted passage by a <strong>Rotalisk</strong> or <strong>Asmodeus</strong>.
+                                    </li>
+
+                                    <li><strong>Dreamsea 🌊</strong><br>
+                                        <em>(Rules in development.)</em> Expected to involve sleep, memory, illusions, and emotion-driven effects.
+                                    </li>
+
+                                    <li><strong>Void 🌀</strong><br>
+                                        Astral travel to and from this realm is easy. Teleportation spells are more effective and stable.
+                                    </li>
+
+                                    <li><strong>Abyss 🩸 <em>(includes Falling Grounds & God Prison)</em></strong><br>
+                                        You cannot Realm Shift into the Abyss by normal means.
+                                        <ul>
+                                            <li><strong>Falling Grounds 🕊️</strong> – Holy magic costs double mana; celestial beings act erratically.</li>
+                                            <li><strong>God Prison 🔒</strong> – Divine intervention and god-granted spells automatically fail.</li>
+                                            <li><strong>Abyssal Depths</strong> – Time fractures, healing spells may corrupt, and Wound accumulation is increased.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </section>
+                        </details>
+                    </div>
 
                 </div>
 

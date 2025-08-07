@@ -18,7 +18,6 @@
     display: flex;
     flex-wrap: wrap;
     padding: var(--padding);
-    margin-left: 20px;
     gap: var(--padding);
 }
 

@@ -23,55 +23,34 @@ function initSidebar() {
     sidebar.classList.toggle("closed");
     sidebar.classList.toggle("open");
   });
-document.getElementById("toggle-spellbook")?.addEventListener("click", () => {
-  window.location.href = "spellcasting.html#spells";
-});
+  document.getElementById("toggle-spellbook")?.addEventListener("click", () => {
+    window.location.href = "spellcasting.html#spells";
+  });
 
-
-
-// Dynamically connect all radios to their matching blocks
+  // Dynamically connect all radios to their matching blocks
 const radios = document.querySelectorAll('input[type="radio"][name="roller-mode"]');
 const blocks = document.querySelectorAll('.roller-block');
 
 radios.forEach(radio => {
+  const mode = radio.id.replace("-mode", ""); // e.g. check, standard
+  const targetBlock = document.getElementById(`${mode}-block`);
+
+  // On change, show matching block and hide others
   radio.addEventListener("change", () => {
     if (radio.checked) {
-      const mode = radio.id.replace("-mode", ""); // e.g., check, standard, reference
       blocks.forEach(block => {
-        block.classList.toggle("active", block.id === `${mode}-block`);
+        block.classList.toggle("active", block === targetBlock);
       });
     }
   });
 
-  // Set initial state
+  // Apply correct visibility on initial load
   if (radio.checked) {
-    const mode = radio.id.replace("-mode", "");
     blocks.forEach(block => {
-      block.classList.toggle("active", block.id === `${mode}-block`);
+      block.classList.toggle("active", block === targetBlock);
     });
   }
 });
-
-
-  // Set initial block visibility
-  if (checkRadio?.checked) {
-    checkBlock?.classList.add("active");
-    standardBlock?.classList.remove("active");
-  } else if (standardRadio?.checked) {
-    standardBlock?.classList.add("active");
-    checkBlock?.classList.remove("active");
-  }
-
-  // Toggle listeners
-  checkRadio?.addEventListener("change", () => {
-    checkBlock?.classList.add("active");
-    standardBlock?.classList.remove("active");
-  });
-
-  standardRadio?.addEventListener("change", () => {
-    standardBlock?.classList.add("active");
-    checkBlock?.classList.remove("active");
-  });
 
   // Check20 Roller
   document.getElementById("roll-d20-check")?.addEventListener("click", () => {
@@ -107,6 +86,9 @@ radios.forEach(radio => {
         ${advantage !== "none" ? `→ <span class="roll-val">${adjustedRoll1}</span> / <span class="roll-val">${highlightRoll(roll2)}</span>` : ""}
         <hr>
       </div>
+      <div class="choice-line">
+        <span class="roll-label"> Chose:</span> <em class="roll-chosen">${chosenRaw}</em>
+      </div>
       <div class="mod-line">
         <span class="roll-label"> Modifier:</span> <span class="roll-mod">${modifier >= 0 ? "+" : ""}${modifier}</span>
       </div>
@@ -115,9 +97,7 @@ radios.forEach(radio => {
         <span class="roll-label"> Total:</span> <strong class="roll-total">${finalResult}</strong>
         ${successCount > 0 ? `<span class="success-count">(${successCount} success${successCount > 1 ? "es" : ""})</span>` : ""}
       </div>
-      <div class="choice-line">
-        <span class="roll-label"> Chose:</span> <em class="roll-chosen">${chosenRaw}</em>
-      </div>
+      
     `;
 
     const historyList = document.getElementById("check-history");
@@ -187,30 +167,28 @@ radios.forEach(radio => {
   });
 
   document.getElementById("increase-mod")?.addEventListener("click", () => {
-  const input = document.getElementById("modifier");
-  const val = parseInt(input.value, 10) || 0;
-  input.value = val + 1;
-});
+    const input = document.getElementById("modifier");
+    const val = parseInt(input.value, 10) || 0;
+    input.value = val + 1;
+  });
 
-document.getElementById("decrease-mod")?.addEventListener("click", () => {
-  const input = document.getElementById("modifier");
-  const val = parseInt(input.value, 10) || 0;
-  input.value = val - 1;
-});
+  document.getElementById("decrease-mod")?.addEventListener("click", () => {
+    const input = document.getElementById("modifier");
+    const val = parseInt(input.value, 10) || 0;
+    input.value = val - 1;
+  });
 
-document.getElementById("increase-check-mod")?.addEventListener("click", () => {
-  const input = document.getElementById("check-modifier");
-  const val = parseInt(input.value, 10) || 0;
-  input.value = val + 1;
-});
+  document.getElementById("increase-check-mod")?.addEventListener("click", () => {
+    const input = document.getElementById("check-modifier");
+    const val = parseInt(input.value, 10) || 0;
+    input.value = val + 1;
+  });
 
-document.getElementById("decrease-check-mod")?.addEventListener("click", () => {
-  const input = document.getElementById("check-modifier");
-  const val = parseInt(input.value, 10) || 0;
-  input.value = val - 1;
-});
-
-
+  document.getElementById("decrease-check-mod")?.addEventListener("click", () => {
+    const input = document.getElementById("check-modifier");
+    const val = parseInt(input.value, 10) || 0;
+    input.value = val - 1;
+  });
 
   // Responsive table labeling
   document.querySelectorAll(".responsive-table").forEach(wrapper => {

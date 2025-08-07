@@ -259,16 +259,9 @@ table tbody td:first-child {
 }
 
 table td {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    word-wrap: normal;
     white-space: normal;
 }
-
-hr {
-    border: none;
-    border-top: 2px solid darkgoldenrod;
-}
-
 
 .dark {
     background-color: var(--dark);
@@ -375,13 +368,6 @@ b {
     max-width: 800px;
     /* Adjust as needed */
     margin: 0 auto;
-}
-
-#how-to {
-    background-image: url('../assets/images/con-mage.png');
-    background-size: 50vw;
-    background-position-x: right;
-    background-repeat: no-repeat;
 }
 
 #flip {
@@ -786,13 +772,22 @@ section {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     color: var(--white);
-    padding: 10px;
-    margin: 10px;
+    padding: var(--padding);
+    margin-left: 40px;
+    margin-right: 20px;
     transition: filter 0.3s ease;
 }
 
 section:hover {
     filter: brightness(.90);
+}
+
+@media (max-width: 768px) {
+  section {
+    padding: 3px;
+    margin: 3px;
+    margin-left: 30px;
+  }
 }
 
 /* Headers */

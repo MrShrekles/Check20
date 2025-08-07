@@ -1,61 +1,51 @@
-.class-description p {
-    margin-bottom: 10px;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--white);
+.tab-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  justify-content: center;
+  margin-left: 50px;
+  margin-right: 30px;
 }
 
-.class-section-title {
-    margin-top: 30px;
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-    color: var(--yellow-1);
+@media (max-width: 690px) {
+  .tab-container {
+    flex-direction: column;
+  }
 }
 
-.class-box {
-    background-color: var(--green-1);
-    border: 2px solid var(--yellow-1);
+.tab {
+  flex: 1;
+  padding: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: var(--theme-1);
+  color: var(--white);
+  border: 2px solid var(--green-2);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.tab:hover {
+  background: var(--dark-1);
+  transform: scale(1.02);
+}
+
+.tab.active {
+  background: var(--green-2);
+  color: var(--black);
+  border-color: var(--green-3);
+  box-shadow: 0 0 10px var(--green-3);
+  transform: scale(1.05);
+  z-index: 1;
+}
+
+#special {
+    background-color: var(--warm-1);
+    padding: 10px;
     border-radius: var(--border-radius);
-    padding: 15px;
-    margin-bottom: 20px;
-}
-
-.class-box h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1.2rem;
-    color: var(--yellow-1);
-}
-
-.class-box ul {
-    list-style-type: disc;
-    padding-left: 20px;
-}
-
-.class-box li {
-    margin-bottom: 8px;
-    font-size: 0.95rem;
-    color: var(--white);
-}
-
-.class-box code {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: monospace;
-}
-
-#support {
-    background-image: url('../assets/images/Hospital.png');
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position-y: top;
-}
-
-#merchant {
-    background-image: url('../assets/images/skyline.png');
-    background-size: 90%;
-    background-repeat: repeat-x;
-    background-position-y: bottom;
-    background-position-x: right;
+    box-shadow: var(--box-shadow);
 }
