@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const [baseClasses, classOptions] = await fetchClassData();
+  const [baseClasses, classOptions, specializations] = await fetchClassData();
   if (!Object.keys(classOptions).length) return;
 
   const tabContainer = document.getElementById("class-tabs");
   const contentContainer = document.getElementById("class-content");
 
-  Object.keys(classOptions).forEach((classType, index) => {
+  Object.keys(classOptions).filter(key => key !== "specializations").forEach((classType, index) => {
     const tab = document.createElement("button");
     tab.className = "tab";
     tab.textContent = classType;
@@ -17,19 +17,33 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const baseClass = baseClasses.find(c => c.name.toLowerCase() === classType.toLowerCase()) || { name: classType };
       const entries = classOptions[classType] || [];
+      let classContent = renderBaseClassInfo(baseClass);
+      // Add specializations dropdown for Professional only
+      if (classType.toLowerCase() === "professional") {
+        classContent += renderSpecializationsDropdown(specializations);
+      }
 
-      contentContainer.innerHTML = `
-        ${renderBaseClassInfo(baseClass)}
-        ${renderPathTalentUI(entries)}
-      `;
+      classContent += renderPathTalentUI(entries);
+      contentContainer.innerHTML = classContent;
 
       setupDropdownHandlers(entries);
+      if (classType.toLowerCase() === "professional") {
+        setupSpecializationHandler(specializations);
+      }
+
     });
 
     tabContainer.appendChild(tab);
   });
 
+  // After appending all tabs
   tabContainer.querySelector(".tab")?.click();
+
+  // If the default tab is "professional", also set up its specialization handler
+  const defaultTabText = tabContainer.querySelector(".tab")?.textContent.toLowerCase();
+  if (defaultTabText === "professional") {
+    setupSpecializationHandler(specializations);
+  }
 });
 
 async function fetchClassData() {
@@ -40,10 +54,11 @@ async function fetchClassData() {
     ]);
     const base = await baseRes.json();
     const opt = await optRes.json();
-    return [base.classes || [], opt.classes || {}];
+
+    return [base.classes || [], opt.classes || {}, opt.specializations || []];
   } catch (err) {
     console.error("Error loading class data:", err);
-    return [[], {}];
+    return [[], {}, []];
   }
 }
 
@@ -91,7 +106,7 @@ function renderPathTalentUI(entries = []) {
   const paths = entries.filter(e => e.path?.steps?.length);
   const talents = entries.filter(e => e.talent?.steps?.length);
 
-return `
+  return `
   <section class="path-talent-section">
     <div class="two-column">
       <div class="column">
@@ -210,4 +225,49 @@ function renderInlineTags(step) {
   if (step.armor) tags.push(`<span class="tag tag-armor">Armor: ${step.armor}</span>`);
   if (step.condition) tags.push(`<span class="tag tag-condition">Condition: ${step.condition}</span>`);
   return tags.join(" ");
+}
+
+function renderSpecializationsDropdown(specializations = []) {
+  return `
+    <section class="specialization-section">
+      <h1>Specialization</h1>
+      <label>Select a Specialization:
+        <select class="specialization-dropdown">
+          <option disabled selected>Select...</option>
+          ${specializations.map(s => `<option value="${s.name}">${capitalize(s.name)}</option>`).join("")}
+        </select>
+      </label>
+      <div class="specialization-info"></div>
+    </section>
+  `;
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function setupSpecializationHandler(specializations = []) {
+  const select = document.querySelector(".specialization-dropdown");
+  const info = document.querySelector(".specialization-info");
+
+  if (!select || !info) return;
+
+  select.addEventListener("change", () => {
+    const chosen = specializations.find(s => s.name.toLowerCase() === select.value.toLowerCase());
+    if (!chosen) return;
+
+    info.innerHTML = `
+      <div class="feature-block">
+        <div class="feature-header">
+          <h1>${capitalize(chosen.name)}</h1>
+        </div>
+        <p>${chosen.desc}</p>
+        <div class="features">
+          <h3>${chosen.feature.name}</h3>
+          ${renderInlineTags(chosen.feature)}
+          <p>${chosen.feature.description}</p>
+        </div>
+      </div>
+    `;
+  });
 }
