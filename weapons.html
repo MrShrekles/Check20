@@ -2,21 +2,21 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weaponry of Check20</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weapons</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/weapons.css">
+    <link rel="stylesheet" href="styles/sidebar.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
-    <script src="scripts/main.js" defer></script>
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
-    <script src="scripts/itemSearch.js"></script>
+    <script src="scripts/weapons.js" defer></script>
 </head>
 
-<body data-page-title="Weapons"> 
-        <div id="header-placeholder"></div>   
-
+<body data-page-title="Weapons">
+    <div id="header-placeholder"></div>
     <main>
         <section>
             <div class="two-column">
@@ -38,6 +38,20 @@
                         Impact,
                         and a pick would deal Piercing. This applies across the board.
                     </p>
+
+                    <div class="weapon-note">
+                        <h3>Additional Information</h3>
+                        <p>
+                            <strong>Check Damage:</strong>
+                            If a weapon lists <code>Check</code> for damage, deal damage equal to your total in the specified check instead of rolling dice.
+                        </p>
+                        <p>
+                            If a weapon's damage includes an exclamation mark (e.g., <code>4d4!</code>), it uses <strong>exploding dice</strong>.
+                            This means that for every die rolled at its maximum value, you roll an additional die of the same type and add it to the total.
+                            This can repeat indefinitely as long as max values keep being rolled.
+                        </p>
+                    </div>
+
                 </div>
                 <div class="column">
                     <h4>Weapon Examples</h4>
@@ -62,461 +76,41 @@
             </div>
         </section>
 
-        <section>
-            <h4>Standard Weapons</h4>
-            <p>Reliable and versatile, these are everyday melee tools suited for most combatants. Easy to carry, easy to
-                use.</p>
-            <div class="responsive-table">
-                <table id="meleeTable">
-                    <thead>
-                        <tr>
-                            <th colspan="7" class="dark">Standard Weapon</th>
-                        </tr>
-                        <tr>
-                            <th>Name</th>
-                            <th>Check</th>
-                            <th>Range</th>
-                            <th>Properties</th>
-                            <th>Damage</th>
-                            <th>Cost ~</th>
-                            <th>Bulk</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Unarmed Attack</td>
-                            <td>Physical</td>
-                            <td>Melee</td>
-                            <td>Light, Free Hands, Attached</td>
-                            <td>1 Physical</td>
-                            <td>-</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>Fist Weapon</td>
-                            <td>Physical</td>
-                            <td>Melee</td>
-                            <td>Light, Free Hands, Attached</td>
-                            <td>1d4 Physical</td>
-                            <td>$10</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>Longsword</td>
-                            <td>Agility or Strength</td>
-                            <td>Melee</td>
-                            <td>1 Hand, Light</td>
-                            <td>1d6 Slashing</td>
-                            <td>$30</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>Mace</td>
-                            <td>Strength</td>
-                            <td>Melee</td>
-                            <td>1 Hand, Light</td>
-                            <td>1d6 Impact</td>
-                            <td>$50</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>Pick</td>
-                            <td>Strength</td>
-                            <td>Melee</td>
-                            <td>1 Hand, Light</td>
-                            <td>1d6 Piercing</td>
-                            <td>$20</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>Light Hammer</td>
-                            <td>Agi, Obs, Sth, Str</td>
-                            <td>Melee, Short</td>
-                            <td>1 Hand, Light, Hidden</td>
-                            <td>1d4 Impact</td>
-                            <td>$5</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>Ice Pick</td>
-                            <td>Agi, Obs, Sth, Str</td>
-                            <td>Melee, Short</td>
-                            <td>1 Hand, Light, Hidden</td>
-                            <td>1d4 Piercing</td>
-                            <td>$5</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>Dagger</td>
-                            <td>Agi, Obs, Sth, Str</td>
-                            <td>Melee, Short</td>
-                            <td>1 Hand, Light, Hidden</td>
-                            <td>1d4 Slashing</td>
-                            <td>$5</td>
-                            <td>1</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <h4>
-                Armaments
-            </h4>
-            <p>
-                Heavier, deadlier melee gear designed for reach or impact. Wielded by those looking to break armor or
-                bones.
-            </p>
-            <div class="responsive-table">
-                <table id="armaTable">
-                    <thead>
-                        <tr>
-                            <th colspan="7" class="dark">Armaments</th>
-                        </tr>
-                        <tr>
-                            <th>Name</th>
-                            <th>Check</th>
-                            <th>Range</th>
-                            <th>Properties</th>
-                            <th>Damage</th>
-                            <th>Cost ~</th>
-                            <th>Bulk</th>
-                        </tr>
-                    </thead>
-                    <tr>
-                        <td>Long Flail</td>
-                        <td>Agi, Lck, Obs, Str</td>
-                        <td>Reach</td>
-                        <td>1 Hand, Reach</td>
-                        <td>1d6 Impact</td>
-                        <td>$20</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>Chain Whip</td>
-                        <td>Agi, Lck, Obs, Str</td>
-                        <td>Reach</td>
-                        <td>1 Hand, Reach</td>
-                        <td>1d6 Slashing</td>
-                        <td>$20</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>Heavy Quarterstaff</td>
-                        <td>Agility</td>
-                        <td>Melee</td>
-                        <td>2 Hand, Hefty</td>
-                        <td>Check as Impact</td>
-                        <td>$150</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>Heavy Spear</td>
-                        <td>Agility or Strength</td>
-                        <td>Melee</td>
-                        <td>2 Hand, Hefty</td>
-                        <td>Check as Piercing</td>
-                        <td>$50</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>Heavy Axe</td>
-                        <td>Strength</td>
-                        <td>Melee</td>
-                        <td>2 Hand, Hefty</td>
-                        <td>Check as Slashing</td>
-                        <td>$50</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>Great Club</td>
-                        <td>Agility, Strength</td>
-                        <td>Reach</td>
-                        <td>2 Hand, Hefty</td>
-                        <td>2d6 Impact</td>
-                        <td>$30</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>Great Pick</td>
-                        <td>Agility, Strength</td>
-                        <td>Reach</td>
-                        <td>2 Hand, Hefty</td>
-                        <td>2d6 Piercing</td>
-                        <td>$30</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>Great Sword</td>
-                        <td>Agility, Strength</td>
-                        <td>Reach</td>
-                        <td>2 Hand, Hefty</td>
-                        <td>2d6 Slashing</td>
-                        <td>$30</td>
-                        <td>4</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <h4>Ranged Weapons</h4>
-            <p>From pistols to rifles, these weapons strike from afar; ideal for ambushes, support, or taking the first
-                shot.</p>
-            <div class="responsive-table">
-                <table id="rangedTable">
-                    <thead>
-                        <tr>
-                            <th colspan="7" class="dark">Ranged Weapon</th>
-                        </tr>
-                        <tr>
-                            <th>Name</th>
-                            <th>Check</th>
-                            <th>Range</th>
-                            <th>Properties</th>
-                            <th>Damage</th>
-                            <th>Cost ~</th>
-                            <th>Bulk</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Revolver</td>
-                            <td>Agi, Int, Lck, Obs</td>
-                            <td>Medium</td>
-                            <td>1 Hand</td>
-                            <td>2d6! Piercing</td>
-                            <td>$100</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>Pistol</td>
-                            <td>Agi, Int, Lck, Obs</td>
-                            <td>Medium</td>
-                            <td>1 Hand, Light</td>
-                            <td>2d4! Piercing</td>
-                            <td>$30</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>Shotgun</td>
-                            <td>Strength</td>
-                            <td>Short</td>
-                            <td>2 Hand</td>
-                            <td>3d6! Piercing</td>
-                            <td>$200</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>Rifle</td>
-                            <td>Agi, Int, Lck, Obs</td>
-                            <td>Long</td>
-                            <td>2 Hand, Close Range Disadvantage</td>
-                            <td>2d8! Piercing</td>
-                            <td>$50</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>Siege Crossbow</td>
-                            <td>Strength</td>
-                            <td>Medium</td>
-                            <td>2 Hand, Hefty, Mechanical, Reload</td>
-                            <td>2d6 Piercing</td>
-                            <td>$70</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>Longbow</td>
-                            <td>Agi, Int, Lck, Obs</td>
-                            <td>Medium</td>
-                            <td>2 Hand, Reload</td>
-                            <td>1d10 Piercing</td>
-                            <td>$50</td>
-                            <td>3</td>
-                        </tr>
-                        <tr>
-                            <td>Dual Revolvers</td>
-                            <td>Agility or Observation</td>
-                            <td>Medium</td>
-                            <td>2 Hands, Split</td>
-                            <td>2d10! Piercing</td>
-                            <td>$200</td>
-                            <td>3</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <section style="background-color: darkred;">
+            <h2 style="color: white;">WORK IN PROGRESS</h2>
+            <p>Sheet copy is currently not functional</p>
         </section>
 
         <section>
-            <!-- Weapon Properties and explanations -->
-            <div class="two-column">
-                <div class="column">
-                    <div class="features">
-                        <h4>Weapon Properties</h4>
+            <div class="weapons-controls">
+                <input type="text" id="weapons-search" style="width:260px" placeholder="Search weapons." />
+                <select id="weapons-sort-options" style="width:220px">
+                    <option value="name">Sort by Name</option>
+                    <option value="category">Sort by Category</option>
+                    <option value="damageNum">Sort by Damage</option>
+                    <option value="cost">Sort by Cost</option>
+                    <option value="bulk">Sort by Bulk</option>
+                    <option value="rarity">Sort by Rarity</option>
+                </select>
 
-                        <ul class="weapon-properties">
-                            <li><strong>Light:</strong> Lightweight and easy to wield, allowing for quick and fluid
-                                movements. Can be dual-wielded or used as an Off-Action.</li>
-                            <li><strong>Free Hands:</strong> Your hands are free and not occupied by the weapon.</li>
-                            <li><strong>Attached:</strong> This weapon is attached and cannot be disarmed.</li>
-                            <li><strong>Thrown:</strong> Can be used in melee or thrown for ranged attacks with short
-                                range.
-                            </li>
-                            <li><strong>Range:</strong> Weapons operate within specific ranges:
-                                <ul>
-                                    <li><strong>Melee:</strong> 5ft</li>
-                                    <li><strong>Reach:</strong> 10ft</li>
-                                    <li><strong>Short:</strong> Under 60ft</li>
-                                    <li><strong>Medium:</strong> 60-220ft</li>
-                                    <li><strong>Long:</strong> 220-600ft</li>
-                                </ul>
-                                <p>Optional rule: Attacking over half the range imposes disadvantage.</p>
-                            </li>
-                            <li><strong>Hefty:</strong> Excessively heavy. Carrying more than two Hefty items causes the
-                                Pinned condition.</li>
-                            <li><strong>Reload:</strong> Requires reloading using an action, half-action, off-action, or
-                                movement.</li>
-                            <li><strong>Explosive:</strong> Causes powerful explosions that deal damage to all within
-                                range.
-                            </li>
-                            <li><strong>Hidden:</strong> Designed to be concealed, making detection difficult.</li>
-                            <li><strong>Mechanical:</strong> Can be disrupted, jammed, or broken.</li>
-                        </ul>
-
-                    </div>
-
-                </div>
-                <div class="column">
-                    <!-- Ammunition Table -->
-                    <h4>Ammunition Types</h4>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Damage Type</th>
-                                <th>Cost per 10</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Physical (Impact, Piercing, Slashing)</td>
-                                <td>$5</td>
-                            </tr>
-                            <tr>
-                                <td>Elemental (Acid, Eclipse, Fire, Fluid, etc)</td>
-                                <td>$15</td>
-                            </tr>
-                            <tr>
-                                <td>Realm (Nature, Psychic, Vozian)</td>
-                                <td>$30</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-        </section>
-
-
-        <section>
-            <h2>
-                Special Armaments
-            </h2>
-            <p>
-                These are examples of special weapons that can be found or potentially crafted by you or an expert
-                craftsmen.
-            </p>
-            <div class="responsive-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th colspan="5" class="dark">Special Armaments</th>
-                        </tr>
-                        <tr>
-                            <th>Name</th>
-                            <th>Check</th>
-                            <th>Range</th>
-                            <th>Properties</th>
-                            <th>Damage</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Gut Shredder LMG</td>
-                            <td>Strength</td>
-                            <td>Short</td>
-                            <td>2 Hand, Hefty, Suppressive & Loud</td>
-                            <td>5d4! Piercing</td>
-                        </tr>
-                        <tr>
-                            <td>Spectral Revolver</td>
-                            <td>Agility or Spirit</td>
-                            <td>Medium</td>
-                            <td>1 Hand, Echoing Shot, Soundless to the Ear</td>
-                            <td>1d10! Thunder</td>
-                        </tr>
-                        <tr>
-                            <td>Gravehook</td>
-                            <td>Strength, Luck</td>
-                            <td>Reach</td>
-                            <td>2 Hand, Pull targets on hit, Grapples</td>
-                            <td>2d6 Piercing</td>
-                        </tr>
-                        <tr>
-                            <td>Phantom Dagger</td>
-                            <td>Agility, Observation</td>
-                            <td>Short</td>
-                            <td>Light, Hidden, Phase Through Armor</td>
-                            <td>1d4 Psychic</td>
-                        </tr>
-                        <tr>
-                            <td>Thunder Rifle</td>
-                            <td>Agility, Intellect, Luck</td>
-                            <td>Long</td>
-                            <td>2 Hand, AoE cone burst on Success+</td>
-                            <td>2d8! Thunder</td>
-                        </tr>
-                        <tr>
-                            <td>Arc Revolver</td>
-                            <td>Agility, Intellect, Observation</td>
-                            <td>Medium</td>
-                            <td>1 Hand, Lightning, +1 damage on crit</td>
-                            <td>2d6! Lightning</td>
-                        </tr>
-                        <tr>
-                            <td>Glyphblade</td>
-                            <td>Spirit, Intellect</td>
-                            <td>Melee</td>
-                            <td>Light, Cast Basic Spell on Hit</td>
-                            <td>1d6 Elemental</td>
-                        </tr>
-                        <tr>
-                            <td>Shatter Staff</td>
-                            <td>Spirit, Strength</td>
-                            <td>Melee</td>
-                            <td>2 Hand, Explodes once/day</td>
-                            <td>2d6 Impact + 1d6 Fire</td>
-                        </tr>
-                        <tr>
-                            <td>Void Knuckles</td>
-                            <td>Physical</td>
-                            <td>Melee</td>
-                            <td>Light, Attached, Eclipse Damage</td>
-                            <td>1d4 Eclipse</td>
-                        </tr>
-                        <tr>
-                            <td>Tranquilizer Dart Gun</td>
-                            <td>Intellect, Observation</td>
-                            <td>Medium</td>
-                            <td>2 Hand, Silent, Sleep on crit</td>
-                            <td>1d4 Toxic</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
 
-        </section>
+
+
+            <div class="filters">
+                <div class="filter-group" data-key="category" aria-label="Category"></div>
+                <div class="filter-group" data-key="range" aria-label="Range"></div>
+                <div class="filter-group" data-key="properties" data-multi="1" aria-label="Properties"></div>
+                <div class="filter-group" data-key="rarity" aria-label="Rarity"></div>
+                <button id="clearFilters" class="ghost-btn" type="button">Clear filters</button>
+            </div>
+
+            <span id="weapons-count"></span>
+
+            <div id="weapons-grid" class="weapons-grid"></div>
+
 
     </main>
-
     <div id="sidebar-placeholder"></div>
 </body>
 
