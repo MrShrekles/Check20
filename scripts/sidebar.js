@@ -208,3 +208,24 @@ function highlightRoll(value) {
   if (value === 1) return `<span class="roll-min">${value}</span>`;
   return `<span class="roll-normal">${value}</span>`;
 }
+
+document.getElementById("toggle-monsters")?.addEventListener("click", () => {
+  window.location.href = "worldbuilding.html";
+});
+
+document.getElementById("toggle-top")?.addEventListener("click", () => {
+  document.getElementById("header-placeholder")?.scrollIntoView({ behavior: "smooth" });
+});
+
+// When you open/close the sidebar, add/remove a class on <body>
+const sidebar   = document.getElementById("sidebar");
+const toggleBtn = document.getElementById("toggle-sidebar");
+
+toggleBtn?.addEventListener("click", () => {
+  const open = sidebar.classList.toggle("open");
+  document.body.classList.toggle("sidebar-open", open);
+});
+
+// Mark floaters to shift with the sidebar
+["toggle-top","toggle-sidebar","toggle-spellbook","toggle-monsters","floating-search"]
+  .forEach(id => document.getElementById(id)?.classList.add("shift-with-sidebar"));

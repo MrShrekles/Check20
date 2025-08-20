@@ -5,7 +5,7 @@
     left: -100vw;
     width: 50vw;
     height: 100%;
-    background: var(--dark);
+    background: var(--dark-1);
     color: var(--white);
     padding: var(--padding);
     box-shadow: var(--box-shadow);
@@ -18,71 +18,116 @@
     left: 0;
 }
 
-/* ───────── Sidebar Toggle Buttons ───────── */
+:root { --sidebar-shift: 50vw; }           /* already using this for buttons */
+@media (max-width:700px){ :root { --sidebar-shift: 80vw; } }
+
+/* Any fixed element with this class will slide when the sidebar opens */
+#sidebar.open .shift-with-sidebar {
+  transform: translateX(var(--sidebar-shift));
+}
+
+
+/* ───────── Sidebar Toggle Buttons (stacked left) ───────── */
 #toggle-sidebar,
-#toggle-spellbook {
-    position: fixed;
-    left: 0;
-    width: 36px;
-    height: 36px;
-    background: var(--dark-3);
-    color: var(--white);
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    box-shadow: var(--box-shadow);
-    z-index: 1001;
-    transition: background 0.2s ease, transform 0.3s ease;
-    font-size: 0;
+#toggle-spellbook,
+#toggle-monsters,
+#toggle-top, #floating-search {
+  position: fixed;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  background: var(--dark-2);
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  box-shadow: var(--box-shadow);
+  z-index: 1001;
+  transition: background .2s ease, transform .3s ease;
+  font-size: 0;                 /* icons come from ::before */
+  display: inline-block;        /* works for <a> and <button> */
+  text-decoration: none;        /* if Monsters is an <a> */
 }
 
-/* 🎲 Dice Button */
-#toggle-sidebar {
-    top: 0;
-}
+/* Individual positions */
+#toggle-sidebar  { top: 40px;    }
+#toggle-spellbook{ top: 80px; }
+#toggle-monsters { top: 120px; }
+#toggle-top      { top: 0; }
 
-#toggle-sidebar::before {
-    content: "🎲";
-    font-size: 1rem;
-    display: block;
-    text-align: center;
-}
+/* Icons */
+#toggle-sidebar::before   { content: "🎲"; font-size: 1rem;  display:block; text-align:center; }
+#toggle-spellbook::before { content: "📖"; font-size: 1.2rem; display:block; text-align:center; }
+#toggle-monsters::before  { content: "☠"; font-size: 1.2rem; display:block; text-align:center; }
+#toggle-top::before       { content: "⬆"; font-size: 1.2rem; display:block; text-align:center; }
 
-/* 📖 Spellbook Button */
-#toggle-spellbook {
-    top: 40px;
-}
-
-#toggle-spellbook::before {
-    content: "📖";
-    font-size: 1.2rem;
-    display: block;
-    text-align: center;
-}
-
-/* Hover effect */
+/* Hover */
 #toggle-sidebar:hover,
-#toggle-spellbook:hover {
-    background: var(--theme-hover);
+#toggle-spellbook:hover,
+#toggle-monsters:hover,
+#toggle-top:hover {
+  background: var(--theme-hover);
 }
 
-/* Sidebar open shift for dice icon */
+/* Slide with sidebar open — use a CSS var so desktop/mobile differ cleanly */
+:root { --sidebar-shift: 50vw; }
 #sidebar.open #toggle-sidebar,
-#sidebar.open #toggle-spellbook {
-    transform: translateX(50vw);
+#sidebar.open #toggle-spellbook,
+#sidebar.open #toggle-monsters,
+#sidebar.open #toggle-top,
+#sidebar.open #floating-search {
+  transform: translateX(var(--sidebar-shift));
 }
 
+/* Mobile tweaks */
 @media (max-width: 700px) {
+  :root { --sidebar-shift: 80vw; }       /* sidebar wider on mobile */
   #toggle-sidebar,
-  #toggle-spellbook {
-    left: 0;
-
+  #toggle-spellbook,
+  #toggle-monsters,
+  #toggle-top {
     border-radius: 0 6px 6px 0;
-    font-size: 1rem;
-    line-height: 48px;
+    line-height: 48px;                   /* keeps tap target comfy */
     padding: 0;
   }
+}
 
+/* Floating search placement (spell page) */
+#floating-search {
+  position: fixed;
+  left: 0;
+  top: 160px;           /* below your 4 buttons at 0/40/80/120 */
+  z-index: 1001;        /* same layer as buttons */
+}
+
+#floating-search.collapsed input {
+  display: none;
+}
+
+#floating-search input,
+#floating-search button {
+  border-radius: var(--border-radius);
+  border-color: var(--green-1);
+  background-color: var(--dark-1);
+  color: var(--text-cream);
+}
+
+#floating-search input {
+  font-size: 1rem;
+  padding: 0.3rem 0.5rem;
+  width: 260px;
+}
+
+#floating-search button {
+  background: var(--dark-3);
+  font-size: 1.1rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* When expanded */
+#floating-search.expanded {
+  width: 250px;
 }
 
 /* ───────── Roller Switch Tabs ───────── */

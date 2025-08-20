@@ -6,14 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Sheet</title>
     <link rel="stylesheet" href="styles/charsheet.css">
+    <link rel="stylesheet" href="styles/sidebar.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
     <script src="scripts/char_class.js" defer></script>
     <script src="scripts/char_species.js" defer></script>
     <script src="scripts/charsheet.js" defer></script>
     <script src="scripts/char_save.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/sidebar.js" defer></script>
 </head>
 
-<body>
+<body data-page-title="Character Sheet">
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
     <button class="nav-button" onclick="location.href='index.html'">Homepage</button>
     <form id="character-sheet">
         <div class="char-page" id="page1">
@@ -857,4 +863,5 @@
 
     </form>
 </body>
+
 </html>

@@ -41,7 +41,6 @@
   }
 }
 
-
 .spell-card:hover {
     box-shadow: 0 0 6px var(--green-1);
     filter: brightness(110%);
@@ -253,53 +252,6 @@ line-height: 0;
   background: var(--green-2);
   font-weight: bold;
 }
-
-/* Search */
-#floating-search {
-  position: fixed;
-  top: 80px;
-  left: 0;
-  background: var(--green-2);
-  border-radius: var(--border-radius);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  box-shadow: var(--box-shadow);
-  transition: width 0.3s ease, padding 0.3s ease;
-  overflow: hidden;
-  width: 36px;
-}
-
-#floating-search.collapsed input {
-  display: none;
-}
-
-#floating-search input,
-#floating-search button {
-  border: none;
-  border-radius: var(--border-radius);
-  background-color: var(--dark-1);
-  color: var(--text-cream);
-}
-
-#floating-search input {
-  font-size: 1rem;
-  padding: 0.3rem 0.5rem;
-  width: 260px;
-}
-
-#floating-search button {
-  background: var(--dark-3);
-  font-size: 1.1rem;
-  cursor: pointer;
-  width: 100%;
-}
-
-/* When expanded */
-#floating-search.expanded {
-  width: 220px;
-}
-
 
 main {
     overflow-x: hidden;
