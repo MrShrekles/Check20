@@ -1,0 +1,21 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "static/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "lore"
+    label: "Lore"
+    folder: "content/lore"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    format: "frontmatter"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Author", name: "author", widget: "string", default: "Anonymous"}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Faction", name: "faction", widget: "string", required: false}
+      - {label: "Region", name: "region", widget: "string", required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
