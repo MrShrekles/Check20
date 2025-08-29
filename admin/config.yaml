@@ -2,6 +2,9 @@ backend:
   name: git-gateway
   branch: main
 
+# optional: require approval before publish
+# publish_mode: editorial_workflow
+
 media_folder: "static/uploads"
 public_folder: "/uploads"
 
@@ -13,9 +16,9 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     format: "frontmatter"
     fields:
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Author", name: "author", widget: "string", default: "Anonymous"}
-      - {label: "Tags", name: "tags", widget: "list", required: false}
-      - {label: "Faction", name: "faction", widget: "string", required: false}
-      - {label: "Region", name: "region", widget: "string", required: false}
-      - {label: "Body", name: "body", widget: "markdown"}
+      - { label: "Title",  name: "title",  widget: "string" }
+      - { label: "Author", name: "author", widget: "string", default: "Anonymous" }
+      - { label: "Tags",   name: "tags",   widget: "list", required: false }
+      - { label: "Faction",name: "faction",widget: "string", required: false }
+      - { label: "Region", name: "region", widget: "string", required: false }
+      - { label: "Body",   name: "body",   widget: "markdown" }
