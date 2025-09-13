@@ -4,11 +4,9 @@
   border-radius: var(--border-radius);
   padding: var(--padding);
   box-shadow: var(--bow-shadow);
-  width: 45vw;
 }
 
 .card-image {
-  float: right;
   max-width: 25vw;
   margin-left: 1rem;
   border-radius: 8px;
@@ -20,4 +18,12 @@
 
 .magic-eyes-list li {
   margin-bottom: 0.3rem;
+}
+
+.card-holder {
+  display: grid;
+  grid-template-columns: auto 40vw;
+  grid-auto-flow: dense;
+  padding: var(--padding);
+  gap: var(--padding);
 }

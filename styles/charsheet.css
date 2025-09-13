@@ -3,56 +3,15 @@
     --medium: #e6e6e6;
     --white: #fff;
     --border-radius: 8px;
-    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     --box-hover: 0 2px 8px rgba(0, 0, 0, 0.7);
     --padding: 5px;
     --body-font: 0.7em;
-}
-/* Root Variables */
-:root {
-    --theme: rgb(70, 100, 100);
-    --theme-hover: rgb(50, 100, 100);
-    --theme-alt: rgb(50, 75, 75);
-    --theme-dark: rgb(40, 50, 50);
-    --gold: goldenrod;
-    --darkgold: darkgoldenrod;
     --white: whitesmoke;
-    --cream: #d9b382;
-    --rust: #a45e3b;
-    --hate: rgb(95, 45, 25);
     --border-radius: 10px;
-    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    --box-hover: red;
     --padding: .5vw;
-
-    /* Grayscale Desaturated Dark */
     --dark-1: #0a0a0a;
     --dark-2: #1e1e1e;
     --dark-3: #3a3a3a;
-    /* Slate-Teal Theme (Darkslategrey-inspired) */
-    --theme-1: #1b2c2c;
-    --theme-2: #2f4f4f;
-    --theme-3: #4c6e6e;
-    /* Warm (earthy/red-brown tones) */
-    --warm-1: #5f2d19;
-    --warm-2: #8b4a2f;
-    --warm-3: #d9b382;
-    /* Gold (vibrant highlight tones) */
-    --gold-1: #664900;
-    --gold-2: #af8000;
-    --gold-3: #ffd700;
-    /* Green (natural, muted) */
-    --green-1: #121b12;
-    --green-2: #3a5f3a;
-    --green-3: #8fbf8f;
-    /* Text */
-    --text-plain: #fffaf0;
-    --text-gold: #ffd700;
-    --text-cream: #f0e5c5;
-    /* Red */
-    --red-1: red;
-    --red-2: rgb(255, 100, 100);
-    --red-3: pink;
 }
 
 body {
@@ -77,7 +36,7 @@ textarea {
 .char-page {
     padding: 0.2in;
     box-sizing: border-box;
-    background: var(--white);
+    background: none;
     page-break-after: always;
 }
 
@@ -220,9 +179,10 @@ td {
     width: 90%;
 }
 
-.health-table td:first-child, 
+.health-table td:first-child,
 .health-table th:first-child {
-  width: 30%; /* Adjust this value as needed */
+    width: 30%;
+    /* Adjust this value as needed */
 }
 
 .formula {
@@ -251,7 +211,7 @@ td {
 .resources {
     padding: 10px;
     margin-bottom: 1em;
-    background: var(--white);
+    background: none;
     border-radius: var(--border-radius);
 }
 
@@ -269,7 +229,7 @@ td {
 .feature-list li {
     padding: var(--padding);
     margin: var(--padding) 0;
-    background: var(--white);
+    background: none;
     border-left: 5px solid var(--medium);
     border-radius: var(--border-radius);
 }
@@ -289,12 +249,6 @@ td {
     align-items: center;
 }
 
-.item-entry button {
-    background: var(--white);
-    border-radius: 4px;
-    cursor: pointer;
-}
-
 .hide,
 .hidden {
     display: none;
@@ -305,7 +259,6 @@ td {
     color: white;
     border-radius: 8px;
     border: 2px solid black;
-    box-shadow: #000;
 }
 
 .nav-button:hover {
@@ -355,7 +308,7 @@ td {
 .damage-box {
     border: 1px solid var(--black);
     border-radius: var(--border-radius);
-    background: var(--white);
+    background: none;
     margin: 0;
     padding: 0;
     gap: 0;
@@ -388,8 +341,7 @@ td {
     border: 1px solid var(--black);
     border-radius: 6px;
     padding: 0.15in;
-    background: var(--white);
-    box-shadow: var(--box-shadow);
+    background: none;
 }
 
 .ref-card h3 {
@@ -428,8 +380,7 @@ td {
     border: 1px solid var(--black);
     border-radius: 6px;
     padding: 0.1in;
-    background: var(--white);
-    box-shadow: var(--box-shadow);
+    background: none;
 }
 
 .small-resources {
@@ -508,4 +459,10 @@ td {
     textarea::placeholder {
         color: transparent !important;
     }
+}
+
+
+/* Tighten list spacing in compact mode */
+body.compact-print ol li {
+    margin: 0 0 6px;
 }

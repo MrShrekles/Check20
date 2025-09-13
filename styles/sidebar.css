@@ -18,12 +18,20 @@
     left: 0;
 }
 
-:root { --sidebar-shift: 50vw; }           /* already using this for buttons */
-@media (max-width:700px){ :root { --sidebar-shift: 80vw; } }
+:root {
+    --sidebar-shift: 50vw;
+}
+
+/* already using this for buttons */
+@media (max-width:700px) {
+    :root {
+        --sidebar-shift: 80vw;
+    }
+}
 
 /* Any fixed element with this class will slide when the sidebar opens */
 #sidebar.open .shift-with-sidebar {
-  transform: translateX(var(--sidebar-shift));
+    transform: translateX(var(--sidebar-shift));
 }
 
 
@@ -31,103 +39,155 @@
 #toggle-sidebar,
 #toggle-spellbook,
 #toggle-monsters,
-#toggle-top, #floating-search {
-  position: fixed;
-  left: 0;
-  width: 36px;
-  height: 36px;
-  background: var(--dark-2);
-  color: var(--white);
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  box-shadow: var(--box-shadow);
-  z-index: 1001;
-  transition: background .2s ease, transform .3s ease;
-  font-size: 0;                 /* icons come from ::before */
-  display: inline-block;        /* works for <a> and <button> */
-  text-decoration: none;        /* if Monsters is an <a> */
+#toggle-top,
+#floating-search {
+    position: fixed;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    background: var(--dark-2);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    z-index: 1001;
+    transition: background .2s ease, transform .3s ease;
+    font-size: 0;
+    /* icons come from ::before */
+    display: inline-block;
+    /* works for <a> and <button> */
+    text-decoration: none;
+    /* if Monsters is an <a> */
 }
 
 /* Individual positions */
-#toggle-sidebar  { top: 40px;    }
-#toggle-spellbook{ top: 80px; }
-#toggle-monsters { top: 120px; }
-#toggle-top      { top: 0; }
+#toggle-sidebar {
+    top: 40px;
+}
+
+#toggle-spellbook {
+    top: 80px;
+}
+
+#toggle-monsters {
+    top: 120px;
+}
+
+#toggle-top {
+    top: 0;
+}
 
 /* Icons */
-#toggle-sidebar::before   { content: "🎲"; font-size: 1rem;  display:block; text-align:center; }
-#toggle-spellbook::before { content: "📖"; font-size: 1.2rem; display:block; text-align:center; }
-#toggle-monsters::before  { content: "☠"; font-size: 1.2rem; display:block; text-align:center; }
-#toggle-top::before       { content: "⬆"; font-size: 1.2rem; display:block; text-align:center; }
+#toggle-spellbook::before {
+    content: "📖";
+    font-size: 1.2rem;
+    display: block;
+    text-align: center;
+}
+
+#toggle-monsters::before {
+    content: "☠";
+    font-size: 1.2rem;
+    display: block;
+    text-align: center;
+}
+
+#toggle-top::before {
+    content: "🔝";
+    font-size: 1.2rem;
+    display: block;
+    text-align: center;
+}
+
+#toggle-sidebar::before {
+    content: "➡️";
+    font-size: 1rem;
+    display: block;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+#sidebar.open #toggle-sidebar::before {
+    content: "⬅";
+}
 
 /* Hover */
 #toggle-sidebar:hover,
 #toggle-spellbook:hover,
 #toggle-monsters:hover,
 #toggle-top:hover {
-  background: var(--theme-hover);
+    background: var(--theme-hover);
 }
 
-/* Slide with sidebar open — use a CSS var so desktop/mobile differ cleanly */
-:root { --sidebar-shift: 50vw; }
+:root {
+    --sidebar-shift: 50vw;
+}
+
 #sidebar.open #toggle-sidebar,
 #sidebar.open #toggle-spellbook,
 #sidebar.open #toggle-monsters,
 #sidebar.open #toggle-top,
 #sidebar.open #floating-search {
-  transform: translateX(var(--sidebar-shift));
+    transform: translateX(var(--sidebar-shift));
 }
 
 /* Mobile tweaks */
 @media (max-width: 700px) {
-  :root { --sidebar-shift: 80vw; }       /* sidebar wider on mobile */
-  #toggle-sidebar,
-  #toggle-spellbook,
-  #toggle-monsters,
-  #toggle-top {
-    border-radius: 0 6px 6px 0;
-    line-height: 48px;                   /* keeps tap target comfy */
-    padding: 0;
-  }
+    :root {
+        --sidebar-shift: 80vw;
+    }
+
+    /* sidebar wider on mobile */
+    #toggle-sidebar,
+    #toggle-spellbook,
+    #toggle-monsters,
+    #toggle-top {
+        border-radius: 0 6px 6px 0;
+        line-height: 48px;
+        /* keeps tap target comfy */
+        padding: 0;
+    }
 }
 
 /* Floating search placement (spell page) */
 #floating-search {
-  position: fixed;
-  left: 0;
-  top: 160px;           /* below your 4 buttons at 0/40/80/120 */
-  z-index: 1001;        /* same layer as buttons */
+    position: fixed;
+    left: 0;
+    top: 160px;
+    /* below your 4 buttons at 0/40/80/120 */
+    z-index: 1001;
+    /* same layer as buttons */
 }
 
 #floating-search.collapsed input {
-  display: none;
+    display: none;
 }
 
 #floating-search input,
 #floating-search button {
-  border-radius: var(--border-radius);
-  border-color: var(--green-1);
-  background-color: var(--dark-1);
-  color: var(--text-cream);
+    border-radius: var(--border-radius);
+    border-color: var(--green-1);
+    background-color: var(--dark-1);
+    color: var(--text-cream);
 }
 
 #floating-search input {
-  font-size: 1rem;
-  padding: 0.3rem 0.5rem;
-  width: 260px;
+    font-size: 1rem;
+    padding: 0.3rem 0.5rem;
+    width: 260px;
 }
 
 #floating-search button {
-  background: var(--dark-3);
-  font-size: 1.1rem;
-  cursor: pointer;
-  width: 100%;
+    background: var(--dark-3);
+    font-size: 1.1rem;
+    cursor: pointer;
+    width: 100%;
 }
 
 /* When expanded */
 #floating-search.expanded {
-  width: 250px;
+    width: 250px;
 }
 
 /* ───────── Roller Switch Tabs ───────── */
@@ -501,53 +561,53 @@ table.condition .category-row {
 }
 
 .dragon-list {
-  display: flex;
-  flex-wrap: wrap;
-  list-style: decimal inside;
-  padding: 0;
-  margin: 0;
-  gap: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    list-style: decimal inside;
+    padding: 0;
+    margin: 0;
+    gap: 4px;
 }
 
 .dragon-list li {
-  flex: 1 1 30%;
-  padding: 4px;
-  font-size: 0.9rem;
-  background: var(--dark-2);
-  border-radius: var(--border-radius);
-  box-sizing: border-box;
+    flex: 1 1 30%;
+    padding: 4px;
+    font-size: 0.9rem;
+    background: var(--dark-2);
+    border-radius: var(--border-radius);
+    box-sizing: border-box;
 }
 
 
 /* Stack fully on small screens */
 @media (max-width: 700px) {
-  .dragon-list li {
-    flex: 1 1 100%;
-  }
+    .dragon-list li {
+        flex: 1 1 100%;
+    }
 }
 
 .compatibility-group {
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  background: var(--dark-2);
-  border-left: 4px solid var(--theme);
-  border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background: var(--dark-2);
+    border-left: 4px solid var(--theme);
+    border-radius: var(--border-radius);
 }
 
 .compatibility-group h4 {
-  margin: 0 0 0.25rem 0;
-  color: var(--gold);
-  font-size: 1.1rem;
+    margin: 0 0 0.25rem 0;
+    color: var(--gold);
+    font-size: 1.1rem;
 }
 
 .compatibility-group ul {
-  margin: 0;
-  padding-left: 1.25rem;
-  list-style: disc;
+    margin: 0;
+    padding-left: 1.25rem;
+    list-style: disc;
 }
 
 .compatibility-group p,
 .compatibility-group li {
-  font-size: 0.95rem;
-  color: var(--text-cream);
+    font-size: 0.95rem;
+    color: var(--text-cream);
 }

@@ -117,36 +117,47 @@ select {
 .origin-tag.basic {
     background-color: darkslategray;
 }
+
 .origin-tag.arcane {
     background-color: darkcyan;
 }
+
 .origin-tag.tech {
     background-color: darkblue;
 }
+
 .origin-tag.crystal {
     background-color: rgb(79, 0, 0);
 }
+
 .origin-tag.nature {
     background-color: #1b7a41;
 }
+
 .origin-tag.vozian {
     background-color: #502379;
 }
+
 .origin-tag.chrono {
     background-color: #8a5408;
 }
+
 .origin-tag.chaos {
     background-color: #331f0e;
 }
+
 .origin-tag.life {
     background-color: #6b2a6a;
 }
+
 .origin-tag.elemental {
     background-color: #275c65;
 }
+
 .origin-tag.dragon {
     background-color: #ff5500;
 }
+
 .origin-tag.celestial {
     background-color: #7a4000;
 }
@@ -155,73 +166,81 @@ select {
 .origin-tag.none {
     background-color: #999;
 }
+
 .tag-action {
     background: var(--theme-2);
 }
+
 .tag-check {
     background: #6a1b9a;
 }
+
 .tag-range {
     background: var(--warm-1);
 }
+
 .tag-duration {
     background: var(--warm-2);
 }
+
 .tag-damage {
     background: #c62828;
 }
+
 .tag-armor {
     background: #5d4037;
 }
+
 .tag-condition {
     background: #3949ab;
 }
 
 .path-talent-section {
-  margin-top: 2rem;
-  padding: 1rem 0;
-  border-top: 2px solid var(--theme-2);
+    margin-top: 2rem;
+    padding: 1rem 0;
+    border-top: 2px solid var(--theme-2);
 }
+
 .collapsible-box {
-  border: 1px solid var(--theme-2);
-  border-radius: 6px;
-  background: var(--dark-3);
-  margin: 1rem 0;
-  overflow: hidden;
+    border: 1px solid var(--theme-2);
+    border-radius: 6px;
+    background: var(--dark-3);
+    margin: 1rem 0;
+    overflow: hidden;
 }
 
 .collapsible-box[open] summary {
-  border-bottom: 1px solid var(--theme-2);
+    border-bottom: 1px solid var(--theme-2);
 }
 
 .collapsible-box summary {
-  cursor: pointer;
-  padding: 1rem;
-  background: var(--theme-2);
-  color: var(--white);
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    cursor: pointer;
+    padding: 1rem;
+    background: var(--theme-2);
+    color: var(--white);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .collapsible-box summary h1 {
-  font-size: 1.25rem;
-  margin: 0;
-  flex: 1;
+    font-size: 1.25rem;
+    margin: 0;
+    flex: 1;
 }
 
 .collapsible-box summary::marker {
-  display: none;
+    display: none;
 }
 
 .collapsible-box summary::after {
-  content: "▼";
-  font-size: 0.8rem;
-  margin-left: 1rem;
-  transition: transform 0.3s ease;
+    content: "▼";
+    font-size: 0.8rem;
+    margin-left: 1rem;
+    transition: transform 0.3s ease;
 }
 
 .collapsible-box[open] summary::after {
-  transform: rotate(180deg);
+    transform: rotate(180deg);
 }

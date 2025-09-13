@@ -17,8 +17,8 @@
 </head>
 
 <body data-page-title="Character Sheet">
-    <div id="header-placeholder"></div>
-    <div id="sidebar-placeholder"></div>
+    <div class="no-print" id="header-placeholder"></div>
+    <div class="no-print" id="sidebar-placeholder"></div>
 
     <button class="nav-button" onclick="location.href='index.html'">Homepage</button>
     <form id="character-sheet">
@@ -148,6 +148,7 @@
                             </table>
                         </div>
 
+                        <!-- Character Details -->
                         <ul class="char-details-inline">
                             <li>
                                 <label for="language">Language:</label>
@@ -230,18 +231,12 @@
                                         <li>&nbsp;</li>
                                         <li>&nbsp;</li>
                                         <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="column">
                                 <div class="ref-card">
                                     <ul class="notes">
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
                                         <li>&nbsp;</li>
                                         <li>&nbsp;</li>
                                         <li>&nbsp;</li>
@@ -321,7 +316,11 @@
             </section>
         </div>
 
-        <div class="char-page" id="page2">
+        <div class="char-page">
+            <div id="progression"></div>
+        </div>
+
+        <div class="char-page" id="con-page">
             <!-- Conditions -->
             <section id="conditions">
                 <table>
@@ -699,7 +698,7 @@
                         </li>
                         <li><strong>Disarm:</strong> Make an opposed Strength or Agility check to disarm a creature.
                         </li>
-                        <li><strong>Help:</strong> Assist another creature, giving them advantage on a check.</li>
+                        <li><strong>Help:</strong> Give a creature +1 to a check</li>
                         <li><strong>Pick up an Item:</strong> Picking up an item is a Half-Action.</li>
                         <li><strong>Use an Object:</strong> Interact with objects like levers or buttons.</li>
                         <li><strong>Disengage:</strong> Move out of a creature's range without provoking opportunity
@@ -722,7 +721,7 @@
                 <div class="ref-card">
                     <h3>Off-Actions</h3>
                     <ul>
-                        <li>Opportunity Attack / Reaction</li>
+                        <li><strong>Provoke:</strong> Strike when enemies drop their guard or misses an attack.</li>
                         <li><strong>Block:</strong> Reduce melee damage by half using a shield.</li>
                         <li><strong>Demoralize:</strong> Force enemies to make a morale check with an Influence (Intimidate) roll.</li>
                     </ul>
