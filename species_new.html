@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Species of Shek</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/species_new.css">
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+    <script src="scripts/species_new.js" defer></script>
+    <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/tooltips.js" defer></script>
+</head>
+
+<body data-page-title="Species">
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
+    <main>
+        <section class="species-toolbar">
+            <input id="species-search" type="search" placeholder="Search name, traits…" />
+            <select id="species-sort">
+                <option value="name">Sort: Name</option>
+                <option value="rarity">Sort: Rarity</option>
+                <option value="lineage">Sort: Lineage</option>
+            </select>
+            <button id="species-clear">Clear</button>
+            <button id="collapse-all">Collapse all</button>
+            <button id="expand-all">Expand all</button>
+            <span id="species-count"></span>
+        </section>
+
+        <section class="species-filters">
+            <div class="filter-group" data-key="lineage">
+                <h4>Lineage</h4>
+            </div>
+            <div class="filter-group" data-key="option">
+                <h4>Option</h4>
+            </div>
+            <div class="filter-group" data-key="rarity">
+                <h4>Rarity</h4>
+            </div>
+            <div class="filter-group" data-key="region">
+                <h4>Region</h4>
+            </div>
+        </section>
+
+        <section id="species-sections" class="species-sections"></section>
+
+        <!-- Lightbox -->
+        <dialog id="species-lightbox">
+            <button class="close" aria-label="Close">×</button>
+            <img id="lightbox-img" alt="">
+            <div id="lightbox-caption"></div>
+            <nav>
+                <button id="lb-prev">‹</button>
+                <button id="lb-next">›</button>
+            </nav>
+        </dialog>
+
+        <script src="species.js"></script>
+
+
+    </main>
+
+</body>

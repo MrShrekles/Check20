@@ -251,3 +251,31 @@
 .damage strong {
   color: var(--gold-3);
 }
+
+.two-column h3 {
+  border-bottom: 2px solid var(--gold-1);
+  font-size: 1.2rem;
+}
+
+.two-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 0;
+}
+
+.two-column li {
+  margin-bottom: 5px;
+  background-color: var(--theme-1);
+  border-radius: var(--border-radius);
+  padding: 5px;
+}
+
+.two-column li strong {
+  display: block;
+  font-weight: bold;
+}
+
+#light {
+  background-color: var(--theme-3);
+}

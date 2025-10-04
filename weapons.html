@@ -75,10 +75,56 @@
                 </div>
             </div>
         </section>
+        <section>
+            <div class="two-column">
+                <div class="column">
+                    <h3>Weapon Categories</h3>
+                    <ul>
+                        <li><strong>Firearm</strong>
+                            <p>Weapons that fire high-speed projectiles, usually Tech in origin. Firearms roll damage with <code>1d4</code> exploding dice; when a die rolls its maximum, roll another and add it. This can repeat as long as maximums are rolled.</p>
+                        </li>
+                        <li><strong>Magic</strong>
+                            <p>Weapons imbued with magical properties. They often include a unique feature or special effect in addition to their base damage.</p>
+                        </li>
+                        <li><strong>Melee</strong>
+                            <p>Close-combat weapons used within reach (about 5 ft). Includes blades, blunt weapons, and other hand-to-hand implements.</p>
+                        </li>
+                        <li><strong>Ranged</strong>
+                            <p>Weapons that fire projectiles without firearms, such as bows or crossbows. Many creatures favor these for their silence and reliability.</p>
+                        </li>
+                    </ul>
 
-        <section style="background-color: darkred;">
-            <h2 style="color: white;">WORK IN PROGRESS</h2>
-            <p>Sheet copy is currently not functional</p>
+                    <h4>Basic Weapons</h4>
+                    <p>All of these are natural weapons and use either an Agility or Strength check. Unless otherwise stated, they are considered Light, 1-handed weapons.</p>
+                    <ul>
+                        <li><strong>Unarmed Strike</strong> A basic punch, kick, or shove. Deals [[1]] Impact damage.</li>
+                        <li><strong>Claws</strong> Sharp natural weapons that slash or rake. Deals [[1]] Slashing damage.</li>
+                        <li><strong>Bite</strong> A tearing bite. Deals [[1]] Piercing damage. On a success+, you may choose to grapple the target instead of rolling on the success table.</li>
+                        <li><strong>Tail</strong> A bludgeoning lash or sweep. Deals [[1]] Slashing damage. On a success+, you may knock the target Prone instead of rolling on the success table.</li>
+                    </ul>
+
+                </div>
+
+                <div class="column">
+                    <h3>Weapon Properties</h3>
+                    <ul>
+                        <li><strong>1-Hand (or foot)</strong> Wielded using only one appendage.</li>
+                        <li><strong>2-Hand</strong> Requires two hands to use.</li>
+                        <li><strong>Attached</strong> Built into or fixed onto armor or gear, does not require a free hand.</li>
+                        <li><strong>Close Range Disadvantage</strong> Ranged or reach attacks suffer Disadvantage against adjacent targets.</li>
+                        <li><strong>Free Hands</strong> Does not restrict use of your hands. You can still use objects or cast spells without stowing the weapon.</li>
+                        <li><strong>Hefty ⚒️</strong> You can only carry two Hefty items at a time before gaining the Pinned condition. These are large, powerful weapons.</li>
+                        <li><strong>Hidden</strong> Can be concealed easily on your person.</li>
+                        <li id="light"><strong>Light ⚔️</strong> Can be used as both an Action and an Off-action attack.</li>
+                        <li><strong>Reach </strong> Extends beyond normal melee range.</li>
+                        <li><strong>Reload</strong> Must be reloaded after a certain number of attacks.</li>
+                        <li><strong>Return🪃</strong> Comes back after being thrown, based on the specified action type (Action, Half-action, Off-action, or Free action).</li>
+                        <li><strong>Surprise</strong> If the target is unaware, the weapon can trigger Finisher or similar effects.</li>
+                        <li><strong>Tech ⚙️</strong> Uses mechanical or technological design rather than purely physical or magical means.</li>
+                        <li><strong>Thrown</strong> Can be thrown as a ranged attack.</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
         <section>
@@ -94,9 +140,6 @@
                 </select>
 
             </div>
-
-
-
             <div class="filters">
                 <div class="filter-group" data-key="category" aria-label="Category"></div>
                 <div class="filter-group" data-key="range" aria-label="Range"></div>
@@ -104,11 +147,8 @@
                 <div class="filter-group" data-key="rarity" aria-label="Rarity"></div>
                 <button id="clearFilters" class="ghost-btn" type="button">Clear filters</button>
             </div>
-
             <span id="weapons-count"></span>
-
             <div id="weapons-grid" class="weapons-grid"></div>
-
 
     </main>
     <div id="sidebar-placeholder"></div>

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Damage & Damage Tables</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/damage.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
     <script src="scripts/main.js" defer></script>
     <script src="scripts/sidebar.js" defer></script>
@@ -13,8 +14,8 @@
     <script src="scripts/tooltips.js" defer></script>
 </head>
 
-<body data-page-title="Damage"> 
-        <div id="header-placeholder"></div>
+<body data-page-title="Damage">
+    <div id="header-placeholder"></div>
     <main>
 
         <section>
@@ -155,20 +156,29 @@
 
         <!-- Damage Tables -->
         <section>
-            <h1>Damage Tables</h1>
-            <p>When you roll a 20 or above on damage, this is termed a "success+". For every "success+" you achieve,
-                you're
-                granted a roll on the appropriate damage table specific to your weapon. Every 5 above 20 is an
-                additional
-                success+, so 25 would be 2 rolls, and 30 would be 3. It's vital to remember that different weapons come
-                with
-                distinct damage tables, so strategic weapon selection can offer unique advantages in combat.
-            </p>
-            <p><strong>Repeated Conditions</strong>: When you have a repeated, non-stacking condition you deal +1 damage
-                instead</p>
-            <h3>Special Values</h3>
-            <li><strong>Cleave</strong>: deal the half damage to any other targetted creatures within melee range</li>
-            <li><strong>Siphon</strong>: heal for the amount listed</li>
+            <div class="two-column">
+                <div class="column">
+                    <h1>Damage Tables</h1>
+                    <p>When you roll a 20 or above on damage, this is termed a <strong>success+</strong>. For every success+ you achieve, roll once on the appropriate damage table for your weapon. Every 5 above 20 grants an additional success+ (e.g., 25 = 2 rolls, 30 = 3 rolls). Different weapons have distinct damage tables, so strategic weapon selection can offer unique advantages.</p>
+
+                    <ul>
+                        <li>
+                            <strong>Repeated Conditions</strong> When you roll a repeated, non-stacking condition, instead deal +1 damage.
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="column">
+                    <h3>Special Values</h3>
+                    <ul>
+                        <li><strong>Cleave</strong> Deal half damage to other creatures within melee range of the target.</li>
+                        <li><strong>Siphon</strong> Heal yourself for the amount listed.</li>
+                    </ul>
+                </div>
+            </div>
+
+
+
         </section>
 
         <section>

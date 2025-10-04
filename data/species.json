@@ -920,7 +920,6 @@
           "name": "Swindler's Charm",
           "description": "Speak to a creature for 1 minute and make a social check (Influence, Influence, or Influence). On a success, charm the creature for 1 hour. The creature is not under your control, and if they take damage or feel threatened, they break from the charm. After the charm is Broken, they know that they have been charmed and will be hostile towards you. While charmed in this way, the creature will:\rAlways tell the truth.\rFollow you if the path is safe.\rGive a minor amount of their wealth.\rAllow blood to be drawn (1 pint), after which they will take the Concussion condition for 1 minute."
         }
-
       ]
     },
     {
@@ -943,7 +942,6 @@
           "name": "Flight",
           "description": "You have massive wings that give fly speed equal to your movement or half as much if you are wearing hefty armor."
         }
-        
       ]
     },
     {

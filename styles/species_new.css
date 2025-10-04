@@ -1,0 +1,283 @@
+/* ===== TOKENS ===== */
+:root {
+    --gap-1: .5rem;
+    --gap-2: .75rem;
+    --radius: var(--border-radius);
+    --bd-1: 1px solid var(--gold-1);
+    --bd-2: 1px dashed var(--gold-2);
+    --bg-1: var(--theme-1);
+    --bg-2: var(--theme-2, #222);
+}
+
+/* ===== TOOLBAR / FILTERS ===== */
+.species-toolbar {
+    display: flex;
+    gap: var(--gap-1);
+    align-items: center;
+    flex-wrap: wrap
+}
+
+.species-filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--gap-1)
+}
+
+.filter-group {
+    background: var(--bg-1);
+    padding: .5rem;
+    border-radius: var(--radius)
+}
+
+.filter-group h4 {
+    margin: .2rem 0 .4rem;
+    font-size: .9rem;
+    opacity: .8
+}
+
+.toggle-btn {
+    padding: .25rem .5rem;
+    border-radius: 999px;
+    border: var(--bd-1);
+    margin: .2rem;
+    font-size: .85rem
+}
+
+.toggle-btn.dim {
+    opacity: .35;
+    filter: saturate(.2)
+}
+
+/* ===== CARDS / GRID ===== */
+.species-grid,
+.lineage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--gap-2)
+}
+
+.species-card {
+    background: var(--bg-1);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column
+}
+
+.species-card header {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    padding: .6rem .7rem;
+    border-bottom: var(--bd-1)
+}
+
+.species-card img.cover {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    background: #222
+}
+
+.species-meta {
+    display: flex;
+    gap: .3rem .4rem;
+    flex-wrap: wrap;
+    padding: .4rem .7rem
+}
+
+.chip {
+    font-size: .75rem;
+    padding: .1rem .5rem;
+    border: var(--bd-2);
+    border-radius: 999px;
+    opacity: .9
+}
+
+.species-body {
+    padding: .6rem .7rem;
+    font-size: .92rem;
+    position: relative
+}
+
+.species-body.collapsed {
+    max-height: 6.5rem;
+    overflow: hidden
+}
+
+.read-more {
+    display: inline-block;
+    margin-top: .35rem;
+    font-size: .85rem;
+    text-decoration: underline;
+    cursor: pointer
+}
+
+/* ===== LIGHTBOX ===== */
+#species-lightbox {
+    width: min(92vw, 1000px);
+    border: none;
+    background: #000c;
+    backdrop-filter: blur(4px)
+}
+
+#species-lightbox img {
+    width: 100%;
+    height: auto;
+    display: block
+}
+
+#species-lightbox .close {
+    position: absolute;
+    top: .5rem;
+    right: .5rem
+}
+
+/* ===== LINEAGE / OPTION SECTIONS ===== */
+.species-sections {
+    display: grid;
+    gap: 1rem
+}
+
+.lineage-section {
+    border: var(--bd-1);
+    border-radius: var(--radius);
+    overflow: hidden
+}
+
+.lineage-header {
+    position: sticky;
+    top: 0;
+    background: var(--bg-1);
+    padding: .5rem .75rem;
+    border-bottom: var(--bd-1)
+}
+
+.lineage-header h2 {
+    margin: 0;
+    font-size: 1rem;
+    letter-spacing: .5px;
+    opacity: .9
+}
+
+.option-header {
+    background: var(--bg-2);
+    padding: .4rem .75rem;
+    border-top: var(--bd-1)
+}
+
+.option-header h3 {
+    margin: 0;
+    font-size: .95rem;
+    opacity: .9
+}
+
+/* ===== FEATURE BLOCK ===== */
+.feature-line {
+    display: block;
+    padding: .6rem .75rem .65rem;
+    border-top: var(--bd-2);
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, .02));
+    font-size: .92rem
+}
+
+.feature-name {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: .3px;
+    margin-right: .35rem;
+    position: relative;
+    color: var(--gold-1)
+}
+
+.feature-name::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold-1, #c2a756), transparent 70%);
+    opacity: .35
+}
+
+.feature-effect {
+    display: inline;
+    opacity: .95
+}
+
+/* Pills */
+.feature-pill {
+    display: inline-block;
+    font-size: .78rem;
+    line-height: 1;
+    padding: .22rem .55rem;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    vertical-align: middle;
+    backdrop-filter: saturate(1.2)
+}
+
+.feature-pill+.feature-pill {
+    margin-left: .35rem
+}
+
+.pill-action {
+    color: #8bd6ff;
+    background: rgba(139, 214, 255, .12);
+    box-shadow: inset 0 0 0 1px rgba(139, 214, 255, .15)
+}
+
+.pill-dmg {
+    color: #ffb37a;
+    background: rgba(255, 179, 122, .12);
+    box-shadow: inset 0 0 0 1px rgba(255, 179, 122, .15)
+}
+
+.pill-type {
+    color: #d0ff9a;
+    background: rgba(208, 255, 154, .12);
+    box-shadow: inset 0 0 0 1px rgba(208, 255, 154, .15)
+}
+
+.feature-pill:hover {
+    transform: translateY(-1px) scale(1.02)
+}
+
+/* Collapsible lineage */
+.lineage-header {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: .5rem
+}
+
+.lineage-header .twisty {
+    inline-size: 1rem;
+    aspect-ratio: 1;
+    display: inline-block;
+    transform: rotate(90deg);
+    transition: .15s ease
+}
+
+.lineage-section.collapsed .twisty {
+    transform: rotate(0deg)
+}
+
+.lineage-section.collapsed .option-header,
+.lineage-section.collapsed .lineage-grid {
+    display: none
+}
+
+.lineage-header .count {
+    opacity: .6;
+    margin-left: auto;
+    font-size: .85rem
+}
+
+.lineage-header h2,
+.option-header h3 {
+    text-transform: capitalize;
+}

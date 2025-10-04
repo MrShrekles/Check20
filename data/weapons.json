@@ -10,11 +10,7 @@
     "rarity": "rare",
     "properties": "2 Hand",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A reliable, rapid-fire weapon favored by soldiers and raiders alike for its balanced accuracy and fire rate.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Medium, Piercing, rare, 2 Hand"
+    "description": "A reliable, rapid-fire weapon favored by soldiers and raiders alike for its balanced accuracy and fire rate."
   },
   {
     "name": "Blunderbuss",
@@ -27,11 +23,7 @@
     "rarity": "common",
     "properties": "2 Hand",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A wide-mouthed scatter weapon that blasts anything unlucky enough to be nearby. Devastating up close, useless at range.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Medium, Piercing, common, 2 Hand"
+    "description": "A wide-mouthed scatter weapon that blasts anything unlucky enough to be nearby. Devastating up close, useless at range."
   },
   {
     "name": "Bolt-Action Rifle",
@@ -44,11 +36,7 @@
     "rarity": "common",
     "properties": "2 Hand, Close Range Disadvantage",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A precise, single-shot weapon with a slow cycle but deadly accuracy. Favored by hunters and sharpshooters.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Medium, Piercing, common, 2 Hand, Close Range Disadvantage"
+    "description": "A precise, single-shot weapon with a slow cycle but deadly accuracy. Favored by hunters and sharpshooters."
   },
   {
     "name": "Derringer",
@@ -61,11 +49,7 @@
     "rarity": "common",
     "properties": "1 Hand, Light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A tiny two-shot pistol easily hidden in a sleeve or boot. Last resort, first surprise.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Medium, Piercing, common, 1 Hand, Light"
+    "description": "A tiny two-shot pistol easily hidden in a sleeve or boot. Last resort, first surprise."
   },
   {
     "name": "Flamethrower",
@@ -75,14 +59,8 @@
     "damage": "3d4!",
     "damageType": "Fire",
     "cost": 500,
-    "rarity": "",
-    "properties": "",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A volatile tank-fed weapon that spews fire in arcs, lighting up trenches, hallways, or crowds with searing heat.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Strength, melee, Fire, , "
+    "description": "A volatile tank-fed weapon that spews fire in arcs, lighting up trenches, hallways, or crowds with searing heat."
   },
   {
     "name": "Flapper's Purse Pistol",
@@ -95,11 +73,7 @@
     "rarity": "uncommon",
     "properties": "1 Hand, Light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A sleek, stylish mini-pistol designed for high society—compact enough for a clutch, deadly enough for a threat.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Medium, Piercing, uncommon, 1 Hand, Light"
+    "description": "A sleek, stylish mini-pistol designed for high society—compact enough for a clutch, deadly enough for a threat."
   },
   {
     "name": "Flintlock Pistol",
@@ -112,11 +86,7 @@
     "rarity": "common",
     "properties": "1 hand",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "Antique and unpredictable, but still dangerous. Used more for intimidation than sustained combat.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Medium, Piercing, common, 1 hand"
+    "description": "Antique and unpredictable, but still dangerous. Used more for intimidation than sustained combat."
   },
   {
     "name": "Grapple Gun",
@@ -129,11 +99,7 @@
     "rarity": "rare",
     "properties": "2 Hand",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A specialized tool that fires a tethered hook, used for scaling buildings or snagging enemies with surprise.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Medium, impact, rare, 2 Hand"
+    "description": "A specialized tool that fires a tethered hook, used for scaling buildings or snagging enemies with surprise."
   },
   {
     "name": "Gut Shredder LMG",
@@ -146,11 +112,7 @@
     "rarity": "very rare",
     "properties": "2 Hand, Hefty",
     "bulk": 3,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A belt-fed heavy machine gun that rips through flesh and armor alike. Brutal, loud, and hard to stop once it starts.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Strength, Short, Piercing, very rare, 2 Hand, Hefty"
+    "description": "A belt-fed heavy machine gun that rips through flesh and armor alike. Brutal, loud, and hard to stop once it starts."
   },
   {
     "name": "Lever-Action Rifle",
@@ -163,11 +125,7 @@
     "rarity": "common",
     "properties": "2 Hand",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A classic frontier rifle with a quick reload and satisfying cycle. Smooth handling, ideal for mid-range duels.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Medium, Piercing, common, 2 Hand"
+    "description": "A classic frontier rifle with a quick reload and satisfying cycle. Smooth handling, ideal for mid-range duels."
   },
   {
     "name": "Machine Gun",
@@ -180,11 +138,7 @@
     "rarity": "uncommon",
     "properties": "2 Hand",
     "bulk": 3,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A mounted or heavy-supported automatic weapon designed to suppress and overwhelm with sheer volume of fire.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Medium, Piercing, uncommon, 2 Hand"
+    "description": "A mounted or heavy-supported automatic weapon designed to suppress and overwhelm with sheer volume of fire."
   },
   {
     "name": "Pen Gun",
@@ -197,11 +151,7 @@
     "rarity": "rare",
     "properties": "1 hand, 1 shot",
     "bulk": 0,
-    "featureName": "",
-    "featureEffect": "",
-    "description": " Disguised as a writing implement, this one-shot pistol is the weapon of choice for spies and desperate gamblers.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Medium, Piercing, rare, 1 hand, 1 shot"
+    "description": "Disguised as a writing implement, this one-shot pistol is the weapon of choice for spies and desperate gamblers."
   },
   {
     "name": "Pistol",
@@ -214,11 +164,7 @@
     "rarity": "common",
     "properties": "1 Hand, Light",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "Standard sidearm, widely available. Compact and balanced, reliable in most close-quarter situations.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Medium, Piercing, common, 1 Hand, Light"
+    "description": "Standard sidearm, widely available. Compact and balanced, reliable in most close-quarter situations."
   },
   {
     "name": "Railway Rifle",
@@ -231,11 +177,7 @@
     "rarity": "rare",
     "properties": "2 Hand, Hefty",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A jury-rigged gun that fires railway spikes at high velocity, often with explosive results. Noisy, crude, deadly.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, short, Piercing, rare, 2 Hand, Hefty"
+    "description": "A jury-rigged gun that fires railway spikes at high velocity, often with explosive results. Noisy, crude, deadly."
   },
   {
     "name": "Revolver",
@@ -248,11 +190,7 @@
     "rarity": "common",
     "properties": "1 Hand",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "Six shots of trust and iron. Slow to reload, fast to earn respect. Every shot counts.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Medium, Piercing, common, 1 Hand"
+    "description": "Six shots of trust and iron. Slow to reload, fast to earn respect. Every shot counts."
   },
   {
     "name": "Rifle",
@@ -265,11 +203,7 @@
     "rarity": "common",
     "properties": "2 Hand, Close Range Disadvantage",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A general term for long-barreled firearms with solid range and stopping power. Standard issue for militias.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Long, Piercing, common, 2 Hand, Close Range Disadvantage"
+    "description": "A general term for long-barreled firearms with solid range and stopping power. Standard issue for militias."
   },
   {
     "name": "Semi-Automatic Pistol",
@@ -282,11 +216,7 @@
     "rarity": "common",
     "properties": "1 Hand, Light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "Faster than a revolver, lighter than a rifle. Fires as fast as you pull the trigger—clean, fast, and modern.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Medium, Piercing, common, 1 Hand, Light"
+    "description": "Faster than a revolver, lighter than a rifle. Fires as fast as you pull the trigger—clean, fast, and modern."
   },
   {
     "name": "Shotgun",
@@ -299,11 +229,7 @@
     "rarity": "common",
     "properties": "2 Hand",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "Devastating in close quarters, scattering lead in a cone. Useless from afar, king of hallways and alleys.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Strength, Short, Piercing, common, 2 Hand"
+    "description": "Devastating in close quarters, scattering lead in a cone. Useless from afar, king of hallways and alleys."
   },
   {
     "name": "Sniper Rifle",
@@ -316,11 +242,7 @@
     "rarity": "uncommon",
     "properties": "2 Hand, Close Range Disadvantage",
     "bulk": 3,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "Built for distance and precision, this scoped weapon can end a fight before it starts.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, long, Piercing, uncommon, 2 Hand, Close Range Disadvantage"
+    "description": "Built for distance and precision, this scoped weapon can end a fight before it starts."
   },
   {
     "name": "Submachine Gun",
@@ -333,11 +255,7 @@
     "rarity": "common",
     "properties": "1 Hand, Light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A compact automatic weapon built for close-quarters firepower. Easy to control, easy to conceal.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, short, Piercing, common, 1 Hand, Light"
+    "description": "A compact automatic weapon built for close-quarters firepower. Easy to control, easy to conceal."
   },
   {
     "name": "Tommy Gun",
@@ -350,11 +268,7 @@
     "rarity": "common",
     "properties": "2 Hand",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "Tommy Gun – Iconic drum-fed submachine gun of gangsters and trench raiders. Unloads bullets as fast as it chews through loyalty.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, Medium, Piercing, common, 2 Hand"
+    "description": "Tommy Gun – Iconic drum-fed submachine gun of gangsters and trench raiders. Unloads bullets as fast as it chews through loyalty."
   },
   {
     "name": "Umbrella Gun",
@@ -367,11 +281,7 @@
     "rarity": "rare",
     "properties": "2 Hand",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A concealed firearm hidden in a reinforced umbrella, perfect for assassins in polite company.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "firearm, Agility, Intellect, Luck, Observation, short, Piercing, rare, 2 Hand"
+    "description": "A concealed firearm hidden in a reinforced umbrella, perfect for assassins in polite company."
   },
   {
     "name": "Arcane Staff",
@@ -386,9 +296,7 @@
     "bulk": 1,
     "featureName": "Arcane Empowerment",
     "featureEffect": "Gain +1 Spell points. When you cast arcane spells deal an additional +2 damage",
-    "description": "A long, ornate staff used to channel potent magical energies with precision and flair.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "magic, Spellcasting, medium, impact, very rare, 1 hand, light"
+    "description": "A long, ornate staff used to channel potent magical energies with precision and flair."
   },
   {
     "name": "Basic Magic Staff",
@@ -403,9 +311,7 @@
     "bulk": 1,
     "featureName": "Basic Empowerment",
     "featureEffect": "Gain +1 Spell points. You have +1 to the check while casting basic spells",
-    "description": "A simple wooden staff that amplifies spells and helps maintain focus.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "magic, Spellcasting, medium, impact, very rare, 1 hand, light"
+    "description": "A simple wooden staff that amplifies spells and helps maintain focus."
   },
   {
     "name": "Crystal Wand",
@@ -420,9 +326,7 @@
     "bulk": 1,
     "featureName": "Crystal Resonance",
     "featureEffect": "Gain +1 Spell points. When a creature casts a spell on you gain +1 spell points",
-    "description": "A finely cut magical conduit used to direct and shape arcane power in delicate forms.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "magic, Spellcasting, medium, impact, very rare, 2 hand, light"
+    "description": "A finely cut magical conduit used to direct and shape arcane power in delicate forms."
   },
   {
     "name": "Gravedigger's Shovel",
@@ -437,9 +341,7 @@
     "bulk": 1,
     "featureName": "Gravedigger",
     "featureEffect": "Deal an additional 3 damage to Eclipse creatures",
-    "description": "A heavy iron shovel, often sharpened and repurposed as a brutal, symbolic weapon.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "magic, Agility, Spirit, Strength, melee, impact, slashing, uncommon, 1 hand, light"
+    "description": "A heavy iron shovel, often sharpened and repurposed as a brutal, symbolic weapon."
   },
   {
     "name": "Psi Blade",
@@ -452,11 +354,7 @@
     "rarity": "Legendary",
     "properties": "2 Hand, Light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A shimmering blade of thought and force, summoned by will and deadly to both body and mind.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "magic, Agility, Intellect, Spirit, melee, Psychic, Legendary, 2 Hand, Light"
+    "description": "A shimmering blade of thought and force, summoned by will and deadly to both body and mind."
   },
   {
     "name": "Soul Jar Mace",
@@ -469,11 +367,7 @@
     "rarity": "Legendary",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A heavy mace with a crystal core that glows faintly, rumored to trap fragments of the souls it strikes.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "magic, Agility, Spirit, Strength, melee, Eclipse, Legendary, 1 Hand, light"
+    "description": "A heavy mace with a crystal core that glows faintly, rumored to trap fragments of the souls it strikes."
   },
   {
     "name": "Battle Axe",
@@ -486,11 +380,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A two-handed axe built for cleaving armor and splitting foes in brutal fashion.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A two-handed axe built for cleaving armor and splitting foes in brutal fashion."
   },
   {
     "name": "Blackjack Sap",
@@ -503,11 +393,7 @@
     "rarity": "common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A weighted leather club used to knock targets unconscious with silent efficiency.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, agility, strength, melee, Slashing, common, 1 Hand, light"
+    "description": "A weighted leather club used to knock targets unconscious with silent efficiency."
   },
   {
     "name": "Brass Knuckles",
@@ -520,11 +406,7 @@
     "rarity": "Common",
     "properties": "2 Hand, Light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "Small metal grips worn over the fingers to turn a punch into a bone-breaking impact.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 2 Hand, Light"
+    "description": "Small metal grips worn over the fingers to turn a punch into a bone-breaking impact."
   },
   {
     "name": "Broadsword",
@@ -537,11 +419,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A wide-bladed sword designed for powerful, sweeping strikes and battlefield dominance.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A wide-bladed sword designed for powerful, sweeping strikes and battlefield dominance."
   },
   {
     "name": "Cane Sword",
@@ -554,11 +432,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A concealed blade hidden within a gentleman’s cane, perfect for stylish duels and surprise attacks.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Piercing, Common, 1 Hand, light"
+    "description": "A concealed blade hidden within a gentleman’s cane, perfect for stylish duels and surprise attacks."
   },
   {
     "name": "Cattle Prod",
@@ -571,11 +445,7 @@
     "rarity": "Uncommon",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "An electrified rod used to shock targets into submission, common among slavers and enforcers.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Lightning, Uncommon, 1 Hand, light"
+    "description": "An electrified rod used to shock targets into submission, common among slavers and enforcers."
   },
   {
     "name": "Chain Whip",
@@ -588,11 +458,7 @@
     "rarity": "Common",
     "properties": "1 Hand, Reach",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A flexible metal whip with barbed links, useful for entangling and tearing through light armor.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Luck, Observation, Strength, reach, Slashing, Common, 1 Hand, Reach"
+    "description": "A flexible metal whip with barbed links, useful for entangling and tearing through light armor."
   },
   {
     "name": "Claymore",
@@ -605,11 +471,7 @@
     "rarity": "Common",
     "properties": "2 Hand",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A massive two-handed sword favored by berserkers and knights alike for overwhelming offense.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 2 Hand"
+    "description": "A massive two-handed sword favored by berserkers and knights alike for overwhelming offense."
   },
   {
     "name": "Club",
@@ -622,11 +484,7 @@
     "rarity": "Common",
     "properties": "1 Hand",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A simple, blunt weapon used to bash, break, or bruise—often improvised, always effective.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Impact, Common, 1 Hand"
+    "description": "A simple, blunt weapon used to bash, break, or bruise—often improvised, always effective."
   },
   {
     "name": "Pirate Hook",
@@ -639,11 +497,7 @@
     "rarity": "Common",
     "properties": "1 hand, light, attached",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A wicked prosthetic with sharp edges, useful for slashing or catching a foe off guard.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 hand, light, attached"
+    "description": "A wicked prosthetic with sharp edges, useful for slashing or catching a foe off guard."
   },
   {
     "name": "Dagger",
@@ -656,11 +510,7 @@
     "rarity": "Common",
     "properties": "1 Hand, Light, Hidden",
     "bulk": 0,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A short blade suited for quick strikes, close quarters, and silent kills.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Observation, Stealth, Strength, Melee, Short, Physical, Common, 1 Hand, Light, Hidden"
+    "description": "A short blade suited for quick strikes, close quarters, and silent kills."
   },
   {
     "name": "Deckblade",
@@ -673,11 +523,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A curved sailor’s knife designed for cutting ropes, gutting fish, or defending in a pinch.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A curved sailor’s knife designed for cutting ropes, gutting fish, or defending in a pinch."
   },
   {
     "name": "Dual Daggers",
@@ -690,11 +536,7 @@
     "rarity": "Common",
     "properties": "2 Hand, Light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A matched pair of light blades meant for fast, fluid combat with relentless motion.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Observation, Stealth, Strength, melee, Physical, Common, 2 Hand, Light"
+    "description": "A matched pair of light blades meant for fast, fluid combat with relentless motion."
   },
   {
     "name": "Dueling Sabre",
@@ -707,11 +549,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A slender, fast blade designed for precision strikes and elegant duels.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A slender, fast blade designed for precision strikes and elegant duels."
   },
   {
     "name": "Falchion",
@@ -724,11 +562,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A curved, heavy-bladed sword built for slashing through armor and bone.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A curved, heavy-bladed sword built for slashing through armor and bone."
   },
   {
     "name": "Fang Dagger",
@@ -743,9 +577,7 @@
     "bulk": 1,
     "featureName": "Venom Fang",
     "featureEffect": "Deal an additional +2 toxic damage",
-    "description": "A jagged dagger shaped like a beast’s tooth, crafted to tear more than pierce.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Observation, Stealth, Strength, melee, Piercing, Common, 1 Hand, light"
+    "description": "A jagged dagger shaped like a beast’s tooth, crafted to tear more than pierce."
   },
   {
     "name": "Fist Weapon",
@@ -758,11 +590,7 @@
     "rarity": "Common",
     "properties": "Light, Free Hands, Attached",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A brutal close-combat weapon worn over the knuckles or as reinforced gloves.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Impact, Common, Light, Free Hands, Attached"
+    "description": "A brutal close-combat weapon worn over the knuckles or as reinforced gloves."
   },
   {
     "name": "Flail",
@@ -775,11 +603,7 @@
     "rarity": "Common",
     "properties": "1 Hand",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A spiked head on a chain, swinging with chaotic force to crush and disorient.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Impact, Common, 1 Hand"
+    "description": "A spiked head on a chain, swinging with chaotic force to crush and disorient."
   },
   {
     "name": "Gangster's Cudgel",
@@ -792,11 +616,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A weighted club favored by enforcers and thugs for its street-level intimidation.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Observation, Stealth, Strength, melee, Impact, Common, 1 Hand, light"
+    "description": "A weighted club favored by enforcers and thugs for its street-level intimidation."
   },
   {
     "name": "Gladius",
@@ -809,11 +629,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A short Roman-style blade perfect for stabbing in tight quarters or shield formations.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Piercing, Common, 1 Hand, light"
+    "description": "A short Roman-style blade perfect for stabbing in tight quarters or shield formations."
   },
   {
     "name": "Glaive",
@@ -826,11 +642,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A polearm with a long blade at the end, ideal for sweeping arcs and extended reach.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A polearm with a long blade at the end, ideal for sweeping arcs and extended reach."
   },
   {
     "name": "Great Club",
@@ -843,11 +655,7 @@
     "rarity": "Common",
     "properties": "2 Hand, Hefty",
     "bulk": 3,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "An oversized wooden club used to smash enemies and break through obstacles.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, Reach, Impact, Common, 2 Hand, Hefty"
+    "description": "An oversized wooden club used to smash enemies and break through obstacles."
   },
   {
     "name": "Great Pick",
@@ -860,11 +668,7 @@
     "rarity": "Common",
     "properties": "2 Hand, Hefty",
     "bulk": 3,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A massive mining tool turned weapon, used to pierce armor and shatter defenses.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, Reach, Piercing, Common, 2 Hand, Hefty"
+    "description": "A massive mining tool turned weapon, used to pierce armor and shatter defenses."
   },
   {
     "name": "Great Sword",
@@ -877,11 +681,7 @@
     "rarity": "Common",
     "properties": "2 Hand, Hefty",
     "bulk": 3,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A massive two-handed sword with devastating reach and cutting power.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, Reach, slashing, Common, 2 Hand, Hefty"
+    "description": "A massive two-handed sword with devastating reach and cutting power."
   },
   {
     "name": "Greataxe",
@@ -894,11 +694,7 @@
     "rarity": "Common",
     "properties": "2 Hand, Hefty",
     "bulk": 3,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A heavy axe designed for wide sweeps and brutal cleaving strikes.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": ", Agility, Strength, Reach, slashing, , 2 Hand, Hefty"
+    "description": "A heavy axe designed for wide sweeps and brutal cleaving strikes."
   },
   {
     "name": "Halberd",
@@ -911,11 +707,7 @@
     "rarity": "Common",
     "properties": "2 Hand, Hefty",
     "bulk": 4,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A multi-functional polearm with axe, spear, and hook elements combined.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, reach, Slashing, Common, 2 Hand, Hefty"
+    "description": "A multi-functional polearm with axe, spear, and hook elements combined."
   },
   {
     "name": "Handaxe",
@@ -928,11 +720,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light, Thrown",
     "bulk": 4,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A compact throwing or chopping axe, ideal for one hand or dual wielding.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, Melee, Short, Slashing, Common, 1 Hand, light, Thrown"
+    "description": "A compact throwing or chopping axe, ideal for one hand or dual wielding."
   },
   {
     "name": "Heavy Axe",
@@ -945,11 +733,7 @@
     "rarity": "Common",
     "properties": "2 Hand, Hefty",
     "bulk": 4,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A large chopping axe meant for brute strength and intimidation.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Strength, Melee, Slashing, Common, 2 Hand, Hefty"
+    "description": "A large chopping axe meant for brute strength and intimidation."
   },
   {
     "name": "Heavy Quarterstaff",
@@ -962,11 +746,7 @@
     "rarity": "Common",
     "properties": "2 Hand, Hefty",
     "bulk": 3,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A thick, reinforced staff used with two hands to batter and block.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, reach, Impact, Common, 2 Hand, Hefty"
+    "description": "A thick, reinforced staff used with two hands to batter and block."
   },
   {
     "name": "Heavy Spear",
@@ -979,11 +759,7 @@
     "rarity": "Common",
     "properties": "2 Hand, Hefty",
     "bulk": 3,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A long spear with a weighted shaft, ideal for heavy thrusts and line-breaking charges.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, reach, Piercing, Common, 2 Hand, Hefty"
+    "description": "A long spear with a weighted shaft, ideal for heavy thrusts and line-breaking charges."
   },
   {
     "name": "Heavy Staff",
@@ -996,11 +772,7 @@
     "rarity": "Common",
     "properties": "2 Hand, Hefty",
     "bulk": 3,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A dense, arcane-carved staff used to strike with surprising force.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, reach, Impact, Common, 2 Hand, Hefty"
+    "description": "A dense, arcane-carved staff used to strike with surprising force."
   },
   {
     "name": "Heavy Whip",
@@ -1013,11 +785,7 @@
     "rarity": "Common",
     "properties": "1 Hand",
     "bulk": 3,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A long, barbed whip that delivers heavy tearing blows rather than finesse strikes.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, reach, Slashing, Common, 1 Hand"
+    "description": "A long, barbed whip that delivers heavy tearing blows rather than finesse strikes."
   },
   {
     "name": "Heel Knife",
@@ -1030,11 +798,7 @@
     "rarity": "Common",
     "properties": "1 foot, surprise",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A concealed blade fitted in a shoe heel, designed for hidden stabs at close range.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Observation, Stealth, Strength, melee, Piercing, Common, 1 foot, surprise"
+    "description": "A concealed blade fitted in a shoe heel, designed for hidden stabs at close range."
   },
   {
     "name": "Hookblade",
@@ -1049,9 +813,7 @@
     "bulk": 1,
     "featureName": "Hookblade",
     "featureEffect": "When you hit with a success+ you can choose to grapple the target instead of rolling on the success table",
-    "description": "A curved blade with a hooked end, ideal for pulling or disarming enemies.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Observation, Stealth, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A curved blade with a hooked end, ideal for pulling or disarming enemies."
   },
   {
     "name": "Ice Pick",
@@ -1064,11 +826,7 @@
     "rarity": "Common",
     "properties": "1 Hand, Light, Hidden",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A narrow, pointed tool used to puncture with precision, often aimed at vital spots.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Observation, Stealth, Strength, Melee, Short, Piercing, Common, 1 Hand, Light, Hidden"
+    "description": "A narrow, pointed tool used to puncture with precision, often aimed at vital spots."
   },
   {
     "name": "Javelin",
@@ -1081,11 +839,7 @@
     "rarity": "Common",
     "properties": "1 Hand, Thrown",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A balanced throwing spear used for ranged attacks or quick stabs in close combat.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, short, Piercing, Common, 1 Hand, Thrown"
+    "description": "A balanced throwing spear used for ranged attacks or quick stabs in close combat."
   },
   {
     "name": "Katana",
@@ -1098,11 +852,7 @@
     "rarity": "Uncommon",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A curved, single-edged sword known for its swift, clean strikes and cutting power.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, melee, Slashing, Uncommon, 1 Hand, light"
+    "description": "A curved, single-edged sword known for its swift, clean strikes and cutting power."
   },
   {
     "name": "Knuckle Dusters",
@@ -1115,11 +865,7 @@
     "rarity": "Common",
     "properties": "1 hand, light, attached",
     "bulk": 0,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "Reinforced rings or metal grips worn on the fists to maximize striking force.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Observation, Stealth, Strength, melee, Impact, Common, 1 hand, light, attached"
+    "description": "Reinforced rings or metal grips worn on the fists to maximize striking force."
   },
   {
     "name": "Kukri",
@@ -1132,11 +878,7 @@
     "rarity": "Uncommon",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A heavy, inward-curving knife used for chopping and close-quarter slashing.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Uncommon, 1 Hand, light"
+    "description": "A heavy, inward-curving knife used for chopping and close-quarter slashing."
   },
   {
     "name": "Lance",
@@ -1149,11 +891,7 @@
     "rarity": "Common",
     "properties": "2 Hand",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A long weapon designed for mounted charges, with devastating force behind its point.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, reach, Piercing, Common, 2 Hand"
+    "description": "A long weapon designed for mounted charges, with devastating force behind its point."
   },
   {
     "name": "Lantern Mace",
@@ -1166,11 +904,7 @@
     "rarity": "Rare",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A mace combined with a lantern, used to blind or bash in low-light conditions.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Solar, Rare, 1 Hand, light"
+    "description": "A mace combined with a lantern, used to blind or bash in low-light conditions."
   },
   {
     "name": "Light Hammer",
@@ -1183,11 +917,7 @@
     "rarity": "Common",
     "properties": "1 Hand, Light, Hidden",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A small hammer ideal for throwing or delivering quick, focused strikes.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Observation, Stealth, Strength, Melee, Short, Impact, Common, 1 Hand, Light, Hidden"
+    "description": "A small hammer ideal for throwing or delivering quick, focused strikes."
   },
   {
     "name": "Light Whip",
@@ -1200,11 +930,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A light, flexible whip used for snapping attacks and keeping enemies at bay.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, reach, Solar, Common, 1 Hand, light"
+    "description": "A light, flexible whip used for snapping attacks and keeping enemies at bay."
   },
   {
     "name": "Long Flail",
@@ -1217,11 +943,7 @@
     "rarity": "Common",
     "properties": "1 Hand, Reach",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "An extended flail with a long chain and spiked head for wide, swinging blows.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Luck, Observation, Strength, Reach, Impact, Common, 1 Hand, Reach"
+    "description": "An extended flail with a long chain and spiked head for wide, swinging blows."
   },
   {
     "name": "Longsword",
@@ -1234,11 +956,7 @@
     "rarity": "Common",
     "properties": "1 Hand, Light",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A balanced, double-edged sword made for versatility in offense and defense.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility or Strength, Melee, Slashing, Common, 1 Hand, Light"
+    "description": "A balanced, double-edged sword made for versatility in offense and defense."
   },
   {
     "name": "Mace",
@@ -1251,11 +969,7 @@
     "rarity": "Common",
     "properties": "1 Hand, Light",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A blunt weapon with a heavy head, used to crush armor and break bones.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Strength, Melee, Impact, Common, 1 Hand, Light"
+    "description": "A blunt weapon with a heavy head, used to crush armor and break bones."
   },
   {
     "name": "Machete",
@@ -1268,11 +982,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A heavy blade built for chopping through brush or foes with equal ease.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A heavy blade built for chopping through brush or foes with equal ease."
   },
   {
     "name": "Maul",
@@ -1285,11 +995,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A massive, two-handed hammer that delivers staggering force on impact.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Impact, Common, 1 Hand, light"
+    "description": "A massive, two-handed hammer that delivers staggering force on impact."
   },
   {
     "name": "Morningstar",
@@ -1302,11 +1008,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A spiked ball mounted on a shaft, mixing blunt trauma with piercing pain.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Impact, Common, 1 Hand, light"
+    "description": "A spiked ball mounted on a shaft, mixing blunt trauma with piercing pain."
   },
   {
     "name": "Naval Cutlass",
@@ -1319,11 +1021,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A short, curved sword used by sailors, built for close-quarters combat.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A short, curved sword used by sailors, built for close-quarters combat."
   },
   {
     "name": "Net",
@@ -1338,9 +1036,7 @@
     "bulk": 3,
     "featureName": "Net",
     "featureEffect": "Target must make an Agility check or take the constrained condition until the end of their next turn",
-    "description": "A mesh weapon thrown to entangle and restrict enemies from moving or escaping.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Luck, Observation, Strength, Melee, Short, Slashing, Common, 2 Hand"
+    "description": "A mesh weapon thrown to entangle and restrict enemies from moving or escaping."
   },
   {
     "name": "Nunchaku",
@@ -1353,11 +1049,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "Twin sticks connected by a chain, used in rapid succession to strike and deflect.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "Twin sticks connected by a chain, used in rapid succession to strike and deflect."
   },
   {
     "name": "Pick",
@@ -1370,11 +1062,7 @@
     "rarity": "Rare",
     "properties": "1 Hand, Light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A small mining tool repurposed as a weapon to pierce and pry.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Strength, Melee, Piercing, Rare, 1 Hand, Light"
+    "description": "A small mining tool repurposed as a weapon to pierce and pry."
   },
   {
     "name": "Pike",
@@ -1387,11 +1075,7 @@
     "rarity": "Common",
     "properties": "2 Hand",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A long spear with reach, designed to keep enemies at bay and deliver heavy thrusts.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, reach, Piercing, Common, 2 Hand"
+    "description": "A long spear with reach, designed to keep enemies at bay and deliver heavy thrusts."
   },
   {
     "name": "Police Baton",
@@ -1404,11 +1088,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A simple, sturdy baton carried by officers for subduing suspects without killing.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Impact, Common, 1 Hand, light"
+    "description": "A simple, sturdy baton carried by officers for subduing suspects without killing."
   },
   {
     "name": "Quarterstaff",
@@ -1421,11 +1101,7 @@
     "rarity": "Common",
     "properties": "2 Hand",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A staff of equal ends used for defense, balance, and sweeping strikes.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, melee, Impact, Common, 2 Hand"
+    "description": "A staff of equal ends used for defense, balance, and sweeping strikes."
   },
   {
     "name": "Rapier",
@@ -1438,11 +1114,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A slender sword built for thrusting with speed and precision.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A slender sword built for thrusting with speed and precision."
   },
   {
     "name": "Razor Blade",
@@ -1455,11 +1127,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A thin, sharpened blade used for close-up slashes, easy to conceal.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A thin, sharpened blade used for close-up slashes, easy to conceal."
   },
   {
     "name": "Sabre",
@@ -1472,11 +1140,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A curved sword with a single edge, used for quick, powerful cuts.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A curved sword with a single edge, used for quick, powerful cuts."
   },
   {
     "name": "Sai",
@@ -1489,11 +1153,7 @@
     "rarity": "Uncommon",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A three-pronged weapon used to trap and redirect enemy attacks.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Piercing, Uncommon, 1 Hand, light"
+    "description": "A three-pronged weapon used to trap and redirect enemy attacks."
   },
   {
     "name": "Sapper's Shovel",
@@ -1508,9 +1168,7 @@
     "bulk": 1,
     "featureName": "Bomb Shield",
     "featureEffect": "Use the small shovel as a shield against fire, reducing fire damage by half as an off-action",
-    "description": "A rugged entrenching tool adapted for brutal combat in close quarters.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Crafting, Strength, melee, Slashing, Rare, 1 Hand, light"
+    "description": "A rugged entrenching tool adapted for brutal combat in close quarters."
   },
   {
     "name": "Saw Blade Gauntlet",
@@ -1523,11 +1181,7 @@
     "rarity": "Very Rare",
     "properties": "1 hand, tech, hefty",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A forearm-mounted weapon with jagged teeth, designed to rip and block.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Strength, melee, Slashing, Very Rare, 1 hand, tech, hefty"
+    "description": "A forearm-mounted weapon with jagged teeth, designed to rip and block."
   },
   {
     "name": "Scalpel",
@@ -1540,11 +1194,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A surgical blade used for fine, precise cuts, often repurposed for silent kills.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Intellect, Observation, Stealth, melee, Slashing, Common, 1 Hand, light"
+    "description": "A surgical blade used for fine, precise cuts, often repurposed for silent kills."
   },
   {
     "name": "Scimitar",
@@ -1557,11 +1207,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A curved blade made for slashing with sweeping strikes, often ornate in design.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A curved blade made for slashing with sweeping strikes, often ornate in design."
   },
   {
     "name": "Shiv",
@@ -1574,11 +1220,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A crude, improvised stabbing tool used in prisons or by desperate hands.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Observation, Stealth, Strength, melee, Piercing, Common, 1 Hand, light"
+    "description": "A crude, improvised stabbing tool used in prisons or by desperate hands."
   },
   {
     "name": "Shortsword",
@@ -1591,11 +1233,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A compact, double-edged blade ideal for quick strikes and tight quarters.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A compact, double-edged blade ideal for quick strikes and tight quarters."
   },
   {
     "name": "Sickle",
@@ -1608,11 +1246,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A curved farming blade turned weapon, used to hook and slash with ease.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A curved farming blade turned weapon, used to hook and slash with ease."
   },
   {
     "name": "Spear",
@@ -1625,11 +1259,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A long polearm with a pointed tip, perfect for thrusting and keeping distance.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, short, Piercing, Common, 1 Hand, light"
+    "description": "A long polearm with a pointed tip, perfect for thrusting and keeping distance."
   },
   {
     "name": "Stiletto",
@@ -1642,11 +1272,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A narrow-bladed dagger designed for piercing gaps in armor with minimal effort.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Observation, Stealth, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A narrow-bladed dagger designed for piercing gaps in armor with minimal effort."
   },
   {
     "name": "Switchblade",
@@ -1659,11 +1285,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A folding knife with a spring-loaded blade, quick to deploy in a pinch.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Observation, Stealth, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A folding knife with a spring-loaded blade, quick to deploy in a pinch."
   },
   {
     "name": "Throwing Axe",
@@ -1676,11 +1298,7 @@
     "rarity": "Common",
     "properties": "1 hand, light, thrown",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A small, hand-held axe designed for throwing or close combat.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, short, Slashing, Common, 1 hand, light, thrown"
+    "description": "A small, hand-held axe designed for throwing or close combat."
   },
   {
     "name": "Throwing Knife",
@@ -1693,11 +1311,7 @@
     "rarity": "Common",
     "properties": "1 hand, light, thrown",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A balanced blade crafted for precision throws and silent takedowns.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, melee, short, Physical, Common, 1 hand, light, thrown"
+    "description": "A balanced blade crafted for precision throws and silent takedowns."
   },
   {
     "name": "Trick Cane",
@@ -1710,11 +1324,7 @@
     "rarity": "Uncommon",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A concealed weapon hidden inside a cane, often used by spies or duelists.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Observation, Stealth, Strength, melee, Impact, Uncommon, 1 Hand, light"
+    "description": "A concealed weapon hidden inside a cane, often used by spies or duelists."
   },
   {
     "name": "Trident",
@@ -1727,11 +1337,7 @@
     "rarity": "Common",
     "properties": "2 Hand",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A three-pronged spear designed for catching, piercing, and pinning foes.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, reach, Piercing, Common, 2 Hand"
+    "description": "A three-pronged spear designed for catching, piercing, and pinning foes."
   },
   {
     "name": "Truncheon",
@@ -1744,28 +1350,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A solid baton used to subdue with blunt force, often used by guards and officers.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Strength, melee, Impact, Common, 1 Hand, light"
-  },
-  {
-    "name": "Unarmed Attack",
-    "category": "melee",
-    "check": "Physical",
-    "range": "Melee",
-    "damage": 1,
-    "damageType": "Impact",
-    "cost": "-",
-    "rarity": "Common",
-    "properties": "Light, Free Hands, Attached",
-    "bulk": 0,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A basic strike using fists, feet, elbows, or knees without a weapon.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Physical, Melee, Impact, Common, Light, Free Hands, Attached"
+    "description": "A solid baton used to subdue with blunt force, often used by guards and officers."
   },
   {
     "name": "War Pick",
@@ -1778,11 +1363,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A reinforced pick weapon designed to punch through armor with brute force.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A reinforced pick weapon designed to punch through armor with brute force."
   },
   {
     "name": "War Scythe",
@@ -1795,11 +1376,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A long, curved blade mounted on a staff, combining scythe reach with martial strength.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Strength, melee, Slashing, Common, 1 Hand, light"
+    "description": "A long, curved blade mounted on a staff, combining scythe reach with martial strength."
   },
   {
     "name": "Warhammer",
@@ -1812,11 +1389,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A two-handed hammer built for smashing shields, armor, and bones.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Strength, melee, Impact, Common, 1 Hand, light"
+    "description": "A two-handed hammer built for smashing shields, armor, and bones."
   },
   {
     "name": "Whip",
@@ -1829,11 +1402,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A flexible weapon used to lash, trip, or disarm opponents from a distance.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "melee, Agility, Luck, reach, Slashing, Common, 1 Hand, light"
+    "description": "A flexible weapon used to lash, trip, or disarm opponents from a distance."
   },
   {
     "name": "Blowgun",
@@ -1846,11 +1415,7 @@
     "rarity": "Uncommon",
     "properties": "1 Hand, light",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A stealthy weapon that fires small darts using breath, often tipped with poison.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "ranged, Agility, Intellect, Luck, Observation, short, piercing, Uncommon, 1 Hand, light"
+    "description": "A stealthy weapon that fires small darts using breath, often tipped with poison."
   },
   {
     "name": "Bolas",
@@ -1863,11 +1428,7 @@
     "rarity": "Uncommon",
     "properties": "1 hand, thrown",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A pair of weighted cords designed to entangle a target’s legs mid-flight.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "ranged, Agility, Intellect, Luck, Observation, short, impact, Uncommon, 1 hand, thrown"
+    "description": "A pair of weighted cords designed to entangle a target’s legs mid-flight."
   },
   {
     "name": "Boomerang",
@@ -1880,11 +1441,7 @@
     "rarity": "Uncommon",
     "properties": "1 hand, thrown, return",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A curved, flat weapon that returns when thrown with skill—useful for distraction or strike.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "ranged, Agility, Intellect, Luck, Observation, short, slashing, Uncommon, 1 hand, thrown, return"
+    "description": "A curved, flat weapon that returns when thrown with skill—useful for distraction or strike."
   },
   {
     "name": "Composite Bow",
@@ -1897,11 +1454,7 @@
     "rarity": "Common",
     "properties": "2 hand",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A powerful bow made from layered materials for added tension and range.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "ranged, Agility, Intellect, Luck, Observation, Medium, piercing, Common, 2 hand"
+    "description": "A powerful bow made from layered materials for added tension and range."
   },
   {
     "name": "Crossbow",
@@ -1914,11 +1467,7 @@
     "rarity": "Common",
     "properties": "2 hand",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A mechanical bow that fires bolts with high accuracy and reload effort.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "ranged, Agility, Intellect, Luck, Observation, Medium, piercing, Common, 2 hand"
+    "description": "A mechanical bow that fires bolts with high accuracy and reload effort."
   },
   {
     "name": "Crossbow, Heavy",
@@ -1931,11 +1480,7 @@
     "rarity": "Common",
     "properties": "2 hand, hefty",
     "bulk": 3,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A larger version of the crossbow, requiring strength or bracing to operate effectively.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "ranged, Agility, Intellect, Luck, Observation, Medium, piercing, Common, 2 hand, hefty"
+    "description": "A larger version of the crossbow, requiring strength or bracing to operate effectively."
   },
   {
     "name": "Crossbow, Light",
@@ -1948,11 +1493,7 @@
     "rarity": "Common",
     "properties": "1 hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A lighter crossbow suited for quick shots and easier handling.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "ranged, Agility, Intellect, Luck, Observation, Medium, piercing, Common, 1 hand, light"
+    "description": "A lighter crossbow suited for quick shots and easier handling."
   },
   {
     "name": "Dart",
@@ -1965,11 +1506,7 @@
     "rarity": "Common",
     "properties": "1 hand, light, thrown",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A small, easily concealed projectile thrown by hand for speed and surprise.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "ranged, Agility, Intellect, Luck, Observation, short, piercing, Common, 1 hand, light, thrown"
+    "description": "A small, easily concealed projectile thrown by hand for speed and surprise."
   },
   {
     "name": "Harpoon",
@@ -1982,11 +1519,7 @@
     "rarity": "Common",
     "properties": "2 hand",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A barbed spear attached to a line, used to impale and retrieve targets.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "ranged, Agility, Intellect, Luck, Observation, short, piercing, Common, 2 hand"
+    "description": "A barbed spear attached to a line, used to impale and retrieve targets."
   },
   {
     "name": "Longbow",
@@ -1999,11 +1532,7 @@
     "rarity": "Common",
     "properties": "2 Hand, Reload",
     "bulk": 3,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A tall, strongbow with exceptional range, favored by skilled archers.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "ranged, Agility, Intellect, Luck, Observation, Medium, Piercing, Common, 2 Hand, Reload"
+    "description": "A tall, strongbow with exceptional range, favored by skilled archers."
   },
   {
     "name": "Netcaster",
@@ -2016,11 +1545,7 @@
     "rarity": "Uncommon",
     "properties": "2 hand",
     "bulk": 3,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A launcher designed to fire weighted nets for capturing or disabling foes.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "ranged, Agility, Intellect, Luck, Observation, short, impact, Uncommon, 2 hand"
+    "description": "A launcher designed to fire weighted nets for capturing or disabling foes."
   },
   {
     "name": "Siege Crossbow",
@@ -2033,11 +1558,7 @@
     "rarity": "Common",
     "properties": "2 Hand, Hefty, tech, Reload",
     "bulk": 2,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A mounted, crank-loaded crossbow capable of piercing armor at extreme range.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "ranged, Strength, Medium, Piercing, Common, 2 Hand, Hefty, tech, Reload"
+    "description": "A mounted, crank-loaded crossbow capable of piercing armor at extreme range."
   },
   {
     "name": "Sling",
@@ -2050,10 +1571,6 @@
     "rarity": "Common",
     "properties": "1 hand, light",
     "bulk": 1,
-    "featureName": "",
-    "featureEffect": "",
-    "description": "A simple weapon that hurls small stones or bullets, used for speed over power.",
-    "tags": "",
-    "category, check, range, damageType, rarity, properties": "ranged, Agility, Intellect, Luck, Observation, medium, impact, Common, 1 hand, light"
+    "description": "A simple weapon that hurls small stones or bullets, used for speed over power."
   }
 ]

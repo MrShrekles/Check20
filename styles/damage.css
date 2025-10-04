@@ -1,0 +1,31 @@
+.two-column h3,
+.damage-tables h3 {
+    font-size: 1.2rem;
+    border-bottom: 2px solid var(--gold-1, var(--theme, #444));
+    padding-bottom: 0.25rem;
+    margin-top: 1.5rem;
+}
+
+.two-column ul,
+.damage-tables ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.two-column li,
+.damage-tables li {
+    margin-bottom: 0.75rem;
+}
+
+.two-column li {
+    background-color: var(--theme-1);
+    border-radius: var(--border-radius);
+    padding: 5px;
+}
+
+.two-column li strong,
+.damage-tables li strong {
+    display: block;
+    font-weight: bold;
+}

@@ -22,20 +22,7 @@
     --sidebar-shift: 50vw;
 }
 
-/* already using this for buttons */
-@media (max-width:700px) {
-    :root {
-        --sidebar-shift: 80vw;
-    }
-}
-
-/* Any fixed element with this class will slide when the sidebar opens */
-#sidebar.open .shift-with-sidebar {
-    transform: translateX(var(--sidebar-shift));
-}
-
-
-/* ───────── Sidebar Toggle Buttons (stacked left) ───────── */
+/* ───────── Sidebar Toggle Buttons ───────── */
 #toggle-sidebar,
 #toggle-spellbook,
 #toggle-monsters,
@@ -54,14 +41,16 @@
     z-index: 1001;
     transition: background .2s ease, transform .3s ease;
     font-size: 0;
-    /* icons come from ::before */
+    /* icons via ::before */
     display: inline-block;
-    /* works for <a> and <button> */
     text-decoration: none;
-    /* if Monsters is an <a> */
 }
 
-/* Individual positions */
+/* Button positions */
+#toggle-top {
+    top: 0;
+}
+
 #toggle-sidebar {
     top: 40px;
 }
@@ -74,11 +63,23 @@
     top: 120px;
 }
 
-#toggle-top {
-    top: 0;
+#floating-search {
+    top: 160px;
 }
 
 /* Icons */
+#toggle-sidebar::before {
+    content: "➡️";
+    font-size: 1rem;
+    display: block;
+    text-align: center;
+    transition: transform .3s;
+}
+
+#sidebar.open #toggle-sidebar::before {
+    content: "⬅";
+}
+
 #toggle-spellbook::before {
     content: "📖";
     font-size: 1.2rem;
@@ -100,19 +101,7 @@
     text-align: center;
 }
 
-#toggle-sidebar::before {
-    content: "➡️";
-    font-size: 1rem;
-    display: block;
-    text-align: center;
-    transition: transform 0.3s ease;
-}
-
-#sidebar.open #toggle-sidebar::before {
-    content: "⬅";
-}
-
-/* Hover */
+/* Hover states */
 #toggle-sidebar:hover,
 #toggle-spellbook:hover,
 #toggle-monsters:hover,
@@ -120,10 +109,7 @@
     background: var(--theme-hover);
 }
 
-:root {
-    --sidebar-shift: 50vw;
-}
-
+/* Shift buttons when sidebar opens */
 #sidebar.open #toggle-sidebar,
 #sidebar.open #toggle-spellbook,
 #sidebar.open #toggle-monsters,
@@ -132,49 +118,26 @@
     transform: translateX(var(--sidebar-shift));
 }
 
-/* Mobile tweaks */
-@media (max-width: 700px) {
-    :root {
-        --sidebar-shift: 80vw;
-    }
-
-    /* sidebar wider on mobile */
-    #toggle-sidebar,
-    #toggle-spellbook,
-    #toggle-monsters,
-    #toggle-top {
-        border-radius: 0 6px 6px 0;
-        line-height: 48px;
-        /* keeps tap target comfy */
-        padding: 0;
-    }
-}
-
-/* Floating search placement (spell page) */
-#floating-search {
-    position: fixed;
-    left: 0;
-    top: 160px;
-    /* below your 4 buttons at 0/40/80/120 */
-    z-index: 1001;
-    /* same layer as buttons */
-}
-
+/* ───────── Floating Search ───────── */
 #floating-search.collapsed input {
     display: none;
+}
+
+#floating-search.expanded {
+    width: 250px;
 }
 
 #floating-search input,
 #floating-search button {
     border-radius: var(--border-radius);
-    border-color: var(--green-1);
-    background-color: var(--dark-1);
+    background: var(--dark-1);
     color: var(--text-cream);
+    border-color: var(--green-1);
 }
 
 #floating-search input {
     font-size: 1rem;
-    padding: 0.3rem 0.5rem;
+    padding: .3rem .5rem;
     width: 260px;
 }
 
@@ -185,16 +148,11 @@
     width: 100%;
 }
 
-/* When expanded */
-#floating-search.expanded {
-    width: 250px;
-}
-
 /* ───────── Roller Switch Tabs ───────── */
 .roller-switch {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: .5rem;
 }
 
 .roller-switch input[type="radio"] {
@@ -203,14 +161,14 @@
 
 .roller-switch label {
     flex: 1;
-    padding: 0.5rem;
+    padding: .5rem;
     background: var(--medium);
     color: var(--white);
     text-align: center;
     cursor: pointer;
     border-radius: var(--border-radius);
-    transition: background 0.3s ease;
-    margin: 0;
+    transition: background .3s ease;
+    width: 80%;
 }
 
 .roller-switch input[type="radio"]:checked+label {
@@ -218,15 +176,11 @@
     font-weight: bold;
 }
 
-.roller-switch label {
-    width: 80%;
-}
-
 .roller-switch label[for="check-mode"]+label[for="standard-mode"] {
     margin-left: -4px;
 }
 
-/* ───────── Roller Visibility (Controlled by JS) ───────── */
+/* Roller visibility */
 .roller-block {
     display: none;
 }
@@ -235,27 +189,48 @@
     display: block;
 }
 
-/* ───────── Roller Content Layout ───────── */
+
+/* Make the visible block scroll to fit the screen */
 .roller-content {
-    display: block;
+    max-height: calc(100vh - 220px);
+    overflow: auto;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--padding);
+#condition-block {
+    max-height: calc(100vh - 220px);
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
-.roller-block {
-    display: none;
+@supports (height: 100dvh) {
+
+    .roller-content,
+    #condition-block {
+        max-height: calc(100dvh - 220px);
+    }
 }
 
-.roller-block.active {
-    display: block;
+/* Keep table header visible while scrolling */
+#condition-block table.condition thead th {
+    position: sticky;
+    top: 0;
+    background: var(--dark-1);
+    z-index: 1;
 }
 
+/* Prevent horizontal overflow on small screens */
+#condition-block table.condition {
+    table-layout: fixed;
+    width: 100%;
+}
 
-/* ───────── Check20 Roller ───────── */
+#condition-block table.condition td,
+#condition-block table.condition th {
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+}
+
+/* ───────── D20 Roller ───────── */
 #d20-check-roller {
     background: var(--dark);
     color: var(--white);
@@ -275,31 +250,13 @@ form {
     gap: var(--padding);
 }
 
-@media (max-width: 690px) {
-    #sidebar {
-        width: 80vw;
-    }
-
-    #sidebar.open #toggle-sidebar,
-    #sidebar.open #toggle-spellbook {
-        transform: translateX(80vw);
-    }
-
-    #roll-d20-check {
-        margin: 5px;
-        width: 97%;
-    }
-
-}
-
-/* ───────── Button Styling ───────── */
 #roll-d20-check {
     background: var(--theme);
     border: none;
     padding: 10px;
     border-radius: var(--border-radius);
     cursor: pointer;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow .3s ease;
 }
 
 #roll-d20-check:hover {
@@ -307,7 +264,7 @@ form {
     box-shadow: var(--box-hover);
 }
 
-/* ───────── Roll History Lists ───────── */
+/* ───────── Roll History ───────── */
 .roll-history,
 #check-history,
 #roll-history {
@@ -318,7 +275,6 @@ form {
     border-radius: var(--border-radius);
 }
 
-/* ───────── Clear Button ───────── */
 #clear-history {
     background: var(--medium);
     color: var(--white);
@@ -328,19 +284,19 @@ form {
     cursor: pointer;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    transition: background .3s, box-shadow .3s;
 }
 
 #clear-history:hover {
     background: var(--theme-hover);
-    box-shadow: var(--box-shadow);
+    box-shadow: var(--box-hover);
 }
 
-/* ───────── Roll Result Formatting ───────── */
+/* Roll results */
 .styled-roll {
     padding: var(--padding);
     margin-bottom: var(--padding);
-    background-color: var(--dark);
+    background: var(--dark);
     border-left: 4px solid var(--theme);
     border-radius: var(--border-radius);
 }
@@ -378,30 +334,22 @@ form {
 
 .roll-max {
     color: var(--gold);
-    text-decoration-color: var(--gold);
 }
 
 .roll-min {
     color: red;
-    text-decoration-color: red;
 }
 
-.roll-normal {
-    color: var(--white);
-}
-
-/* Success marker */
 .roll-success {
     background-color: var(--theme-dark);
     border-left-color: var(--gold);
 }
 
-/* Success counter */
 .success-count {
     margin-left: 10px;
     color: var(--gold);
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: .9rem;
 }
 
 /* Dividers */
@@ -412,132 +360,85 @@ form {
     margin: 4px 0;
 }
 
-.dice-adjust {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.dice-input-group {
-    display: flex;
-    align-items: center;
-}
-
-.dice-input-group input[type="number"] {
-    width: 50px;
-    text-align: center;
-    font-size: 1.2rem;
-    padding: 0.25rem;
-    margin: 0 0.5rem;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--medium);
-    background: var(--dark);
-    color: var(--white);
-}
-
-.dice-button {
-    font-size: 1.5rem;
-    padding: 0.25rem 0.75rem;
-    background: var(--theme);
-    color: var(--white);
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.dice-button:hover {
-    background: var(--theme-hover);
-}
-
+/* ───────── Dice & Mod Adjustments ───────── */
+.dice-adjust,
 .mod-adjust {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: .25rem;
 }
 
+.dice-input-group,
 .mod-input-group {
     display: flex;
     align-items: center;
 }
 
+.dice-input-group input[type="number"],
 .mod-input-group input[type="number"] {
     width: 50px;
     text-align: center;
     font-size: 1.2rem;
-    padding: 0.25rem;
-    margin: 0 0.5rem;
+    padding: .25rem;
+    margin: 0 .5rem;
     border-radius: var(--border-radius);
     border: 1px solid var(--medium);
     background: var(--dark);
     color: var(--white);
 }
 
+.dice-button,
 .mod-button {
     font-size: 1.5rem;
-    padding: 0.25rem 0.75rem;
+    padding: .25rem .75rem;
     background: var(--theme);
     color: var(--white);
     border: none;
     border-radius: var(--border-radius);
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background .3s;
 }
 
+.dice-button:hover,
 .mod-button:hover {
     background: var(--theme-hover);
 }
 
 /* ───────── References ───────── */
-.references {
-    max-height: 500px;
+.references,
+#condition-block {
     overflow-y: auto;
+    scroll-behavior: smooth;
     padding-right: 8px;
 }
 
-.references:hover {
-    scrollbar-width: thin;
-    filter: brightness(1.05);
-}
-
 .references {
-    scroll-behavior: smooth;
-}
-
-.references::-webkit-scrollbar {
-    width: 6px;
-}
-
-.references::-webkit-scrollbar-thumb {
-    background-color: rgba(100, 100, 100, 0.5);
-    border-radius: 4px;
-}
-
-.references:hover::-webkit-scrollbar {
-    width: 6px;
-    /* Show on hover */
-}
-
-.references:hover::-webkit-scrollbar-thumb {
-    background-color: rgba(100, 100, 100, 0.5);
-    border-radius: 4px;
+    max-height: 500px;
 }
 
 #condition-block {
     max-height: 1000px;
-    overflow-y: auto;
     padding: 1rem;
 }
 
+.references:hover,
+#condition-block:hover {
+    scrollbar-width: thin;
+    filter: brightness(1.05);
+}
+
+.references::-webkit-scrollbar,
 #condition-block::-webkit-scrollbar {
     width: 6px;
 }
 
+.references::-webkit-scrollbar-thumb,
 #condition-block::-webkit-scrollbar-thumb {
     background-color: rgba(100, 100, 100, 0.5);
     border-radius: 4px;
 }
 
+/* ───────── Conditions & Lists ───────── */
 .condition {
     font-size: .8rem;
 }
@@ -548,54 +449,47 @@ table.condition {
 }
 
 table.condition td {
-    padding: 0.6rem;
+    padding: .6rem;
 }
 
 table.condition .category-row {
-    background-color: var(--dark-1);
+    background: var(--dark-1);
     font-weight: bold;
     color: var(--gold);
     text-transform: uppercase;
     letter-spacing: 5px;
-    padding: 0.5rem;
+    padding: .5rem;
 }
 
 .dragon-list {
     display: flex;
     flex-wrap: wrap;
+    gap: 4px;
     list-style: decimal inside;
     padding: 0;
     margin: 0;
-    gap: 4px;
 }
 
 .dragon-list li {
     flex: 1 1 30%;
     padding: 4px;
-    font-size: 0.9rem;
+    font-size: .9rem;
     background: var(--dark-2);
     border-radius: var(--border-radius);
     box-sizing: border-box;
 }
 
-
-/* Stack fully on small screens */
-@media (max-width: 700px) {
-    .dragon-list li {
-        flex: 1 1 100%;
-    }
-}
-
+/* ───────── Compatibility ───────── */
 .compatibility-group {
     margin-bottom: 1rem;
-    padding: 0.5rem;
+    padding: .5rem;
     background: var(--dark-2);
     border-left: 4px solid var(--theme);
     border-radius: var(--border-radius);
 }
 
 .compatibility-group h4 {
-    margin: 0 0 0.25rem 0;
+    margin: 0 0 .25rem 0;
     color: var(--gold);
     font-size: 1.1rem;
 }
@@ -608,6 +502,35 @@ table.condition .category-row {
 
 .compatibility-group p,
 .compatibility-group li {
-    font-size: 0.95rem;
+    font-size: .95rem;
     color: var(--text-cream);
+}
+
+/* ───────── Responsive ───────── */
+@media (max-width: 700px) {
+    :root {
+        --sidebar-shift: 80vw;
+    }
+
+    #sidebar {
+        width: 80vw;
+    }
+
+    #toggle-sidebar,
+    #toggle-spellbook,
+    #toggle-monsters,
+    #toggle-top {
+        border-radius: 0 6px 6px 0;
+        line-height: 48px;
+        padding: 0;
+    }
+
+    .dragon-list li {
+        flex: 1 1 100%;
+    }
+
+    #roll-d20-check {
+        margin: 5px;
+        width: 97%;
+    }
 }
