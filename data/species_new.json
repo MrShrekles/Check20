@@ -146,7 +146,10 @@
         "origin": "vozian",
         "feature_name": "Streetwise",
         "feature_effect": "You have an ear to the cobblestones. In any urban area, once per day, you can find a hidden entrance, shady contact, or potentially a lost item. This can only be used if you've spent at least 10 minutes wandering alone or mingling.",
-        "fetAction": "Special"
+        "fetAction": "Special",
+        "images": [
+            "assets/species/coinerr.jpg"
+        ]
     },
     {
         "lineage": "goblijjin",
@@ -373,7 +376,10 @@
         "origin": "basic",
         "feature_name": "Weapon Connection",
         "feature_effect": "Gain +2 to Attack Checks and Damage with weapons.",
-        "fetAction": "Passive"
+        "fetAction": "Passive",
+        "images": [
+            "assets/species/mountain-orc.jpg"
+        ]
     },
     {
         "lineage": "human",
@@ -472,7 +478,10 @@
         "origin": "vozian",
         "feature_name": "Vozian Core",
         "feature_effect": "Once per turn, you may burn your core. Choose one of your checks to take a –1 penalty until your next Press On or Long Rest. In exchange, you gain advantage on all checks until the end of your next turn. You may only burn your core once per turn. The first time you take the death condition, take -1 to all checks and remove the condition. You have a -1 to all checks until your next Long Rest",
-        "fetAction": "Resource"
+        "fetAction": "Resource",
+        "images": [
+            "assets/species/vozian-core.jpg"
+        ]
     },
     {
         "lineage": "human",
@@ -556,7 +565,10 @@
         "feature_name": "Pinpoint Crash",
         "feature_effect": "When you hit a medium sized creature with a melee attack, you may use an off-action to drive them into the ground or into a wall. The target must succeed a Physical check of their choice against your Strength or Agility check or be knocked Prone and Pinned until the end of their next turn.",
         "fetAction": "Off-Action",
-        "fetCheck": "Physical"
+        "fetCheck": "Physical",
+        "images": [
+            "assets/species/breaker-elf.jpg"
+        ]
     },
     {
         "lineage": "human",
@@ -655,7 +667,10 @@
         "feature_name": "Nature Bound",
         "feature_effect": "You can speak with plants and animals, they always speak in riddles. As an action blend in with plants, moss, or debris and you turn Invisible until the end of your next turn.",
         "fetAction": "Action",
-        "fetDuration": "Until the end of their next turn"
+        "fetDuration": "Until the end of their next turn",
+        "images": [
+            "assets/species/muskila.jpg"
+        ]
     },
     {
         "lineage": "jotun",
@@ -804,7 +819,10 @@
         "feature_effect": "As a half-action, you may draw and suspend up to 1 gallon of nearby water within shart range, manipulating it around you. While holding this water, you may, as an action, release a slashing fluid strike that deals [[1d6]] fluid damage and consumes part of the mass. Additionally, once per rest, you may listen to the memory held within water from the past 5 minutes, revealing sounds and movement it has touched.",
         "fetAction": "Half-Action",
         "fetDamage": "1d6",
-        "fetDamagetype": "Fluid"
+        "fetDamagetype": "Fluid",
+        "images": [
+            "assets/species/ensuri-water.jpg"
+        ]
     },
     {
         "lineage": "realmsplit",
@@ -822,6 +840,7 @@
         "feature_effect": "When you would gain a Cognition condition, you may use an Off-Action to make a Survival check against the triggering difficulty. On a success, the condition is prevented. Once you use this ability successfully, you must complete a rest before using it again.",
         "fetAction": "Off-Action",
         "fetCheck": "Survival"
+
     },
     {
         "lineage": "realmsplit",
@@ -975,7 +994,10 @@
         "feature_name": "Skin of Hate",
         "feature_effect": "When a spell targets you directly, you may make a Luck check as an Off-Action. On a success, reflect half the damage or primary effect of the spell back at the caster.",
         "fetAction": "Off-Action",
-        "fetCheck": "Luck"
+        "fetCheck": "Luck",
+                "images": [
+                    "assets/species/helborn-vozian.jpg"
+                ]
     },
     {
         "lineage": "realmsplit",
@@ -1293,7 +1315,7 @@
     {
         "lineage": "Beastmen",
         "option": "Zoanthropes",
-        "name": "cervidae",
+        "name": "Velorin",
         "description": "These shifters possess a strong cervidae heritage, characterized by their deer or hooved animal form. Known for their speed and agility, they can outrun and outmaneuver threats with ease. Peaceful and gentle by nature, they are fiercely loyal to their tribe and become formidable when threatened. Often found in wooded areas, they are considered protectors of the forest.",
         "size": "5-7",
         "lifespan": "60-90 years",
@@ -1580,7 +1602,7 @@
         "lineage": "Beastmen",
         "option": "Beruklians",
         "name": "Oraggian",
-        "description": "The Gorilla subspecies is a powerful and intimidating force to be reckoned with. Renowned for their immense strength and warrior-like abilities, they are highly sought after in the corporate world. Many major companies employ Gorillas as bouncers and security guards, appreciating their physical prowess, discipline, intelligence, and loyalty. Their presence alone is often enough to deter troublemakers, making them an invaluable asset for businesses seeking top-notch security. Gorillas are not only symbols of power but also of trust and reliability.",
+        "description": "Oraggians are towering, contemplative beings who dwell in the high canopies and mist-laden valleys of the Prime and Fey realms. With russet fur and deep amber eyes that gleam with timeless understanding, they move with a deliberate grace that reflects immense patience. Each Oraggian is a living archive of stories, serving as teacher, philosopher, and guide who believes wisdom is not taught but uncovered through dialogue and reflection. Their homes, called Sanctums of Branch and Bark, are living monasteries woven from vines and ancient trees where apprentices study the balance of nature and thought. They often travel to mentor younger species or to restore harmony where arrogance has taken root. When they speak their words carry the calm authority of experience, and when they act it is with quiet purpose and control.",
         "size": "5-7",
         "lifespan": "60-90 years",
         "language": "Imperial, Naech (Claw)",
@@ -1597,7 +1619,7 @@
         "lineage": "Beastmen",
         "option": "Beruklians",
         "name": "Papio",
-        "description": "The Mono Grito subspecies, also known as the Howler Monkey subspecies, is known for their loud and piercing screams. Boisterous and outgoing, they thrive in group settings and enjoy being the center of attention. Their highly social nature makes them excellent communicators, and their ability to coordinate as a team is unmatched. Mono Gritos bring an infectious energy and excitement to any environment, making them a lively and colorful addition to any group.",
+        "description": "Papio are wiry, quick-moving primates with keen eyes and brightly colored faces marked in reds, blues, and yellows. Their fur ranges from sandy brown to charcoal gray, and their limbs are long and powerful, built for climbing, sprinting, and wrestling. Their teeth are prominent and their grins wide, giving them an ever-playful look that often hides sharp awareness. Papio live loud and fast, thriving in groups that value courage, humor, and quick thinking. They adorn themselves with scraps of cloth, bone charms, and trinkets scavenged from their travels. Many become field medics, couriers, or survivalists, using wit and reflex over brute strength. When danger strikes, they move together in perfect rhythm, chattering to one another as they fight, patch wounds, or pull each other to safety. Beneath their wild energy lies an unshakable instinct to protect their troop.",
         "size": "5-7",
         "lifespan": "60-90 years",
         "language": "Imperial, Naech (Claw)",
@@ -1628,7 +1650,10 @@
         "fetAction": "Action",
         "fetCheck": "Spirit",
         "fetRange": "Short",
-        "fetDuration": "1 minute"
+        "fetDuration": "1 minute",
+        "images": [
+            "assets/species/alpha.jpg"
+        ]
     },
     {
         "lineage": "Beastmen",
@@ -1645,7 +1670,10 @@
         "feature_name": "Sacred Howl",
         "feature_effect": "As an action, let out a resonant howl that invokes nature’s blessing. Summon rain, breeze or other effect that gives one creature either +2 or -2 on their next check",
         "fetAction": "Action",
-        "fetRange": "Short"
+        "fetRange": "Short",
+        "images": [
+            "assets/species/sov.jpg"
+        ]
     },
     {
         "lineage": "Beastmen",

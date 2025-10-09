@@ -8,7 +8,8 @@ const state = {
     q: '',
     exclude: { lineage: new Set(), option: new Set(), rarity: new Set(), region: new Set() },
     sort: 'name',
-    collapsed: new Set() // lineage names (case-sensitive)
+    collapsed: new Set(),                       // lineage names (case-sensitive)
+    filterUniverse: { lineage: new Set(), option: new Set(), rarity: new Set(), region: new Set() }
 };
 
 const RARITY_ORDER = ["common", "uncommon", "rare", "very rare", "legendary", "mythic"];
@@ -22,14 +23,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     restoreCollapsed();
     wireUI();
     await loadSpecies();          // loads species_new.json only
-    hydrateFromURL();
-    buildFilters(SPECIES);
-    applyFilters();
+    buildFilters(SPECIES);        // build buttons & record universes
+    hydrateFromURL();             // apply URL -> state (after buttons exist)
+    refreshFilterButtons();       // reflect URL state on buttons
+    applyFilters();               // initial render
 });
 
 /* ====== Data ====== */
 async function loadSpecies() {
-    const tryPaths = ['data/species_new.json', 'species_new.json']; // only species_new.json
+    const tryPaths = ['data/species_new.json', 'species_new.json'];
     for (const p of tryPaths) {
         try {
             const r = await fetch(p, { cache: 'no-store' });
@@ -81,7 +83,7 @@ function normalizeSpecies(arr) {
             options: Array.isArray(f.options) ? f.options : []
         }));
 
-        // Images (explicit or convention; optional placeholder map hook below)
+        // Images: explicit or default by slug
         if (!o.images || !o.images.length) {
             const placeholder = (typeof PLACEHOLDER_MAP !== 'undefined')
                 ? PLACEHOLDER_MAP?.[o.lineage]?.[o.option]
@@ -101,18 +103,25 @@ function wireUI() {
     const sort = document.getElementById('species-sort');
     const clr = document.getElementById('species-clear');
 
-    q?.addEventListener('input', debounce(() => { state.q = q.value.toLowerCase(); syncURL(); applyFilters(); }, 120));
-    sort?.addEventListener('change', () => { state.sort = sort.value; syncURL(); applyFilters(); });
-    clr?.addEventListener('click', () => {
-        state.q = ''; if (q) q.value = '';
-        Object.values(state.exclude).forEach(set => set.clear());
-        document.querySelectorAll('.toggle-btn').forEach(b => { b.classList.add('active'); b.classList.remove('dim'); });
+    q?.addEventListener('input', debounce(() => {
+        state.q = q.value.toLowerCase();
+        syncURL(); applyFilters();
+    }, 120));
+
+    sort?.addEventListener('change', () => {
+        state.sort = sort.value;
         syncURL(); applyFilters();
     });
 
-    // Optional global collapsers
+    clr?.addEventListener('click', () => {
+        state.q = ''; if (q) q.value = '';
+        Object.values(state.exclude).forEach(set => set.clear()); // all active
+        refreshFilterButtons();
+        syncURL(); applyFilters();
+    });
+
+    // Global collapsers
     document.getElementById('collapse-all')?.addEventListener('click', () => {
-        // Fill with currently rendered lineage names
         state.collapsed = new Set([...document.querySelectorAll('.lineage-section')]
             .map(s => s.dataset.lineageLabel));
         persistCollapsed();
@@ -122,6 +131,14 @@ function wireUI() {
         state.collapsed.clear();
         persistCollapsed();
         document.querySelectorAll('.lineage-section').forEach(s => s.classList.remove('collapsed'));
+    });
+
+    // Lightbox: event delegation so we don’t bind per-card
+    ensureLightbox();
+    document.addEventListener('click', (e) => {
+        const img = e.target.closest('img.cover');
+        if (!img) return;
+        openLightbox(img.currentSrc || img.src, img.alt);
     });
 }
 
@@ -135,23 +152,63 @@ function buildFilters(items) {
         s.regionKeys.forEach(r => uniq.region.add(r));
     });
 
+    // store universes
+    for (const k of Object.keys(uniq)) state.filterUniverse[k] = new Set(uniq[k]);
+
     document.querySelectorAll('.filter-group').forEach(group => {
         const key = group.dataset.key; // lineage|option|rarity|region
         const vals = [...(uniq[key] || [])].sort((a, b) => a.localeCompare(b));
-        group.innerHTML = `<h4>${capFirst(key)}</h4>`;
+        // build buttons
+        const frag = document.createDocumentFragment();
+        const h = document.createElement('h4'); h.textContent = capFirst(key);
+        frag.appendChild(h);
+
         vals.forEach(val => {
             const btn = document.createElement('button');
             btn.type = 'button'; btn.className = 'toggle-btn active';
             btn.textContent = capFirst(val); btn.dataset.key = key; btn.dataset.value = val;
-            btn.onclick = () => {
-                const set = state.exclude[key];
-                if (set.has(val)) { set.delete(val); btn.classList.add('active'); btn.classList.remove('dim'); }
-                else { set.add(val); btn.classList.remove('active'); btn.classList.add('dim'); }
-                syncURL(); applyFilters();
-            };
-            group.appendChild(btn);
+            btn.addEventListener('click', () => {
+                isolateToggle(key, val);
+                syncURL(); applyFilters(); refreshFilterButtons();
+            });
+            frag.appendChild(btn);
         });
+
+        group.innerHTML = '';
+        group.appendChild(frag);
     });
+}
+
+function refreshFilterButtons() {
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+        const key = btn.dataset.key, val = btn.dataset.value;
+        const active = !state.exclude[key].has(val);
+        btn.classList.toggle('active', active);
+        btn.classList.toggle('dim', !active);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+}
+
+/**
+ * Isolate behavior (per group):
+ * - All active -> click val => isolate val (exclude all others)
+ * - Isolated to val -> click val => clear excludes (back to all active)
+ * - Isolated to other -> click val => switch isolate to val
+ */
+function isolateToggle(key, val) {
+    const all = state.filterUniverse[key];
+    const ex = state.exclude[key];
+
+    const allActive = ex.size === 0;
+    const isolatedTo = (ex.size === all.size - 1) ? [...all].find(v => !ex.has(v)) : null;
+
+    if (allActive) {
+        ex.clear(); all.forEach(v => { if (v !== val) ex.add(v); });
+    } else if (isolatedTo === val) {
+        ex.clear();
+    } else {
+        ex.clear(); all.forEach(v => { if (v !== val) ex.add(v); });
+    }
 }
 
 /* ====== Apply + Render ====== */
@@ -202,6 +259,8 @@ function renderGrid(list) {
         return a.localeCompare(b);
     });
 
+    const outerFrag = document.createDocumentFragment();
+
     lineageNames.forEach(L => {
         const sec = document.createElement('section');
         sec.className = 'lineage-section';
@@ -243,12 +302,18 @@ function renderGrid(list) {
 
             const grid = document.createElement('div');
             grid.className = 'lineage-grid';
-            byOption[O].forEach(s => grid.appendChild(renderCard(s)));
+
+            const gridFrag = document.createDocumentFragment();
+            byOption[O].forEach(s => gridFrag.appendChild(renderCard(s)));
+            grid.appendChild(gridFrag);
+
             sec.appendChild(grid);
         });
 
-        wrap.appendChild(sec);
+        outerFrag.appendChild(sec);
     });
+
+    wrap.appendChild(outerFrag);
 }
 
 function renderCard(s) {
@@ -291,7 +356,6 @@ function renderCard(s) {
 }
 
 /* ====== Feature block ====== */
-// Layout: name on its own line; pills on next line; effect below
 function renderFeatureLine(f) {
     const name = (f.name || 'Feature').trim();
     const action = (f.action || '').toString().trim();
@@ -333,10 +397,14 @@ function hydrateFromURL() {
     const params = new URLSearchParams(location.search);
     state.q = (params.get('q') || '').toLowerCase();
     state.sort = params.get('sort') || 'name';
+
+    // reset excludes then reapply from URL
+    for (const key of Object.keys(state.exclude)) state.exclude[key].clear();
     for (const key of Object.keys(state.exclude)) {
         const v = params.getAll(key);
         v.forEach(x => state.exclude[key].add(x.toLowerCase()));
     }
+
     const q = document.getElementById('species-search');
     const sort = document.getElementById('species-sort');
     if (q) q.value = state.q;
@@ -357,3 +425,24 @@ function syncURL() {
 function capFirst(s) { return s ? s[0].toUpperCase() + s.slice(1) : s; }
 function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); } }
 function escapeHTML(s) { return String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])); }
+
+/* ====== Lightbox ====== */
+function ensureLightbox() {
+    if (document.getElementById('img-lightbox')) return;
+    const box = document.createElement('div');
+    box.id = 'img-lightbox';
+    box.innerHTML = `<span class="close" aria-label="Close">✕</span><img alt="">`;
+    document.body.appendChild(box);
+
+    const close = () => { box.classList.remove('open'); document.body.classList.remove('stop-scroll'); };
+    box.addEventListener('click', (e) => { if (e.target === box || e.target.classList.contains('close')) close(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+}
+
+function openLightbox(src, alt = '') {
+    const box = document.getElementById('img-lightbox');
+    const img = box.querySelector('img');
+    img.src = src; img.alt = alt;
+    box.classList.add('open');
+    document.body.classList.add('stop-scroll');
+}

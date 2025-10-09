@@ -281,3 +281,85 @@
 .option-header h3 {
     text-transform: capitalize;
 }
+
+/* === Lightbox === */
+#img-lightbox {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, .8);
+    z-index: 9999;
+    padding: 2rem;
+}
+
+#img-lightbox.open {
+    display: flex;
+}
+
+#img-lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 0 24px rgba(0, 0, 0, .6);
+}
+
+#img-lightbox .close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 28px;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+}
+
+body.stop-scroll {
+    overflow: hidden;
+}
+/* === Lightbox === */
+#img-lightbox {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, .8);
+    z-index: 9999;
+    padding: 2rem;
+}
+
+#img-lightbox.open {
+    display: flex;
+}
+
+#img-lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 0 24px rgba(0, 0, 0, .6);
+}
+
+#img-lightbox .close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 28px;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+}
+
+body.stop-scroll {
+    overflow: hidden;
+}
+
+/* Optional: filter button states */
+.toggle-btn.active {
+    opacity: 1;
+}
+
+.toggle-btn.dim {
+    opacity: .35;
+}
