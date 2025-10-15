@@ -363,3 +363,52 @@ body.stop-scroll {
 .toggle-btn.dim {
     opacity: .35;
 }
+
+/* ====== Small CSS ====== */
+/* Add to your CSS */
+.dragon-type {
+    margin-top: .5rem;
+    padding: .5rem;
+    border: 1px solid var(--theme-2, #555);
+    border-radius: var(--border-radius, 6px);
+}
+
+.dragon-type label {
+    display: block;
+    margin-bottom: .25rem;
+}
+
+.dragon-type .dt-feature {
+    margin: .5rem 0 0;
+    font-size: .9rem;
+    opacity: .9;
+}
+
+/* ====== Dragon Type UI ====== */
+.dragon-type {
+    margin-top: .5rem;
+    padding: .5rem;
+    border: 1px solid var(--theme-2, #555);
+    border-radius: var(--border-radius, 6px);
+}
+
+.dragon-type label {
+    display: block;
+    margin-bottom: .25rem;
+}
+
+.dt-feature {
+    margin: .5rem 0 0;
+    font-size: .9rem;
+    line-height: 1.35;
+}
+
+.pill {
+    display: inline-block;
+    padding: 0 .4em;
+    margin-right: .4em;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-size: .75em;
+    opacity: .8;
+}

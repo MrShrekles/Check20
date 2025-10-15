@@ -4,14 +4,21 @@
 
 /* ====== State ====== */
 let SPECIES = [];
+let DRAGON_TYPES = [];
 const state = {
     q: '',
     exclude: { lineage: new Set(), option: new Set(), rarity: new Set(), region: new Set() },
     sort: 'name',
-    collapsed: new Set(),                       // lineage names (case-sensitive)
-    filterUniverse: { lineage: new Set(), option: new Set(), rarity: new Set(), region: new Set() }
+    collapsed: new Set(),
+    filterUniverse: { lineage: new Set(), option: new Set(), rarity: new Set(), region: new Set() },
+    selectedId: null,
+    dragonType: null
 };
 
+/* ====== Utils ====== */
+const slug = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const loadDragonChoice = () => state.dragonType = localStorage.getItem('c20.dragonType') || null;
+const saveDragonChoice = () => localStorage.setItem('c20.dragonType', state.dragonType || '');
 const RARITY_ORDER = ["common", "uncommon", "rare", "very rare", "legendary", "mythic"];
 const rarityRank = r => {
     const i = RARITY_ORDER.indexOf(String(r || '').toLowerCase());
@@ -22,11 +29,12 @@ const rarityRank = r => {
 document.addEventListener('DOMContentLoaded', async () => {
     restoreCollapsed();
     wireUI();
-    await loadSpecies();          // loads species_new.json only
-    buildFilters(SPECIES);        // build buttons & record universes
-    hydrateFromURL();             // apply URL -> state (after buttons exist)
-    refreshFilterButtons();       // reflect URL state on buttons
-    applyFilters();               // initial render
+    await loadSpecies();
+    loadDragonChoice();
+    buildFilters(SPECIES);
+    hydrateFromURL();
+    refreshFilterButtons();
+    applyFilters();
 });
 
 /* ====== Data ====== */
@@ -34,10 +42,11 @@ async function loadSpecies() {
     const tryPaths = ['data/species_new.json', 'species_new.json'];
     for (const p of tryPaths) {
         try {
-            const r = await fetch(p, { cache: 'no-store' });
-            if (!r.ok) continue;
-            const raw = await r.json();
-            SPECIES = normalizeSpecies(raw.species || raw || []);
+            const res = await fetch(p);
+            if (!res.ok) continue;
+            const json = await res.json();
+            SPECIES = normalizeSpecies(json.species || []);
+            DRAGON_TYPES = json.dragonTypes || [];
             return;
         } catch { }
     }
@@ -46,8 +55,8 @@ async function loadSpecies() {
 
 function normalizeSpecies(arr) {
     const low = v => typeof v === 'string' ? v.trim().toLowerCase() : v;
-    return arr.map(s => {
-        const o = { ...s };
+    return (arr || []).map(src => {
+        const o = { ...src };
         o.name = (o.name || '').trim();
         o.slug = slug(o.name);
         o.lineage = (o.lineage || '').trim();
@@ -61,15 +70,14 @@ function normalizeSpecies(arr) {
         o.regionKeys = o.regionList.map(x => x.toLowerCase());
         o.size = String(o.size || '').trim();
 
-        // Build features[] from either existing array or flat keys
         let features = Array.isArray(o.features) ? o.features : null;
         if (!features) {
             const flatFeature = {
-                name: s.feature_name || s.featureName || s.fetName || 'Feature',
-                description: s.feature_effect || s.featureEffect || s.fetEffect || '',
-                action: s.fetAction || s.action || '',
-                damage: s.fetDamage || s.damage || '',
-                type: s.fetDamagetype || s.fetDamageType || s.damageType || s.type || ''
+                name: o.feature_name || o.featureName || o.fetName || 'Feature',
+                description: o.feature_effect || o.featureEffect || o.fetEffect || '',
+                action: o.fetAction || o.action || '',
+                damage: o.fetDamage || o.damage || '',
+                type: o.fetDamagetype || o.fetDamageType || o.damageType || o.type || ''
             };
             const hasAny = Object.values(flatFeature).some(v => (v ?? '').toString().trim().length);
             features = hasAny ? [flatFeature] : [];
@@ -83,19 +91,15 @@ function normalizeSpecies(arr) {
             options: Array.isArray(f.options) ? f.options : []
         }));
 
-        // Images: explicit or default by slug
         if (!o.images || !o.images.length) {
             const placeholder = (typeof PLACEHOLDER_MAP !== 'undefined')
                 ? PLACEHOLDER_MAP?.[o.lineage]?.[o.option]
                 : null;
             o.images = [placeholder || `assets/species/${o.slug}.jpg`];
         }
-
         return o;
     });
 }
-
-function slug(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
 
 /* ====== UI wiring ====== */
 function wireUI() {
@@ -115,31 +119,99 @@ function wireUI() {
 
     clr?.addEventListener('click', () => {
         state.q = ''; if (q) q.value = '';
-        Object.values(state.exclude).forEach(set => set.clear()); // all active
+        Object.values(state.exclude).forEach(set => set.clear());
         refreshFilterButtons();
         syncURL(); applyFilters();
     });
 
-    // Global collapsers
     document.getElementById('collapse-all')?.addEventListener('click', () => {
         state.collapsed = new Set([...document.querySelectorAll('.lineage-section')]
             .map(s => s.dataset.lineageLabel));
         persistCollapsed();
         document.querySelectorAll('.lineage-section').forEach(s => s.classList.add('collapsed'));
     });
+
     document.getElementById('expand-all')?.addEventListener('click', () => {
         state.collapsed.clear();
         persistCollapsed();
         document.querySelectorAll('.lineage-section').forEach(s => s.classList.remove('collapsed'));
     });
 
-    // Lightbox: event delegation so we don’t bind per-card
     ensureLightbox();
+
     document.addEventListener('click', (e) => {
         const img = e.target.closest('img.cover');
         if (!img) return;
         openLightbox(img.currentSrc || img.src, img.alt);
     });
+}
+
+/* ====== Card Render ====== */
+function renderCard(s) {
+    const el = document.createElement('article');
+    el.className = 'species-card';
+    el.dataset.id = s.slug;
+    const cover = s.images?.[0] || `assets/species/${s.slug}.jpg`;
+
+    const chips = [
+        s.rarity && `<span class="chip">${escapeHTML(s.rarity)}</span>`,
+        ...(s.regionList || []).map(r => `<span class="chip">${escapeHTML(r)}</span>`)
+    ].filter(Boolean).join('');
+
+    const pf = (s.features && s.features[0]) ? s.features[0] : null;
+
+    el.innerHTML = `
+    <img class="cover" loading="lazy" src="${cover}" alt="${escapeHTML(s.name)}">
+    <header><h3>${escapeHTML(s.name)}</h3></header>
+    <div class="species-meta">${chips}</div>
+    <div class="species-body collapsed">${escapeHTML(s.description || '')}</div>
+    <a class="read-more" role="button">Read full</a>
+    ${isDragonLineage(s) ? dragonTypeBlockHTML() : ''}
+    ${pf ? renderFeatureLine(pf) : ''}
+  `;
+
+    const body = el.querySelector('.species-body');
+    const btn = el.querySelector('.read-more');
+    const toggle = () => {
+        const isCollapsed = body.classList.toggle('collapsed');
+        btn.textContent = isCollapsed ? 'Read full' : 'Show less';
+    };
+    btn.addEventListener('click', toggle);
+    if ((s.description || '').length < 220) {
+        body.classList.remove('collapsed');
+        btn.style.display = 'none';
+    }
+
+    return el;
+}
+
+function refreshCard(idSlug) {
+    const el = document.querySelector(`.species-card[data-id="${idSlug}"]`);
+    if (!el) return;
+    const sp = SPECIES.find(s => s.slug === idSlug);
+    if (!sp) return;
+    el.replaceWith(renderCard(sp));
+}
+
+/* ====== Feature block ====== */
+function renderFeatureLine(f) {
+    const name = (f.name || 'Feature').trim();
+    const action = (f.action || '').toString().trim();
+    const dmg = (f.damage || '').toString().trim();
+    const dtype = (f.type || '').toString().trim();
+    const effect = (f.description || '').toString().trim();
+
+    const actionPill = action ? `<span class="feature-pill pill-action">${escapeHTML(action)}</span>` : '';
+    const dmgBits = [dmg, dtype].filter(Boolean).join(', ');
+    const dmgPill = dmgBits ? `<span class="feature-pill pill-dmg">${escapeHTML(dmgBits)}</span>` : '';
+
+    return `
+    <div class="feature-line">
+      <div class="feature-name">${escapeHTML(name)}</div>
+      <div class="feature-pills">${actionPill} ${dmgPill}</div>
+      <div class="feature-effect">${escapeHTML(effect)}</div>
+    </div>
+  `;
 }
 
 /* ====== Filters ====== */
@@ -152,13 +224,11 @@ function buildFilters(items) {
         s.regionKeys.forEach(r => uniq.region.add(r));
     });
 
-    // store universes
     for (const k of Object.keys(uniq)) state.filterUniverse[k] = new Set(uniq[k]);
 
     document.querySelectorAll('.filter-group').forEach(group => {
-        const key = group.dataset.key; // lineage|option|rarity|region
+        const key = group.dataset.key;
         const vals = [...(uniq[key] || [])].sort((a, b) => a.localeCompare(b));
-        // build buttons
         const frag = document.createDocumentFragment();
         const h = document.createElement('h4'); h.textContent = capFirst(key);
         frag.appendChild(h);
@@ -189,16 +259,9 @@ function refreshFilterButtons() {
     });
 }
 
-/**
- * Isolate behavior (per group):
- * - All active -> click val => isolate val (exclude all others)
- * - Isolated to val -> click val => clear excludes (back to all active)
- * - Isolated to other -> click val => switch isolate to val
- */
 function isolateToggle(key, val) {
     const all = state.filterUniverse[key];
     const ex = state.exclude[key];
-
     const allActive = ex.size === 0;
     const isolatedTo = (ex.size === all.size - 1) ? [...all].find(v => !ex.has(v)) : null;
 
@@ -228,7 +291,6 @@ function applyFilters() {
         return true;
     });
 
-    // sort
     out.sort((a, b) => {
         if (state.sort === 'rarity') return rarityRank(a.rarity) - rarityRank(b.rarity) || a.name.localeCompare(b.name);
         if (state.sort === 'lineage') return a.lineage.localeCompare(b.lineage) || a.name.localeCompare(b.name);
@@ -246,7 +308,6 @@ function renderGrid(list) {
     if (!wrap) return;
     wrap.innerHTML = '';
 
-    // group by lineage
     const byLineage = list.reduce((m, s) => {
         const L = s.lineage || 'Other';
         (m[L] ||= []).push(s);
@@ -265,9 +326,8 @@ function renderGrid(list) {
         const sec = document.createElement('section');
         sec.className = 'lineage-section';
         sec.dataset.lineage = L.toLowerCase();
-        sec.dataset.lineageLabel = L; // used by collapse-all
+        sec.dataset.lineageLabel = L;
 
-        // header with twisty + count; click toggles collapse
         const header = document.createElement('div');
         header.className = 'lineage-header';
         header.innerHTML = `
@@ -283,10 +343,8 @@ function renderGrid(list) {
         });
         sec.appendChild(header);
 
-        // initial collapse state
         sec.classList.toggle('collapsed', isCollapsed(L));
 
-        // group by option within lineage
         const byOption = byLineage[L].reduce((m, s) => {
             const O = s.option || 'General';
             (m[O] ||= []).push(s);
@@ -316,67 +374,7 @@ function renderGrid(list) {
     wrap.appendChild(outerFrag);
 }
 
-function renderCard(s) {
-    const el = document.createElement('article');
-    el.className = 'species-card';
-    const cover = s.images?.[0] || `assets/species/${s.slug}.jpg`;
-
-    const chips = [
-        s.rarity && `<span class="chip">${escapeHTML(s.rarity)}</span>`,
-        ...(s.regionList || []).map(r => `<span class="chip">${escapeHTML(r)}</span>`)
-    ].filter(Boolean).join('');
-
-    const pf = (s.features && s.features[0]) ? s.features[0] : null;
-
-    el.innerHTML = `
-    <img class="cover" loading="lazy" src="${cover}" alt="${escapeHTML(s.name)}">
-    <header><h3>${escapeHTML(s.name)}</h3></header>
-    <div class="species-meta">${chips}</div>
-    <div class="species-body collapsed">${escapeHTML(s.description || '')}</div>
-    <a class="read-more" role="button">Read full</a>
-    ${pf ? renderFeatureLine(pf) : ''}
-  `;
-
-    // Description toggle
-    const body = el.querySelector('.species-body');
-    const btn = el.querySelector('.read-more');
-    const toggle = () => {
-        const isCollapsed = body.classList.toggle('collapsed');
-        btn.textContent = isCollapsed ? 'Read full' : 'Show less';
-    };
-    btn.addEventListener('click', toggle);
-
-    // Auto-expand short blurbs
-    if ((s.description || '').length < 220) {
-        body.classList.remove('collapsed');
-        btn.style.display = 'none';
-    }
-
-    return el;
-}
-
-/* ====== Feature block ====== */
-function renderFeatureLine(f) {
-    const name = (f.name || 'Feature').trim();
-    const action = (f.action || '').toString().trim();
-    const dmg = (f.damage || '').toString().trim();
-    const dtype = (f.type || '').toString().trim();
-    const effect = (f.description || '').toString().trim();
-
-    const actionPill = action ? `<span class="feature-pill pill-action">${escapeHTML(action)}</span>` : '';
-    const dmgBits = [dmg, dtype].filter(Boolean).join(', ');
-    const dmgPill = dmgBits ? `<span class="feature-pill pill-dmg">${escapeHTML(dmgBits)}</span>` : '';
-
-    return `
-    <div class="feature-line">
-      <div class="feature-name">${escapeHTML(name)}</div>
-      <div class="feature-pills">${actionPill} ${dmgPill}</div>
-      <div class="feature-effect">${escapeHTML(effect)}</div>
-    </div>
-  `;
-}
-
-/* ====== Collapse state helpers ====== */
+/* ====== Collapse state ====== */
 function isCollapsed(lineage) { return state.collapsed.has(lineage); }
 function setCollapsed(lineage, val) {
     if (val) state.collapsed.add(lineage); else state.collapsed.delete(lineage);
@@ -398,7 +396,6 @@ function hydrateFromURL() {
     state.q = (params.get('q') || '').toLowerCase();
     state.sort = params.get('sort') || 'name';
 
-    // reset excludes then reapply from URL
     for (const key of Object.keys(state.exclude)) state.exclude[key].clear();
     for (const key of Object.keys(state.exclude)) {
         const v = params.getAll(key);
@@ -421,9 +418,9 @@ function syncURL() {
     history.replaceState({}, '', '?' + params.toString());
 }
 
-/* ====== Utils ====== */
+/* ====== Helpers ====== */
 function capFirst(s) { return s ? s[0].toUpperCase() + s.slice(1) : s; }
-function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); } }
+function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 function escapeHTML(s) { return String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])); }
 
 /* ====== Lightbox ====== */
@@ -445,4 +442,70 @@ function openLightbox(src, alt = '') {
     img.src = src; img.alt = alt;
     box.classList.add('open');
     document.body.classList.add('stop-scroll');
+}
+
+/* ====== Data ====== */
+async function loadSpecies() {
+    const tryPaths = ['data/species_new.json', 'species_new.json'];
+    for (const p of tryPaths) {
+        try {
+            const res = await fetch(p);
+            if (!res.ok) continue;
+            const json = await res.json();
+            SPECIES = normalizeSpecies(json.species || []);
+            DRAGON_TYPES = normalizeDragonTypes(json.dragonTypes || []);  // <-- normalized
+            return;
+        } catch { }
+    }
+    console.error('Could not load species_new.json');
+}
+
+function normalizeDragonTypes(arr) {
+    const trim = s => String(s || '').replace(/\s+/g, ' ').trim();
+    return (arr || []).map(raw => {
+        const name = trim(raw.name);
+        const m = name.match(/^(.*?)(?:\s*\(([^)]+)\))?$/);
+        const title = trim(m?.[1] || name);
+        const element = trim(m?.[2] || '');
+        const featuresRaw = trim(raw.features || raw.feature || '');
+        const cleaned = featuresRaw.replace(/<\/?li>/gi, ''); // clean stray tags
+        const idx = cleaned.indexOf(':');
+        const featureName = idx > -1 ? trim(cleaned.slice(0, idx)) : (cleaned ? cleaned.split(' ')[0] : 'Feature');
+        const featureText = idx > -1 ? trim(cleaned.slice(idx + 1)) : trim(cleaned.replace(featureName, ''));
+        return {
+            ...raw,
+            name, title, element,
+            slug: slug(name),
+            featureName,
+            featureText
+        };
+    });
+}
+
+/* ====== Dragon Types ====== */
+function isDragonLineage(sp) {
+    return String(sp.lineage || '').toLowerCase() === 'dragon';
+}
+
+function dragonTypeBlockHTML() {
+    if (!DRAGON_TYPES.length) return '';
+    const opts = DRAGON_TYPES.map(dt => {
+        const val = dt.slug;
+        const sel = state.dragonType === val ? ' selected' : '';
+        const label = dt.element ? `${dt.title} (${dt.element})` : dt.title;
+        return `<option value="${val}"${sel}>${escapeHTML(label)}</option>`;
+    }).join('');
+
+    const chosen = DRAGON_TYPES.find(dt => dt.slug === state.dragonType);
+    const preview = chosen ? `
+    <p class="dt-feature">
+      ${chosen.element ? `<span class="pill">${escapeHTML(chosen.element)}</span>` : ''}
+      <strong>${escapeHTML(chosen.featureName)}:</strong> ${escapeHTML(chosen.featureText)}
+    </p>` : '';
+
+    return `
+      <label><strong>Dragon Type</strong></label>
+      <select class="dragonTypeSelect">${opts}</select>
+      ${preview}
+  `;
 }

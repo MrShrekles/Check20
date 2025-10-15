@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="styles/sidebar.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
     <script src="scripts/char_class.js" defer></script>
-    <script src="scripts/char_species.js" defer></script>
     <script src="scripts/charsheet.js" defer></script>
     <script src="scripts/char_save.js" defer></script>
     <script src="scripts/header.js" defer></script>
@@ -34,7 +33,6 @@
                             </div>
 
                             <div class="health-section">
-                                <h2>Health</h2>
                                 <table class="health-table">
                                     <thead>
                                         <tr>
@@ -74,7 +72,6 @@
                             </div>
                         </div>
 
-                        <h2>Checks</h2>
                         <div class="checks-section">
                             <table class="checks-table">
                                 <thead>
@@ -148,126 +145,125 @@
                             </table>
                         </div>
 
-                        <!-- Character Details -->
-                        <ul class="char-details-inline">
-                            <li>
-                                <label for="language">Language:</label>
-                                <input type="text" id="language" name="language">
-                                <!-- br -->
-                                <label for="age">Age:</label>
-                                <input type="number" id="age" name="age">
-                            </li>
-                            <li>
-                                <label for="diet">Diet:</label>
-                                <input type="text" id="diet" name="diet">
-                                <label for="size">Size:</label>
-                                <select id="size" name="size" style="width: auto;">
-                                    <option value="">-- Select Size --</option>
-                                    <option value="Tiny">Tiny (under 1 ft)</option>
-                                    <option value="Small">Small (1–4 ft)</option>
-                                    <option value="Medium">Medium (5–7 ft)</option>
-                                    <option value="Large">Large (8–15 ft)</option>
-                                    <option value="Giant">Giant (15–25 ft)</option>
+                        <!-- ============== Species ============== -->
+                        <fieldset class="section section--species">
+
+                            <div class="form-row">
+                                <label for="species">Species</label>
+                                <select id="species" name="species">
+                                    <option value="">Select Species</option>
                                 </select>
-                            </li>
-                        </ul>
+                            </div>
 
-                        <!-- Trink, Motive, Add Equip -->
-                        <div class="two-column" id="extras">
-                            <div class="column">
-                                <label for="trinket">Trinket:</label>
-                                <textarea id="trinket" name="trinket"></textarea>
+                            <!-- Optional: shown only when populated -->
+                            <div class="form-row is-hidden" id="subspecies-row">
+                                <label for="subspecies">Option</label>
+                                <select id="subspecies" name="subspecies"></select>
                             </div>
-                            <div class="column">
-                                <label for="motivation">Motivation:</label>
-                                <textarea id="motivation" name="motivation"></textarea>
-                            </div>
-                            <div class="column">
-                                <label for="addEquip">Additional:</label>
-                                <textarea id="addEquip" name="addEquip"></textarea>
-                            </div>
-                        </div>
 
-                        <div class="reference-grid small-resources">
-                            <!-- GP/Currency Card -->
-                            <div class="ref-card">
-                                <h3>Wealth</h3>
-                                <div class="input-row">
-                                    <input type="number" id="gp" name="gp" class="square-input" placeholder="Amount">
+                            <ul id="species-details" class="feature-list" aria-live="polite"></ul>
+                            <div id="subspecies-details" aria-live="polite"></div>
+                        </fieldset>
+
+                        <!-- ============== Character Details ============== -->
+                        <fieldset class="section section--char-details">
+                            <legend>Character Details</legend>
+
+                            <div class="grid grid--2">
+                                <div class="form-row">
+                                    <label for="language">Language</label>
+                                    <input type="text" id="language" name="language" autocomplete="off" placeholder="e.g. Imperial, Drak">
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="age">Age</label>
+                                    <input type="number" id="age" name="age" inputmode="numeric" min="0" placeholder="Years">
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="diet">Diet</label>
+                                    <input type="text" id="diet" name="diet" autocomplete="off" placeholder="e.g. Omnivore">
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="size">Size</label>
+                                    <select id="size" name="size">
+                                        <option value="">-- Select Size --</option>
+                                        <option value="Tiny">Tiny (under 1 ft)</option>
+                                        <option value="Small">Small (1–4 ft)</option>
+                                        <option value="Medium">Medium (5–7 ft)</option>
+                                        <option value="Large">Large (8–15 ft)</option>
+                                        <option value="Giant">Giant (15–25 ft)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="trinket">Trinket</label>
+                                    <input type="text" id="trinket" name="trinket" placeholder="e.g. Silver locket, lucky coin">
+                                </div>
+
+                                <!-- Motivation (1 line) -->
+                                <div class="form-row">
+                                    <label for="motivation">Motivation</label>
+                                    <input type="text" id="motivation" name="motivation" placeholder="e.g. Avenge my clan">
                                 </div>
                             </div>
+                        </fieldset>
 
-                            <!-- Class Resource Card -->
-                            <div class="ref-card">
-                                <h3 style="font-size: 10px;">Class Rescource</h3>
-                                <div class="input-row">
-                                    <input type="number" id="class-resource_max" name="class-resource_max" class="square-input">
-                                    <input type="number" id="class-resource" name="class-resource" class="square-input">
-                                </div>
-                            </div>
+                        <!-- ============== Notes & Resources (Unified) ============== -->
+                        <section class="section section--notes-resources">
+                            <table class="nr-table" role="table">
+                                <tbody>
+                                    <!-- Additional (big textarea) -->
+                                    <tr>
+                                        <th scope="row"><label for="addEquip">Additional</label></th>
+                                        <td colspan="2">
+                                            <textarea id="addEquip" name="addEquip" class="nr-textarea" rows="4"></textarea>
+                                        </td>
+                                    </tr>
 
-                            <!-- Spell Points Card -->
-                            <div class="ref-card">
-                                <h3>Spell Points</h3>
-                                <div class="input-row">
-                                    <input type="number" id="spell-points_max" name="spell-points_max" class="square-input">
-                                    <input type="number" id="spell-points" name="spell-points" class="square-input">
-                                </div>
-                            </div>
+                                    <!-- Wealth -->
+                                    <tr>
+                                        <th scope="row"><label for="gp">Wealth</label></th>
+                                        <td class="nr-field">
+                                            <input type="number" id="gp" name="gp" class="nr-input" placeholder="Amount" inputmode="numeric" min="0">
+                                        </td>
+                                        <td class="nr-hint"></td>
+                                    </tr>
 
-                        </div>
+                                    <!-- Class Resource (Now / Max) -->
+                                    <tr>
+                                        <th scope="row">Class Resource</th>
+                                        <td class="nr-field">
+                                            <div class="nr-duo" role="group" aria-label="Class Resource">
+                                                <input type="number" id="class-resource" name="class-resource" class="nr-input" placeholder="Current" inputmode="numeric" min="0">
+                                                <span class="nr-sep" aria-hidden="true">/</span>
+                                                <input type="number" id="class-resource_max" name="class-resource_max" class="nr-input" placeholder="Max" inputmode="numeric" min="0">
+                                            </div>
+                                        </td>
+                                        <td class="nr-hint"></td>
+                                    </tr>
 
-                        <div class="two-column">
-                            <div class="column">
-                                <div class="ref-card">
-                                    <ul class="notes">
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="ref-card">
-                                    <ul class="notes">
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                        <li>&nbsp;</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                                    <!-- Spell Points (Now / Max) -->
+                                    <tr>
+                                        <th scope="row">Spell Points</th>
+                                        <td class="nr-field">
+                                            <div class="nr-duo" role="group" aria-label="Spell Points">
+                                                <input type="number" id="spell-points" name="spell-points" class="nr-input" placeholder="Current" inputmode="numeric" min="0">
+                                                <span class="nr-sep" aria-hidden="true">/</span>
+                                                <input type="number" id="spell-points_max" name="spell-points_max" class="nr-input" placeholder="Max" inputmode="numeric" min="0">
+                                            </div>
+                                        </td>
+                                        <td class="nr-hint"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+
 
                     </div>
                     <div class="column" id="right">
-                        <!-- Species Selection -->
-                        <div class="flex-item">
-                            <label for="species">Species:</label>
-                            <select id="species" name="species">
-                                <option value="">Select Species</option>
-                            </select>
-
-                            <select id="subspecies" name="subspecies" style="display: none;"></select>
-
-                            <ul id="species-details" class="feature-list"></ul>
-                            <div id="subspecies-details"></div>
-
-                        </div>
-
                         <!-- Class Selection -->
                         <div class="flex-item">
                             <label for="class">Class:</label>
@@ -784,21 +780,6 @@
                     </p>
                 </div>
                 <div class="ref-card">
-                    <h3>Languages Overview</h3>
-                    <ul class="ref-list">
-                        <li><strong>Imperial:</strong> Common tongue</li>
-                        <li><strong>Naech:</strong> Speak to animals</li>
-                        <li><strong>Dealig:</strong> Oreadlis, Infernal</li>
-                        <li><strong>Etheros:</strong> Elemental magic</li>
-                        <li><strong>Night:</strong> Undead & Darkness</li>
-                        <li><strong>Clunk:</strong> Tech/mechanical</li>
-                        <li><strong>Yar:</strong> Maritime & Dreamsea.</li>
-                        <li><strong>Drak:</strong> Draconic</li>
-                        <li><strong>Holy:</strong> Divine language.</li>
-                        <li><strong>Jotun:</strong> Giant & ancient</li>
-                    </ul>
-                </div>
-                <div class="ref-card">
                     <h3>Check Result Outcomes</h3>
                     <ul class="ref-list">
                         <li><strong>1–4:</strong> Fail+ Provoke @Adv</li>
@@ -808,51 +789,6 @@
                         <li><strong>20–24:</strong> Success + — 1 roll</li>
                         <li><strong>25–29:</strong> Success ++ — 2 rolls</li>
                         <li><strong>30–34:</strong> Success +++ — 3 rolls</li>
-                    </ul>
-                </div>
-                <div class="ref-card">
-                    <ul class="notes">
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                    </ul>
-                </div>
-                <div class="ref-card">
-                    <ul class="notes">
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                    </ul>
-                </div>
-                <div class="ref-card">
-                    <ul class="notes">
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
                     </ul>
                 </div>
 
