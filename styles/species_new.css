@@ -4,9 +4,103 @@
     --gap-2: .75rem;
     --radius: var(--border-radius);
     --bd-1: 1px solid var(--gold-1);
-    --bd-2: 1px dashed var(--gold-2);
     --bg-1: var(--theme-1);
     --bg-2: var(--theme-2, #222);
+}
+
+/* Base chip */
+.chip {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 2px;
+    border-radius: var(--border-radius);
+    font-size: 0.8em;
+    font-weight: 500;
+    background: var(--theme-1);
+    color: var(--text-cream);
+    border: 1px solid var(--theme-3);
+    box-shadow: var(--box-shadow);
+}
+
+/* Rarity chips */
+.chip-rarity {
+    font-weight: 700;
+    border: 1px solid var(--gold-2);
+    box-shadow: 0 0 6px rgba(255, 215, 0, 0.2);
+    letter-spacing: 0.5px;
+}
+
+.rarity-common {
+    background: var(--dark-2);
+    color: var(--green-3);
+    border-color: var(--green-2);
+}
+
+.rarity-uncommon {
+    background: var(--theme-2);
+    color: var(--text-cream);
+    border-color: var(--theme-3);
+}
+
+.rarity-rare {
+    background: var(--theme-dark);
+    color: var(--gold-2);
+    border-color: var(--gold-1);
+}
+
+.rarity-very-rare {
+    background: var(--warm-1);
+    color: var(--cream);
+    border-color: var(--warm-3);
+}
+
+.rarity-legendary {
+    background: var(--gold-1);
+    color: var(--text-gold);
+    border-color: var(--gold-3);
+}
+
+.rarity-mythic {
+    background: var(--hate);
+    color: var(--text-cream);
+    border-color: var(--rust);
+}
+
+/* ===============================   Read-Full Tag Section */
+
+.read-tags {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.6rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--theme-2);
+}
+
+.tag-kv {
+    background: var(--dark-2);
+    border: 1px solid var(--theme-3);
+    border-radius: var(--border-radius);
+    padding: 0.25rem 0.6rem;
+    color: var(--text-cream);
+    font-size: 0.85em;
+    box-shadow: var(--box-shadow);
+    transition: background 0.2s ease;
+}
+
+.tag-kv:hover {
+    background: var(--theme-hover);
+}
+
+.tag-kv .k {
+    color: var(--gold-3);
+    font-weight: 600;
+    margin-right: 0.25rem;
+}
+
+.tag-kv .v {
+    color: var(--text-plain);
+    font-weight: 400;
 }
 
 /* ===== TOOLBAR / FILTERS ===== */
@@ -89,7 +183,7 @@
 .chip {
     font-size: .75rem;
     padding: .1rem .5rem;
-    border: var(--bd-2);
+    border: var(--bd-1);
     border-radius: 999px;
     opacity: .9
 }
@@ -176,7 +270,7 @@
 .feature-line {
     display: block;
     padding: .6rem .75rem .65rem;
-    border-top: var(--bd-2);
+    border-top: var(--bd-1);
     background: linear-gradient(180deg, transparent, rgba(255, 255, 255, .02));
     font-size: .92rem
 }
@@ -318,6 +412,7 @@
 body.stop-scroll {
     overflow: hidden;
 }
+
 /* === Lightbox === */
 #img-lightbox {
     position: fixed;

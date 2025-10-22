@@ -1,6 +1,7 @@
 #generate-npc,
 #generate-business,
-#generate-monster {
+#generate-monster,
+#generate-medicine {
     background-color: var(--hate);
     width: 100%;
     font-size: 2rem;
@@ -8,7 +9,8 @@
 
 #generate-npc:hover,
 #generate-business:hover,
-#generate-monster:hover {
+#generate-monster:hover,
+#generate-medicine {
     filter: brightness(110%);
 }
 
@@ -123,7 +125,9 @@
     gap: 1%;
 }
 
-#npc-output, #business-output, #monster-output {
+#npc-output,
+#business-output,
+#monster-output {
     max-height: 600px;
     overflow-y: auto;
     overflow-x: hidden;

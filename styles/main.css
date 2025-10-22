@@ -1,6 +1,5 @@
 @import url("sidebar.css");
 
-/* Root Variables */
 :root {
     --dark: rgb(30, 30, 30);
     --medium: rgb(50, 50, 50);
@@ -55,8 +54,8 @@ body {
     background-color: var(--dark);
     color: var(--white);
     text-shadow: 1px 1px 1px black;
-    margin: 0;
     overflow-x: hidden;
+    padding-left: 30px;
 }
 
 header {
@@ -133,13 +132,6 @@ header nav ul li a {
 
 header nav ul li a:hover {
     color: var(--darkgold);
-}
-
-main {
-    border-radius: var(--border-radius);
-    margin: 1rem auto;
-    max-width: 100%;
-    box-shadow: var(--box-shadow);
 }
 
 footer {
@@ -771,9 +763,6 @@ section {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     color: var(--white);
-    padding: var(--padding);
-    margin-left: 40px;
-    margin-right: 20px;
     transition: filter 0.3s ease;
 }
 
@@ -782,11 +771,10 @@ section:hover {
 }
 
 @media (max-width: 768px) {
-  section {
-    padding: 3px;
-    margin: 3px;
-    margin-left: 30px;
-  }
+    section {
+        padding: 3px;
+        margin: 3px;
+    }
 }
 
 /* Headers */
