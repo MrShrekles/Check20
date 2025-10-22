@@ -154,20 +154,24 @@ function renderCard(s) {
     const cover = s.images?.[0] || `assets/species/${s.slug}.jpg`;
 
     const chips = [
-        s.rarity && `<span class="chip">${escapeHTML(s.rarity)}</span>`,
+        s.rarity && `<span class="chip chip-rarity rarity-${(s.rarityKey || '').replace(/\s+/g, '-')}">${escapeHTML(s.rarity)}</span>`,
         ...(s.regionList || []).map(r => `<span class="chip">${escapeHTML(r)}</span>`)
     ].filter(Boolean).join('');
+
 
     const pf = (s.features && s.features[0]) ? s.features[0] : null;
 
     el.innerHTML = `
-    <img class="cover" loading="lazy" src="${cover}" alt="${escapeHTML(s.name)}">
-    <header><h3>${escapeHTML(s.name)}</h3></header>
-    <div class="species-meta">${chips}</div>
-    <div class="species-body collapsed">${escapeHTML(s.description || '')}</div>
-    <a class="read-more" role="button">Read full</a>
-    ${isDragonLineage(s) ? dragonTypeBlockHTML() : ''}
-    ${pf ? renderFeatureLine(pf) : ''}
+  <img class="cover" loading="lazy" src="${cover}" alt="${escapeHTML(s.name)}">
+  <header><h3>${escapeHTML(s.name)}</h3></header>
+  <div class="species-meta">${chips}</div>
+  <div class="species-body collapsed">
+    ${escapeHTML(s.description || '')}
+    ${renderDataTags(s)}
+  </div>
+  <a class="read-more" role="button">Read full</a>
+  ${isDragonLineage(s) ? dragonTypeBlockHTML() : ''}
+  ${pf ? renderFeatureLine(pf) : ''}
   `;
 
     const body = el.querySelector('.species-body');
@@ -183,6 +187,27 @@ function renderCard(s) {
     }
 
     return el;
+}
+
+function renderDataTags(s) {
+    const rows = [
+        ['Size (ft)', s.size],
+        ['Lifespan', s.lifespan],
+        ['Language', s.language],
+        ['Diet', s.diet],
+        ['Rarity', s.rarity],
+        ['Region', (s.regionList || []).join(', ') || s.region],
+        ['Origin', s.origin]
+    ].filter(([, v]) => v && String(v).trim().length);
+
+    if (!rows.length) return '';
+    return `
+    <div class="read-tags">
+      ${rows.map(([k, v]) => `
+        <span class="tag-kv"><span class="k">${escapeHTML(k)}:</span> <span class="v">${escapeHTML(String(v))}</span></span>
+      `).join('')}
+    </div>
+  `;
 }
 
 function refreshCard(idSlug) {
