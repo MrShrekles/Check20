@@ -6,21 +6,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Monster</title>
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/weapons.css">
-    <link rel="stylesheet" href="styles/sidebar.css">
+    <link rel="stylesheet" href="styles/monster.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
     <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/almanac.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
-    <script src="scripts/weapons.js" defer></script>
+    <script src="scripts/monsterGenerator.js"></script>
+    <script src="scripts/monster-builder.js"></script>
+
 </head>
 
-<body data-page-title="Weapons">
+<body data-page-title="Monsters">
     <div id="header-placeholder"></div>
     <div id="sidebar-placeholder"></div>
 
-    <main>
-        <section>
+    <body>
+        <main class="wrap">
+            <h1>Monster Generator</h1>
 
-        </section>
-    </main>
+            <!-- Controls -->
+            <section class="panel">
+                <div class="row">
+                    <button id="btnGenerate">Generate</button>
+                    <button id="btnClearAll" class="ghost">Clear All</button>
+                </div>
+
+                <details>
+                    <summary>Settings</summary>
+
+                    <div class="panel">
+                        <strong>Randomization</strong>
+                        <div class="row" style="margin-top:6px">
+                            <label><input type="checkbox" id="chkRandomBase" checked> Randomize Base</label>
+                            <label><input type="checkbox" id="chkRandomAdd" checked> Randomize Add</label>
+                        </div>
+
+                        <div id="pickerRow" class="row" style="margin-top:6px">
+                            <!-- Shown only when the corresponding Randomize is unchecked -->
+                            <label>Base:
+                                <select id="selBase" disabled></select>
+                            </label>
+                            <label>Add:
+                                <select id="selAdd" disabled></select>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <strong>Compose</strong>
+                        <div class="row" style="margin-top:6px">
+                            <label><input type="checkbox" id="chkConcatName" checked> Title uses “Base + Add”</label>
+                            <label><input type="checkbox" id="chkNumbersAdd" checked> Numbers add up (e.g., movement)</label>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- Output grid -->
+            <section class="panel">
+                <div id="monsterOutput" class="monster-grid"></div>
+            </section>
+        </main>
+
+    </body>
+
+</html>

@@ -1,3 +1,4 @@
+/* ===== Generate buttons ===== */
 #generate-npc,
 #generate-business,
 #generate-monster,
@@ -10,18 +11,19 @@
 #generate-npc:hover,
 #generate-business:hover,
 #generate-monster:hover,
-#generate-medicine {
+#generate-medicine:hover {
     filter: brightness(110%);
 }
 
-/* === Layout: Grid Wrappers === */
+/* ===== Grids ===== */
 .monster-grid,
 .item-cards {
     display: flex;
     flex-wrap: wrap;
+    gap: 8px;
 }
 
-/* === Card: Monster & Item === */
+/* ===== Cards ===== */
 .monster-card,
 .item-card {
     background: var(--theme-dark);
@@ -35,42 +37,57 @@
 
 .monster-card {
     background: rgba(40, 40, 40, 0.9);
-    transition: transform 0.2s ease;
     width: 300px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    will-change: transform;
+    transform-origin: center;
 }
 
 .monster-card p {
-    margin: .5vw;
+    margin: 0.5rem 0;
 }
 
 .item-card {
     border: 1px solid var(--gold);
     width: 25vw;
+    min-width: 280px;
+    max-width: 520px;
 }
 
-/* === Interactions: Editable Text === */
+/* ===== Editable ===== */
 .monster-card h3,
 .monster-card p span,
 .monster-card ul li {
     cursor: text;
-    transition: background 0.3s ease;
+    transition: background 0.2s ease;
 }
 
 .monster-card h3:focus,
 .monster-card p span:focus,
 .monster-card ul li:focus {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     outline: none;
     border-radius: var(--border-radius);
 }
 
-/* === Hover Effect: Monster Card === */
+/* ===== Hover ===== */
 .monster-card:hover {
     background-color: var(--dark);
-    box-shadow: var(--box-hover);
-    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    transform: translateZ(0) scale(1.03);
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .monster-card {
+        transition: none;
+    }
+
+    .monster-card:hover {
+        transform: none;
+    }
+}
+
+/* ===== Buttons ===== */
 .button-row {
     display: flex;
     gap: var(--padding);
@@ -78,38 +95,49 @@
 }
 
 .copy-npc,
-.delete-monster {
-    flex: 1;
-    padding: var(--padding);
-    border-radius: var(--border-radius);
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-/* === Buttons (Shared Styling) === */
+.btn-copy,
+.delete-monster,
+.btn-remove,
 .donate-button {
     border: none;
     border-radius: var(--border-radius);
     padding: var(--padding);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.2s ease, filter 0.2s ease;
 }
 
-/* === Delete Button === */
-.delete-monster {
+.copy-npc,
+.btn-copy {
+    background: var(--theme-alt);
+    color: var(--white);
+}
+
+.copy-npc:hover,
+.btn-copy:hover {
+    filter: brightness(110%);
+}
+
+.delete-monster,
+.btn-remove {
     background: #d9534f;
+    color: #fff;
 }
 
-.delete-monster:hover {
+.delete-monster:hover,
+.btn-remove:hover {
     background: #b52b27;
 }
 
-.copy-npc:hover {
-    background: #b52b27;
+.donate-button {
+    background: var(--gold);
+    color: #1a1a1a;
 }
 
+.donate-button:hover {
+    filter: brightness(108%);
+}
+
+/* ===== Monster section ===== */
 #monster {
     background-image: url('../assets/images/Monsta.png');
     background-size: 50vw;
@@ -118,6 +146,7 @@
     min-height: 700px;
 }
 
+/* ===== Generator & outputs ===== */
 .generator-row {
     display: flex;
     flex-wrap: wrap;
@@ -134,9 +163,11 @@
     padding: var(--padding);
 }
 
+/* ===== Responsive ===== */
 @media (max-width: 690px) {
     .item-card {
-        width: 40%;
+        width: 100%;
+        min-width: 0;
     }
 
     .monster-card {
@@ -151,4 +182,161 @@
     #monster {
         background-size: 100%;
     }
+}
+
+/* ===== Features ===== */
+.features {
+    margin: 10px 0 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.features li {
+    margin-left: 10px;
+    line-height: 1.5;
+    padding-left: 1.25em;
+    text-indent: -0.75em;
+    word-break: break-word;
+}
+
+.features li::before {
+    content: "💀";
+    position: relative;
+    left: 0.35em;
+    margin-right: 0.25em;
+    color: var(--gold);
+    font-size: 0.8em;
+    display: inline-block;
+}
+
+.features li.add-line {
+    color: var(--text-cream);
+}
+
+.monster-card {
+    position: relative;
+}
+
+.info-mon {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1vw;
+    padding: var(--padding);
+    margin: 8px 0;
+    background: var(--theme-1);
+    border: 1px solid var(--theme-3);
+    border-radius: var(--border-radius);
+    font-size: 0.85rem;
+    color: var(--text-plain);
+    box-shadow: var(--box-shadow);
+}
+
+.info-mon span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.2;
+}
+
+.info-mon strong {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+.info-mon .info-icon {
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+/* Origin Tag Positioning */
+.origin-tag {
+    padding: 2px 6px;
+    border-radius: var(--border-radius);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    pointer-events: none;
+}
+
+/* Origin Colors */
+.origin-tag.basic {
+    background-color: darkslategray;
+}
+
+.origin-tag.arcane {
+    background-color: darkcyan;
+}
+
+.origin-tag.tech {
+    background-color: darkblue;
+}
+
+.origin-tag.crystal {
+    background-color: rgb(79, 0, 0);
+}
+
+.origin-tag.nature {
+    background-color: #1b7a41;
+}
+
+.origin-tag.vozian {
+    background-color: #502379;
+}
+
+.origin-tag.chrono {
+    background-color: #8a5408;
+}
+
+.origin-tag.chaos {
+    background-color: #331f0e;
+}
+
+.origin-tag.life {
+    background-color: #6b2a6a;
+}
+
+.origin-tag.elemental {
+    background-color: #275c65;
+}
+
+.origin-tag.dragon {
+    background-color: #ff5500;
+}
+
+.origin-tag.celestial {
+    background-color: #7a4000;
+}
+
+/* Fallback */
+.origin-tag.none {
+    background-color: #999;
+}
+
+.tag-action {
+    background: var(--theme-2);
+}
+
+.tag-check {
+    background: #6a1b9a;
+}
+
+.tag-range {
+    background: var(--warm-1);
+}
+
+.tag-duration {
+    background: var(--warm-2);
+}
+
+.tag-damage {
+    background: #c62828;
+}
+
+.tag-armor {
+    background: #5d4037;
+}
+
+.tag-condition {
+    background: #3949ab;
 }
