@@ -71,6 +71,7 @@ button:hover {
     font-weight: 700;
     font-size: 16px;
     margin-bottom: 2px;
+    color: var(--gold-3);
 }
 
 .meta {
@@ -93,11 +94,12 @@ button:hover {
 }
 
 .chip {
-    border: 1px solid #385050;
+    border: 1px solid var(--gold-2);
     border-radius: 999px;
     padding: 2px 8px;
     font-size: 11px;
     opacity: .95;
+    background-color: var(--theme-1);
 }
 
 /* --- Tools --- */
@@ -105,4 +107,28 @@ button:hover {
     display: flex;
     gap: 8px;
     margin-top: 8px;
+}
+
+.card {
+    position: relative;
+}
+
+.origin-pills {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    max-width: 60%;
+}
+
+.origin-tag {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    color: #eee;
+    border: 1px solid rgba(255, 255, 255, .15);
+    text-transform: capitalize;
+    white-space: nowrap;
 }

@@ -6,7 +6,7 @@
         "location": "Universal",
         "rank": 0.1,
         "lineage": "Self",
-        "tag": ""
+        "origin": "all"
     },
     {
         "name": "Chronus",
@@ -15,7 +15,7 @@
         "location": "Universal",
         "rank": 0.1,
         "lineage": "Self",
-        "tag": ""
+        "origin": "all"
     },
     {
         "name": "Dumda",
@@ -24,7 +24,7 @@
         "location": "Universal",
         "rank": 0.1,
         "lineage": "Self",
-        "tag": ""
+        "origin": "all"
     },
     {
         "name": "Exembar",
@@ -33,7 +33,7 @@
         "location": "Universal",
         "rank": 0.1,
         "lineage": "Self",
-        "tag": ""
+        "origin": "all"
     },
     {
         "name": "Jesha",
@@ -42,7 +42,7 @@
         "location": "Universal",
         "rank": 0.1,
         "lineage": "Self",
-        "tag": ""
+        "origin": "all"
     },
     {
         "name": "Signessen",
@@ -51,7 +51,7 @@
         "location": "Universal",
         "rank": 0.1,
         "lineage": "Self",
-        "tag": ""
+        "origin": "all"
     },
     {
         "name": "Zuinmuir",
@@ -60,25 +60,25 @@
         "location": "Universal",
         "rank": 0.1,
         "lineage": "Self",
-        "tag": ""
+        "origin": "all"
     },
     {
         "name": "Tala",
         "words": "Growth, Guidance, Love, Nature",
-        "desc": "Tala, Mother Nature, is the ethereal embodiment of life, growth, and the natural world. She is the divine progenitor of the elves and all beings that inhabit the fey realms. Tala's presence is deeply entwined with the living essence of the world, her very heart manifested as the World Tree, the source of life and the focal point of the fey realms.\n\nCloaked in verdant foliage and adorned with blossoms of every hue, Tala exudes an aura of life and vitality. Her gentle, nurturing touch brings forth new life and guides the growth of all living things. However, her heart aches for her first son, Burnfyre, whose tragic demise led to the disappearance of autumn on the planet, leaving the world in perpetual transition between summer and winter.\n\nTitania, the queen of the elves and ruler of the fey, is believed to be an avatar of Tala herself. In this form, Tala interacts with her creations more intimately, guiding them in harmony with the natural world. Tala's essence continues to permeate the world of Shek, her presence both comforting and inspiring to those who revere the beauty and power of nature.",
+        "desc": "Tala, Mother Nature, is the ethereal embodiment of life, growth, and the natural world. She is the divine progenitor of the elves and all beings that inhabit the fey realms. Tala's presence is deeply entwined with the living essence of the world, her very heart manifested as the World Tree, the source of life and the focal point of the fey realms.\nCloaked in verdant foliage and adorned with blossoms of every hue, Tala exudes an aura of life and vitality. Her gentle, nurturing touch brings forth new life and guides the growth of all living things. However, her heart aches for her first son, Burnfyre, whose tragic demise led to the disappearance of autumn on the planet, leaving the world in perpetual transition between summer and winter.\nTitania, the queen of the elves and ruler of the fey, is believed to be an avatar of Tala herself. In this form, Tala interacts with her creations more intimately, guiding them in harmony with the natural world. Tala's essence continues to permeate the world of Shek, her presence both comforting and inspiring to those who revere the beauty and power of nature.",
         "location": "Fey",
         "rank": 4.1,
         "lineage": "Self",
-        "tag": "mother nature"
+        "origin": "nature"
     },
     {
         "name": "Khalas God-Dragon",
         "words": "Weather, Alignment, Inspiration, Dragon, Ancient",
-        "desc": "Khalas, the God-Dragon, is an ancient and dormant being of immense power and size. Its colossal body lies still, covered in majestic, iridescent scales that shimmer and reflect the colors of the world. Since its battle with Vozo thousands of years ago, Khalas has remained in a deep slumber, its presence commanding respect and reverence.\n\nWhile asleep, the God-Dragon's breath subtly alters the seasons, causing them to shift and change. This brings about a love-hate relationship with Tala, Mother Nature, as she is bound to the whims of the slumbering Khalas. Their intertwined fates create a delicate balance, with Tala's nurturing influence tempering Khalas' raw, untamed power.\n\nWorshiped by dragons and other powerful creatures, Khalas symbolizes the strength and unpredictability of nature, while Tala represents its life-giving and nurturing aspects. The two deities, though bound by circumstance, remain powerful and enigmatic forces within the world of Shek.",
+        "desc": "Khalas, the God-Dragon, is an ancient and dormant being of immense power and size. Its colossal body lies still, covered in majestic, iridescent scales that shimmer and reflect the colors of the world. Since its battle with Vozo thousands of years ago, Khalas has remained in a deep slumber, its presence commanding respect and reverence.\nWhile asleep, the God-Dragon's breath subtly alters the seasons, causing them to shift and change. This brings about a love-hate relationship with Tala, Mother Nature, as she is bound to the whims of the slumbering Khalas. Their intertwined fates create a delicate balance, with Tala's nurturing influence tempering Khalas' raw, untamed power.\nWorshiped by dragons and other powerful creatures, Khalas symbolizes the strength and unpredictability of nature, while Tala represents its life-giving and nurturing aspects. The two deities, though bound by circumstance, remain powerful and enigmatic forces within the world of Shek.",
         "location": "Global",
         "rank": 4.2,
         "lineage": "Alien",
-        "tag": ""
+        "origin": "dragon"
     },
     {
         "name": "Vozo",
@@ -87,7 +87,7 @@
         "location": "dreamsea (Imprisoned and separated)",
         "rank": 5,
         "lineage": "Self",
-        "tag": ""
+        "origin": "vozian"
     },
     {
         "name": "The Dawn",
@@ -96,7 +96,7 @@
         "location": "Global",
         "rank": 6,
         "lineage": "Exembar",
-        "tag": ""
+        "origin": "celestial"
     },
     {
         "name": "Undying",
@@ -105,7 +105,7 @@
         "location": "Global",
         "rank": 6.5,
         "lineage": "Chronus",
-        "tag": ""
+        "origin": "life"
     },
     {
         "name": "Yurmundas, Summer Archfey",
@@ -114,7 +114,7 @@
         "location": "Fey, Global",
         "rank": 7,
         "lineage": "Tala, Exembar",
-        "tag": ""
+        "origin": "nature"
     },
     {
         "name": "Hamsa, Soul Archfey",
@@ -123,7 +123,7 @@
         "location": "Fey, shadow, dreamsea",
         "rank": 7.5,
         "lineage": "Tala, Chronus",
-        "tag": ""
+        "origin": "nature"
     },
     {
         "name": "Karne, Winter Archfey",
@@ -132,7 +132,7 @@
         "location": "Fey, Shadow, Winter",
         "rank": 8,
         "lineage": "Zuinmuir, Tala",
-        "tag": ""
+        "origin": "nature"
     },
     {
         "name": "Hpem (Titania)",
@@ -141,7 +141,7 @@
         "location": "Fey, dreamsea",
         "rank": 8.5,
         "lineage": "Tala, Dumda",
-        "tag": ""
+        "origin": "nature"
     },
     {
         "name": "Asmodeus",
@@ -150,7 +150,7 @@
         "location": "ordealis",
         "rank": 9,
         "lineage": "Exembar, VoZo",
-        "tag": ""
+        "origin": "vozian"
     },
     {
         "name": "Nocha",
@@ -159,7 +159,7 @@
         "location": "Fey, Shadow, dreamsea, Global",
         "rank": 9.5,
         "lineage": "Jesha",
-        "tag": ""
+        "origin": "nature"
     },
     {
         "name": "Diabolus",
@@ -168,7 +168,7 @@
         "location": "ordealis, Global",
         "rank": 10,
         "lineage": "Dumda VoZo",
-        "tag": ""
+        "origin": "vozian"
     },
     {
         "name": "Vultus",
@@ -177,7 +177,7 @@
         "location": "dreamsea",
         "rank": 10.5,
         "lineage": "Signessen",
-        "tag": ""
+        "origin": "vozian"
     },
     {
         "name": "Yeeshnu",
@@ -186,7 +186,7 @@
         "location": "Global",
         "rank": 11,
         "lineage": "Exembar",
-        "tag": ""
+        "origin": "life"
     },
     {
         "name": "Mephisto",
@@ -195,7 +195,7 @@
         "location": "Fey, dreamsea",
         "rank": 11.5,
         "lineage": "Exembar VoZo",
-        "tag": "orc, first"
+        "origin": "chaos"
     },
     {
         "name": "The Elements",
@@ -204,7 +204,7 @@
         "location": "Global, Chaos",
         "rank": 12,
         "lineage": "Parent: Brakkus\nDirect Siblings:\nBhaal, DIabolus",
-        "tag": ""
+        "origin": "elemental"
     },
     {
         "name": "Temprusk",
@@ -213,7 +213,7 @@
         "location": "Global, Chaos",
         "rank": 12.5,
         "lineage": "Kistar",
-        "tag": ""
+        "origin": "chaos"
     },
     {
         "name": "Maldios (Maldios)",
@@ -222,7 +222,7 @@
         "location": "ordealis",
         "rank": 13,
         "lineage": "The Elements",
-        "tag": ""
+        "origin": "vozian"
     },
     {
         "name": "The Emperor",
@@ -231,7 +231,7 @@
         "location": "Global",
         "rank": 13.5,
         "lineage": "Lineage",
-        "tag": ""
+        "origin": "arcane"
     },
     {
         "name": "Tyrant Lord Breaker",
@@ -240,7 +240,7 @@
         "location": "Global, Undark",
         "rank": 14,
         "lineage": "Father: Asmodeus\nSiblings:\nThe Watcher, The Stone King",
-        "tag": ""
+        "origin": "tech"
     },
     {
         "name": "Caishen",
@@ -249,7 +249,7 @@
         "location": "Global, Fey",
         "rank": 14.5,
         "lineage": "Tala, Exembar",
-        "tag": "gargoyle, first"
+        "origin": "celestial"
     },
     {
         "name": "Brycotarian",
@@ -258,7 +258,7 @@
         "location": "Global, undark",
         "rank": 15,
         "lineage": "Amalgamation",
-        "tag": ""
+        "origin": "celestial, vozian"
     },
     {
         "name": "Whisper",
@@ -267,7 +267,7 @@
         "location": "Shadow, Global",
         "rank": 15.5,
         "lineage": "Brakkus",
-        "tag": "lich, first"
+        "origin": "arcane"
     },
     {
         "name": "Daruuk, The Thorned Prince",
@@ -276,7 +276,7 @@
         "location": "ordealis",
         "rank": 16,
         "lineage": "Lineage",
-        "tag": "demon, angel"
+        "origin": "vozian"
     },
     {
         "name": "Falkaust",
@@ -285,7 +285,7 @@
         "location": "Ostrio",
         "rank": 16.5,
         "lineage": "Tala",
-        "tag": ""
+        "origin": "crystal"
     },
     {
         "name": "Primus, King of Angels",
@@ -294,7 +294,7 @@
         "location": "Global, Celestia",
         "rank": 17,
         "lineage": "Exembar",
-        "tag": ""
+        "origin": "celestial"
     },
     {
         "name": "Noh, Spring Archfey",
@@ -303,7 +303,7 @@
         "location": "Fey",
         "rank": 17.5,
         "lineage": "Dumda",
-        "tag": ""
+        "origin": "nature"
     },
     {
         "name": "Fenrir or Fenris",
@@ -312,7 +312,7 @@
         "location": "Fey, Shadow",
         "rank": 18,
         "lineage": "Tala",
-        "tag": ""
+        "origin": "nature"
     },
     {
         "name": "Enou",
@@ -321,7 +321,7 @@
         "location": "Global",
         "rank": 18.5,
         "lineage": "Burnfyre",
-        "tag": ""
+        "origin": "life"
     },
     {
         "name": "Hav",
@@ -330,7 +330,7 @@
         "location": "Fey",
         "rank": 19,
         "lineage": "Brakkus",
-        "tag": ""
+        "origin": "nature"
     },
     {
         "name": "Johanna, The Bear",
@@ -339,7 +339,7 @@
         "location": "Global, Fey",
         "rank": 19.5,
         "lineage": "Asmodues",
-        "tag": ""
+        "origin": "chaos"
     },
     {
         "name": "Bhaal",
@@ -348,7 +348,7 @@
         "location": "dreamsea",
         "rank": 20,
         "lineage": "Noh, Ymir",
-        "tag": ""
+        "origin": "life"
     },
     {
         "name": "Sov",
@@ -357,7 +357,7 @@
         "location": "Kingslands, Ostrio, prime",
         "rank": 20.5,
         "lineage": "Fenris",
-        "tag": ""
+        "origin": "nature"
     },
     {
         "name": "Beggar",
@@ -366,303 +366,303 @@
         "location": "Kingslands, Ostrio, prime",
         "rank": 21,
         "lineage": "Karne",
-        "tag": ""
+        "origin": "life"
     },
     {
         "name": "Lachesis ",
         "words": "Weave, Web, Fate",
-        "desc": "Lachesis was born of Tala, the World-Heart and breath of nature, in a time before seasons solidified. Her first cries echoed in the blooming groves of the Feywild, stirring petals and serpents alike. While others see destiny as a line or path, Lachesis perceives it as an ever-shifting tapestry. She is not a goddess of control, but of invitation. Her weaving is not merely of lives, but of the potential within them.\n\nEach silk thread she spins is an offer. A new love. A second chance. A transformation from curse to choice. The spiders of her court whisper truths through pattern and movement, their webs glimmering with dew and decision. When drow, changelings, or lost wanderers slip into the Feywild, it is often Lachesis they meet first. She does not demand devotion. She offers change.\n\nOf the three sisters, Lachesis is the most gentle in demeanor, yet perhaps the most dangerous in what she makes possible. In her presence, destinies unfold like flowers in spring, and few leave unchanged. She is adored by poets, lovers, and those who believe fate can be rewritten with enough courage.",
+        "desc": "Lachesis was born of Tala, the World-Heart and breath of nature, in a time before seasons solidified. Her first cries echoed in the blooming groves of the Feywild, stirring petals and serpents alike. While others see destiny as a line or path, Lachesis perceives it as an ever-shifting tapestry. She is not a goddess of control, but of invitation. Her weaving is not merely of lives, but of the potential within them.\nEach silk thread she spins is an offer. A new love. A second chance. A transformation from curse to choice. The spiders of her court whisper truths through pattern and movement, their webs glimmering with dew and decision. When drow, changelings, or lost wanderers slip into the Feywild, it is often Lachesis they meet first. She does not demand devotion. She offers change.\nOf the three sisters, Lachesis is the most gentle in demeanor, yet perhaps the most dangerous in what she makes possible. In her presence, destinies unfold like flowers in spring, and few leave unchanged. She is adored by poets, lovers, and those who believe fate can be rewritten with enough courage.",
         "location": "Fey, Spring-Touched Groves",
         "rank": 22,
         "lineage": "Wish",
-        "tag": ""
+        "origin": "chrono"
     },
     {
         "name": "Clotho",
         "words": "Complexity, Prediction, Interfere",
-        "desc": "Clotho emerged from Jesha, goddess of silence and prophecy, in the cold hush between stars. She is a child of the void and the celestial firmament, birthed not from desire or suffering, but from cosmic equilibrium. Clotho did not cry when she was born. She simply opened her eyes and began to weave. Her threads span galaxies, her patterns echo in gravitational pulses, and her loom is silent, tireless, and eternal.\n\nMore than any god, Clotho understands cause and effect. She is not a god of fate in the dramatic sense, but of systems, patterns, and probabilities beyond mortal comprehension. Her followers do not expect answers. They seek glimpses. A flicker of clarity in a storm of choices. A sign hidden in a spider’s walk, a repeating number in the stars, a dream that echoes too long.\n\nClotho sits at the edge of all knowing, watching threads unravel across time. Her throne is a lattice of starlight and shadow, with threads of fate stretching infinitely in every direction. It was she who foresaw VoZo’s fall, not in vision but in shape, and her divine purpose emerged not from ambition but from recognition. Her ascension was a silent step into a role the universe demanded.\n\nThe drow call her Mother Weave, and believe their lives are among her most intricate patterns. Celestials refer to her as The Unblinking Architect. To mortals, she is mystery, patience, and the unbearable weight of meaning.",
+        "desc": "Clotho emerged from Jesha, goddess of silence and prophecy, in the cold hush between stars. She is a child of the void and the celestial firmament, birthed not from desire or suffering, but from cosmic equilibrium. Clotho did not cry when she was born. She simply opened her eyes and began to weave. Her threads span galaxies, her patterns echo in gravitational pulses, and her loom is silent, tireless, and eternal.\nMore than any god, Clotho understands cause and effect. She is not a god of fate in the dramatic sense, but of systems, patterns, and probabilities beyond mortal comprehension. Her followers do not expect answers. They seek glimpses. A flicker of clarity in a storm of choices. A sign hidden in a spider’s walk, a repeating number in the stars, a dream that echoes too long.\nClotho sits at the edge of all knowing, watching threads unravel across time. Her throne is a lattice of starlight and shadow, with threads of fate stretching infinitely in every direction. It was she who foresaw VoZo’s fall, not in vision but in shape, and her divine purpose emerged not from ambition but from recognition. Her ascension was a silent step into a role the universe demanded.\nThe drow call her Mother Weave, and believe their lives are among her most intricate patterns. Celestials refer to her as The Unblinking Architect. To mortals, she is mystery, patience, and the unbearable weight of meaning.",
         "location": "Kingslands",
         "rank": 22,
         "lineage": "Diabolus, Chronos",
-        "tag": ""
+        "origin": "chrono"
     },
     {
         "name": "Atropos ",
         "words": "Lust, Influnce, Hive",
-        "desc": "Atropos was conceived in the heart of Ordealis, the Infernal River that all souls must cross. Her mother was pain, her cradle was fire, and her lullaby was the moaning of the dead. She is not merely the goddess of death or passion, but of the inevitable convergence of the two. Her love is consuming, her beauty sharp. She is the guardian of all things that reach their end, and the final kiss before something shatters.\n\nWhere her sister Lachesis measures the thread and Clotho observes its weave, Atropos severs. But her cutting is not cruel. It is merciful, deliberate, and needed. Without her, nothing would ever end, and rot would overtake growth. Her realm is overrun with insect-spirits, each one a messenger of expiration. Moths cling to her hair. Fireflies trail in her wake. The night blooms with her scent.\n\nWorshipers of Atropos are many, though they rarely admit it openly. She is adored in funeral temples, among assassins, midwives, and those who trade in flesh and secrets. She is not chaos, but the moment of stillness that follows a climax, a death, or a goodbye. She is the mother of hunters, the tender executioner, and the ache in every beautiful moment we cannot keep.",
+        "desc": "Atropos was conceived in the heart of Ordealis, the Infernal River that all souls must cross. Her mother was pain, her cradle was fire, and her lullaby was the moaning of the dead. She is not merely the goddess of death or passion, but of the inevitable convergence of the two. Her love is consuming, her beauty sharp. She is the guardian of all things that reach their end, and the final kiss before something shatters.\nWhere her sister Lachesis measures the thread and Clotho observes its weave, Atropos severs. But her cutting is not cruel. It is merciful, deliberate, and needed. Without her, nothing would ever end, and rot would overtake growth. Her realm is overrun with insect-spirits, each one a messenger of expiration. Moths cling to her hair. Fireflies trail in her wake. The night blooms with her scent.\nWorshipers of Atropos are many, though they rarely admit it openly. She is adored in funeral temples, among assassins, midwives, and those who trade in flesh and secrets. She is not chaos, but the moment of stillness that follows a climax, a death, or a goodbye. She is the mother of hunters, the tender executioner, and the ache in every beautiful moment we cannot keep.",
         "location": "Ordealis, The Embersworn Court",
         "rank": 22,
         "lineage": "Tala, Chronos",
-        "tag": ""
+        "origin": "chrono"
     },
     {
         "name": "Tortugreg",
         "words": "Reverly",
         "desc": "Party man, Turtle",
         "location": "Ostrio, prime",
-        "rank": 23,
+        "rank": 23.3,
         "lineage": "Jesha, Chronos",
-        "tag": ""
+        "origin": "basic"
     },
     {
         "name": "Felsmoke",
         "words": "Mystic, eternity",
         "desc": "In the caverns that stretch into infinity, Felsmoke, the Draco Lich, rests atop the largest hoard any dragon has ever amassed. Not only is his treasure vast in wealth, but it is also imbued with the very essence of time and the universe. Tales speak of artifacts that hold the secrets of existence, hidden among gold and jewels. Sorcerers and mystics from around Shek make perilous journeys to seek an audience with Felsmoke, hoping to glimpse the arcane knowledge he protects. Every century, during the Confluence of Mystics, mages gather to celebrate Felsmoke, sharing spells and stories inspired by the eternal keeper.",
         "location": "Ostrio, prime",
-        "rank": 24,
+        "rank": 23.6,
         "lineage": "",
-        "tag": ""
+        "origin": "life"
     },
     {
         "name": "Jesus \"Tiamat\" Christ",
         "words": "Gluttony, Food, Eating",
         "desc": "5 headed dragon of eating stuff",
         "location": "ordealis",
-        "rank": 25,
+        "rank": 23.9,
         "lineage": "Khalas, VoZo",
-        "tag": ""
+        "origin": "dragon, vozian"
     },
     {
         "name": "Vassago",
         "words": "Violence, Murder",
         "desc": "Emerging from the bloodstained labyrinth of time, Vassago stands as the primal minotaur, the very embodiment of violence and murder. With horns that have impaled kings and hooves that have trampled cities, he is both revered and feared. Assassins and warriors whisper prayers to him before embarking on their darkest deeds, seeking his brutal blessings. In the Labyrinth Festival, a complex maze is erected, and participants navigate its treacherous paths, reenacting the legendary hunts of Vassago. It's not just a test of skill, but also a ritual to honor the Minotaur Lord's eternal reign over the art of killing.",
         "location": "ordealis",
-        "rank": 26,
+        "rank": 24.2,
         "lineage": "",
-        "tag": "First, minotaur"
+        "origin": "nature, vozian"
     },
     {
         "name": "Behemoth",
         "words": "Treachery, Memory",
         "desc": "Behemoth, the First Elephantine, is the eternal guardian of the river Styx, a waterway feared not for its treacherous currents but for its ability to seize memories from those who dare to cross. Massive in stature with tusks made of obsidian and eyes that hold the reflections of countless lost memories, Behemoth ferries souls on his barge, aptly named Lost Thoughts. Those who seek to traverse the Styx offer memories as tribute, willingly surrendering fragments of their past to the great elephantine god. Once a year, a ritual called the Memory Offering is held, where the devout come to the riverbanks, whispering forgotten tales into the waters, hoping to appease Behemoth and perhaps, regain fragments of what was once lost.",
         "location": "ordealis",
-        "rank": 27,
+        "rank": 24.5,
         "lineage": "",
-        "tag": "First, Elephantine"
+        "origin": "nature, vozian"
     },
     {
         "name": "Tuchulcha",
         "words": "Fraud, Ooze",
         "desc": "Emerging from the mires and murky depths is Tuchulcha, the Oozemother. Deceptive and ever-shifting, she embodies the very nature of fraud. Her form is amorphous, constantly changing, making it impossible to discern her true essence. Temples dedicated to Tuchulcha are few but are characterized by pools of thick, viscous liquids where devotees offer sacrifices, hoping to receive blessings in their deceptive endeavors. The Festival of Shifting Forms is a major event were alchemists and mages gather, experimenting with liquids and potions that alter appearances, paying homage to the mistress of fraud.",
         "location": "ordealis",
-        "rank": 28,
+        "rank": 24.8,
         "lineage": "",
-        "tag": "ooze"
+        "origin": "nature, vozian"
     },
     {
         "name": "Gash",
         "words": "Heresy, Trinkets",
         "desc": "Trapped in the fiery depths of the infernal, Gash, the deity of heresy, finds solace only in his obsession with trinkets and magical artifacts. Represented as a figure shrouded in flames, with hands forever reaching out for the next enchanted item, his temples are treasure troves of relics, both cursed and blessed. Worshipers, often mages and treasure hunters, venture into dangerous realms to retrieve magical items, offering them to Gash in exchange for power or protection. The Infernal Auction, held every decade, is a grand event where the most prized possessions are bid upon, not with gold, but with promises, secrets, and sometimes, souls.",
         "location": "ordealis",
-        "rank": 29,
+        "rank": 25.1,
         "lineage": "",
-        "tag": ""
+        "origin": "tech, vozian"
     },
     {
         "name": "Pluto {Limbo}",
         "words": "Stillness, hunt",
         "desc": "In the silent corners of the infernal, Pluto, the ranger of the damned, prowls. Known for his unmatched stealth and predatory skill, he is the embodiment of stillness before the hunt. With eyes that can pierce through the darkest shadows and a bow crafted from the bones of fallen angels, Pluto is both a protector and hunter of souls that wander the infernal. Followers, primarily rangers and hunters, seek his guidance to perfect their skills. The Silent Vigil is an annual event where devotees gather in secluded woods, maintaining complete silence, honing their senses, and paying homage to the master huntsman of the infernal.",
         "location": "ordealis",
-        "rank": 30,
+        "rank": 25.4,
         "lineage": "",
-        "tag": ""
+        "origin": "vozian"
     },
     {
         "name": "Ventress of Iron",
         "words": "Ferrus, Smithing",
         "desc": "Ventress, with her powerful four arms, is the formidable queen of combat and the deity of smithing. Each arm represents an aspect of her domain: forging, wielding, defending, and innovating. Her temples are often found adjacent to blacksmiths' forges, roaring with flames and echoing with the rhythmic clanging of hammer on anvil. Being the sister and rival to Bosk, the tales of their epic duels are legendary and serve as inspirational stories for warriors and blacksmiths alike. During the annual Forge Fest, smiths from all over Shek gather to showcase their craft, compete, and pay homage to their divine patron, Ventress.",
         "location": "Fey Spring",
-        "rank": 31,
+        "rank": 25.7,
         "lineage": "",
-        "tag": ""
+        "origin": "nature, tech"
     },
     {
         "name": "Stormbane",
         "words": "Hero",
         "desc": "Once a humble druid, Stormbane's destiny was forever changed when he allied with a group of adventurers on a perilous quest, ultimately ascending to divinity as the god of heroes. His story is a testament to the idea that heroism can emerge from the unlikeliest of places. Shrines dedicated to Stormbane are often erected at the starting points of great journeys or at crossroads, serving as places of blessing for those about to embark on adventures. Every year, the Hero's Dawn is celebrated, marking the day of Stormbane's ascent, and adventurers from far and wide share tales of bravery, camaraderie, and sacrifice.",
         "location": "Fey, Hero",
-        "rank": 32,
+        "rank": 26,
         "lineage": "",
-        "tag": ""
+        "origin": "nature"
     },
     {
         "name": "Meris",
         "words": "Shifters",
         "desc": "Guardian of the ever-shifting borders of the Fey realm, Meris stands as a beacon for all shifters, those beings able to change form and essence. With eyes that change hue and form with his emotions and a cloak woven from the very essence of the Feywild, Meris ensures the safety of his domain and its inhabitants. Sacred groves dedicated to him are places where shifters come to train, hone their skills, and connect with their divine protector. On the night of the Shifting Moon, a special event occurs where shifters display their transformations in a dazzling spectacle, celebrating their unique gift and paying homage to their lord.",
         "location": "Fey, Hero",
-        "rank": 33,
+        "rank": 26.3,
         "lineage": "",
-        "tag": ""
+        "origin": "nature"
     },
     {
         "name": "Beinvinger",
         "words": "Bone",
         "desc": "In the twilight realm where bone fairies flutter and blood sprites dance, Beinvinger reigns supreme. This deity, with a crown made of intricately carved bone and robes dyed in deep crimson, governs the delicate balance between life and decay. Those who wish to communicate with the spirits of the departed or seek the services of the bone fairies often invoke Beinvinger's name. The Night of Whispered Secrets is a revered event when the veil between realms is thin, allowing for easier communication with the other side and celebrating Beinvinger's dominion.",
         "location": "Fey, Winter",
-        "rank": 34,
+        "rank": 26.6,
         "lineage": "Karne",
-        "tag": ""
+        "origin": "nature, life"
     },
     {
         "name": "Baset",
         "words": "Drifter, Nomad",
         "desc": "The elegant and enigmatic Baset, a feline deity, stands as a symbol of both protection and fertility. As the child of the formidable Maldios and the graceful Nocha, Baset embodies the dual nature of wandering freely yet always being watched over. Temples dedicated to Baset are adorned with intricate mosaics showcasing various phases of a cat's life, from playful kitten to wise elder. The Festival of Purring Echoes is a time when devotees gather, sharing tales of wanderlust, protection, and the bounties of life, all under the watchful gaze of the Drifter Cat God, Baset.",
         "location": "Planeswalker, Fey, ordealis, Abyss, Celestial, Prime, Global",
-        "rank": 35,
-        "lineage": "",
-        "tag": ""
-    },
-    {
-        "name": "Nasius",
-        "words": "Lineage",
-        "desc": "Child of the son of Fenris & the shadow king, Grandson of Fenris, Great Grandchild of Noh and Ymir. Killed Ymir and took his domain as the new Archfey of the spring court",
-        "location": "Fey, Spring",
-        "rank": 36,
+        "rank": 26.9,
         "lineage": "Maldios - Nocha",
-        "tag": ""
+        "origin": "nature, vozian"
     },
     {
         "name": "Jera",
         "words": "Jade",
         "desc": "With skin gleaming like polished jade and eyes that mirror the depth of the Feywild, Jera reigns as the Fey Queen in the Kingslands. Her realm, verdant and shimmering, is a bridge between the material and the Fey. The Festival of Emerald Dreams celebrates Jera's connection to both worlds.",
         "location": "Fey, Kingslands",
-        "rank": 37,
+        "rank": 28,
         "lineage": "",
-        "tag": ""
+        "origin": "nature, elemental"
+    },
+    {
+        "name": "Nasius",
+        "words": "Lineage",
+        "desc": "Child of the son of Fenris & the shadow king, Grandson of Fenris, Great Grandchild of Noh and Ymir. Killed Ymir and took his domain as the new Archfey of the spring court",
+        "location": "Fey, Spring",
+        "rank": 29.5,
+        "lineage": "",
+        "origin": "nature"
     },
     {
         "name": "Queldethenarous",
         "words": "Learning, Arcana",
         "desc": "Draped in the azure majesty of his own scales, Queldethenarous is the embodiment of knowledge and arcane wisdom. As the grand blue dragon of knowledge, he is the revered headmaster of Stonetooth Academy, guiding both novices and seasoned magi in their quest for enlightenment. Beneath his vast wings, scrolls and spell books from across realms find a home. The Day of Illumination is an annual festivity at the academy, where scholars present their arcane discoveries, all under the watchful eye of the great blue dragon.",
         "location": "Ostrio, prime",
-        "rank": 38,
+        "rank": 30,
         "lineage": "",
-        "tag": ""
+        "origin": "dragon, arcane"
     },
     {
         "name": "Orod Goldrot",
         "words": "Gold-Rot",
         "desc": "A demon with a penchant for gold. is said to be roaming the prime material sticking his rotten gold into banks everywhere if he can. Banks have become wise to this and puit in tight security so that his rotting gold wont affect the rest",
         "location": "Ostrio",
-        "rank": 38.5,
+        "rank": 31,
         "lineage": "",
-        "tag": ""
-    },
-    {
-        "name": "The Watcher",
-        "words": "Guard, Gargoyle",
-        "desc": "Silent yet ever-vigilant, The Watcher stands as Ostrio's eternal guardian. This wayward gargoyle, along with a legion of followers, perches atop the city's spires and battlements, keeping a keen eye for any threats. Temples dedicated to The Watcher are adorned with statues, each representing a moment of Ostrio's storied history. The Guardian's Night is a tradition where Ostrio's citizens light candles, casting shadows in homage to their silent protector.",
-        "location": "Ostrio, prime",
-        "rank": 39,
-        "lineage": "",
-        "tag": ""
+        "origin": "vozain"
     },
     {
         "name": "Huginn & Muninn",
         "words": "Mimic, Domineer",
         "desc": "These twin deities, once the world's watchers for Kistar, have now carved their own destiny. With eyes that have seen the world's secrets, they and their kin serve as mimics, reflecting the universe's myriad wonders.",
         "location": "Fey",
-        "rank": 40,
+        "rank": 33,
         "lineage": "",
-        "tag": ""
+        "origin": "nature"
     },
     {
         "name": "Nag Panchami",
         "words": "Enlightenment",
         "desc": "Wrapped in the mystique of scales and exuding an aura of serenity, Nag Panchami is the reptilian god of enlightenment. Devotees meditate by tranquil pools, seeking visions and insights from the depths. Every solstice, the Ritual of the Serpent Dance is performed, symbolizing the shedding of old beliefs and the embrace of newfound wisdom.",
         "location": "Fey, dreamsea",
-        "rank": 40.5,
+        "rank": 34,
         "lineage": "",
-        "tag": ""
+        "origin": "nature"
     },
     {
         "name": "Bøsk",
         "words": "Combat",
         "desc": "Bøsk, the formidable queen of combat, stands in stark contrast to her rival, Ventress. With an armory that legends say can equip entire realms, Bøsk embodies the very spirit of battle. Warriors from every corner of Shek journey to her grand hall, seeking weapons and blessings. The Duel of Sisters, a ceremonial combat between Bøsk's and Ventress's champions, is a highly anticipated event that showcases their eternal rivalry.",
         "location": "Fey, Summer",
-        "rank": 41,
+        "rank": 35,
         "lineage": "",
-        "tag": ""
-    },
-    {
-        "name": "Undersun",
-        "words": "Explorer, Faith",
-        "desc": "Lord of the undersun, fungal keeper of light in the dwelfmire.",
-        "location": "Ostrio, Prime",
-        "rank": 42,
-        "lineage": "",
-        "tag": ""
-    },
-    {
-        "name": "Ms. Noble",
-        "words": "Dignity",
-        "desc": "From the esteemed House of Mages, Noble rises as the queen of madness, her allure intertwined with whispers of forbidden desires. Her domain, draped in both dignity and decadence, attracts those seeking power and pleasure. The Masquerade of Mystique, an event where boundaries blur, is a testament to Noble's dual nature.",
-        "location": "Kingslands, Prime",
-        "rank": 43,
-        "lineage": "",
-        "tag": ""
-    },
-    {
-        "name": "Kistar",
-        "words": "Shame, Defeat, Loss",
-        "desc": "Once omnipotent, Kistar now exists in a state of perpetual decay. His realm, the plane of chaos, crumbles, mirroring his own decline. Those who still revere him often gather in silent vigils, mourning a god's fall from grace.",
-        "location": "Realm of Chaos",
-        "rank": 46,
-        "lineage": "",
-        "tag": ""
-    },
-    {
-        "name": "Caivie",
-        "words": "Bramble",
-        "desc": "In the shadowed groves and whispered valleys of Shek, Caivie, known reverently as the Bramble Witch, weaves her ancient magics. Guardian of the sacred balance between the wilds and the woven tapestry of magic, she stands as a protector of all that grows untamed and free. Caivie's connection to the natural world runs deep, her powers manifesting through the verdant underbrush and thorny thickets that guard her hidden sanctum.\nAs the Bramble Witch, Caivie's word is a minor but profound power, capable of invoking the growth of protective thickets or conjuring the hidden paths through the wilds. Despite her imprisonment by the deity Ventress, her influence lingers in the whispering leaves and the resilient sprouts that break through stone, a testament to her enduring will and her unbreakable bond with the natural world.",
-        "location": "Feywild",
-        "rank": 47,
-        "lineage": "",
-        "tag": ""
-    },
-    {
-        "name": "Magister Loral",
-        "words": "Magi",
-        "desc": "The head of the Arcanium, an ancient elf with unmatched arcane knowledge. Rumors whisper that he's not entirely of this plane. Crossed horns through the mouth talks through the slit in his neck that has teeth. ",
-        "location": "Abyss",
-        "rank": 49,
-        "lineage": "Arcane, Magi",
-        "tag": ""
+        "origin": "nature"
     },
     {
         "name": "Bonkfyre",
         "words": "Remnant",
         "desc": "Once an avatar of the mighty Burnfyre, Bonkfyre is now the lingering spark of that ancient power. As the last vestige of Burnfyre's might, temples to Bonkfyre are places of both mourning and hope. The Festival of the Fading Flame celebrates Burnfyre's legacy and Bonkfyre's enduring spirit.",
         "location": "Ostrio, Prime",
-        "rank": 50,
+        "rank": 35.5,
         "lineage": "Burnfyre",
-        "tag": ""
+        "origin": "chaos, nature"
+    },
+    {
+        "name": "Undersun",
+        "words": "Explorer, Faith",
+        "desc": "Lord of the undersun, fungal keeper of light in the dwelfmire.",
+        "location": "Ostrio, Prime",
+        "rank": 36,
+        "lineage": "",
+        "origin": "Nature, Celestial"
+    },
+    {
+        "name": "Ms. Noble",
+        "words": "Dignity",
+        "desc": "From the esteemed House of Mages, Noble rises as the queen of madness, her allure intertwined with whispers of forbidden desires. Her domain, draped in both dignity and decadence, attracts those seeking power and pleasure. The Masquerade of Mystique, an event where boundaries blur, is a testament to Noble's dual nature.",
+        "location": "Kingslands, Prime",
+        "rank": 37,
+        "lineage": "",
+        "origin": "arcane"
+    },
+    {
+        "name": "The Watcher",
+        "words": "Guard, Gargoyle",
+        "desc": "Silent yet ever-vigilant, The Watcher stands as Ostrio's eternal guardian. This wayward gargoyle, along with a legion of followers, perches atop the city's spires and battlements, keeping a keen eye for any threats. Temples dedicated to The Watcher are adorned with statues, each representing a moment of Ostrio's storied history. The Guardian's Night is a tradition where Ostrio's citizens light candles, casting shadows in homage to their silent protector.",
+        "location": "Ostrio, prime",
+        "rank": 38,
+        "lineage": "",
+        "origin": "elemental"
+    },
+    {
+        "name": "Kistar",
+        "words": "Shame, Defeat, Loss",
+        "desc": "Once omnipotent, Kistar now exists in a state of perpetual decay. His realm, the plane of chaos, crumbles, mirroring his own decline. Those who still revere him often gather in silent vigils, mourning a god's fall from grace.",
+        "location": "Realm of Chaos",
+        "rank": 38,
+        "lineage": "",
+        "origin": "basic"
+    },
+    {
+        "name": "Caivie",
+        "words": "Bramble",
+        "desc": "In the shadowed groves and whispered valleys of Shek, Caivie, known reverently as the Bramble Witch, weaves her ancient magics. Guardian of the sacred balance between the wilds and the woven tapestry of magic, she stands as a protector of all that grows untamed and free. Caivie's connection to the natural world runs deep, her powers manifesting through the verdant underbrush and thorny thickets that guard her hidden sanctum.\nAs the Bramble Witch, Caivie's word is a minor but profound power, capable of invoking the growth of protective thickets or conjuring the hidden paths through the wilds. Despite her imprisonment by the deity Ventress, her influence lingers in the whispering leaves and the resilient sprouts that break through stone, a testament to her enduring will and her unbreakable bond with the natural world.",
+        "location": "Feywild",
+        "rank": 39,
+        "lineage": "",
+        "origin": "nature"
+    },
+    {
+        "name": "Magister Loral",
+        "words": "Magi",
+        "desc": "The head of the Arcanium, an ancient elf with unmatched arcane knowledge. Rumors whisper that he's not entirely of this plane. Crossed horns through the mouth talks through the slit in his neck that has teeth.",
+        "location": "Abyss",
+        "rank": 40,
+        "lineage": "Arcane, Magi",
+        "origin": "vozian, arcane"
     },
     {
         "name": "Principle Fun",
         "words": "Fun",
         "desc": "a sneaky little creature indeed",
         "location": "Ostrio, Prime",
-        "rank": 51,
+        "rank": 48,
         "lineage": "",
-        "tag": "troll"
+        "origin": "chaos"
     },
     {
         "name": "Vicanon",
         "words": "Summon",
         "desc": "Crystal entity of pure summoning power, gifted with intellect",
         "location": "The Void",
-        "rank": "",
+        "rank": 49.5,
         "lineage": "",
-        "tag": ""
+        "origin": "crystal"
     },
     {
         "name": "Claraene",
         "words": "",
         "desc": "Evading responsibility. Gifted with Luck",
         "location": "The Void",
-        "rank": "",
+        "rank": 49.5,
         "lineage": "Baset",
-        "tag": ""
+        "origin": "nature, elemental"
     }
 ]

@@ -1,103 +1,184 @@
 (async function () {
-    // Load data
-    const res = await fetch('../data/gods.json');
-    let raw = await res.json();
-    const gods = (Array.isArray(raw) ? raw : raw.gods || []).map(normalize);
+    const DATA_URL = '/data/gods.json';
+    const $ = s => document.querySelector(s);
+    const COLLATE = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
-    // Elements
-    const q = document.getElementById('q');
-    const locSel = document.getElementById('loc');
-    const linSel = document.getElementById('lin');
-    const sortSel = document.getElementById('sort');
-    const clearBtn = document.getElementById('clear');
-    const list = document.getElementById('list');
-    const count = document.getElementById('count');
+    // ---------- Load ----------
+    let gods = [];
+    try {
+        const res = await fetch(DATA_URL, { cache: 'no-store' });
+        const raw = await res.json();
+        gods = (Array.isArray(raw) ? raw : raw.gods || []).map(normalize);
+    } catch (e) {
+        console.error('Failed to load gods.json:', e);
+        $('#list').innerHTML = `<div class="card">Failed to load data.</div>`;
+        return;
+    }
 
-    // Populate dropdowns
-    fillSelect(locSel, uniq(gods.map(g => g.location)));
-    fillSelect(linSel, uniq(gods.map(g => g.lineage)));
+    // ---------- Elements ----------
+    const q = $('#q'), locSel = $('#loc'), linSel = $('#lin'), sortSel = $('#sort'),
+        clearBtn = $('#clear'), list = $('#list'), count = $('#count');
 
-    // Events
-    [q, locSel, linSel, sortSel].forEach(el => el.addEventListener('input', render));
-    clearBtn.onclick = () => { q.value = ''; locSel.value = ''; linSel.value = ''; sortSel.value = 'rank'; render(); };
+    // ---------- Filters ----------
+    fillSelect(locSel, uniq(gods.flatMap(g => g.locations)));
+    fillSelect(linSel, uniq(gods.flatMap(g => g.lineages)));
 
-    render();
+    // ---------- Rank stats (once) ----------
+    const rankStats = (() => {
+        const vals = gods.map(g => (typeof g.rank === 'number' ? g.rank : null)).filter(v => v != null);
+        const min = vals.length ? Math.min(...vals) : 0;
+        const max = vals.length ? Math.max(...vals) : 1;
+        return { min, max: max === min ? min + 1 : max };
+    })();
 
-    // --- Render ---
+    // ---------- Events ----------
+    [q, locSel, linSel, sortSel].forEach(el => el.addEventListener('input', scheduleRender));
+    clearBtn.onclick = () => {
+        q.value = ''; locSel.value = ''; linSel.value = ''; sortSel.value = 'rank';
+        document.querySelectorAll('.card').forEach(c => { c.classList.remove('collapsed'); c.style.outline = ''; });
+        scheduleRender();
+    };
+
+    // One listener for card buttons
+    list.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-act]');
+        if (!btn) return;
+        const g = godsBySlug.get(btn.dataset.slug);
+        const card = btn.closest('.card'); if (!g || !card) return;
+
+        if (btn.dataset.act === 'copy') {
+            navigator.clipboard.writeText(buildClean(g));
+            btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy', 900);
+            card.style.outline = '2px solid #4caf50';
+        } else if (btn.dataset.act === 'toggle') {
+            const collapsed = card.classList.toggle('collapsed');
+            btn.textContent = collapsed ? 'Show' : 'Hide';
+        }
+    });
+
+    const godsBySlug = new Map(gods.map(g => [g.slug, g]));
+
+    // ---------- Render loop ----------
+    let raf = null;
+    function scheduleRender() { if (raf) cancelAnimationFrame(raf); raf = requestAnimationFrame(render); }
+
     function render() {
-        const term = q.value.trim().toLowerCase();
-        const loc = locSel.value;
-        const lin = linSel.value;
-        let data = gods.filter(g =>
-            (!loc || g.location === loc) &&
-            (!lin || g.lineage === lin) &&
-            (!term || (g.name + ' ' + g.words.join(' ') + ' ' + g.desc + ' ' + g.tag.join(' ')).toLowerCase().includes(term))
-        );
+        raf = null;
+        const term = (q.value || '').trim().toLowerCase();
+        const loc = locSel.value, lin = linSel.value;
 
-        // Sort
-        if (sortSel.value === 'rank') data.sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999));
-        else data.sort((a, b) => a.name.localeCompare(b.name));
+        let data = gods;
+        if (loc) data = data.filter(g => g.locations.includes(loc));
+        if (lin) data = data.filter(g => g.lineages.includes(lin));
+        if (term) data = data.filter(g => g.hay.includes(term));
+
+        if (sortSel.value === 'rank') data = data.slice().sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999));
+        else data = data.slice().sort((a, b) => COLLATE.compare(a.name, b.name));
 
         count.textContent = `${data.length} / ${gods.length}`;
-        list.innerHTML = data.map(card).join('') || `<div class="card">No matches.</div>`;
-        hookCopy();
+
+        const frag = document.createDocumentFragment();
+        if (!data.length) {
+            const div = document.createElement('div');
+            div.className = 'card'; div.textContent = 'No matches.';
+            frag.appendChild(div);
+        } else {
+            for (const g of data) frag.appendChild(cardNode(g));
+        }
+        list.replaceChildren(frag);
     }
 
-    // --- Templates ---
-    function card(g) {
-        return `
-      <article class="card" id="${g.slug}">
-        <div class="name">${g.name}</div>
-        <div class="meta">Rank: ${g.rank ?? '—'} • ${g.location || '—'} • ${g.lineage || '—'}</div>
-        <div class="chips">${g.words.map(w => `<span class="chip">${w}</span>`).join('')}</div>
-        ${g.tag.length ? `<div class="chips">${g.tag.map(t => `<span class="chip">${t}</span>`).join('')}</div>` : ''}
-        <div class="desc">${g.desc}</div>
-        <div class="tools">
-          <button data-copy="macro" data-slug="${g.slug}">Copy Macro</button>
-          <button data-copy="json" data-slug="${g.slug}">Copy JSON</button>
-        </div>
-      </article>`;
+    scheduleRender();
+
+    // ---------- DOM ----------
+    function cardNode(g) {
+        const art = document.createElement('article');
+        art.className = 'card';
+        art.id = g.slug;
+        art.style.cssText = rankStyle(g.rank);
+
+        const pills = document.createElement('div');
+        pills.className = 'origin-pills';
+        pills.innerHTML = g.origins.map(o => `<span class="origin-tag" data-origin="${originKey(o)}">${o}</span>`).join('');
+        art.appendChild(pills);
+
+        art.insertAdjacentHTML('beforeend', `
+      <div class="name">${g.name}</div>
+      <div class="meta">
+        Rank: ${g.rank ?? '—'} •
+        ${(g.locations.length ? g.locations.join(', ') : '—')} •
+        ${(g.lineages.length ? g.lineages.join(', ') : '—')}
+      </div>
+      <div class="chips">${g.words.map(w => `<span class="chip">${w}</span>`).join('')}</div>
+      <div class="desc">${g.desc}</div>
+      <div class="tools">
+        <button data-act="copy"  data-slug="${g.slug}">Copy</button>
+        <button data-act="toggle" data-slug="${g.slug}">Hide</button>
+      </div>
+    `);
+        return art;
     }
 
-    // --- Copy handlers ---
-    function hookCopy() {
-        document.querySelectorAll('button[data-copy]').forEach(btn => {
-            btn.onclick = () => {
-                const g = gods.find(x => x.slug === btn.dataset.slug);
-                const text = btn.dataset.copy === 'json'
-                    ? JSON.stringify(g, null, 2)
-                    : [
-                        `**${g.name}** (Rank ${g.rank ?? '-'})`,
-                        `Location: ${g.location || '-'} | Lineage: ${g.lineage || '-'}`,
-                        `Words: ${g.words.join(', ') || '-'}`,
-                        `Tags: ${g.tag.join(', ') || '-'}`,
-                        g.desc || ''
-                    ].join('\n');
-                navigator.clipboard.writeText(text);
-                const old = btn.textContent; btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = old, 800);
-            };
-        });
-    }
-
-    // --- Helpers ---
+    // ---------- Helpers ----------
     function normalize(g) {
         const words = split(g.words);
-        const tag = split(g.tag);
+        const origins = split(g.origins ?? g.origin ?? g.tag);
+        const locations = splitCSV(g.location);
+        const lineages = splitCSV(g.lineage);
         const name = String(g.name || '').trim();
+
+        const hay = (name + ' ' + words.join(' ') + ' ' +
+            (g.desc || '') + ' ' + origins.join(' ') + ' ' +
+            locations.join(' ') + ' ' + lineages.join(' ')
+        ).toLowerCase();
+
         return {
             name,
             words,
             desc: String(g.desc || '').trim(),
-            location: String(g.location || '').trim(),
+            location: locations[0] || '',
+            locations,
             rank: numOrNull(g.rank),
-            lineage: String(g.lineage || '').trim(),
-            tag,
-            slug: slug(name)
+            lineage: lineages[0] || '',
+            lineages,
+            origins,
+            slug: slug(name),
+            hay
         };
     }
+
+    function buildClean(g) {
+        return JSON.stringify({
+            name: g.name,
+            words: g.words.join(', '),
+            desc: g.desc,
+            location: (g.locations.length ? g.locations.join(', ') : ''),
+            rank: (typeof g.rank === 'number' ? g.rank : ''),
+            lineage: (g.lineages.length ? g.lineages.join(', ') : ''),
+            origins: g.origins.join(', ')
+        }, null, 2);
+    }
+
+    function originKey(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
+
+    function rankStyle(rank) {
+        const { min, max } = rankStats;
+        const r = (typeof rank === 'number') ? (rank - min) / (max - min) : 0.5; // 0..1
+        // low rank -> deeper & cooler; high rank -> lighter & warmer (tweak as you like)
+        const hue = Math.round(10 - r * 500);       // 210→140
+        const sat = Math.round(60);  // 55–85
+        const light = Math.round(10 + r * 20);      // 20–38
+        const bg = `hsl(${hue} ${sat}% ${light}%)`;
+        const bd = `hsl(${hue} ${Math.max(25, sat - 18)}% ${Math.max(10, light - 8)}%)`;
+        return `background:${bg}; border-color:${bd};`;
+    }
+
+    // splits: "a, b" or "a|b" or "a,b|c"
     function split(v) { return v ? String(v).split(/[|,]/).map(s => s.trim()).filter(Boolean) : []; }
+    function splitCSV(v) { return v ? String(v).split(',').map(s => s.trim()).filter(Boolean) : []; }
     function numOrNull(v) { const n = Number(v); return isNaN(n) ? null : n; }
     function slug(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
-    function uniq(a) { return [...new Set(a.filter(Boolean))]; }
-    function fillSelect(sel, arr) { arr.sort().forEach(v => { const o = document.createElement('option'); o.value = o.textContent = v; sel.appendChild(o); }); }
+    function uniq(a) { return [...new Set(a.filter(Boolean))].sort(COLLATE.compare); }
+    function fillSelect(sel, arr) { arr.forEach(v => { const o = document.createElement('option'); o.value = o.textContent = v; sel.appendChild(o); }); }
+    function clamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
 })();
