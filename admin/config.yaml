@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: <your-user>/<your-repo>
+  repo: <MrShrekles>/<Check20>
   branch: main
 
 media_folder: "assets/uploads"
