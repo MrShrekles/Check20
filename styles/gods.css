@@ -1,0 +1,108 @@
+:root {
+    --dark: #1e1e1e;
+    --mid: #323232;
+    --ink: #eee;
+    --theme: #466464;
+    --theme2: #2b3a3a;
+}
+
+body {
+    margin: 0;
+    background: var(--dark);
+    color: var(--ink);
+    font: 14px/1.45 system-ui, sans-serif;
+}
+
+/* --- Toolbar --- */
+.bar {
+    top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    border-bottom: 1px solid #000;
+    background: linear-gradient(#111, #191c1c);
+}
+
+input,
+select,
+button {
+    background: #222;
+    color: #eee;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+button {
+    background: var(--theme);
+    border-color: #1c3f3f;
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(1.05);
+}
+
+.muted {
+    opacity: .7;
+}
+
+/* --- List --- */
+#wrap {
+    padding: 12px;
+}
+
+#list {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.card {
+    background: #202425;
+    border: 1px solid var(--theme2);
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.name {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+.meta {
+    opacity: .8;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.desc {
+    opacity: .95;
+    margin-top: 6px;
+}
+
+/* --- Chips --- */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 6px 0;
+}
+
+.chip {
+    border: 1px solid #385050;
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-size: 11px;
+    opacity: .95;
+}
+
+/* --- Tools --- */
+.tools {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}

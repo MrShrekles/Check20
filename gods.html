@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check20</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/monster.css">
+    <link rel="stylesheet" href="styles/gods.css">
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+    <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/gods.js"></script>
+</head>
+
+<body data-page-title="Gods">
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
+<section class="bar">
+    <input id="q" placeholder="Search name / words / desc…">
+    <select id="loc">
+        <option value="">All Locations</option>
+    </select>
+    <select id="lin">
+        <option value="">All Lineages</option>
+    </select>
+    <select id="sort">
+        <option value="rank">Sort: Rank (asc)</option>
+        <option value="name">Sort: Name (A–Z)</option>
+    </select>
+    <button id="clear">Clear</button>
+    <span class="muted" id="count"></span>
+</section>
+
+<main id="wrap">
+    <div id="list"></div>
+</main>
+
+</body>
+
+</html>

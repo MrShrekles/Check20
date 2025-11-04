@@ -1,197 +1,110 @@
 {
-    "templates": [
-        "{brand} {adjective} {substance} {form}. {claim}. {packaging} {disclaimer}",
-        "{company}’s {substance} {form}, fortified with {ingredient}; indicated for {indication}. {packaging} {disclaimer}",
-        "Dr. {doctor}’s {adjective} {substance}; a {form} reputed to {effect}. {seal} {disclaimer}"
+    "prefix": [
+        "Field",
+        "Iron",
+        "Pixie",
+        "Drift",
+        "Root",
+        "Glow",
+        "Quiet",
+        "Black",
+        "Storm",
+        "Ash",
+        "Ember",
+        "Silver"
     ],
-    "pools": {
-        "brand": [
-            "Professor Zelman’s",
-            "Blue Lady",
-            "Iron & Ivy",
-            "Thistledown",
-            "New Era",
-            "Obsidian Remedies",
-            "Arcadia Pharmacal",
-            "Good Neighbor"
-        ],
-        "company": [
-            "Arcadia Chemical Co.",
-            "Commonwealth Apothecaries",
-            "Metropolitan Pharmakon",
-            "Obsidian Laboratories",
-            "Redline Remedies",
-            "Eldridge & Sons"
-        ],
-        "doctor": [
-            "Caliban",
-            "Morrissey",
-            "Voss",
-            "Farnum",
-            "Kell",
-            "Thackery",
-            "Mayhew",
-            "Zelman"
-        ],
-        "adjective": [
-            "Invigorating",
-            "Perpetual",
-            "Electric",
-            "Luminous",
-            "Radiant",
-            "Patent",
-            "Refined",
-            "Triple-Distilled",
-            "Phosphorescent",
-            "Temperate"
-        ],
-        "substance": [
-            "Nerve",
-            "Vitality",
-            "Ether",
-            "Liver",
-            "Lung",
-            "Cardio",
-            "Somnus",
-            "Spirit",
-            "Mercury-Free",
-            "Phosphor",
-            "Camphor",
-            "Opaline",
-            "Bismuth",
-            "Cinchona"
-        ],
-        "form": [
-            "Elixir",
-            "Tonic",
-            "Syrup",
-            "Balm",
-            "Salve",
-            "Powder",
-            "Tablets",
-            "Drops",
-            "Liniment",
-            "Lozenges"
-        ],
-        "ingredient": [
-            "phosphor salts",
-            "powdered cinchona",
-            "iodized bitters",
-            "wintergreen extract",
-            "activated charcoal",
-            "bismuth citrate",
-            "distilled opaline",
-            "ether essence",
-            "camphorated spirits",
-            "peppermint oil"
-        ],
-        "claim": [
-            "steadies the hands and brightens the eye",
-            "dispels melancholia and furnishes mettle",
-            "fortifies the blood and clarifies the spirit",
-            "soothes ague and vapors",
-            "banishes night terrors and improves the temper",
-            "promotes restful sleep and industrious mornings"
-        ],
-        "indication": [
-            "nerves, jitters, blues",
-            "palpitations & short temperament",
-            "coughs, colds, catarrh",
-            "stomach upset & bilious humor",
-            "sleeplessness, nightmares",
-            "post-ether stupor"
-        ],
-        "effect": [
-            "reveal whispers left in empty rooms",
-            "dull the bite of shadow-things",
-            "stiffen the resolve against infernal suggestion",
-            "let the drinker see weak auras for an hour",
-            "lend a day’s worth of pep in a pinch",
-            "quieten a fretful heart and hush the trembling"
-        ],
-        "packaging": [
-            "Amber glass with cork and paper seal.",
-            "Sold in a nickel tin with embossed deco swirls.",
-            "Packed in a black box with gold foil label.",
-            "Stoppered flask, velvet ribbon, and folded leaflet.",
-            "Paper-wrapped bottle with municipal tax stamp."
-        ],
-        "seal": [
-            "Blue ribbon award, City Fair 1923.",
-            "Temperance League approved (contested).",
-            "Pharmacists’ Circle commendation (regional).",
-            "Guarantee seal: unbroken.",
-            "Signed by the Proprietor in violet ink."
-        ],
-        "disclaimers": {
-            "common": [
-                "Contains no known narcotics.",
-                "Dosage: one spoon after supper.",
-                "Keep from children and the humorless."
-            ],
-            "rare": [
-                "Restricted sale; chemist ledger entry required.",
-                "For demonstration and museum use only.",
-                "Warning: may induce peculiar dreams."
-            ],
-            "forbidden": [
-                "Not approved for sale within city limits.",
-                "For export or research under lock & key.",
-                "Possession may require guild charter."
-            ]
-        },
-        "price": [
-            "$1",
-            "$1.2",
-            "$1.4",
-            "$1.6",
-            "$1.8",
-            "$2",
-            "$2.2",
-            "$2.4",
-            "$2.6",
-            "$2.8",
-            "$3",
-            "$3.2",
-            "$3.4",
-            "$3.6",
-            "$3.8",
-            "$4",
-            "$4.2",
-            "$4.4",
-            "$4.6",
-            "$4.8",
-            "$5",
-            "$5.2",
-            "$5.4",
-            "$5.6",
-            "$5.8",
-            "$6",
-            "$6.2",
-            "$6.4",
-            "$6.6",
-            "$6.8",
-            "$7",
-            "$7.2",
-            "$7.4",
-            "$7.6",
-            "$7.8",
-            "$8",
-            "$8.2",
-            "$8.4",
-            "$8.6",
-            "$8.8",
-            "$9",
-            "$9.2",
-            "$9.4",
-            "$9.6",
-            "$9.8",
-            "$10"
-        ]
+    "base": [
+        "Tonic",
+        "Elixir",
+        "Draught",
+        "Tea",
+        "Serum",
+        "Salts",
+        "Vial",
+        "Dust",
+        "Capsule",
+        "Remedy",
+        "Mixture",
+        "Potion"
+    ],
+    "suffix": [
+        "No.3",
+        "Mk-II",
+        "Prime",
+        "Blue",
+        "Red",
+        "Standard",
+        "Glass",
+        "Amber",
+        "Special",
+        ""
+    ],
+    "desc_templates": [
+        "A {flavor} concoction brewed by {maker}.",
+        "A {flavor} remedy traded in {place}.",
+        "A {flavor} vial marked with {symbol}.",
+        "A {flavor} mixture trusted by {folk}."
+    ],
+    "flavor": [
+        "herbal",
+        "metallic",
+        "sweet",
+        "smoky",
+        "bitter",
+        "clean",
+        "fey-scented"
+    ],
+    "maker": [
+        "local alchemists",
+        "gapwardens",
+        "black market medics",
+        "rakkari traders",
+        "forest witches"
+    ],
+    "place": [
+        "stormports",
+        "quarry camps",
+        "undermarkets",
+        "village stalls",
+        "traveling fairs"
+    ],
+    "symbol": [
+        "a faded guild seal",
+        "a cracked sigil",
+        "a bright rune",
+        "an industrial stamp"
+    ],
+    "folk": [
+        "miners",
+        "pilgrims",
+        "dockhands",
+        "scholars",
+        "soldiers"
+    ],
+"effects": [
+    {
+        "name": "Restorative Surge",
+        "tmpl": "Mends [[wound:P]], knitting torn flesh and easing pain."
     },
-    "defaults": {
-        "occult": true,
-        "mundaneOnly": false,
-        "allowRare": false
+    {
+        "name": "Purifying Draught",
+        "tmpl": "Cleanses [[condition:HALF]], washing away toxins or afflictions."
+    },
+    {
+        "name": "Fortified Skin",
+        "tmpl": "Bolsters the body, granting {{ARMOR}} temporary Armor for a short time."
+    },
+    {
+        "name": "Focused Mind",
+        "tmpl": "Sharpens your senses; gain +{{CEILHALF}} to one chosen check for [[minute:1]]."
+    },
+    {
+        "name": "Regenerative Tonic",
+        "tmpl": "Stimulates rapid healing, restoring [[wound:1]] each turn for [[turn:P]]."
+    },
+    {
+        "name": "Antivenom Serum",
+        "tmpl": "Neutralizes poisons or diseases. Stronger ailments are suppressed for [[minute:P]]."
     }
+]
 }

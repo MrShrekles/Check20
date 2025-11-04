@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Check20 Wiki</title>
+    <title>Check20: Worldbuilding</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/monster.css">
+    <link rel="stylesheet" href="styles/medicine.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/almanac.js" defer></script>
@@ -36,7 +37,7 @@
         <!-- NPC Gen -->
         <details open>
             <summary>
-                NPC Generator
+                NPC
             </summary>
             <section id="npc">
                 <div class="box-button">
@@ -51,7 +52,7 @@
         <!-- Business -->
         <details>
             <summary>
-                Business Generator
+                Business
             </summary>
             <section id="business">
                 <div class="box-button">
@@ -61,30 +62,17 @@
 
                 <div class="flex-container" id="business-output"></div>
             </section>
-
         </details>
 
-        <!-- Medicine Gen -->
+        <!-- Medicine -->
         <details>
-            <summary>Patent Medicine / Tonic Generator</summary>
-
-            <section id="medicine">
-                <div class="box-button">
-                    <button class="button" id="generate-medicine">Generate Medicine</button>
-                </div>
-
-                <div class="controls" style="margin:.5rem 0;">
-                    <!-- Optional toggles you can wire up now or later -->
-                    <label><input type="checkbox" id="med-occult" checked> Occult flavor</label>
-                    <label><input type="checkbox" id="med-mundane"> Mundane only</label>
-                    <label><input type="checkbox" id="med-rare"> Allow rare/forbidden</label>
-                </div>
-
-                <button id="clear-medicines">Clear Medicines</button>
-                <div class="flex-container" id="medicine-output"></div>
+            <summary>Medicine</summary>
+            <section>
+                <button id="go" class="button">Generate Medicine</button>
+                <button id="clear-medicine">Clear</button>
+                <div id="medicine-output" class="flex-container"></div>
             </section>
         </details>
-
 
         <!-- Traps -->
         <details>

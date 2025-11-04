@@ -1,175 +1,202 @@
-/* =========================
-   Check20 — Patent Medicine Generator (1920s)
-   Data-driven version using data/medicine.json
-   ========================= */
+// -------------------------------
+// Medicine Generator (simple)
+// -------------------------------
+const POTENCY_MODE = "random"; // "random" | "fixed"
+const FIXED_POTENCY = 4;       // used when POTENCY_MODE === "fixed"
+const EFFECT_COUNT = 1;       // always 1 effect (set to 2 if you want doubles)
+const PRICE_ROUND_TO = 10;     // round prices to nearest 10
 
-const MED_DATA_URL = "data/medicine.json";
+let DATA = null;
 
-let MED_DATA = null;               // full json
-let MED_TEMPLATES = [];            // array of template strings
-let MED_POOLS = {};                // all pools
-let MED_DEFAULTS = { occult: true, mundaneOnly: false, allowRare: false };
+// load data once
+fetch("data/medicine.json").then(r => r.json()).then(j => { DATA = j; });
 
-let SAVED_MEDS = JSON.parse(localStorage.getItem("check20-medicine-cards") || "[]");
+// utils
+const rand = (n) => Math.floor(Math.random() * n);
+const random = (arr) => arr[rand(arr.length)];
 
-/* ---------- Utilities ---------- */
-const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
-const cap = (s = "") => s.charAt(0).toUpperCase() + s.slice(1);
-const byId = (id) => document.getElementById(id);
-
-function fillTemplate(tpl, dict) {
-    return tpl.replace(/\{(\w+)\}/g, (_, k) => dict[k] ?? "");
+function genMedicineName() {
+    const { prefix, base, suffix } = DATA;
+    return [random(prefix), random(base), random(suffix)].filter(Boolean).join(" ");
 }
 
-function pickDisclaimer(allowRare) {
-    const d = MED_POOLS.disclaimers || {};
-    const common = d.common || [];
-    const rare = d.rare || [];
-    const forbidden = d.forbidden || [];
-
-    const roll = Math.random();
-    if (allowRare && roll > 0.8 && forbidden.length) return rand(forbidden);
-    if (allowRare && roll > 0.6 && rare.length) return rand(rare);
-    return rand(common.length ? common : [""]);
+function genMedicineDesc() {
+    const t = random(DATA.desc_templates);
+    const map = {
+        "{flavor}": random(DATA.flavor),
+        "{maker}": random(DATA.maker),
+        "{place}": random(DATA.place),
+        "{symbol}": random(DATA.symbol),
+        "{folk}": random(DATA.folk)
+    };
+    return Object.entries(map).reduce((s, [k, v]) => s.replace(k, v), t);
 }
 
-/* ---------- Model ---------- */
-class Medicine {
-    constructor(opts = {}) {
-        const { occult, mundaneOnly, allowRare } = { ...MED_DEFAULTS, ...opts };
+function genPotency() {
+    return POTENCY_MODE === "fixed"
+        ? Math.max(1, Math.min(10, FIXED_POTENCY))
+        : 1 + rand(10); // 1–10
+}
 
-        this.brand = rand(MED_POOLS.brand);
-        this.company = rand(MED_POOLS.company);
-        this.doctor = rand(MED_POOLS.doctor);
-        this.adjective = rand(MED_POOLS.adjective);
-        this.substance = rand(MED_POOLS.substance);
-        this.form = rand(MED_POOLS.form);
-        this.ingredient = rand(MED_POOLS.ingredient);
+// potency math tokens
+function effectNumbers(p) {
+    return { P: p, HALF: Math.floor(p / 2), CEILHALF: Math.ceil(p / 2), ARMOR: 2 * p };
+}
 
-        const claim = rand(MED_POOLS.claim);
-        const effect = (occult && !mundaneOnly ? rand(MED_POOLS.effect) : claim);
+// naive pluralize
+function pluralize(word, n) {
+    if (n === 1) return word;
+    if (word.endsWith("y") && !/[aeiou]y$/i.test(word)) return word.slice(0, -1) + "ies";
+    if (word.endsWith("s")) return word + "es";
+    return word + "s";
+}
 
-        this.packaging = rand(MED_POOLS.packaging);
-        this.seal = rand(MED_POOLS.seal);
-        this.price = rand(MED_POOLS.price);
-        this.disclaimer = pickDisclaimer(allowRare);
+// render tokens: {{P}} and count-macros [[word:KEY]]
+function renderTemplate(tpl, p) {
+    const nums = effectNumbers(p);
+    let out = tpl.replace(/\{\{([A-Z]+)\}\}/g, (_, k) => nums[k] ?? 0);
+    out = out.replace(/\[\[([a-zA-Z]+):([A-Z]+|\d+)\]\]/g, (_, w, key) => {
+        const n = /^\d+$/.test(key) ? parseInt(key, 10) : (nums[key] ?? 0);
+        return `${n} ${pluralize(w, n)}`;
+    });
+    return out;
+}
 
-        const tpl = rand(MED_TEMPLATES);
-        this.label = fillTemplate(tpl, {
-            brand: this.brand,
-            company: this.company,
-            doctor: this.doctor,
-            adjective: this.adjective,
-            substance: this.substance,
-            form: this.form,
-            ingredient: this.ingredient,
-            claim,
-            effect,
-            packaging: this.packaging,
-            seal: this.seal,
-            disclaimer: this.disclaimer
-        });
-
-        this._id = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+// pick N unique effects and render
+function genEffects(p) {
+    const pool = DATA.effects.slice();
+    const picked = [];
+    for (let i = 0; i < EFFECT_COUNT && pool.length; i++) {
+        picked.push(pool.splice(rand(pool.length), 1)[0]);
     }
+    return picked.map(e => ({ name: e.name, desc: renderTemplate(e.tmpl, p) }));
 }
 
-/* ---------- Card Rendering ---------- */
-function createMedicineCard(med) {
+// price: quadratic curve ~10 @ P=1 → ~260 @ P=10, rounded to PRICE_ROUND_TO
+function computePrice(p) {
+    const raw = 7.5 + 2.5 * p * p; // tweak 2.5 or 7.5 to reshape curve
+    return Math.round(raw / PRICE_ROUND_TO) * PRICE_ROUND_TO;
+}
+
+function generateMedicine() {
+    if (!DATA) return { name: "Loading...", desc: "", potency: null, effects: [], price: null };
+    const potency = genPotency();
+    const effects = genEffects(potency);
+    return {
+        name: genMedicineName(),
+        desc: genMedicineDesc(),
+        potency,
+        effects,
+        price: computePrice(potency)
+    };
+}
+
+// DOM
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("go");
+    const out = document.getElementById("out");
+    btn.onclick = () => {
+        const m = generateMedicine();
+        const effLines = m.effects.map(e => `${e.name}: ${e.desc}`).join("\n\n");
+        out.textContent =
+            `${m.name}
+---
+${m.desc}
+Potency: ${m.potency}
+Price: ${m.price}
+
+${effLines}`;
+    };
+});
+
+// ===== Persistence =====
+const STORAGE_KEY = "check20_medicines";
+
+function loadSaved() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch { return []; }
+}
+function saveAll(list) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+}
+function addSaved(med) {
+    const list = loadSaved();
+    list.unshift(med);
+    saveAll(list);
+}
+function removeSaved(id) {
+    const list = loadSaved().filter(x => x.id !== id);
+    saveAll(list);
+}
+function clearSaved() {
+    saveAll([]);
+}
+
+// ===== Card builder (updates storage when removed) =====
+function createMedicineCard(m) {
     const div = document.createElement("div");
-    div.className = "monster-card";
+    div.className = "medicine-card";
+    div.dataset.id = m.id;
+
+    const effHtml = m.effects.map(e => `<li contenteditable="true"><strong>${e.name}</strong>: ${e.desc}</li>`).join("");
 
     div.innerHTML = `
-    <h1 contenteditable="true">${cap(med.brand)} ${med.substance} ${med.form}</h1>
-    <p>${med.label}</p>
-    <hr>
-    <p><b>Form:</b> ${med.form}</p>
-    <p><b>Ingredient:</b> ${med.ingredient}</p>
-    <p><b>Packaging:</b> ${med.packaging}</p>
-    <p><b>Seal:</b> ${med.seal}</p>
-    <p><b>Price:</b> ${med.price}</p>
-
+    <h2 contenteditable="true">${m.name}</h2>
+    <p>${m.desc}</p>
+    <p class="medicine-meta"><strong>Potency:</strong> ${m.potency} &nbsp;•&nbsp; <strong>Price:</strong> ${m.price}</p>
+    <ul>${effHtml}</ul>
     <div class="button-row">
-      <button class="copy-med">Copy</button>
-      <button class="delete-med">Remove</button>
+      <button class="btn-copy">Copy</button>
+      <button class="btn-remove">Remove</button>
     </div>
   `;
 
-    div.querySelector(".delete-med").addEventListener("click", () => {
-        div.remove();
-        SAVED_MEDS = SAVED_MEDS.filter(m => m._id !== med._id);
-        localStorage.setItem("check20-medicine-cards", JSON.stringify(SAVED_MEDS));
+    // copy
+    div.querySelector(".btn-copy").addEventListener("click", () => {
+        const text = `${m.name}\n${m.desc}\nPotency: ${m.potency}\nPrice: ${m.price}\n\n${m.effects.map(e => `${e.name}: ${e.desc}`).join("\n")}`;
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = div.querySelector(".btn-copy");
+            btn.textContent = "Copied!";
+            setTimeout(() => (btn.textContent = "Copy"), 1000);
+        });
     });
 
-    div.querySelector(".copy-med").addEventListener("click", () => {
-        const copyBtn = div.querySelector(".copy-med");
-        const delBtn = div.querySelector(".delete-med");
-        copyBtn.style.display = "none";
-        delBtn.style.display = "none";
-        const text = div.innerText.trim();
-        copyBtn.style.display = "";
-        delBtn.style.display = "";
-        navigator.clipboard.writeText(text).then(() => {
-            copyBtn.textContent = "Copied!";
-            setTimeout(() => (copyBtn.textContent = "Copy"), 1200);
-        });
+    // remove (DOM + storage)
+    div.querySelector(".btn-remove").addEventListener("click", () => {
+        removeSaved(m.id);
+        div.remove();
     });
 
     return div;
 }
 
-/* ---------- Boot ---------- */
-async function loadMedicineData() {
-    const res = await fetch(MED_DATA_URL);
-    if (!res.ok) throw new Error(`Failed to load ${MED_DATA_URL}`);
-    const json = await res.json();
-
-    MED_DATA = json;
-    MED_TEMPLATES = json.templates || [];
-    MED_POOLS = json.pools || {};
-    MED_DEFAULTS = { ...MED_DEFAULTS, ...(json.defaults || {}) };
-
-    // ensure arrays exist to avoid rand() errors
-    const ensure = (k, fallback = []) => { if (!Array.isArray(MED_POOLS[k])) MED_POOLS[k] = fallback; };
-    ["brand", "company", "doctor", "adjective", "substance", "form", "ingredient", "claim", "indication",
-        "effect", "packaging", "seal", "price"].forEach(k => ensure(k));
-    if (!MED_POOLS.disclaimers) MED_POOLS.disclaimers = { common: [], rare: [], forbidden: [] };
+// ===== Render all saved on load =====
+function renderAll(container) {
+    container.innerHTML = "";
+    const list = loadSaved();
+    for (const m of list) container.append(createMedicineCard(m));
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-    const out = byId("medicine-output");
-    const genBtn = byId("generate-medicine");
-    const clrBtn = byId("clear-medicines");
-    const chkOcc = byId("med-occult");
-    const chkMun = byId("med-mundane");
-    const chkRare = byId("med-rare");
+// ===== Single source of truth for DOM wiring =====
+document.addEventListener("DOMContentLoaded", () => {
+    const genBtn = document.getElementById("go");
+    const clearBtn = document.getElementById("clear-medicine");
+    const container = document.getElementById("medicine-output");
 
-    try {
-        await loadMedicineData();
-    } catch (e) {
-        console.error("❌ Medicine data load error:", e);
-    }
+    // show saved cards on refresh
+    renderAll(container);
 
-    // render saved
-    SAVED_MEDS.forEach(m => out.prepend(createMedicineCard(m)));
+    // generate + save + render
+    genBtn.onclick = () => {
+        const m = generateMedicine();
+        m.id = crypto?.randomUUID ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2));
+        addSaved(m);
+        container.prepend(createMedicineCard(m));
+    };
 
-    genBtn?.addEventListener("click", () => {
-        const med = new Medicine({
-            occult: chkOcc?.checked ?? MED_DEFAULTS.occult,
-            mundaneOnly: chkMun?.checked ?? MED_DEFAULTS.mundaneOnly,
-            allowRare: chkRare?.checked ?? MED_DEFAULTS.allowRare
-        });
-
-        const card = createMedicineCard(med);
-        out.prepend(card);
-
-        SAVED_MEDS.push(med);
-        localStorage.setItem("check20-medicine-cards", JSON.stringify(SAVED_MEDS));
-    });
-
-    clrBtn?.addEventListener("click", () => {
-        localStorage.removeItem("check20-medicine-cards");
-        SAVED_MEDS = [];
-        out.innerHTML = "";
-    });
+    // clear all
+    clearBtn.onclick = () => {
+        clearSaved();
+        container.innerHTML = "";
+    };
 });

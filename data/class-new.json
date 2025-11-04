@@ -9607,7 +9607,7 @@
                             "step": 0,
                             "name": "Blink Trick",
                             "action": "Action",
-                            "description": "As an action, teleport to a visible space within short range. Before or after, make a Spellcasting check. On a Success++, gain Advantage on your next attack this turn or give an adjacent enemy the confused condition until the end of your next turn",
+                            "description": "As an action teleport up to short range, your next spellcasting check is made at advantage",
                             "damageType": "",
                             "armor": "",
                             "condition": ""
