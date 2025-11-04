@@ -1,31 +1,30 @@
 backend:
   name: github
-  repo: <MrShrekles>/<Check20>
+  repo: MrShrekles/Check20
   branch: main
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
-
-publish_mode: editorial_workflow  # optional drafts
+publish_mode: editorial_workflow
 
 collections:
-  - label: "Gods"
-    name: "gods"
+  - label: "Data"
+    name: "data"            # unique collection name
     files:
-      - label: "Gods JSON"
-        name: "gods_json"
+      - label: "Gods (JSON)"
+        name: "gods_json"   # unique file name within the collection
         file: "data/gods.json"
         format: "json"
         fields:
           - label: "Gods"
-            name: "root"
+            name: "gods"    # results in { "gods": [ ... ] }
             widget: list
             label_singular: "God"
             fields:
-              - {label: Name, name: name, widget: string}
-              - {label: Words, name: words, widget: string, hint: "Comma or pipe separated"}
-              - {label: Description, name: desc, widget: text}
-              - {label: Location, name: location, widget: string}
-              - {label: Rank, name: rank, widget: number, value_type: float}
-              - {label: Lineage, name: lineage, widget: string}
-              - {label: Tag, name: tag, widget: string, hint: "Comma or pipe separated"}
+              - { label: Name, name: name, widget: string }
+              - { label: Words, name: words, widget: string }
+              - { label: Description, name: desc, widget: text }
+              - { label: Location, name: location, widget: string }
+              - { label: Rank, name: rank, widget: number, value_type: float }
+              - { label: Lineage, name: lineage, widget: string }
+              - { label: Tag, name: tag, widget: string }
