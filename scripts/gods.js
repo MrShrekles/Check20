@@ -112,8 +112,12 @@
         head.innerHTML = `
     <div class="title">${g.name}</div>
     <div class="origin-pills">
-      ${g.origins.map(o => `<span class="origin-tag" data-origin="${originKey(o)}">${o}</span>`).join('')}
+      ${g.origins.map(o => {
+            const key = originKey(o); // e.g. "Arcane" → "arcane"
+            return `<span class="origin-tag ${key}" data-origin="${key}">${o}</span>`;
+        }).join('')}
     </div>`;
+
         art.appendChild(head);
 
         // cover image (hidden if missing)
@@ -240,17 +244,56 @@
 
     function originKey(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
 
+    // rank color "dials"
+    const RANK_COLOR = {
+        MIN_RANK: 1,
+        MAX_RANK: 200,
+
+        HUE_START: 120,   // starting hue (blue-ish)
+        HUE_RANGE: 999,   // how far around the wheel you travel
+
+        SAT_START: 50,    // saturation at best rank
+        SAT_END: 30,      // saturation at worst rank
+
+        LIGHT_START: 30,  // lightness at best rank
+        LIGHT_END: 9     // lightness at worst rank
+    };
+
     function rankStyle(rank) {
-        const { min, max } = rankStats;
-        const r = (typeof rank === 'number') ? (rank - min) / (max - min) : 0.5; // 0..1
-        // low rank -> deeper & cooler; high rank -> lighter & warmer (tweak as you like)
-        const hue = Math.round(10 - r * 500);       // 210→140
-        const sat = Math.round(60);  // 55–85
-        const light = Math.round(10 + r * 20);      // 20–38
-        const bg = `hsl(${hue} ${sat}% ${light}%)`;
-        const bd = `hsl(${hue} ${Math.max(25, sat - 18)}% ${Math.max(10, light - 8)}%)`;
+        if (rank === 999) {
+            return 'background:#000; border-color:#000;';
+        }
+
+        if (rank === 0 || rank == null || isNaN(rank)) {
+            return 'background:var(--gold-1); border-color:#d4af37;';
+        }
+
+        const cfg = RANK_COLOR;
+        const minRank = cfg.MIN_RANK;
+        const maxRank = cfg.MAX_RANK;
+        const clamped = clamp(rank, minRank, maxRank);
+        const span = maxRank - minRank || 1;
+
+        const r = (clamped - minRank) / span;
+
+        let hue = cfg.HUE_START + r * cfg.HUE_RANGE;
+        hue = ((hue % 500) + 360) % 360;
+
+        const sat = cfg.SAT_START + (cfg.SAT_END - cfg.SAT_START) * r;
+        const light = cfg.LIGHT_START + (cfg.LIGHT_END - cfg.LIGHT_START) * r;
+
+        const H = Math.round(hue);
+        const S = Math.round(sat);
+        const L = Math.round(light);
+
+        const bg = `hsl(${H} ${S}% ${L}%)`;
+        const bd = `hsl(${H} ${Math.max(0, S - 15)}% ${Math.max(0, L - 12)}%)`;
+
         return `background:${bg}; border-color:${bd};`;
     }
+
+
+
 
     // splits: "a, b" or "a|b" or "a,b|c"
     function split(v) { return v ? String(v).split(/[|,]/).map(s => s.trim()).filter(Boolean) : []; }
