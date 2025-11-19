@@ -1,9 +1,22 @@
 :root {
     --dark: #1e1e1e;
-    --mid: #323232;
     --ink: #eee;
     --theme: #466464;
-    --theme2: #2b3a3a;
+    --theme-2: #2b3a3a;
+
+    --card-bg: #1d2425;
+    --card-bd: #2a3b3d;
+    --head-bg1: #2a3a3d;
+    --head-bg2: #203133;
+    --head-bd: #203033;
+
+    --chip-bg: #273629;
+    --chip-bd: #6a7b55;
+    --chip-ink: #e9f0d8;
+}
+
+* {
+    box-sizing: border-box
 }
 
 body {
@@ -13,13 +26,15 @@ body {
     font: 14px/1.45 system-ui, sans-serif;
 }
 
-/* --- Toolbar --- */
+/* Toolbar */
 .bar {
+    position: sticky;
     top: 0;
+    z-index: 10;
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
     gap: 8px;
+    align-items: center;
     padding: 10px;
     border-bottom: 1px solid #000;
     background: linear-gradient(#111, #191c1c);
@@ -38,97 +53,166 @@ button {
 button {
     background: var(--theme);
     border-color: #1c3f3f;
-    cursor: pointer;
+    cursor: pointer
 }
 
 button:hover {
-    filter: brightness(1.05);
+    filter: brightness(1.05)
 }
 
 .muted {
-    opacity: .7;
+    opacity: .7
 }
 
-/* --- List --- */
+/* Grid */
 #wrap {
-    padding: 12px;
+    padding: 12px
 }
 
 #list {
     display: grid;
-    gap: 10px;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
 }
 
-.card {
-    background: #202425;
-    border: 1px solid var(--theme2);
-    border-radius: 10px;
-    padding: 12px;
-}
-
-.name {
+/* Group headers (realm bars) */
+.group-head {
+    grid-column: 1/-1;
+    margin: 8px 0 0;
+    padding: 6px 10px;
     font-weight: 700;
-    font-size: 16px;
-    margin-bottom: 2px;
-    color: var(--gold-3);
+    letter-spacing: .3px;
+    background: linear-gradient(180deg, #314244, #273435);
+    border: 1px solid #253133;
+    border-radius: 10px;
+    color: #d9d7b9;
+}
+
+/* Card shell */
+.card {
+    position: relative;
+    overflow: hidden;
+    background: var(--card-bg);
+    border: 1px solid var(--card-bd);
+    border-radius: 14px;
+}
+
+/* Header strip (title left, origin pills right) */
+.card .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 10px;
+    background: linear-gradient(180deg, var(--head-bg1), var(--head-bg2));
+    border-bottom: 1px solid var(--head-bd);
+}
+
+.head .title {
+    font-size: 18px;
+    font-weight: 800
+}
+
+/* Cover banner */
+.cover {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid #243537;
+}
+
+/* Rows */
+.row {
+    padding: 8px 10px
 }
 
 .meta {
     opacity: .8;
     font-size: 12px;
-    margin-bottom: 6px;
+    margin-top: 2px
 }
 
-.desc {
-    opacity: .95;
-    margin-top: 6px;
-}
-
-/* --- Chips --- */
+/* Chips */
 .chips {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin: 6px 0;
+    margin-top: 6px
 }
 
 .chip {
-    border: 1px solid var(--gold-2);
-    border-radius: 999px;
     padding: 2px 8px;
     font-size: 11px;
-    opacity: .95;
-    background-color: var(--theme-1);
+    border-radius: 999px;
+    background: var(--chip-bg);
+    color: var(--chip-ink);
+    border: 1px solid var(--chip-bd);
 }
 
-/* --- Tools --- */
-.tools {
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
+.chip-child {
+    background: var(--warm-1);
 }
 
-.card {
-    position: relative;
+.chip-lineage {
+    background: var(--gold-2);
 }
 
+.chip-lineage,
+.chip-child {
+    text-decoration: none
+}
+
+/* Origin pills (top-right in header) */
 .origin-pills {
-    position: absolute;
-    top: 8px;
-    right: 8px;
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
-    max-width: 60%;
+    justify-content: flex-end
 }
 
 .origin-tag {
     padding: 2px 8px;
-    border-radius: 999px;
     font-size: 11px;
     color: #eee;
+    border-radius: 999px;
     border: 1px solid rgba(255, 255, 255, .15);
     text-transform: capitalize;
     white-space: nowrap;
+}
+
+/* Read-full clamp (standard + -webkit) */
+.god-body.collapsed {
+    display: -webkit-box;
+    display: box;
+    display: -moz-box;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    overflow: hidden;
+    line-clamp: 4;
+    -webkit-line-clamp: 4;
+}
+
+.read-more {
+    display: inline-block;
+    margin: 6px 10px 0;
+    font-size: 12px;
+    opacity: .9;
+    cursor: pointer
+}
+
+/* Tools */
+.tools {
+    display: flex;
+    gap: 8px;
+    padding: 8px 10px 12px
+}
+
+.tools button {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #2f4446;
+    background: #244044;
+    color: #eee;
+    cursor: pointer;
 }

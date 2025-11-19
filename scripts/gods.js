@@ -45,6 +45,14 @@
         if (!btn) return;
         const g = godsBySlug.get(btn.dataset.slug);
         const card = btn.closest('.card'); if (!g || !card) return;
+        const goto = e.target.closest('[data-goto]');
+        if (goto) {
+            e.preventDefault();
+            const target = document.getElementById(goto.dataset.goto);
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+        }
+
 
         if (btn.dataset.act === 'copy') {
             navigator.clipboard.writeText(buildClean(g));
@@ -73,7 +81,9 @@
         if (term) data = data.filter(g => g.hay.includes(term));
 
         if (sortSel.value === 'rank') data = data.slice().sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999));
-        else data = data.slice().sort((a, b) => COLLATE.compare(a.name, b.name));
+        else if (sortSel.value === 'origin') data = data.slice().sort((a, b) => (a.origins[0] || '').localeCompare(b.origins[0] || '') || a.name.localeCompare(b.name));
+        else data = data.slice().sort((a, b) => a.name.localeCompare(b.name));
+
 
         count.textContent = `${data.length} / ${gods.length}`;
 
@@ -90,42 +100,92 @@
 
     scheduleRender();
 
-    // ---------- DOM ----------
     function cardNode(g) {
         const art = document.createElement('article');
         art.className = 'card';
         art.id = g.slug;
         art.style.cssText = rankStyle(g.rank);
 
-        const pills = document.createElement('div');
-        pills.className = 'origin-pills';
-        pills.innerHTML = g.origins.map(o => `<span class="origin-tag" data-origin="${originKey(o)}">${o}</span>`).join('');
-        art.appendChild(pills);
+        // header strip
+        const head = document.createElement('div');
+        head.className = 'head';
+        head.innerHTML = `
+    <div class="title">${g.name}</div>
+    <div class="origin-pills">
+      ${g.origins.map(o => `<span class="origin-tag" data-origin="${originKey(o)}">${o}</span>`).join('')}
+    </div>`;
+        art.appendChild(head);
 
+        // cover image (hidden if missing)
+        const img = document.createElement('img');
+        img.className = 'cover';
+        img.loading = 'lazy';
+        img.alt = g.name;
+        img.src = g.cover;
+        img.onerror = () => img.remove();
+        art.appendChild(img);
+
+        // --- body content ---
         art.insertAdjacentHTML('beforeend', `
-      <div class="name">${g.name}</div>
-      <div class="meta">
-        Rank: ${g.rank ?? '—'} •
-        ${(g.locations.length ? g.locations.join(', ') : '—')} •
-        ${(g.lineages.length ? g.lineages.join(', ') : '—')}
-      </div>
-      <div class="chips">${g.words.map(w => `<span class="chip">${w}</span>`).join('')}</div>
-      <div class="desc">${g.desc}</div>
-      <div class="tools">
-        <button data-act="copy"  data-slug="${g.slug}">Copy</button>
-        <button data-act="toggle" data-slug="${g.slug}">Hide</button>
-      </div>
-    `);
+    <div class="row meta">
+      Rank: ${g.rank ?? '—'} • ${g.locations.join(', ') || '—'} •  ${g.lineages.map(L => {
+          const target = byName.get(String(L).toLowerCase());
+          const href = target ? `#${target.slug}` : '';
+          return `<a class="chip chip-lineage" ${href ? `href="${href}" data-goto="${target.slug}"` : ''}>${L}</a>`;
+      }).join('')}
+    </div>
+
+
+    <div class="row chips">${g.words.map(w => `<span class="chip">${w}</span>`).join('')}</div>
+    <div class="row god-body collapsed">${g.desc}</div>
+        <a class="read-more" role="button">Read full</a>
+
+    <h4>Children: </h4>
+    ${renderChildren(g)}
+
+    <div class="tools">
+      <button data-act="copy"  data-slug="${g.slug}">Copy</button>
+      <button data-act="toggle" data-slug="${g.slug}">Hide</button>
+    </div>
+  `);
+
+        // read-more toggle
+        const body = art.querySelector('.god-body');
+        const more = art.querySelector('.read-more');
+        const toggle = () => {
+            const collapsed = body.classList.toggle('collapsed');
+            more.textContent = collapsed ? 'Read full' : 'Show less';
+        };
+        more.addEventListener('click', toggle);
+
+        if ((g.desc || '').length < 220) {
+            body.classList.remove('collapsed');
+            more.style.display = 'none';
+        }
+
         return art;
     }
 
-    // ---------- Helpers ----------
+
+
+    function renderChildren(g) {
+        const kids = childrenMap.get(g.slug) || [];
+        if (!kids.length) return '';
+        const chips = kids.map(sl => {
+            const c = bySlug.get(sl);
+            return `<a class="chip chip-child" href="#${c.slug}" data-goto="${c.slug}">${c.name}</a>`;
+        }).join('');
+        return `<div class="chips kids">${chips}</div>`;
+    }
+
+
     function normalize(g) {
         const words = split(g.words);
         const origins = split(g.origins ?? g.origin ?? g.tag);
         const locations = splitCSV(g.location);
         const lineages = splitCSV(g.lineage);
         const name = String(g.name || '').trim();
+        const slugged = slug(name);
 
         const hay = (name + ' ' + words.join(' ') + ' ' +
             (g.desc || '') + ' ' + origins.join(' ') + ' ' +
@@ -134,30 +194,49 @@
 
         return {
             name,
+            slug: slugged,
             words,
             desc: String(g.desc || '').trim(),
-            location: locations[0] || '',
+            cover: `assets/gods/${slugged}.jpg`,
             locations,
-            rank: numOrNull(g.rank),
-            lineage: lineages[0] || '',
+            location: locations[0] || '',
             lineages,
+            lineage: lineages[0] || '',
             origins,
-            slug: slug(name),
+            rank: numOrNull(g.rank),
             hay
         };
     }
 
+    // after gods array exists:
+    const byName = new Map(gods.map(g => [g.name.toLowerCase(), g]));
+    const bySlug = new Map(gods.map(g => [g.slug, g]));
+
+    // build children map from lineage references
+    const childrenMap = new Map(); // parentSlug -> [childSlugs]
+    gods.forEach(child => {
+        child.lineages.forEach(L => {
+            const p = byName.get(String(L).toLowerCase());
+            if (!p) return;
+            const list = childrenMap.get(p.slug) || [];
+            list.push(child.slug);
+            childrenMap.set(p.slug, list);
+        });
+    });
+
+
     function buildClean(g) {
-        return JSON.stringify({
-            name: g.name,
-            words: g.words.join(', '),
-            desc: g.desc,
-            location: (g.locations.length ? g.locations.join(', ') : ''),
-            rank: (typeof g.rank === 'number' ? g.rank : ''),
-            lineage: (g.lineages.length ? g.lineages.join(', ') : ''),
-            origins: g.origins.join(', ')
-        }, null, 2);
+        const lines = [
+            `${g.name} (Rank ${g.rank ?? '-'})`,
+            `Origins: ${g.origins.join(', ') || '-'}`,
+            `Lineage: ${g.lineages.join(', ') || '-'}`,
+            `Location: ${g.locations.join(', ') || '-'}`,
+            `Words: ${g.words.join(', ') || '-'}`,
+            g.desc || ''
+        ];
+        return lines.join('\n');
     }
+
 
     function originKey(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
 
@@ -181,4 +260,7 @@
     function uniq(a) { return [...new Set(a.filter(Boolean))].sort(COLLATE.compare); }
     function fillSelect(sel, arr) { arr.forEach(v => { const o = document.createElement('option'); o.value = o.textContent = v; sel.appendChild(o); }); }
     function clamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
+
+
 })();
+

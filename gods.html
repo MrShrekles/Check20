@@ -19,25 +19,43 @@
     <div id="header-placeholder"></div>
     <div id="sidebar-placeholder"></div>
 
-<section class="bar">
-    <input id="q" placeholder="Search name / words / desc…">
-    <select id="loc">
-        <option value="">All Locations</option>
-    </select>
-    <select id="lin">
-        <option value="">All Lineages</option>
-    </select>
-    <select id="sort">
-        <option value="rank">Sort: Rank (asc)</option>
-        <option value="name">Sort: Name (A–Z)</option>
-    </select>
-    <button id="clear">Clear</button>
-    <span class="muted" id="count"></span>
-</section>
+    <section class="bar">
+        <div class="flex-container">
+            <!-- search -->
+            <input id="q" placeholder="Search name / words / desc…">
 
-<main id="wrap">
-    <div id="list"></div>
-</main>
+            <!-- location -->
+            <div class="flex-item">
+                <select id="loc">
+                    <option value="">All Locations</option>
+                </select>
+            </div>
+
+            <!-- lineage -->
+            <div class="flex-item">
+                <select id="lin">
+                    <option value="">All Lineages</option>
+                </select>
+            </div>
+
+            <!-- sort -->
+            <div class="flex-item">
+                <select id="sort">
+                    <option value="rank">Sort: Rank (asc)</option>
+                    <option value="name">Sort: Name (A–Z)</option>
+                </select>
+            </div>
+            
+            <!-- clear & count -->
+            <button id="clear">Clear</button>
+            <span class="muted" id="count"></span>
+        </div>
+
+    </section>
+
+    <main id="wrap">
+        <div id="list"></div>
+    </main>
 
 </body>
 
