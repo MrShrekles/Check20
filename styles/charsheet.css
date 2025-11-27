@@ -1,6 +1,4 @@
-/* ===============================
-   TOKENS
-   =============================== */
+/*    TOKENS    */
 :root {
     /* colors */
     --black: #000;
@@ -28,9 +26,7 @@
     --box-hover: 0 2px 8px rgba(0, 0, 0, .7);
 }
 
-/* ===============================
-   BASE
-   =============================== */
+/*    BASE    */
 *,
 *::before,
 *::after {
@@ -99,9 +95,9 @@ textarea {
     resize: vertical;
 }
 
-/* ===============================
+/* 
    LAYOUT HELPERS
-   =============================== */
+    */
 .section {
     margin-block: var(--space-1);
 }
@@ -158,9 +154,9 @@ legend {
     padding: var(--space-1);
 }
 
-/* ===============================
+/* 
    CHARACTER DETAILS (COMBINED)
-   =============================== */
+    */
 .section--char .char-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -193,9 +189,9 @@ legend {
     }
 }
 
-/* ===============================
+/* 
    NOTES & RESOURCES (BLOCK ROWS)
-   =============================== */
+    */
 .nr-block {
     display: grid;
     grid-template-columns: 22ch 1fr;
@@ -274,9 +270,9 @@ legend {
     }
 }
 
-/* ===============================
+/* 
    FEATURE LIST + PILLS
-   =============================== */
+    */
 .feature-list {
     list-style: none;
     margin: var(--space-1) 0;
@@ -311,9 +307,9 @@ legend {
     opacity: .8;
 }
 
-/* ===============================
+/* 
    DRAGON TYPE
-   =============================== */
+    */
 .dragon-type {
     margin-top: var(--space-1);
     padding: var(--space-1);
@@ -327,22 +323,29 @@ legend {
     line-height: 1.35;
 }
 
-/* ===============================
+/* 
    PAGE SECTIONS
-   =============================== */
+    */
 .char-page {
     padding: .2in;
     background: none;
     page-break-after: always;
+    width: 8.5in;
+}
+
+@media (max-width: 690px) {
+    .char-page {
+        width: auto;
+    }
 }
 
 .char-page:last-of-type {
     page-break-after: auto;
 }
 
-/* ===============================
+/* 
    HEALTH / CHECKS / RESOURCES
-   =============================== */
+    */
 .health-section,
 .checks-section,
 .resources-section {
@@ -365,9 +368,9 @@ legend {
     display: block;
 }
 
-/* ===============================
+/* 
    REFERENCE GRIDS / CARDS
-   =============================== */
+    */
 .reference-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
@@ -417,9 +420,9 @@ legend {
     padding: 3px;
 }
 
-/* ===============================
+/* 
    MISC
-   =============================== */
+    */
 .item-entry {
     display: flex;
     align-items: center;
@@ -466,9 +469,9 @@ legend {
     color: #ccc;
 }
 
-/* ===============================
+/* 
    CONDITIONS
-   =============================== */
+    */
 #conditions {
     page-break-inside: avoid;
 }
@@ -496,9 +499,9 @@ legend {
     font-style: italic;
 }
 
-/* ===============================
+/* 
    DAMAGE BLOCKS
-   =============================== */
+    */
 .damage-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -530,9 +533,9 @@ legend {
     padding: 0;
 }
 
-/* ===============================
+/* 
    PRINT
-   =============================== */
+    */
 @media print {
 
     .hide,

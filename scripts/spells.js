@@ -110,18 +110,18 @@ function renderSpells() {
     'known': 9
   };
 
-let filteredSpells = cachedSpells.filter(spell => {
-  const matchesIntent = activeIntents.length === 0 || spell.effects.some(e =>
-    activeIntents.includes(e.intent)
-  );
+  let filteredSpells = cachedSpells.filter(spell => {
+    const matchesIntent = activeIntents.length === 0 || spell.effects.some(e =>
+      activeIntents.includes(e.intent)
+    );
 
-  const matchesOrigin = activeOrigins.length === 0 || activeOrigins.includes((spell.origin || '').toLowerCase());
+    const matchesOrigin = activeOrigins.length === 0 || activeOrigins.includes((spell.origin || '').toLowerCase());
 
-  const matchesSearch = spell.name.toLowerCase().includes(searchTerm) ||
-    spell.effects.some(e => e.effect.toLowerCase().includes(searchTerm));
+    const matchesSearch = spell.name.toLowerCase().includes(searchTerm) ||
+      spell.effects.some(e => e.effect.toLowerCase().includes(searchTerm));
 
-  return matchesIntent && matchesOrigin && matchesSearch;
-});
+    return matchesIntent && matchesOrigin && matchesSearch;
+  });
 
   if (sortKey === 'name') {
     filteredSpells.sort((a, b) => a.name.localeCompare(b.name));

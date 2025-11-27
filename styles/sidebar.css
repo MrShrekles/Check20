@@ -22,7 +22,27 @@
     --sidebar-shift: 50vw;
 }
 
-/* ───────── Sidebar Toggle Buttons ───────── */
+/* Button positions */
+#toggle-top {
+    top: 0;
+}
+
+#toggle-sidebar {
+    top: 50px;
+}
+
+#toggle-spellbook {
+    top: 100px;
+}
+
+#toggle-monsters {
+    top: 150px;
+}
+
+#floating-search {
+    top: 200px;
+}
+
 #toggle-sidebar,
 #toggle-spellbook,
 #toggle-monsters,
@@ -30,8 +50,8 @@
 #floating-search {
     position: fixed;
     left: 0;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     background: var(--dark-2);
     color: var(--white);
     border: none;
@@ -41,72 +61,46 @@
     z-index: 1001;
     transition: background .2s ease, transform .3s ease;
     font-size: 0;
-    /* icons via ::before */
     display: inline-block;
     text-decoration: none;
 }
 
-/* Button positions */
+/* Use PNG icons instead of emoji for sidebar buttons */
+#toggle-sidebar,
+#toggle-spellbook,
+#toggle-monsters,
 #toggle-top {
-    top: 0;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
+/* Individual icons (adjust path if your CSS is in a /css folder) */
 #toggle-sidebar {
-    top: 40px;
+    /* open/close sidebar – dice icon */
+background-image: url('../assets/icons/dice.png');
 }
 
 #toggle-spellbook {
-    top: 80px;
+    /* spellbook tab */
+    background-image: url('../assets/icons/spellbook.png');
 }
 
 #toggle-monsters {
-    top: 120px;
+    /* monsters / NPC generator link */
+    background-image: url('../assets/icons/monster.png');
 }
 
-#floating-search {
-    top: 160px;
+#toggle-top {
+    /* scroll to top */
+    background-image: url('../assets/icons/top.png');
 }
 
-/* Icons */
-#toggle-sidebar::before {
-    content: "➡️";
-    font-size: 1rem;
-    display: block;
-    text-align: center;
-    transition: transform .3s;
-}
-
-#sidebar.open #toggle-sidebar::before {
-    content: "⬅";
-}
-
-#toggle-spellbook::before {
-    content: "📖";
-    font-size: 1.2rem;
-    display: block;
-    text-align: center;
-}
-
-#toggle-monsters::before {
-    content: "☠";
-    font-size: 1.2rem;
-    display: block;
-    text-align: center;
-}
-
-#toggle-top::before {
-    content: "🔝";
-    font-size: 1.2rem;
-    display: block;
-    text-align: center;
-}
-
-/* Hover states */
 #toggle-sidebar:hover,
 #toggle-spellbook:hover,
 #toggle-monsters:hover,
 #toggle-top:hover {
-    background: var(--theme-hover);
+    filter: invert(1);
 }
 
 /* Shift buttons when sidebar opens */
