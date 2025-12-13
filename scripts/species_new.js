@@ -4,7 +4,6 @@
 
 /* ====== State ====== */
 let SPECIES = [];
-let DRAGON_TYPES = [];
 const state = {
     q: '',
     exclude: { lineage: new Set(), option: new Set(), rarity: new Set(), region: new Set() },
@@ -12,13 +11,10 @@ const state = {
     collapsed: new Set(),
     filterUniverse: { lineage: new Set(), option: new Set(), rarity: new Set(), region: new Set() },
     selectedId: null,
-    dragonType: null
 };
 
 /* ====== Utils ====== */
 const slug = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const loadDragonChoice = () => state.dragonType = localStorage.getItem('c20.dragonType') || null;
-const saveDragonChoice = () => localStorage.setItem('c20.dragonType', state.dragonType || '');
 const RARITY_ORDER = ["common", "uncommon", "rare", "very rare", "legendary", "mythic"];
 const rarityRank = r => {
     const i = RARITY_ORDER.indexOf(String(r || '').toLowerCase());
@@ -30,7 +26,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     restoreCollapsed();
     wireUI();
     await loadSpecies();
-    loadDragonChoice();
     buildFilters(SPECIES);
     hydrateFromURL();
     refreshFilterButtons();
@@ -46,7 +41,6 @@ async function loadSpecies() {
             if (!res.ok) continue;
             const json = await res.json();
             SPECIES = normalizeSpecies(json.species || []);
-            DRAGON_TYPES = json.dragonTypes || [];
             return;
         } catch { }
     }
@@ -170,7 +164,6 @@ function renderCard(s) {
     ${renderDataTags(s)}
   </div>
   <a class="read-more" role="button">Read full</a>
-  ${isDragonLineage(s) ? dragonTypeBlockHTML() : ''}
   ${pf ? renderFeatureLine(pf) : ''}
   `;
 
@@ -478,59 +471,8 @@ async function loadSpecies() {
             if (!res.ok) continue;
             const json = await res.json();
             SPECIES = normalizeSpecies(json.species || []);
-            DRAGON_TYPES = normalizeDragonTypes(json.dragonTypes || []);  // <-- normalized
             return;
         } catch { }
     }
     console.error('Could not load species_new.json');
-}
-
-function normalizeDragonTypes(arr) {
-    const trim = s => String(s || '').replace(/\s+/g, ' ').trim();
-    return (arr || []).map(raw => {
-        const name = trim(raw.name);
-        const m = name.match(/^(.*?)(?:\s*\(([^)]+)\))?$/);
-        const title = trim(m?.[1] || name);
-        const element = trim(m?.[2] || '');
-        const featuresRaw = trim(raw.features || raw.feature || '');
-        const cleaned = featuresRaw.replace(/<\/?li>/gi, ''); // clean stray tags
-        const idx = cleaned.indexOf(':');
-        const featureName = idx > -1 ? trim(cleaned.slice(0, idx)) : (cleaned ? cleaned.split(' ')[0] : 'Feature');
-        const featureText = idx > -1 ? trim(cleaned.slice(idx + 1)) : trim(cleaned.replace(featureName, ''));
-        return {
-            ...raw,
-            name, title, element,
-            slug: slug(name),
-            featureName,
-            featureText
-        };
-    });
-}
-
-/* ====== Dragon Types ====== */
-function isDragonLineage(sp) {
-    return String(sp.lineage || '').toLowerCase() === 'dragon';
-}
-
-function dragonTypeBlockHTML() {
-    if (!DRAGON_TYPES.length) return '';
-    const opts = DRAGON_TYPES.map(dt => {
-        const val = dt.slug;
-        const sel = state.dragonType === val ? ' selected' : '';
-        const label = dt.element ? `${dt.title} (${dt.element})` : dt.title;
-        return `<option value="${val}"${sel}>${escapeHTML(label)}</option>`;
-    }).join('');
-
-    const chosen = DRAGON_TYPES.find(dt => dt.slug === state.dragonType);
-    const preview = chosen ? `
-    <p class="dt-feature">
-      ${chosen.element ? `<span class="pill">${escapeHTML(chosen.element)}</span>` : ''}
-      <strong>${escapeHTML(chosen.featureName)}:</strong> ${escapeHTML(chosen.featureText)}
-    </p>` : '';
-
-    return `
-      <label><strong>Dragon Type</strong></label>
-      <select class="dragonTypeSelect">${opts}</select>
-      ${preview}
-  `;
 }
