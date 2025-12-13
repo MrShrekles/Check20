@@ -903,40 +903,51 @@ button:hover {
     font-size: small;
 }
 
-/* -------------Tooltip Container-------------- */
+/* Tooltip Container */
 .tooltip {
     position: relative;
+    display: inline-block;
     cursor: help;
     color: var(--cream);
-    display: inline-block;
 }
 
+/* Tooltip Text */
 .tooltip::after {
     content: attr(data-tooltip);
     position: absolute;
     bottom: 125%;
     left: 50%;
-    transform: translate(-80%, 0);
-    background-color: var(--hate);
+    transform: translateX(-50%);
+    background: var(--hate);
     color: var(--white);
-    padding: var(--padding);
+    padding: 0.5rem;
     border-radius: var(--border-radius);
-    font-size: 0.9rem;
-    width: 200px;
+    font-size: 0.85rem;
+    width: max-content;
+    max-width: 200px;
+    text-align: center;
+    white-space: normal;
     box-shadow: var(--box-shadow);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-    z-index: 9999;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
     pointer-events: none;
+    z-index: 1000;
 }
 
+/* Show on Hover */
 .tooltip:hover::after {
     opacity: 1;
     visibility: visible;
-    transition-delay: 0.3s;
 }
 
+.tooltip::after {
+    position: fixed;
+    left: 50%;
+    bottom: auto;
+    top: auto;
+    transform: translateX(-50%);
+}
 
 /* Dropdown Navigation */
 nav {

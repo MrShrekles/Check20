@@ -2,9 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("✅ Tooltips active.");
 
     const tooltipLibrary = {
+        "Provoke":"This happens if an attack misses, or when a creature willingly moves out of another’s melee range. The target is granted a counterattack",
+        "Advantage": "Roll a d20+4 then roll a d20, take the higher result", 
+        "Disadvantage": "Roll a d20-4 then roll a d20, take the lower result",
         // Actions
-        'Attack': 'Make a melee, ranged, or spell attack against a creature or object within range.',
-
+        "Attack": "Make a melee, ranged, or spell attack against a creature or object within range.",
         "Reaction": "A special action taken out of turn, like an opportunity attack.",
         "Opportunity Attacks": "Attack creatures leaving your melee range without disengaging.",
         "Drink Something": "Use an Off-Action to drink or hand off a potion.",

@@ -87,3 +87,26 @@ function setValueAndSave(fieldId, value) {
     field.value = value;
     field.dispatchEvent(new Event('input'));
 }
+
+function clearCharacter() {
+    if (!confirm('Clear all fields and reset this character?')) return;
+
+    // Remove saved data
+    localStorage.removeItem('check20Character');
+
+    // Clear all form fields
+    document.querySelectorAll('input, select, textarea').forEach(field => {
+        if (!field.name) return;
+
+        if (field.type === 'checkbox' || field.type === 'radio') {
+            field.checked = false;
+        } else if (field.tagName === 'SELECT') {
+            field.selectedIndex = 0;
+        } else {
+            field.value = '';
+        }
+    });
+
+    // Re-save the now-empty state so it stays clean on reload
+    autoSave();
+}

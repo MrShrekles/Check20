@@ -17,7 +17,6 @@
 
 <body data-page-title="Character Sheet">
     <div class="no-print" id="header-placeholder"></div>
-    <div class="no-print" id="sidebar-placeholder"></div>
 
     <button class="nav-button" onclick="location.href='index.html'">Homepage</button>
     <form id="character-sheet">
@@ -25,6 +24,8 @@
             <section class="two-column" id="charsheet">
                 <div class="two-column">
                     <div class="column" id="left">
+                        <button class="no-print" type="button" onclick="clearCharacter()">Clear Sheet</button>
+
 
                         <div class="character-header">
                             <div class="character-header">
@@ -61,11 +62,6 @@
                                             <td>Low Light Vision<br><small class="formula">30 + 5 per 2 Obs</small></td>
                                             <td><input type="number" name="llvTotal" class="circle-input" id="llv"></td>
                                             <td><input type="number" name="llvCurrent" class="circle-input" id="llvCurrent"></td>
-                                        </tr>
-                                        <tr class="online-only">
-                                            <td colspan="3" class="centered">
-                                                <button type="button" onclick="recalculateAllStats()">Recalculate Stats</button>
-                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -197,16 +193,23 @@
                                     </select>
                                 </div>
 
-                                <div class="form-row">
+                                <div class="form-row wide-row">
                                     <label for="trinket">Trinket</label>
-                                    <input type="text" id="trinket" name="trinket" placeholder="e.g. Silver locket, lucky coin">
+                                    <div class="input-with-button">
+                                        <textarea id="trinket" name="trinket" rows="2" placeholder="e.g. Shotgun shell that was once shot at you, kept as a lucky charm"></textarea>
+                                        <button type="button" id="roll-trinket-sheet" title="Roll Trinket">🎲</button>
+                                    </div>
                                 </div>
 
-                                <!-- Motivation (1 line) -->
-                                <div class="form-row">
+                                <div class="form-row wide-row">
                                     <label for="motivation">Motivation</label>
-                                    <input type="text" id="motivation" name="motivation" placeholder="e.g. Avenge my clan">
+                                    <div class="input-with-button">
+                                        <textarea id="motivation" name="motivation" rows="2" placeholder="e.g. Overcoming past failures"></textarea>
+                                        <button type="button" id="roll-motivation-sheet" title="Roll Motivation">🎲</button>
+                                    </div>
                                 </div>
+
+
                             </div>
                         </fieldset>
 
@@ -216,11 +219,15 @@
                                 <tbody>
                                     <!-- Additional (big textarea) -->
                                     <tr>
-                                        <th scope="row"><label for="addEquip">Additional</label></th>
+                                        <th scope="row">
+                                            <label for="addEquip">Additional</label>
+                                            <button type="button" id="roll-addEquip-sheet" title="Roll Additional Equipment">🎲</button>
+                                        </th>
                                         <td colspan="2">
                                             <textarea id="addEquip" name="addEquip" class="nr-textarea" rows="4"></textarea>
                                         </td>
                                     </tr>
+
 
                                     <!-- Wealth -->
                                     <tr>
@@ -649,7 +656,7 @@
             </section>
 
         </div>
-        
+
         <div class="char-page" id="page3">
             <section class="reference-grid">
                 <div class="ref-card">

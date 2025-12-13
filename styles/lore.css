@@ -27,3 +27,9 @@
   padding: var(--padding);
   gap: var(--padding);
 }
+
+#demons {
+background-image: url('../assets/images/Ordealis2.png');
+background-size: 100% 100%;
+background-color: rgb(65, 10, 27);
+}
