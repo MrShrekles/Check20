@@ -75,7 +75,7 @@ input,
 select,
 textarea {
     width: 100%;
-    padding: var(--space-1);
+    padding: 3px 1px;
     border: 1px solid var(--black);
     border-radius: var(--radius-1);
     background: none;

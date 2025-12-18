@@ -148,7 +148,7 @@ function renderCard(s) {
     const cover = s.images?.[0] || `assets/species/${s.slug}.jpg`;
 
     const chips = [
-        s.rarity && `<span class="chip chip-rarity rarity-${(s.rarityKey || '').replace(/\s+/g, '-')}">${escapeHTML(s.rarity)}</span>`,
+        s.rarity && `<div class="info-chip">Rarity: <span class="chip chip-rarity rarity-${(s.rarityKey || '').replace(/\s+/g, '-')}">${escapeHTML(s.rarity)}</span></div>`,
         ...(s.regionList || []).map(r => `<span class="chip">${escapeHTML(r)}</span>`)
     ].filter(Boolean).join('');
 

@@ -66,8 +66,30 @@
     border-color: var(--rust);
 }
 
-/* ===============================   Read-Full Tag Section */
+.info-chip {
+    padding: 0px 5px;
+    font-size: 0.9rem;
+    cursor: default;
+    background-color: var(--dark-2);
+    border-radius: var(--border-radius);
+    color: var(--gold-2);
+    box-shadow:
+        1px 1px rgba(0, 0, 0, .2);
+    transition:
+        transform 0.2s ease-out,
+        box-shadow 0.2s ease-out;
+    will-change: transform, box-shadow;
+}
 
+.info-chip:hover {
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        0 0 0 1px var(--gold-2);
+    color: var(--gold-3);
+    background-color: var(--theme-1);
+}
+
+/* ===============================   Read-Full Tag Section */
 .read-tags {
     margin-top: 0.5rem;
     display: flex;
@@ -266,7 +288,7 @@
     opacity: .9;
     color: var(--text-cream);
     border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-        padding-bottom: 0.25em;
+    padding-bottom: 0.25em;
 }
 
 /* ===== FEATURE BLOCK ===== */
