@@ -9275,6 +9275,86 @@
                 }
             }
         ],
+        "specializations": [
+            {
+                "name": "Warrior",
+                "description": "Battle-scarred and wise, the Warrior has seen the horrors and glories of war, excelling in strategic combat and resilience.",
+                "featureName": "Battle-Hardened",
+                "featureDescription": "You have +5 Armor. When you are subjected to the Fear condition, you have advantage on saves against it. If there isn't an established save, you can make a Survival check against it."
+            },
+            {
+                "name": "Mercenary",
+                "description": "A seasoned fighter for hire, the Mercenary specializes in versatility and adaptability, thriving in unpredictable situations and diverse contracts.",
+                "featureName": "Adaptability",
+                "featureDescription": "You can take a Stance as an action and a half-action, holding 2 stances at once. The stance you take as an action remains until the end of your next turn."
+            },
+            {
+                "name": "Scout",
+                "description": "Masters of reconnaissance and stealth, Scouts excel in gathering intelligence and leading surprise attacks, using their knowledge of terrain to their advantage.",
+                "featureName": "Reconnaissance",
+                "featureDescription": "You can use your Tactical Assessment from Medium Range. When you do so, you cannot lose track of that creature while they are on the same plane as you for 24 hours."
+            },
+            {
+                "name": "Guardian",
+                "description": "Protectors at heart, Guardians are skilled in defensive tactics, prioritizing the safety of their allies and excelling in shielding and interceptive maneuvers.",
+                "featureName": "Protector’s Stance",
+                "featureDescription": "When you take this stance as a half-action and allies within reach take damage from an area of effect or something that targets more than one creature, you reduce the damage to everyone by half."
+            },
+            {
+                "name": "Gladiator",
+                "description": "Born in the arena, Gladiators are entertainers as much as fighters, adept at crowd-pleasing combat and theatrical, yet deadly, showmanship.",
+                "featureName": "Crowd Pleaser",
+                "featureDescription": "You have advantage on Influence checks in combat and a unique combat maneuver that can intimidate or impress opponents and onlookers. This can cause morale drops in the enemy or reduce the enemy PL."
+            },
+            {
+                "name": "Operative",
+                "description": "Trained for covert operations, the Operative specializes in precision strikes, espionage, and working from the shadows to take down targets efficiently.",
+                "featureName": "Lethal Precision",
+                "featureDescription": "Gain the ability to strike vital points. When you make a called shot on a creature, roll a 1d100. If it's above 90, reduce the monster PL by -1."
+            },
+            {
+                "name": "Pirate",
+                "description": "Navigators of the high seas, Pirates are adept in aquatic combat and maritime skills, often employing unconventional tactics and a flair for the dramatic.",
+                "featureName": "Seafarer's Endurance",
+                "featureDescription": "You can operate any aquatic vehicle and have the ability to navigate by strange means that others don't understand. Additionally, you can either hold your breath or breathe underwater for 1 hour. You also have a Breath attack: Action, Survival Check, reach range, deals 3 Fluid damage."
+            },
+            {
+                "name": "Negotiator",
+                "description": "With a talent for diplomacy and de-escalation, Negotiators can resolve conflicts without bloodshed, using their words as weapons to achieve their goals.",
+                "featureName": "Diplomatic Resolve",
+                "featureDescription": "If combat initiative is rolled, you get a Diplomatic turn before any other creature. This can only be used for social checks and movement, and no creature can make attacks against you until the end of the Diplomatic turn."
+            },
+            {
+                "name": "Scholar",
+                "description": "Combining combat prowess with intellectual mastery, Scholars are well-versed in history and strategy, using knowledge to outmaneuver their foes.",
+                "featureName": "Strategist",
+                "featureDescription": "Can devise battle plans or strategies. As an action on your turn, you can grant a creature an additional half-action on their next turn."
+            },
+            {
+                "name": "Mystic",
+                "description": "Attuned to the esoteric and supernatural, Mystics blend martial skills with mystical insights, often surprising enemies with unorthodox strategies.",
+                "featureName": "Spirit Caster",
+                "featureDescription": "Gain +2 Spirit and +2 Spell points."
+            },
+            {
+                "name": "Warden",
+                "description": "Guardians of nature and the wilderness, Wardens are adept in outdoor survival and environmental combat, using natural elements to their advantage.",
+                "featureName": "Nature’s Blessing",
+                "featureDescription": "As an action, you can summon a PL [[1d4]] creature of nature or gain +10 Armor. Each lasts for 1 minute."
+            },
+            {
+                "name": "Explorer",
+                "description": "You've always been one to adventure and see the world. You know all of its dangers and how best to avoid them.",
+                "featureName": "Maneuverist",
+                "featureDescription": "Your movement does not provoke opportunity attacks."
+            },
+            {
+                "name": "Chosen",
+                "description": "Marked by destiny or divine favor, the Chosen wield powers or blessings beyond the ordinary, often driven by a higher calling or prophetic mission.",
+                "featureName": "Divine Blessings",
+                "featureDescription": "As a 1-minute action, receive cryptic visions, a strange message, or dreams from a divine entity, offering hints or guidance for current quests or goals. Additionally, as a 1-minute action, you can sanctify an area, providing protection or other benefits to allies within it for 8 hours. This repels creatures that would work against your Motivation or seek to harm you."
+            }
+        ],
         "merchant": [
             {
                 "class": "merchant",
