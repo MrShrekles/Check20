@@ -1,11 +1,11 @@
 {
     "classes": {
-        "Tank": [
+        "tank": [
             {
-                "class": "Tank",
+                "class": "tank",
                 "name": "Skellbund",
                 "origin": "vozian",
-                "desc": "",
+                "desc": "A Skellbund is not possessed. That would imply weakness. A Skellbund is a negotiated disaster, a living vessel forged through ritual, desperation, or calculated defiance. Something powerful is bound within them, sealed behind flesh, bone, and will, reinforcing the body while constantly testing the limits of control. The entity grants strength, resilience, and instinctive violence, but every benefit comes at the cost of endurance, autonomy, and time.\nSkellbund walk a narrow line between mastery and collapse. The bound presence reacts faster than thought, resists death with brutal insistence, and occasionally asserts itself without permission. Demons recognize the arrangement immediately. Mortals feel it in the air. A Skellbund does not command fear through threats. They carry it with them, contained, straining, and waiting for the moment when restraint fails.",
                 "path": {
                     "steps": [
                         {
@@ -152,166 +152,16 @@
                             "condition": ""
                         }
                     ]
-                }
-            },
-            {
-                "class": "Tank",
-                "name": "Hoardmarked",
-                "origin": "dragon",
-                "desc": "Hoardmarked are thieves who stole from a dragon and lived. They carry a relic taken from a hoard that remembers its loss, drawing pursuit, consequence, and power in equal measure. To be Hoardmarked is to live hunted, marked by wealth that cannot be forgotten.",
-                "path": {
-                    "steps": [
-                        {
-                            "step": 0,
-                            "name": "Hoard Relic",
-                            "action": "Resource",
-                            "check": "",
-                            "range": "",
-                            "description": "You stole a relic from a dragon’s hoard. Choose one: \nWeapon – an oversized melee weapon of your choice that deals +1 damage per dragon (or powerful creature) slain; \nArmor – Dragonbane armor that provides 25 Armor and grants immunity to fear effects caused by dragons but cannot be removed once worn;\nTrinket – a draconic fear talisman that, once per day, allows you to target a creature within reach and inflict the Fear condition (a creature affected by this talisman cannot be targeted again).",
-                            "duration": "",
-                            "damage": "",
-                            "damageType": "",
-                            "armor": "",
-                            "condition": ""
-                        },
-                        {
-                            "step": 1,
-                            "name": "Scalebreaker",
-                            "action": "Passive",
-                            "check": "",
-                            "range": "",
-                            "description": "At the start of combat, you deal +1 damage. If a dragon is present, this bonus increases to +2.",
-                            "duration": "",
-                            "damage": "",
-                            "damageType": "",
-                            "armor": "",
-                            "condition": ""
-                        },
-                        {
-                            "step": 2,
-                            "name": "Hoardtheif",
-                            "action": "Passive",
-                            "check": "",
-                            "range": "",
-                            "description": "You cannot be tracked by magical means and leave no trace while traveling. Divination, scrying, and magical pursuit consistently fail to pin you down.",
-                            "duration": "",
-                            "damage": "",
-                            "damageType": "",
-                            "armor": "",
-                            "condition": ""
-                        },
-                        {
-                            "step": 3,
-                            "name": "Lockstep",
-                            "action": "Passive",
-                            "check": "",
-                            "range": "",
-                            "description": "You gain advantage on Stealth checks to pick locks, disable simple mechanisms, or bypass mundane security.",
-                            "duration": "",
-                            "damage": "",
-                            "damageType": "",
-                            "armor": "",
-                            "condition": ""
-                        },
-                        {
-                            "step": 4,
-                            "name": "Scalebreaker II",
-                            "action": "Passive",
-                            "check": "",
-                            "range": "",
-                            "description": "You gain advantage on checks made to target or engage flying creatures.",
-                            "duration": "",
-                            "damage": "",
-                            "damageType": "",
-                            "armor": "",
-                            "condition": ""
-                        },
-                        {
-                            "step": 5,
-                            "name": "Hoardtheif II",
-                            "action": "Action",
-                            "check": "",
-                            "range": "Melee",
-                            "description": "As an action, make a Stealth check to pickpocket a creature. On a success, steal one item and [[1d20]] gold without immediately alerting the target.",
-                            "duration": "",
-                            "damage": "",
-                            "damageType": "",
-                            "armor": "",
-                            "condition": ""
-                        },
-                        {
-                            "step": 6,
-                            "name": "Scalebreaker III",
-                            "action": "Upgrade",
-                            "check": "",
-                            "range": "",
-                            "description": "You deal an additional +5 damage to creatures larger than you.",
-                            "duration": "",
-                            "damage": 5,
-                            "damageType": "",
-                            "armor": "",
-                            "condition": ""
-                        },
-                        {
-                            "step": 7,
-                            "name": "Lockstep II",
-                            "action": "Upgrade",
-                            "check": "",
-                            "range": "",
-                            "description": "You sense traps moments before they trigger. You cannot be harmed by traps, tripwires, pressure mechanisms, or similar environmental hazards.",
-                            "duration": "",
-                            "damage": "",
-                            "damageType": "",
-                            "armor": "",
-                            "condition": ""
-                        },
-                        {
-                            "step": 8,
-                            "name": "Scalebreaker IV",
-                            "action": "Upgrade",
-                            "check": "",
-                            "range": "",
-                            "description": "Creatures larger than you suffer disadvantage on their first attack against you each combat, and you take half damage from that attack.",
-                            "duration": "",
-                            "damage": "",
-                            "damageType": "",
-                            "armor": "",
-                            "condition": ""
-                        },
-                        {
-                            "step": 9,
-                            "name": "Scalebreaker IV",
-                            "action": "Half-Action",
-                            "check": "",
-                            "range": "",
-                            "description": "You can bolster your defenses to withstand powerful attacks. As a Half Action, Use a Bolster to double your Armor until the end of your next turn",
-                            "duration": "Until the start of your next turn",
-                            "damage": "",
-                            "damageType": "",
-                            "armor": "",
-                            "condition": ""
-                        },
-                        {
-                            "step": 10,
-                            "name": "Dragonbound",
-                            "action": "Special",
-                            "check": "",
-                            "range": "",
-                            "description": "As a one-time action, the dragon you stole from finds you. A PL12 dragon confronts you directly. If your party defeats the dragon, it is honor-bound to you by ancient draconic law and will serve you with unyielding loyalty, acting as your companion and ally for the remainder of your life",
-                            "duration": "",
-                            "damage": "",
-                            "damageType": "",
-                            "armor": "",
-                            "condition": ""
-                        }
-                    ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
                 "class": "tank",
                 "name": "Centurion",
                 "origin": "tech",
-                "desc": "",
+                "desc": "Centurions are built around momentum. Their training focuses on preparation, repetition, and engineering violence until it becomes reliable under pressure. Weapons are modified, reinforced, and maintained until they function as extensions of the body, responding without hesitation or ceremony. A Centurion enters combat already thinking about load-bearing points, kill order, and what needs to break first.\nOnce the fight begins, they do not slow down. Each strike feeds the next, each advantage compounds, and retreat is treated as a mechanical failure rather than a tactical option. Bolsters are burned, systems are pushed past safe limits, and pain is accepted as a cost of operation. When a Centurion commits fully, they do so knowing the aftermath will be severe, because the goal is not endurance. The goal is resolution.",
                 "path": {
                     "steps": [
                         {
@@ -458,6 +308,9 @@
                             "condition": "Stunned"
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -611,6 +464,9 @@
                             "condition": "Stunned"
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -764,6 +620,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -917,6 +776,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -1070,6 +932,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -1223,6 +1088,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -1376,6 +1244,9 @@
                             "condition": "Judicator"
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -1529,6 +1400,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -1682,6 +1556,9 @@
                             "condition": "Confused, Stunned, Exhaustion, Pinned, Constrained"
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -1835,6 +1712,165 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
+                }
+            },
+            {
+                "class": "tank",
+                "name": "Hoardmarked",
+                "origin": "dragon",
+                "desc": "Hoardmarked are thieves who stole from a dragon and lived. They carry a relic taken from a hoard that remembers its loss, drawing pursuit, consequence, and power in equal measure. To be Hoardmarked is to live hunted, marked by wealth that cannot be forgotten.",
+                "path": {
+                    "steps": [
+                        {
+                            "step": 0,
+                            "name": "Hoard Relic",
+                            "action": "Resource",
+                            "check": "",
+                            "range": "",
+                            "description": "You stole a relic from a dragon’s hoard. Choose one: \nWeapon – an oversized melee weapon of your choice that deals +1 damage per dragon (or powerful creature) slain; \nArmor – Dragonbane armor that provides 25 Armor and grants immunity to fear effects caused by dragons but cannot be removed once worn;\nTrinket – a draconic fear talisman that, once per day, allows you to target a creature within reach and inflict the Fear condition (a creature affected by this talisman cannot be targeted again).",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 1,
+                            "name": "Scalebreaker",
+                            "action": "Passive",
+                            "check": "",
+                            "range": "",
+                            "description": "At the start of combat, you deal +1 damage. If a dragon is present, this bonus increases to +2.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 2,
+                            "name": "Hoardtheif",
+                            "action": "Passive",
+                            "check": "",
+                            "range": "",
+                            "description": "You cannot be tracked by magical means and leave no trace while traveling. Divination, scrying, and magical pursuit consistently fail to pin you down.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 3,
+                            "name": "Lockstep",
+                            "action": "Passive",
+                            "check": "",
+                            "range": "",
+                            "description": "You gain advantage on Stealth checks to pick locks, disable simple mechanisms, or bypass mundane security.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 4,
+                            "name": "Scalebreaker II",
+                            "action": "Passive",
+                            "check": "",
+                            "range": "",
+                            "description": "You gain advantage on checks made to target or engage flying creatures.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 5,
+                            "name": "Hoardtheif II",
+                            "action": "Action",
+                            "check": "",
+                            "range": "Melee",
+                            "description": "As an action, make a Stealth check to pickpocket a creature. On a success, steal one item and [[1d20]] gold without immediately alerting the target.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 6,
+                            "name": "Scalebreaker III",
+                            "action": "Upgrade",
+                            "check": "",
+                            "range": "",
+                            "description": "You deal an additional +5 damage to creatures larger than you.",
+                            "duration": "",
+                            "damage": 5,
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 7,
+                            "name": "Lockstep II",
+                            "action": "Upgrade",
+                            "check": "",
+                            "range": "",
+                            "description": "You sense traps moments before they trigger. You cannot be harmed by traps, tripwires, pressure mechanisms, or similar environmental hazards.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 8,
+                            "name": "Scalebreaker IV",
+                            "action": "Upgrade",
+                            "check": "",
+                            "range": "",
+                            "description": "Creatures larger than you suffer disadvantage on their first attack against you each combat, and you take half damage from that attack.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 9,
+                            "name": "Scalebreaker IV",
+                            "action": "Half-Action",
+                            "check": "",
+                            "range": "",
+                            "description": "You can bolster your defenses to withstand powerful attacks. As a Half Action, Use a Bolster to double your Armor until the end of your next turn",
+                            "duration": "Until the start of your next turn",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 10,
+                            "name": "Dragonbound",
+                            "action": "Special",
+                            "check": "",
+                            "range": "",
+                            "description": "As a one-time action, the dragon you stole from finds you. A PL12 dragon confronts you directly. If your party defeats the dragon, it is honor-bound to you by ancient draconic law and will serve you with unyielding loyalty, acting as your companion and ally for the remainder of your life",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        }
+                    ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -3888,6 +3924,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -4041,6 +4080,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -4194,6 +4236,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -4347,6 +4392,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -4500,6 +4548,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -4653,6 +4704,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -4806,6 +4860,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -6222,6 +6279,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -6375,6 +6435,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -6528,6 +6591,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -6694,6 +6760,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -6847,6 +6916,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -7000,6 +7072,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -7028,7 +7103,7 @@
                             "action": "Off-Action",
                             "check": "",
                             "range": "",
-                            "description": "Summon a shroud of Eclipse armor as off-action when an attack is hitting you, reducing the damage by half",
+                            "description": "Summon a shroud of death as off-action when an attack is hitting you, reducing the damage by half",
                             "duration": "",
                             "damage": "",
                             "damageType": "",
@@ -7067,7 +7142,7 @@
                             "action": "Off-Action",
                             "check": "",
                             "range": "",
-                            "description": "Drain vitality from enemies to heal yourself or weaken them. As an off-action, when you make a successful attack on a creature, heal yourself for half the damage dealt",
+                            "description": "Drain life from enemies to heal yourself or weaken them. As an off-action, when you make a successful attack on a creature, heal yourself for half the damage dealt",
                             "duration": "",
                             "damage": "",
                             "damageType": "",
@@ -7153,6 +7228,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -8571,6 +8649,630 @@
                         }
                     ]
                 }
+            },
+            {
+                "class": "professional",
+                "name": "Tlamatini",
+                "origin": "nature",
+                "desc": "The Tlamatini are interpreters of the living world rather than its masters. They listen before they act, read signs others overlook, and understand that survival is a conversation, not a contest. Through ritual, stillness, shared meals, and omen-reading, they mediate between people, beasts, spirits, and land itself. When conflict is inevitable, the Tlamatini do not rush to violence. They arrive early, speak calmly, and ensure that when blood is spilled, everyone understands why it had to happen. Nature does not grant them power freely. It responds because they have learned when to ask and when to wait.",
+                "path": {
+                    "steps": [
+                        {
+                            "step": 0,
+                            "name": "Shared Sustenance",
+                            "action": "Special",
+                            "check": "",
+                            "range": "",
+                            "description": "Once per day, as a 1-hour action during a resting social scene, you prepare and share food with willing creatures. At the end of the scene, all participants gain +1 to all checks until their next Press On, and they immediately gain the benefits of a Press On without expending one. This feature cannot be used during combat or under immediate threat.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 1,
+                            "name": "Foreseen Step",
+                            "action": "Special",
+                            "check": "",
+                            "range": "",
+                            "description": "Once per day, at the start of your turn, you may reposition up to your full movement speed without provoking attacks of opportunity, as you step into a future you already anticipated. This movement must end in a space you could normally occupy.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 2,
+                            "name": "Intercession",
+                            "action": "Off-Action",
+                            "check": "",
+                            "range": "",
+                            "description": "Once per day, when a creature you can see fails a check, you may summon a beast-spirit as an off-action to negate the failure. The check is treated as a mixed success, but the spirit immediately introduces a hostile complication determined by the Narrator, such as entering combat, altering terrain, or drawing additional attention.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 3,
+                            "name": "Eyes Before the Storm",
+                            "action": "Passive",
+                            "check": "",
+                            "range": "",
+                            "description": "You are rarely surprised. You gain +2 to Initiative and advantage on checks made to detect ambushes, hidden creatures, traps, or imminent violence.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 4,
+                            "name": "Rite of Parley",
+                            "action": "Special",
+                            "check": "",
+                            "range": "",
+                            "description": "At the start of combat, before the first round begins, you may offer food or drink to hostile creatures. Any intelligent creature that chooses curiosity over violence delays combat long enough to state its motivation for the conflict. If no agreement is reached, combat resumes normally, and all creatures involved gain advantage on their first check of the encounter.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 5,
+                            "name": "Stillness",
+                            "action": "Special",
+                            "check": "",
+                            "range": "",
+                            "description": "At the start of your turn, you may choose to forgo all movement until the end of the turn to gain one additional half-action. This decision must be made before taking any other actions.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 6,
+                            "name": "Anchored Mind",
+                            "action": "Action",
+                            "check": "",
+                            "range": "",
+                            "description": "As an action, you enter a heightened state of ritual focus for 1 minute. While this effect lasts, you cannot be surprised and cannot gain the Confused condition. If you are incapacitated, this effect ends early.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": "Confused"
+                        },
+                        {
+                            "step": 7,
+                            "name": "Omen of Feather and Bone",
+                            "action": "Passive",
+                            "check": "Observation, Luck",
+                            "range": "",
+                            "description": "You may roll Luck instead of Observation when reading signs left by animals, plants, wind, unnatural stillness, or disturbed growth. On a success+, you also learn whether the omen leans toward fortune or danger, rather than remaining ambiguous.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 8,
+                            "name": "Rooted Step",
+                            "action": "Passive",
+                            "check": "Luck",
+                            "range": "",
+                            "description": "When you would be knocked prone, pushed, or forcibly repositioned, you may roll Luck. On a success, you ignore the movement entirely. On a success+, you may instead move 5 ft in any direction without provoking, as roots, stone, or shadow momentarily anchor you.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 9,
+                            "name": "Intercession",
+                            "action": "Special",
+                            "check": "Luck",
+                            "range": "",
+                            "description": "When an ally within short range fails a check, you may roll Luck to call on unseen natural or fey forces. On a success, the failure becomes a mixed success. On a success+, it becomes a full success. On a failure, the check remains failed and the Narrator introduces a subtle environmental or fey complication.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 10,
+                            "name": "The World Acknowledges You",
+                            "action": "Special",
+                            "check": "",
+                            "range": "",
+                            "description": "You declare an outcome involving survival, escape, defeat, or revelation and roll Luck. On a success, the world bends to allow the outcome. On a success+, it occurs cleanly and leaves behind a lasting blessing or sign of favor. On a failure, the outcome still occurs, but the land demands a severe and lasting price, such as scarred terrain, spiritual debt, or a fey obligation. From this moment on, nature remembers you.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        }
+                    ]
+                },
+                "talent": {
+                    "steps": []
+                }
+            },
+            {
+                "class": "professional",
+                "name": "Exiled Inquisitor",
+                "origin": "basic",
+                "desc": "Once agents of absolute judgment, Exiled Inquisitors now walk without sanction, stripped of authority but not conviction. They are living weapons trained to dismantle belief, magic, and ideology at their source. Their exile did not soften them. It sharpened them. Every mark they place, every rite they break, and every spell they interrupt is driven by memory, failure, and unresolved oath. The mask they wear is both a warning and a sentence. They no longer ask permission to judge. They simply act, carrying the weight of verdicts passed long ago and never forgotten.",
+                "path": {
+                    "steps": [
+                        {
+                            "step": 0,
+                            "name": "Mark of Exile",
+                            "action": "Passive",
+                            "check": "Influence",
+                            "range": "",
+                            "description": "You bear the shattered porcelain mask of the Inquisition, permanently affixed and ritually bound. You gain advantage on checks to intimidate, interrogate, or unnerve creatures familiar with religious, legal, or arcane authority. You suffer disadvantage on checks to blend into polite society or formal institutions that recognize the symbol.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 1,
+                            "name": "Violence",
+                            "action": "Action",
+                            "check": "",
+                            "range": "",
+                            "description": "Once combat, as an action, you channel limited and painful magic into your weapon. For 1 minute, your weapon’s damage type becomes an elemental damage type of your choice. This does not change the weapon’s other properties.",
+                            "duration": "1 minute",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 2,
+                            "name": "Marked",
+                            "action": "Off-Action",
+                            "check": "",
+                            "range": "",
+                            "description": "As an off-action, you mark one creature you can see within short range with hatred, memory, and unresolved oath. The mark lasts for 1 hour or until the creature is defeated. While marked, you gain +1 to attack checks and damage against the target, and the target has disadvantage on checks made to deceive you, hide from you, or escape you. You may only have one creature marked at a time.",
+                            "duration": "1 hour",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 3,
+                            "name": "Suppression",
+                            "action": "Special",
+                            "check": "",
+                            "range": "",
+                            "description": "Once per combat, when you hit a creature with a weapon attack, you may disrupt its casting patterns. The target must succeed on a Spirit check or gain the Confused condition until the end of its next turn.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": "Confused"
+                        },
+                        {
+                            "step": 4,
+                            "name": "Interrogate",
+                            "action": "Special",
+                            "check": "",
+                            "range": "",
+                            "description": "The first time each scene you deal damage to a creature capable of spellcasting or supernatural abilities, you immediately learn one of the following of your choice: a damage type they favor, a condition they commonly apply, or whether their power is learned, innate, or granted.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 5,
+                            "name": "Ritebreaker",
+                            "action": "Off-Action",
+                            "check": "",
+                            "range": "Short",
+                            "description": "When a creature within short range begins casting a spell or activating a supernatural ability, you may make a weapon attack as an off-action. On a hit, the triggering spell or ability is made at disadvantage.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 6,
+                            "name": "Hateseer",
+                            "action": "Special",
+                            "check": "Observation",
+                            "range": "",
+                            "description": "You ignore disadvantage imposed by smoke, low light, obscuring effects, or battlefield chaos when making ranged attacks or Observation checks. You have learned to operate inside collapsing rituals, burning sanctuaries, and hostile environments.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 7,
+                            "name": "Marked II",
+                            "action": "Upgrade",
+                            "check": "",
+                            "range": "",
+                            "description": "Each time your marked target makes an attack against a creature other than you, increase your Marked damage bonus by +1, to a maximum of +10. This bonus applies only against the marked target and resets when the mark ends.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 8,
+                            "name": "Violence II",
+                            "action": "Upgrade",
+                            "check": "",
+                            "range": "",
+                            "description": "When you activate Violence, you may choose to double your weapon’s damage until the end of your next turn. If you do, you immediately gain the Exposed condition until the start of your following turn.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 9,
+                            "name": "Suppression II",
+                            "action": "Upgrade",
+                            "check": "Spirit",
+                            "range": "",
+                            "description": "When you use Suppression and the creature fails its Spirit check, all attacks against that creature have advantage until the start of your next turn.",
+                            "duration": "Until the start of your next turn",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 10,
+                            "name": "Judgment Was Rendered Long Ago",
+                            "action": "Off-Action",
+                            "check": "",
+                            "range": "",
+                            "description": "If you have a creature Marked, you may use your off-action to invoke final judgment. Until the end of the combat, your damage against the marked creature is doubled, Suppression triggers on every successful hit even if expended, and the marked creature automatically triggers Ritebreaker whenever it attempts to cast a spell or activate a supernatural ability. When the creature is killed or submits, you gain 1 Spell Point that remains until you long rest. It feels like a burden",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        }
+                    ]
+                },
+                "talent": {
+                    "steps": []
+                }
+            },
+            {
+                "class": "professional",
+                "name": "Scaleveil",
+                "origin": "dragon",
+                "desc": "Scaleveil Operatives wear fragments of draconic fleshcraft and illusion, reshaping their silhouette, skin, and presence at will. They move between identities, using draconic authority and predatory subtlety to infiltrate, mislead, and survive situations where brute force would fail.",
+                "path": {
+                    "steps": [
+                        {
+                            "step": 0,
+                            "name": "Draconic Shift",
+                            "action": "Action",
+                            "check": "Stealth, Influence",
+                            "range": "",
+                            "description": "As an action, you subtly alter your appearance for 1 hour. This may include color changes, posture shifts, clothing adjustments, or restrained draconic features such as scales, eyes, or silhouette. While shifted, you gain +1 to Stealth and Influence checks. This shift is cosmetic but unsettling, evoking predatory presence rather than overt transformation.",
+                            "duration": "1 hour",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 1,
+                            "name": "Surveillance",
+                            "action": "Passive",
+                            "check": "Observation",
+                            "range": "",
+                            "description": "You gain advantage on Observation checks made to tail, monitor, or notice repeated patterns in a location or individual. You also automatically know when you are being followed unless the follower critically succeeds on their check.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 2,
+                            "name": "Draconic Shift II",
+                            "action": "Upgrade",
+                            "check": "",
+                            "range": "",
+                            "description": "While Draconic Shift is active, you may manifest a muscular tail. You may use the tail to make an off-action melee attack dealing 1d6 physical damage. This attack uses normal melee targeting rules and counts as a natural weapon.",
+                            "duration": "",
+                            "damage": "1d6",
+                            "damageType": "Physical",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 3,
+                            "name": "Slip the Shot",
+                            "action": "Passive",
+                            "check": "",
+                            "range": "",
+                            "description": "When a ranged attack misses you, you may immediately move 10 ft without provoking and gain advantage on your next attack against the creature that missed. This movement represents instinctive repositioning rather than speed.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 4,
+                            "name": "Slipscale",
+                            "action": "Special",
+                            "check": "",
+                            "range": "Short",
+                            "description": "Once per combat, you or one ally within short range may reposition up to 10 ft without provoking and gain advantage on the next non-attack check made before the end of their next turn. The movement appears deliberate and practiced, as if anticipated.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 5,
+                            "name": "Shadowscale",
+                            "action": "Action",
+                            "check": "",
+                            "range": "",
+                            "description": "As an action, you draw shadowlike scales across your body, blurring your presence. You gain the Invisible condition for up to 1 hour, or until you attack, cast a spell, or take a hostile action. This invisibility is predatory and imperfect, closer to vanishing from notice than vanishing from sight.",
+                            "duration": "1 hour",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 6,
+                            "name": "Draconic Shift III",
+                            "action": "Upgrade",
+                            "check": "",
+                            "range": "",
+                            "description": "While Draconic Shift is active, you may manifest restrained wings. You gain a flight speed equal to half your movement, provided you are carrying no hefty items. The wings retract immediately when the shift ends.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 7,
+                            "name": "Controlled Exposure",
+                            "action": "Special",
+                            "check": "",
+                            "range": "",
+                            "description": "When you are targeted by an attack or hostile check that fails, you may choose to allow it to succeed instead. If you do, you gain advantage on all checks and attacks against that creature until the end of your next turn. This choice must be made immediately after the failure is determined.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 8,
+                            "name": "Concealed Draw",
+                            "action": "Off-Action",
+                            "check": "",
+                            "range": "",
+                            "description": "When combat begins, or the first time you are targeted by a hostile creature, you may immediately make a weapon attack with a concealed weapon as an off-action. This attack gains advantage if the target was unaware of the weapon or believed you to be unarmed.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 9,
+                            "name": "Crossfire",
+                            "action": "Passive",
+                            "check": "",
+                            "range": "",
+                            "description": "When two allied creatures threaten an enemy from opposite sides or opposite corners, they overwhelm its defenses. Both allies gain advantage on melee attacks against that enemy while this positioning is maintained.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 10,
+                            "name": "Burn the Hoard",
+                            "action": "Special",
+                            "check": "",
+                            "range": "",
+                            "description": "When combat begins, or at the start of your turn during combat, you may activate this ability. Until the end of combat, you and your allies cannot be surprised, enemies cannot gain advantage, and once per combat each ally may convert one failed check into a mixed success. When the combat ends, the Narrator introduces a lasting complication tied to exposure, retaliation, or political fallout. Someone important realizes a larger force has moved.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        }
+                    ]
+                },
+                "talent": {
+                    "steps": []
+                }
+            },
+            {
+                "class": "professional",
+                "name": "Banished God",
+                "origin": "celestial",
+                "desc": "You were once a god. Not metaphorically. Not in the inspirational sense. Proper worship, real authority, the whole catastrophic responsibility package. Then something went wrong, or right, depending on your perspective, and now you are here. Mortal. Smaller. Still immortal, technically, but without the infrastructure.\nYou remember shaping worlds. You remember being prayed to. You also remember why you stopped. These days, you operate on instinct, experience, and a deep, weary understanding of how things tend to fall apart. You do not seek power. You have had enough of it. What remains is perspective, restraint, and an uncanny ability to recognize mistakes while they are still happening.\nYou are not a prophecy. You are not a chosen one. You are a former cosmic authority who has decided that participation is preferable to dominance. It is not humility. It is fatigue. And somehow, that makes you dangerous in an entirely different way.",
+                "path": {
+                    "steps": []
+                },
+                "talent": {
+                    "steps": [
+                        {
+                            "step": 0,
+                            "name": "Cursed Immortality",
+                            "action": "Special",
+                            "check": "Spirit",
+                            "range": "",
+                            "description": "You are immortal. You always have been, technically. When you take the Death condition, you may immediately make a Spirit check to remove it. If you fail, you remain dead for 1 hour to 6 weeks, which is deeply inconvenient but not permanent.",
+                            "duration": "1 hour",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 1,
+                            "name": "The Power Lingers",
+                            "action": "Resource",
+                            "check": "",
+                            "range": "",
+                            "description": "Gods used to shape reality with a gesture. You get +3 Spell Points and may cast Basic and Celestial spells, though doing so now feels like trying to write poetry with a crayon.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 2,
+                            "name": "Memories of Truth",
+                            "action": "Special",
+                            "check": "Mental",
+                            "range": "",
+                            "description": "Creatures with significant age, history, or power instinctively hesitate around you. The first time per session such a creature targets you with a hostile non-attack action, it must succeed on a Mental check or choose a different target or action, usually while squinting suspiciously.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 3,
+                            "name": "Scars of Omniscience",
+                            "action": "Passive",
+                            "check": "Influence",
+                            "range": "",
+                            "description": "You have advantage on Influence checks when dealing with gods, demigods, celestials, or similarly embarrassing peers. They laugh at your situation, but they remember what you were, and that makes things awkward.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 4,
+                            "name": "Divine Editorializing",
+                            "action": "Special",
+                            "check": "",
+                            "range": "",
+                            "description": "Once every three sessions, you may ask the Narrator one question about the likely consequence of a current plan, choice, or event. The answer is truthful, frustratingly incomplete, and delivered with the tone of someone who has watched this exact mistake unfold several thousand times.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 5,
+                            "name": "Denial of Apotheosis",
+                            "action": "Special",
+                            "check": "",
+                            "range": "",
+                            "description": "You are keenly aware of your limitations, mostly because they annoy you. When you fail a check, you may choose to succeed with a complication instead. If you do, you cannot use this feature again until next session, because even gods get tired of improvising.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 6,
+                            "name": "I Have Seen This Before",
+                            "action": "Off-Action",
+                            "check": "",
+                            "range": "Short",
+                            "description": "When a creature within short range begins an attack, spell, or ability you have already witnessed earlier this combat, you may reduce its effect or damage by [[1d4]]. After using this feature, you gain the Confused condition until the end of your next turn.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": "Confused"
+                        },
+                        {
+                            "step": 7,
+                            "name": "Unimpressed",
+                            "action": "Off-Action",
+                            "check": "",
+                            "range": "",
+                            "description": "Once per combat, when you are hit by an attack, you may reduce the damage by 5 and immediately move 5 feet without provoking. It still hurts. You simply refuse to react correctly.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 8,
+                            "name": "What Did you Say?",
+                            "action": "Action",
+                            "check": "",
+                            "range": "",
+                            "description": "If a scene begins without you, you may forcibly insert yourself into it as an action. You immediately gain the Stunned condition until the end of your next turn. The involved creatures will not speak behind your back again, at least not confidently.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": "Stunned"
+                        },
+                        {
+                            "step": 9,
+                            "name": "Forgotten",
+                            "action": "Off-Action",
+                            "check": "",
+                            "range": "Short",
+                            "description": "Once per creature per session, as an off-action you may cause a creature within short range to struggle to place you. Until the end of the scene, they cannot clearly recall your name, title, or role and suffer disadvantage on checks made to socially define, categorize, or explain you.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        },
+                        {
+                            "step": 10,
+                            "name": "Apology Accepted",
+                            "action": "Off-Action",
+                            "check": "",
+                            "range": "",
+                            "description": "As an off-action, when a creature misses you with an attack, spell, or accusation, you may forgive them. That creature cannot target you with attacks until the end of its next turn. Forgiveness is not consent.",
+                            "duration": "",
+                            "damage": "",
+                            "damageType": "",
+                            "armor": "",
+                            "condition": ""
+                        }
+                    ]
+                }
             }
         ],
         "merchant": [
@@ -8725,6 +9427,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -8878,6 +9583,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -9031,6 +9739,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -9184,6 +9895,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -9337,6 +10051,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -9490,6 +10207,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -9643,6 +10363,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -9796,6 +10519,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -9949,6 +10675,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -10102,6 +10831,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -11505,6 +12237,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -11658,6 +12393,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -11811,6 +12549,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -11964,6 +12705,9 @@
                             "condition": "Blind"
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -12117,6 +12861,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -12270,6 +13017,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -12423,6 +13173,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -12576,6 +13329,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -12729,6 +13485,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -12882,6 +13641,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -13035,6 +13797,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -13188,6 +13953,9 @@
                             "condition": ""
                         }
                     ]
+                },
+                "talent": {
+                    "steps": []
                 }
             },
             {
@@ -15026,7 +15794,7 @@
                             "action": "Passive",
                             "check": "",
                             "range": "",
-                            "description": "You always know the nearest exit, tunnel, or crawlspace within medium range while underground or in urban terrain. You gain +2 to checks to escape, 1hide, or track others in cities or sewers",
+                            "description": "You always know the nearest exit, tunnel, or crawlspace within medium range while underground or in urban terrain. You gain +2 to checks to escape, hide, or track others in cities or sewers",
                             "duration": "",
                             "damage": "",
                             "damageType": "",
