@@ -644,3 +644,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadSpeciesData();
+    buildSpeciesSelect();
+
+    // existing hydration logic...
+    const sel = document.getElementById('species');
+    if (sel && sel.value) {
+        const [slugPart, optPart] = (sel.value || '').split('::');
+        state.speciesSlug = slugPart || null;
+        state.optionKey = optPart || 'general';
+    }
+    renderSpeciesBlock();
+
+    // --- ADD THIS: keep Total Checks auto-updating for every check ---
+    getCheckTotalInputs().forEach(input => {
+        input.addEventListener('input', updateTotalChecksSum);
+        input.addEventListener('change', updateTotalChecksSum);
+    });
+
+    // initialize on load
+    updateTotalChecksSum();
+});
