@@ -14,9 +14,10 @@
     <script src="scripts/tooltips.js" defer></script>
 </head>
 
-<body data-page-title="Enchanted"> 
-        <div id="header-placeholder"></div>
-        
+<body data-page-title="Enchanted">
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
     <main>
         <section>
             <h1>Enchanted items</h1>
@@ -54,25 +55,8 @@
             <script src="scripts/itemCards.js" defer></script>
 
         </section>
-
-        <script>
-            const observer = new MutationObserver(() => {
-                document.querySelectorAll(".item-card img").forEach(img => {
-                    if (!img.complete || img.naturalWidth === 0) {
-                        img.src = "assets/images/no-image-pixel-sword.png";
-                    }
-                });
-            });
-
-            observer.observe(document.body, { childList: true, subtree: true });
-        </script>
-
     </main>
 
-   
-
-
-    <div id="sidebar-placeholder"></div>
 </body>
 
 </html>

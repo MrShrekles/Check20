@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Active Sheet</title>
+
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/active-sheet.css" />
+
+    <script src="scripts/main.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/tooltips.js" defer></script>
+
+    <!-- page logic -->
+    <script src="scripts/active-sheet.js" defer></script>
+</head>
+
+<body data-page-title="Active-Sheet">
+    <!-- Optional: your existing header injection can target this -->
+    <header id="site-header" class="site-header"></header>
+
+    <main class="app" id="app">
+        <!-- Sticky resource strip (no-scroll critical loop) -->
+        <section class="resource-strip" aria-label="Resources">
+            <div class="resource-pill" data-resource="hp">
+                <div class="pill-label">Wounds</div>
+                <div class="pill-value">
+                    <button class="pill-btn" data-action="dec" aria-label="Decrease Wounds">−</button>
+                    <output class="pill-num" id="hp-current">0</output>
+                    <span class="pill-sep">/</span>
+                    <output class="pill-num pill-max" id="hp-max">0</output>
+                    <button class="pill-btn" data-action="inc" aria-label="Increase Wounds">+</button>
+                </div>
+            </div>
+
+            <div class="resource-pill" data-resource="armor">
+                <div class="pill-label">Armor</div>
+                <div class="pill-value">
+                    <button class="pill-btn" data-action="dec" aria-label="Decrease Armor">−</button>
+                    <output class="pill-num" id="armor-current">0</output>
+                    <span class="pill-sep">/</span>
+                    <output class="pill-num pill-max" id="armor-max">0</output>
+                    <button class="pill-btn" data-action="inc" aria-label="Increase Armor">+</button>
+                </div>
+            </div>
+
+            <div class="resource-pill" data-resource="sp">
+                <div class="pill-label">SP</div>
+                <div class="pill-value">
+                    <button class="pill-btn" data-action="dec" aria-label="Decrease SP">−</button>
+                    <output class="pill-num" id="sp-current">0</output>
+                    <span class="pill-sep">/</span>
+                    <output class="pill-num pill-max" id="sp-max">0</output>
+                    <button class="pill-btn" data-action="inc" aria-label="Increase SP">+</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page panels (switch via bottom nav) -->
+        <section class="panel-stack" id="panel-stack">
+            <!-- PLAY -->
+            <section class="panel is-active" id="panel-play" role="region" aria-label="Play">
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Conditions</h2>
+                        <button class="ghost-btn" id="btn-clear-conditions" type="button">Clear</button>
+                    </div>
+                    <div class="chip-row" id="conditions-row" aria-label="Condition chips">
+                        <!-- chips injected by JS -->
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Quick Checks</h2>
+                        <button class="ghost-btn" id="btn-customize-quick" type="button">Edit</button>
+                    </div>
+
+                    <div class="quick-grid" id="quick-checks">
+                        <!-- Big tappable buttons injected by JS -->
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Recent</h2>
+                        <button class="ghost-btn" id="btn-clear-log" type="button">Clear</button>
+                    </div>
+                    <ol class="roll-log" id="roll-log" aria-label="Recent rolls">
+                        <!-- log items injected by JS -->
+                    </ol>
+                </div>
+            </section>
+
+            <!-- ACTIONS -->
+            <section class="panel" id="panel-actions" role="region" aria-label="Actions">
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Actions</h2>
+                        <button class="ghost-btn" id="btn-add-action" type="button">Add</button>
+                    </div>
+
+                    <div class="search-row">
+                        <input class="search" id="actions-search" type="search" placeholder="Search actions…" autocomplete="off" />
+                    </div>
+
+                    <div class="card-list" id="actions-list">
+                        <!-- action cards injected by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- CHECKS -->
+            <section class="panel" id="panel-checks" role="region" aria-label="Checks">
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Checks</h2>
+                        <button class="ghost-btn" id="btn-check-filters" type="button">Filters</button>
+                    </div>
+
+                    <div class="search-row">
+                        <input class="search" id="checks-search" type="search" placeholder="Search checks…" autocomplete="off" />
+                    </div>
+
+                    <div class="list" id="checks-list">
+                        <!-- check rows injected by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- GEAR -->
+            <section class="panel" id="panel-gear" role="region" aria-label="Gear">
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Gear</h2>
+                        <button class="ghost-btn" id="btn-add-gear" type="button">Add</button>
+                    </div>
+
+                    <div class="search-row">
+                        <input class="search" id="gear-search" type="search" placeholder="Search gear…" autocomplete="off" />
+                    </div>
+
+                    <div class="card-list" id="gear-list">
+                        <!-- gear cards injected by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- EDIT -->
+            <section class="panel" id="panel-edit" role="region" aria-label="Edit">
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Edit</h2>
+                        <button class="ghost-btn" id="btn-export" type="button">Export</button>
+                    </div>
+
+                    <!-- Keep Edit minimal on mobile; link out to your full builder if needed -->
+                    <div class="form">
+                        <label class="field">
+                            <span class="field-label">Name</span>
+                            <input id="char-name" name="charName" type="text" inputmode="text" autocomplete="off" />
+                        </label>
+
+                        <label class="field">
+                            <span class="field-label">Level</span>
+                            <input id="char-level" name="charLevel" type="number" inputmode="numeric" min="1" step="1" />
+                        </label>
+
+                        <div class="field-row">
+                            <label class="field">
+                                <span class="field-label">HP Max</span>
+                                <input id="hp-max-input" name="hpMax" type="number" inputmode="numeric" min="0" step="1" />
+                            </label>
+                            <label class="field">
+                                <span class="field-label">Armor Max</span>
+                                <input id="armor-max-input" name="armorMax" type="number" inputmode="numeric" min="0" step="1" />
+                            </label>
+                            <label class="field">
+                                <span class="field-label">SP Max</span>
+                                <input id="sp-max-input" name="spMax" type="number" inputmode="numeric" min="0" step="1" />
+                            </label>
+                        </div>
+
+                        <button class="primary-btn" id="btn-save-edit" type="button">Save</button>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Bottom navigation -->
+        <nav class="bottom-nav" aria-label="Bottom navigation">
+            <button class="nav-btn is-active" data-nav="play" type="button" aria-controls="panel-play">
+                <span class="nav-icon" aria-hidden="true">🎲</span>
+                <span class="nav-label">Play</span>
+            </button>
+            <button class="nav-btn" data-nav="actions" type="button" aria-controls="panel-actions">
+                <span class="nav-icon" aria-hidden="true">⚔️</span>
+                <span class="nav-label">Actions</span>
+            </button>
+            <button class="nav-btn" data-nav="checks" type="button" aria-controls="panel-checks">
+                <span class="nav-icon" aria-hidden="true">✅</span>
+                <span class="nav-label">Checks</span>
+            </button>
+            <button class="nav-btn" data-nav="gear" type="button" aria-controls="panel-gear">
+                <span class="nav-icon" aria-hidden="true">🎒</span>
+                <span class="nav-label">Gear</span>
+            </button>
+            <button class="nav-btn" data-nav="edit" type="button" aria-controls="panel-edit">
+                <span class="nav-icon" aria-hidden="true">⚙️</span>
+                <span class="nav-label">Edit</span>
+            </button>
+        </nav>
+
+        <!-- Roll Drawer (bottom sheet) -->
+        <section class="drawer" id="roll-drawer" aria-hidden="true">
+            <div class="drawer-scrim" data-drawer-close></div>
+
+            <div class="drawer-sheet" role="dialog" aria-modal="true" aria-label="Roll">
+                <div class="drawer-handle" aria-hidden="true"></div>
+
+                <div class="drawer-head">
+                    <div class="drawer-title" id="drawer-title">Roll</div>
+                    <button class="icon-btn" type="button" data-drawer-close aria-label="Close roll drawer">✕</button>
+                </div>
+
+                <div class="drawer-body">
+                    <div class="roll-grid">
+                        <label class="field">
+                            <span class="field-label">Label</span>
+                            <input id="roll-label" type="text" placeholder="Agility Check" autocomplete="off" />
+                        </label>
+
+                        <label class="field">
+                            <span class="field-label">Modifier</span>
+                            <input id="roll-mod" type="number" inputmode="numeric" value="0" step="1" />
+                        </label>
+                    </div>
+
+                    <div class="toggle-row" role="group" aria-label="Roll toggles">
+                        <button class="toggle-btn" type="button" data-toggle="adv">Adv</button>
+                        <button class="toggle-btn" type="button" data-toggle="dis">Dis</button>
+                        <button class="toggle-btn" type="button" data-toggle="edge">Edge</button>
+                    </div>
+
+                    <button class="primary-btn" id="btn-roll" type="button">Roll</button>
+
+                    <div class="mini-log">
+                        <div class="mini-log-head">
+                            <div class="mini-log-title">This Session</div>
+                            <button class="ghost-btn" id="btn-clear-mini-log" type="button">Clear</button>
+                        </div>
+                        <ol class="roll-log" id="mini-roll-log"></ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Floating Roll button (thumb friendly) -->
+        <button class="fab" id="fab-roll" type="button" aria-label="Open roll drawer">Roll</button>
+    </main>
+</body>
+
+</html>

@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/species_new.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
-    <script src="scripts/species_new.js" defer></script>
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/species-data.js" defer></script>
+    <script src="scripts/species-render.js" defer></script>
+    <script src="scripts/species-ui.js" defer></script>
 </head>
 
 <body data-page-title="Species">
@@ -32,23 +34,11 @@
             <span id="species-count"></span>
         </section>
 
+        <nav id="lineage-tabs" class="lineage-tabs"></nav>
         <section class="species-filters">
-            <div class="filter-group" data-key="lineage">
-                <h4>Lineage</h4>
-            </div>
             <div class="filter-group" data-key="option">
                 <h4>Option</h4>
             </div>
-            <div class="filter-group" data-key="rarity">
-                <h4>Rarity</h4>
-            </div>
-            <div class="filter-group" data-key="region">
-                <h4>Region</h4>
-            </div>
-        </section>
-
-        <section>
-            <div class="info-chip">Region:</div>
         </section>
 
         <section id="species-sections" class="species-sections"></section>
@@ -63,9 +53,6 @@
                 <button id="lb-next">›</button>
             </nav>
         </dialog>
-
-        <script src="species.js"></script>
-
 
     </main>
 

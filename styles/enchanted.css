@@ -9,6 +9,14 @@
   transition: transform 0.2s ease;
 }
 
+.item-card img {
+  width: 60px;
+  height: auto;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  object-fit: contain;
+}
+
 .item-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 0 10px rgba(255, 200, 120, 0.2);

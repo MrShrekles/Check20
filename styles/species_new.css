@@ -8,7 +8,7 @@
     --bg-2: var(--theme-2, #222);
 }
 
-/* Base chip */
+/* ===== CHIPS ===== */
 .chip {
     display: inline-block;
     padding: 2px 8px;
@@ -22,7 +22,6 @@
     box-shadow: var(--box-shadow);
 }
 
-/* Rarity chips */
 .chip-rarity {
     font-weight: 700;
     border: 1px solid var(--gold-2);
@@ -73,23 +72,18 @@
     background-color: var(--dark-2);
     border-radius: var(--border-radius);
     color: var(--gold-2);
-    box-shadow:
-        1px 1px rgba(0, 0, 0, .2);
-    transition:
-        transform 0.2s ease-out,
-        box-shadow 0.2s ease-out;
+    box-shadow: 1px 1px rgba(0, 0, 0, .2);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
     will-change: transform, box-shadow;
 }
 
 .info-chip:hover {
-    box-shadow:
-        0 4px 8px rgba(0, 0, 0, 0.3),
-        0 0 0 1px var(--gold-2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--gold-2);
     color: var(--gold-3);
     background-color: var(--theme-1);
 }
 
-/* ===============================   Read-Full Tag Section */
+/* ===== READ-FULL TAGS ===== */
 .read-tags {
     margin-top: 0.5rem;
     display: flex;
@@ -125,30 +119,70 @@
     font-weight: 400;
 }
 
-/* ===== TOOLBAR / FILTERS ===== */
+/* ===== TOOLBAR ===== */
 .species-toolbar {
     display: flex;
     gap: var(--gap-1);
     align-items: center;
-    flex-wrap: wrap
+    flex-wrap: wrap;
 }
 
+/* ===== LINEAGE TABS ===== */
+#lineage-tabs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 150px));
+    gap: .35rem;
+    padding: .5rem .75rem;
+    background: var(--bg-1);
+    border-bottom: var(--bd-1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#lineage-tabs .tab {
+    padding: .3rem .75rem;
+    border-radius: 999px;
+    border: var(--bd-1);
+    background: transparent;
+    color: var(--text-cream);
+    font-size: .875rem;
+    cursor: pointer;
+    opacity: .65;
+    transition: opacity .15s, background .15s;
+    text-transform: capitalize;
+}
+
+#lineage-tabs .tab:hover {
+    opacity: .9;
+    background: var(--bg-2);
+}
+
+#lineage-tabs .tab.active {
+    opacity: 1;
+    background: var(--gold-1);
+    color: var(--text-gold);
+    border-color: var(--gold-2);
+    font-weight: 600;
+}
+
+/* ===== OPTION FILTERS ===== */
 .species-filters {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: var(--gap-1)
+    gap: var(--gap-1);
 }
 
 .filter-group {
     background: var(--bg-1);
     padding: .5rem;
-    border-radius: var(--radius)
+    border-radius: var(--radius);
 }
 
 .filter-group h4 {
     margin: .2rem 0 .4rem;
     font-size: .9rem;
-    opacity: .8
+    opacity: .8;
 }
 
 .toggle-btn {
@@ -156,20 +190,23 @@
     border-radius: 999px;
     border: var(--bd-1);
     margin: .2rem;
-    font-size: .85rem
+    font-size: .85rem;
+}
+
+.toggle-btn.active {
+    opacity: 1;
 }
 
 .toggle-btn.dim {
     opacity: .35;
-    filter: saturate(.2)
+    filter: saturate(.2);
 }
 
 /* ===== CARDS / GRID ===== */
-.species-grid,
-.lineage-grid {
+.species-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--gap-2)
+    gap: var(--gap-2);
 }
 
 .species-card {
@@ -177,7 +214,7 @@
     border-radius: var(--radius);
     overflow: hidden;
     display: flex;
-    flex-direction: column
+    flex-direction: column;
 }
 
 .species-card header {
@@ -185,40 +222,32 @@
     gap: .5rem;
     align-items: center;
     padding: .6rem .7rem;
-    border-bottom: var(--bd-1)
+    border-bottom: var(--bd-1);
 }
 
 .species-card img.cover {
     width: 100%;
     aspect-ratio: 16/9;
     object-fit: cover;
-    background: #222
+    background: #222;
 }
 
 .species-meta {
     display: flex;
     gap: .3rem .4rem;
     flex-wrap: wrap;
-    padding: .4rem .7rem
-}
-
-.chip {
-    font-size: .75rem;
-    padding: .1rem .5rem;
-    border: var(--bd-1);
-    border-radius: 999px;
-    opacity: .9
+    padding: .4rem .7rem;
 }
 
 .species-body {
     padding: .6rem .7rem;
     font-size: .92rem;
-    position: relative
+    position: relative;
 }
 
 .species-body.collapsed {
     max-height: 6.5rem;
-    overflow: hidden
+    overflow: hidden;
 }
 
 .read-more {
@@ -226,69 +255,96 @@
     margin-top: .35rem;
     font-size: .85rem;
     text-decoration: underline;
-    cursor: pointer
+    cursor: pointer;
 }
 
-/* ===== LIGHTBOX ===== */
-#species-lightbox {
-    width: min(92vw, 1000px);
-    border: none;
-    background: #000c;
-    backdrop-filter: blur(4px)
-}
-
-#species-lightbox img {
-    width: 100%;
-    height: auto;
-    display: block
-}
-
-#species-lightbox .close {
-    position: absolute;
-    top: .5rem;
-    right: .5rem
-}
-
-/* ===== LINEAGE / OPTION SECTIONS ===== */
+/* ===== LINEAGE SECTIONS (All view) ===== */
 .species-sections {
     display: grid;
-    gap: 1rem
-}
-
-.lineage-section {
-    border: var(--bd-1);
-    border-radius: var(--radius);
-    overflow: hidden
+    gap: 1rem;
 }
 
 .lineage-header {
-    position: sticky;
-    top: 0;
-    background: var(--bg-1);
-    padding: .5rem .75rem;
-    border-bottom: var(--bd-1)
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
 }
 
-.lineage-header h2 {
-    margin: 0;
-    font-size: 1rem;
-    letter-spacing: .5px;
-    opacity: .9
+.lineage-header .twisty {
+    inline-size: 1rem;
+    aspect-ratio: 1;
+    display: inline-block;
+    transform: rotate(90deg);
+    transition: .15s ease;
 }
 
+.lineage-section.collapsed .twisty {
+    transform: rotate(0deg);
+}
+
+.lineage-section.collapsed .option-group {
+    display: none;
+}
+
+.lineage-header .count {
+    opacity: .6;
+    margin-left: auto;
+    font-size: .85rem;
+}
+
+h2 {
+    text-transform: capitalize;
+}
+
+/* ===== OPTION GROUPS ===== */
 .option-header {
     background: var(--bg-2);
     padding: .4rem .75rem;
-    border-top: var(--bd-1)
+    border-top: var(--bd-1);
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
 }
 
 .option-header h3 {
     margin: 0;
-    font-size: 2rem;
+    font-size: 1.1rem;
     opacity: .9;
     color: var(--text-cream);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-    padding-bottom: 0.25em;
+    text-transform: capitalize;
+}
+
+.option-header .twisty {
+    inline-size: 1rem;
+    aspect-ratio: 1;
+    display: inline-block;
+    transform: rotate(90deg);
+    transition: .15s ease;
+}
+
+.option-header .count {
+    opacity: .6;
+    font-size: .85rem;
+    margin-left: auto;
+}
+
+.option-group.collapsed .twisty {
+    transform: rotate(0deg);
+}
+
+.option-group.collapsed .lineage-grid {
+    display: none;
+}
+
+.lineage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--gap-2);
+    padding: var(--gap-2);
 }
 
 /* ===== FEATURE BLOCK ===== */
@@ -297,7 +353,7 @@
     padding: .6rem .75rem .65rem;
     border-top: var(--bd-1);
     background: linear-gradient(180deg, transparent, rgba(255, 255, 255, .02));
-    font-size: .92rem
+    font-size: .92rem;
 }
 
 .feature-name {
@@ -307,7 +363,7 @@
     letter-spacing: .3px;
     margin-right: .35rem;
     position: relative;
-    color: var(--gold-1)
+    color: var(--gold-1);
 }
 
 .feature-name::after {
@@ -318,15 +374,18 @@
     width: 100%;
     height: 2px;
     background: linear-gradient(90deg, var(--gold-1, #c2a756), transparent 70%);
-    opacity: .35
+    opacity: .35;
 }
 
 .feature-effect {
     display: inline;
-    opacity: .95
+    opacity: .95;
 }
 
-/* Pills */
+.feature-pills {
+    display: inline;
+}
+
 .feature-pill {
     display: inline-block;
     font-size: .78rem;
@@ -335,186 +394,98 @@
     border-radius: 999px;
     border: 1px solid currentColor;
     vertical-align: middle;
-    backdrop-filter: saturate(1.2)
+    backdrop-filter: saturate(1.2);
+    transition: transform .1s;
 }
 
 .feature-pill+.feature-pill {
-    margin-left: .35rem
+    margin-left: .35rem;
+}
+
+.feature-pill:hover {
+    transform: translateY(-1px) scale(1.02);
 }
 
 .pill-action {
     color: #8bd6ff;
     background: rgba(139, 214, 255, .12);
-    box-shadow: inset 0 0 0 1px rgba(139, 214, 255, .15)
+    box-shadow: inset 0 0 0 1px rgba(139, 214, 255, .15);
 }
 
 .pill-dmg {
     color: #ffb37a;
     background: rgba(255, 179, 122, .12);
-    box-shadow: inset 0 0 0 1px rgba(255, 179, 122, .15)
+    box-shadow: inset 0 0 0 1px rgba(255, 179, 122, .15);
 }
 
 .pill-type {
     color: #d0ff9a;
     background: rgba(208, 255, 154, .12);
-    box-shadow: inset 0 0 0 1px rgba(208, 255, 154, .15)
+    box-shadow: inset 0 0 0 1px rgba(208, 255, 154, .15);
 }
 
-.feature-pill:hover {
-    transform: translateY(-1px) scale(1.02)
+/* ===== LIGHTBOX (dialog) ===== */
+#species-lightbox {
+    width: min(92vw, 1000px);
+    border: none;
+    border-radius: var(--radius);
+    background: #000c;
+    backdrop-filter: blur(4px);
+    padding: 0;
 }
 
-/* Collapsible lineage */
-.lineage-header {
-    cursor: pointer;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    gap: .5rem
+#species-lightbox::backdrop {
+    background: rgba(0, 0, 0, .75);
 }
 
-.lineage-header .twisty {
-    inline-size: 1rem;
-    aspect-ratio: 1;
-    display: inline-block;
-    transform: rotate(90deg);
-    transition: .15s ease
+#species-lightbox img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
-.lineage-section.collapsed .twisty {
-    transform: rotate(0deg)
-}
-
-.lineage-section.collapsed .option-header,
-.lineage-section.collapsed .lineage-grid {
-    display: none
-}
-
-.lineage-header .count {
-    opacity: .6;
-    margin-left: auto;
-    font-size: .85rem
-}
-
-.lineage-header h2,
-.option-header h3 {
-    text-transform: capitalize;
-}
-
-/* === Lightbox === */
-#img-lightbox {
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, .8);
-    z-index: 9999;
-    padding: 2rem;
-}
-
-#img-lightbox.open {
-    display: flex;
-}
-
-#img-lightbox img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    box-shadow: 0 0 24px rgba(0, 0, 0, .6);
-}
-
-#img-lightbox .close {
+#species-lightbox .close {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    font-size: 28px;
+    top: .5rem;
+    right: .5rem;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
     color: #fff;
     cursor: pointer;
-    user-select: none;
+    line-height: 1;
 }
 
-body.stop-scroll {
-    overflow: hidden;
-}
-
-/* === Lightbox === */
-#img-lightbox {
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, .8);
-    z-index: 9999;
-    padding: 2rem;
-}
-
-#img-lightbox.open {
+#species-lightbox nav {
     display: flex;
+    justify-content: space-between;
+    padding: .5rem;
 }
 
-#img-lightbox img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    box-shadow: 0 0 24px rgba(0, 0, 0, .6);
-}
-
-#img-lightbox .close {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    font-size: 28px;
+#species-lightbox nav button {
+    background: none;
+    border: none;
     color: #fff;
+    font-size: 2rem;
     cursor: pointer;
-    user-select: none;
+    padding: 0 .5rem;
+    opacity: .75;
+    transition: opacity .15s;
 }
 
-body.stop-scroll {
-    overflow: hidden;
-}
-
-/* Optional: filter button states */
-.toggle-btn.active {
+#species-lightbox nav button:hover {
     opacity: 1;
 }
 
-.toggle-btn.dim {
-    opacity: .35;
+#lightbox-caption {
+    text-align: center;
+    color: rgba(255, 255, 255, .6);
+    font-size: .85rem;
+    padding: .25rem;
 }
 
-/* ====== Small CSS ====== */
-/* Add to your CSS */
-.dragon-type {
-    margin-top: .5rem;
-    padding: .5rem;
-    border: 1px solid var(--theme-2, #555);
-    border-radius: var(--border-radius, 6px);
-}
-
-.dragon-type label {
-    display: block;
-    margin-bottom: .25rem;
-}
-
-.dragon-type .dt-feature {
-    margin: .5rem 0 0;
-    font-size: .9rem;
-    opacity: .9;
-}
-
-/* ====== Dragon Type UI ====== */
-.dragon-type {
-    margin-top: .5rem;
-    padding: .5rem;
-    border: 1px solid var(--theme-2, #555);
-    border-radius: var(--border-radius, 6px);
-}
-
-.dragon-type label {
-    display: block;
-    margin-bottom: .25rem;
+body.stop-scroll {
+    overflow: hidden;
 }
 
 .dt-feature {
