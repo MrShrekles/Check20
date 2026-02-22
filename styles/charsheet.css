@@ -604,3 +604,105 @@ legend {
 body.compact-print ol li {
     margin: 0 0 6px;
 }
+
+/* 
+   PROGRESSION PAGE
+    */
+.progression-columns {
+    align-items: start;
+}
+
+.progression-group h3 {
+    font-size: .85em;
+    margin: 0 0 2px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid var(--medium);
+    text-transform: uppercase;
+}
+
+.step-list {
+    margin: 0;
+    padding-left: 1.2em;
+}
+
+.step-list li {
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.step-list li p.desc {
+    margin: 1px 0 0;
+}
+
+.progression-placeholder {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    margin-top: 1in;
+}
+
+/* 
+   RESOURCES TABLE (page 1, right col)
+    */
+.section--resources {
+    margin-top: auto;
+}
+
+.resources-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.resources-table th {
+    background-color: var(--medium);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.resources-table td,
+.resources-table th {
+    padding: var(--space-1);
+    border: 1px solid var(--black);
+}
+
+/* 
+   PAGE 2 INVENTORY
+    */
+#page2 h2 {
+    margin-top: 0;
+}
+
+#page2 .form-row {
+    margin-bottom: calc(var(--space-1) * 2);
+}
+
+#page2 textarea {
+    height: 80px;
+}
+
+/* Gear tables (page 2) */
+.gear-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: .15in;
+}
+
+.gear-table th {
+    background-color: var(--medium);
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 2px 4px;
+    border: 1px solid var(--black);
+}
+
+.gear-table td {
+    border: 1px solid var(--black);
+    padding: 1px 2px;
+}
+
+.gear-table input {
+    border: none;
+    border-radius: 0;
+    padding: 1px 2px;
+    font-size: 1em;
+}

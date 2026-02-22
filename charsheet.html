@@ -17,311 +17,454 @@
 
 <body data-page-title="Character Sheet">
     <div class="no-print" id="header-placeholder"></div>
-    
+
 
     <button class="nav-button" onclick="location.href='index.html'">Homepage</button>
     <form id="character-sheet">
+
+        <!-- ==================== PAGE 1 — Combat Reference ==================== -->
         <div class="char-page" id="page1">
-            <section class="two-column" id="charsheet">
-                <div class="two-column">
-                    <div class="column" id="left">
-                        <button class="no-print" type="button" onclick="clearCharacter()">Clear Sheet</button>
+            <div class="two-column">
 
+                <!-- LEFT: stats + species -->
+                <div class="column" id="left">
+                    <button class="no-print" type="button" onclick="clearCharacter()">Clear Sheet</button>
 
-                        <div class="character-header">
-                            <div class="character-header">
-                                <label for="charName">Character Name:</label>
-                                <input type="text" id="charName" name="charName">
-                            </div>
-
-                            <div class="health-section">
-                                <table class="health-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Attribute</th>
-                                            <th>Total</th>
-                                            <th>Current</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Armor</td>
-                                            <td><input type="number" name="armorTotal" class="circle-input" id="armor"></td>
-                                            <td><input type="number" name="armorCurrent" class="circle-input"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Wounds<br><small class="formula">Agi + Str</small></td>
-                                            <td><input type="number" name="woundsTotal" class="circle-input" id="wounds"></td>
-                                            <td><input type="number" name="woundsCurrent" class="circle-input" id="woundsCurrent"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Movement Speed<br><small class="formula">30 + 5 per 2 Agi</small></td>
-                                            <td><input type="number" name="moveTotal" class="circle-input" id="movement"></td>
-                                            <td><input type="number" name="moveCurrent" class="circle-input" id="moveCurrent"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Low Light Vision<br><small class="formula">30 + 5 per 2 Obs</small></td>
-                                            <td><input type="number" name="llvTotal" class="circle-input" id="llv"></td>
-                                            <td><input type="number" name="llvCurrent" class="circle-input" id="llvCurrent"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="checks-section">
-                            <table class="checks-table">
-                                <thead>
-                                    <tr>
-                                        <th>Physical Checks</th>
-                                        <th>Total</th>
-                                        <th>Bonus</th>
-                                        <th>Mental Checks</th>
-                                        <th>Total</th>
-                                        <th>Bonus</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Row 1 -->
-                                    <tr>
-                                        <td>Agility</td>
-                                        <td><input type="number" name="agilityTotal" class="circle-input" id="agilityTotal" onchange="calculateDerivedStats()"></td>
-                                        <td><input type="number" name="agilityBonus" class="circle-input"></td>
-                                        <td>Influence</td>
-                                        <td><input type="number" name="influenceTotal" class="circle-input"></td>
-                                        <td><input type="number" name="influenceBonus" class="circle-input"></td>
-                                    </tr>
-                                    <!-- Row 2 -->
-                                    <tr>
-                                        <td>Crafting</td>
-                                        <td><input type="number" name="craftingTotal" class="circle-input"></td>
-                                        <td><input type="number" name="craftingBonus" class="circle-input"></td>
-                                        <td>Intellect</td>
-                                        <td><input type="number" name="intellectTotal" class="circle-input"></td>
-                                        <td><input type="number" name="intellectBonus" class="circle-input"></td>
-                                    </tr>
-                                    <!-- Row 3 -->
-                                    <tr>
-                                        <td>Stealth</td>
-                                        <td><input type="number" name="stealthTotal" class="circle-input"></td>
-                                        <td><input type="number" name="stealthBonus" class="circle-input"></td>
-                                        <td>Luck</td>
-                                        <td><input type="number" name="luckTotal" class="circle-input"></td>
-                                        <td><input type="number" name="luckBonus" class="circle-input"></td>
-                                    </tr>
-                                    <!-- Row 4 -->
-                                    <tr>
-                                        <td>Strength</td>
-                                        <td><input type="number" name="strengthTotal" class="circle-input" id="strength" onchange="calculateDerivedStats()"></td>
-                                        <td><input type="number" name="strengthBonus" class="circle-input"></td>
-                                        <td>Observation</td>
-                                        <td><input type="number" name="observationTotal" class="circle-input" id="observation" onchange="calculateDerivedStats()"></td>
-                                        <td><input type="number" name="observationBonus" class="circle-input"></td>
-                                    </tr>
-                                    <!-- Row 5 -->
-                                    <tr>
-                                        <td>Survival</td>
-                                        <td><input type="number" name="survivalTotal" class="circle-input"></td>
-                                        <td><input type="number" name="survivalBonus" class="circle-input"></td>
-                                        <td>Spirit</td>
-                                        <td><input type="number" name="spiritTotal" class="circle-input"></td>
-                                        <td><input type="number" name="spiritBonus" class="circle-input"></td>
-                                    </tr>
-                                    <tr class="online-only">
-                                        <td colspan="3" class="total-sum-row">
-                                            <button type="button" onclick="adjustAllTotals(1)">+1 to All</button>
-                                            <button type="button" onclick="adjustAllTotals(-1)">-1 to All</button>
-                                            <button type="button" onclick="clearAllTotals()">Clear All</button>
-                                        </td>
-                                        <td colspan="3">
-                                            Total Checks: <input type="number" id="totalChecksSum" class="circle-input" readonly>
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- ============== Species ============== -->
-                        <fieldset class="section section--species">
-
-                            <div class="form-row">
-                                <label for="species">Species</label>
-                                <select id="species" name="species">
-                                    <option value="">Select Species</option>
-                                </select>
-                            </div>
-
-                            <!-- Optional: shown only when populated -->
-                            <div class="form-row is-hidden" id="subspecies-row">
-                                <label for="subspecies">Option</label>
-                                <select id="subspecies" name="subspecies"></select>
-                            </div>
-
-                            <ul id="species-details" class="feature-list" aria-live="polite"></ul>
-                            <div id="subspecies-details" aria-live="polite"></div>
-                        </fieldset>
-
-                        <!-- ============== Character Details ============== -->
-                        <fieldset class="section section--char-details">
-                            <legend>Character Details</legend>
-
-                            <div class="grid grid--2">
-                                <div class="form-row">
-                                    <label for="language">Language</label>
-                                    <input type="text" id="language" name="language" autocomplete="off" placeholder="e.g. Imperial, Drak">
-                                </div>
-
-                                <div class="form-row">
-                                    <label for="age">Age</label>
-                                    <input type="number" id="age" name="age" inputmode="numeric" min="0" placeholder="Years">
-                                </div>
-
-                                <div class="form-row">
-                                    <label for="diet">Diet</label>
-                                    <input type="text" id="diet" name="diet" autocomplete="off" placeholder="e.g. Omnivore">
-                                </div>
-
-                                <div class="form-row">
-                                    <label for="size">Size</label>
-                                    <select id="size" name="size">
-                                        <option value="">-- Select Size --</option>
-                                        <option value="Tiny">Tiny (under 1 ft)</option>
-                                        <option value="Small">Small (1–4 ft)</option>
-                                        <option value="Medium">Medium (5–7 ft)</option>
-                                        <option value="Large">Large (8–15 ft)</option>
-                                        <option value="Giant">Giant (15–25 ft)</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-row wide-row">
-                                    <label for="trinket">Trinket</label>
-                                    <div class="input-with-button">
-                                        <textarea id="trinket" name="trinket" rows="2" placeholder="e.g. Shotgun shell that was once shot at you, kept as a lucky charm"></textarea>
-                                        <button type="button" id="roll-trinket-sheet" title="Roll Trinket">🎲</button>
-                                    </div>
-                                </div>
-
-                                <div class="form-row wide-row">
-                                    <label for="motivation">Motivation</label>
-                                    <div class="input-with-button">
-                                        <textarea id="motivation" name="motivation" rows="2" placeholder="e.g. Overcoming past failures"></textarea>
-                                        <button type="button" id="roll-motivation-sheet" title="Roll Motivation">🎲</button>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </fieldset>
-
-                        <!-- ============== Notes & Resources (Unified) ============== -->
-                        <section class="section section--notes-resources">
-                            <table class="nr-table" role="table">
-                                <tbody>
-                                    <!-- Additional (big textarea) -->
-                                    <tr>
-                                        <th scope="row">
-                                            <label for="addEquip">Additional</label>
-                                            <button type="button" id="roll-addEquip-sheet" title="Roll Additional Equipment">🎲</button>
-                                        </th>
-                                        <td colspan="2">
-                                            <textarea id="addEquip" name="addEquip" class="nr-textarea" rows="4"></textarea>
-                                        </td>
-                                    </tr>
-
-
-                                    <!-- Wealth -->
-                                    <tr>
-                                        <th scope="row"><label for="gp">Wealth</label></th>
-                                        <td class="nr-field">
-                                            <input type="number" id="gp" name="gp" class="nr-input" placeholder="Amount" inputmode="numeric" min="0">
-                                        </td>
-                                        <td class="nr-hint"></td>
-                                    </tr>
-
-                                    <!-- Class Resource (Now / Max) -->
-                                    <tr>
-                                        <th scope="row">Class Resource</th>
-                                        <td class="nr-field">
-                                            <div class="nr-duo" role="group" aria-label="Class Resource">
-                                                <input type="number" id="class-resource" name="class-resource" class="nr-input" placeholder="Current" inputmode="numeric" min="0">
-                                                <span class="nr-sep" aria-hidden="true">/</span>
-                                                <input type="number" id="class-resource_max" name="class-resource_max" class="nr-input" placeholder="Max" inputmode="numeric" min="0">
-                                            </div>
-                                        </td>
-                                        <td class="nr-hint"></td>
-                                    </tr>
-
-                                    <!-- Spell Points (Now / Max) -->
-                                    <tr>
-                                        <th scope="row">Spell Points</th>
-                                        <td class="nr-field">
-                                            <div class="nr-duo" role="group" aria-label="Spell Points">
-                                                <input type="number" id="spell-points" name="spell-points" class="nr-input" placeholder="Current" inputmode="numeric" min="0">
-                                                <span class="nr-sep" aria-hidden="true">/</span>
-                                                <input type="number" id="spell-points_max" name="spell-points_max" class="nr-input" placeholder="Max" inputmode="numeric" min="0">
-                                            </div>
-                                        </td>
-                                        <td class="nr-hint"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </section>
-
-
-
+                    <!-- Name -->
+                    <div class="form-row">
+                        <label for="charName">Character Name</label>
+                        <input type="text" id="charName" name="charName">
                     </div>
-                    <div class="column" id="right">
-                        <!-- Class Selection -->
-                        <div class="flex-item">
-                            <label for="class">Class:</label>
-                            <select name="class" id="class">
-                                <option value="">Select Class</option>
-                            </select>
-                            <div id="class-description" class="description-text"></div>
-                            <ul id="class-features" class="feature-list"></ul>
-                            <ul id="class-equipment" class="feature-list"></ul>
-                        </div>
 
-                        <!-- Path, Talent, Specialization -->
-                        <div class="flex-container">
-                            <div class="flex-item">
-                                <label for="path">Path:</label>
+                    <!-- Health / Combat Stats -->
+                    <div class="health-section">
+                        <table class="health-table">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Total</th>
+                                    <th>Current</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Armor</td>
+                                    <td><input type="number" name="armorTotal" class="circle-input" id="armor"></td>
+                                    <td><input type="number" name="armorCurrent" class="circle-input"></td>
+                                </tr>
+                                <tr>
+                                    <td>Wounds<br><small class="formula">Agi + Str</small></td>
+                                    <td><input type="number" name="woundsTotal" class="circle-input" id="wounds"></td>
+                                    <td><input type="number" name="woundsCurrent" class="circle-input" id="woundsCurrent"></td>
+                                </tr>
+                                <tr>
+                                    <td>Movement<br><small class="formula">30 + 5 per 2 Agi</small></td>
+                                    <td><input type="number" name="moveTotal" class="circle-input" id="movement"></td>
+                                    <td><input type="number" name="moveCurrent" class="circle-input" id="moveCurrent"></td>
+                                </tr>
+                                <tr>
+                                    <td>Low Light Vision<br><small class="formula">30 + 5 per 2 Obs</small></td>
+                                    <td><input type="number" name="llvTotal" class="circle-input" id="llv"></td>
+                                    <td><input type="number" name="llvCurrent" class="circle-input" id="llvCurrent"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Checks -->
+                    <div class="checks-section">
+                        <table class="checks-table">
+                            <thead>
+                                <tr>
+                                    <th>Physical Checks</th>
+                                    <th>Total</th>
+                                    <th>Bonus</th>
+                                    <th>Mental Checks</th>
+                                    <th>Total</th>
+                                    <th>Bonus</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Agility</td>
+                                    <td><input type="number" name="agilityTotal" class="circle-input" id="agilityTotal" oninput="calculateDerivedStats()"></td>
+                                    <td><input type="number" name="agilityBonus" class="circle-input"></td>
+                                    <td>Influence</td>
+                                    <td><input type="number" name="influenceTotal" class="circle-input"></td>
+                                    <td><input type="number" name="influenceBonus" class="circle-input"></td>
+                                </tr>
+                                <tr>
+                                    <td>Crafting</td>
+                                    <td><input type="number" name="craftingTotal" class="circle-input"></td>
+                                    <td><input type="number" name="craftingBonus" class="circle-input"></td>
+                                    <td>Intellect</td>
+                                    <td><input type="number" name="intellectTotal" class="circle-input"></td>
+                                    <td><input type="number" name="intellectBonus" class="circle-input"></td>
+                                </tr>
+                                <tr>
+                                    <td>Stealth</td>
+                                    <td><input type="number" name="stealthTotal" class="circle-input"></td>
+                                    <td><input type="number" name="stealthBonus" class="circle-input"></td>
+                                    <td>Luck</td>
+                                    <td><input type="number" name="luckTotal" class="circle-input"></td>
+                                    <td><input type="number" name="luckBonus" class="circle-input"></td>
+                                </tr>
+                                <tr>
+                                    <td>Strength</td>
+                                    <td><input type="number" name="strengthTotal" class="circle-input" id="strengthTotal" oninput="calculateDerivedStats()"></td>
+                                    <td><input type="number" name="strengthBonus" class="circle-input"></td>
+                                    <td>Observation</td>
+                                    <td><input type="number" name="observationTotal" class="circle-input" id="observationTotal" oninput="calculateDerivedStats()"></td>
+                                    <td><input type="number" name="observationBonus" class="circle-input"></td>
+                                </tr>
+                                <tr>
+                                    <td>Survival</td>
+                                    <td><input type="number" name="survivalTotal" class="circle-input"></td>
+                                    <td><input type="number" name="survivalBonus" class="circle-input"></td>
+                                    <td>Spirit</td>
+                                    <td><input type="number" name="spiritTotal" class="circle-input"></td>
+                                    <td><input type="number" name="spiritBonus" class="circle-input"></td>
+                                </tr>
+                                <tr class="online-only">
+                                    <td colspan="3" class="total-sum-row">
+                                        <button type="button" onclick="adjustAllTotals(1)">+1 to All</button>
+                                        <button type="button" onclick="adjustAllTotals(-1)">-1 to All</button>
+                                        <button type="button" onclick="clearAllTotals()">Clear All</button>
+                                    </td>
+                                    <td colspan="3">
+                                        Total Checks: <input type="number" id="totalChecksSum" class="circle-input" readonly>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Species -->
+                    <fieldset class="section section--species">
+                        <legend>Species</legend>
+                        <div class="form-row">
+                            <select id="species" name="species">
+                                <option value="">Select Species</option>
+                            </select>
+                        </div>
+                        <div class="form-row is-hidden" id="subspecies-row">
+                            <label for="subspecies">Option</label>
+                            <select id="subspecies" name="subspecies"></select>
+                        </div>
+                        <ul id="species-details" class="feature-list" aria-live="polite"></ul>
+                        <ul id="species-subfeature-list" class="feature-list" aria-live="polite"></ul>
+                        <div id="subspecies-details" aria-live="polite"></div>
+                    </fieldset>
+                </div>
+
+                <!-- RIGHT: class + path/talent + resources -->
+                <div class="column" id="right">
+
+                    <!-- Class -->
+                    <div class="section">
+                        <label for="class">Class</label>
+                        <select name="class" id="class">
+                            <option value="">Select Class</option>
+                        </select>
+                        <div id="class-description" class="description-text"></div>
+                        <ul id="class-features" class="feature-list"></ul>
+                    </div>
+
+                    <!-- Path & Talent -->
+                    <div class="section">
+                        <div class="two-column">
+                            <div class="column" style="padding-left:0">
+                                <label for="path">Path</label>
                                 <select name="path" id="path">
                                     <option value="">Select Path</option>
                                 </select>
                             </div>
-                            <div class="flex-item">
-                                <label for="talent">Talent:</label>
+                            <div class="column" style="padding-right:0">
+                                <label for="talent">Talent</label>
                                 <select name="talent" id="talent">
                                     <option value="">Select Talent</option>
                                 </select>
                             </div>
-                            <div class="flex-item specialization-wrapper hidden" id="specialization-wrapper">
-                                <label for="special">Specialization:</label>
-                                <select id="special" name="special">
-                                    <option value="">Select Specialization</option>
-                                </select>
-                            </div>
                         </div>
-
-                        <!-- Details Outputs -->
-                        <div id="specialization-details" class="details-box"></div>
-                        <div id="char-details">
-                            <div id="species-details"></div>
-                            <div class="feature">
-
-                                <div id="path-details" class="feature-list"></div>
-                                <div id="talent-details" class="feature-list"></div>
-                            </div>
+                        <!-- Specialization (Professional only) -->
+                        <div class="flex-item specialization-wrapper hidden" id="specialization-wrapper">
+                            <label for="special">Specialization</label>
+                            <select id="special" name="special">
+                                <option value="">Select Specialization</option>
+                            </select>
                         </div>
                     </div>
+
+                    <!-- Feature details -->
+                    <div id="specialization-details" class="details-box"></div>
+                    <div id="path-details" class="feature-list"></div>
+                    <div id="talent-details" class="feature-list"></div>
+
+                    <!-- Resources — always needed at the table -->
+                    <div class="section section--resources">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Resource</th>
+                                    <th>Current</th>
+                                    <th>Max</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Class Resource</td>
+                                    <td><input type="number" id="class-resource" name="class-resource" class="circle-input" placeholder="—" inputmode="numeric" min="0"></td>
+                                    <td><input type="number" id="class-resource_max" name="class-resource_max" class="circle-input" placeholder="—" inputmode="numeric" min="0"></td>
+                                </tr>
+                                <tr>
+                                    <td>Spell Points</td>
+                                    <td><input type="number" id="spell-points" name="spell-points" class="circle-input" placeholder="—" inputmode="numeric" min="0"></td>
+                                    <td><input type="number" id="spell-points_max" name="spell-points_max" class="circle-input" placeholder="—" inputmode="numeric" min="0"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
-            </section>
+            </div>
         </div>
 
-        <div class="char-page">
-            <div id="progression"></div>
+        <!-- ==================== PAGE 2 — Setup & Inventory ==================== -->
+        <div class="char-page" id="page2">
+            <div class="two-column">
+        
+                <!-- LEFT: character details + notes -->
+                <div class="column">
+                    <h2>Character Details</h2>
+                    <div class="grid grid--2">
+                        <div class="form-row">
+                            <label for="language">Language</label>
+                            <input type="text" id="language" name="language" autocomplete="off" placeholder="e.g. Imperial, Drak">
+                        </div>
+                        <div class="form-row">
+                            <label for="age">Age</label>
+                            <div class="input-with-button">
+                                <input type="number" id="age" name="age" inputmode="numeric" min="0" placeholder="Years">
+                                <button type="button" id="roll-age-sheet" title="Roll Age">🎲</button>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label for="diet">Diet</label>
+                            <input type="text" id="diet" name="diet" autocomplete="off" placeholder="e.g. Omnivore">
+                        </div>
+                        <div class="form-row">
+                            <label for="size">Size</label>
+                            <select id="size" name="size">
+                                <option value="">-- Select Size --</option>
+                                <option value="Tiny">Tiny (under 1 ft)</option>
+                                <option value="Small">Small (1–4 ft)</option>
+                                <option value="Medium">Medium (5–7 ft)</option>
+                                <option value="Large">Large (8–15 ft)</option>
+                                <option value="Giant">Giant (15–25 ft)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="motivation">
+                            Motivation
+                            <button type="button" id="roll-motivation-sheet" class="no-print" title="Roll Motivation">🎲</button>
+                        </label>
+                        <textarea id="motivation" name="motivation" rows="3" placeholder="e.g. Overcoming past failures"></textarea>
+                    </div>
+        
+                    <div class="form-row" style="margin-top:.3in">
+                        <label for="trinket">
+                            Trinket
+                            <button type="button" id="roll-trinket-sheet" class="no-print" title="Roll Trinket">🎲</button>
+                        </label>
+                        <textarea id="trinket" name="trinket" rows="3" placeholder="e.g. Shotgun shell that was once shot at you, kept as a lucky charm"></textarea>
+                    </div>
+        
+                    <div class="form-row">
+                        <label for="addEquip">
+                            Additional Equipment
+                            <button type="button" id="roll-addEquip-sheet" class="no-print" title="Roll Additional Equipment">🎲</button>
+                        </label>
+                        <textarea id="addEquip" name="addEquip" rows="4"></textarea>
+                    </div>
+        
+                    <div class="form-row">
+                        <label for="gp">
+                            Wealth
+                            <button type="button" id="roll-wealth-sheet" class="no-print" title="Roll Wealth (1d100+50)">🎲</button>
+                        </label>
+                        <input type="number" id="gp" name="gp" placeholder="Amount" inputmode="numeric" min="0">
+                    </div>
+                </div>
+        
+                <!-- RIGHT: gear -->
+                <div class="column">
+                    <h2>Inventory</h2>
+        
+                    <!-- Class starting equipment -->
+                    <ul id="class-equipment" class="feature-list"></ul>
+        
+                    <!-- Weapons -->
+                    <h4>Weapons</h4>
+                    <table class="gear-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Damage</th>
+                                <th>Type</th>
+                                <th>Range</th>
+                                <th>---</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="w1-name"></td>
+                                <td><input type="text" name="w1-dmg"></td>
+                                <td><input type="text" name="w1-type"></td>
+                                <td><input type="text" name="w1-range"></td>
+                                <td><input type="text" name="w1-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="w2-name"></td>
+                                <td><input type="text" name="w2-dmg"></td>
+                                <td><input type="text" name="w2-type"></td>
+                                <td><input type="text" name="w2-range"></td>
+                                <td><input type="text" name="w2-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="w3-name"></td>
+                                <td><input type="text" name="w3-dmg"></td>
+                                <td><input type="text" name="w3-type"></td>
+                                <td><input type="text" name="w3-range"></td>
+                                <td><input type="text" name="w3-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="w4-name"></td>
+                                <td><input type="text" name="w4-dmg"></td>
+                                <td><input type="text" name="w4-type"></td>
+                                <td><input type="text" name="w4-range"></td>
+                                <td><input type="text" name="w4-notes"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+        
+                    <!-- Armor -->
+                    <h4>Armor</h4>
+                    <table class="gear-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Armor Value</th>
+                                <th>---</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="a1-name"></td>
+                                <td><input type="text" name="a1-value"></td>
+                                <td><input type="text" name="a1-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="a2-name"></td>
+                                <td><input type="text" name="a2-value"></td>
+                                <td><input type="text" name="a2-notes"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+        
+                    <!-- Items -->
+                    <h4>Items</h4>
+                    <table class="gear-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>---</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="i1-name"></td>
+                                <td><input type="text" name="i1-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i2-name"></td>
+                                <td><input type="text" name="i2-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i3-name"></td>
+                                <td><input type="text" name="i3-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i4-name"></td>
+                                <td><input type="text" name="i4-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i5-name"></td>
+                                <td><input type="text" name="i5-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i6-name"></td>
+                                <td><input type="text" name="i6-notes"></td>
+                            </tr><tr>
+                                <td><input type="text" name="i1-name"></td>
+                                <td><input type="text" name="i1-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i2-name"></td>
+                                <td><input type="text" name="i2-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i3-name"></td>
+                                <td><input type="text" name="i3-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i4-name"></td>
+                                <td><input type="text" name="i4-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i5-name"></td>
+                                <td><input type="text" name="i5-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i6-name"></td>
+                                <td><input type="text" name="i6-notes"></td>
+                            </tr><tr>
+                                <td><input type="text" name="i1-name"></td>
+                                <td><input type="text" name="i1-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i2-name"></td>
+                                <td><input type="text" name="i2-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i3-name"></td>
+                                <td><input type="text" name="i3-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i4-name"></td>
+                                <td><input type="text" name="i4-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i5-name"></td>
+                                <td><input type="text" name="i5-notes"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="i6-name"></td>
+                                <td><input type="text" name="i6-notes"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+        
+            </div>
+        </div>
+
+        <!-- ==================== PAGE 3 — Progression ==================== -->
+        <div class="char-page" id="page-progression">
+            <div id="progression">
+                <p class="progression-placeholder no-print">Select a class, path, and talent on page 1 to see progression here.</p>
+            </div>
         </div>
 
         <div class="char-page" id="con-page">
@@ -341,7 +484,7 @@
                             <th>Duration / Description</th>
                         </tr>
                     </thead>
-                    <tbody id="conditions">
+                    <tbody id="conditions-body">
                         <!-- Corpus Conditions -->
                         <tr>
                             <td colspan="3" class="category-row">Corpus Conditions</td>
@@ -518,7 +661,7 @@
                             <li>Feint (Take Stance)</li>
                         </ol>
                     </div>
-                    <!-- Eleemtnal -->
+                    <!-- Elemental -->
                     <div class="damage-box">
                         <h3>Acid</h3>
                         <ol>
@@ -666,7 +809,7 @@
                         <li><strong>Move:</strong> Up to your Speed</li>
                         <li><strong>Action:</strong> The primary activity you perform, like attacking or casting a spell. Generally, you get one action per turn, though certain abilities may offer more.</li>
                         <li><strong>Half-Action:</strong> Instead of an action. Stance</li>
-                        <li><strong>Off-Action:</strong> Reaction, opprotunity attack, or an action taken off your turn</li>
+                        <li><strong>Off-Action:</strong> Reaction, opportunity attack, or an action taken off your turn</li>
                         <li><strong>Non-Action:</strong> Talk, switch items, other</li>
                         <li><strong>Finisher:</strong> Eliminate locked foes</li>
                     </ul>
@@ -682,7 +825,7 @@
                         <li><strong>Dash:</strong> Double distance (Action)</li>
                         <li><strong>Fall:</strong> 5 dmg per 10ft</li>
                         <li><strong>Extreme Hazard:</strong> 10 dmg/sec</li>
-                        <li><strong>Burrowing:</strong> are unseen,. Can't target nor breathe</li>
+                        <li><strong>Burrowing:</strong> Are unseen. Can't target nor breathe</li>
                         <li><strong>Teleport:</strong> unoccupied space, no opportunity attacks.</li>
                     </ul>
                 </div>

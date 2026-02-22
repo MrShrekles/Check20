@@ -2,8 +2,9 @@
 let SPECIES = [];
 let DRAGON_TYPES = [];
 const state = {
-    speciesSlug: null,                    // current species slug
-    optionKey: 'general',                 // current option key
+    speciesSlug: null,
+    optionKey: 'general',
+    lifespan: null,
     dragonType: localStorage.getItem('c20.dragonType') || null
 };
 
@@ -298,16 +299,33 @@ function isDragonEligible(s) {
 /* Normalize species to consistent fields. */
 function normalizeSpecies(arr) {
     return (arr || []).map(s => {
-        // If features is an array, keep it; otherwise, build one feature from legacy fields.
-        const feats = Array.isArray(s.features) ? s.features
-            : ((s.feature_name || s.featureName || s.features) ? [{
-                name: s.feature_name || s.featureName || 'Feature',
-                // Map feature_effect → description; fall back to string features if present
-                description: s.feature_effect || (typeof s.features === 'string' ? s.features : ''),
-                action: s.fetAction || s.action || '',
-                damage: s.fetDamage || s.damage || '',
-                type: s.fetDamageType || s.damageType || s.type || ''
-            }] : []);
+        // If features is an array, keep it; otherwise, build from flat legacy fields.
+        let feats;
+        if (Array.isArray(s.features)) {
+            feats = s.features;
+        } else {
+            feats = [];
+            // Main feature
+            if (s.feature_name || s.featureName) {
+                feats.push({
+                    name: s.feature_name || s.featureName || 'Feature',
+                    description: s.feature_effect || (typeof s.features === 'string' ? s.features : ''),
+                    action: s.fetAction || s.action || '',
+                    damage: s.fetDamage || s.damage || '',
+                    type: s.fetDamageType || s.damageType || s.type || ''
+                });
+            }
+            // Sub-feature (sub-fet-name / sub-fet-effect)
+            if (s['sub-fet-name']) {
+                feats.push({
+                    name: s['sub-fet-name'],
+                    description: s['sub-fet-effect'] || '',
+                    action: s['sub-fet-action'] || '',
+                    damage: s['sub-fet-damage'] || '',
+                    type: s['sub-fet-type'] || ''
+                });
+            }
+        }
 
         const out = {
             ...s,
@@ -395,12 +413,14 @@ function renderSpeciesBlock() {
     const details = document.getElementById('species-details') ||
         document.querySelector('ul#species-details.feature-list');
     const subs = document.getElementById('subspecies-details');
+    const subfeatureList = document.getElementById('species-subfeature-list');
     if (!details) return;
 
     // Clear if nothing selected
     if (!state.speciesSlug) {
         details.innerHTML = '';
         if (subs) subs.innerHTML = '';
+        if (subfeatureList) subfeatureList.innerHTML = '';
         return;
     }
 
@@ -409,6 +429,7 @@ function renderSpeciesBlock() {
     if (!pick) {
         details.innerHTML = '';
         if (subs) subs.innerHTML = '';
+        if (subfeatureList) subfeatureList.innerHTML = '';
         return;
     }
 
@@ -420,13 +441,26 @@ function renderSpeciesBlock() {
     if (diet) diet.value = pick.diet || '';
     if (size) size.value = pick.size || '';
 
-    // Feature names + description inline; add simple pills if present
-    details.innerHTML = (pick.features || []).map(f => {
+    // Store lifespan for age roller
+    state.lifespan = pick.lifespan || null;
+
+    const features = pick.features || [];
+
+    // Render a feature as an <li>
+    function featureLI(f) {
         const pills = [f.action, [f.damage, f.type].filter(Boolean).join(', ')].filter(Boolean)
             .map(x => `<span class="pill">${esc(x)}</span>`).join(' ');
         const desc = f.description ? `: ${esc(f.description)}` : '';
         return `<li><strong>${esc(f.name || 'Feature')}</strong>${desc}${pills ? ' ' + pills : ''}</li>`;
-    }).join('') || '';
+    }
+
+    // Main feature (first)
+    details.innerHTML = features[0] ? featureLI(features[0]) : '';
+
+    // Sub-features (everything after the first)
+    if (subfeatureList) {
+        subfeatureList.innerHTML = features.slice(1).map(featureLI).join('');
+    }
 
     // Dragon type (optional)
     if (subs) subs.innerHTML = '';
@@ -549,8 +583,8 @@ function clearAllTotals() {
 // Core derived stats logic: Wounds, Movement, LLV
 function calculateDerivedStats() {
     const agiInput = document.getElementById("agilityTotal");
-    const strInput = document.getElementById("strength");
-    const obsInput = document.getElementById("observation");
+    const strInput = document.getElementById("strengthTotal");
+    const obsInput = document.getElementById("observationTotal");
 
     const agility = agiInput ? parseInt(agiInput.value, 10) || 0 : 0;
     const strength = strInput ? parseInt(strInput.value, 10) || 0 : 0;
@@ -641,6 +675,28 @@ document.addEventListener('DOMContentLoaded', () => {
         rollAddEquipBtn.addEventListener('click', () => {
             const result = getRandomItem(equipmentList);
             addEquipTextarea.value = result;
+        });
+    }
+
+    // Age roller: 3 to species lifespan, fallback d100
+    const rollAgeBtn = document.getElementById('roll-age-sheet');
+    const ageInput = document.getElementById('age');
+    if (rollAgeBtn && ageInput) {
+        rollAgeBtn.addEventListener('click', () => {
+            const max = state.lifespan || 100;
+            const min = 3;
+            ageInput.value = Math.floor(Math.random() * (max - min + 1)) + min;
+            ageInput.dispatchEvent(new Event('input'));
+        });
+    }
+
+    // Wealth roller: 1d100 + 50
+    const rollWealthBtn = document.getElementById('roll-wealth-sheet');
+    const gpInput = document.getElementById('gp');
+    if (rollWealthBtn && gpInput) {
+        rollWealthBtn.addEventListener('click', () => {
+            gpInput.value = Math.floor(Math.random() * 100) + 1 + 50;
+            gpInput.dispatchEvent(new Event('input'));
         });
     }
 });

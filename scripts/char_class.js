@@ -102,12 +102,11 @@ function renderBranch(entry, isPath) {
       </div>` : ``}
   ` : `<p>No ${isPath ? 'path' : 'talent'} found.</p>`;
 
-    // Page 2 (progression two-col), scaffold once
+    // Page 3 (progression two-col), scaffold once
     const prog = byId('progression');
     if (!byId('path-progression') || !byId('talent-progression')) {
         prog.innerHTML = `
-      <h2>Progression</h2>
-      <div class="two-column">
+      <div class="two-column progression-columns">
         <div class="column progression-group" id="path-progression"></div>
         <div class="column progression-group" id="talent-progression"></div>
       </div>`;
@@ -124,7 +123,6 @@ function renderStepList(steps = [], isPath = false) {
     const Tag = isPath ? 'ol' : 'ul';
     return `
     <div class="features">
-      <h3>Progression</h3>
       <${Tag} class="step-list">${steps.map(renderStep).join('')}</${Tag}>
     </div>`;
 }
