@@ -1,14 +1,11 @@
 // char_class.js — Path/Talent wired like class-loader, but to sheet targets.
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const [baseClasses, optClasses, specializations] = await fetchClassData();
+    const [baseClasses, optClasses] = await fetchClassData();
 
     const clsSel = document.getElementById('class');
     const pathSel = document.getElementById('path');
     const talentSel = document.getElementById('talent');
-    const specSel = document.getElementById('special');
-    const specWrap = document.getElementById('specialization-wrapper');
-
     const classDetails = document.getElementById('class-features');
     const equipList = document.getElementById('class-equipment');
 
@@ -42,12 +39,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         populate(pathSel, entries.filter(e => Array.isArray(e?.path?.steps) && e.path.steps.length).map(e => e.name), "Select a Path");
         populate(talentSel, entries.filter(e => Array.isArray(e?.talent?.steps) && e.talent.steps.length).map(e => e.name), "Select a Talent");
 
-        // Specializations (Professional only) from root
-        const isPro = classKey === 'professional';
-        specWrap?.classList.toggle('hidden', !isPro);
-        specSel.innerHTML = `<option value="">Select Specialization</option>` +
-            (isPro ? (specializations || []).map(s => `<option value="${s.name}">${s.name}</option>`).join('') : '');
-
         // Clear detail panes + progression page
         byId('path-details').innerHTML = '';
         byId('talent-details').innerHTML = '';
@@ -55,7 +46,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Hook up change handlers (mirror class-loader behavior)
         wireBranchHandlers(entries);
-        wireSpecHandler(specializations);
     };
 });
 
@@ -67,8 +57,8 @@ async function fetchClassData() {
         ]);
         const base = await baseRes.json();
         const opt = await optRes.json();
-        return [base?.classes || [], opt?.classes || {}, opt?.specializations || []];
-    } catch (e) { console.error(e); return [[], {}, []]; }
+        return [base?.classes || [], opt?.classes || {}];
+    } catch (e) { console.error(e); return [[], {}]; }
 }
 
 function wireBranchHandlers(entries) {
@@ -149,49 +139,6 @@ function renderInlineTags(s) {
     if (s?.armor !== undefined && s.armor !== "") tags.push(`<span class="tag tag-armor">[Armor: ${s.armor}]</span>`);
     if (s?.condition) tags.push(`<span class="tag tag-condition">[Condition: ${s.condition}]</span>`);
     return tags.join(' ');
-}
-
-function wireSpecHandler(specializations = []) {
-    const clsSel = byId('class');
-    const specSel = byId('special');
-    const specDetails = byId('specialization-details');
-    if (!specSel) return;
-
-    specSel.onchange = () => {
-        const isPro = (clsSel.value || '').toLowerCase() === 'professional';
-        if (!isPro) { specDetails.innerHTML = ''; return; }
-
-        const s = specializations.find(x => x?.name === specSel.value);
-        if (!s) { specDetails.innerHTML = ''; return; }
-
-        let featureBlock = '';
-        if (s.feature) {
-            // Case: single 'feature' object
-            featureBlock = `<div class="features">
-                <ul class="step-list">${renderSpecFeature(s.feature)}</ul>
-            </div>`;
-        } else if (Array.isArray(s.features) && s.features.length) {
-            // Case: 'features' array
-            featureBlock = `<div class="features">
-                <ul class="step-list">${s.features.map(renderSpecFeature).join('')}</ul>
-            </div>`;
-        } else if (s.features && typeof s.features === 'object') {
-            // Case: single 'features' object (like 'warrior')
-            featureBlock = `<div class="features">
-                <ul class="step-list">${renderSpecFeature(s.features)}</ul>
-            </div>`;
-        }
-
-        specDetails.innerHTML = `
-            <h4>${s.name}</h4>
-            ${featureBlock}
-        `;
-    };
-}
-
-function renderSpecFeature(f) {
-    return `<li><strong>${f?.name || 'Feature'}</strong> ${renderInlineTags(f)}
-    <p class="features">${f?.description || ''}</p></li>`;
 }
 
 function populate(sel, names = [], label = "Select...") {

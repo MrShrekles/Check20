@@ -955,29 +955,29 @@
       "features": [
         {
           "name": "Professional Knowledge",
-          "description": "At character creation, gain an additional 5 points towards your checks to a maximum of 15 for any check, reflecting your wealth of experience. Additionally, you suffer no penalties from wearing Medium armor."
+          "description": "At character creation, gain an additional 5 points towards your checks to a maximum of 15 for any check, reflecting your wealth of experience."
         },
         {
           "name": "Tactical Assessment",
           "description": "As an off-action targeting a creature within short range, gain advantage on checks against them until the end of your next turn, using your experience discerning a target's vulnerabilities and strengths."
-        },
-        {
-          "name": "Professional Specialization",
-          "description": "Choose a specialization from the list below."
         }
       ],
       "equipment": [
         {
-          "name": "Medium Armor",
-          "description": "Provides 10 Armor."
+          "name": "Scout's Armor",
+          "description": "Armor: 8; Bulk: 2; Stealth +1, Magic -1"
         },
         {
-          "name": "Standard Weapon",
-          "description": "(Agi or Str; 1 hand, Light; [[1d6]] Physical)."
+          "name": "Light Shield",
+          "description": "Armor: 3; Bulk: 2"
         },
         {
-          "name": "Standard Ranged",
-          "description": "(Agi; 2 Hand, Medium Range, Reload; [[1d10]] Piercing)."
+          "name": "Semi-Automatic Pistol",
+          "description": "3d4!-3 Piercing; Agility, Luck, Observation; Medium; 1 hand; Bulk: 1"
+        },
+        {
+          "name": "Hookblade",
+          "description": "1d6 Slashing Agility, Observation, Stealth, Strength; Melee 1 hand, Light; Bulk: 1 [Hookblade: When you hit with a success+ you can choose to grapple the target instead of rolling on the success table]"
         }
       ],
       "specializations": [
