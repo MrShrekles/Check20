@@ -175,7 +175,6 @@ ul.transmission strong {
   color: var(--dark-2);
 }
 
-
 /* Controls Container */
 .control {
   padding: var(--padding);
@@ -231,28 +230,6 @@ ul.transmission strong {
   font-weight: bold;
 }
 
-#origin-toggles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  margin: var(--padding) 0;
-}
-
-#origin-toggles button {
-  padding: 0.3rem 0.6rem;
-  background: var(--dark-2);
-  color: var(--cream);
-  border: 1px solid var(--theme-2);
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-#origin-toggles button.active {
-  background: var(--green-2);
-  font-weight: bold;
-}
-
 main {
   overflow-x: hidden;
 }
@@ -265,5 +242,1209 @@ main {
   #intent-spellcasting {
     background-position-y: top;
     background-position-x: right;
+  }
+}
+
+/* ── Main Tab Navigation ─────────────────────────────────────────── */
+#spell-tabs {
+  display: flex;
+  width: 100%;
+  margin: 0 0 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.85rem 1rem;
+  background: var(--theme-1);
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--cream);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.tab-btn:hover {
+  background: var(--green-1);
+  color: var(--white);
+}
+
+.tab-btn.active {
+  background: var(--green-2);
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* ── Origin Sub-tabs ─────────────────────────────────────────────── */
+#origin-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  background: var(--green-1);
+  border-bottom: 2px solid var(--green-3);
+  margin: 0 0 1.5rem 0;
+  padding: 5px;
+  gap: 5px;
+  border-radius: var(--border-radius);
+}
+
+.origin-tab {
+  padding: 0.45rem 0.9rem;
+  background: var(--theme-1);
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: bold;
+  color: var(--cream);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  position: relative;
+  bottom: -2px;
+  white-space: nowrap;
+}
+
+.origin-tab:hover {
+  color: var(--white);
+  background: var(--green-2);
+}
+
+.origin-tab.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+  background: var(--green-2);
+}
+
+/* ── Spell Builder ───────────────────────────────────────────────── */
+#spell-builder {
+  margin-top: 2rem;
+}
+
+.builder-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .builder-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.builder-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.builder-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.builder-field--full {
+  grid-column: 1 / -1;
+}
+
+.builder-field label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--cream);
+}
+
+.builder-field .optional {
+  font-style: italic;
+  opacity: 0.6;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.builder-field input,
+.builder-field select,
+.builder-field textarea {
+  background: var(--dark-2);
+  border: 1px solid var(--green-3);
+  color: var(--white);
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.builder-field textarea {
+  resize: vertical;
+}
+
+.builder-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.builder-actions button {
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  background: var(--green-2);
+  color: var(--cream);
+  border: 1px solid var(--green-3);
+  border-radius: var(--border-radius);
+}
+
+.builder-actions button:hover {
+  background: var(--green-3);
+}
+
+.builder-actions button.secondary {
+  background: transparent;
+  border: 1px solid var(--green-3);
+  color: var(--cream);
+}
+
+/* Preview panel */
+.builder-preview {
+  min-height: 200px;
+  border: 1px dashed var(--green-3);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+}
+
+.preview-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 180px;
+  opacity: 0.5;
+  text-align: center;
+}
+
+.preview-error {
+  color: var(--red, #e07070);
+  padding: 0.5rem;
+}
+
+.built-spell {
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   SPELLCRAFT TAB
+   ═══════════════════════════════════════════ */
+
+/* Rules Panel */
+.craft-rules-panel {
+  background: var(--green-1);
+  border: 1px solid var(--green-3);
+  border-radius: var(--border-radius);
+  margin: 1rem var(--padding) 0;
+  overflow: hidden;
+}
+
+.craft-rules-panel>summary {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  list-style: none;
+  user-select: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.craft-rules-panel[open]>summary {
+  border-bottom-color: var(--green-3);
+}
+
+.craft-rules-panel>summary::-webkit-details-marker {
+  display: none;
+}
+
+.craft-rules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.craft-rule {
+  background: var(--dark-2);
+  border: 1px solid var(--green-3);
+  border-radius: var(--border-radius);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.82rem;
+}
+
+.craft-rule strong {
+  display: block;
+  color: var(--gold);
+  margin-bottom: 0.25rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.craft-rule p {
+  margin: 0;
+  color: var(--cream);
+  line-height: 1.4;
+}
+
+/* ── Flow Container ── */
+#spellcraft-flow {
+  padding: var(--padding);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ── Craft Step ── */
+.craft-step {
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.craft-step--locked {
+  opacity: 0.25;
+  pointer-events: none;
+  filter: blur(1px);
+}
+
+.craft-step--revealed {
+  opacity: 1;
+  pointer-events: auto;
+  filter: none;
+}
+
+.craft-step-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  background: var(--green-2);
+  border: 1px solid var(--green-3);
+  border-radius: 50%;
+  color: var(--gold);
+  font-weight: bold;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.craft-step-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--cream);
+}
+
+.step-sub {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted, #999);
+  font-style: italic;
+}
+
+/* ── Card Row ── */
+.card-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.card-row--wide {
+  gap: 0.75rem;
+}
+
+.card-row--intent {
+  gap: 0.6rem;
+}
+
+/* ── Craft Card (tarot-style flip) ── */
+.craft-card {
+  width: 130px;
+  height: 180px;
+  cursor: pointer;
+  perspective: 800px;
+  flex-shrink: 0;
+}
+
+.card-row--wide .craft-card {
+  width: 115px;
+  height: 160px;
+}
+
+.card-row--intent .craft-card {
+  width: 105px;
+  height: 150px;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s ease;
+  border-radius: var(--border-radius);
+}
+
+.craft-card:hover .card-inner {
+  transform: rotateY(180deg);
+  box-shadow: 0 0 18px var(--green-3);
+}
+
+.craft-card.selected .card-inner {
+  transform: rotateY(180deg);
+  box-shadow: 0 0 20px var(--gold);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--border-radius);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem;
+  text-align: center;
+  border: 1px solid var(--green-3);
+}
+
+.card-front {
+  background: linear-gradient(160deg, var(--green-2), var(--dark-2));
+}
+
+.card-back {
+  background: linear-gradient(160deg, var(--dark-2), var(--green-1));
+  transform: rotateY(180deg);
+  border-color: var(--gold);
+}
+
+.craft-card.selected .card-back {
+  border-color: var(--gold);
+  background: linear-gradient(160deg, var(--green-2), var(--dark-2));
+}
+
+.card-front h4,
+.card-back h4 {
+  margin: 0 0 0.3rem;
+  font-size: 0.9rem;
+  color: var(--cream);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.card-back h4 {
+  color: var(--gold);
+}
+
+.card-front .card-glyph {
+  font-size: 2rem;
+  margin-bottom: 0.4rem;
+  filter: drop-shadow(0 0 6px var(--green-3));
+  line-height: 1;
+}
+
+.card-back p {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--cream);
+  line-height: 1.45;
+  font-weight: normal;
+}
+
+/* SP badge on intent cards */
+.sp-badge {
+  font-size: 0.7rem;
+  background: var(--dark-2);
+  border: 1px solid var(--green-3);
+  border-radius: var(--border-radius);
+  padding: 2px 6px;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+  display: inline-block;
+}
+
+/* ── Summary Formula ── */
+#craft-summary {
+  background: var(--dark-2);
+  border: 1px solid var(--green-3);
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.summary-formula {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.sum-pill {
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--border-radius);
+  font-size: 0.82rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+}
+
+.sum-manner {
+  background: var(--warm-2);
+  color: var(--white);
+}
+
+.sum-transmission {
+  background: var(--green-2);
+  color: var(--white);
+}
+
+.sum-intent {
+  background: var(--theme-1);
+  color: var(--cream);
+}
+
+.sum-plus {
+  color: var(--green-3);
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.sum-damage {
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  color: var(--gold);
+  font-style: italic;
+}
+
+/* ── Detail Fields ── */
+.craft-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .craft-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .craft-card {
+    width: 100px;
+    height: 140px;
+  }
+
+  .card-row--wide .craft-card {
+    width: 90px;
+    height: 130px;
+  }
+
+  .card-row--intent .craft-card {
+    width: 85px;
+    height: 125px;
+  }
+}
+
+.detail-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Mobile responsive for card rows */
+@media (max-width: 500px) {
+  .card-row {
+    justify-content: center;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   SPELLCRAFT TAB
+   ═══════════════════════════════════════════ */
+
+/* Rules Panel */
+.craft-rules-panel {
+  background: var(--green-1);
+  border: 1px solid var(--green-3);
+  border-radius: var(--border-radius);
+  margin: 1rem var(--padding) 0;
+  overflow: hidden;
+}
+
+.craft-rules-panel>summary {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  list-style: none;
+  user-select: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.craft-rules-panel[open]>summary {
+  border-bottom-color: var(--green-3);
+}
+
+.craft-rules-panel>summary::-webkit-details-marker {
+  display: none;
+}
+
+.craft-rules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.craft-rule {
+  background: var(--dark-2);
+  border: 1px solid var(--green-3);
+  border-radius: var(--border-radius);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.82rem;
+}
+
+.craft-rule strong {
+  display: block;
+  color: var(--gold);
+  margin-bottom: 0.25rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.craft-rule p {
+  margin: 0;
+  color: var(--cream);
+  line-height: 1.4;
+}
+
+/* ── Flow Container ── */
+#spellcraft-flow {
+  padding: var(--padding);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ── Craft Step ── */
+.craft-step {
+  transition: opacity 0.35s ease, filter 0.35s ease;
+}
+
+.craft-step--locked {
+  opacity: 0.25;
+  pointer-events: none;
+  filter: blur(1px);
+}
+
+.craft-step--revealed {
+  opacity: 1;
+  pointer-events: auto;
+  filter: none;
+}
+
+.craft-step-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  background: var(--green-2);
+  border: 1px solid var(--green-3);
+  border-radius: 50%;
+  color: var(--gold);
+  font-weight: bold;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.craft-step-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--cream);
+}
+
+.step-sub {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted, #999);
+  font-style: italic;
+}
+
+/* ── Card Row ── */
+.card-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.card-row--wide {
+  gap: 0.75rem;
+}
+
+.card-row--intent {
+  gap: 0.6rem;
+}
+
+/* ── Craft Cards (tarot flip) ── */
+.craft-card {
+  width: 130px;
+  height: 180px;
+  cursor: pointer;
+  perspective: 800px;
+  flex-shrink: 0;
+}
+
+.card-row--wide .craft-card {
+  width: 115px;
+  height: 160px;
+}
+
+.card-row--intent .craft-card {
+  width: 105px;
+  height: 150px;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+  border-radius: var(--border-radius);
+}
+
+.craft-card:hover .card-inner {
+  transform: rotateY(180deg);
+  box-shadow: 0 0 18px var(--green-3);
+}
+
+.craft-card.selected .card-inner {
+  transform: rotateY(180deg);
+  box-shadow: 0 0 20px var(--gold);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--border-radius);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem;
+  text-align: center;
+  border: 1px solid var(--green-3);
+}
+
+.card-front {
+  background: linear-gradient(160deg, var(--green-2), var(--dark-2));
+}
+
+.card-back {
+  background: linear-gradient(160deg, var(--dark-2), var(--green-1));
+  transform: rotateY(180deg);
+  border-color: var(--gold);
+}
+
+.craft-card.selected .card-back {
+  border-color: var(--gold);
+  background: linear-gradient(160deg, var(--green-2), var(--dark-2));
+}
+
+.card-front h4,
+.card-back h4 {
+  margin: 0 0 0.3rem;
+  font-size: 0.9rem;
+  color: var(--cream);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.card-back h4 {
+  color: var(--gold);
+}
+
+.card-front .card-glyph {
+  font-size: 2rem;
+  margin-bottom: 0.4rem;
+  filter: drop-shadow(0 0 6px var(--green-3));
+  line-height: 1;
+}
+
+.card-back p {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--cream);
+  line-height: 1.45;
+  font-weight: normal;
+}
+
+.sp-badge {
+  font-size: 0.7rem;
+  background: var(--dark-2);
+  border: 1px solid var(--green-3);
+  border-radius: var(--border-radius);
+  padding: 2px 6px;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+  display: inline-block;
+}
+
+/* ── Summary Formula ── */
+#craft-summary {
+  background: var(--dark-2);
+  border: 1px solid var(--green-3);
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.summary-formula {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.sum-pill {
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--border-radius);
+  font-size: 0.82rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+}
+
+.sum-manner {
+  background: var(--warm-2);
+  color: var(--white);
+}
+
+.sum-transmission {
+  background: var(--green-2);
+  color: var(--white);
+}
+
+.sum-intent {
+  background: var(--theme-1);
+  color: var(--cream);
+}
+
+.sum-plus {
+  color: var(--green-3);
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.sum-damage {
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  color: var(--gold);
+  font-style: italic;
+}
+
+/* ── Toggle Groups ── */
+.toggle-group {
+  margin-bottom: 1rem;
+}
+
+.toggle-group-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.toggle-group-header label {
+  font-size: 0.78rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cream);
+}
+
+.toggle-cost-hint {
+  font-size: 0.7rem;
+  color: var(--text-muted, #888);
+  font-style: italic;
+}
+
+.toggle-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* ── SP Toggle Pills ── */
+.sp-toggle {
+  padding: 0.3rem 0.65rem;
+  background: var(--dark-2);
+  color: var(--cream);
+  border: 1px solid var(--green-3);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: bold;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, opacity 0.15s;
+  white-space: nowrap;
+}
+
+.sp-toggle em {
+  font-style: normal;
+  color: var(--gold);
+  margin-left: 0.25rem;
+  font-size: 0.72rem;
+}
+
+.sp-toggle:hover {
+  background: var(--green-2);
+  color: var(--white);
+}
+
+.sp-toggle.active {
+  background: var(--green-2);
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 0 6px var(--gold);
+}
+
+.sp-toggle--cost {
+  border-color: var(--warm-2);
+}
+
+.sp-toggle--cost.active {
+  border-color: var(--gold);
+}
+
+/* Locked (Permanent before Storm) */
+.toggle-locked {
+  opacity: 0.35;
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+.toggle-locked:hover {
+  background: var(--dark-2);
+  color: var(--cream);
+}
+
+/* Area note */
+.area-note {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-size: 0.72rem;
+  color: var(--gold);
+  font-style: italic;
+  padding: 0.2rem 0.5rem;
+  background: var(--dark-2);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--green-3);
+}
+
+/* ── SP Counter ── */
+#sp-counter {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--dark-2);
+  border: 2px solid var(--green-3);
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  transition: border-color 0.3s;
+}
+
+#sp-counter:has(.tier-9) {
+  border-color: var(--warm-2);
+}
+
+#sp-counter:has(.tier-12) {
+  border-color: var(--gold);
+}
+
+#sp-counter:has(.tier-24) {
+  border-color: var(--red, #e06060);
+}
+
+.sp-counter-left {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.sp-total-number {
+  font-size: 2.8rem;
+  font-weight: bold;
+  line-height: 1;
+  transition: color 0.3s;
+}
+
+/* Tier colors */
+.tier-0 {
+  color: var(--cream);
+}
+
+.tier-1 {
+  color: var(--cream);
+}
+
+.tier-3 {
+  color: #7ec8a0;
+}
+
+.tier-6 {
+  color: #7eb8e0;
+}
+
+.tier-9 {
+  color: var(--warm-2, #d4913a);
+}
+
+.tier-12 {
+  color: var(--gold);
+}
+
+.tier-24 {
+  color: #e06060;
+}
+
+.sp-counter-label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--cream);
+  opacity: 0.6;
+}
+
+.sp-counter-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.sp-intent-label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sp-breakdown {
+  font-size: 0.72rem;
+  color: var(--text-muted, #888);
+  font-style: italic;
+}
+
+/* ── Details Grid ── */
+.craft-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.detail-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ── Builder fields (reuse from spells.css) ── */
+.builder-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.builder-field--full {
+  grid-column: 1 / -1;
+}
+
+.builder-field label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--cream);
+}
+
+.builder-field .optional {
+  font-style: italic;
+  opacity: 0.6;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.builder-field input,
+.builder-field textarea {
+  background: var(--dark-2);
+  border: 1px solid var(--green-3);
+  color: var(--white);
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.builder-field textarea {
+  resize: vertical;
+}
+
+.builder-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.builder-actions button {
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  background: var(--green-2);
+  color: var(--cream);
+  border: 1px solid var(--green-3);
+  border-radius: var(--border-radius);
+}
+
+.builder-actions button:hover {
+  background: var(--green-3);
+}
+
+.builder-actions button.secondary {
+  background: transparent;
+  border-color: var(--green-3);
+  color: var(--cream);
+}
+
+.builder-preview {
+  min-height: 200px;
+  border: 1px dashed var(--green-3);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+}
+
+.preview-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 180px;
+  opacity: 0.5;
+  text-align: center;
+}
+
+.preview-error {
+  color: var(--red, #e07070);
+  padding: 0.5rem;
+}
+
+.built-spell {
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .craft-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .craft-card {
+    width: 100px;
+    height: 140px;
+  }
+
+  .card-row--wide .craft-card {
+    width: 90px;
+    height: 130px;
+  }
+
+  .card-row--intent .craft-card {
+    width: 85px;
+    height: 125px;
+  }
+
+  .detail-fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .card-row {
+    justify-content: center;
   }
 }
