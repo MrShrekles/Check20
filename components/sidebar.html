@@ -115,151 +115,157 @@
 
                 <!-- Reference -->
                 <div class="roller-block" id="reference-block">
-                    <!-- Reference Section-->
-                    <div>
-                        <details>
-                            <summary>Progression Steps</summary>
-                            <section>
-                                <h3>Standard Progression</h3>
-                                <p>
-                                    At every Path Progression Step gain one of the following: +1 to any check (max 15), +1 Spell Point, or +1 Class Resource.
-                                </p>
-                            </section>
-                            <p><strong>Note:</strong> Every 2 Spirit grants +1 Spell Point. Increasing a Spellcasting Check also grants
-                            +1 Spell Point if you have spellcasting from a Class or Item. Consider these bonuses
-                            when choosing Check increases.</p>
+                    <section class="reference-grid">
 
-                        </details>
-
-                        <details>
-                            <summary><strong>What to do on your turn</strong></summary>
+                        <details class="ref-card">
+                            <summary>Action Types</summary>
                             <ul>
-                                <li><strong>Move:</strong> Move any distance up to your speed during your turn.</li>
-                                <li><strong>Action:</strong> Perform main abilities like attack or cast a spell.</li>
-                                <li><strong>Half-Action:</strong> Perform two minor actions instead of 1 action, like switching stances.</li>
-                                <li><strong>Off-Action (Reaction):</strong> Additional attacks with light weapons or reaction to a missed attack.</li>
-                                <li><strong>Non-Action:</strong> Quick tasks like talking that require minimal effort.</li>
-                                <li><strong>Finisher:</strong> Eliminate defenseless opponents locked from combat.</li>
-                                <h3>Positioning in Combat</h3>
-                                <li><strong>Cover:</strong> Disadvantage to hit. Full cover cannot be targeted.</li>
-                                <li><strong>Range:</strong> Melee, reach (10ft), short (under 50ft), medium (50–200ft), long (200+ft).</li>
+                                <li><strong>Move:</strong> Up to your Speed</li>
+                                <li><strong>Action:</strong> The primary activity you perform, like attacking or casting a spell. You get one action per turn, though certain abilities may offer more.</li>
+                                <li><strong>Half-Action:</strong> Instead of a single action, take 2 half-actions. These are things like picking things up or Stances</li>
+                                <li><strong>Off-Action:</strong> Can be used on your turn or after. Most used for Provoke attacks or light weapon strikes</li>
+                                <li><strong>Non-Action:</strong> Talk, switch items, other</li>
+                                <li><strong>Finisher:</strong> Eliminate locked or submitted foes</li>
                             </ul>
                         </details>
 
-                        <details>
-                            <summary><strong>Range</strong></summary>
-                            <ul>
-                                <li><strong>Melee:</strong> Direct touch or physical contact.</li>
-                                <li><strong>Reach:</strong> Within 10 ft of the caster.</li>
-                                <li><strong>Short Range:</strong> Up to 50 ft.</li>
-                                <li><strong>Medium Range:</strong> 50–200 ft.</li>
-                                <li><strong>Long Range:</strong> 200–1000 ft.</li>
-                                <li><strong>Visible:</strong> As far as the caster can clearly see the target.
-                                    <em>(Line-of-sight; affected by light, terrain, and atmosphere.)</em>
-                                </li>
-                                <li><strong>Known:</strong> Anywhere within the same realm in a location the caster is familiar with.
-                                    <em>(Travel, study, or detailed description provides this knowledge.)</em>
-                                </li>
-                            </ul>
-                        </details>
-
-                        <details>
-                            <summary><strong>Types of Movement</strong></summary>
-                            <ul>
-                                <li><strong>Regular:</strong> Move up to your speed.</li>
-                                <li><strong>Dash:</strong> Move double distance as an action.</li>
-                                <li><strong>Jumping:</strong> 5ft per check (2× with running start).</li>
-                                <li><strong>Climbing:</strong> Requires agility checks; risk of falling.</li>
-                                <li><strong>Difficult Terrain / Swimming:</strong> Halves movement speed.</li>
-                                <li><strong>Prone:</strong> Standing up uses 15ft movement.</li>
-                                <li><strong>Moving Past Creatures:</strong> Only allies or small enemies.</li>
-                                <li><strong>Falling:</strong> 5 impact damage per 10ft.</li>
-                                <li><strong>Extreme Conditions:</strong> Hazardous environments deal 10 damage per second.</li>
-                                <li><strong>Burrowing:</strong> Full cover while burrowed, but no breathing.</li>
-                            </ul>
-                        </details>
-
-                        <details>
+                        <details class="ref-card">
                             <summary>Actions</summary>
                             <ul>
-                                <li><strong>Attack:</strong> Make a combat attack.</li>
-                                <li><strong>Unarmed Strike:</strong> Deal minor damage without weapons.</li>
-                                <li><strong>Grab or Hold:</strong> Grapple, contested Strength or Agility.</li>
-                                <li><strong>Stealth:</strong> Hide or conceal presence.</li>
-                                <li><strong>Cast a Spell:</strong> Perform magical actions.</li>
-                                <li><strong>Dash:</strong> Move double distance as an action.</li>
-                                <li><strong>Administer a Potion:</strong> Heal or aid an ally.</li>
+                                <li><strong>Attack:</strong> Make a melee or ranged attack. Unarmed deal 1 dmg</li>
+                                <li><strong>Grab or Hold</strong> Contested Physical Check (Strength Default)</li>
+                                <li><strong>Cast Spell:</strong> Requires seeing and perceiving the target, and having free hands.</li>
+                                <li><strong>Administer Potion:</strong> Use an action to give a potion to a downed ally.</li>
+                                <li><strong>Stealth: </strong>Attempt to hide for advantage on the next attack.</li>
                             </ul>
                         </details>
 
-                        <details>
-                            <summary><strong>Half-Actions & Stances</strong></summary>
+                        <details class="ref-card">
+                            <summary>Half-Actions</summary>
                             <ul>
-                                <h3>Stances:</h3>
-                                <li><strong>Advantage Stance:</strong> Give your next attack advantage.</li>
-                                <li><strong>Disadvantage Stance:</strong> Enemies have disadvantage to hit you and nearby allies.</li>
-                                <li><strong>Offensive Stance:</strong> The next time you are attacked, make an attack once against the attacking creature.</li>
-                                <li><strong>Reaction Stance:</strong> React to any failed attacks against you.</li>
-                                <hr>
-                                <h3>Half Actions:</h3>
-                                <li><strong>Pick up an Item:</strong> Retrieve something in combat.</li>
-                                <li><strong>Use an Object:</strong> Interact with your environment.</li>
-                                <li><strong>Escape:</strong> Break free from restraints or conditions.</li>
-                                <li><strong>Disarm:</strong> Remove an opponent's weapon.</li>
+                                <li><strong>Stances:</strong> Choose a stance to remain in until your next turn.
+                                </li>
+                                <li><strong>Disarm:</strong> Make a contested Strength or Agility check to disarm a creature.
+                                </li>
                                 <li><strong>Help:</strong> Give a creature +1 to a check</li>
-                                <li><strong>Disengage:</strong> Avoid opportunity attacks.</li>
-                                <li><strong>Shove:</strong> Knock a creature prone via contest.</li>
-                                <li><strong>Taunt:</strong> Force a check; failure compels enemy to target you.</li>
+                                <li><strong>Pick up an Item:</strong> Picking up an item is a Half-Action.</li>
+                                <li><strong>Use an Object:</strong> Interact with objects like levers or buttons.</li>
+                                <li><strong>Disengage:</strong> Move out of a creature's range without provoking opportunity
+                                    attacks.</li>
                             </ul>
                         </details>
 
-                        <details>
-                            <summary><strong>Off Actions</strong></summary>
+                        <details class="ref-card">
+                            <summary>Off-Actions</summary>
                             <ul>
-                                <li><strong>Reaction:</strong> In response to another action.</li>
-                                <li><strong>Provoke:</strong> Strike when enemies drop their guard or misses an attack.</li>
-                                <li><strong>Drink Something:</strong> Quickly consume something for benefit.</li>
-                                <li><strong>Disrupt:</strong> Give disadvantage on a successful check.</li>
-                                <li><strong>Block:</strong> If shielded, halve melee damage with a reaction.</li>
-                                <li><strong>Demoralize:</strong> Intimidate to force morale check or flee.</li>
+                                <li><strong>Provoke:</strong> Make an attack against a creature that has missed an attack directly targeting you, or against a creature that willingly leaves your melee weapon range.</li>
+                                <li><strong>Block:</strong> As an Off-Action, reduce incoming damage by half if you have Armor from a shield</li>
+                                <li><strong>Demoralize:</strong> Make a contested Influence check against an intelligent creature. On a success, the target gains the Fear condition.</li>
                             </ul>
                         </details>
 
-                        <details>
-                            <summary><strong>Non-Actions</strong></summary>
+                        <details class="ref-card">
+                            <summary>Non-Actions</summary>
                             <ul>
-                                <li>Limited to 1 per turn. Minimal effort actions.</li>
-                                <li><strong>Stress Push:</strong> Take 4 stress to boost a failed check up to 15.</li>
-                                <li><strong>Switch Weapons:</strong> Swap gear in combat.</li>
-                                <li><strong>Roleplay:</strong> Speak or act in character briefly.</li>
-                                <li><strong>Shouting Orders:</strong> Command allies or intimidate foes.</li>
+                                <li><strong>Switch Weapons:</strong> Drop a weapon and draw another.</li>
+                                <li><strong>Stress Push:</strong> Take 4 stress damage for +3 on a low roll.</li>
+                                <li><strong>Roleplay:</strong> Briefly communicate or give orders.</li>
                             </ul>
                         </details>
 
-                        <details>
-                            <summary><strong>Special Actions</strong></summary>
+                        <details class="ref-card">
+                            <summary>Stances</summary>
                             <ul>
-                                <li><strong>Called Shots:</strong> Take -10 to apply a condition.</li>
-                                <li><strong>Surprise Turns:</strong> Gain extra action in specific conditions.</li>
-                                <li><strong>Targeting:</strong> Use senses to engage enemies (part of an action).</li>
-                                <li><strong>Cover:</strong> Use cover for protection (part of movement).</li>
+                                <li><strong>Advantage Stance:</strong> Gain advantage on your next attack.</li>
+                                <li><strong>Disadvantage Stance:</strong> Give disadvantage to enemies attacking you
+                                    or
+                                    allies in range.
+                                </li>
+                                <li><strong>Guard Stance:</strong> When a creature attacks you, Provoke without using an Off-Action once. On all failed attacks, you may also Provoke at disadvantage.</li>
                             </ul>
                         </details>
 
-                        <details>
-                            <summary>Size</summary>
+                        <details class="ref-card">
+                            <summary>Special</summary>
                             <ul>
-                                <li><strong>Tiny:</strong> Under 1 ft (insects, potion bottles).</li>
-                                <li><strong>Small:</strong> 1–4 ft (cats, scrolls).</li>
-                                <li><strong>Medium:</strong> 5–7 ft (humanoids, armor).</li>
-                                <li><strong>Large:</strong> 8–15 ft (bears, shields).</li>
-                                <li><strong>Giant:</strong> 15–25 ft (elephants, siege engines).</li>
-                                <li><strong>Monolithic:</strong> 25–100 ft (castles, airships).</li>
-                                <li><strong>Environmental:</strong> 100–300 ft (mountains, landmarks).</li>
+                                <li><strong>Called Shot:</strong> −10 for a condition.</li>
+                                <li><strong>Surprise:</strong> Additional action.</li>
+                                <li><strong>Cover:</strong> Disadvantage to be hit.</li>
+                                <li><strong>Full Cover:</strong> Cannot be targeted without line of sight.</li>
                             </ul>
                         </details>
 
-                    </div>
+                        <details class="ref-card" id="movement-desc">
+                            <summary>Movement</summary>
+                            <ul>
+                                <li><strong>Difficult Terrain:</strong> Halved speed.</li>
+                                <li><strong>Jump:</strong> 2ft × Agility or Strength.</li>
+                                <li><strong>Climb/Swim:</strong> Counts as difficult terrain.</li>
+                                <li><strong>Prone:</strong> Disadv on ranged attacks against you; adv on melee. Standing costs 15ft.</li>
+                                <li><strong>Moving Past:</strong> Can only pass smaller creatures.</li>
+                                <li><strong>Dash:</strong> Double distance (Action).</li>
+                                <li><strong>Fall:</strong> 5 dmg per 10ft.</li>
+                                <li><strong>Extreme Hazard:</strong> 10 dmg/sec.</li>
+                                <li><strong>Burrowing:</strong> Unseen. Cannot target or breathe.</li>
+                                <li><strong>Teleport:</strong> Unoccupied space; no opportunity attacks.</li>
+                            </ul>
+                        </details>
+
+                        <details class="ref-card" id="size-desc">
+                            <summary>Size Scale</summary>
+                            <ul>
+                                <li><strong>Tiny:</strong>
+                                    < 1 ft; pixies, potions</li>
+                                <li><strong>Small:</strong> 1–4 ft; goblins</li>
+                                <li><strong>Medium:</strong> 5–7 ft; humans</li>
+                                <li><strong>Large:</strong> 8–15 ft; ogres</li>
+                                <li><strong>Giant:</strong> 15–25 ft; siege equipment</li>
+                                <li><strong>Monolithic:</strong> 25–100 ft; building</li>
+                            </ul>
+                        </details>
+
+                        <details class="ref-card">
+                            <summary>Press On</summary>
+                            <div class="ref-body-prose">
+                                <p>After a combat encounter, characters may Press On to recover:</p>
+                                <ul>
+                                    <li>1 class resource and 1 spell point</li>
+                                    <li><strong>Armor repair:</strong> <code>[[1d6]]</code> + Crafting</li>
+                                    <li><strong>Healing:</strong> <code>[[1d6]]</code> + Survival</li>
+                                    <li>Remove all conditions and effects lasting 1 minute or less</li>
+                                </ul>
+                                <p>Press On may be used twice per day.</p>
+                            </div>
+                        </details>
+
+                        <details class="ref-card">
+                            <summary>Long Rest</summary>
+                            <div class="ref-body-prose">
+                                <p>Requires 10 hours of uninterrupted downtime in a safe environment. Restores:</p>
+                                <ul>
+                                    <li>All wounds</li>
+                                    <li>All class resources and spell points</li>
+                                    <li>Armor repaired to at least half</li>
+                                    <li>Remove all conditions lasting one day or less</li>
+                                </ul>
+                                <p>Can only be taken once per day.</p>
+                            </div>
+                        </details>
+
+                        <details class="ref-card">
+                            <summary>Check Result Outcomes</summary>
+                            <ul class="ref-list">
+                                <li><strong>1–4:</strong> Fail — Provoke @Adv</li>
+                                <li><strong>5–9:</strong> Fail — Provoke</li>
+                                <li><strong>10–14:</strong> Fail — Provoke @Dis</li>
+                                <li><strong>15–19:</strong> Success</li>
+                                <li><strong>20–24:</strong> Success+ (1 roll)</li>
+                                <li><strong>25–29:</strong> Success++ (2 rolls)</li>
+                                <li><strong>30–34:</strong> Success+++ (3 rolls)</li>
+                            </ul>
+                        </details>
+
+                    </section>
                 </div>
 
                 <!-- Conditions -->
@@ -539,18 +545,18 @@
                                 Unions
                             </summary>
                             <ul class="union-list">
-                                <li><strong>Fabrication</strong> – Smiths, crafters, machinists (<strong>Opposes</strong>: Culture)</li>
-                                <li><strong>Refinement</strong> – Alchemists, augmenters, tinkerers (<strong>Opposes</strong>: Mysticism)</li>
-                                <li><strong>Commerce</strong> – Traders, brokers, financial control (<strong>Opposes</strong>: Scholarship)</li>
-                                <li><strong>Transport</strong> – Pilots, freight runners, route controllers (<strong>Opposes</strong>: Stewardship)</li>
-                                <li><strong>Scholarship</strong> – Academics, researchers, lorekeepers (<strong>Opposes</strong>: Commerce)</li>
-                                <li><strong>Mysticism</strong> – Mages, relic examiners, arcane regulators (<strong>Opposes</strong>: Refinement)</li>
-                                <li><strong>Politics</strong> – Lawmakers, clerks, administrators (<strong>Opposes</strong>: Harvest)</li>
-                                <li><strong>Culture</strong> – Performers, media, influencers (<strong>Opposes</strong>: Fabrication)</li>
-                                <li><strong>Martial</strong> – Enforcers, bounty hunters, guards (<strong>Opposes</strong>: Subversion)</li>
-                                <li><strong>Subversion</strong> – Smugglers, spies, counterfeiters (<strong>Opposes</strong>: Martial)</li>
-                                <li><strong>Harvest</strong> – Farmers, miners, gatherers (<strong>Opposes</strong>: Politics)</li>
-                                <li><strong>Stewardship</strong> – Civil engineers, utility workers (<strong>Opposes</strong>: Transport)</li>
+                                <li><span class="union-name">Fabrication</span><span class="union-role">Smiths, crafters, machinists</span><span class="union-opposes">⚔ Opposes: Culture</span></li>
+                                <li><span class="union-name">Refinement</span><span class="union-role">Alchemists, augmenters, tinkerers</span><span class="union-opposes">⚔ Opposes: Mysticism</span></li>
+                                <li><span class="union-name">Commerce</span><span class="union-role">Traders, brokers, financial control</span><span class="union-opposes">⚔ Opposes: Scholarship</span></li>
+                                <li><span class="union-name">Transport</span><span class="union-role">Pilots, freight runners, route controllers</span><span class="union-opposes">⚔ Opposes: Stewardship</span></li>
+                                <li><span class="union-name">Scholarship</span><span class="union-role">Academics, researchers, lorekeepers</span><span class="union-opposes">⚔ Opposes: Commerce</span></li>
+                                <li><span class="union-name">Mysticism</span><span class="union-role">Mages, relic examiners, arcane regulators</span><span class="union-opposes">⚔ Opposes: Refinement</span></li>
+                                <li><span class="union-name">Politics</span><span class="union-role">Lawmakers, clerks, administrators</span><span class="union-opposes">⚔ Opposes: Harvest</span></li>
+                                <li><span class="union-name">Culture</span><span class="union-role">Performers, media, influencers</span><span class="union-opposes">⚔ Opposes: Fabrication</span></li>
+                                <li><span class="union-name">Martial</span><span class="union-role">Enforcers, bounty hunters, guards</span><span class="union-opposes">⚔ Opposes: Subversion</span></li>
+                                <li><span class="union-name">Subversion</span><span class="union-role">Smugglers, spies, counterfeiters</span><span class="union-opposes">⚔ Opposes: Martial</span></li>
+                                <li><span class="union-name">Harvest</span><span class="union-role">Farmers, miners, gatherers</span><span class="union-opposes">⚔ Opposes: Politics</span></li>
+                                <li><span class="union-name">Stewardship</span><span class="union-role">Civil engineers, utility workers</span><span class="union-opposes">⚔ Opposes: Transport</span></li>
                             </ul>
                         </details>
 

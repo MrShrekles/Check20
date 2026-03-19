@@ -52,6 +52,30 @@ radios.forEach(radio => {
   }
 });
 
+  // Union hover — highlight hovered union green, opposed union red
+  const unionItems = document.querySelectorAll(".union-list li");
+  const unionMap = {};
+  unionItems.forEach(li => {
+    const name = li.querySelector(".union-name")?.textContent.trim().toLowerCase();
+    if (name) unionMap[name] = li;
+  });
+
+  unionItems.forEach(li => {
+    li.addEventListener("mouseenter", () => {
+      const opposesText = li.querySelector(".union-opposes")?.textContent ?? "";
+      const match = opposesText.match(/Opposes:\s*(.+)/i);
+      const opposedName = match?.[1]?.trim().toLowerCase();
+      const opposedLi = opposedName ? unionMap[opposedName] : null;
+
+      li.classList.add("union-active");
+      opposedLi?.classList.add("union-opposed");
+    });
+
+    li.addEventListener("mouseleave", () => {
+      unionItems.forEach(el => el.classList.remove("union-active", "union-opposed"));
+    });
+  });
+
   // Check20 Roller
   document.getElementById("roll-d20-check")?.addEventListener("click", () => {
     const modifier = parseInt(document.getElementById("check-modifier").value, 10);

@@ -1,7 +1,7 @@
 /* ===== State ===== */
 let cachedWeapons = [];
 const state = {
-    exclude: {
+    include: {
         category: new Set(),
         type: new Set(),
         range: new Set(),
@@ -13,8 +13,8 @@ const RARITY_ORDER = ["common", "uncommon", "rare", "very rare", "legendary", "m
 // top-level (anywhere above applyFilters)
 const CATEGORY_ORDER = ["melee", "ranged", "firearm", "magic"];
 const categoryRank = c => {
-  const i = CATEGORY_ORDER.indexOf((c || "").toLowerCase());
-  return i === -1 ? 999 : i;
+    const i = CATEGORY_ORDER.indexOf((c || "").toLowerCase());
+    return i === -1 ? 999 : i;
 };
 
 
@@ -62,8 +62,8 @@ function normalizeWeapon(w) {
     c.cost = Number(c.cost) || 0;
     c.bulk = Number(c.bulk) || 0;
 
-c.damage = c.damage ? String(c.damage).trim() : '1d4';
-c.damageNum = /\d+d\d+!?/i.test(c.damage) ? dicePower(c.damage) : 0;
+    c.damage = c.damage ? String(c.damage).trim() : '1d4';
+    c.damageNum = /\d+d\d+!?/i.test(c.damage) ? dicePower(c.damage) : 0;
 
 
     c.description = c.description || '';
@@ -104,11 +104,11 @@ function debounce(fn, ms) { let t; return (...args) => { clearTimeout(t); t = se
 function buildToggleFilters(items) {
     const groups = [...document.querySelectorAll('.filter-group')];
     const uniq = { category: new Set(), type: new Set(), range: new Set(), rarity: new Set(), properties: new Set() };
-    const CATEGORY_ORDER = ["melee","ranged","firearm","magic"];
-const categoryRank = c => {
-  const i = CATEGORY_ORDER.indexOf((c||"").toLowerCase());
-  return i === -1 ? 999 : i;
-};
+    const CATEGORY_ORDER = ["melee", "ranged", "firearm", "magic"];
+    const categoryRank = c => {
+        const i = CATEGORY_ORDER.indexOf((c || "").toLowerCase());
+        return i === -1 ? 999 : i;
+    };
 
 
     items.forEach(w => {
@@ -120,25 +120,43 @@ const categoryRank = c => {
     });
 
     groups.forEach(g => {
-        const key = g.dataset.key; // category|type|range|properties|rarity
+        const key = g.dataset.key;
+        const isSolo = g.dataset.mode === 'solo'; // tab-style: only one active at a time
         const values = [...(uniq[key] || [])].sort((a, b) => a.localeCompare(b));
         g.innerHTML = '';
         values.forEach(val => {
             const btn = document.createElement('button');
             btn.type = 'button';
-            btn.className = 'toggle-btn active';
-            btn.textContent = capFirst(val);   // pretty
+            btn.className = 'toggle-btn';
+            btn.textContent = capFirst(val);
             btn.dataset.key = key;
-            btn.dataset.value = val;           // canonical lower
-            btn.setAttribute('aria-pressed', 'true');
+            btn.dataset.value = val;
+            btn.setAttribute('aria-pressed', 'false');
             btn.addEventListener('click', () => {
-                const set = state.exclude[key];
-                if (set.has(val)) {
-                    set.delete(val);
-                    btn.classList.add('active'); btn.classList.remove('dim'); btn.setAttribute('aria-pressed', 'true');
+                const set = state.include[key];
+                if (isSolo) {
+                    // clicking the active tab deselects it (show all); clicking another switches
+                    const alreadyActive = set.has(val);
+                    set.clear();
+                    g.querySelectorAll('.toggle-btn').forEach(b => {
+                        b.classList.remove('active');
+                        b.setAttribute('aria-pressed', 'false');
+                    });
+                    if (!alreadyActive) {
+                        set.add(val);
+                        btn.classList.add('active');
+                        btn.setAttribute('aria-pressed', 'true');
+                    }
                 } else {
-                    set.add(val);
-                    btn.classList.remove('active'); btn.classList.add('dim'); btn.setAttribute('aria-pressed', 'false');
+                    if (set.has(val)) {
+                        set.delete(val);
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-pressed', 'false');
+                    } else {
+                        set.add(val);
+                        btn.classList.add('active');
+                        btn.setAttribute('aria-pressed', 'true');
+                    }
                 }
                 applyFilters();
             });
@@ -162,12 +180,12 @@ function applyFilters() {
             if (!hay.includes(q)) return false;
         }
 
-        // excludes (all canonical lower)
-        if (w.category && state.exclude.category.has(w.category)) return false;
-        if (w.typeKey && state.exclude.type.has(w.typeKey)) return false;
-        if (w.rarity && state.exclude.rarity.has(w.rarity)) return false;
-        if (w.rangeList.length && w.rangeList.some(r => state.exclude.range.has(r))) return false;
-        if (state.exclude.properties.size && w.properties.some(p => state.exclude.properties.has(p))) return false;
+        // includes — empty set means "show all"; non-empty means "must match one"
+        if (state.include.category.size && !state.include.category.has(w.category)) return false;
+        if (state.include.type.size && !state.include.type.has(w.typeKey)) return false;
+        if (state.include.rarity.size && !state.include.rarity.has(w.rarity)) return false;
+        if (state.include.range.size && !w.rangeList.some(r => state.include.range.has(r))) return false;
+        if (state.include.properties.size && !w.properties.some(p => state.include.properties.has(p))) return false;
 
         return true;
     });
@@ -218,6 +236,7 @@ function renderCard(w) {
 
     const card = document.createElement('div');
     card.className = 'weapon-card';
+    card.dataset.category = w.category || '';
     card.innerHTML = `
     <h4>${icon} ${w.name}</h4>
     ${tagsHTML}
@@ -257,10 +276,10 @@ function renderCard(w) {
 
 /* ===== Clear ===== */
 function clearAll() {
-    Object.values(state.exclude).forEach(set => set.clear());
+    Object.values(state.include).forEach(set => set.clear());
     document.querySelectorAll('.toggle-btn').forEach(btn => {
-        btn.classList.add('active'); btn.classList.remove('dim');
-        btn.setAttribute('aria-pressed', 'true');
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
     });
     applyFilters();
 }

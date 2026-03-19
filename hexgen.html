@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check20: Hex Generator</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/hexgen.css">
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+    <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/hexgen.js"></script>
+</head>
+
+<body data-page-title="Hex Generator">
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
+    <main>
+
+        <!-- ROLLER -->
+        <details open>
+            <summary>Hex Roller</summary>
+            <section>
+                <div class="hexgen-controls">
+                    <select id="terrain-pick">
+                        <option value="all">All Terrains</option>
+                        <option value="desert">Desert</option>
+                        <option value="mountain">Mountain</option>
+                        <option value="city">City</option>
+                    </select>
+                    <button class="button" id="roll-all-btn">Roll Location + Modifiers</button>
+                    <button class="button" id="roll-loc-btn">Location Only</button>
+                    <button class="button" id="roll-mod-btn">Modifiers Only</button>
+                    <button id="clear-hexes">Clear</button>
+                </div>
+                <div id="hex-history"></div>
+            </section>
+        </details>
+
+        <!-- LOCATION TABLES -->
+        <details>
+            <summary>Location Tables</summary>
+            <section>
+                <div class="raw-tabs">
+                    <button class="raw-tab active" onclick="showRaw('desert',this)">Desert</button>
+                    <button class="raw-tab" onclick="showRaw('mountain',this)">Mountain</button>
+                    <button class="raw-tab" onclick="showRaw('city',this)">City</button>
+                </div>
+                <div id="raw-desert" class="raw-panel active"></div>
+                <div id="raw-mountain" class="raw-panel"></div>
+                <div id="raw-city" class="raw-panel"></div>
+            </section>
+        </details>
+
+        <!-- MODIFIER TABLES -->
+        <details>
+            <summary>Modifier Tables</summary>
+            <section>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:.5vw; margin-bottom:.5vw;">
+                    <div>
+                        <h3 style="color:var(--gold)">Origins</h3>
+                        <table class="hex-table">
+                            <thead>
+                                <tr>
+                                    <th>Origin</th>
+                                    <th>Weight</th>
+                                </tr>
+                            </thead>
+                            <tbody id="t-origin"></tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <h3 style="color:var(--gold)">Threats</h3>
+                        <table class="hex-table">
+                            <thead>
+                                <tr>
+                                    <th>Threat</th>
+                                    <th>Weight</th>
+                                </tr>
+                            </thead>
+                            <tbody id="t-threat"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <h3 style="color:var(--gold)">Species (from species.json — weighted by rarity)</h3>
+                <table class="hex-table">
+                    <thead>
+                        <tr>
+                            <th>Species</th>
+                            <th>Rarity</th>
+                            <th>Origin</th>
+                        </tr>
+                    </thead>
+                    <tbody id="t-species"></tbody>
+                </table>
+            </section>
+        </details>
+
+    </main>
+
+</body>
+
+</html>

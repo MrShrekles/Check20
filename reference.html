@@ -6,1192 +6,1030 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How To Play | Armored Noir - Check20</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/reference.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
     <script src="scripts/main.js" defer></script>
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/reference.js" defer></script>
 </head>
 
 <body data-page-title="How To Play">
     <div id="header-placeholder"></div>
 
     <main>
-        <!-- How to play -->
-        <section id="howto">
-            <div class="two-column">
-                <div class="column">
-                    <h1>Introduction</h1>
-                    <!-- Intro  -->
-                    <p>Welcome to Check20, a tabletop RPG set in the roaring 1920s, blending high fantasy with the era's
-                        charm.
-                        Our game focuses on worldbuilding, fast-paced combat, and deep in-world relationships. It values
-                        player
-                        creativity and group consensus over rigid rules. Survival is key, as characters face real
-                        dangers,
-                        and
-                        not all battles are meant to be fought. Downtime is crucial, especially for roles like merchants
-                        needing
-                        time for their ventures. The game balances combat with social interactions, where NPCs offer
-                        rich
-                        stories and potential quests. It's a world where discovery, personal connections, and the thrill
-                        of
-                        combat coexist, against a backdrop of industrialization and magical mysteries. Players are
-                        storytellers,
-                        shaping the narrative with their actions in a world full of opportunities and challenges. Engage
-                        with
-                        the world, from running a jazz club to exploring treacherous lands, and let your imagination
-                        guide
-                        your
-                        journey.
-                    </p>
+        <!-- Tab Navigation -->
+        <nav class="ref-nav" id="ref-nav" aria-label="Reference sections">
+            <button class="ref-nav-btn active" data-tab="intro">Introduction</button>
+            <button class="ref-nav-btn" data-tab="rolls">Checks &amp; Rolls</button>
+            <button class="ref-nav-btn" data-tab="gameplay">Gameplay &amp; Loyalty</button>
+            <button class="ref-nav-btn" data-tab="combat">Combat &amp; Rest</button>
+            <button class="ref-nav-btn" data-tab="actions">Movement &amp; Actions</button>
+            <button class="ref-nav-btn" data-tab="charinfo">Character Info &amp;  Bulk</button>
 
-                    <div class="two-column">
-                        <div class="column">
-                            <h2>Narrator</h2>
-                            <p>Your role is to create the game world, challenge players, and bring the story to life. Encourage
-                                player
-                                interaction and questions, and reward their achievements with points for character development.
-                                Flexibility and adaptation to player actions are key for a dynamic and enjoyable game. Foster
-                                creativity
-                                and collaboration for a shared adventure.
-                            </p>
-
-                        </div>
-                        <div class="column">
-                            <h2>Players are Characters</h2>
-                            <p>Bring your character to life and collaborate with the group towards shared goals. Understand your
-                                character's abilities and be proactive in story progression. Think creatively and communicate
-                                effectively with the group for a rich, immersive experience.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- How to play and ttrpg basics -->
-                    <h1>How To Play</h1>
-                    <p>
-                        Gather a group of friends or like-minded folks who enjoy building stories together.
-                        I have created (and will keep creating) tools to make running this game easier.
-                        You can play online using Roll20, or go full classic with pencils and paper.
-                        Character creation is available on the website, but making your own sheets by hand
-                        is always an option.
-                    </p>
-
-                    <p>
-                        A game system exists to give structure, rules that create challenges and focus.
-                        Yes, everything is made up anyway, but having a framework makes the fun funner.
-                        Pure improv can be great, but having mechanics gives you tension, consequences,
-                        and those big triumphant moments that feel earned.
-                    </p>
-
-                    <p>
-                        Once you have gathered your people, they will make characters while you prepare the world.
-                        Listen to what they choose and shape the story around them. If someone is a tank, think of
-                        intense fights and a big boss battle. If someone is a mage, maybe there is a rival
-                        spellcaster, a wise mentor, or a magic school down the street. If someone is a merchant,
-                        break out some spreadsheets and prepare for the weirdest and most unpredictable corner of
-                        this system, a corner even I am still figuring out.
-                    </p>
-
-                    <p>
-                        Players choose a Class, then a Path and Talent for that Class. Before or after that they
-                        pick a Species. Your world determines whether species are high fantasy or low fantasy.
-                        In high fantasy, everyone might be wildly unique creatures. In low fantasy, everyone is
-                        basically human with one cool feature, like an orc who is just a dude with modest tusks,
-                        or a helborn who looks normal except their irises burn like embers.
-                    </p>
-
-                    <p>
-                        Low fantasy makes high fantasy moments feel even bigger. But I almost always run high
-                        fantasy because it is fun to let players be happy. And after a dozen campaigns, who
-                        wants to be just a knight when you can be a plaguebringer half angel with a penchant
-                        for mysteries.
-                    </p>
-
-                    <p>
-                        Now the Narrator sets the scene. How do these characters fit in? Are they a band of
-                        oddballs sitting in a smoky bar, low lights and even lower inhibitions? Are they a
-                        mystery solving crew sharing an apartment downtown? In Shek, the world is dangerous
-                        and alive with possibility. Even a simple trip to Target (which existed in the 1920s,
-                        trust me on this) can turn into a battle with a sewer construct, yes a creature built
-                        from the sewer itself. The drain mouth rises up, pipes twisting like a serpent, and
-                        you grin as you ask,
-                    </p>
-
-                    <h2>Roll Outcomes</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Roll</th>
-                                <th>Outcome</th>
-                                <th>Provoke</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1-4</td>
-                                <td>Fail +</td>
-                                <td>Yes @ Advantage</td>
-                            </tr>
-                            <tr>
-                                <td>5-9</td>
-                                <td>Fail</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>10-14</td>
-                                <td>Minor Failure</td>
-                                <td>Yes @ Disadvantage</td>
-                            </tr>
-                            <tr>
-                                <td>15-19</td>
-                                <td>Success</td>
-                                <td>-</td>
-                            </tr>
-                            <tr>
-                                <td>20-24</td>
-                                <td>Success +</td>
-                                <td>-</td>
-                            </tr>
-                            <tr>
-                                <td>25-29</td>
-                                <td>Success ++</td>
-                                <td>-</td>
-                            </tr>
-                            <tr>
-                                <td>30-34</td>
-                                <td>Success +++</td>
-                                <td>-</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <h2>Advantage and Disadvantage</h2>
-                    <ul>
-                        <li><strong>Advantage:</strong> Roll a d20+4 then roll a d20, take the higher result</li>
-                        <li><strong>Disadvantage:</strong> Roll a d20-4 then roll a d20, take the lower result</li>
-                        <li><strong>Locked Out:</strong> If you have double disadvantage on a roll, you are unable to perform the action.</li>
-                    </ul>
-
-                    <h2>Opposed Checks</h2>
-                    <p>
-                        A niche roll is the opposed check, where two characters make rolls, adding their designated
-                        check
-                        against another creature or player making the same roll and adding their values as well. The
-                        winner
-                        of
-                        the check is the creature with the higher roll value.
-                    </p>
-
-
-                    <div class="two-column">
-                        <div class="column">
-                            <h2>Success + and Larger Outcomes</h2>
-                            
-                            <p>
-                                When a player rolls a Success + or higher, the result should feel bigger than a simple pass. Most checks have more
-                                than one way to succeed, so higher success tiers create stronger outcomes, better advantages, or more cinematic
-                                impact. Your job as the Narrator is to reward great rolls with great moments.
-                            </p>
-                            
-                            <p>
-                                <strong>Example: Breaking Down a Door</strong><br>
-                                A Success means the door breaks open. A Success + might have the door fly off its hinges. A Success ++ could send
-                                the door crashing into a guard on the other side for 1d6 impact damage. A Success +++ might reveal crucial intel
-                                or catch enemies completely unaware. Bigger success should equal bigger results.
-                            </p>
-                            
-                            <p>
-                                <strong>Group Checks</strong><br>
-                                When the whole party attempts the same action, such as sneaking past a patrol or pushing a truck out of the road,
-                                you can call for a Group Check. The group must reach a number of total successes equal to the number of players
-                                taking part. For example, a group of four characters needs four total successes to slip by undetected. Even if two
-                                players fail, the stealth expert might roll a Success +++ while another hits a clean success, bringing the group
-                                across the finish line together.
-                            </p>
-                            
-                            <p>
-                                <strong>Setting Difficulty</strong><br>
-                                The number of required successes changes how hard a task is. Something ordinary should not require a roll at all.
-                                If a character can reasonably do the task, simply call it a success. For typical challenges a single success at
-                                15 is all they need. Larger obstacles may require Success + or even multiple successes to show that the task is
-                                significant. This lets you scale difficulty without changing the core target number.
-                            </p>
-                            
-                            <p>
-                                Success + outcomes create memorable scenes and empower players to shape the story. Failure and success both move
-                                the narrative forward, but greater successes let the players shine.
-                            </p>
-
-
-                        </div>
-                        <div class="column">
-                            <h2>Critical Checks and Failures</h2>
-                            
-                            <p>
-                                Critical checks are the extremes of a d20 roll. A critical success can supercharge an action, while a critical failure adds
-                                complications. This applies to all checks, not just attacks.
-                            </p>
-                            
-                            <p>
-                                <strong>Critical Success:</strong> On a critical success, the effect of the action should be stronger or cleaner than normal.
-                                In combat this can mean double damage, an extra roll on a damage table, a bonus effect, or even finishing off a creature
-                                that is already near defeat and the situation makes sense. Outside combat it might mean perfect timing, extra information,
-                                or a stronger narrative outcome.
-                            </p>
-                            
-                            <p>
-                                <strong>Critical Failure:</strong> On a critical failure, something goes wrong. In combat this might mean half damage,
-                                a weapon slipping, breaking, or creating a new problem on the battlefield. A spell might backfire, fizzle, or cause
-                                unintended side effects. A critical failure should never feel like a clean success, but creatures with very high Checks
-                                should rarely fall completely flat. For them, treat critical failures more as setbacks and complications than total collapse.
-                            </p>
-
-                        </div>
-                    </div>
-
+            <div class="ref-search-wrap">
+                <div class="search-nav" id="search-nav">
+                    <button id="search-prev" title="Previous match">&#8593;</button>
+                    <button id="search-next" title="Next match">&#8595;</button>
                 </div>
-                <div class="column">
-                    <h2>Gameplay</h2>
-                    <p>
-                        In this game, dice are used to see what happens when you try something risky, with the d20 doing most of the heavy lifting. In most situations, a roll of 15 or higher is considered a success.
-                    </p>
-                    <p>
-                        When you roll, you add a relevant stat called a Check to your result. That total lands on a tier that ranges from
-                        Failure up to Success +++, with higher successes unlocking stronger effects, extra damage, or bonus advantages.
-                    </p>
-                    <p>
-                        Actions come in different durations, from quick reactions to tasks that can take the whole day. Even when you fail,
-                        it is not the end of the story. Failure creates complications, twists, and new problems to solve, instead of simply
-                        stopping the game.
-                    </p>
-                    <img src="assets/images/Lakelyn.png" alt="Tank-Vampire- Detective" style="max-width: 100%; height:auto;margin: -5rem auto -10rem;">
+                <span class="search-count" id="search-count"></span>
+                <input type="search" id="ref-search" placeholder="Search rules…" autocomplete="off" spellcheck="false">
+            </div>
+        </nav>
 
-                    <div class="features">
-                        <h2>Types of Scenes</h2>
-                        <p>There are several types of interactions that players may engage in during the game. These include relationships, mysteries, problems, exploring, combat, and downtime.
+        <p class="no-results" id="no-results">No results found.</p>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- TAB 1 · Introduction                      -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="tab-panel active" data-tab="intro">
+            <p class="tab-label">Introduction</p>
+            <section id="howto">
+                <div class="two-column">
+                    <div class="column">
+                        <h1>Introduction</h1>
+                        <p>Welcome to Check20, a tabletop RPG set in the roaring 1920s, blending high fantasy with the era's
+                            charm.
+                            Our game focuses on worldbuilding, fast-paced combat, and deep in-world relationships. It values
+                            player
+                            creativity and group consensus over rigid rules. Survival is key, as characters face real
+                            dangers,
+                            and
+                            not all battles are meant to be fought. Downtime is crucial, especially for roles like merchants
+                            needing
+                            time for their ventures. The game balances combat with social interactions, where NPCs offer
+                            rich
+                            stories and potential quests. It's a world where discovery, personal connections, and the thrill
+                            of
+                            combat coexist, against a backdrop of industrialization and magical mysteries. Players are
+                            storytellers,
+                            shaping the narrative with their actions in a world full of opportunities and challenges. Engage
+                            with
+                            the world, from running a jazz club to exploring treacherous lands, and let your imagination
+                            guide
+                            your
+                            journey.
                         </p>
-                        <ul>
-                            <li><strong>Relationships</strong> involve players interacting with characters from their
-                                own
-                                backstory
-                                or with new characters introduced by the narrator. These interactions can lead to
-                                intense
-                                role-playing and can bring new connections to the group. Creatures and NPCs may have
-                                basic
-                                or
-                                complex needs that players can exploit to gain something in return.
-                            </li>
-                            <li><strong>Mysteries</strong> and problems are presented by the narrator for the players to
-                                solve
-                                or
-                                interact with. These can range from missing children, bounties, or haunted houses that
-                                need
-                                to
-                                be
-                                dealt with. Exploring the world created by the narrator allows players to discover new
-                                areas
-                                and
-                                locations, and can lead to building relationships with local businesses or guilds.
-                            </li>
 
-                            <li><strong>Combat</strong> in this system is brutal, and players should be prepared for
-                                tough
-                                engagements. It is important to consider conditions and locking out creatures and NPCs
-                                from
-                                being
-                                able to act, rather than relying on hit points. Downtime involves characters recovering
-                                from
-                                battle
-                                and taking care of their equipment, which can lead to further interactions and
-                                connections
-                                within
-                                the city. Finally, character death is something to be expected in combat, but it does
-                                not
-                                necessarily mean the end of play. The group may consider seeking revival through a
-                                temple
-                                priest
-                                or
-                                hospital doctor.
-                            </li>
-
-                            <li><strong>Character Death</strong> is a potential outcome of combat, and players should be
-                                prepared
-                                for it. However, death is not necessarily the end of play. The group may consider
-                                seeking
-                                revival
-                                through a temple priest or hospital doctor, or may choose to continue the game with a
-                                new
-                                character.
-                                It is important to remember that character death should be taken seriously and not
-                                approached
-                                with a
-                                mindset of always winning
-                            </li>
-
-                            <li><strong>Downtime</strong> is an important aspect of the game, as it allows characters to
-                                recover
-                                from battle and tend to their equipment. Repairing armor and interacting with
-                                blacksmiths to
-                                afford
-                                it can lead to further connections within the city and can involve other types of
-                                interactions,
-                                such
-                                as favors or quests. It is important to not take downtime lightly and to consider it as
-                                a
-                                part
-                                of
-                                the overall story.
-                            </li>
-
-                        </ul>
-                    </div>
-
-                </div>
-            </div>
-
-
-        </section>
-
-        <section>
-            <h2>Provoke</h2>
-            <p>
-                A creature provokes when it leaves itself open to retaliation. This happens if an attack misses, or when a creature willingly moves out of another’s melee range. The target is granted a counterattack, the result of which depends on the original roll’s outcome. Advantage and Disadvantage rolls still apply, with double advantages or disadvantages becoming automatic success or failure. Critical results create memorable moments with significant effects as noted on character sheets.
-            </p>
-            <p>
-                Provokes can also occur in ranged combat if the creature being targeted has a ranged option immediately available. A creature will likewise provoke if it moves out of another creature’s melee range without first using the Disengage half-action.
-            </p>
-            <h2>Damage and Non-D20 Rolls</h2>
-            <p>
-                Damage calculation usually starts with armor, then wounds inward unless otherwise specified. Non-d20 rolls are used for damage, spells, conditions, and random events, with the narrator providing dice for these specific situations.
-            </p>
-
-            <div class="features">
-                <h2>Progression</h2>
-                <p>
-                    At every Path Progression Step gain one of the following: +1 to any check (max 15), +1 Spell Point, or +1 Class Resource.
-                </p>
-            </div>
-        </section>
-        <!-- Checks -->
-        <section id="checks">
-            <h1>Checks</h1>
-            <div class="two-column">
-                <div class="column">
-                    <p>
-                        In the game, checks dictate how your character interacts with the world and faces challenges. At
-                        the
-                        start, you're given 20 points to spread among these checks, but no check can receive more than
-                        10 points
-                        from this initial pool.
-                    </p>
-                    <p>
-                        <strong>The Math:</strong> When you roll a 20-sided die (d20), each outcome has a 5%
-                        probability. The
-                        average roll is 10.5, meaning there's a 50% likelihood of rolling 10 or above. Adding modifiers,
-                        like a
-                        +5 bonus, shifts the average roll to 15.5, enhancing your chances of superior results. As you
-                        move up
-                        the scale (15-34), outcomes improve, leading to better achievements in combat or surpassing
-                        original
-                        goals.
-                    </p>
-                    <h3>Minimum Wounds</h3>
-                    <p>
-                        Your wounds are equal to your Agility + Strength checks. If you put points into Agility or
-                        Strength, it
-                        increases your wounds by that much. If you do not have any points in either, you have a minimum
-                        of 1. If
-                        you put 1 into one of the checks, it would still be 1 until you raise it above the minimum.
-                    </p>
-
-                    <h3>Low Light Vision</h3>
-                    <p>
-                        In dark places where all you have is a torch or a flashlight, you use the low light vision stat.
-                        Unless
-                        otherwise stated, creatures cannot see in complete darkness. <br>
-                        <em>Every 2 points:</em> Increases the low-light distance by 5ft.
-                    </p>
-                    <h2>Training to Improve Abilities</h2>
-                    <p>
-                        Characters can train to boost their abilities. While the Merchant is off doing business deals,
-                        the Tank
-                        is in the gym training or perhaps in the library rounding out their skills.
-                    </p>
-
-                    <h3>Training Duration</h3>
-                    <ul>
-                        <li>Can only train one at a time.</li>
-                        <li><strong>Months needed = desired ability value.</strong></li>
-                    </ul>
-                    <p><strong>Example:</strong> To go from Strength 3 to 4, train for 4 months. To go from 1 to 4 would
-                        be 9
-                        months:
-                    <ul>
-                        <li>1-2: 2 months</li>
-                        <li>2-3: 3 months</li>
-                        <li>3-4: 4 months</li>
-                    </ul>
-                    </p>
-
-                    <h3>Training Commitment</h3>
-                    <p>
-                        Emphasize to players the significance of full devotion in their training regimen. It's an
-                        opportunity
-                        for rich role-play, exploring the struggles and triumphs that define their character's growth.
-                        While
-                        occasional minor tasks are part of their routine, their narrative should be dominated by intense
-                        and
-                        purposeful training, shaping their journey towards greatness.
-                    </p>
-                </div>
-                <div class="column">
-                    <h2>Checks Table</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Check</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Agility</strong></td>
-                                <td>
-                                    Perform tasks with precision and physical agility. Increases movement speed and
-                                    initiative
-                                    bonus.<br>
-                                    <em>Movement Base:</em> 30ft<br>
-                                    <em>Every 2 points:</em> Increase by 5ft<br>
-                                    <em>Each point:</em> Increases wounds
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Crafting</strong></td>
-                                <td>
-                                    Transform raw materials into utility and art, including repairing or tinkering with
-                                    items.
-                                    <br>
-                                    <em>Basic crafting:</em> Small-scale improvisations.<br>
-                                    <em>Advanced crafting:</em> Requires time, materials, and multiple checks.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Influence</strong></td>
-                                <td>
-                                    Measures your knack for weaving together persuasive dialogue, emotional
-                                    intelligence, and
-                                    performative elements to captivate and convince.<br>
-                                    <em>Includes:</em> Understanding audiences, engaging them, and swaying perspectives.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Intellect</strong></td>
-                                <td>
-                                    Primarily used for comprehending magic or conducting research.<br>
-                                    <em>Fields:</em> Nature, arcanum, history, occult, science, etc.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Luck</strong></td>
-                                <td>
-                                    Influences the probability of experiencing good fortune or favorable outcomes.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Spirit</strong></td>
-                                <td>
-                                    Mystical link to the unseen, bridging the supernatural.<br>
-                                    <em>Every 2 points:</em> Grants 1 spell point.<br>
-                                    <em>1 spell point:</em> Grants access to wordless magic.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Stealth</strong></td>
-                                <td>
-                                    The ability to move quietly and unnoticed, including hiding, blending into crowds, or moving
-                                    silently.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Strength</strong></td>
-                                <td>
-                                    Represents raw power and resilience.<br>
-                                    <em>Each point:</em> Increases wounds.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Observation</strong></td>
-                                <td>
-                                    Closely observe surroundings and interpret non-verbal cues.<br>
-                                    <em>Useful for:</em> Investigation and understanding others' intentions.<br>
-                                    <em>Low Light Base:</em> 30ft<br>
-                                    <em>Every 2 points:</em> Increases by 5ft.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Survival</strong></td>
-                                <td>
-                                    Primal instinct and the ability to navigate dangers and endure harsh
-                                    environments.<br>
-                                    <em>Used for:</em> Navigation and survival skills.
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- Loyalty -->
-        <section id="loyalty">
-            <div class="two-column">
-                <div class="column">
-                    <h2>Loyalty</h2>
-                    <p>
-                        Loyalty not only measures individual trust and bonds but also reflects a character's reputation
-                        within
-                        factions or guilds, impacted by their actions and decisions. Positive deeds like completing
-                        quests or
-                        offering gifts enhance loyalty, while negative actions such as betrayal diminish it. This system
-                        includes:
-                    </p>
-                    <ul>
-                        <li><strong>Individual Loyalty:</strong> Loyalty between characters.</li>
-                        <li><strong>Group Reputation:</strong> A character's standing with factions or guilds changes
-                            based on
-                            their actions, affecting interactions and opportunities within those groups.</li>
-                    </ul>
-                    <p>
-                        Loyalty points are earned or lost through these actions, dictating the character's relationship
-                        and
-                        standing within the community. Tiers range from Hostile to Unwavering to represent the depth of
-                        trust or
-                        disdain. Loyalty Checks, influenced by these points or the character's tier within the faction
-                        or guild,
-                        are pivotal in social encounters, leading to outcomes such as gaining access to unique
-                        resources, facing
-                        hostility, or unlocking special quests.
-                    </p>
-                </div>
-                <div class="column">
-                    <h3>Loyalty Tiers</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Tier</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Tier 0 (Negative): Hostile</strong></td>
-                                <td>Most likely to attack on sight but might be willing to listen to reason.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Tier 1 (0-3 points): Neutral</strong></td>
-                                <td>No particular benefits or penalties.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Tier 2 (4-6 points): Friendly</strong></td>
-                                <td>Minor favors, access to some restricted areas or information.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Tier 3 (7-9 points): Trusted</strong></td>
-                                <td>Moderate favors, access to more resources or assistance.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Tier 4 (10-20 points): Devoted</strong></td>
-                                <td>Significant favors, access to high-value resources or powerful allies.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Tier 5 (21-30 points): Unwavering</strong></td>
-                                <td>Complete trust, unwavering support, and access to top-tier resources or allies.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- Combat -->
-        <section id="combat">
-            <h1>Combat</h1>
-
-            <div class="two-column">
-                <div class="column">
-                    <h3>Character Health</h3>
-                    <p>
-                        Character health in this RPG pivots from traditional hit points to a system of armor and wounds
-                        for a grittier
-                        feel. <strong>Damage hits armor first</strong>, then wounds. Zero wounds result in being in the
-                        Injured Condition
-                        and further
-                        damage risks the Death condition.
-                    </p>
-                    <ul>
-                        <li><strong>Armor</strong> acts as your first defense, absorbing damage until depleted, then
-                            requires repairs.
-                            Some spells boost
-                            armor temporarily.</li>
-                        <li><strong>Wounds</strong> track minor injuries, healed by rest or medical aid. Exhausting
-                            wound capacity leads
-                            to the Injured
-                            condition; additional harm may cause death. Wound capacity is the sum of Agility and
-                            Strength checks.</li>
-                        <li><strong>Healing</strong> replenishes wounds up to the character's maximum, not affecting
-                            armor or directly
-                            curing conditions.
-                        </li>
-                    </ul>
-
-                    <!-- Add this under “Combat and Non-Combat Mechanics” -->
-                    <h3>Combat and Non-Combat Mechanics</h3>
-                    <ul>
-                        <li><strong>Finisher</strong>: A Finisher allows you to eliminate a helpless foe in one strike. Sleeping guards, bound prisoners, or creatures completely unaware of you can be ended instantly without playing through full combat. Stealth can help you set up a Finisher, but it is not required. This cannot be used on an active or aware opponent.</li>
-                        <li><strong>Targeting</strong>: To attack, you must see, hear, or otherwise detect your target.
-                            Lack of senses may impose disadvantages.</li>
-                        <li><strong>Cover</strong>: Targets behind half cover are at disadvantage to hit; targets behind
-                            full cover cannot be targeted.</li>
-                        <li><strong>Stealth</strong>: Stealth lets you hide from enemies. Take an action to make a Stealth check. If successful, you are unseen and your next attack has Advantage, with additional consecutive attacks at Advantage for each success. Attacking, spellcasting, or revealing yourself in any other way ends Stealth unless a feature says otherwise.</li>
-                        <li><strong>Surprise Turns</strong>: When attacking from stealth, you gain one extra action. This reveals your position unless an ability states otherwise.</li>
-                        <li><strong>Called Shots</strong>: Aim for specific effects rather than damage. Declare before
-                            attacking, accept a -10 to hit, and if successful, inflict conditions like Bleeding, Broken, or
-                            Blind, instead of normal damage.</li>
-                    </ul>
-
-                    <h3>What You Can Do on Your Turn in Combat</h3>
-                    <ul>
-                        <li><strong>Move:</strong> Utilize your speed and terrain to reposition, dodge, or engage.
-                            Movement can be split
-                            before and after your action as needed.</li>
-                        <li><strong>Action:</strong> The primary activity you perform, like attacking or casting a
-                            spell. Generally, you
-                            get one action per turn, though certain abilities may offer more.</li>
-                        <li><strong>Half-Actions:</strong> Smaller actions that can be doubled up in place of a full
-                            action, such as
-                            shooting and reloading a weapon.</li>
-                        <li><strong>Off-Action:</strong> Can be used to attack on your turn or react off your turn
-                            to a
-                            missed attack.
-                        </li>
-                        <li><strong>Free-Action:</strong> Minor tasks or communication that don't consume your
-                            action
-                            economy, like quick
-                            exchanges or item handling.</li>
-                    </ul>
-
-                </div>
-                <div class="column">
-                    <div class="two-column">
-                        <div class="column">
-                            <div class="features">
-                                <h3>Press On</h3>
-                                <p>
-                                    After a combat encounter, characters can "Press On" to regain 1 class resource, 1
-                                    spell point,
-                                    repair armor for
-                                    <code>[[1d6]]</code> + Crafting, heal for <code>[[1d6]]</code> + Survival, and
-                                    remove all
-                                    conditions and effects lasting
-                                    for 1 minute or
-                                    less. This option can be used twice per day, but not consecutively without engaging
-                                    in another
-                                    combat.
+                        <div class="two-column">
+                            <div class="column">
+                                <h2>Narrator</h2>
+                                <p>Your role is to create the game world, challenge players, and bring the story to life. Encourage
+                                    player
+                                    interaction and questions, and reward their achievements with points for character development.
+                                    Flexibility and adaptation to player actions are key for a dynamic and enjoyable game. Foster
+                                    creativity
+                                    and collaboration for a shared adventure.
+                                </p>
+                            </div>
+                            <div class="column">
+                                <h2>Players are Characters</h2>
+                                <p>Bring your character to life and collaborate with the group towards shared goals. Understand your
+                                    character's abilities and be proactive in story progression. Think creatively and communicate
+                                    effectively with the group for a rich, immersive experience.
                                 </p>
                             </div>
                         </div>
-                        <div class="column">
-                            <div class="features">
-                                <h3>Long Rest</h3>
-                                <p>
-                                    A long rest requires 10 hours of uninterrupted downtime, fully restoring all wounds,
-                                    recharging
-                                    class resources,
-                                    repairing all armor to at least half, and removing any conditions that last one day
-                                    or less.
-                                    Characters can only
-                                    take a long rest once per long rest and must be in a safe environment.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <p id="combat">
-                        Combat simplifies to a clash between your party and enemies, initiating with an attack and
-                        proceeding in
-                        turn-based rounds, where strategy aims to incapacitate opponents akin to chess's checkmate,
-                        either
-                        through
-                        strategic disadvantage or elimination. Consideration for peaceful resolutions or stealth
-                        approaches
-                        can enrich
-                        the roleplaying experience.
-                    </p>
-                    <p>
-                        Morale checks for enemies can dictate their willingness to fight, with
-                        living beings
-                        more likely to flee than undead.
-                        Turn order is determined by an initiative roll, which is a roll +
-                        Agility check, proceeding until one side wins or retreats. Actions can be delayed for strategic
-                        timing within one's
-                        turn, maintaining the chosen initiative position.
-                    </p>
-                    <p>
-                        Theater of the mind combat descriptions can focus on relative distances: melee, reach, short,
-                        medium, long - rather than specifics, allowing for imaginative
-                        engagement with
-                        the scenario.
-                    </p>
 
-                    <h3>Range</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Range Type</th>
-                                <th>Distance</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Melee Range</td>
-                                <td>5ft or touching</td>
-                            </tr>
-                            <tr>
-                                <td>Reach Range</td>
-                                <td>10ft</td>
-                            </tr>
-                            <tr>
-                                <td>Short Range</td>
-                                <td>Within 50ft</td>
-                            </tr>
-                            <tr>
-                                <td>Medium Range</td>
-                                <td>50-200ft</td>
-                            </tr>
-                            <tr>
-                                <td>Long Range</td>
-                                <td>200-1000ft</td>
-                            </tr>
-                            <tr>
-                                <td>Visible Range</td>
-                                <td>Within Visible Range</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- Movement -->
-        <section id="movement">
-            <h2>Movement</h2>
-            <div class="two-column">
-                <div class="column">
-                    <p>
-                        In combat, movement is a separate type of action from attacking or using items. During any turn
-                        in combat, you
-                        can move any amount of your movement speed at any point during your turn. For example, if you
-                        have 30 ft of
-                        movement, you can move 10 ft to approach a creature, attack, and then move 20 ft away. However,
-                        if you engage a
-                        creature in combat and then retreat, they may have an opportunity to attack you using their
-                        Off-Action.
-                    </p>
-                    <div class="features">
+                        <h1>How To Play</h1>
                         <p>
-                            <strong>Fern-Tuft (ft) Definition:</strong> In this rulebook, "ft" does not stand for "feet"
-                            but
-                            for
-                            "fern-tuft," a unit of measure slightly smaller than the traditional foot. This ensures that
-                            when a character
-                            moves 50ft in a turn, the distance is more practical within the game's context. For ease,
-                            simply
-                            use "ferns" to
-                            refer to this unit of measurement in gameplay.
+                            Gather a group of friends or like-minded folks who enjoy building stories together.
+                            I have created (and will keep creating) tools to make running this game easier.
+                            You can play online using Roll20, or go full classic with pencils and paper.
+                            Character creation is available on the website, but making your own sheets by hand
+                            is always an option.
+                        </p>
+
+                        <p>
+                            A game system exists to give structure, rules that create challenges and focus.
+                            Yes, everything is made up anyway, but having a framework makes the fun funner.
+                            Pure improv can be great, but having mechanics gives you tension, consequences,
+                            and those big triumphant moments that feel earned.
+                        </p>
+
+                        <p>
+                            Once you have gathered your people, they will make characters while you prepare the world.
+                            Listen to what they choose and shape the story around them. If someone is a tank, think of
+                            intense fights and a big boss battle. If someone is a mage, maybe there is a rival
+                            spellcaster, a wise mentor, or a magic school down the street. If someone is a merchant,
+                            break out some spreadsheets and prepare for the weirdest and most unpredictable corner of
+                            this system, a corner even I am still figuring out.
+                        </p>
+
+                        <p>
+                            Players choose a Class, then a Path and Talent for that Class. Before or after that they
+                            pick a Species. Your world determines whether species are high fantasy or low fantasy.
+                            In high fantasy, everyone might be wildly unique creatures. In low fantasy, everyone is
+                            basically human with one cool feature, like an orc who is just a dude with modest tusks,
+                            or a helborn who looks normal except their irises burn like embers.
+                        </p>
+
+                        <p>
+                            Low fantasy makes high fantasy moments feel even bigger. But I almost always run high
+                            fantasy because it is fun to let players be happy. And after a dozen campaigns, who
+                            wants to be just a knight when you can be a plaguebringer half angel with a penchant
+                            for mysteries.
+                        </p>
+
+                        <p>
+                            Now the Narrator sets the scene. How do these characters fit in? Are they a band of
+                            oddballs sitting in a smoky bar, low lights and even lower inhibitions? Are they a
+                            mystery solving crew sharing an apartment downtown? In Shek, the world is dangerous
+                            and alive with possibility. Even a simple trip to Target (which existed in the 1920s,
+                            trust me on this) can turn into a battle with a sewer construct, yes a creature built
+                            from the sewer itself. The drain mouth rises up, pipes twisting like a serpent, and
+                            you grin as you ask,
                         </p>
                     </div>
+
+                    <div class="column">
+                        <h2>Gameplay</h2>
+                        <p>
+                            In this game, dice are used to see what happens when you try something risky, with the d20 doing most of the heavy lifting. In most situations, a roll of 15 or higher is considered a success.
+                        </p>
+                        <p>
+                            When you roll, you add a relevant stat called a Check to your result. That total lands on a tier that ranges from
+                            Failure up to Success +++, with higher successes unlocking stronger effects, extra damage, or bonus advantages.
+                        </p>
+                        <p>
+                            Actions come in different durations, from quick reactions to tasks that can take the whole day. Even when you fail,
+                            it is not the end of the story. Failure creates complications, twists, and new problems to solve, instead of simply
+                            stopping the game.
+                        </p>
+                        <img src="assets/images/Lakelyn.png" alt="Tank-Vampire- Detective" style="max-width: 100%; height:auto;margin: -5rem auto -10rem;">
+
+                        <div class="features">
+                            <h2>Types of Scenes</h2>
+                            <p>There are several types of interactions that players may engage in during the game. These include relationships, mysteries, problems, exploring, combat, and downtime.
+                            </p>
+                            <ul>
+                                <li><strong>Relationships</strong> involve players interacting with characters from their
+                                    own backstory or with new characters introduced by the narrator. These interactions can lead to
+                                    intense role-playing and can bring new connections to the group. Creatures and NPCs may have
+                                    basic or complex needs that players can exploit to gain something in return.
+                                </li>
+                                <li><strong>Mysteries</strong> and problems are presented by the narrator for the players to
+                                    solve or interact with. These can range from missing children, bounties, or haunted houses that
+                                    need to be dealt with. Exploring the world created by the narrator allows players to discover new
+                                    areas and locations, and can lead to building relationships with local businesses or guilds.
+                                </li>
+                                <li><strong>Combat</strong> in this system is brutal, and players should be prepared for
+                                    tough engagements. It is important to consider conditions and locking out creatures and NPCs
+                                    from being able to act, rather than relying on hit points. Downtime involves characters recovering
+                                    from battle and taking care of their equipment, which can lead to further interactions and
+                                    connections within the city. Finally, character death is something to be expected in combat, but
+                                    it does not necessarily mean the end of play. The group may consider seeking revival through a
+                                    temple priest or hospital doctor.
+                                </li>
+                                <li><strong>Character Death</strong> is a potential outcome of combat, and players should be
+                                    prepared for it. However, death is not necessarily the end of play. The group may consider
+                                    seeking revival through a temple priest or hospital doctor, or may choose to continue the game
+                                    with a new character. It is important to remember that character death should be taken seriously
+                                    and not approached with a mindset of always winning.
+                                </li>
+                                <li><strong>Downtime</strong> is an important aspect of the game, as it allows characters to
+                                    recover from battle and tend to their equipment. Repairing armor and interacting with blacksmiths
+                                    to afford it can lead to further connections within the city and can involve other types of
+                                    interactions, such as favors or quests. It is important to not take downtime lightly and to
+                                    consider it as a part of the overall story.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="column" id="dim">
-                    <h4>Types of Movement</h4>
-                    <ul>
-                        <li><strong>Difficult Terrain:</strong> Requires twice as much movement to navigate, so every 5
-                            ft becomes
-                            10ft.</li>
-                        <li><strong>Jumping:</strong> Jump 5 ft from a standstill plus your Strength, or twice that
-                            distance with a
-                            running start.</li>
-                        <li><strong>Climbing:</strong> Make a Strength check to move up to half your movement speed in
-                            one turn. Failures
-                            result in falling; make an Agility check to save yourself.</li>
-                        <li><strong>Swimming:</strong> Swim at half your movement speed. Wearing heavy armor causes
-                            sinking.</li>
-                        <li><strong>Prone:</strong> Being prone gives melee attackers advantage and ranged attackers
-                            disadvantage.
-                            Standing up costs 15 ft of movement.</li>
-                        <li><strong>Moving Past Creatures:</strong> Move through a creature's space only if they are two
-                            sizes smaller
-                            (Tiny) or larger (Massive), or if they are allies who assist you.</li>
-                        <li><strong>Falling:</strong> Take 5 bludgeoning damage per 10 ft of falling distance. Falls
-                            that bring you to
-                            the Injured Condition cause the Death Condition instead.</li>
-                        <li><strong>Extreme Conditions:</strong> Hazardous environments, like lava or acid, cause 10
-                            damage per round.
-                        </li>
-                        <li><strong>Burrowing:</strong> Creatures that burrow are immune to sight-based spells and
-                            non-piercing weapons.
-                            They need a way to breathe while burrowed.</li>
-                        <li><strong>Teleport:</strong> Special creatures can teleport to another unoccupied space
-                            without provoking</li>
-                    </ul>
+            </section>
+        </div>
 
-                </div>
-            </div>
+        <!-- ══════════════════════════════════════════ -->
+        <!-- TAB 2 · Checks & Rolls                    -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="tab-panel" data-tab="rolls">
+            <p class="tab-label">Checks &amp; Rolls</p>
+            <section id="howto-rolls">
+                <div class="two-column">
+                    <div class="column">
+                        <h1>Checks &amp; Rolls</h1>
 
-        </section>
+                        <h2>Roll Outcomes</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Roll</th>
+                                    <th>Outcome</th>
+                                    <th>Provoke</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1-4</td>
+                                    <td>Fail +</td>
+                                    <td>Yes @ Advantage</td>
+                                </tr>
+                                <tr>
+                                    <td>5-9</td>
+                                    <td>Fail</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>10-14</td>
+                                    <td>Minor Failure</td>
+                                    <td>Yes @ Disadvantage</td>
+                                </tr>
+                                <tr>
+                                    <td>15-19</td>
+                                    <td>Success</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>20-24</td>
+                                    <td>Success +</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>25-29</td>
+                                    <td>Success ++</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>30-34</td>
+                                    <td>Success +++</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-        <!-- Actions -->
-        <section id="action">
-            <h1>Types of Actions</h1>
-            <div class="two-column">
-                <div class="column" id="dim">
-                    <h2>Actions</h2>
-                    <p>
-                        Actions are activities that take only a few seconds to complete. They are distinct from
-                        Half-Actions and
-                        Off-Actions, which have different characteristics and limitations.
-                    </p>
-                    <ul>
-                        <li><strong>Attack:</strong> Make a melee or ranged attack against a creature or object within
-                            range.</li>
-                        <li><strong>Unarmed Strike:</strong> Deals 1 BPorS damage and can be taken as an Off-Action.
-                        </li>
-                        <li><strong>Dash:</strong> Use your action to move again after moving, doubling your distance.
-                        </li>
-                        <li><strong>Grab or Hold:</strong> Make an opposed Strength check to impose the Pinned
-                            Condition.</li>
-                        <li><strong>Administer a Potion:</strong> Use an action to give a potion to a downed ally.
-                            Drinking a potion
-                            yourself is a Half-Action.</li>
-                        <li><strong>Stealth</strong>: Make a Stealth check. If successful, you are unseen and your next attack has Advantage, with additional consecutive attacks at Advantage for each success. Attacking, spellcasting, or revealing yourself in any other way ends Stealth unless a feature says otherwise.</li>
-                        <li><strong>Cast a Spell:</strong> Requires sound, movement, and a spellcasting check (usually
-                            Spirit).</li>
-                    </ul>
-                    <h3>Half-Actions</h3>
-                    <p>Half-Actions consume half of your action economy and allow two actions in one turn.</p>
-                    <ul>
-                        <li><strong>Stances:</strong> Choose a stance to remain in until your next turn.
-                            <div class="features">
-                                <ul>
-                                    <li><strong>Advantage Stance:</strong> Gain advantage on your next attack.</li>
-                                    <li><strong>Disadvantage Stance:</strong> Give disadvantage to enemies attacking you
-                                        or
-                                        allies in range.
-                                    </li>
-                                    <li><strong>Offensive Stance:</strong> Use your Off-Action to Provoke.</li>
-                                    <li><strong>Reaction Stance:</strong> React to failed attacks against you.</li>
-                                </ul>
+                        <h2>Advantage and Disadvantage</h2>
+                        <ul>
+                            <li><strong>Advantage:</strong> Roll a d20+4 then roll a d20, take the higher result</li>
+                            <li><strong>Disadvantage:</strong> Roll a d20-4 then roll a d20, take the lower result</li>
+                            <li><strong>Locked Out:</strong> If you have double disadvantage on a roll, you are unable to perform the action.</li>
+                        </ul>
+
+                        <h2>Opposed Checks</h2>
+                        <p>
+                            A niche roll is the opposed check, where two characters make rolls, adding their designated
+                            check against another creature or player making the same roll and adding their values as well.
+                            The winner of the check is the creature with the higher roll value.
+                        </p>
+
+                        <h2>Provoke</h2>
+                        <p>
+                            A creature provokes when it leaves itself open to retaliation. This happens if an attack misses, or when a creature willingly moves out of another's melee range. The target is granted a counterattack, the result of which depends on the original roll's outcome. Advantage and Disadvantage rolls still apply, with double advantages or disadvantages becoming automatic success or failure. Critical results create memorable moments with significant effects as noted on character sheets.
+                        </p>
+                        <p>
+                            Provokes can also occur in ranged combat if the creature being targeted has a ranged option immediately available. A creature will likewise provoke if it moves out of another creature's melee range without first using the Disengage half-action.
+                        </p>
+
+                        <h2>Damage and Non-D20 Rolls</h2>
+                        <p>
+                            Damage calculation usually starts with armor, then wounds inward unless otherwise specified. Non-d20 rolls are used for damage, spells, conditions, and random events, with the narrator providing dice for these specific situations.
+                        </p>
+
+                        <div class="features">
+                            <h2>Progression</h2>
+                            <p>
+                                At every Path Progression Step gain one of the following: +1 to any check (max 15), +1 Spell Point, or +1 Class Resource.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <div class="two-column">
+                            <div class="column">
+                                <h2>Success + and Larger Outcomes</h2>
+                                <p>
+                                    When a player rolls a Success + or higher, the result should feel bigger than a simple pass. Most checks have more
+                                    than one way to succeed, so higher success tiers create stronger outcomes, better advantages, or more cinematic
+                                    impact. Your job as the Narrator is to reward great rolls with great moments.
+                                </p>
+                                <p>
+                                    <strong>Example: Breaking Down a Door</strong><br>
+                                    A Success means the door breaks open. A Success + might have the door fly off its hinges. A Success ++ could send
+                                    the door crashing into a guard on the other side for 1d6 impact damage. A Success +++ might reveal crucial intel
+                                    or catch enemies completely unaware. Bigger success should equal bigger results.
+                                </p>
+                                <p>
+                                    <strong>Group Checks</strong><br>
+                                    When the whole party attempts the same action, such as sneaking past a patrol or pushing a truck out of the road,
+                                    you can call for a Group Check. The group must reach a number of total successes equal to the number of players
+                                    taking part. For example, a group of four characters needs four total successes to slip by undetected. Even if two
+                                    players fail, the stealth expert might roll a Success +++ while another hits a clean success, bringing the group
+                                    across the finish line together.
+                                </p>
+                                <p>
+                                    <strong>Setting Difficulty</strong><br>
+                                    The number of required successes changes how hard a task is. Something ordinary should not require a roll at all.
+                                    If a character can reasonably do the task, simply call it a success. For typical challenges a single success at
+                                    15 is all they need. Larger obstacles may require Success + or even multiple successes to show that the task is
+                                    significant. This lets you scale difficulty without changing the core target number.
+                                </p>
+                                <p>
+                                    Success + outcomes create memorable scenes and empower players to shape the story. Failure and success both move
+                                    the narrative forward, but greater successes let the players shine.
+                                </p>
                             </div>
-
-                        </li>
-                        <li><strong>Disarm:</strong> Make an opposed Strength or Agility check to disarm a creature.
-                        </li>
-                        <li><strong>Help:</strong> Give a creature +1 to a check.</li>
-                        <li><strong>Pick up an Item:</strong> Picking up an item is a Half-Action.</li>
-                        <li><strong>Use an Object:</strong> Interact with objects like levers or buttons.</li>
-                        <li><strong>Disengage:</strong> Move out of a creature's range without provoking opportunity
-                            attacks.</li>
-                    </ul>
+                            <div class="column">
+                                <h2>Critical Checks and Failures</h2>
+                                <p>
+                                    Critical checks are the extremes of a d20 roll. A critical success can supercharge an action, while a critical failure adds
+                                    complications. This applies to all checks, not just attacks.
+                                </p>
+                                <p>
+                                    <strong>Critical Success:</strong> On a critical success, the effect of the action should be stronger or cleaner than normal.
+                                    In combat this can mean double damage, an extra roll on a damage table, a bonus effect, or even finishing off a creature
+                                    that is already near defeat and the situation makes sense. Outside combat it might mean perfect timing, extra information,
+                                    or a stronger narrative outcome.
+                                </p>
+                                <p>
+                                    <strong>Critical Failure:</strong> On a critical failure, something goes wrong. In combat this might mean half damage,
+                                    a weapon slipping, breaking, or creating a new problem on the battlefield. A spell might backfire, fizzle, or cause
+                                    unintended side effects. A critical failure should never feel like a clean success, but creatures with very high Checks
+                                    should rarely fall completely flat. For them, treat critical failures more as setbacks and complications than total collapse.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="column">
-                    <div class="features">
-                        <h3>Off-Actions</h3>
-                        <p>Off-Actions don't require an Action or Half-Action and include quick reactions or minor
-                            activities. They also dont need to be preformed on your turn.</p>
+            </section>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- TAB 3 · Gameplay                          -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="tab-panel" data-tab="gameplay">
+            <p class="tab-label">Gameplay</p>
+
+            <!-- Checks -->
+            <section id="checks">
+                <h1>Checks</h1>
+                <div class="two-column">
+                    <div class="column">
+                        <p>
+                            In the game, checks dictate how your character interacts with the world and faces challenges. At
+                            the start, you're given 20 points to spread among these checks, but no check can receive more than
+                            10 points from this initial pool.
+                        </p>
+                        <p>
+                            <strong>The Math:</strong> When you roll a 20-sided die (d20), each outcome has a 5%
+                            probability. The average roll is 10.5, meaning there's a 50% likelihood of rolling 10 or above.
+                            Adding modifiers, like a +5 bonus, shifts the average roll to 15.5, enhancing your chances of
+                            superior results. As you move up the scale (15-34), outcomes improve, leading to better
+                            achievements in combat or surpassing original goals.
+                        </p>
+                        <h3>Minimum Wounds</h3>
+                        <p>
+                            Your wounds are equal to your Agility + Strength checks. If you put points into Agility or
+                            Strength, it increases your wounds by that much. If you do not have any points in either, you
+                            have a minimum of 1. If you put 1 into one of the checks, it would still be 1 until you raise
+                            it above the minimum.
+                        </p>
+
+                        <h3>Low Light Vision</h3>
+                        <p>
+                            In dark places where all you have is a torch or a flashlight, you use the low light vision stat.
+                            Unless otherwise stated, creatures cannot see in complete darkness.<br>
+                            <em>Every 2 points:</em> Increases the low-light distance by 5ft.
+                        </p>
+                        <h2>Training to Improve Abilities</h2>
+                        <p>
+                            Characters can train to boost their abilities. While the Merchant is off doing business deals,
+                            the Tank is in the gym training or perhaps in the library rounding out their skills.
+                        </p>
+
+                        <h3>Training Duration</h3>
                         <ul>
-                            <li><strong>Reaction:</strong> A special action taken out of turn, like an opportunity
-                                attack.
-                            </li>
-                            <li><strong>Provoke:</strong> Either attack creatures leaving your melee range without
-                                disengaging, when they fail a check against you, or do some other action that specifically provides Provoke.</li>
-                            <li><strong>Drink Something:</strong> Use an Off-Action to drink or hand off a potion.</li>
-                            <li><strong>Disrupt:</strong> Impose disadvantage on an enemy's attack with a successful
-                                check.
-                            </li>
-                            <li><strong>Block:</strong> Reduce melee damage by half using a shield.</li>
-                            <li><strong>Demoralize:</strong> Force enemies to make a morale check with an Influence
-                                (Intimidate) roll.</li>
+                            <li>Can only train one at a time.</li>
+                            <li><strong>Months needed = desired ability value.</strong></li>
+                        </ul>
+                        <p><strong>Example:</strong> To go from Strength 3 to 4, train for 4 months. To go from 1 to 4 would be 9 months:</p>
+                        <ul>
+                            <li>1-2: 2 months</li>
+                            <li>2-3: 3 months</li>
+                            <li>3-4: 4 months</li>
                         </ul>
 
-                        <h3>Non-Actions</h3>
-                        <p>Non-Actions don't consume any part of your action economy but may be limited by the narrator.
+                        <h3>Training Commitment</h3>
+                        <p>
+                            Emphasize to players the significance of full devotion in their training regimen. It's an
+                            opportunity for rich role-play, exploring the struggles and triumphs that define their character's
+                            growth. While occasional minor tasks are part of their routine, their narrative should be dominated
+                            by intense and purposeful training, shaping their journey towards greatness.
+                        </p>
+                    </div>
+                    <div class="column">
+                        <h2>Checks Table</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Check</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Agility</strong></td>
+                                    <td>
+                                        Perform tasks with precision and physical agility. Increases movement speed and initiative bonus.<br>
+                                        <em>Movement Base:</em> 30ft<br>
+                                        <em>Every 2 points:</em> Increase by 5ft<br>
+                                        <em>Each point:</em> Increases wounds
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Crafting</strong></td>
+                                    <td>
+                                        Transform raw materials into utility and art, including repairing or tinkering with items.<br>
+                                        <em>Basic crafting:</em> Small-scale improvisations.<br>
+                                        <em>Advanced crafting:</em> Requires time, materials, and multiple checks.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Influence</strong></td>
+                                    <td>
+                                        Measures your knack for weaving together persuasive dialogue, emotional intelligence, and
+                                        performative elements to captivate and convince.<br>
+                                        <em>Includes:</em> Understanding audiences, engaging them, and swaying perspectives.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Intellect</strong></td>
+                                    <td>
+                                        Primarily used for comprehending magic or conducting research.<br>
+                                        <em>Fields:</em> Nature, arcanum, history, occult, science, etc.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Luck</strong></td>
+                                    <td>
+                                        Influences the probability of experiencing good fortune or favorable outcomes.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Spirit</strong></td>
+                                    <td>
+                                        Mystical link to the unseen, bridging the supernatural.<br>
+                                        <em>Every 2 points:</em> Grants 1 spell point.<br>
+                                        <em>1 spell point:</em> Grants access to wordless magic.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Stealth</strong></td>
+                                    <td>
+                                        The ability to move quietly and unnoticed, including hiding, blending into crowds, or moving silently.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Strength</strong></td>
+                                    <td>
+                                        Represents raw power and resilience.<br>
+                                        <em>Each point:</em> Increases wounds.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Observation</strong></td>
+                                    <td>
+                                        Closely observe surroundings and interpret non-verbal cues.<br>
+                                        <em>Useful for:</em> Investigation and understanding others' intentions.<br>
+                                        <em>Low Light Base:</em> 30ft<br>
+                                        <em>Every 2 points:</em> Increases by 5ft.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Survival</strong></td>
+                                    <td>
+                                        Primal instinct and the ability to navigate dangers and endure harsh environments.<br>
+                                        <em>Used for:</em> Navigation and survival skills.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loyalty -->
+            <section id="loyalty">
+                <div class="two-column">
+                    <div class="column">
+                        <h2>Loyalty</h2>
+                        <p>
+                            Loyalty not only measures individual trust and bonds but also reflects a character's reputation
+                            within factions or guilds, impacted by their actions and decisions. Positive deeds like completing
+                            quests or offering gifts enhance loyalty, while negative actions such as betrayal diminish it.
+                            This system includes:
                         </p>
                         <ul>
-                            <li><strong>Switch Weapons:</strong> Drop a weapon and draw another.</li>
-                            <li><strong>Stress Push:</strong> Take 4 stress damage to gain a +3 bonus on a low roll.
-                            </li>
-                            <li><strong>Roleplay:</strong> Briefly communicate or give orders without consequence.</li>
+                            <li><strong>Individual Loyalty:</strong> Loyalty between characters.</li>
+                            <li><strong>Group Reputation:</strong> A character's standing with factions or guilds changes
+                                based on their actions, affecting interactions and opportunities within those groups.</li>
                         </ul>
+                        <p>
+                            Loyalty points are earned or lost through these actions, dictating the character's relationship
+                            and standing within the community. Tiers range from Hostile to Unwavering to represent the depth
+                            of trust or disdain. Loyalty Checks, influenced by these points or the character's tier within
+                            the faction or guild, are pivotal in social encounters, leading to outcomes such as gaining access
+                            to unique resources, facing hostility, or unlocking special quests.
+                        </p>
+                    </div>
+                    <div class="column">
+                        <h3>Loyalty Tiers</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tier</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Tier 0 (Negative): Hostile</strong></td>
+                                    <td>Most likely to attack on sight but might be willing to listen to reason.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tier 1 (0-3 points): Neutral</strong></td>
+                                    <td>No particular benefits or penalties.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tier 2 (4-6 points): Friendly</strong></td>
+                                    <td>Minor favors, access to some restricted areas or information.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tier 3 (7-9 points): Trusted</strong></td>
+                                    <td>Moderate favors, access to more resources or assistance.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tier 4 (10-20 points): Devoted</strong></td>
+                                    <td>Significant favors, access to high-value resources or powerful allies.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tier 5 (21-30 points): Unwavering</strong></td>
+                                    <td>Complete trust, unwavering support, and access to top-tier resources or allies.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
-        <!-- Additonal Character Information -->
-        <section class="character-section" id="size">
-            <h2>Additional Character Information</h2>
-            <!-- Character information -->
-            <div class="two-column">
-                <div class="column">
-                    <h4>Physical Attributes</h4>
-                    <h3>Size</h3>
-                    <p>
-                        Size in the world of adventuring isn't merely a matter of height and weight; it's a
-                        key
-                        factor in determining how a creature interacts with its environment and other
-                        beings.
-                        From the tiniest insect skittering unseen beneath a leaf to the towering giants
-                        striding
-                        across mountain ranges, size affects reach, stealth, strength, and vulnerability. A
-                        creature's size can determine the spaces it can traverse, the opponents it can
-                        challenge, and the impact of its presence in any given situation. In a realm of
-                        magic
-                        and might, understanding size is crucial for survival and success.
-                    </p>
+        <!-- ══════════════════════════════════════════ -->
+        <!-- TAB 4 · Combat                            -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="tab-panel" data-tab="combat">
+            <p class="tab-label">Combat</p>
+            <section id="combat">
+                <h1>Combat</h1>
 
-                    <ul class="size-list">
-                        <li class="size-tiny">
-                            <strong>Tiny:</strong> Less than 1 ft – Insects, pixies, pocket watches, potion bottles,
-                            radio, rings, wind-up familiars, frogs, canary birds, magical acorns.
-                        </li>
-                        <li class="size-small">
-                            <strong>Small:</strong> 1–4 ft – Gnomes, Klienkin, wild cats, gas lanterns, typewriters,
-                            violin cases, bootleg barrels, goblins, garden statues.
-                        </li>
-                        <li class="size-medium">
-                            <strong>Medium:</strong> 5–7 ft – Humans, Beastfolk, trench-coated detectives, phonograph
-                            cabinets, armor stands, coffins, altar tables, claw-foot bathtubs, cabaret stage props.
-                        </li>
-                        <li class="size-large">
-                            <strong>Large:</strong> 8–15 ft – Ogres, dire bears, streetlamps, arcane engines, cars and
-                            trucks, reinforced vault doors, golem enforcers, dockside cranes, patrol boats, siege
-                            barricades.
-                        </li>
-                        <li class="size-giant">
-                            <strong>Giant:</strong> 15–25 ft – Clockwork titans, building-sized automatons, firewatch
-                            towers, billboard rigs, massive organ pipes, elevated rail segments, airship mooring frames.
-                        </li>
-                        <li class="size-monolithic">
-                            <strong>Monolithic:</strong> 25–100 ft – Skyscraper façades, cathedral domes, war zeppelins,
-                            tower golems, arcano-generators, coastal artillery, subterranean elevators, great bells,
-                            dirigible hangars.
-                        </li>
-                        <li class="size-environmental">
-                            <strong>Environmental:</strong> Over 100 ft – Floating citadels, crashed skyliners, mountain
-                            elementals, world-tree, sleeping colossi, arcane power grids, misty fogbanks, buried
-                            industrial deities.
-                        </li>
-                    </ul>
-
-                </div>
-
-                <div class="column">
-                    <h3>Gender</h3>
-                    <p>
-                        In the realm of Shek, gender is as varied as the landscapes that stretch from
-                        soaring
-                        peaks to deep mystical forests. Here, identity is not just male or female but also
-                        includes the enigmatic dragon. Dragons, with their ancient magic, can fluidly shift
-                        to
-                        align with the souls of those they cherish. The changelings too, with their
-                        transformative abilities, are not bound by any single form. In Shek, it's a gentle
-                        reminder for all: never assume, for identity is a personal journey, unique as the
-                        being
-                        who walks its path.
-                    </p>
-
-                    <img src="assets/images/Goblin 2.png" id="gender">
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Bulk & Inventory -->
-        <section id="bulk">
-            <h1>Bulk Items</h1>
-            <p>
-                Bulk represents the weight and space your gear occupies, from negligible trinkets to
-                burdensome
-                hauls. It's not just about weight but also the size and how cumbersome an item is. Managing
-                your
-                bulk is crucial for maintaining agility and avoiding encumbrance.
-            </p>
-            <p>
-                For example, a watch has 0 Bulk because it can be worn and forgotten about. Meanwhile, an
-                empty
-                barrel may be light but is awkward to carry, giving it a Bulk of 5.
-            </p>
-
-            <h4>Bulk Classifications</h4>
-            <div class="two-column">
-                <div class="column">
-                    <!-- Bulk Classifications -->
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Bulk</th>
-                                <th>Description</th>
-                                <th>Examples</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>0</td>
-                                <td>Small/wearable items</td>
-                                <td>Watch, ring, eyeglasses</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Backpack-sized items</td>
-                                <td>Clothes, flask, small tools</td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>Large items</td>
-                                <td>Armor, barrel, large pot</td>
-                            </tr>
-                            <tr>
-                                <td>10</td>
-                                <td>Heavy items</td>
-                                <td>Furniture, small canoe</td>
-                            </tr>
-                            <tr>
-                                <td>15</td>
-                                <td>Very heavy items</td>
-                                <td>Piano, cart</td>
-                            </tr>
-                            <tr>
-                                <td>20</td>
-                                <td>Extremely heavy items</td>
-                                <td>Small car, heavy safe</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="column">
-                    <!-- Bulk Penalties -->
-                    <div class="features">
-                        <h4>Bulk Penalties</h4>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>Character Health</h3>
+                        <p>
+                            Character health in this RPG pivots from traditional hit points to a system of armor and wounds
+                            for a grittier feel. <strong>Damage hits armor first</strong>, then wounds. Zero wounds result
+                            in being in the Injured Condition and further damage risks the Death condition.
+                        </p>
                         <ul>
-                            <li><strong>Bulk exceeds Strength:</strong> Over-encumbered (Pinned condition).</li>
-                            <li><strong>Bulk > 2x Strength:</strong> Over-encumbered + Exhausted condition.</li>
-                            <li><strong>Worn items:</strong> Worn items have no bulk.</li>
-                            <li><strong>Bundles:</strong> Bundles reduce the average bulk of items.</li>
-                            <li><strong>Backpacks:</strong> Reduce total bulk carried.</li>
+                            <li><strong>Armor</strong> acts as your first defense, absorbing damage until depleted, then
+                                requires repairs. Some spells boost armor temporarily.</li>
+                            <li><strong>Wounds</strong> track minor injuries, healed by rest or medical aid. Exhausting
+                                wound capacity leads to the Injured condition; additional harm may cause death. Wound
+                                capacity is the sum of Agility and Strength checks.</li>
+                            <li><strong>Healing</strong> replenishes wounds up to the character's maximum, not affecting
+                                armor or directly curing conditions.</li>
+                        </ul>
+
+                        <h3>Combat and Non-Combat Mechanics</h3>
+                        <ul>
+                            <li><strong>Finisher</strong>: A Finisher allows you to eliminate a helpless foe in one strike. Sleeping guards, bound prisoners, or creatures completely unaware of you can be ended instantly without playing through full combat. Stealth can help you set up a Finisher, but it is not required. This cannot be used on an active or aware opponent.</li>
+                            <li><strong>Targeting</strong>: To attack, you must see, hear, or otherwise detect your target. Lack of senses may impose disadvantages.</li>
+                            <li><strong>Cover</strong>: Targets behind half cover are at disadvantage to hit; targets behind full cover cannot be targeted.</li>
+                            <li><strong>Stealth</strong>: Stealth lets you hide from enemies. Take an action to make a Stealth check. If successful, you are unseen and your next attack has Advantage, with additional consecutive attacks at Advantage for each success. Attacking, spellcasting, or revealing yourself in any other way ends Stealth unless a feature says otherwise.</li>
+                            <li><strong>Surprise Turns</strong>: When attacking from stealth, you gain one extra action. This reveals your position unless an ability states otherwise.</li>
+                            <li><strong>Called Shots</strong>: Aim for specific effects rather than damage. Declare before attacking, accept a -10 to hit, and if successful, inflict conditions like Bleeding, Broken, or Blind, instead of normal damage.</li>
+                        </ul>
+
+                        <h3>What You Can Do on Your Turn in Combat</h3>
+                        <ul>
+                            <li><strong>Move:</strong> Utilize your speed and terrain to reposition, dodge, or engage. Movement can be split before and after your action as needed.</li>
+                            <li><strong>Action:</strong> The primary activity you perform, like attacking or casting a spell. Generally, you get one action per turn, though certain abilities may offer more.</li>
+                            <li><strong>Half-Actions:</strong> Smaller actions that can be doubled up in place of a full action, such as shooting and reloading a weapon.</li>
+                            <li><strong>Off-Action:</strong> Can be used to attack on your turn or react off your turn to a missed attack.</li>
+                            <li><strong>Free-Action:</strong> Minor tasks or communication that don't consume your action economy, like quick exchanges or item handling.</li>
+                        </ul>
+                    </div>
+
+                    <div class="column">
+                        <div class="two-column">
+                            <div class="column">
+                                <div class="features">
+                                    <h3>Press On</h3>
+                                    <p>
+                                        After a combat encounter, characters can "Press On" to regain 1 class resource, 1
+                                        spell point, repair armor for <code>[[1d6]]</code> + Crafting, heal for
+                                        <code>[[1d6]]</code> + Survival, and remove all conditions and effects lasting
+                                        for 1 minute or less. This option can be used twice per day, but not consecutively
+                                        without engaging in another combat.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="features">
+                                    <h3>Long Rest</h3>
+                                    <p>
+                                        A long rest requires 10 hours of uninterrupted downtime, fully restoring all wounds,
+                                        recharging class resources, repairing all armor to at least half, and removing any
+                                        conditions that last one day or less. Characters can only take a long rest once per
+                                        long rest and must be in a safe environment.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p>
+                            Combat simplifies to a clash between your party and enemies, initiating with an attack and
+                            proceeding in turn-based rounds, where strategy aims to incapacitate opponents akin to chess's
+                            checkmate, either through strategic disadvantage or elimination. Consideration for peaceful
+                            resolutions or stealth approaches can enrich the roleplaying experience.
+                        </p>
+                        <p>
+                            Morale checks for enemies can dictate their willingness to fight, with living beings more likely
+                            to flee than undead. Turn order is determined by an initiative roll, which is a roll + Agility
+                            check, proceeding until one side wins or retreats. Actions can be delayed for strategic timing
+                            within one's turn, maintaining the chosen initiative position.
+                        </p>
+                        <p>
+                            Theater of the mind combat descriptions can focus on relative distances: melee, reach, short,
+                            medium, long — rather than specifics, allowing for imaginative engagement with the scenario.
+                        </p>
+
+                        <h3>Range</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Range Type</th>
+                                    <th>Distance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Melee Range</td>
+                                    <td>5ft or touching</td>
+                                </tr>
+                                <tr>
+                                    <td>Reach Range</td>
+                                    <td>10ft</td>
+                                </tr>
+                                <tr>
+                                    <td>Short Range</td>
+                                    <td>Within 50ft</td>
+                                </tr>
+                                <tr>
+                                    <td>Medium Range</td>
+                                    <td>50-200ft</td>
+                                </tr>
+                                <tr>
+                                    <td>Long Range</td>
+                                    <td>200-1000ft</td>
+                                </tr>
+                                <tr>
+                                    <td>Visible Range</td>
+                                    <td>Within Visible Range</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- TAB 5 · Movement & Actions                -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="tab-panel" data-tab="actions">
+            <p class="tab-label">Movement &amp; Actions</p>
+
+            <!-- Movement -->
+            <section id="movement">
+                <h2>Movement</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <p>
+                            In combat, movement is a separate type of action from attacking or using items. During any turn
+                            in combat, you can move any amount of your movement speed at any point during your turn. For
+                            example, if you have 30 ft of movement, you can move 10 ft to approach a creature, attack, and
+                            then move 20 ft away. However, if you engage a creature in combat and then retreat, they may
+                            have an opportunity to attack you using their Off-Action.
+                        </p>
+                        <div class="features">
+                            <p>
+                                <strong>Fern-Tuft (ft) Definition:</strong> In this rulebook, "ft" does not stand for "feet"
+                                but for "fern-tuft," a unit of measure slightly smaller than the traditional foot. This
+                                ensures that when a character moves 50ft in a turn, the distance is more practical within
+                                the game's context. For ease, simply use "ferns" to refer to this unit of measurement in
+                                gameplay.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="column" id="dim">
+                        <h4>Types of Movement</h4>
+                        <ul>
+                            <li><strong>Difficult Terrain:</strong> Requires twice as much movement to navigate, so every 5 ft becomes 10ft.</li>
+                            <li><strong>Jumping:</strong> Jump 5 ft from a standstill plus your Strength, or twice that distance with a running start.</li>
+                            <li><strong>Climbing:</strong> Make a Strength check to move up to half your movement speed in one turn. Failures result in falling; make an Agility check to save yourself.</li>
+                            <li><strong>Swimming:</strong> Swim at half your movement speed. Wearing heavy armor causes sinking.</li>
+                            <li><strong>Prone:</strong> Being prone gives melee attackers advantage and ranged attackers disadvantage. Standing up costs 15 ft of movement.</li>
+                            <li><strong>Moving Past Creatures:</strong> Move through a creature's space only if they are two sizes smaller (Tiny) or larger (Massive), or if they are allies who assist you.</li>
+                            <li><strong>Falling:</strong> Take 5 bludgeoning damage per 10 ft of falling distance. Falls that bring you to the Injured Condition cause the Death Condition instead.</li>
+                            <li><strong>Extreme Conditions:</strong> Hazardous environments, like lava or acid, cause 10 damage per round.</li>
+                            <li><strong>Burrowing:</strong> Creatures that burrow are immune to sight-based spells and non-piercing weapons. They need a way to breathe while burrowed.</li>
+                            <li><strong>Teleport:</strong> Special creatures can teleport to another unoccupied space without provoking.</li>
                         </ul>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="two-column">
-                <div class="column">
-                    <!-- Storage Options -->
-                    <h4>Types of Mundane Storage</h4>
-                    <p>
-                        Mundane storage allows characters to organize and carry items effectively. Accessing storage
-                        usually requires an off-action or is included in an action like switching weapons or
-                        grabbing a
-                        potion.
-                    </p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Storage Option</th>
-                                <th>Description</th>
-                                <th>Bulk Reduction</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Utility Pouch</td>
-                                <td>A small, rugged pouch worn on a belt or strap. Designed for carrying small
-                                    tools,
-                                    trinkets, or coins.</td>
-                                <td>-1 Bulk</td>
-                            </tr>
-                            <tr>
-                                <td>Craftsman’s Satchel</td>
-                                <td>A compact, cross-body satchel with multiple compartments for tools and
-                                    materials.
-                                    Ideal for organization.</td>
-                                <td>-3 Bulk</td>
-                            </tr>
-                            <tr>
-                                <td>Traveler’s Backpack</td>
-                                <td>A durable backpack with adjustable straps and reinforced compartments for
-                                    essential
-                                    gear.</td>
-                                <td>-5 Bulk</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- Actions -->
+            <section id="action">
+                <h1>Types of Actions</h1>
+                <div class="two-column">
+                    <div class="column" id="dim">
+                        <h2>Actions</h2>
+                        <p>
+                            Actions are activities that take only a few seconds to complete. They are distinct from
+                            Half-Actions and Off-Actions, which have different characteristics and limitations.
+                        </p>
+                        <ul>
+                            <li><strong>Attack:</strong> Make a melee or ranged attack against a creature or object within range.</li>
+                            <li><strong>Unarmed Strike:</strong> Deals 1 BPorS damage and can be taken as an Off-Action.</li>
+                            <li><strong>Dash:</strong> Use your action to move again after moving, doubling your distance.</li>
+                            <li><strong>Grab or Hold:</strong> Make an opposed Strength check to impose the Pinned Condition.</li>
+                            <li><strong>Administer a Potion:</strong> Use an action to give a potion to a downed ally. Drinking a potion yourself is a Half-Action.</li>
+                            <li><strong>Stealth</strong>: Make a Stealth check. If successful, you are unseen and your next attack has Advantage, with additional consecutive attacks at Advantage for each success. Attacking, spellcasting, or revealing yourself in any other way ends Stealth unless a feature says otherwise.</li>
+                            <li><strong>Cast a Spell:</strong> Requires sound, movement, and a spellcasting check (usually Spirit).</li>
+                        </ul>
+                        <h3>Half-Actions</h3>
+                        <p>Half-Actions consume half of your action economy and allow two actions in one turn.</p>
+                        <ul>
+                            <li><strong>Stances:</strong> Choose a stance to remain in until your next turn.
+                                <div class="features">
+                                    <ul>
+                                        <li><strong>Advantage Stance:</strong> Gain advantage on your next attack.</li>
+                                        <li><strong>Disadvantage Stance:</strong> Give disadvantage to enemies attacking you or allies in range.</li>
+                                        <li><strong>Offensive Stance:</strong> Use your Off-Action to Provoke.</li>
+                                        <li><strong>Reaction Stance:</strong> React to failed attacks against you.</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li><strong>Disarm:</strong> Make an opposed Strength or Agility check to disarm a creature.</li>
+                            <li><strong>Help:</strong> Give a creature +1 to a check.</li>
+                            <li><strong>Pick up an Item:</strong> Picking up an item is a Half-Action.</li>
+                            <li><strong>Use an Object:</strong> Interact with objects like levers or buttons.</li>
+                            <li><strong>Disengage:</strong> Move out of a creature's range without provoking opportunity attacks.</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <div class="features">
+                            <h3>Off-Actions</h3>
+                            <p>Off-Actions don't require an Action or Half-Action and include quick reactions or minor activities. They also don't need to be performed on your turn.</p>
+                            <ul>
+                                <li><strong>Reaction:</strong> A special action taken out of turn, like an opportunity attack.</li>
+                                <li><strong>Provoke:</strong> Either attack creatures leaving your melee range without disengaging, when they fail a check against you, or do some other action that specifically provides Provoke.</li>
+                                <li><strong>Drink Something:</strong> Use an Off-Action to drink or hand off a potion.</li>
+                                <li><strong>Disrupt:</strong> Impose disadvantage on an enemy's attack with a successful check.</li>
+                                <li><strong>Block:</strong> Reduce melee damage by half using a shield.</li>
+                                <li><strong>Demoralize:</strong> Force enemies to make a morale check with an Influence (Intimidate) roll.</li>
+                            </ul>
+
+                            <h3>Non-Actions</h3>
+                            <p>Non-Actions don't consume any part of your action economy but may be limited by the narrator.</p>
+                            <ul>
+                                <li><strong>Switch Weapons:</strong> Drop a weapon and draw another.</li>
+                                <li><strong>Stress Push:</strong> Take 4 stress damage to gain a +3 bonus on a low roll.</li>
+                                <li><strong>Roleplay:</strong> Briefly communicate or give orders without consequence.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="column">
-                    <h4>Types of Dimensional Storage</h4>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Storage Option</th>
-                                <th>Capacity</th>
-                                <th>Access Time</th>
-                                <th>Living Creatures</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Ring Safe</td>
-                                <td>1 item, up to 1 bulk</td>
-                                <td>Off-Action to store or retrieve</td>
-                                <td>Not allowed</td>
-                            </tr>
-                            <tr>
-                                <td>Nomad Pouch</td>
-                                <td>Up to 10 bulk (items ≤ 2 bulk each)</td>
-                                <td>Off-Action to store or retrieve</td>
-                                <td>Tiny creatures for up to 1 hour</td>
-                            </tr>
-                            <tr>
-                                <td>Small Bag of Efficient Storage</td>
-                                <td>Up to 50 bulk (items ≤ 5 bulk each)</td>
-                                <td>Half-Action to store, Action to retrieve large items</td>
-                                <td>Creatures up to 2 bulk for 8 hours</td>
-                            </tr>
-                            <tr>
-                                <td>Deep Pack</td>
-                                <td>200 bulk</td>
-                                <td>1 Action to store or retrieve items</td>
-                                <td>Up to 10 bulk for 24 hours</td>
-                            </tr>
-                            <tr>
-                                <td>Storage Vault</td>
-                                <td>Up to 1,000 bulk</td>
-                                <td>1 minute to access and retrieve items</td>
-                                <td>Any size with air and sustenance</td>
-                            </tr>
-                            <tr>
-                                <td>Portable Sanctuary</td>
-                                <td>Unlimited</td>
-                                <td>10 minutes to open or close</td>
-                                <td>Thrives with no time limits or constraints</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            </section>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- TAB 6 · Character Info                    -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="tab-panel" data-tab="charinfo">
+            <p class="tab-label">Character Info</p>
+
+            <!-- Size & Gender -->
+            <section class="character-section" id="size">
+                <h2>Additional Character Information</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h4>Physical Attributes</h4>
+                        <h3>Size</h3>
+                        <p>
+                            Size in the world of adventuring isn't merely a matter of height and weight; it's a key factor
+                            in determining how a creature interacts with its environment and other beings. From the tiniest
+                            insect skittering unseen beneath a leaf to the towering giants striding across mountain ranges,
+                            size affects reach, stealth, strength, and vulnerability. A creature's size can determine the
+                            spaces it can traverse, the opponents it can challenge, and the impact of its presence in any
+                            given situation. In a realm of magic and might, understanding size is crucial for survival and
+                            success.
+                        </p>
+
+                        <ul class="size-list">
+                            <li class="size-tiny"><strong>Tiny:</strong> Less than 1 ft – Insects, pixies, pocket watches, potion bottles, radio, rings, wind-up familiars, frogs, canary birds, magical acorns.</li>
+                            <li class="size-small"><strong>Small:</strong> 1–4 ft – Gnomes, Klienkin, wild cats, gas lanterns, typewriters, violin cases, bootleg barrels, goblins, garden statues.</li>
+                            <li class="size-medium"><strong>Medium:</strong> 5–7 ft – Humans, Beastfolk, trench-coated detectives, phonograph cabinets, armor stands, coffins, altar tables, claw-foot bathtubs, cabaret stage props.</li>
+                            <li class="size-large"><strong>Large:</strong> 8–15 ft – Ogres, dire bears, streetlamps, arcane engines, cars and trucks, reinforced vault doors, golem enforcers, dockside cranes, patrol boats, siege barricades.</li>
+                            <li class="size-giant"><strong>Giant:</strong> 15–25 ft – Clockwork titans, building-sized automatons, firewatch towers, billboard rigs, massive organ pipes, elevated rail segments, airship mooring frames.</li>
+                            <li class="size-monolithic"><strong>Monolithic:</strong> 25–100 ft – Skyscraper façades, cathedral domes, war zeppelins, tower golems, arcano-generators, coastal artillery, subterranean elevators, great bells, dirigible hangars.</li>
+                            <li class="size-environmental"><strong>Environmental:</strong> Over 100 ft – Floating citadels, crashed skyliners, mountain elementals, world-tree, sleeping colossi, arcane power grids, misty fogbanks, buried industrial deities.</li>
+                        </ul>
+                    </div>
+
+                    <div class="column">
+                        <h3>Gender</h3>
+                        <p>
+                            In the realm of Shek, gender is as varied as the landscapes that stretch from soaring peaks to
+                            deep mystical forests. Here, identity is not just male or female but also includes the enigmatic
+                            dragon. Dragons, with their ancient magic, can fluidly shift to align with the souls of those
+                            they cherish. The changelings too, with their transformative abilities, are not bound by any
+                            single form. In Shek, it's a gentle reminder for all: never assume, for identity is a personal
+                            journey, unique as the being who walks its path.
+                        </p>
+
+                        <img src="assets/images/Goblin 2.png" id="gender">
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            <!-- Bulk & Inventory -->
+            <section id="bulk">
+                <h1>Bulk Items</h1>
+                <p>
+                    Bulk represents the weight and space your gear occupies, from negligible trinkets to burdensome
+                    hauls. It's not just about weight but also the size and how cumbersome an item is. Managing your
+                    bulk is crucial for maintaining agility and avoiding encumbrance.
+                </p>
+                <p>
+                    For example, a watch has 0 Bulk because it can be worn and forgotten about. Meanwhile, an empty
+                    barrel may be light but is awkward to carry, giving it a Bulk of 5.
+                </p>
+
+                <h4>Bulk Classifications</h4>
+                <div class="two-column">
+                    <div class="column">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Bulk</th>
+                                    <th>Description</th>
+                                    <th>Examples</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>0</td>
+                                    <td>Small/wearable items</td>
+                                    <td>Watch, ring, eyeglasses</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Backpack-sized items</td>
+                                    <td>Clothes, flask, small tools</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>Large items</td>
+                                    <td>Armor, barrel, large pot</td>
+                                </tr>
+                                <tr>
+                                    <td>10</td>
+                                    <td>Heavy items</td>
+                                    <td>Furniture, small canoe</td>
+                                </tr>
+                                <tr>
+                                    <td>15</td>
+                                    <td>Very heavy items</td>
+                                    <td>Piano, cart</td>
+                                </tr>
+                                <tr>
+                                    <td>20</td>
+                                    <td>Extremely heavy items</td>
+                                    <td>Small car, heavy safe</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="column">
+                        <div class="features">
+                            <h4>Bulk Penalties</h4>
+                            <ul>
+                                <li><strong>Bulk exceeds Strength:</strong> Over-encumbered (Pinned condition).</li>
+                                <li><strong>Bulk > 2x Strength:</strong> Over-encumbered + Exhausted condition.</li>
+                                <li><strong>Worn items:</strong> Worn items have no bulk.</li>
+                                <li><strong>Bundles:</strong> Bundles reduce the average bulk of items.</li>
+                                <li><strong>Backpacks:</strong> Reduce total bulk carried.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="column">
+                        <h4>Types of Mundane Storage</h4>
+                        <p>
+                            Mundane storage allows characters to organize and carry items effectively. Accessing storage
+                            usually requires an off-action or is included in an action like switching weapons or grabbing a
+                            potion.
+                        </p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Storage Option</th>
+                                    <th>Description</th>
+                                    <th>Bulk Reduction</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Utility Pouch</td>
+                                    <td>A small, rugged pouch worn on a belt or strap. Designed for carrying small tools, trinkets, or coins.</td>
+                                    <td>-1 Bulk</td>
+                                </tr>
+                                <tr>
+                                    <td>Craftsman's Satchel</td>
+                                    <td>A compact, cross-body satchel with multiple compartments for tools and materials. Ideal for organization.</td>
+                                    <td>-3 Bulk</td>
+                                </tr>
+                                <tr>
+                                    <td>Traveler's Backpack</td>
+                                    <td>A durable backpack with adjustable straps and reinforced compartments for essential gear.</td>
+                                    <td>-5 Bulk</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="column">
+                        <h4>Types of Dimensional Storage</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Storage Option</th>
+                                    <th>Capacity</th>
+                                    <th>Access Time</th>
+                                    <th>Living Creatures</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Ring Safe</td>
+                                    <td>1 item, up to 1 bulk</td>
+                                    <td>Off-Action to store or retrieve</td>
+                                    <td>Not allowed</td>
+                                </tr>
+                                <tr>
+                                    <td>Nomad Pouch</td>
+                                    <td>Up to 10 bulk (items ≤ 2 bulk each)</td>
+                                    <td>Off-Action to store or retrieve</td>
+                                    <td>Tiny creatures for up to 1 hour</td>
+                                </tr>
+                                <tr>
+                                    <td>Small Bag of Efficient Storage</td>
+                                    <td>Up to 50 bulk (items ≤ 5 bulk each)</td>
+                                    <td>Half-Action to store, Action to retrieve large items</td>
+                                    <td>Creatures up to 2 bulk for 8 hours</td>
+                                </tr>
+                                <tr>
+                                    <td>Deep Pack</td>
+                                    <td>200 bulk</td>
+                                    <td>1 Action to store or retrieve items</td>
+                                    <td>Up to 10 bulk for 24 hours</td>
+                                </tr>
+                                <tr>
+                                    <td>Storage Vault</td>
+                                    <td>Up to 1,000 bulk</td>
+                                    <td>1 minute to access and retrieve items</td>
+                                    <td>Any size with air and sustenance</td>
+                                </tr>
+                                <tr>
+                                    <td>Portable Sanctuary</td>
+                                    <td>Unlimited</td>
+                                    <td>10 minutes to open or close</td>
+                                    <td>Thrives with no time limits or constraints</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
 
     </main>
+
     <div id="sidebar-placeholder"></div>
+
 </body>
 
 </html>

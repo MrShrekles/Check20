@@ -15,10 +15,6 @@
     --chip-ink: #e9f0d8;
 }
 
-* {
-    box-sizing: border-box
-}
-
 body {
     margin: 0;
     background: var(--dark);

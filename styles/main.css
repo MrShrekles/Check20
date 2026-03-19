@@ -58,13 +58,8 @@ body {
     padding-left: 30px;
 }
 
-header {
-    background-color: var(--theme);
-    padding: var(--padding);
-}
 
 .main-header {
-    background: linear-gradient(to bottom, #1c1c1c, #000000);
     color: var(--white);
     text-align: center;
     border-bottom: 3px solid var(--gold);
@@ -75,8 +70,7 @@ header {
 .main-header::before {
     content: "";
     position: absolute;
-    background: radial-gradient(circle, rgba(0, 0, 0, 0.7), transparent 70%);
-    z-index: 0;
+    inset: 0;
     pointer-events: none;
 }
 
@@ -84,38 +78,30 @@ header {
     font-size: 6vw;
     color: var(--gold);
     text-transform: uppercase;
-    margin: 0;
     letter-spacing: 10px;
+    margin: 0;
+    transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+    cursor: cell;
 }
 
-@media (max-width: 690px) {
-    .header-title {
-        text-align: right;
-    }
+.header-title:hover {
+    text-shadow: 4px 4px 15px var(--gold);
 }
 
 .header-subtitle {
     font-size: 3vw;
     color: #7c531c;
-    margin: 0;
     text-transform: uppercase;
     font-family: "Playfair Display", serif;
+    margin: 0;
 }
 
 .header-description {
     font-size: 1rem;
-    color: var(--white);
     font-style: italic;
     line-height: 1.6;
     margin: 10px 0 0;
     border-top: 1px solid #444;
-}
-
-.header-title:hover {
-    color: var(--white);
-    text-shadow: 4px 4px 15px var(--gold);
-    transition: 0.3s ease-in-out;
-    cursor: cell;
 }
 
 header nav ul {
@@ -132,6 +118,12 @@ header nav ul li a {
 
 header nav ul li a:hover {
     color: var(--darkgold);
+}
+
+@media (max-width: 690px) {
+    .header-title {
+        text-align: right;
+    }
 }
 
 footer {
@@ -496,9 +488,41 @@ b {
 
 .nav-button:hover {
     background-color: var(--theme-alt);
-    /* Darker green on hover */
 }
 
+/* ── CTA header buttons ── */
+.header-cta {
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    letter-spacing: .04em;
+    text-decoration: none;
+    transition: background .2s ease, border-color .2s ease, box-shadow .2s ease, color .2s ease;
+}
+
+.header-cta--sheet {
+    border-color: var(--gold-2);
+    color: var(--gold-3);
+}
+
+.header-cta--sheet:hover {
+    background-color: var(--gold-1);
+    border-color: var(--gold-3);
+    box-shadow: 0 0 8px var(--gold-2);
+    color: var(--gold-3);
+}
+
+.header-cta--downloads {
+    border-color: var(--green-2);
+    color: var(--green-3);
+}
+
+.header-cta--downloads:hover {
+    background-color: var(--green-1);
+    border-color: var(--green-3);
+    box-shadow: 0 0 8px var(--green-2);
+    color: var(--green-3);
+}
 
 /* ────────────── Flex Container ────────────── */
 .flex-container {

@@ -8,10 +8,7 @@
 
 /* Cards */
 .weapon-card {
-  background:
-    linear-gradient(180deg, rgba(95, 45, 25, 0.25), rgba(95, 45, 25, 0.05)),
-    /* --hate as a subtle warm overlay */
-    var(--dark-2);
+  background: var(--dark-2);
   border: 1px solid var(--warm-2);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
@@ -23,6 +20,31 @@
   flex-direction: column;
   justify-content: space-between;
 }
+
+/* Category tints */
+.weapon-card[data-category="melee"] {
+  background: linear-gradient(160deg, rgba(139, 74, 47, 0.2), transparent 60%), var(--dark-2);
+  border-color: var(--warm-2);
+}
+.weapon-card[data-category="melee"] h4 { color: var(--warm-3); }
+
+.weapon-card[data-category="ranged"] {
+  background: linear-gradient(160deg, rgba(175, 128, 0, 0.18), transparent 60%), var(--dark-2);
+  border-color: var(--gold-2);
+}
+.weapon-card[data-category="ranged"] h4 { color: var(--gold-3); }
+
+.weapon-card[data-category="firearm"] {
+  background: linear-gradient(160deg, rgba(255, 100, 100, 0.15), transparent 60%), var(--dark-2);
+  border-color: var(--red-2);
+}
+.weapon-card[data-category="firearm"] h4 { color: var(--red-2); }
+
+.weapon-card[data-category="magic"] {
+  background: linear-gradient(160deg, rgba(58, 95, 58, 0.25), transparent 60%), var(--dark-2);
+  border-color: var(--green-2);
+}
+.weapon-card[data-category="magic"] h4 { color: var(--green-3); }
 
 @media (max-width:690px) {
   .weapon-card {
@@ -172,10 +194,6 @@
   color: var(--white);
 }
 
-.toggle-btn.dim {
-  opacity: 0.5;
-}
-
 /* read label from aria-label (matches your HTML) */
 .filter-group::before {
   content: attr(aria-label) ":";
@@ -215,9 +233,52 @@
   outline-offset: 2px;
 }
 
-.toggle-btn.dim {
-  opacity: .45;
-  filter: saturate(.7);
+/* Category filter as tabs */
+.filter-group[data-key="category"] {
+  gap: 0;
+  padding: 0;
+  background: var(--dark-3);
+  border: 1px solid var(--gold-1);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.filter-group[data-key="category"] .toggle-btn {
+  flex: 1;
+  text-align: center;
+  border-radius: 0;
+  border: none;
+  border-right: 1px solid var(--dark-1);
+  background: transparent;
+  color: #aaa;
+  padding: .5rem .75rem;
+  font-size: .85rem;
+}
+
+.filter-group[data-key="category"] .toggle-btn:last-child {
+  border-right: none;
+}
+
+/* Tab active states match the category colours */
+.filter-group[data-key="category"] .toggle-btn[data-value="melee"].active {
+  background: var(--warm-2);
+  color: var(--white);
+  box-shadow: none;
+}
+.filter-group[data-key="category"] .toggle-btn[data-value="ranged"].active {
+  background: var(--gold-1);
+  color: var(--white);
+  box-shadow: none;
+}
+.filter-group[data-key="category"] .toggle-btn[data-value="firearm"].active {
+  background: var(--red-2);
+  color: var(--white);
+  box-shadow: none;
+}
+.filter-group[data-key="category"] .toggle-btn[data-value="magic"].active {
+  background: var(--green-2);
+  color: var(--white);
+  box-shadow: none;
 }
 
 /* Clear filters */

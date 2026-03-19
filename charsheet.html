@@ -232,7 +232,7 @@
         <!-- ==================== PAGE 2 — Setup & Inventory ==================== -->
         <div class="char-page" id="page2">
             <div class="two-column">
-        
+
                 <!-- LEFT: character details + notes -->
                 <div class="column">
                     <h2>Character Details</h2>
@@ -272,7 +272,7 @@
                         </label>
                         <textarea id="motivation" name="motivation" rows="3" placeholder="e.g. Overcoming past failures"></textarea>
                     </div>
-        
+
                     <div class="form-row" style="margin-top:.3in">
                         <label for="trinket">
                             Trinket
@@ -280,7 +280,7 @@
                         </label>
                         <textarea id="trinket" name="trinket" rows="3" placeholder="e.g. Shotgun shell that was once shot at you, kept as a lucky charm"></textarea>
                     </div>
-        
+
                     <div class="form-row">
                         <label for="addEquip">
                             Additional Equipment
@@ -288,7 +288,7 @@
                         </label>
                         <textarea id="addEquip" name="addEquip" rows="4"></textarea>
                     </div>
-        
+
                     <div class="form-row">
                         <label for="gp">
                             Wealth
@@ -297,24 +297,24 @@
                         <input type="number" id="gp" name="gp" placeholder="Amount" inputmode="numeric" min="0">
                     </div>
                 </div>
-        
+
                 <!-- RIGHT: gear -->
                 <div class="column">
                     <h2>Inventory</h2>
-        
+
                     <!-- Class starting equipment -->
                     <ul id="class-equipment" class="feature-list"></ul>
-        
+
                     <!-- Weapons -->
                     <h4>Weapons</h4>
                     <table class="gear-table">
                         <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>Check</th>
                                 <th>Damage</th>
-                                <th>Type</th>
                                 <th>Range</th>
-                                <th>---</th>
+                                <th>Hefty</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -348,7 +348,7 @@
                             </tr>
                         </tbody>
                     </table>
-        
+
                     <!-- Armor -->
                     <h4>Armor</h4>
                     <table class="gear-table">
@@ -372,7 +372,7 @@
                             </tr>
                         </tbody>
                     </table>
-        
+
                     <!-- Items -->
                     <h4>Items</h4>
                     <table class="gear-table">
@@ -406,7 +406,8 @@
                             <tr>
                                 <td><input type="text" name="i6-name"></td>
                                 <td><input type="text" name="i6-notes"></td>
-                            </tr><tr>
+                            </tr>
+                            <tr>
                                 <td><input type="text" name="i1-name"></td>
                                 <td><input type="text" name="i1-notes"></td>
                             </tr>
@@ -429,7 +430,8 @@
                             <tr>
                                 <td><input type="text" name="i6-name"></td>
                                 <td><input type="text" name="i6-notes"></td>
-                            </tr><tr>
+                            </tr>
+                            <tr>
                                 <td><input type="text" name="i1-name"></td>
                                 <td><input type="text" name="i1-notes"></td>
                             </tr>
@@ -456,7 +458,7 @@
                         </tbody>
                     </table>
                 </div>
-        
+
             </div>
         </div>
 
@@ -807,18 +809,18 @@
                     <h3>Action Types</h3>
                     <ul>
                         <li><strong>Move:</strong> Up to your Speed</li>
-                        <li><strong>Action:</strong> The primary activity you perform, like attacking or casting a spell. Generally, you get one action per turn, though certain abilities may offer more.</li>
-                        <li><strong>Half-Action:</strong> Instead of an action. Stance</li>
-                        <li><strong>Off-Action:</strong> Reaction, opportunity attack, or an action taken off your turn</li>
+                        <li><strong>Action:</strong> The primary activity you perform, like attacking or casting a spell. You get one action per turn, though certain abilities may offer more.</li>
+                        <li><strong>Half-Action:</strong> Instead of a single action, take 2 half-actions. These are things like picking things up or Stances</li>
+                        <li><strong>Off-Action:</strong> Can be used on your turn or after. Most used for Provoke attacks or light weapon strikes</li>
                         <li><strong>Non-Action:</strong> Talk, switch items, other</li>
-                        <li><strong>Finisher:</strong> Eliminate locked foes</li>
+                        <li><strong>Finisher:</strong> Eliminate locked or submitted foes</li>
                     </ul>
                 </div>
                 <div class="ref-card" id="movement-desc">
                     <h3>Movement</h3>
                     <ul>
                         <li><strong>Difficult Terrain:</strong> Halved speed</li>
-                        <li><strong>Jump:</strong> 5ft × Strength</li>
+                        <li><strong>Jump:</strong> 2ft × Agiltiy or Strength</li>
                         <li><strong>Climb/Swim:</strong> Counts as difficult terrain</li>
                         <li><strong>Prone:</strong> Disadv on range attacks; adv for melee attacks against you. Stand costs 15ft</li>
                         <li><strong>Moving Past Creatures:</strong> Can only move past smaller creature</li>
@@ -827,50 +829,6 @@
                         <li><strong>Extreme Hazard:</strong> 10 dmg/sec</li>
                         <li><strong>Burrowing:</strong> Are unseen. Can't target nor breathe</li>
                         <li><strong>Teleport:</strong> unoccupied space, no opportunity attacks.</li>
-                    </ul>
-                </div>
-                <div class="ref-card">
-                    <h3>Actions</h3>
-                    <ul>
-                        <li><strong>Attack:</strong> Make a melee or ranged attack. Unarmed deal 1 dmg</li>
-                        <li>Grab or Hold (STR vs Physical)</li>
-                        <li><strong>Cast Spell:</strong> Requires seeing and perceiving the target, and having free hands.</li>
-                        <li><strong>Administer Potion:</strong> Use an action to give a potion to a downed ally. Drinking it yourself is a Half-Action.</li>
-                        <li><strong>Stealth: </strong>Attempt to hide for advantage on the next attack.</li>
-                    </ul>
-                </div>
-                <div class="ref-card" id="half-action">
-                    <h3>Half-Actions</h3>
-                    <ul>
-                        <li><strong>Stances:</strong> Choose a stance to remain in until your next turn.
-                        </li>
-                        <li><strong>Disarm:</strong> Make an opposed Strength or Agility check to disarm a creature.
-                        </li>
-                        <li><strong>Help:</strong> Give a creature +1 to a check</li>
-                        <li><strong>Pick up an Item:</strong> Picking up an item is a Half-Action.</li>
-                        <li><strong>Use an Object:</strong> Interact with objects like levers or buttons.</li>
-                        <li><strong>Disengage:</strong> Move out of a creature's range without provoking opportunity
-                            attacks.</li>
-                    </ul>
-                </div>
-                <div class="ref-card">
-                    <h3>Stances</h3>
-                    <ul>
-                        <li><strong>Advantage Stance:</strong> Gain advantage on your next attack.</li>
-                        <li><strong>Disadvantage Stance:</strong> Give disadvantage to enemies attacking you
-                            or
-                            allies in range.
-                        </li>
-                        <li><strong>Offensive Stance:</strong> The next time you are attacked, make an attack once against the attacking creature.</li>
-                        <li><strong>Reaction Stance:</strong> React to failed attacks against you.</li>
-                    </ul>
-                </div>
-                <div class="ref-card">
-                    <h3>Off-Actions</h3>
-                    <ul>
-                        <li><strong>Provoke:</strong> Strike when enemies drop their guard or misses an attack.</li>
-                        <li><strong>Block:</strong> Reduce melee damage by half using a shield.</li>
-                        <li><strong>Demoralize:</strong> Force enemies to make a morale check with an Influence (Intimidate) roll.</li>
                     </ul>
                 </div>
                 <div class="ref-card">
@@ -888,6 +846,50 @@
                         <li><strong>Called Shot:</strong> −10 for condition</li>
                         <li><strong>Surprise:</strong> additional action</li>
                         <li><strong>Cover:</strong> Disadv. to be hit</li>
+                        <li><strong>Full Cover:</strong> Cannot be targetted without line of sight</li>
+                    </ul>
+                </div>
+                <div class="ref-card">
+                    <h3>Actions</h3>
+                    <ul>
+                        <li><strong>Attack:</strong> Make a melee or ranged attack. Unarmed deal 1 dmg</li>
+                        <li><strong>Grab or Hold</strong> Contested Physical Check (Strength Default)</li>
+                        <li><strong>Cast Spell:</strong> Requires seeing and perceiving the target, and having free hands.</li>
+                        <li><strong>Administer Potion:</strong> Use an action to give a potion to a downed ally.</li>
+                        <li><strong>Stealth: </strong>Attempt to hide for advantage on the next attack.</li>
+                    </ul>
+                </div>
+                <div class="ref-card" id="half-action">
+                    <h3>Half-Actions</h3>
+                    <ul>
+                        <li><strong>Stances:</strong> Choose a stance to remain in until your next turn.
+                        </li>
+                        <li><strong>Disarm:</strong> Make a contested Strength or Agility check to disarm a creature.
+                        </li>
+                        <li><strong>Help:</strong> Give a creature +1 to a check</li>
+                        <li><strong>Pick up an Item:</strong> Picking up an item is a Half-Action.</li>
+                        <li><strong>Use an Object:</strong> Interact with objects like levers or buttons.</li>
+                        <li><strong>Disengage:</strong> Move out of a creature's range without provoking opportunity
+                            attacks.</li>
+                    </ul>
+                </div>
+                <div class="ref-card">
+                    <h3>Stances</h3>
+                    <ul>
+                        <li><strong>Advantage Stance:</strong> Gain advantage on your next attack.</li>
+                        <li><strong>Disadvantage Stance:</strong> Give disadvantage to enemies attacking you
+                            or
+                            allies in range.
+                        </li>
+                        <li><strong>Guard Stance:</strong> When a creature attacks you, Provoke without using an Off-Action once. On all failed attacks, you may also Provoke at disadvantage.</li>
+                    </ul>
+                </div>
+                <div class="ref-card">
+                    <h3>Off-Actions</h3>
+                    <ul>
+                        <li><strong>Provoke:</strong> Make an attack against a creature that has missed an attack directly targeting you, or against a creature that willingly leaves your melee weapon range.</li>
+                        <li><strong>Block:</strong> As an Off-Action, reduce incoming damage by half if you have Armor from a shield</li>
+                        <li><strong>Demoralize:</strong> Make a contested Influence check against an intelligent creature. On a success, the target gains the Fear condition.</li>
                     </ul>
                 </div>
                 <div class="ref-card" id="size-desc">
@@ -895,40 +897,35 @@
                     <ul>
                         <li><strong>Tiny:</strong>
                             < 1 ft – pixies, potions</li>
-                        <li><strong>Small:</strong> 1–4 ft – goblins</li>
-                        <li><strong>Medium:</strong> 5–7 ft – humans</li>
-                        <li><strong>Large:</strong> 8–15 ft – ogres</li>
-                        <li><strong>Giant:</strong> 15–25 ft – siege gear</li>
-                        <li><strong>Monolithic:</strong> 25–100 ft</li>
+                        <li><strong>Small:</strong> 1–4 ft; goblins</li>
+                        <li><strong>Medium:</strong> 5–7 ft; humans</li>
+                        <li><strong>Large:</strong> 8–15 ft; ogres</li>
+                        <li><strong>Giant:</strong> 15–25 ft; siege equipment</li>
+                        <li><strong>Monolithic:</strong> 25–100 ft; building</li>
                     </ul>
                 </div>
 
                 <div class="ref-card">
                     <h3>Press On</h3>
-                    <p>
-                        After a combat encounter, characters can "Press On" to regain 1 class resource, 1
-                        spell point,
-                        repair armor for
-                        <code>[[1d6]]</code> + Crafting, heal for <code>[[1d6]]</code> + Survival, and
-                        remove all
-                        conditions and effects lasting
-                        for 1 minute or
-                        less. This option can be used twice per day, but not consecutively without engaging
-                        in another
-                        combat.
-                    </p>
+                    <p>After a combat encounter, characters may Press On to recover:</p>
+                    <ul>
+                        <li>1 class resource and 1 spell point</li>
+                        <li><strong>Armor repair:</strong> <code>[[1d6]]</code> + Crafting</li>
+                        <li><strong>Healing:</strong> <code>[[1d6]]</code> + Survival</li>
+                        <li>Remove all conditions and effects lasting 1 minute or less</li>
+                    </ul>
+                    <p>Press On may be used twice per day.</p>
                 </div>
                 <div class="ref-card">
                     <h3>Long Rest</h3>
-                    <p>
-                        A long rest requires 10 hours of uninterrupted downtime, fully restoring all wounds,
-                        recharging
-                        class resources,
-                        repairing all armor to at least half, and removing any conditions that last one day
-                        or less.
-                        Characters can only
-                        take a long rest once per long rest and must be in a safe environment.
-                    </p>
+                    <p>Requires 10 hours of uninterrupted downtime in a safe environment. Restores:</p>
+                    <ul>
+                        <li>All wounds</li>
+                        <li>All class resources and spell points</li>
+                        <li>Armor repaired to at least half</li>
+                        <li>Remove all conditions lasting one day or less</li>
+                    </ul>
+                    <p>Can only be taken once per day.</p>
                 </div>
                 <div class="ref-card">
                     <h3>Check Result Outcomes</h3>
