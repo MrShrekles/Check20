@@ -38,23 +38,33 @@
     top: 50px;
 }
 
-#toggle-spellbook {
+#toggle-reference {
     top: 100px;
 }
 
-#toggle-monsters {
+#toggle-lore {
     top: 150px;
 }
 
-#floating-search {
+#toggle-worldbuilding {
     top: 200px;
+}
+
+#toggle-monsters {
+    top: 250px;
+}
+
+#toggle-spellbook {
+    top: 300px;
 }
 
 #toggle-sidebar,
 #toggle-spellbook,
 #toggle-monsters,
 #toggle-top,
-#floating-search {
+#toggle-reference,
+#toggle-lore,
+#toggle-worldbuilding {
     position: fixed;
     left: 0;
     width: 40px;
@@ -72,6 +82,15 @@
     text-decoration: none;
 }
 
+/* Emoji-icon buttons (no PNG available) */
+#toggle-reference,
+#toggle-lore,
+#toggle-worldbuilding {
+    font-size: 1.2rem;
+    line-height: 40px;
+    text-align: center;
+}
+
 /* Use PNG icons instead of emoji for sidebar buttons */
 #toggle-sidebar,
 #toggle-spellbook,
@@ -82,10 +101,11 @@
     background-position: center;
 }
 
+
 /* Individual icons (adjust path if your CSS is in a /css folder) */
 #toggle-sidebar {
     /* open/close sidebar – dice icon */
-background-image: url('../assets/icons/dice.png');
+    background-image: url('../assets/icons/dice.png');
 }
 
 #toggle-spellbook {
@@ -106,7 +126,10 @@ background-image: url('../assets/icons/dice.png');
 #toggle-sidebar:hover,
 #toggle-spellbook:hover,
 #toggle-monsters:hover,
-#toggle-top:hover {
+#toggle-top:hover,
+#toggle-reference:hover,
+#toggle-lore:hover,
+#toggle-worldbuilding:hover {
     filter: invert(1);
 }
 
@@ -115,38 +138,110 @@ background-image: url('../assets/icons/dice.png');
 #sidebar.open #toggle-spellbook,
 #sidebar.open #toggle-monsters,
 #sidebar.open #toggle-top,
-#sidebar.open #floating-search {
+#sidebar.open #toggle-reference,
+#sidebar.open #toggle-lore,
+#sidebar.open #toggle-worldbuilding {
     transform: translateX(var(--sidebar-shift));
 }
 
 /* ───────── Floating Search ───────── */
-#floating-search.collapsed input {
+#floating-search {
+    position: fixed;
+    top: 350px;
+    left: 0;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    z-index: 1001;
+    transition: transform .3s ease;
+}
+
+#toggle-search {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    background: var(--dark-2) url('../assets/icons/search.png') center / 100% no-repeat;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    flex-shrink: 0;
+    font-size: 0;
+}
+
+#toggle-search:hover {
+    filter: invert(1);
+}
+
+#sidebar-search-input {
+    width: 220px;
+    max-width: 0;
+    overflow: hidden;
+    padding: 0;
+    border: 1px solid transparent;
+    background: var(--dark-3);
+    color: var(--white);
+    font-size: .9rem;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    box-shadow: var(--box-shadow);
+    box-sizing: border-box;
+    transition: max-width .3s ease, padding .3s ease, border-color .3s ease;
+}
+
+#sidebar-search-input::placeholder {
+    color: var(--text-cream);
+    opacity: .6;
+}
+
+#floating-search.expanded #sidebar-search-input {
+    max-width: 220px;
+    padding: .4rem .6rem;
+    border-color: var(--medium);
+}
+
+#sidebar-search-count {
+    font-size: .72rem;
+    color: var(--dark-1);
+    background: var(--gold);
+    white-space: nowrap;
+    max-width: 0;
+    overflow: hidden;
+    padding: 0;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    transition: max-width .3s ease, padding .3s ease;
+}
+
+#floating-search.expanded #sidebar-search-count:not(:empty) {
+    max-width: 80px;
+    padding: .4rem .4rem;
+}
+
+/* Shift with sidebar when open */
+#sidebar.open #floating-search {
+    transform: translateX(var(--sidebar-shift));
+}
+
+mark.sb-highlight {
+    background: var(--gold);
+    color: var(--dark-1);
+    border-radius: 2px;
+    padding: 0 1px;
+}
+
+/* ───────── Sidebar Mode — show only relevant tabs ───────── */
+#sidebar.mode-dice label[data-group="reference"],
+#sidebar.mode-dice label[data-group="lore"] {
     display: none;
 }
 
-#floating-search.expanded {
-    width: 250px;
+#sidebar.mode-reference label[data-group="dice"],
+#sidebar.mode-reference label[data-group="lore"] {
+    display: none;
 }
 
-#floating-search input,
-#floating-search button {
-    border-radius: var(--border-radius);
-    background: var(--dark-1);
-    color: var(--text-cream);
-    border-color: var(--green-1);
-}
-
-#floating-search input {
-    font-size: 1rem;
-    padding: .3rem .5rem;
-    width: 260px;
-}
-
-#floating-search button {
-    background: var(--dark-3);
-    font-size: 1.1rem;
-    cursor: pointer;
-    width: 100%;
+/* Lore has no sub-tabs — hide the switch entirely */
+#sidebar.mode-lore .roller-switch > label {
+    display: none;
 }
 
 /* ───────── Roller Switch Tabs ───────── */
@@ -588,10 +683,19 @@ table.condition .category-row {
     #toggle-sidebar,
     #toggle-spellbook,
     #toggle-monsters,
-    #toggle-top {
+    #toggle-top,
+    #toggle-reference,
+    #toggle-lore,
+    #toggle-worldbuilding,
+    #toggle-search {
         border-radius: 0 6px 6px 0;
         line-height: 48px;
         padding: 0;
+    }
+
+    #floating-search.expanded #sidebar-search-input {
+        max-width: calc(100vw - 90px);
+        width: calc(100vw - 90px);
     }
 
     .dragon-list li {

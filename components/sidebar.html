@@ -1,27 +1,35 @@
 <!-- Sidebar -->
 <div id="sidebar" class="closed">
-    <button id="toggle-sidebar"></button>
-    <button id="toggle-spellbook" title="Open Spellbook"></button>
-    <a id="toggle-monsters" href="worldbuilding.html#generate-npc"></a>
-    <a id="toggle-top" href="#header-placeholder"></a>
+    <a id="toggle-top" href="#header-placeholder" title="Back to Top"></a>
+    <button id="toggle-sidebar" title="Dice Roller"></button>
+    <button id="toggle-reference" title="Reference">⚔</button>
+    <button id="toggle-lore" title="Lore">🏛</button>
+    <a id="toggle-worldbuilding" href="worldbuilding.html" title="Worldbuilding">🗺</a>
+    <a id="toggle-monsters" href="monster.html" title="Monsters"></a>
+    <button id="toggle-spellbook" title="Spellbook"></button>
+    <div id="floating-search">
+        <button id="toggle-search" title="Search"></button>
+        <input type="search" id="sidebar-search-input" placeholder="Search page...">
+        <span id="sidebar-search-count"></span>
+    </div>
 
     <div id="sidebar-content">
         <div class="roller-switch">
             <!-- Radio Toggles -->
             <input type="radio" name="roller-mode" id="check-mode" checked>
-            <label for="check-mode">Check20 Roller</label>
+            <label for="check-mode" data-group="dice">Check20 Roller</label>
 
             <input type="radio" name="roller-mode" id="standard-mode">
-            <label for="standard-mode">Standard Roller</label>
+            <label for="standard-mode" data-group="dice">Standard Roller</label>
 
             <input type="radio" name="roller-mode" id="reference-mode">
-            <label for="reference-mode">Reference</label>
+            <label for="reference-mode" data-group="reference">Reference</label>
 
             <input type="radio" name="roller-mode" id="condition-mode">
-            <label for="condition-mode">Conditions</label>
+            <label for="condition-mode" data-group="reference">Conditions</label>
 
             <input type="radio" name="roller-mode" id="lore-mode">
-            <label for="lore-mode">Lore</label>
+            <label for="lore-mode" data-group="lore">Lore</label>
 
             <!-- Sidebar -->
             <div class="roller-content">

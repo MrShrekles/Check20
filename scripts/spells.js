@@ -133,12 +133,6 @@ function initTabs() {
       document.querySelectorAll('.tab-content').forEach(panel => panel.classList.remove('active'));
       document.getElementById(`tab-${target}`)?.classList.add('active');
 
-      // Show/hide floating search (only on spellbook)
-      const floatingSearch = document.getElementById('floating-search');
-      if (floatingSearch) {
-        floatingSearch.style.display = target === 'spellbook' ? 'flex' : 'none';
-      }
-
       // Persist tab preference
       sessionStorage.setItem('activeSpellTab', target);
     });
@@ -205,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.getElementById('spell-search')?.addEventListener('input', renderSpells);
+  // spell-search is now #sidebar-search-input, wired in sidebar.js after sidebar loads
 
   document.getElementById('toggle-details')?.addEventListener('click', () => {
     document.querySelectorAll('.spell-effect').forEach(el => {
@@ -234,7 +228,7 @@ function renderEffectInfo(effect) {
 
 function renderSpells() {
   const container = document.getElementById('spell-grid');
-  const searchTerm = document.getElementById('spell-search')?.value.toLowerCase() || '';
+  const searchTerm = document.getElementById('sidebar-search-input')?.value.toLowerCase() || '';
 
   const rangeOrder = {
     'self': 1, 'touch': 2, 'reach': 3, 'melee': 4,
@@ -370,17 +364,3 @@ function flashButton(button, message) {
   }, 1500);
 }
 
-// ─── Floating Search ─────────────────────────────────────────────────────────
-
-document.addEventListener('DOMContentLoaded', () => {
-  const searchBox = document.getElementById('floating-search');
-  const toggleBtn = document.getElementById('toggle-search');
-
-  // Default: hide until spellbook tab is active
-  if (searchBox) searchBox.style.display = 'none';
-
-  toggleBtn?.addEventListener('click', () => {
-    searchBox.classList.toggle('expanded');
-    searchBox.classList.toggle('collapsed');
-  });
-});

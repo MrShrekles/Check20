@@ -2553,7 +2553,7 @@
       "sub-fet-effect": "You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty."
     },
     {
-      "lineage": "Realmsplit",
+      "lineage": "realmsplit",
       "option": "Gargoyle",
       "name": "Celestial (Marble)",
       "description": "The Celestial Gargoyles are a symbol of divine power and protection. Their ancestors were chosen by the angels to guard the great temples of the world, a duty they carry out with unwavering dedication. Their skin is as smooth and polished as marble, and their golden eyes and hair shine with a heavenly light. They are capable of sustained flight, a gift bestowed upon them by the angels to aid in their sacred duty. They are also capable of releasing a burst of radiant energy, a manifestation of their divine power that can harm those who threaten the peace of their temples. They are a rare and revered species, seen as a beacon of hope and a symbol of divine protection.",
@@ -2573,7 +2573,7 @@
       "sub-fet-effect": "You have a fly speed equal to your movement speed while you carry 1 or fewer Hefty items and have no major conditions. You can carry 1 Small or smaller creature without penalty. You cannot carry a Medium or larger creature."
     },
     {
-      "lineage": "Realmsplit",
+      "lineage": "realmsplit",
       "option": "Gargoyle",
       "name": "Infernal (Lavastone)",
       "description": "Born from the fiery depths of the underworld, the Infernal Gargoyles are a testament to the power of dark rituals and ancient magic. Their ancestors were created by demonic forces, designed to be the ultimate weapon against their enemies. Their skin is as coarse and rugged as lava stone, and their eyes glow with an infernal light that strikes Fear into the hearts of their foes. They are known for their intimidating presence, often using their terrifying appearance to their advantage in battle. Despite their heavy build, they are capable of short flights, a skill they use to surprise their enemies and gain the upper hand in combat. Their bodies are naturally armored, providing them with a level of protection that few can match. They are a rare and formidable species, feared and respected in equal measure.",
@@ -2591,7 +2591,7 @@
       "sub-fet-effect": "You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty."
     },
     {
-      "lineage": "Realmsplit",
+      "lineage": "realmsplit",
       "option": "Gargoyle",
       "name": "Nemuri (Mind Stone)",
       "description": "The Nemuri Gargoyles are a unique and mysterious species, born from the stone of the Nemuri sea. Their bodies glow with a strange luminescence, a reflection of their connection to dreams and memories. They are capable of flight, a skill they use to traverse the Nemuri plane and explore the mysteries of the universe. They are also capable of releasing a burst of radiant energy, a manifestation of their Nemuri power that can harm those who threaten their peace. They are a rare and enigmatic species, seen as the keepers of dreams and the guardians of the Nemuri plane.",
@@ -2610,7 +2610,7 @@
       "sub-fet-effect": "You have a fly speed equal to your movement speed while you carry 1 or fewer Hefty items and have no major conditions. You can carry 1 Small or smaller creature without penalty. You cannot carry a Medium or larger creature."
     },
     {
-      "lineage": "Realmsplit",
+      "lineage": "realmsplit",
       "option": "Gargoyle",
       "name": "Stone (Greystone)",
       "description": "The Greystone Gargoyles are the embodiment of ancient tradition and natural power. They are the descendants of the original gargoyle bloodline, born from the very stone of the earth. Their skin is as hard and unyielding as granite, and their bodies are built for endurance and strength. Despite their heavy build, they are capable of flight, a skill they use to patrol their territories and protect their kin. They have the unique ability to regenerate their bodies, healing wounds and injuries at a remarkable rate when they remain still. They are a rare and respected species, seen as the guardians of ancient traditions and the protectors of their kind.",

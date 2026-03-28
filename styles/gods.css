@@ -212,3 +212,171 @@ button:hover {
     color: #eee;
     cursor: pointer;
 }
+
+/* ── View toggle ── */
+#view-toggle {
+    display: flex;
+    gap: 2px;
+    border: 1px solid #2f4446;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.view-btn {
+    background: #1e2e30;
+    border: none;
+    border-radius: 0;
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.view-btn.active {
+    background: var(--theme);
+    color: #eee;
+}
+
+/* ── Realm tabs ── */
+#realm-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 12px;
+    background: #161c1c;
+    border-bottom: 1px solid #1e2c2e;
+}
+
+.realm-tab {
+    padding: 4px 14px;
+    font-size: 12px;
+    border-radius: 999px;
+    border: 1px solid #2a3f42;
+    background: #1a2829;
+    color: #aac;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+}
+
+.realm-tab:hover {
+    background: #243535;
+    color: #eee;
+}
+
+.realm-tab.active {
+    background: var(--theme);
+    border-color: #2d5555;
+    color: #eee;
+    font-weight: 600;
+}
+
+/* ── Children heading ── */
+.children-head {
+    margin: 4px 10px 0;
+    font-size: 12px;
+    opacity: .6;
+    font-weight: 600;
+}
+
+/* ── Tree view ── */
+#tree-wrap {
+    padding: 16px;
+}
+
+.tree-container {
+    max-width: 960px;
+}
+
+.tree-empty {
+    opacity: .6;
+    padding: 20px;
+}
+
+.tree-orphan-head {
+    margin: 24px 0 8px;
+    font-size: 12px;
+    opacity: .5;
+    letter-spacing: .5px;
+    text-align: center;
+}
+
+/* Reset list styles for tree */
+.tree, .tree ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
+
+.tree-root {
+    padding-left: 0;
+}
+
+/* Indent child trees */
+.tree .tree {
+    padding-left: 28px;
+    position: relative;
+}
+
+/* Vertical line down the left of each child group */
+.tree .tree::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 8px;
+    width: 1px;
+    background: var(--theme);
+    opacity: .5;
+}
+
+.tree-item {
+    position: relative;
+    padding: 4px 0;
+}
+
+/* Horizontal branch line from vertical trunk to node */
+.tree .tree-item::before {
+    content: '';
+    position: absolute;
+    left: -18px;
+    top: 16px;
+    width: 18px;
+    height: 1px;
+    background: var(--theme);
+    opacity: .5;
+}
+
+.tree-node {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 5px 10px;
+    border: 1px solid #2a3b3d;
+    border-radius: 10px;
+    cursor: default;
+    max-width: 600px;
+    transition: border-color .15s;
+}
+
+.tree-node:hover {
+    border-color: var(--theme);
+}
+
+.tree-name {
+    font-weight: 700;
+    font-size: 13px;
+    color: #eef;
+    text-decoration: none;
+}
+
+.tree-name:hover {
+    text-decoration: underline;
+    color: #adf;
+}
+
+.tree-rank {
+    font-size: 11px;
+    opacity: .55;
+    white-space: nowrap;
+}

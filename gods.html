@@ -24,13 +24,6 @@
             <!-- search -->
             <input id="q" placeholder="Search name / words / desc…">
 
-            <!-- location -->
-            <div class="flex-item">
-                <select id="loc">
-                    <option value="">All Locations</option>
-                </select>
-            </div>
-
             <!-- lineage -->
             <div class="flex-item">
                 <select id="lin">
@@ -43,15 +36,27 @@
                 <select id="sort">
                     <option value="rank">Sort: Rank (asc)</option>
                     <option value="name">Sort: Name (A–Z)</option>
+                    <option value="origin">Sort: Origin</option>
                 </select>
             </div>
-            
-            <!-- clear & count -->
+
+            <!-- view toggle -->
+            <div id="view-toggle">
+                <button id="btn-card-view" class="view-btn active" title="Card View">Cards</button>
+                <button id="btn-tree-view" class="view-btn" title="Family Tree">Tree</button>
+            </div>
+
+            <!-- collapse all / clear & count -->
+            <button id="collapse-all">Collapse All</button>
             <button id="clear">Clear</button>
             <span class="muted" id="count"></span>
         </div>
-
     </section>
+
+    <!-- Realm tabs -->
+    <div id="realm-tabs">
+        <button class="realm-tab active" data-realm="">All</button>
+    </div>
 
     <section>
         <details>
@@ -105,6 +110,7 @@
 
     <main id="wrap">
         <div id="list"></div>
+        <div id="tree-wrap" style="display:none"></div>
     </main>
 
 </body>
