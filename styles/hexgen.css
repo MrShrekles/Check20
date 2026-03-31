@@ -1,4 +1,4 @@
-/* ── Hex Generator ── */
+/* ── Hex Generator v2 ── */
 
 .hexgen-controls {
     display: flex;
@@ -8,18 +8,49 @@
     padding: .5vw 0;
 }
 
-.hexgen-controls select {
+.hexgen-controls select,
+.hexgen-controls input[type="number"] {
     width: auto;
-    min-width: 160px;
     font-size: 1rem;
 }
 
-/* ── History grid ── */
+.hexgen-controls input[type="number"] {
+    min-width: 60px;
+    max-width: 70px;
+    background: var(--dark);
+    color: var(--gold);
+    border: 2px solid var(--theme);
+    border-radius: var(--border-radius);
+    padding: .5vw;
+    text-align: center;
+}
+
+.ctrl-label {
+    font-size: .8rem;
+    color: var(--cream);
+    opacity: .7;
+}
+
+/* ── Hex history wrapper ── */
 #hex-history {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+/* Single roll card — constrained width */
+#hex-history>.hex-result-card {
+    width: 100%;
+    max-width: 300px;
+}
+
+/* ── Single hex card grid ── */
+.hex-single-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
     gap: 10px;
-    align-items: start;
 }
 
 /* ── Card shell ── */
@@ -28,126 +59,151 @@
     box-shadow: var(--box-shadow);
     border-top: 3px solid var(--gold);
     background-color: var(--medium);
-    min-height: 80px;
 }
 
 .hex-card-inner {
     padding: 10px 12px;
     display: flex;
     flex-direction: column;
+    gap: 5px;
     height: 100%;
 }
 
 .void-card {
-    opacity: .55;
+    opacity: .5;
+    border-top-color: #555;
 }
 
-/* ── Card text ── */
+/* ── Card header ── */
 .hex-terrain-label {
     font-size: .65rem;
     color: var(--cream);
     text-transform: uppercase;
     letter-spacing: .1em;
     opacity: .7;
-    margin-bottom: 3px;
     display: flex;
     align-items: center;
     gap: 6px;
+    flex-wrap: wrap;
+}
+
+.hex-num {
+    background: var(--theme-dark);
+    color: var(--cream);
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-size: .6rem;
+}
+
+.hex-env {
+    font-weight: bold;
 }
 
 .hex-title {
     font-size: 1rem;
     font-weight: bold;
     color: var(--gold);
-    margin-bottom: 6px;
-    line-height: 1.3;
+    line-height: 1.2;
 }
 
-.hex-title.void-title {
-    color: #666;
-    font-weight: normal;
-    font-style: italic;
-    font-size: .9rem;
-}
-
-.hex-desc {
-    font-size: .82rem;
-    color: var(--white);
-    line-height: 1.45;
-    margin-bottom: 8px;
-    border-left: 2px solid var(--theme-3);
-    padding-left: 8px;
-    flex: 1;
-}
-
-/* ── Modifier rows ── */
+/* ── Stat rows ── */
 .hex-mods {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    margin-bottom: 6px;
-    padding-top: 6px;
+    gap: 3px;
+    padding: 5px 0;
     border-top: 1px solid var(--theme-dark);
+    border-bottom: 1px solid var(--theme-dark);
 }
 
 .hex-mod-row {
     font-size: .78rem;
     display: flex;
-    gap: 5px;
     align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px;
 }
 
 .mod-key {
     color: var(--cream);
-    font-size: .65rem;
+    font-size: .62rem;
     text-transform: uppercase;
     letter-spacing: .05em;
     opacity: .65;
-    min-width: 44px;
+    min-width: 42px;
     flex-shrink: 0;
 }
 
 .mod-val {
     color: var(--white);
     font-weight: bold;
-    line-height: 1.3;
+    line-height: 1.2;
 }
 
-/* ── Type badges ── */
-.hex-type-badge {
+.enemy-val {
+    color: var(--red-2);
+}
+
+.hex-divider {
     display: inline-block;
-    padding: 1px 7px;
-    border-radius: 20px;
+    width: 1px;
+    height: 10px;
+    background: var(--theme-3);
+    opacity: .4;
+    margin: 0 2px;
+    align-self: center;
+}
+
+/* ── Tag sections ── */
+.hex-tag-section {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.tag-group-label {
     font-size: .6rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    vertical-align: middle;
-}
-
-.badge-void {
-    background: var(--dark-3);
-    color: #555;
-}
-
-.badge-location {
-    background: var(--theme-2);
-    color: var(--white);
-}
-
-.badge-event {
-    background: var(--warm-1);
     color: var(--cream);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    opacity: .5;
 }
 
-.badge-resource {
+.hex-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.hex-tag {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-size: .7rem;
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+.tag-feature {
+    background: var(--theme-1);
+    color: var(--green-3);
+}
+
+.tag-resource {
     background: var(--gold-1);
     color: var(--gold-3);
 }
 
-.badge-hazard {
-    background: var(--red-1);
-    color: var(--white);
+.tag-species {
+    background: var(--warm-1);
+    color: var(--cream);
+}
+
+.tag-empty {
+    background: var(--dark-3);
+    color: #555;
+    font-style: italic;
+    font-weight: normal;
 }
 
 /* ── Remove button ── */
@@ -160,23 +216,121 @@
     cursor: pointer;
     font-size: .75rem;
     padding: 2px 4px;
-    line-height: 1;
     border-radius: 3px;
 }
 
 .delete-hex:hover {
     color: var(--red-2);
+}
+
+/* ── Journey wrapper ── */
+.journey-wrap {
+    border: 1px solid var(--theme-2);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    width: 340px;
+    flex-shrink: 0;
+}
+
+.journey-header {
+    background: var(--theme-dark);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.journey-title {
+    color: var(--gold);
+    font-weight: bold;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.journey-meta {
+    color: var(--cream);
+    font-size: .8rem;
+    opacity: .7;
+    flex: 1;
+}
+
+.journey-del {
+    margin-left: auto;
     background: var(--hate);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 3px 10px;
+    cursor: pointer;
+    font-size: .78rem;
 }
 
-/* ── Void rows in raw tables ── */
-.void-row td {
-    color: #555 !important;
-    background-color: var(--dark-2) !important;
-    font-style: italic;
+/* ── Journey paginated layout ── */
+.journey-page-area {
+    padding: 12px;
+    background: var(--dark-2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
-/* ── Raw table tabs ── */
+.journey-page-area .hex-result-card {
+    width: 100%;
+    max-width: 300px;
+}
+
+.journey-connector-block {
+    display: flex;
+    justify-content: center;
+}
+
+.travel-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--cream);
+    font-size: .75rem;
+    opacity: .6;
+    line-height: 1.4;
+    text-align: center;
+    padding: 4px 0;
+}
+
+.connector-arrow {
+    font-size: 1.2rem;
+    color: var(--theme-3);
+    opacity: .8;
+}
+
+/* ── Journey nav ── */
+.journey-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 4px 0 8px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.journey-page-counter {
+    color: var(--cream);
+    font-size: .8rem;
+    opacity: .6;
+    min-width: 44px;
+    text-align: center;
+}
+
+.journey-nav-btn {
+    padding: 4px 14px;
+    font-size: .85rem;
+}
+
+/* ── Modifier tables ── */
 .raw-tabs {
     display: flex;
     gap: 6px;
@@ -189,9 +343,9 @@
     color: var(--cream);
     border: 2px solid var(--theme-2);
     border-radius: var(--border-radius);
-    padding: 4px 14px;
+    padding: 4px 12px;
     cursor: pointer;
-    font-size: .9rem;
+    font-size: .85rem;
     transition: background .2s;
 }
 
@@ -209,18 +363,12 @@
     display: block;
 }
 
-/* ── Override first-col style for hex tables ── */
+/* ── Override first-col for hex tables ── */
 .hex-table tbody td:first-child {
     background-color: var(--dark-3) !important;
     color: var(--cream) !important;
     text-transform: none !important;
     font-weight: normal !important;
-    min-width: 36px;
-    text-align: center;
-}
-
-.hex-table thead th:first-child {
-    width: 40px;
 }
 
 section {

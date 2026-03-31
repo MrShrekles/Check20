@@ -30,71 +30,135 @@
                         <option value="mountain">Mountain</option>
                         <option value="city">City</option>
                     </select>
-                    <button class="button" id="roll-all-btn">Roll Location + Modifiers</button>
-                    <button class="button" id="roll-loc-btn">Location Only</button>
-                    <button class="button" id="roll-mod-btn">Modifiers Only</button>
+                    <button class="button" id="roll-hex-btn">Roll Hex</button>
+                    <span class="ctrl-label" style="margin-left:.5vw;">Travel:</span>
+                    <input type="number" id="travel-hexes" value="4" min="1" max="12" title="Number of hexes">
+                    <button class="button" id="roll-travel-btn">Generate Journey</button>
                     <button id="clear-hexes">Clear</button>
                 </div>
                 <div id="hex-history"></div>
             </section>
         </details>
 
-        <!-- LOCATION TABLES -->
+        <!-- REFERENCE TABLES -->
         <details>
-            <summary>Location Tables</summary>
+            <summary>Reference Tables</summary>
             <section>
                 <div class="raw-tabs">
-                    <button class="raw-tab active" onclick="showRaw('desert',this)">Desert</button>
-                    <button class="raw-tab" onclick="showRaw('mountain',this)">Mountain</button>
-                    <button class="raw-tab" onclick="showRaw('city',this)">City</button>
+                    <button class="raw-tab active" onclick="showTab('lords',this)">Lords</button>
+                    <button class="raw-tab" onclick="showTab('enemies',this)">Enemies</button>
+                    <button class="raw-tab" onclick="showTab('pops',this)">Population</button>
+                    <button class="raw-tab" onclick="showTab('temps',this)">Temperament</button>
+                    <button class="raw-tab" onclick="showTab('features',this)">Features</button>
+                    <button class="raw-tab" onclick="showTab('foods',this)">Food</button>
+                    <button class="raw-tab" onclick="showTab('resources',this)">Resources</button>
+                    <button class="raw-tab" onclick="showTab('species',this)">Species</button>
                 </div>
-                <div id="raw-desert" class="raw-panel active"></div>
-                <div id="raw-mountain" class="raw-panel"></div>
-                <div id="raw-city" class="raw-panel"></div>
-            </section>
-        </details>
 
-        <!-- MODIFIER TABLES -->
-        <details>
-            <summary>Modifier Tables</summary>
-            <section>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:.5vw; margin-bottom:.5vw;">
-                    <div>
-                        <h3 style="color:var(--gold)">Origins</h3>
-                        <table class="hex-table">
-                            <thead>
-                                <tr>
-                                    <th>Origin</th>
-                                    <th>Weight</th>
-                                </tr>
-                            </thead>
-                            <tbody id="t-origin"></tbody>
-                        </table>
-                    </div>
-                    <div>
-                        <h3 style="color:var(--gold)">Threats</h3>
-                        <table class="hex-table">
-                            <thead>
-                                <tr>
-                                    <th>Threat</th>
-                                    <th>Weight</th>
-                                </tr>
-                            </thead>
-                            <tbody id="t-threat"></tbody>
-                        </table>
-                    </div>
+                <div id="tab-lords" class="raw-panel active">
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Lord</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-lords"></tbody>
+                    </table>
                 </div>
-                <h3 style="color:var(--gold)">Species (from species.json — weighted by rarity)</h3>
-                <table class="hex-table">
-                    <thead>
-                        <tr>
-                            <th>Species</th>
-                            <th>Rarity</th>
-                            <th>Origin</th>
-                        </tr>
-                    </thead>
-                    <tbody id="t-species"></tbody>
-                </table>
+
+                <div id="tab-enemies" class="raw-panel">
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Enemy</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-enemies"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-pops" class="raw-panel">
+                    <p style="color:var(--cream);font-size:.85rem;margin-bottom:.5vw;">
+                        Tier drives how many features, resources, and species are rolled. Tier 0 = barren. Tier 10 = metropolis. Collapsed state locks temperament.
+                    </p>
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Population</th>
+                                <th>Tier</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-pops"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-temps" class="raw-panel">
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Temperament</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-temps"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-features" class="raw-panel">
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-features"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-foods" class="raw-panel">
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Food Source</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-foods"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-resources" class="raw-panel">
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Resource</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-resources"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-species" class="raw-panel">
+                    <p style="color:var(--cream);font-size:.85rem;margin-bottom:.5vw;">
+                        Pulled from species.json. Weighted by rarity — Common rolls ~4x more often than Very Rare.
+                    </p>
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Species</th>
+                                <th>Rarity</th>
+                                <th>Origin</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-species"></tbody>
+                    </table>
+                </div>
+
             </section>
         </details>
 

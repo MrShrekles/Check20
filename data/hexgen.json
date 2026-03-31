@@ -1,1325 +1,773 @@
 {
-  "desert": [
+  "lords": [
     {
-      "title": "Open dunes",
-      "type": "void",
-      "weight": 3
+      "name": "Salt Lord",
+      "weight": 6
     },
     {
-      "title": "Empty salt flat",
-      "type": "void",
-      "weight": 3
-    },
-    {
-      "title": "Scorched hardpan",
-      "type": "void",
-      "weight": 3
-    },
-    {
-      "title": "Bone-dry riverbed",
-      "type": "void",
-      "weight": 3
-    },
-    {
-      "title": "Dead caravan scatter",
-      "type": "void",
-      "weight": 3
-    },
-    {
-      "title": "Rippled sand field",
-      "type": "void",
-      "weight": 3
-    },
-    {
-      "title": "Heat shimmer, possible mirage",
-      "type": "void",
-      "weight": 2
-    },
-    {
-      "title": "Dust devil field",
-      "type": "void",
-      "weight": 2
-    },
-    {
-      "title": "Dead zone, no insects, no birds",
-      "type": "void",
-      "weight": 2
-    },
-    {
-      "title": "Cracked earth, deep fissures",
-      "type": "void",
-      "weight": 2
-    },
-    {
-      "title": "Glasseye flats",
-      "desc": "The sand here has fused into near-perfect mirrors. Navigation is disorienting and the heat doubles back on itself.",
-      "type": "hazard",
+      "name": "Blood Lord",
       "weight": 1
     },
     {
-      "title": "Dried oasis",
-      "desc": "A cracked basin ringed by dead palms. The water table collapsed years ago. Something still lives in the roots.",
-      "type": "location",
+      "name": "Glass Lord",
+      "weight": 4
+    },
+    {
+      "name": "Star Lord",
       "weight": 2
     },
     {
-      "title": "Functioning oasis",
-      "desc": "Small, unmarked on any map the party owns. The water is clean. Someone has been here recently.",
-      "type": "location",
+      "name": "Bone Lord",
       "weight": 2
     },
     {
-      "title": "Camelon sacred oasis",
-      "desc": "A living spring the Camelon call Dhat al-Wadi. A carved stone basin sits at the center. Taking water without leaving water is an offense.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "species": "camelon"
-      }
+      "name": "Gold Lord",
+      "weight": 5
     },
     {
-      "title": "Contested oasis",
-      "desc": "Two factions are camped on opposite sides of the water. Neither will leave. Neither will attack first.",
-      "type": "event",
-      "weight": 1
+      "name": "Ink Lord",
+      "weight": 4
     },
     {
-      "title": "Salt flat mine",
-      "desc": "Abandoned shafts still gaping open. Slabs of grey salt litter the ground. The equipment left behind is worth something to someone.",
-      "type": "location",
+      "name": "Spice Lord",
+      "weight": 4
+    },
+    {
+      "name": "Ivory Lord",
       "weight": 2
     },
     {
-      "title": "Salt spring",
-      "desc": "A small seep of slightly toxic brine. Usable in small quantities. Animals avoid it.",
-      "type": "resource",
-      "weight": 1
-    },
-    {
-      "title": "Salt trade marker",
-      "desc": "A carved post indicating a price station ahead. The price listed has been crossed out and rewritten three times.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Desert glass field",
-      "desc": "Meteorite-formed glass stretches for a quarter mile. Each piece is unique. The Glass Lord has surveyors who map these fields.",
-      "type": "resource",
-      "weight": 1,
-      "hints": {
-        "lord": "glass"
-      }
-    },
-    {
-      "title": "Natural glass cave",
-      "desc": "A small entrance leads into a bubble of fused sand. The walls refract light in uncomfortable directions.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Ruined waystation",
-      "desc": "Walls still standing, no roof. Old fire rings, broken furniture, a door that opens onto nothing.",
-      "type": "location",
-      "weight": 2
-    },
-    {
-      "title": "Ivory Lord circuit post",
-      "desc": "A marker on the Ivory Lord's rotation. The post lists the next waystation, the current toll rate, and a warning not to interfere with the circuit.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "ivory"
-      }
-    },
-    {
-      "title": "Road Lord checkpoint ruins",
-      "desc": "Burned down recently. The toll ledger is ash. Someone was making a point.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "lord": "road"
-      }
-    },
-    {
-      "title": "Partial crypt entrance",
-      "desc": "Half buried by a recent dune shift. The exposed stone is older than the Scarab Lord titles. No seal on the door.",
-      "type": "location",
-      "weight": 2
-    },
-    {
-      "title": "Sealed crypt",
-      "desc": "A Scarab Lord seal on the door. The wax is intact. The seal belongs to a lord who has not claimed this region.",
-      "type": "location",
-      "weight": 2
-    },
-    {
-      "title": "Shallow looted crypt",
-      "desc": "Already emptied. The traps were not. At least two triggered recently judging by the scorch marks.",
-      "type": "location",
-      "weight": 2
-    },
-    {
-      "title": "Deep crypt, unknown sigils",
-      "desc": "The entrance is sealed with markings no one in the party recognizes. They are not in any script the Ink Lord catalogues.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Intact crypt antechamber",
-      "desc": "The outer room is undisturbed. The inner door is sealed. Something on the other side moves occasionally.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Royal tomb, untouched",
-      "desc": "No evidence of entry. The seals are perfect. The surrounding sand has no footprints, not even animals.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Collapsed crypt",
-      "desc": "The roof came down. Something underneath is still moving.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "threat": "undead"
-      }
-    },
-    {
-      "title": "Savra tomb carvings",
-      "desc": "Surface rock carved with Savra ancestor script. No entrance visible. The carvings describe a king who was buried standing up.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "species": "savra"
-      }
-    },
-    {
-      "title": "Bone Lord marker stone",
-      "desc": "A single black stone with the Bone Lord's mark. No text. No explanation. Locals know what it means.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "bone"
-      }
-    },
-    {
-      "title": "Hollow Queen dream site",
-      "desc": "Anyone who sleeps here reports the same dream. A vast dark hall, rows of preserved dead, and a woman who asks them their name.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "origin": "nature"
-      }
-    },
-    {
-      "title": "Exposed burial goods",
-      "desc": "A recent break-in. Gold leaf and oil jars scattered across the sand. Whoever opened the tomb left in a hurry.",
-      "type": "event",
-      "weight": 1
-    },
-    {
-      "title": "Coyote story-fire",
-      "desc": "A ring of old ash and scattered bones from many meals. Coyotes camp here seasonally. The stories they left behind are scratched into the nearby rock.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "species": "coyote"
-      }
-    },
-    {
-      "title": "Desert Orc dome",
-      "desc": "A stone dome structure built from moved rock. Occupied. The leader is whoever won the last fight.",
-      "type": "location",
-      "weight": 2,
-      "hints": {
-        "species": "desert_orc"
-      }
-    },
-    {
-      "title": "Scorpikin territorial marker",
-      "desc": "Fresh kills arranged in a pattern only Scorpikin read. This land has an owner. They are nearby.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "species": "scorpikin"
-      }
-    },
-    {
-      "title": "First Sting holy site",
-      "desc": "A flat stone marked with the oldest Scorpikin script. Warriors press a cut palm to it before battle. The stone is always warm.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "species": "scorpikin",
-        "origin": "nature"
-      }
-    },
-    {
-      "title": "Varuuk shrine",
-      "desc": "Storm-worn stones arranged in a spiral. Small offerings left recently. No one builds near this spot.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "origin": "nature"
-      }
-    },
-    {
-      "title": "Akhemu shrine",
-      "desc": "A ring of black stones, no roof, no walls. Open to the noon sun. No one speaks near it.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "origin": "nature"
-      }
-    },
-    {
-      "title": "Tanawak crossroads",
-      "desc": "Three paths diverge here. The signs point in different directions and contradict each other. One of them is correct.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "origin": "chaos"
-      }
-    },
-    {
-      "title": "Spice grove",
-      "desc": "A clutch of rare spice plants unmarked on any map. The Spice Lord has people who look for exactly this.",
-      "type": "resource",
-      "weight": 1,
-      "hints": {
-        "lord": "spice"
-      }
-    },
-    {
-      "title": "Shallow gold vein",
-      "desc": "A storm exposed it. The vein is shallow but real. Three different parties will want to know about this.",
-      "type": "resource",
-      "weight": 1,
-      "hints": {
-        "lord": "gold"
-      }
-    },
-    {
-      "title": "Camelon water cache",
-      "desc": "A flat stone concealing a sealed clay pot of water. A Camelon guide mark is scratched nearby. This is someone's emergency.",
-      "type": "resource",
-      "weight": 1,
-      "hints": {
-        "species": "camelon"
-      }
-    },
-    {
-      "title": "Treasure cache",
-      "desc": "Old. Partially looted. Something remains at the bottom of the hole, wrapped in leather that has mostly rotted.",
-      "type": "resource",
-      "weight": 1
-    },
-    {
-      "title": "Wrecked sand skiff",
-      "desc": "Hull cracked, one runner bent. Cargo compartment possibly intact. No sign of the crew.",
-      "type": "event",
-      "weight": 2
-    },
-    {
-      "title": "Downed airship",
-      "desc": "Recent. The gondola is mostly intact. The crew's fate is unclear. Something picked through the cargo already.",
-      "type": "event",
-      "weight": 1
-    },
-    {
-      "title": "Active caravan camp",
-      "desc": "Mid-journey rest. Tents up, fires going, guards posted. They will trade but not talk about where they're headed.",
-      "type": "event",
-      "weight": 2
-    },
-    {
-      "title": "Caravan ambush site",
-      "desc": "Recent. Blood on the sand, scattered goods, broken wheels. Unclear who won.",
-      "type": "event",
-      "weight": 1
-    },
-    {
-      "title": "Sandstorm scar",
-      "desc": "The landscape was rearranged. A known route no longer exists here. The old map is wrong.",
-      "type": "event",
-      "weight": 2
-    },
-    {
-      "title": "Ink Lord survey flag",
-      "desc": "Fresh. The surveyor is either nearby or dead. The flag marks something the Ink Lord wants mapped.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "lord": "ink"
-      }
-    },
-    {
-      "title": "Blood Lord contract post",
-      "desc": "A small outpost of rough canvas and poles drilled into the sand. Mercenaries can sign up for jobs, bounties, and contracts.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "blood"
-      }
-    },
-    {
-      "title": "Storm Lord observation post",
-      "desc": "Unmanned. Instruments still running, readings still recording. The Storm Lord reviews these remotely.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "storm"
-      }
-    },
-    {
-      "title": "Star Lord navigation pillar",
-      "desc": "Ancient stone pillar carved with star positions. Still accurate. The Star Lord did not build this. No one knows who did.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "star"
-      }
-    },
-    {
-      "title": "Ancient road segment",
-      "desc": "Paved stone, partially buried. Pre-Scarab Lord. The road goes somewhere that no current map names.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Natural spire",
-      "desc": "A stone column visible for miles. Used as a navigation landmark by everyone. No one controls it but everyone references it.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Sand predator hunting ground",
-      "desc": "Bones everywhere. Picked clean. The kills are fresh enough that whatever did this is nearby.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "threat": "predator"
-      }
+      "name": "No Scarab Influence",
+      "weight": 4
     }
   ],
-  "mountain": [
-    {
-      "title": "Sheer cliff face",
-      "type": "void",
-      "weight": 3
-    },
-    {
-      "title": "Loose scree slope",
-      "type": "void",
-      "weight": 3
-    },
-    {
-      "title": "Exposed ridge",
-      "type": "void",
-      "weight": 3
-    },
-    {
-      "title": "Empty valley",
-      "type": "void",
-      "weight": 3
-    },
-    {
-      "title": "Wind-blasted peak",
-      "type": "void",
-      "weight": 2
-    },
-    {
-      "title": "Rock rubble field",
-      "type": "void",
-      "weight": 2
-    },
-    {
-      "title": "Fog-filled ravine",
-      "type": "void",
-      "weight": 2
-    },
-    {
-      "title": "Fog bank, no visibility",
-      "type": "void",
-      "weight": 2
-    },
-    {
-      "title": "Dead end canyon",
-      "type": "void",
-      "weight": 2
-    },
-    {
-      "title": "Narrow mountain pass",
-      "desc": "Unguarded. Locally known. Wide enough for a cart if you don't rush it.",
-      "type": "location",
-      "weight": 2
-    },
-    {
-      "title": "Secret Camelon pass",
-      "desc": "Not on any map. The Camelon who know it do not share it freely.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "species": "camelon"
+  "environments": {
+    "desert": [
+      {
+        "name": "Open Desert",
+        "weight": 4
+      },
+      {
+        "name": "Salt Fields",
+        "weight": 2
+      },
+      {
+        "name": "Salt Spires",
+        "weight": 1
+      },
+      {
+        "name": "Oasis (Lush)",
+        "weight": 1
+      },
+      {
+        "name": "Oasis (Dying)",
+        "weight": 2
+      },
+      {
+        "name": "High Desert",
+        "weight": 2
+      },
+      {
+        "name": "Dry Riverbed",
+        "weight": 2
+      },
+      {
+        "name": "Termite Mounds",
+        "weight": 1
+      },
+      {
+        "name": "Volcanic Lakes",
+        "weight": 1
+      },
+      {
+        "name": "Volcanic Peaks",
+        "weight": 1
+      },
+      {
+        "name": "Limestone Forest",
+        "weight": 1
+      },
+      {
+        "name": "Baobab Forest",
+        "weight": 1
+      },
+      {
+        "name": "Mirage Zone",
+        "weight": 1
+      },
+      {
+        "name": "Salt Marsh",
+        "weight": 1
+      },
+      {
+        "name": "Badlands",
+        "weight": 2
+      },
+      {
+        "name": "Sandstone Arches",
+        "weight": 1
+      },
+      {
+        "name": "Sandstone Cliffs",
+        "weight": 1
+      },
+      {
+        "name": "Ancient Ruins",
+        "weight": 1
+      },
+      {
+        "name": "Boiling Sand Lake",
+        "weight": 1
+      },
+      {
+        "name": "Boiling Sand River",
+        "weight": 1
+      },
+      {
+        "name": "Tar Field",
+        "weight": 1
       }
-    },
-    {
-      "title": "Road Lord toll gate",
-      "desc": "A solid iron gate across the only viable path. Guards rotate every six days. The rate board is posted clearly.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "road"
+    ],
+    "mountain": [
+      {
+        "name": "High Peaks",
+        "weight": 3
+      },
+      {
+        "name": "Deep Caves",
+        "weight": 2
+      },
+      {
+        "name": "Mountain Pass",
+        "weight": 2
+      },
+      {
+        "name": "Gulch",
+        "weight": 2
+      },
+      {
+        "name": "Plateau",
+        "weight": 2
+      },
+      {
+        "name": "Volcanic Lakes",
+        "weight": 1
+      },
+      {
+        "name": "Volcanic Peaks",
+        "weight": 1
+      },
+      {
+        "name": "Ancient Ruins",
+        "weight": 1
+      },
+      {
+        "name": "Limestone Caves",
+        "weight": 1
+      },
+      {
+        "name": "Deep Ravine",
+        "weight": 2
       }
-    },
-    {
-      "title": "Fortified watchtower",
-      "desc": "Abandoned but intact. The sight lines are excellent. Someone left in a hurry judging by what they left behind.",
-      "type": "location",
-      "weight": 2
-    },
-    {
-      "title": "Heliograph tower",
-      "desc": "A working signal mirror mounted at the peak. Unmanned. The code is not publicly known.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Ancient carved stairway",
-      "desc": "Cut directly into the cliff face. No railing. Origin unknown. It leads somewhere the current maps do not show.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Ancient carved faces",
-      "desc": "Three enormous faces looking down at the pass below. Pre-Scarab Lord. They watch everything that passes.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Gold Lord mine entrance",
-      "desc": "Sealed and guarded. The guards rotate weekly and do not make conversation. Unauthorized entry is handled internally.",
-      "type": "location",
-      "weight": 2,
-      "hints": {
-        "lord": "gold"
+    ],
+    "city": [
+      {
+        "name": "Oasis City",
+        "weight": 2
+      },
+      {
+        "name": "Trade Hub",
+        "weight": 2
+      },
+      {
+        "name": "Salt Spires Settlement",
+        "weight": 1
+      },
+      {
+        "name": "Plateau City",
+        "weight": 1
+      },
+      {
+        "name": "Ruins Settlement",
+        "weight": 1
+      },
+      {
+        "name": "Gulch Town",
+        "weight": 1
+      },
+      {
+        "name": "Mountain Stronghold",
+        "weight": 1
+      },
+      {
+        "name": "Riverside Port",
+        "weight": 1
       }
-    },
-    {
-      "title": "Copper Lord mining camp",
-      "desc": "Active operation, workers present. Heavily organized. Visitors are logged and given a pass number.",
-      "type": "location",
-      "weight": 2,
-      "hints": {
-        "lord": "copper"
+    ],
+    "all": [
+      {
+        "name": "Open Desert",
+        "weight": 4
+      },
+      {
+        "name": "Salt Fields",
+        "weight": 2
+      },
+      {
+        "name": "Oasis (Lush)",
+        "weight": 1
+      },
+      {
+        "name": "Oasis (Dying)",
+        "weight": 2
+      },
+      {
+        "name": "High Desert",
+        "weight": 2
+      },
+      {
+        "name": "Dry Riverbed",
+        "weight": 2
+      },
+      {
+        "name": "Caves",
+        "weight": 2
+      },
+      {
+        "name": "Mountain Pass",
+        "weight": 2
+      },
+      {
+        "name": "Gulch",
+        "weight": 2
+      },
+      {
+        "name": "Plateau",
+        "weight": 1
+      },
+      {
+        "name": "Volcanic Lakes",
+        "weight": 1
+      },
+      {
+        "name": "Badlands",
+        "weight": 2
+      },
+      {
+        "name": "Sandstone Cliffs",
+        "weight": 1
+      },
+      {
+        "name": "Ancient Ruins",
+        "weight": 1
+      },
+      {
+        "name": "Boiling Sand Lake",
+        "weight": 1
+      },
+      {
+        "name": "Salt Marsh",
+        "weight": 1
+      },
+      {
+        "name": "Termite Mounds",
+        "weight": 1
+      },
+      {
+        "name": "Baobab Forest",
+        "weight": 1
+      },
+      {
+        "name": "Tar Field",
+        "weight": 1
+      },
+      {
+        "name": "Trade Hub",
+        "weight": 1
+      },
+      {
+        "name": "Oasis City",
+        "weight": 1
       }
-    },
-    {
-      "title": "Copper Lord foundry outpost",
-      "desc": "Armed. Requires a pass to enter. The smell of hot metal is detectable from a mile away.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "copper"
-      }
-    },
-    {
-      "title": "Disputed mine",
-      "desc": "Two Scarab Lord flags planted ten feet apart. A standoff has been ongoing for weeks. Neither side will be the first to swing.",
-      "type": "event",
-      "weight": 1
-    },
-    {
-      "title": "Red Kobari settlement",
-      "desc": "Built into a volcanic vent network. Hot, loud, and deeply unwelcoming to outsiders who have not been introduced properly.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "species": "red_kobari"
-      }
-    },
-    {
-      "title": "Pyre Drakonari nest",
-      "desc": "Active. Territorial. The nest is visible from below. The Drakonari are also visible from below.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "species": "pyre_drakonari"
-      }
-    },
-    {
-      "title": "Ashkind shrine",
-      "desc": "A volcanic vent the Red Kobari consider the breath of their god. Prayers are scratched into every surface. Interrupting a ritual here has consequences.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "species": "red_kobari",
-        "origin": "elemental"
-      }
-    },
-    {
-      "title": "Desert Orc dome",
-      "desc": "Stone dome built from moved boulders. The construction is impressive. The inhabitants are not interested in visitors.",
-      "type": "location",
-      "weight": 2,
-      "hints": {
-        "species": "desert_orc"
-      }
-    },
-    {
-      "title": "Abandoned dome",
-      "desc": "Empty. Contents possibly intact. No indication of why it was left.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Savra ancestor temple",
-      "desc": "Cut directly into the mountain. The Golden Ancestor markings on the door mean outsiders are not welcome. The Savra inside are polite about this.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "species": "savra",
-        "origin": "nature"
-      }
-    },
-    {
-      "title": "Bone Lord deep shaft",
-      "desc": "Descends into the tomb network beneath the mountain. The Bone Lord's mark is above the entrance. The shaft has no ladder.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "bone"
-      }
-    },
-    {
-      "title": "Mountain crypt",
-      "desc": "Older than any Scarab Lord title. The stone work predates everything in the current catalogues.",
-      "type": "location",
-      "weight": 2
-    },
-    {
-      "title": "Sealed cliff vault",
-      "desc": "Set into the rock face with no markings and no visible mechanism. Someone knows how to open it.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Storm Lord weather station",
-      "desc": "Automated instruments recording wind, pressure, and temperature. The readings feed into the Storm Lord's network. Tampering is noticed.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "storm"
-      }
-    },
-    {
-      "title": "Star Lord summit pillar",
-      "desc": "Navigation point for the desert below. The pillar is older than the Star Lord title. They did not build this.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "star"
-      }
-    },
-    {
-      "title": "Blood Lord staging camp",
-      "desc": "Mercenaries between contracts. Some are waiting for work. Some are waiting for something else.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "blood"
-      }
-    },
-    {
-      "title": "Ink Lord cartography cache",
-      "desc": "A sealed box containing partially updated maps. The surveyor who left it has not returned to collect it.",
-      "type": "resource",
-      "weight": 1,
-      "hints": {
-        "lord": "ink"
-      }
-    },
-    {
-      "title": "Gold vein exposure",
-      "desc": "Visible on the cliff face. Accessible. Also visible from the road below, which means this will not stay a secret.",
-      "type": "resource",
-      "weight": 1,
-      "hints": {
-        "lord": "gold"
-      }
-    },
-    {
-      "title": "Gem deposit",
-      "desc": "Semi-precious stones exposed by a recent quake. The seam is shallow but there is more below.",
-      "type": "resource",
-      "weight": 1
-    },
-    {
-      "title": "Unregistered copper deposit",
-      "desc": "Somebody already knows about this. The signs of recent inspection are visible if you look.",
-      "type": "resource",
-      "weight": 1,
-      "hints": {
-        "lord": "copper"
-      }
-    },
-    {
-      "title": "Hidden armoury",
-      "desc": "A Copper Lord contract cache. Weapons, tools, and a sealed manifest of what was stored and by whom.",
-      "type": "resource",
-      "weight": 1,
-      "hints": {
-        "lord": "copper"
-      }
-    },
-    {
-      "title": "Mountain spring",
-      "desc": "Clean water. Contested between two Desert Orc clans. The argument is ongoing and neither side is willing to share.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "High-altitude oasis",
-      "desc": "Cold spring, small, unmarked. The altitude keeps most travelers away. The water is exceptional.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Underground waterfall",
-      "desc": "A river emerges from the rock as a waterfall, crosses forty feet of open air, and vanishes back into the mountain.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Petrified forest",
-      "desc": "Stone trees in perfect formation. Ancient. Probably magical in origin. The Ink Lord has been trying to date them for twenty years.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Giant raptor nest",
-      "desc": "Eggs present. Parents circling overhead. The nest is between the party and the pass.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "threat": "predator"
-      }
-    },
-    {
-      "title": "Wrecked supply crawler",
-      "desc": "Road collapse. The cargo is spread across the slope. Some of it is still usable. Some of it is dangerous.",
-      "type": "event",
-      "weight": 2
-    },
-    {
-      "title": "Crashed airship",
-      "desc": "Recent. Half hanging over the cliff edge. The remaining cargo is worth recovering if someone anchors the wreck first.",
-      "type": "event",
-      "weight": 1
-    },
-    {
-      "title": "Kobari den network",
-      "desc": "Extensive tunnels. Children present, adults armed. The entrance is well-defended and not obviously marked.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Mosaic Kobari outpost",
-      "desc": "More diplomatic than Red Kobari. They trade and negotiate. They also remember every deal ever made with outsiders.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Earthquake fissure",
-      "desc": "Fresh. A new cave system partially revealed. What is inside has not been assessed.",
-      "type": "event",
-      "weight": 1
-    },
-    {
-      "title": "Flooded mine shaft",
-      "desc": "Something drowned in it recently. The water is dark and still.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "threat": "unknown"
-      }
-    },
-    {
-      "title": "Avalanche debris",
-      "desc": "Tomb goods mixed with rock. Gold leaf and carved bone scattered across a fifty-foot slide zone.",
-      "type": "event",
-      "weight": 1
-    },
-    {
-      "title": "Bandit camp",
-      "desc": "Using decommissioned Gold Lord infrastructure. The equipment is better than typical bandits. Someone funded this.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "threat": "raiders"
-      }
-    },
-    {
-      "title": "Territorial dispute",
-      "desc": "Pyre Drakonari and Scorpikin in active standoff. Violence is likely. Both sides will interpret an outsider's presence as choosing a side.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "threat": "political"
-      }
-    },
-    {
-      "title": "Forgotten fort",
-      "desc": "Pre-Scarab Lord. Siege weapons still mounted. The mechanisms are seized with rust but the structure is sound.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Ancient road checkpoint",
-      "desc": "Pre-Scarab Lord construction. Structurally sound. Someone has been maintaining it without making themselves known.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Pyre Drakonari ritual",
-      "desc": "In progress. Dangerous to interrupt. The ashes being scattered belong to someone who made the journey from the east specifically for this.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "species": "pyre_drakonari",
-        "origin": "elemental"
-      }
-    },
-    {
-      "title": "Gold Lord assay station",
-      "desc": "Samples being weighed. The atmosphere is tense. Someone's numbers do not match last month's numbers.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "lord": "gold"
-      }
-    },
-    {
-      "title": "Ivory Lord hunting party",
-      "desc": "Tracking something large. They have been out here for nine days and the mood has shifted.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "lord": "ivory"
-      }
-    }
-  ],
-  "city": [
-    {
-      "title": "Empty lot",
-      "type": "void",
-      "weight": 3
-    },
-    {
-      "title": "Back alley, nothing of note",
-      "type": "void",
-      "weight": 3
-    },
-    {
-      "title": "Collapsed building, cleared",
-      "type": "void",
-      "weight": 3
-    },
-    {
-      "title": "Abandoned market stall",
-      "type": "void",
-      "weight": 3
-    },
-    {
-      "title": "Boarded building",
-      "type": "void",
-      "weight": 2
-    },
-    {
-      "title": "Unused warehouse",
-      "type": "void",
-      "weight": 2
-    },
-    {
-      "title": "Caravan staging yard",
-      "desc": "Busy. Multiple Scarab Lords represented. Everyone is pretending not to watch everyone else.",
-      "type": "location",
-      "weight": 2
-    },
-    {
-      "title": "Waystation tavern",
-      "desc": "Three Scarab Lords have eyes in here. The food is good. The conversation is carefully managed.",
-      "type": "location",
-      "weight": 2
-    },
-    {
-      "title": "Foxxin brokerage",
-      "desc": "Officially a trading house. Three factions are watching who enters and for how long.",
-      "type": "location",
-      "weight": 2,
-      "hints": {
-        "species": "foxxin"
-      }
-    },
-    {
-      "title": "Corvus messenger hub",
-      "desc": "Birds for hire. Information unofficially available at a separate counter in the back.",
-      "type": "location",
-      "weight": 2,
-      "hints": {
-        "species": "corvus"
-      }
-    },
-    {
-      "title": "Crow courier roost",
-      "desc": "Renting birds for messages. Discretion costs extra. The birds remember every route they have ever flown.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "species": "corvus"
-      }
-    },
-    {
-      "title": "Ink Lord reading house",
-      "desc": "Maps for sale openly. Better maps available for a conversation. The best maps require something the Ink Lord wants.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "ink"
-      }
-    },
-    {
-      "title": "Ink Lord printing press",
-      "desc": "First edition of a new desert map being distributed today. The information on it is three months old and already being argued about.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "lord": "ink"
-      }
-    },
-    {
-      "title": "Glass Lord gallery",
-      "desc": "High-end relics on display. A fence operation runs through the back. The distinction between the two is mostly aesthetic.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "glass"
-      }
-    },
-    {
-      "title": "Relic scholar",
-      "desc": "Offering authentication services. Also a fence. The authentication is genuine. The provenance documentation is not.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Relic auction",
-      "desc": "Stolen goods. No questions asked. Three buyers are here on behalf of different Scarab Lords who cannot be seen attending.",
-      "type": "event",
-      "weight": 1
-    },
-    {
-      "title": "Black market stall",
-      "desc": "Hollow Queen adjacent goods. The seller does not explain what that means. The items are cold to the touch.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "origin": "nature"
-      }
-    },
-    {
-      "title": "Salt Lord factor house",
-      "desc": "Heavily secured. Tax records inside. The clerks are polite and keep excellent notes on everyone who enters.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "salt"
-      }
-    },
-    {
-      "title": "Gold Lord assay office",
-      "desc": "Bribes accepted for better weights. This is an open secret. The Salt Lord disapproves loudly and uses the same service.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "gold"
-      }
-    },
-    {
-      "title": "Spice Lord market",
-      "desc": "Priced for nobles. Controlled quantities. The perfume of the place is overwhelming and almost certainly intentional.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "spice"
-      }
-    },
-    {
-      "title": "Spice market price war",
-      "desc": "Two brokers shouting in public. The price of something has shifted. The reason behind the shift is more interesting than the argument.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "lord": "spice"
-      }
-    },
-    {
-      "title": "Ivory Lord trade post",
-      "desc": "Mounted heads on every wall. The inventory leans toward things that should not be for sale.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "ivory"
-      }
-    },
-    {
-      "title": "Copper Lord parts depot",
-      "desc": "Everything mechanical comes through here. Skiff parts, crawler components, tools. The wait list for some items is eight months.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "copper"
-      }
-    },
-    {
-      "title": "Road Lord factor",
-      "desc": "Route passes and toll exemptions for sale. The price depends on who you work for. Some combinations are not offered.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "road"
-      }
-    },
-    {
-      "title": "Storm Lord weather post",
-      "desc": "Public forecasts updated at dawn. The forecast is never wrong. The Storm Lord does not explain how.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "storm"
-      }
-    },
-    {
-      "title": "Star Lord navigator school",
-      "desc": "Star charts sold at the door. The full curriculum requires an interview and a deposit the size of a caravan contract.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "star"
-      }
-    },
-    {
-      "title": "Blood Lord recruitment board",
-      "desc": "Contracts posted publicly. The rates are honest. The jobs that pay most are described in deliberately vague terms.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "lord": "blood"
-      }
-    },
-    {
-      "title": "Bone Lord office",
-      "desc": "Quiet. Few visitors. The ones who enter look calm. The ones who exit look different.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "lord": "bone"
-      }
-    },
-    {
-      "title": "Bone Lord courier",
-      "desc": "Alone, carrying a sealed case, moving quickly. Nervous in a way that has nothing to do with the streets.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "lord": "bone"
-      }
-    },
-    {
-      "title": "Caishen temple",
-      "desc": "Funded by the Gold Lord. Small, well-maintained. The priests are aware of the arrangement and have opinions about it.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "origin": "celestial"
-      }
-    },
-    {
-      "title": "Dhat al-Wadi shrine",
-      "desc": "A water offering basin in the middle of the city. Even here, even paved over, the Camelon leave water in it.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "species": "camelon",
-        "origin": "nature"
-      }
-    },
-    {
-      "title": "Tanawak shrine",
-      "desc": "Hidden in plain sight. Looks like a junk stall. The items for sale have no obvious purpose.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "origin": "chaos"
-      }
-    },
-    {
-      "title": "Akhemu noon shrine",
-      "desc": "Open air, city center. No one speaks near it. Traffic routes around it without any signs asking them to.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "origin": "nature"
-      }
-    },
-    {
-      "title": "Foxxin Clever Dead shrine",
-      "desc": "Family specific. Outsiders are not welcome. The family in question has been here for six generations and remembers everything.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "species": "foxxin"
-      }
-    },
-    {
-      "title": "Savra scholar hall",
-      "desc": "Ancient tomb knowledge, carefully guarded. Outsiders can purchase basic reference texts. Everything useful requires an introduction.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "species": "savra"
-      }
-    },
-    {
-      "title": "Red Kobari forge district",
-      "desc": "Loud, hot, no outsider discount. The work is exceptional. The wait is long and the Kobari will tell you exactly why it is worth it.",
-      "type": "location",
-      "weight": 1,
-      "hints": {
-        "species": "red_kobari"
-      }
-    },
-    {
-      "title": "Camelon caravan guild",
-      "desc": "Hiring today. Guards, guides, cooks, and translators. The contracts are fair. The routes are not disclosed until departure.",
-      "type": "event",
-      "weight": 2,
-      "hints": {
-        "species": "camelon"
-      }
-    },
-    {
-      "title": "Scorpikin dueling circle",
-      "desc": "Public. Regulated. Bettable. The Scorpikin running it are scrupulously honest about the odds.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "species": "scorpikin"
-      }
-    },
-    {
-      "title": "Coyote storytelling circle",
-      "desc": "Outsiders can listen for a coin. The stories are true. The details have been adjusted for the audience.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "species": "coyote"
-      }
-    },
-    {
-      "title": "Merchant tokens exchange",
-      "desc": "Three currencies in play today. The rates are posted. Two of the rates are accurate.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Sand skiff track",
-      "desc": "Illegal. Extremely popular. The bets are larger than the prize money. The Copper Lord supplies the replacement parts.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Desert turtle paddock",
-      "desc": "Three turtles available. Bids open. The seller knows more about these animals than they are disclosing.",
-      "type": "event",
-      "weight": 1
-    },
-    {
-      "title": "Airship dock",
-      "desc": "One ship. Delayed. The listed reason is weather. The actual reason is being negotiated inside.",
-      "type": "event",
-      "weight": 1
-    },
-    {
-      "title": "Skiff chop shop",
-      "desc": "Legitimate on the surface. The provenance of some components does not hold up to scrutiny.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Underground caravan road",
-      "desc": "Below the city. Old. Still used by people who do not want to be seen using the surface roads.",
-      "type": "location",
-      "weight": 1
-    },
-    {
-      "title": "Public trial",
-      "desc": "A crowd gathered. The charges are political and the outcome appears to be predetermined. The defendant knows this.",
-      "type": "event",
-      "weight": 1
-    },
-    {
-      "title": "Political assassination",
-      "desc": "Just occurred. The city guard is mobilizing. The assassin is probably still in the crowd.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "threat": "political"
-      }
-    },
-    {
-      "title": "Trade dispute",
-      "desc": "Salt Lord and Gold Lord factions, swords out. The street has cleared. Everyone is watching from inside.",
-      "type": "event",
-      "weight": 1
-    },
-    {
-      "title": "Prison wagon",
-      "desc": "Copper Lord insignia. Moving quickly. The prisoner's identity is not posted. Someone very much wants to know who it is.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "lord": "copper"
-      }
-    },
-    {
-      "title": "Returned western caravan",
-      "desc": "Just back from the Boiling Reaches. The crew is shaken. They are not talking about what they saw and they are not sleeping.",
-      "type": "event",
-      "weight": 1
-    },
-    {
-      "title": "Oasis festival",
-      "desc": "All Scarab Lords represented. Temporary peace enforced by mutual agreement. The peace lasts exactly as long as the festival.",
-      "type": "event",
-      "weight": 1
-    },
-    {
-      "title": "Varuuk storm caller",
-      "desc": "Offering weather manipulation at a price that has not been stated. The negotiation is happening in the open, which is itself unusual.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "origin": "chaos"
-      }
-    },
-    {
-      "title": "Ash Lord sighting",
-      "desc": "A representative from the western reaches has been spotted in the city. This has not happened before. The other Lords are aware.",
-      "type": "event",
-      "weight": 1,
-      "hints": {
-        "lord": "ash"
-      }
-    },
-    {
-      "title": "Collapsed tunnel",
-      "desc": "A city block has sunk slightly. The hole reveals an older city underneath with different architecture and unknown writing.",
-      "type": "event",
-      "weight": 1
-    }
-  ],
-  "origins": [
-    {
-      "name": "Nature",
-      "weight": 3
-    },
-    {
-      "name": "Vozian",
-      "weight": 2
-    },
-    {
-      "name": "Celestial",
-      "weight": 1
-    },
-    {
-      "name": "Chrono",
-      "weight": 1
-    },
-    {
-      "name": "Dragon",
-      "weight": 2
-    },
-    {
-      "name": "Arcane",
-      "weight": 2
-    },
-    {
-      "name": "Basic",
-      "weight": 3
-    },
-    {
-      "name": "Chaos",
-      "weight": 1
-    },
-    {
-      "name": "Life",
-      "weight": 2
-    },
-    {
-      "name": "Tech",
-      "weight": 1
-    },
-    {
-      "name": "Crystal",
-      "weight": 1
-    },
-    {
-      "name": "Elemental",
-      "weight": 2
-    }
-  ],
-  "threats": [
+    ]
+  },
+  "enemies": [
     {
       "name": "None",
       "weight": 4
+    },
+    {
+      "name": "Termite Packs",
+      "weight": 2
     },
     {
       "name": "Bandits",
       "weight": 3
     },
     {
-      "name": "Organised Raiders",
-      "weight": 2
-    },
-    {
-      "name": "Sand Predator",
-      "weight": 2
-    },
-    {
-      "name": "Sandstorm Corridor",
-      "weight": 2
-    },
-    {
-      "name": "Undead Presence",
+      "name": "Pirates",
       "weight": 1
     },
     {
-      "name": "Hostile Locals",
-      "weight": 2
-    },
-    {
-      "name": "Active Trap Network",
+      "name": "The Vessels",
       "weight": 1
     },
     {
-      "name": "Political Tension",
+      "name": "Demons",
+      "weight": 1
+    },
+    {
+      "name": "Undead",
       "weight": 2
     },
     {
-      "name": "Something Unknown",
+      "name": "Tar Ooze",
+      "weight": 1
+    },
+    {
+      "name": "Poachers",
+      "weight": 2
+    },
+    {
+      "name": "Slavers",
+      "weight": 1
+    },
+    {
+      "name": "Blight",
+      "weight": 1
+    },
+    {
+      "name": "Carrion Feeders",
+      "weight": 2
+    },
+    {
+      "name": "Sandworm",
+      "weight": 1
+    },
+    {
+      "name": "Dune Dogs",
+      "weight": 2
+    }
+  ],
+  "populations": [
+    {
+      "name": "Barren",
+      "tier": 0,
+      "weight": 5
+    },
+    {
+      "name": "Nomads",
+      "tier": 1,
+      "weight": 7
+    },
+    {
+      "name": "Single Home",
+      "tier": 1,
+      "weight": 6
+    },
+    {
+      "name": "Homestead",
+      "tier": 2,
+      "weight": 6
+    },
+    {
+      "name": "Several Homesteads",
+      "tier": 2,
+      "weight": 5
+    },
+    {
+      "name": "Hamlet",
+      "tier": 3,
+      "weight": 5
+    },
+    {
+      "name": "Small Village",
+      "tier": 4,
+      "weight": 4
+    },
+    {
+      "name": "Large Village",
+      "tier": 5,
+      "weight": 3
+    },
+    {
+      "name": "Small Tribe",
+      "tier": 2,
+      "weight": 4
+    },
+    {
+      "name": "Large Tribe",
+      "tier": 3,
+      "weight": 3
+    },
+    {
+      "name": "Small Town",
+      "tier": 5,
+      "weight": 3
+    },
+    {
+      "name": "Large Town",
+      "tier": 6,
+      "weight": 2
+    },
+    {
+      "name": "Small City",
+      "tier": 6,
+      "weight": 2
+    },
+    {
+      "name": "Large City",
+      "tier": 8,
+      "weight": 2
+    },
+    {
+      "name": "Metropolis",
+      "tier": 10,
+      "weight": 1
+    },
+    {
+      "name": "Collapsed State",
+      "tier": 3,
+      "weight": 2,
+      "collapsed": true
+    }
+  ],
+  "temperaments": [
+    {
+      "name": "Uninhabited",
+      "weight": 3
+    },
+    {
+      "name": "Peaceful",
+      "weight": 3
+    },
+    {
+      "name": "Quiet Tension",
+      "weight": 3
+    },
+    {
+      "name": "Bickering",
+      "weight": 2
+    },
+    {
+      "name": "Skirmishes",
+      "weight": 2
+    },
+    {
+      "name": "Raiding",
+      "weight": 2
+    },
+    {
+      "name": "At War",
+      "weight": 1
+    },
+    {
+      "name": "Occupied",
+      "weight": 1
+    },
+    {
+      "name": "Collapsed",
       "weight": 1
     }
+  ],
+  "features": [
+    {
+      "name": "Small Dungeon",
+      "weight": 2
+    },
+    {
+      "name": "Large Dungeon",
+      "weight": 1
+    },
+    {
+      "name": "Bazaar",
+      "weight": 2
+    },
+    {
+      "name": "Laboratory",
+      "weight": 1
+    },
+    {
+      "name": "Factory",
+      "weight": 1
+    },
+    {
+      "name": "Ruined Fortress",
+      "weight": 2
+    },
+    {
+      "name": "Cave System",
+      "weight": 2
+    },
+    {
+      "name": "Sunken Ruins",
+      "weight": 1
+    },
+    {
+      "name": "Tomb Complex",
+      "weight": 2
+    },
+    {
+      "name": "Bandit Camp",
+      "weight": 2
+    },
+    {
+      "name": "Enemy Stronghold",
+      "weight": 1
+    },
+    {
+      "name": "Tavern/Inn",
+      "weight": 2
+    },
+    {
+      "name": "Caravan Stop",
+      "weight": 2
+    },
+    {
+      "name": "Port/Harbor",
+      "weight": 1
+    },
+    {
+      "name": "City District",
+      "weight": 1
+    },
+    {
+      "name": "Thieves Guild",
+      "weight": 1
+    },
+    {
+      "name": "Temple/Shrine",
+      "weight": 2
+    },
+    {
+      "name": "Library/Archive",
+      "weight": 1
+    },
+    {
+      "name": "Cult Compound",
+      "weight": 1
+    },
+    {
+      "name": "Sealed Vault",
+      "weight": 1
+    },
+    {
+      "name": "Abandoned Settlement",
+      "weight": 2
+    },
+    {
+      "name": "Mine",
+      "weight": 2
+    },
+    {
+      "name": "Quarry",
+      "weight": 1
+    },
+    {
+      "name": "Refinery",
+      "weight": 1
+    },
+    {
+      "name": "Slave Camp",
+      "weight": 1
+    },
+    {
+      "name": "Farmstead/Plantation",
+      "weight": 1
+    },
+    {
+      "name": "Way Station",
+      "weight": 2
+    },
+    {
+      "name": "Undead Barrow",
+      "weight": 1
+    },
+    {
+      "name": "Corrupted Zone",
+      "weight": 1
+    },
+    {
+      "name": "Rift/Planar Tear",
+      "weight": 1
+    },
+    {
+      "name": "Ancient Sealed Prison",
+      "weight": 1
+    }
+  ],
+  "foods": [
+    {
+      "name": "Insect",
+      "weight": 3
+    },
+    {
+      "name": "Reptile",
+      "weight": 3
+    },
+    {
+      "name": "Rodent",
+      "weight": 3
+    },
+    {
+      "name": "Birds",
+      "weight": 2
+    },
+    {
+      "name": "Cactus",
+      "weight": 2
+    },
+    {
+      "name": "Fruits",
+      "weight": 2
+    },
+    {
+      "name": "Tubers",
+      "weight": 2
+    },
+    {
+      "name": "Lichen",
+      "weight": 1
+    },
+    {
+      "name": "Sandfish",
+      "weight": 2
+    },
+    {
+      "name": "Boilbugs",
+      "weight": 1
+    },
+    {
+      "name": "Carrion",
+      "weight": 2
+    }
+  ],
+  "resources": [
+    {
+      "name": "Salt",
+      "weight": 3
+    },
+    {
+      "name": "Soil",
+      "weight": 2
+    },
+    {
+      "name": "Spices",
+      "weight": 2
+    },
+    {
+      "name": "Iron",
+      "weight": 2
+    },
+    {
+      "name": "Copper",
+      "weight": 2
+    },
+    {
+      "name": "Tin",
+      "weight": 1
+    },
+    {
+      "name": "Silver",
+      "weight": 1
+    },
+    {
+      "name": "Sulfur",
+      "weight": 1
+    },
+    {
+      "name": "Nitrates",
+      "weight": 1
+    },
+    {
+      "name": "Borax",
+      "weight": 1
+    },
+    {
+      "name": "Gemstones",
+      "weight": 1
+    },
+    {
+      "name": "Obsidian",
+      "weight": 1
+    },
+    {
+      "name": "Flint",
+      "weight": 2
+    },
+    {
+      "name": "Deadfall",
+      "weight": 2
+    },
+    {
+      "name": "Drywood",
+      "weight": 2
+    },
+    {
+      "name": "Dry Dung",
+      "weight": 2
+    },
+    {
+      "name": "Peat",
+      "weight": 1
+    },
+    {
+      "name": "Oil",
+      "weight": 1
+    },
+    {
+      "name": "Tar",
+      "weight": 1
+    },
+    {
+      "name": "Coal",
+      "weight": 1
+    },
+    {
+      "name": "Medicinal Plants",
+      "weight": 2
+    },
+    {
+      "name": "Dyes",
+      "weight": 1
+    },
+    {
+      "name": "Plant Fiber",
+      "weight": 2
+    },
+    {
+      "name": "Resin",
+      "weight": 1
+    },
+    {
+      "name": "Exotic Animals",
+      "weight": 1
+    },
+    {
+      "name": "Stone",
+      "weight": 2
+    }
+  ],
+  "travelConnectors": [
+    "The route ahead is open but the heat builds steadily.",
+    "Fresh tracks cross the path. Something large passed recently.",
+    "A wrecked skiff sits half-buried in the sand. The cargo is gone.",
+    "The horizon shimmers. Could be a mirage. Could be smoke.",
+    "An old way marker stands here, pointing three directions.",
+    "The wind picks up. Dust on the eastern edge.",
+    "Bones of a large animal. Picked clean. Recent.",
+    "A dry riverbed cuts across the path. Crossable but slow.",
+    "Distant fire at night. Origin unclear.",
+    "The road narrows to a single track through loose sand.",
+    "Evidence of a camp, abandoned in a hurry.",
+    "A stretch of ancient paved road surfaces briefly, then vanishes.",
+    "Vultures circling something ahead and to the north.",
+    "The temperature drops sharply. The terrain is shifting.",
+    "A lone figure on the ridge. Gone by the time you look again.",
+    "Salt crust underfoot. The ground here is hollow.",
+    "Storm debris scattered across the route. Recent passage was rough.",
+    "A Camelon trail marker. Someone knows this path.",
+    "Silence. No insects, no wind. Uncomfortable quiet.",
+    "The sand here has an unusual color. Red-orange, almost rust."
   ]
 }
