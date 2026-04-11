@@ -8,8 +8,18 @@ const PRICE_ROUND_TO = 10;     // round prices to nearest 10
 
 let DATA = null;
 
-// load data once
-fetch("data/medicine.json").then(r => r.json()).then(j => { DATA = j; });
+// load data once — transform flat array into category-keyed object
+fetch("data/medicine.json").then(r => r.json()).then(j => {
+    DATA = {};
+    for (const item of j) {
+        if (!DATA[item.category]) DATA[item.category] = [];
+        if (item.category === "effects") {
+            DATA[item.category].push({ name: item.name, tmpl: item.value });
+        } else {
+            DATA[item.category].push(item.value);
+        }
+    }
+});
 
 // utils
 const rand = (n) => Math.floor(Math.random() * n);
@@ -90,24 +100,6 @@ function generateMedicine() {
         price: computePrice(potency)
     };
 }
-
-// DOM
-document.addEventListener("DOMContentLoaded", () => {
-    const btn = document.getElementById("go");
-    const out = document.getElementById("out");
-    btn.onclick = () => {
-        const m = generateMedicine();
-        const effLines = m.effects.map(e => `${e.name}: ${e.desc}`).join("\n\n");
-        out.textContent =
-            `${m.name}
----
-${m.desc}
-Potency: ${m.potency}
-Price: ${m.price}
-
-${effLines}`;
-    };
-});
 
 // ===== Persistence =====
 const STORAGE_KEY = "check20_medicines";

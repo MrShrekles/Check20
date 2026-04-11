@@ -1,559 +1,2166 @@
-{
-    "namePrefixes": [
-        "Silver",
-        "Gilded",
-        "Rusty",
-        "Brass",
-        "Velvet",
-        "Duskwind",
-        "Evernight",
-        "Storm &",
-        "Ember",
-        "Cinder",
-        "Clockwork",
-        "Obsidian",
-        "Ironclad",
-        "Hollow",
-        "Verdigris",
-        "Moonless",
-        "Crimson",
-        "Shatterglass",
-        "Ashen",
-        "Whalebone",
-        "Frostbitten",
-        "Wyrmfang",
-        "Flicker",
-        "Echoing",
-        "Sunken",
-        "Nickel",
-        "Gallant",
-        "Smokestack",
-        "Velour",
-        "Barbed",
-        "Gin-soaked",
-        "Coalburn",
-        "Sepia",
-        "Silkcut",
-        "Midnight",
-        "Opaline",
-        "Gallows",
-        "Gutterborn",
-        "Chained",
-        "Tarnished",
-        "Copperline",
-        "Lacquered",
-        "Steamworn",
-        "Ivory",
-        "Deadlight",
-        "Gingerwire",
-        "Hush &",
-        "Sootveil",
-        "Charred",
-        "Brinewashed",
-        "Grayscale",
-        "Foxglove",
-        "Whispering",
-        "Oilblack",
-        "Tallow",
-        "Crooked",
-        "Crowskin",
-        "Twinebound",
-        "Leadspun",
-        "Redhook",
-        "Grimeborn",
-        "Bitter",
-        "Lowtown",
-        "Hollowpoint",
-        "Hewn"
-    ],
-    "nameSubjects": [
-        "Serpent",
-        "Gear",
-        "Lotus",
-        "Crown",
-        "Talon",
-        "Furnace",
-        "Vault",
-        "Anchor",
-        "Coin",
-        "Fang",
-        "Wraith",
-        "Lantern",
-        "Harbor",
-        "Forge",
-        "Spire",
-        "Chalice",
-        "Anvil",
-        "Marrow",
-        "Spindle",
-        "Mask",
-        "Beacon",
-        "Gambit",
-        "Phantom",
-        "Flask",
-        "Circuit",
-        "Ledger",
-        "Cigarette",
-        "Chassis",
-        "Specter",
-        "Valise",
-        "Gazette",
-        "Knuckle",
-        "Moth",
-        "Trench",
-        "Gargoyle",
-        "Ragman",
-        "Gramophone",
-        "Decanter",
-        "Curtain",
-        "Switch",
-        "Vestige",
-        "Rivet",
-        "Raven",
-        "Badge",
-        "Heirloom",
-        "Corset",
-        "Chimera",
-        "Ticket",
-        "Thimble",
-        "Engine",
-        "Gutter",
-        "Balcony",
-        "Dirge",
-        "Vial",
-        "Glimmer",
-        "Derby",
-        "Spanner",
-        "Veil",
-        "Socket",
-        "Wager",
-        "Halberd",
-        "Penny",
-        "Plume",
-        "Script",
-        "Valve"
-    ],
-    "businessTypes": [
-        "Tavern",
-        "Trading Co.",
-        "Forge",
-        "Emporium",
-        "Workshop",
-        "Boutique",
-        "Supply Co.",
-        "Foundry",
-        "Jewelers",
-        "Mercantile",
-        "Bazaar",
-        "Guildhall",
-        "Apothecary",
-        "Syndicate",
-        "Market",
-        "Bank",
-        "Lounge",
-        "Office",
-        "Brewery",
-        "Archive",
-        "Tinker’s Den",
-        "Arcanery",
-        "Theater",
-        "Parlor",
-        "Courier House",
-        "Haberdashery",
-        "Galleria",
-        "Broadcast Hall",
-        "Motorworks",
-        "Speakeasy",
-        "Tatters & Tailors",
-        "Drapery House",
-        "Conservatory",
-        "Rookery",
-        "Inkhouse",
-        "Scrivener’s Hall",
-        "Pawn & Parchment",
-        "Clocktower Office",
-        "Printshop",
-        "Gaslight Club",
-        "Engraver’s Row",
-        "Undertaking Co.",
-        "Dyehouse",
-        "Smeltery",
-        "Buttonworks",
-        "Observation Deck",
-        "Aether Exchange",
-        "Transmitter Hub",
-        "Salon de Mystère",
-        "Switchboard Hall",
-        "Pipefitters' Union",
-        "Cipher House",
-        "Mourning Agency",
-        "Barbershop",
-        "Valet Co.",
-        "Detective Bureau",
-        "Apparatus Co.",
-        "Smokehouse",
-        "Mender’s Parlour",
-        "Projection Room",
-        "Coilworks",
-        "Gramophone Depot",
-        "Charmwright’s Lounge",
-        "Taproom"
-    ],
-    "firstNames": [
-        "Arthur",
-        "Albert",
-        "Alfred",
-        "Bertram",
-        "Basil",
-        "Cecil",
-        "Charles",
-        "Clive",
-        "Colin",
-        "Daniel",
-        "Douglas",
-        "Dudley",
-        "Edgar",
-        "Edmund",
-        "Edward",
-        "Edwin",
-        "Ernest",
-        "Eustace",
-        "Francis",
-        "Frederick",
-        "Geoffrey",
-        "George",
-        "Gerald",
-        "Gordon",
-        "Graham",
-        "Harold",
-        "Herbert",
-        "Horace",
-        "Hubert",
-        "Hugh",
-        "James",
-        "John",
-        "Kenneth",
-        "Leonard",
-        "Lionel",
-        "Malcolm",
-        "Maurice",
-        "Nigel",
-        "Norman",
-        "Percival",
-        "Philip",
-        "Quentin",
-        "Reginald",
-        "Roland",
-        "Ronald",
-        "Rupert",
-        "Sidney",
-        "Stanley",
-        "Terrence",
-        "Theodore",
-        "Victor",
-        "Vincent",
-        "Wallace",
-        "Walter",
-        "Wilfred",
-        "Wilbur",
-        "Winston",
-        "Agatha",
-        "Alice",
-        "Annie",
-        "Audrey",
-        "Barbara",
-        "Beatrice",
-        "Bridget",
-        "Catherine",
-        "Cecilia",
-        "Charlotte",
-        "Clara",
-        "Constance",
-        "Daisy",
-        "Dorothy",
-        "Edith",
-        "Eleanor",
-        "Elizabeth",
-        "Elsie",
-        "Emily",
-        "Emma",
-        "Ethel",
-        "Evelyn",
-        "Felicity",
-        "Florence",
-        "Frances",
-        "Gwendolyn",
-        "Gladys",
-        "Grace",
-        "Harriet",
-        "Helen",
-        "Henrietta",
-        "Irene",
-        "Isabelle",
-        "Jean",
-        "Josephine",
-        "Julia",
-        "Lavinia",
-        "Lilian",
-        "Louisa",
-        "Mabel",
-        "Margaret",
-        "Marjorie",
-        "Mildred",
-        "Millicent",
-        "Muriel",
-        "Nancy",
-        "Nora",
-        "Olive",
-        "Patricia",
-        "Penelope",
-        "Phyllis",
-        "Primrose",
-        "Rosalind",
-        "Rose",
-        "Sylvia",
-        "Theodora",
-        "Victoria",
-        "Vera",
-        "Winifred",
-        "Yvonne"
-    ],
-    "lastNames": [
-        "Abbington",
-        "Ashworth",
-        "Barclay",
-        "Bradshaw",
-        "Chamberlain",
-        "Chapman",
-        "Daventry",
-        "Ellsworth",
-        "Fairchild",
-        "Gladstone",
-        "Harrington",
-        "Holloway",
-        "Kensington",
-        "Lancaster",
-        "Montague",
-        "Norwood",
-        "Pembroke",
-        "Radcliffe",
-        "Sinclair",
-        "Thornfield",
-        "Whittington",
-        "Winchester",
-        "Yardley"
-    ],
-    "titles": [
-        "Mr.",
-        "Mrs.",
-        "Miss",
-        "Dr.",
-        "Sir",
-        "Lady",
-        "Dragon"
-    ],
-    "reputations": [
-        "Highly respected",
-        "Well-known among the elite",
-        "A staple of high society",
-        "A luxurious experience",
-        "Frequented by nobles and politicians",
-        "Award-winning and widely acclaimed",
-        "A historical landmark business",
-        "Exclusive clientele only",
-        "Rumored to have royal patronage",
-        "Has a waiting list months long",
-        "Long-established and trusted",
-        "A local institution",
-        "Known for quality craftsmanship",
-        "A family business passed down generations",
-        "Popular with the working class",
-        "A cornerstone of the community",
-        "Run by a respected master of the trade",
-        "Known for fair prices and honesty",
-        "The go-to place for its services",
-        "Frequently recommended by word of mouth",
-        "Mysterious and enigmatic",
-        "Operates at odd hours",
-        "Customers leave whispering",
-        "Shrouded in secrecy",
-        "Run by an eccentric owner",
-        "Appears to have no fixed location",
-        "Only those 'in the know' can find it",
-        "Ritualistic customer service practices",
-        "Deals in esoteric and arcane goods",
-        "Surrounded by rumors and myths",
-        "Shady dealings and questionable business practices",
-        "A front for organized crime",
-        "Underground network operations",
-        "Frequently raided by the authorities",
-        "Bribing officials to stay in business",
-        "Known for back-alley deals",
-        "Rumored to launder money",
-        "Run by a former smuggler",
-        "Heavily guarded and secretive",
-        "A meeting place for underworld figures",
-        "An ambitious newcomer",
-        "Up-and-coming but still unknown",
-        "Recently renovated and gaining attention",
-        "Trying to carve a niche in the market",
-        "Innovative but unproven",
-        "Struggling to stay afloat",
-        "Plagued by debt and bad investments",
-        "Losing customers to competitors",
-        "Management in constant turmoil",
-        "Frequently changing ownership",
-        "Feared by competitors",
-        "No one dares cross its owner",
-        "Has a monopoly on its trade",
-        "Unfairly drives competitors out of business",
-        "Heavy security and tight restrictions",
-        "Known for ruthless business tactics",
-        "Reputation for dealing with troublemakers harshly",
-        "Haunted by past tragedies",
-        "Accused of dealing in cursed goods",
-        "A recent crime happened on its premises",
-        "Has the strangest clientele",
-        "The business itself seems alive",
-        "Employees wear bizarre uniforms",
-        "Known for its bizarre and unique products",
-        "Customers leave feeling 'changed'",
-        "People swear the shop moves locations overnight",
-        "Visitors report strange occurrences",
-        "The owner is rumored to be non-human",
-        "Nobody knows where their goods come from",
-        "People go in but don’t always come out"
-    ],
-    "secrets": [
-        "Front for organized crime",
-        "Smuggles rare and illegal goods",
-        "Owner is an informant for the authorities",
-        "Launders money for criminal organizations",
-        "Hides contraband in its backrooms",
-        "Frequented by known criminals",
-        "Has ties to a notorious gang",
-        "Bribes officials to avoid inspections",
-        "Used as a meeting place for spies",
-        "Sells counterfeit goods disguised as real",
-        "Hides a secret vault filled with treasure",
-        "Has a hidden underground chamber",
-        "Owner possesses a legendary artifact",
-        "Houses a stolen royal heirloom",
-        "Customers unknowingly pay with cursed coins",
-        "Store items hold hidden magical properties",
-        "A secret map is hidden somewhere inside",
-        "Owner secretly collects forbidden relics",
-        "The sign outside is a coded message for those in the know",
-        "A rare book in its possession holds a lost prophecy",
-        "Run by a secret society",
-        "Has dealings with the underworld",
-        "Protected by powerful supernatural figures",
-        "A ghost haunts the establishment",
-        "Customers sometimes disappear without a trace",
-        "Has an old contract with a demon",
-        "The business only appears under certain conditions",
-        "Employees must perform strange rituals before opening",
-        "Its owner is far older than they appear",
-        "A secret room leads to another realm",
-        "Experiments with illegal alchemy",
-        "The basement hides unethical experiments",
-        "Sells enchanted items that cause bad luck",
-        "A cursed object is kept locked away in the back",
-        "An old debt requires the business to sacrifice something every month",
-        "A strange illness plagues those who work here too long",
-        "The building itself seems to whisper at night",
-        "Customers leave feeling oddly changed",
-        "The business attracts people who were thought to be dead",
-        "No one knows who built it or when it opened",
-        "Is deeply in debt to dangerous people",
-        "Owner is trying to flee from past crimes",
-        "Once belonged to someone who mysteriously vanished",
-        "A powerful rival is trying to ruin it",
-        "Barely staying afloat, but refuses to close",
-        "Employees are forced to work under extreme conditions",
-        "A former partner wants revenge for a betrayal",
-        "A secret investor is pulling all the strings",
-        "The business is unknowingly on cursed land",
-        "Something valuable is buried beneath its foundation",
-        "A secret rebellion operates from its basement",
-        "The owner is connected to the royal family",
-        "Messages for spies are hidden in its receipts",
-        "A major scandal is about to surface regarding its dealings",
-        "Its profits fund an underground resistance movement",
-        "Has access to classified government information",
-        "A powerful noble visits in disguise",
-        "Hidden documents inside could topple a government",
-        "A strange customer always comes to collect 'special orders'",
-        "The owner was assumed dead years ago, but is alive and running the shop",
-        "Quietly funds an orphanage or shelter",
-        "Provides free food to the poor after hours",
-        "Houses and employs war veterans in need of work",
-        "Owner donates most of their earnings to charity",
-        "Offers discounted goods to struggling families",
-        "Runs a secret soup kitchen in the back alley",
-        "Provides scholarships for gifted but poor students",
-        "Supports an underground hospital for the injured",
-        "Gives safe passage to those fleeing persecution",
-        "Hides rare medicine for those who need it most",
-        "Gathers donations for rebuilding homes after disasters",
-        "Provides free legal aid to the falsely accused",
-        "Shelters runaway children in need of protection",
-        "Employs people who would otherwise be shunned by society",
-        "Forgives debts for customers struggling to pay",
-        "Gives free repairs for those who can't afford them",
-        "Passes on unsold goods to struggling merchants",
-        "Trains apprentices who can't afford an education",
-        "Smuggles books into areas where knowledge is restricted",
-        "Supports artists and writers by funding their work",
-        "Protects the town from a hidden supernatural threat",
-        "Has a magical charm that wards off misfortune",
-        "Uses secret enchantments to ensure fair deals",
-        "A benevolent ghost helps guide lost travelers",
-        "Knows a prophecy about the town's future and safeguards it",
-        "Has an ancient blessing that ensures prosperity",
-        "A secret guardian watches over the business from the shadows",
-        "Sells items that bring luck and protection to those in need",
-        "A hidden artifact beneath the shop keeps an old evil at bay",
-        "Owner can see glimpses of the future and uses it to help others",
-        "Works hard to keep the city’s streets safe at night",
-        "Refuses to deal in goods of unethical origin",
-        "Exposes fraud and corruption among the elite",
-        "Smuggles people to freedom from oppressive regimes",
-        "Acts as a neutral ground for rival factions to negotiate peace",
-        "Shelters political exiles from unjust rulers",
-        "Shields innocent people from wrongful accusations",
-        "Keeps a secret record of crimes that others try to erase",
-        "Secretly repairs historical artifacts and donates them",
-        "Investigates missing persons and finds lost loved ones",
-        "Hides free gifts in packages to brighten customers’ days",
-        "Delivers anonymous care packages to those in need",
-        "Employs staff who would otherwise be left destitute",
-        "Buys goods from struggling farmers at fair prices",
-        "Provides free meals to children without homes",
-        "Once saved a famous hero but never speaks of it",
-        "Donates profits to maintain public libraries and schools",
-        "Funds expeditions to lost civilizations for the sake of knowledge",
-        "Ensures no workers are ever exploited in their trade",
-        "Lets struggling musicians perform for free, boosting their careers",
-        "Provides sanctuary for those fleeing unjust laws",
-        "Smuggles messages for those who can't afford official couriers",
-        "Trades with outcasts and the downtrodden, keeping them afloat",
-        "Secretly funds the resistance against a tyrannical government",
-        "Provides a safe house for refugees in need of escape",
-        "Distributes stolen goods back to the poor, like a modern Robin Hood",
-        "Offers loans with no interest to help struggling businesses",
-        "Harbors runaway slaves and helps them find new lives",
-        "Trades only in fair-trade goods, rejecting exploitative practices",
-        "Teaches literacy to those who were never allowed to learn",
-        "A hidden library exists beneath the store, open only to a select few",
-        "Contains a vault with ancient knowledge that no one else has",
-        "Owner possesses a legendary recipe that can cure any ailment",
-        "Sells handcrafted items made by artisans long thought lost",
-        "Has an unknown benefactor who keeps it running despite hardships",
-        "Holds an ancient secret about the city's foundation",
-        "A forgotten royal once owned the business but disappeared",
-        "A secret garden inside produces rare and extinct plants",
-        "Has a secret handshake for members of a mysterious order",
-        "A small emblem on every item hints at a greater hidden network"
-    ]
-}
+[
+    {
+        "category": "namePrefixes",
+        "value": "Silver"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Gilded"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Rusty"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Brass"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Velvet"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Duskwind"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Evernight"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Storm &"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Ember"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Cinder"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Clockwork"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Obsidian"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Ironclad"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Hollow"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Verdigris"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Moonless"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Crimson"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Shatterglass"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Ashen"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Whalebone"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Frostbitten"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Wyrmfang"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Flicker"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Echoing"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Sunken"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Nickel"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Gallant"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Smokestack"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Velour"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Barbed"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Gin-soaked"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Coalburn"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Sepia"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Silkcut"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Midnight"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Opaline"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Gallows"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Gutterborn"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Chained"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Tarnished"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Copperline"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Lacquered"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Steamworn"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Ivory"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Deadlight"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Gingerwire"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Hush &"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Sootveil"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Charred"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Brinewashed"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Grayscale"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Foxglove"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Whispering"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Oilblack"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Tallow"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Crooked"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Crowskin"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Twinebound"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Leadspun"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Redhook"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Grimeborn"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Bitter"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Lowtown"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Hollowpoint"
+    },
+    {
+        "category": "namePrefixes",
+        "value": "Hewn"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Serpent"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Gear"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Lotus"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Crown"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Talon"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Furnace"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Vault"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Anchor"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Coin"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Fang"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Wraith"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Lantern"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Harbor"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Forge"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Spire"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Chalice"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Anvil"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Marrow"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Spindle"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Mask"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Beacon"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Gambit"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Phantom"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Flask"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Circuit"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Ledger"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Cigarette"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Chassis"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Specter"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Valise"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Gazette"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Knuckle"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Moth"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Trench"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Gargoyle"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Ragman"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Gramophone"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Decanter"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Curtain"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Switch"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Vestige"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Rivet"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Raven"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Badge"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Heirloom"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Corset"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Chimera"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Ticket"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Thimble"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Engine"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Gutter"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Balcony"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Dirge"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Vial"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Glimmer"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Derby"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Spanner"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Veil"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Socket"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Wager"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Halberd"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Penny"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Plume"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Script"
+    },
+    {
+        "category": "nameSubjects",
+        "value": "Valve"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Tavern"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Trading Co."
+    },
+    {
+        "category": "businessTypes",
+        "value": "Forge"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Emporium"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Workshop"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Boutique"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Supply Co."
+    },
+    {
+        "category": "businessTypes",
+        "value": "Foundry"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Jewelers"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Mercantile"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Bazaar"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Guildhall"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Apothecary"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Syndicate"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Market"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Bank"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Lounge"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Office"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Brewery"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Archive"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Tinker’s Den"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Arcanery"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Theater"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Parlor"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Courier House"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Haberdashery"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Galleria"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Broadcast Hall"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Motorworks"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Speakeasy"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Tatters & Tailors"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Drapery House"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Conservatory"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Rookery"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Inkhouse"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Scrivener’s Hall"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Pawn & Parchment"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Clocktower Office"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Printshop"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Gaslight Club"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Engraver’s Row"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Undertaking Co."
+    },
+    {
+        "category": "businessTypes",
+        "value": "Dyehouse"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Smeltery"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Buttonworks"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Observation Deck"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Aether Exchange"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Transmitter Hub"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Salon de Mystère"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Switchboard Hall"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Pipefitters' Union"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Cipher House"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Mourning Agency"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Barbershop"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Valet Co."
+    },
+    {
+        "category": "businessTypes",
+        "value": "Detective Bureau"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Apparatus Co."
+    },
+    {
+        "category": "businessTypes",
+        "value": "Smokehouse"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Mender’s Parlour"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Projection Room"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Coilworks"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Gramophone Depot"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Charmwright’s Lounge"
+    },
+    {
+        "category": "businessTypes",
+        "value": "Taproom"
+    },
+    {
+        "category": "firstNames",
+        "value": "Arthur"
+    },
+    {
+        "category": "firstNames",
+        "value": "Albert"
+    },
+    {
+        "category": "firstNames",
+        "value": "Alfred"
+    },
+    {
+        "category": "firstNames",
+        "value": "Bertram"
+    },
+    {
+        "category": "firstNames",
+        "value": "Basil"
+    },
+    {
+        "category": "firstNames",
+        "value": "Cecil"
+    },
+    {
+        "category": "firstNames",
+        "value": "Charles"
+    },
+    {
+        "category": "firstNames",
+        "value": "Clive"
+    },
+    {
+        "category": "firstNames",
+        "value": "Colin"
+    },
+    {
+        "category": "firstNames",
+        "value": "Daniel"
+    },
+    {
+        "category": "firstNames",
+        "value": "Douglas"
+    },
+    {
+        "category": "firstNames",
+        "value": "Dudley"
+    },
+    {
+        "category": "firstNames",
+        "value": "Edgar"
+    },
+    {
+        "category": "firstNames",
+        "value": "Edmund"
+    },
+    {
+        "category": "firstNames",
+        "value": "Edward"
+    },
+    {
+        "category": "firstNames",
+        "value": "Edwin"
+    },
+    {
+        "category": "firstNames",
+        "value": "Ernest"
+    },
+    {
+        "category": "firstNames",
+        "value": "Eustace"
+    },
+    {
+        "category": "firstNames",
+        "value": "Francis"
+    },
+    {
+        "category": "firstNames",
+        "value": "Frederick"
+    },
+    {
+        "category": "firstNames",
+        "value": "Geoffrey"
+    },
+    {
+        "category": "firstNames",
+        "value": "George"
+    },
+    {
+        "category": "firstNames",
+        "value": "Gerald"
+    },
+    {
+        "category": "firstNames",
+        "value": "Gordon"
+    },
+    {
+        "category": "firstNames",
+        "value": "Graham"
+    },
+    {
+        "category": "firstNames",
+        "value": "Harold"
+    },
+    {
+        "category": "firstNames",
+        "value": "Herbert"
+    },
+    {
+        "category": "firstNames",
+        "value": "Horace"
+    },
+    {
+        "category": "firstNames",
+        "value": "Hubert"
+    },
+    {
+        "category": "firstNames",
+        "value": "Hugh"
+    },
+    {
+        "category": "firstNames",
+        "value": "James"
+    },
+    {
+        "category": "firstNames",
+        "value": "John"
+    },
+    {
+        "category": "firstNames",
+        "value": "Kenneth"
+    },
+    {
+        "category": "firstNames",
+        "value": "Leonard"
+    },
+    {
+        "category": "firstNames",
+        "value": "Lionel"
+    },
+    {
+        "category": "firstNames",
+        "value": "Malcolm"
+    },
+    {
+        "category": "firstNames",
+        "value": "Maurice"
+    },
+    {
+        "category": "firstNames",
+        "value": "Nigel"
+    },
+    {
+        "category": "firstNames",
+        "value": "Norman"
+    },
+    {
+        "category": "firstNames",
+        "value": "Percival"
+    },
+    {
+        "category": "firstNames",
+        "value": "Philip"
+    },
+    {
+        "category": "firstNames",
+        "value": "Quentin"
+    },
+    {
+        "category": "firstNames",
+        "value": "Reginald"
+    },
+    {
+        "category": "firstNames",
+        "value": "Roland"
+    },
+    {
+        "category": "firstNames",
+        "value": "Ronald"
+    },
+    {
+        "category": "firstNames",
+        "value": "Rupert"
+    },
+    {
+        "category": "firstNames",
+        "value": "Sidney"
+    },
+    {
+        "category": "firstNames",
+        "value": "Stanley"
+    },
+    {
+        "category": "firstNames",
+        "value": "Terrence"
+    },
+    {
+        "category": "firstNames",
+        "value": "Theodore"
+    },
+    {
+        "category": "firstNames",
+        "value": "Victor"
+    },
+    {
+        "category": "firstNames",
+        "value": "Vincent"
+    },
+    {
+        "category": "firstNames",
+        "value": "Wallace"
+    },
+    {
+        "category": "firstNames",
+        "value": "Walter"
+    },
+    {
+        "category": "firstNames",
+        "value": "Wilfred"
+    },
+    {
+        "category": "firstNames",
+        "value": "Wilbur"
+    },
+    {
+        "category": "firstNames",
+        "value": "Winston"
+    },
+    {
+        "category": "firstNames",
+        "value": "Agatha"
+    },
+    {
+        "category": "firstNames",
+        "value": "Alice"
+    },
+    {
+        "category": "firstNames",
+        "value": "Annie"
+    },
+    {
+        "category": "firstNames",
+        "value": "Audrey"
+    },
+    {
+        "category": "firstNames",
+        "value": "Barbara"
+    },
+    {
+        "category": "firstNames",
+        "value": "Beatrice"
+    },
+    {
+        "category": "firstNames",
+        "value": "Bridget"
+    },
+    {
+        "category": "firstNames",
+        "value": "Catherine"
+    },
+    {
+        "category": "firstNames",
+        "value": "Cecilia"
+    },
+    {
+        "category": "firstNames",
+        "value": "Charlotte"
+    },
+    {
+        "category": "firstNames",
+        "value": "Clara"
+    },
+    {
+        "category": "firstNames",
+        "value": "Constance"
+    },
+    {
+        "category": "firstNames",
+        "value": "Daisy"
+    },
+    {
+        "category": "firstNames",
+        "value": "Dorothy"
+    },
+    {
+        "category": "firstNames",
+        "value": "Edith"
+    },
+    {
+        "category": "firstNames",
+        "value": "Eleanor"
+    },
+    {
+        "category": "firstNames",
+        "value": "Elizabeth"
+    },
+    {
+        "category": "firstNames",
+        "value": "Elsie"
+    },
+    {
+        "category": "firstNames",
+        "value": "Emily"
+    },
+    {
+        "category": "firstNames",
+        "value": "Emma"
+    },
+    {
+        "category": "firstNames",
+        "value": "Ethel"
+    },
+    {
+        "category": "firstNames",
+        "value": "Evelyn"
+    },
+    {
+        "category": "firstNames",
+        "value": "Felicity"
+    },
+    {
+        "category": "firstNames",
+        "value": "Florence"
+    },
+    {
+        "category": "firstNames",
+        "value": "Frances"
+    },
+    {
+        "category": "firstNames",
+        "value": "Gwendolyn"
+    },
+    {
+        "category": "firstNames",
+        "value": "Gladys"
+    },
+    {
+        "category": "firstNames",
+        "value": "Grace"
+    },
+    {
+        "category": "firstNames",
+        "value": "Harriet"
+    },
+    {
+        "category": "firstNames",
+        "value": "Helen"
+    },
+    {
+        "category": "firstNames",
+        "value": "Henrietta"
+    },
+    {
+        "category": "firstNames",
+        "value": "Irene"
+    },
+    {
+        "category": "firstNames",
+        "value": "Isabelle"
+    },
+    {
+        "category": "firstNames",
+        "value": "Jean"
+    },
+    {
+        "category": "firstNames",
+        "value": "Josephine"
+    },
+    {
+        "category": "firstNames",
+        "value": "Julia"
+    },
+    {
+        "category": "firstNames",
+        "value": "Lavinia"
+    },
+    {
+        "category": "firstNames",
+        "value": "Lilian"
+    },
+    {
+        "category": "firstNames",
+        "value": "Louisa"
+    },
+    {
+        "category": "firstNames",
+        "value": "Mabel"
+    },
+    {
+        "category": "firstNames",
+        "value": "Margaret"
+    },
+    {
+        "category": "firstNames",
+        "value": "Marjorie"
+    },
+    {
+        "category": "firstNames",
+        "value": "Mildred"
+    },
+    {
+        "category": "firstNames",
+        "value": "Millicent"
+    },
+    {
+        "category": "firstNames",
+        "value": "Muriel"
+    },
+    {
+        "category": "firstNames",
+        "value": "Nancy"
+    },
+    {
+        "category": "firstNames",
+        "value": "Nora"
+    },
+    {
+        "category": "firstNames",
+        "value": "Olive"
+    },
+    {
+        "category": "firstNames",
+        "value": "Patricia"
+    },
+    {
+        "category": "firstNames",
+        "value": "Penelope"
+    },
+    {
+        "category": "firstNames",
+        "value": "Phyllis"
+    },
+    {
+        "category": "firstNames",
+        "value": "Primrose"
+    },
+    {
+        "category": "firstNames",
+        "value": "Rosalind"
+    },
+    {
+        "category": "firstNames",
+        "value": "Rose"
+    },
+    {
+        "category": "firstNames",
+        "value": "Sylvia"
+    },
+    {
+        "category": "firstNames",
+        "value": "Theodora"
+    },
+    {
+        "category": "firstNames",
+        "value": "Victoria"
+    },
+    {
+        "category": "firstNames",
+        "value": "Vera"
+    },
+    {
+        "category": "firstNames",
+        "value": "Winifred"
+    },
+    {
+        "category": "firstNames",
+        "value": "Yvonne"
+    },
+    {
+        "category": "lastNames",
+        "value": "Abbington"
+    },
+    {
+        "category": "lastNames",
+        "value": "Ashworth"
+    },
+    {
+        "category": "lastNames",
+        "value": "Barclay"
+    },
+    {
+        "category": "lastNames",
+        "value": "Bradshaw"
+    },
+    {
+        "category": "lastNames",
+        "value": "Chamberlain"
+    },
+    {
+        "category": "lastNames",
+        "value": "Chapman"
+    },
+    {
+        "category": "lastNames",
+        "value": "Daventry"
+    },
+    {
+        "category": "lastNames",
+        "value": "Ellsworth"
+    },
+    {
+        "category": "lastNames",
+        "value": "Fairchild"
+    },
+    {
+        "category": "lastNames",
+        "value": "Gladstone"
+    },
+    {
+        "category": "lastNames",
+        "value": "Harrington"
+    },
+    {
+        "category": "lastNames",
+        "value": "Holloway"
+    },
+    {
+        "category": "lastNames",
+        "value": "Kensington"
+    },
+    {
+        "category": "lastNames",
+        "value": "Lancaster"
+    },
+    {
+        "category": "lastNames",
+        "value": "Montague"
+    },
+    {
+        "category": "lastNames",
+        "value": "Norwood"
+    },
+    {
+        "category": "lastNames",
+        "value": "Pembroke"
+    },
+    {
+        "category": "lastNames",
+        "value": "Radcliffe"
+    },
+    {
+        "category": "lastNames",
+        "value": "Sinclair"
+    },
+    {
+        "category": "lastNames",
+        "value": "Thornfield"
+    },
+    {
+        "category": "lastNames",
+        "value": "Whittington"
+    },
+    {
+        "category": "lastNames",
+        "value": "Winchester"
+    },
+    {
+        "category": "lastNames",
+        "value": "Yardley"
+    },
+    {
+        "category": "titles",
+        "value": "Mr."
+    },
+    {
+        "category": "titles",
+        "value": "Mrs."
+    },
+    {
+        "category": "titles",
+        "value": "Miss"
+    },
+    {
+        "category": "titles",
+        "value": "Dr."
+    },
+    {
+        "category": "titles",
+        "value": "Sir"
+    },
+    {
+        "category": "titles",
+        "value": "Lady"
+    },
+    {
+        "category": "titles",
+        "value": "Dragon"
+    },
+    {
+        "category": "reputations",
+        "value": "Highly respected"
+    },
+    {
+        "category": "reputations",
+        "value": "Well-known among the elite"
+    },
+    {
+        "category": "reputations",
+        "value": "A staple of high society"
+    },
+    {
+        "category": "reputations",
+        "value": "A luxurious experience"
+    },
+    {
+        "category": "reputations",
+        "value": "Frequented by nobles and politicians"
+    },
+    {
+        "category": "reputations",
+        "value": "Award-winning and widely acclaimed"
+    },
+    {
+        "category": "reputations",
+        "value": "A historical landmark business"
+    },
+    {
+        "category": "reputations",
+        "value": "Exclusive clientele only"
+    },
+    {
+        "category": "reputations",
+        "value": "Rumored to have royal patronage"
+    },
+    {
+        "category": "reputations",
+        "value": "Has a waiting list months long"
+    },
+    {
+        "category": "reputations",
+        "value": "Long-established and trusted"
+    },
+    {
+        "category": "reputations",
+        "value": "A local institution"
+    },
+    {
+        "category": "reputations",
+        "value": "Known for quality craftsmanship"
+    },
+    {
+        "category": "reputations",
+        "value": "A family business passed down generations"
+    },
+    {
+        "category": "reputations",
+        "value": "Popular with the working class"
+    },
+    {
+        "category": "reputations",
+        "value": "A cornerstone of the community"
+    },
+    {
+        "category": "reputations",
+        "value": "Run by a respected master of the trade"
+    },
+    {
+        "category": "reputations",
+        "value": "Known for fair prices and honesty"
+    },
+    {
+        "category": "reputations",
+        "value": "The go-to place for its services"
+    },
+    {
+        "category": "reputations",
+        "value": "Frequently recommended by word of mouth"
+    },
+    {
+        "category": "reputations",
+        "value": "Mysterious and enigmatic"
+    },
+    {
+        "category": "reputations",
+        "value": "Operates at odd hours"
+    },
+    {
+        "category": "reputations",
+        "value": "Customers leave whispering"
+    },
+    {
+        "category": "reputations",
+        "value": "Shrouded in secrecy"
+    },
+    {
+        "category": "reputations",
+        "value": "Run by an eccentric owner"
+    },
+    {
+        "category": "reputations",
+        "value": "Appears to have no fixed location"
+    },
+    {
+        "category": "reputations",
+        "value": "Only those 'in the know' can find it"
+    },
+    {
+        "category": "reputations",
+        "value": "Ritualistic customer service practices"
+    },
+    {
+        "category": "reputations",
+        "value": "Deals in esoteric and arcane goods"
+    },
+    {
+        "category": "reputations",
+        "value": "Surrounded by rumors and myths"
+    },
+    {
+        "category": "reputations",
+        "value": "Shady dealings and questionable business practices"
+    },
+    {
+        "category": "reputations",
+        "value": "A front for organized crime"
+    },
+    {
+        "category": "reputations",
+        "value": "Underground network operations"
+    },
+    {
+        "category": "reputations",
+        "value": "Frequently raided by the authorities"
+    },
+    {
+        "category": "reputations",
+        "value": "Bribing officials to stay in business"
+    },
+    {
+        "category": "reputations",
+        "value": "Known for back-alley deals"
+    },
+    {
+        "category": "reputations",
+        "value": "Rumored to launder money"
+    },
+    {
+        "category": "reputations",
+        "value": "Run by a former smuggler"
+    },
+    {
+        "category": "reputations",
+        "value": "Heavily guarded and secretive"
+    },
+    {
+        "category": "reputations",
+        "value": "A meeting place for underworld figures"
+    },
+    {
+        "category": "reputations",
+        "value": "An ambitious newcomer"
+    },
+    {
+        "category": "reputations",
+        "value": "Up-and-coming but still unknown"
+    },
+    {
+        "category": "reputations",
+        "value": "Recently renovated and gaining attention"
+    },
+    {
+        "category": "reputations",
+        "value": "Trying to carve a niche in the market"
+    },
+    {
+        "category": "reputations",
+        "value": "Innovative but unproven"
+    },
+    {
+        "category": "reputations",
+        "value": "Struggling to stay afloat"
+    },
+    {
+        "category": "reputations",
+        "value": "Plagued by debt and bad investments"
+    },
+    {
+        "category": "reputations",
+        "value": "Losing customers to competitors"
+    },
+    {
+        "category": "reputations",
+        "value": "Management in constant turmoil"
+    },
+    {
+        "category": "reputations",
+        "value": "Frequently changing ownership"
+    },
+    {
+        "category": "reputations",
+        "value": "Feared by competitors"
+    },
+    {
+        "category": "reputations",
+        "value": "No one dares cross its owner"
+    },
+    {
+        "category": "reputations",
+        "value": "Has a monopoly on its trade"
+    },
+    {
+        "category": "reputations",
+        "value": "Unfairly drives competitors out of business"
+    },
+    {
+        "category": "reputations",
+        "value": "Heavy security and tight restrictions"
+    },
+    {
+        "category": "reputations",
+        "value": "Known for ruthless business tactics"
+    },
+    {
+        "category": "reputations",
+        "value": "Reputation for dealing with troublemakers harshly"
+    },
+    {
+        "category": "reputations",
+        "value": "Haunted by past tragedies"
+    },
+    {
+        "category": "reputations",
+        "value": "Accused of dealing in cursed goods"
+    },
+    {
+        "category": "reputations",
+        "value": "A recent crime happened on its premises"
+    },
+    {
+        "category": "reputations",
+        "value": "Has the strangest clientele"
+    },
+    {
+        "category": "reputations",
+        "value": "The business itself seems alive"
+    },
+    {
+        "category": "reputations",
+        "value": "Employees wear bizarre uniforms"
+    },
+    {
+        "category": "reputations",
+        "value": "Known for its bizarre and unique products"
+    },
+    {
+        "category": "reputations",
+        "value": "Customers leave feeling 'changed'"
+    },
+    {
+        "category": "reputations",
+        "value": "People swear the shop moves locations overnight"
+    },
+    {
+        "category": "reputations",
+        "value": "Visitors report strange occurrences"
+    },
+    {
+        "category": "reputations",
+        "value": "The owner is rumored to be non-human"
+    },
+    {
+        "category": "reputations",
+        "value": "Nobody knows where their goods come from"
+    },
+    {
+        "category": "reputations",
+        "value": "People go in but don’t always come out"
+    },
+    {
+        "category": "secrets",
+        "value": "Front for organized crime"
+    },
+    {
+        "category": "secrets",
+        "value": "Smuggles rare and illegal goods"
+    },
+    {
+        "category": "secrets",
+        "value": "Owner is an informant for the authorities"
+    },
+    {
+        "category": "secrets",
+        "value": "Launders money for criminal organizations"
+    },
+    {
+        "category": "secrets",
+        "value": "Hides contraband in its backrooms"
+    },
+    {
+        "category": "secrets",
+        "value": "Frequented by known criminals"
+    },
+    {
+        "category": "secrets",
+        "value": "Has ties to a notorious gang"
+    },
+    {
+        "category": "secrets",
+        "value": "Bribes officials to avoid inspections"
+    },
+    {
+        "category": "secrets",
+        "value": "Used as a meeting place for spies"
+    },
+    {
+        "category": "secrets",
+        "value": "Sells counterfeit goods disguised as real"
+    },
+    {
+        "category": "secrets",
+        "value": "Hides a secret vault filled with treasure"
+    },
+    {
+        "category": "secrets",
+        "value": "Has a hidden underground chamber"
+    },
+    {
+        "category": "secrets",
+        "value": "Owner possesses a legendary artifact"
+    },
+    {
+        "category": "secrets",
+        "value": "Houses a stolen royal heirloom"
+    },
+    {
+        "category": "secrets",
+        "value": "Customers unknowingly pay with cursed coins"
+    },
+    {
+        "category": "secrets",
+        "value": "Store items hold hidden magical properties"
+    },
+    {
+        "category": "secrets",
+        "value": "A secret map is hidden somewhere inside"
+    },
+    {
+        "category": "secrets",
+        "value": "Owner secretly collects forbidden relics"
+    },
+    {
+        "category": "secrets",
+        "value": "The sign outside is a coded message for those in the know"
+    },
+    {
+        "category": "secrets",
+        "value": "A rare book in its possession holds a lost prophecy"
+    },
+    {
+        "category": "secrets",
+        "value": "Run by a secret society"
+    },
+    {
+        "category": "secrets",
+        "value": "Has dealings with the underworld"
+    },
+    {
+        "category": "secrets",
+        "value": "Protected by powerful supernatural figures"
+    },
+    {
+        "category": "secrets",
+        "value": "A ghost haunts the establishment"
+    },
+    {
+        "category": "secrets",
+        "value": "Customers sometimes disappear without a trace"
+    },
+    {
+        "category": "secrets",
+        "value": "Has an old contract with a demon"
+    },
+    {
+        "category": "secrets",
+        "value": "The business only appears under certain conditions"
+    },
+    {
+        "category": "secrets",
+        "value": "Employees must perform strange rituals before opening"
+    },
+    {
+        "category": "secrets",
+        "value": "Its owner is far older than they appear"
+    },
+    {
+        "category": "secrets",
+        "value": "A secret room leads to another realm"
+    },
+    {
+        "category": "secrets",
+        "value": "Experiments with illegal alchemy"
+    },
+    {
+        "category": "secrets",
+        "value": "The basement hides unethical experiments"
+    },
+    {
+        "category": "secrets",
+        "value": "Sells enchanted items that cause bad luck"
+    },
+    {
+        "category": "secrets",
+        "value": "A cursed object is kept locked away in the back"
+    },
+    {
+        "category": "secrets",
+        "value": "An old debt requires the business to sacrifice something every month"
+    },
+    {
+        "category": "secrets",
+        "value": "A strange illness plagues those who work here too long"
+    },
+    {
+        "category": "secrets",
+        "value": "The building itself seems to whisper at night"
+    },
+    {
+        "category": "secrets",
+        "value": "Customers leave feeling oddly changed"
+    },
+    {
+        "category": "secrets",
+        "value": "The business attracts people who were thought to be dead"
+    },
+    {
+        "category": "secrets",
+        "value": "No one knows who built it or when it opened"
+    },
+    {
+        "category": "secrets",
+        "value": "Is deeply in debt to dangerous people"
+    },
+    {
+        "category": "secrets",
+        "value": "Owner is trying to flee from past crimes"
+    },
+    {
+        "category": "secrets",
+        "value": "Once belonged to someone who mysteriously vanished"
+    },
+    {
+        "category": "secrets",
+        "value": "A powerful rival is trying to ruin it"
+    },
+    {
+        "category": "secrets",
+        "value": "Barely staying afloat, but refuses to close"
+    },
+    {
+        "category": "secrets",
+        "value": "Employees are forced to work under extreme conditions"
+    },
+    {
+        "category": "secrets",
+        "value": "A former partner wants revenge for a betrayal"
+    },
+    {
+        "category": "secrets",
+        "value": "A secret investor is pulling all the strings"
+    },
+    {
+        "category": "secrets",
+        "value": "The business is unknowingly on cursed land"
+    },
+    {
+        "category": "secrets",
+        "value": "Something valuable is buried beneath its foundation"
+    },
+    {
+        "category": "secrets",
+        "value": "A secret rebellion operates from its basement"
+    },
+    {
+        "category": "secrets",
+        "value": "The owner is connected to the royal family"
+    },
+    {
+        "category": "secrets",
+        "value": "Messages for spies are hidden in its receipts"
+    },
+    {
+        "category": "secrets",
+        "value": "A major scandal is about to surface regarding its dealings"
+    },
+    {
+        "category": "secrets",
+        "value": "Its profits fund an underground resistance movement"
+    },
+    {
+        "category": "secrets",
+        "value": "Has access to classified government information"
+    },
+    {
+        "category": "secrets",
+        "value": "A powerful noble visits in disguise"
+    },
+    {
+        "category": "secrets",
+        "value": "Hidden documents inside could topple a government"
+    },
+    {
+        "category": "secrets",
+        "value": "A strange customer always comes to collect 'special orders'"
+    },
+    {
+        "category": "secrets",
+        "value": "The owner was assumed dead years ago, but is alive and running the shop"
+    },
+    {
+        "category": "secrets",
+        "value": "Quietly funds an orphanage or shelter"
+    },
+    {
+        "category": "secrets",
+        "value": "Provides free food to the poor after hours"
+    },
+    {
+        "category": "secrets",
+        "value": "Houses and employs war veterans in need of work"
+    },
+    {
+        "category": "secrets",
+        "value": "Owner donates most of their earnings to charity"
+    },
+    {
+        "category": "secrets",
+        "value": "Offers discounted goods to struggling families"
+    },
+    {
+        "category": "secrets",
+        "value": "Runs a secret soup kitchen in the back alley"
+    },
+    {
+        "category": "secrets",
+        "value": "Provides scholarships for gifted but poor students"
+    },
+    {
+        "category": "secrets",
+        "value": "Supports an underground hospital for the injured"
+    },
+    {
+        "category": "secrets",
+        "value": "Gives safe passage to those fleeing persecution"
+    },
+    {
+        "category": "secrets",
+        "value": "Hides rare medicine for those who need it most"
+    },
+    {
+        "category": "secrets",
+        "value": "Gathers donations for rebuilding homes after disasters"
+    },
+    {
+        "category": "secrets",
+        "value": "Provides free legal aid to the falsely accused"
+    },
+    {
+        "category": "secrets",
+        "value": "Shelters runaway children in need of protection"
+    },
+    {
+        "category": "secrets",
+        "value": "Employs people who would otherwise be shunned by society"
+    },
+    {
+        "category": "secrets",
+        "value": "Forgives debts for customers struggling to pay"
+    },
+    {
+        "category": "secrets",
+        "value": "Gives free repairs for those who can't afford them"
+    },
+    {
+        "category": "secrets",
+        "value": "Passes on unsold goods to struggling merchants"
+    },
+    {
+        "category": "secrets",
+        "value": "Trains apprentices who can't afford an education"
+    },
+    {
+        "category": "secrets",
+        "value": "Smuggles books into areas where knowledge is restricted"
+    },
+    {
+        "category": "secrets",
+        "value": "Supports artists and writers by funding their work"
+    },
+    {
+        "category": "secrets",
+        "value": "Protects the town from a hidden supernatural threat"
+    },
+    {
+        "category": "secrets",
+        "value": "Has a magical charm that wards off misfortune"
+    },
+    {
+        "category": "secrets",
+        "value": "Uses secret enchantments to ensure fair deals"
+    },
+    {
+        "category": "secrets",
+        "value": "A benevolent ghost helps guide lost travelers"
+    },
+    {
+        "category": "secrets",
+        "value": "Knows a prophecy about the town's future and safeguards it"
+    },
+    {
+        "category": "secrets",
+        "value": "Has an ancient blessing that ensures prosperity"
+    },
+    {
+        "category": "secrets",
+        "value": "A secret guardian watches over the business from the shadows"
+    },
+    {
+        "category": "secrets",
+        "value": "Sells items that bring luck and protection to those in need"
+    },
+    {
+        "category": "secrets",
+        "value": "A hidden artifact beneath the shop keeps an old evil at bay"
+    },
+    {
+        "category": "secrets",
+        "value": "Owner can see glimpses of the future and uses it to help others"
+    },
+    {
+        "category": "secrets",
+        "value": "Works hard to keep the city’s streets safe at night"
+    },
+    {
+        "category": "secrets",
+        "value": "Refuses to deal in goods of unethical origin"
+    },
+    {
+        "category": "secrets",
+        "value": "Exposes fraud and corruption among the elite"
+    },
+    {
+        "category": "secrets",
+        "value": "Smuggles people to freedom from oppressive regimes"
+    },
+    {
+        "category": "secrets",
+        "value": "Acts as a neutral ground for rival factions to negotiate peace"
+    },
+    {
+        "category": "secrets",
+        "value": "Shelters political exiles from unjust rulers"
+    },
+    {
+        "category": "secrets",
+        "value": "Shields innocent people from wrongful accusations"
+    },
+    {
+        "category": "secrets",
+        "value": "Keeps a secret record of crimes that others try to erase"
+    },
+    {
+        "category": "secrets",
+        "value": "Secretly repairs historical artifacts and donates them"
+    },
+    {
+        "category": "secrets",
+        "value": "Investigates missing persons and finds lost loved ones"
+    },
+    {
+        "category": "secrets",
+        "value": "Hides free gifts in packages to brighten customers’ days"
+    },
+    {
+        "category": "secrets",
+        "value": "Delivers anonymous care packages to those in need"
+    },
+    {
+        "category": "secrets",
+        "value": "Employs staff who would otherwise be left destitute"
+    },
+    {
+        "category": "secrets",
+        "value": "Buys goods from struggling farmers at fair prices"
+    },
+    {
+        "category": "secrets",
+        "value": "Provides free meals to children without homes"
+    },
+    {
+        "category": "secrets",
+        "value": "Once saved a famous hero but never speaks of it"
+    },
+    {
+        "category": "secrets",
+        "value": "Donates profits to maintain public libraries and schools"
+    },
+    {
+        "category": "secrets",
+        "value": "Funds expeditions to lost civilizations for the sake of knowledge"
+    },
+    {
+        "category": "secrets",
+        "value": "Ensures no workers are ever exploited in their trade"
+    },
+    {
+        "category": "secrets",
+        "value": "Lets struggling musicians perform for free, boosting their careers"
+    },
+    {
+        "category": "secrets",
+        "value": "Provides sanctuary for those fleeing unjust laws"
+    },
+    {
+        "category": "secrets",
+        "value": "Smuggles messages for those who can't afford official couriers"
+    },
+    {
+        "category": "secrets",
+        "value": "Trades with outcasts and the downtrodden, keeping them afloat"
+    },
+    {
+        "category": "secrets",
+        "value": "Secretly funds the resistance against a tyrannical government"
+    },
+    {
+        "category": "secrets",
+        "value": "Provides a safe house for refugees in need of escape"
+    },
+    {
+        "category": "secrets",
+        "value": "Distributes stolen goods back to the poor, like a modern Robin Hood"
+    },
+    {
+        "category": "secrets",
+        "value": "Offers loans with no interest to help struggling businesses"
+    },
+    {
+        "category": "secrets",
+        "value": "Harbors runaway slaves and helps them find new lives"
+    },
+    {
+        "category": "secrets",
+        "value": "Trades only in fair-trade goods, rejecting exploitative practices"
+    },
+    {
+        "category": "secrets",
+        "value": "Teaches literacy to those who were never allowed to learn"
+    },
+    {
+        "category": "secrets",
+        "value": "A hidden library exists beneath the store, open only to a select few"
+    },
+    {
+        "category": "secrets",
+        "value": "Contains a vault with ancient knowledge that no one else has"
+    },
+    {
+        "category": "secrets",
+        "value": "Owner possesses a legendary recipe that can cure any ailment"
+    },
+    {
+        "category": "secrets",
+        "value": "Sells handcrafted items made by artisans long thought lost"
+    },
+    {
+        "category": "secrets",
+        "value": "Has an unknown benefactor who keeps it running despite hardships"
+    },
+    {
+        "category": "secrets",
+        "value": "Holds an ancient secret about the city's foundation"
+    },
+    {
+        "category": "secrets",
+        "value": "A forgotten royal once owned the business but disappeared"
+    },
+    {
+        "category": "secrets",
+        "value": "A secret garden inside produces rare and extinct plants"
+    },
+    {
+        "category": "secrets",
+        "value": "Has a secret handshake for members of a mysterious order"
+    },
+    {
+        "category": "secrets",
+        "value": "A small emblem on every item hints at a greater hidden network"
+    }
+]

@@ -353,45 +353,70 @@
     {
       "name": "Barren",
       "tier": 0,
-      "weight": 6
+      "weight": 5
     },
     {
       "name": "Nomads",
       "tier": 1,
-      "weight": 5
+      "weight": 7
     },
     {
       "name": "Single Home",
       "tier": 1,
-      "weight": 5
+      "weight": 6
     },
     {
       "name": "Homestead",
+      "tier": 2,
+      "weight": 6
+    },
+    {
+      "name": "Several Homesteads",
       "tier": 2,
       "weight": 5
     },
     {
       "name": "Hamlet",
-      "tier": 2,
+      "tier": 3,
       "weight": 5
     },
     {
-      "name": "Village",
+      "name": "Small Village",
       "tier": 4,
       "weight": 4
     },
     {
-      "name": "Tribe",
-      "tier": 3,
-      "weight": 4
-    },
-    {
-      "name": "Town",
-      "tier": 6,
+      "name": "Large Village",
+      "tier": 5,
       "weight": 3
     },
     {
-      "name": "City",
+      "name": "Small Tribe",
+      "tier": 2,
+      "weight": 4
+    },
+    {
+      "name": "Large Tribe",
+      "tier": 3,
+      "weight": 3
+    },
+    {
+      "name": "Small Town",
+      "tier": 5,
+      "weight": 3
+    },
+    {
+      "name": "Large Town",
+      "tier": 6,
+      "weight": 2
+    },
+    {
+      "name": "Small City",
+      "tier": 6,
+      "weight": 2
+    },
+    {
+      "name": "Large City",
       "tier": 8,
       "weight": 2
     },
@@ -399,6 +424,12 @@
       "name": "Metropolis",
       "tier": 10,
       "weight": 1
+    },
+    {
+      "name": "Collapsed State",
+      "tier": 3,
+      "weight": 2,
+      "collapsed": true
     }
   ],
   "temperaments": [
@@ -435,7 +466,8 @@
       "weight": 1
     },
     {
-      "name": "Boring"
+      "name": "Collapsed",
+      "weight": 1
     }
   ],
   "features": [

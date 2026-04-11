@@ -11,8 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const chkRandomAdd = $("#chkRandomAdd");
     const selBase = $("#selBase");
     const selAdd = $("#selAdd");
-    const chkConcatName = $("#chkConcatName");
-    const chkNumbersAdd = $("#chkNumbersAdd");
+    const chkConcatName  = $("#chkConcatName");
+    const chkNumbersAdd  = $("#chkNumbersAdd");
+    const filterSize     = $("#filterSize");
+    const filterRarity   = $("#filterRarity");
+    const filterBehavior = $("#filterBehavior");
+    const filterEnv      = $("#filterEnvironment");
 
     const BASE_MOVE = 30;
     const ZERO = 0;
@@ -75,19 +79,63 @@ document.addEventListener('DOMContentLoaded', () => {
         r.featureDuration ??= "Instant";
         r.featureDamage ??= "";
 
+        // Normalize add-type movement fields to standard names
+        if (!nonEmpty(r.movement) && nonEmpty(r.movementAdd)) r.movement = r.movementAdd;
+        if (!nonEmpty(r.fly)      && nonEmpty(r.flyAdd))      r.fly      = r.flyAdd;
+        if (!nonEmpty(r.swim)     && nonEmpty(r.swimAdd))     r.swim     = r.swimAdd;
+        if (!nonEmpty(r.climb)    && nonEmpty(r.climbAdd))    r.climb    = r.climbAdd;
+
         r.movement = nonEmpty(r.movement) ? r.movement : undefined;
-        r.fly = nonEmpty(r.fly) ? r.fly : undefined;
-        r.swim = nonEmpty(r.swim) ? r.swim : undefined;
-        r.climb = nonEmpty(r.climb) ? r.climb : undefined;
-        r.burrow = nonEmpty(r.burrow) ? r.burrow : undefined;
+        r.fly      = nonEmpty(r.fly)      ? r.fly      : undefined;
+        r.swim     = nonEmpty(r.swim)     ? r.swim     : undefined;
+        r.climb    = nonEmpty(r.climb)    ? r.climb    : undefined;
+        r.burrow   = nonEmpty(r.burrow)   ? r.burrow   : undefined;
 
         return r;
     }
 
     function populateSelectors() {
-        fill(selBase, DATA.base);
+        fillFilter(filterSize,     DATA.base, "size");
+        fillFilter(filterRarity,   DATA.base, "rarity");
+        fillFilter(filterBehavior, DATA.base, "behavior");
+        fillFilter(filterEnv,      DATA.base, "environment");
+        repopulateBase();
         fill(selAdd, DATA.add);
         togglePickers();
+        [filterSize, filterRarity, filterBehavior, filterEnv].forEach(f =>
+            f?.addEventListener("change", repopulateBase)
+        );
+    }
+
+    function fillFilter(sel, arr, key) {
+        if (!sel) return;
+        const vals = [...new Set(arr.map(e => e[key]).filter(nonEmpty))].sort();
+        sel.innerHTML = `<option value="">Any</option>` +
+            vals.map(v => `<option value="${v}">${v}</option>`).join("");
+    }
+
+    function applyBaseFilters(arr) {
+        const size = filterSize?.value    || "";
+        const rar  = filterRarity?.value  || "";
+        const beh  = filterBehavior?.value || "";
+        const env  = filterEnv?.value     || "";
+        const filtered = arr.filter(e =>
+            (!size || e.size        === size) &&
+            (!rar  || e.rarity      === rar)  &&
+            (!beh  || e.behavior    === beh)  &&
+            (!env  || e.environment === env)
+        );
+        return filtered.length ? filtered : arr;
+    }
+
+    function repopulateBase() {
+        const pool = applyBaseFilters(DATA.base);
+        if (!selBase) return;
+        selBase.innerHTML = "";
+        pool.forEach((m, i) => {
+            const label = [m.name, m.baseType].filter(Boolean).join(" — ");
+            selBase.add(new Option(label || `(Unnamed ${i})`, String(DATA.base.indexOf(m))));
+        });
     }
     function fill(select, list) {
         if (!select) return;
@@ -122,9 +170,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function pickBase() {
         if (!DATA.base.length) return {};
-        if (!selBase || chkRandomBase?.checked) return rand(DATA.base);
+        const pool = applyBaseFilters(DATA.base);
+        if (!selBase || chkRandomBase?.checked) return rand(pool);
         const idx = Number(selBase.value) || 0;
-        return DATA.base[idx] || DATA.base[0];
+        return DATA.base[idx] || rand(pool);
     }
     function pickAdd() {
         if (!DATA.add.length) return null;
@@ -174,8 +223,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function buildMovementLine(base, add, numbersAdd) {
         const modes = ["movement", "fly", "swim", "climb", "burrow"];
-        const b = coerceMove(base);
-        const a = coerceMove(add);
+        const b = coerceMove(base, BASE_MOVE);
+        const a = coerceMove(add, ZERO);
         const out = {};
 
         for (const m of modes) {
@@ -200,11 +249,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return `Movement: ${parts.length ? parts.join(", ") : "—"}`;
     }
 
-    function coerceMove(row = {}) {
+    function coerceMove(row = {}, baseWalk = BASE_MOVE) {
         const out = {};
-        const walkRaw = nonEmpty(row.movement) ? row.movement : BASE_MOVE;
-        const walk = toNum(walkRaw, BASE_MOVE);
-        out.movement = isFinite(walk) ? walk : BASE_MOVE;
+        const walkMod = nonEmpty(row.movement) ? (isFinite(+row.movement) ? +row.movement : 0) : 0;
+        out.movement = baseWalk + walkMod;
 
         for (const m of ["fly", "swim", "climb", "burrow"]) {
             const raw = nonEmpty(row[m]) ? row[m] : ZERO;

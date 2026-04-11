@@ -1,110 +1,288 @@
-{
-    "prefix": [
-        "Field",
-        "Iron",
-        "Pixie",
-        "Drift",
-        "Root",
-        "Glow",
-        "Quiet",
-        "Black",
-        "Storm",
-        "Ash",
-        "Ember",
-        "Silver"
-    ],
-    "base": [
-        "Tonic",
-        "Elixir",
-        "Draught",
-        "Tea",
-        "Serum",
-        "Salts",
-        "Vial",
-        "Dust",
-        "Capsule",
-        "Remedy",
-        "Mixture",
-        "Potion"
-    ],
-    "suffix": [
-        "No.3",
-        "Mk-II",
-        "Prime",
-        "Blue",
-        "Red",
-        "Standard",
-        "Glass",
-        "Amber",
-        "Special",
-        ""
-    ],
-    "desc_templates": [
-        "A {flavor} concoction brewed by {maker}.",
-        "A {flavor} remedy traded in {place}.",
-        "A {flavor} vial marked with {symbol}.",
-        "A {flavor} mixture trusted by {folk}."
-    ],
-    "flavor": [
-        "herbal",
-        "metallic",
-        "sweet",
-        "smoky",
-        "bitter",
-        "clean",
-        "fey-scented"
-    ],
-    "maker": [
-        "local alchemists",
-        "gapwardens",
-        "black market medics",
-        "rakkari traders",
-        "forest witches"
-    ],
-    "place": [
-        "stormports",
-        "quarry camps",
-        "undermarkets",
-        "village stalls",
-        "traveling fairs"
-    ],
-    "symbol": [
-        "a faded guild seal",
-        "a cracked sigil",
-        "a bright rune",
-        "an industrial stamp"
-    ],
-    "folk": [
-        "miners",
-        "pilgrims",
-        "dockhands",
-        "scholars",
-        "soldiers"
-    ],
-"effects": [
+[
     {
+        "category": "prefix",
+        "value": "Field"
+    },
+    {
+        "category": "prefix",
+        "value": "Iron"
+    },
+    {
+        "category": "prefix",
+        "value": "Pixie"
+    },
+    {
+        "category": "prefix",
+        "value": "Drift"
+    },
+    {
+        "category": "prefix",
+        "value": "Root"
+    },
+    {
+        "category": "prefix",
+        "value": "Glow"
+    },
+    {
+        "category": "prefix",
+        "value": "Quiet"
+    },
+    {
+        "category": "prefix",
+        "value": "Black"
+    },
+    {
+        "category": "prefix",
+        "value": "Storm"
+    },
+    {
+        "category": "prefix",
+        "value": "Ash"
+    },
+    {
+        "category": "prefix",
+        "value": "Ember"
+    },
+    {
+        "category": "prefix",
+        "value": "Silver"
+    },
+    {
+        "category": "base",
+        "value": "Tonic"
+    },
+    {
+        "category": "base",
+        "value": "Elixir"
+    },
+    {
+        "category": "base",
+        "value": "Draught"
+    },
+    {
+        "category": "base",
+        "value": "Tea"
+    },
+    {
+        "category": "base",
+        "value": "Serum"
+    },
+    {
+        "category": "base",
+        "value": "Salts"
+    },
+    {
+        "category": "base",
+        "value": "Vial"
+    },
+    {
+        "category": "base",
+        "value": "Dust"
+    },
+    {
+        "category": "base",
+        "value": "Capsule"
+    },
+    {
+        "category": "base",
+        "value": "Remedy"
+    },
+    {
+        "category": "base",
+        "value": "Mixture"
+    },
+    {
+        "category": "base",
+        "value": "Potion"
+    },
+    {
+        "category": "suffix",
+        "value": "No.3"
+    },
+    {
+        "category": "suffix",
+        "value": "Mk-II"
+    },
+    {
+        "category": "suffix",
+        "value": "Prime"
+    },
+    {
+        "category": "suffix",
+        "value": "Blue"
+    },
+    {
+        "category": "suffix",
+        "value": "Red"
+    },
+    {
+        "category": "suffix",
+        "value": "Standard"
+    },
+    {
+        "category": "suffix",
+        "value": "Glass"
+    },
+    {
+        "category": "suffix",
+        "value": "Amber"
+    },
+    {
+        "category": "suffix",
+        "value": "Special"
+    },
+    {
+        "category": "suffix",
+        "value": ""
+    },
+    {
+        "category": "desc_templates",
+        "value": "A {flavor} concoction brewed by {maker}."
+    },
+    {
+        "category": "desc_templates",
+        "value": "A {flavor} remedy traded in {place}."
+    },
+    {
+        "category": "desc_templates",
+        "value": "A {flavor} vial marked with {symbol}."
+    },
+    {
+        "category": "desc_templates",
+        "value": "A {flavor} mixture trusted by {folk}."
+    },
+    {
+        "category": "flavor",
+        "value": "herbal"
+    },
+    {
+        "category": "flavor",
+        "value": "metallic"
+    },
+    {
+        "category": "flavor",
+        "value": "sweet"
+    },
+    {
+        "category": "flavor",
+        "value": "smoky"
+    },
+    {
+        "category": "flavor",
+        "value": "bitter"
+    },
+    {
+        "category": "flavor",
+        "value": "clean"
+    },
+    {
+        "category": "flavor",
+        "value": "fey-scented"
+    },
+    {
+        "category": "maker",
+        "value": "local alchemists"
+    },
+    {
+        "category": "maker",
+        "value": "gapwardens"
+    },
+    {
+        "category": "maker",
+        "value": "black market medics"
+    },
+    {
+        "category": "maker",
+        "value": "rakkari traders"
+    },
+    {
+        "category": "maker",
+        "value": "forest witches"
+    },
+    {
+        "category": "place",
+        "value": "stormports"
+    },
+    {
+        "category": "place",
+        "value": "quarry camps"
+    },
+    {
+        "category": "place",
+        "value": "undermarkets"
+    },
+    {
+        "category": "place",
+        "value": "village stalls"
+    },
+    {
+        "category": "place",
+        "value": "traveling fairs"
+    },
+    {
+        "category": "symbol",
+        "value": "a faded guild seal"
+    },
+    {
+        "category": "symbol",
+        "value": "a cracked sigil"
+    },
+    {
+        "category": "symbol",
+        "value": "a bright rune"
+    },
+    {
+        "category": "symbol",
+        "value": "an industrial stamp"
+    },
+    {
+        "category": "folk",
+        "value": "miners"
+    },
+    {
+        "category": "folk",
+        "value": "pilgrims"
+    },
+    {
+        "category": "folk",
+        "value": "dockhands"
+    },
+    {
+        "category": "folk",
+        "value": "scholars"
+    },
+    {
+        "category": "folk",
+        "value": "soldiers"
+    },
+    {
+        "category": "effects",
         "name": "Restorative Surge",
-        "tmpl": "Mends [[wound:P]], knitting torn flesh and easing pain."
+        "value": "Mends [[wound:P]], knitting torn flesh and easing pain."
     },
     {
+        "category": "effects",
         "name": "Purifying Draught",
-        "tmpl": "Cleanses [[condition:HALF]], washing away toxins or afflictions."
+        "value": "Cleanses [[condition:HALF]], washing away toxins or afflictions."
     },
     {
+        "category": "effects",
         "name": "Fortified Skin",
-        "tmpl": "Bolsters the body, granting {{ARMOR}} temporary Armor for a short time."
+        "value": "Bolsters the body, granting {{ARMOR}} temporary Armor for a short time."
     },
     {
+        "category": "effects",
         "name": "Focused Mind",
-        "tmpl": "Sharpens your senses; gain +{{CEILHALF}} to one chosen check for [[minute:1]]."
+        "value": "Sharpens your senses; gain +{{CEILHALF}} to one chosen check for [[minute:1]]."
     },
     {
+        "category": "effects",
         "name": "Regenerative Tonic",
-        "tmpl": "Stimulates rapid healing, restoring [[wound:1]] each turn for [[turn:P]]."
+        "value": "Stimulates rapid healing, restoring [[wound:1]] each turn for [[turn:P]]."
     },
     {
+        "category": "effects",
         "name": "Antivenom Serum",
-        "tmpl": "Neutralizes poisons or diseases. Stronger ailments are suppressed for [[minute:P]]."
+        "value": "Neutralizes poisons or diseases. Stronger ailments are suppressed for [[minute:P]]."
     }
 ]
-}

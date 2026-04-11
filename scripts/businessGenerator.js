@@ -9,7 +9,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function loadBusinessData() {
     try {
       const res = await fetch("data/business.json");
-      businessData = await res.json();
+      const flat = await res.json();
+      for (const item of flat) {
+        if (!businessData[item.category]) businessData[item.category] = [];
+        businessData[item.category].push(item.value);
+      }
     } catch (err) {
       console.error("Failed to load business.json:", err);
     }

@@ -12,7 +12,9 @@
     "properties": "",
     "bulk": 1,
     "description": "",
-    "tags": []
+    "tags": [
+      "light armor"
+    ]
   },
   {
     "name": "Traveler's Cloak",

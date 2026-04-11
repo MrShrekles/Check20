@@ -1,31 +1,85 @@
-.two-column h3,
-.damage-tables h3 {
-    font-size: 1.2rem;
-    border-bottom: 2px solid var(--gold-1, var(--theme, #444));
-    padding-bottom: 0.25rem;
-    margin-top: 1.5rem;
+/* ===== Intro ===== */
+.damage-intro p {
+    max-width: 80ch;
+    margin-bottom: 0.6rem;
 }
 
-.two-column ul,
-.damage-tables ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.two-column li,
-.damage-tables li {
-    margin-bottom: 0.75rem;
-}
-
-.two-column li {
-    background-color: var(--theme-1);
+.special-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.75rem;
+    padding: 0.6rem 1rem;
+    background: var(--theme-1);
+    border-left: 3px solid var(--gold);
     border-radius: var(--border-radius);
-    padding: 5px;
+    font-size: 0.9rem;
 }
 
-.two-column li strong,
-.damage-tables li strong {
-    display: block;
+/* ===== Card Grid ===== */
+.damage-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* ===== Individual Cards ===== */
+.damage-card {
+    background: var(--theme-dark);
+    border: 1px solid var(--theme-1);
+    border-radius: var(--border-radius);
+    padding: 14px 16px;
+    width: 220px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.damage-card h3 {
+    font-size: 1rem;
+    margin: 0 0 4px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--theme-1);
+    color: var(--gold);
+}
+
+.damage-card p {
+    font-size: 0.82rem;
+    opacity: 0.85;
+    margin: 0;
+    line-height: 1.45;
+}
+
+.damage-card ol {
+    margin: 6px 0 0 0;
+    padding-left: 1.4em;
+    font-size: 0.85rem;
+}
+
+.damage-card ol li {
+    margin-bottom: 3px;
+    line-height: 1.35;
+}
+
+.damage-card ol li::marker {
+    color: var(--gold);
     font-weight: bold;
+}
+
+/* Healing has no table — let it shrink naturally */
+.damage-card--healing {
+    border-color: #a44;
+}
+
+.damage-card--healing h3 {
+    border-bottom-color: #a44;
+    color: #e88;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+    .damage-card {
+        width: 100%;
+    }
 }
