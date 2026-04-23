@@ -13,6 +13,7 @@ Promise.all([
     HEX = hex;
     SPECIES_LIST = sp.species || [];
     buildModTables();
+    loadHistory();
 }).catch(err => console.error('Data load failed:', err));
 
 // ── Helpers ─────────────────────────────────────
@@ -31,6 +32,20 @@ function weightedPick(arr, weightFn) {
     arr.forEach(item => {
         const w = Math.floor((weightFn ? weightFn(item) : (item.weight || 1)) * 10);
         for (let i = 0; i < w; i++) pool.push(item);
+    });
+    return pool.length ? pool[rnd(pool.length)] : arr[rnd(arr.length)];
+}
+
+// Like weightedPick but multiplies the weight of whichever item matches preferVal.
+// preferKey is the property to match on (e.g. 'name', 'pl').
+const JOURNEY_BIAS = 3;
+function weightedPickBiased(arr, weightFn, preferKey, preferVal) {
+    if (preferVal == null) return weightedPick(arr, weightFn);
+    const pool = [];
+    arr.forEach(item => {
+        const w = Math.floor((weightFn ? weightFn(item) : (item.weight || 1)) * 10);
+        const bias = item[preferKey] === preferVal ? JOURNEY_BIAS : 1;
+        for (let i = 0; i < w * bias; i++) pool.push(item);
     });
     return pool.length ? pool[rnd(pool.length)] : arr[rnd(arr.length)];
 }
@@ -84,18 +99,44 @@ function pickUnique(arr, count, weightFn) {
     return results;
 }
 
+// ── Local persistence ────────────────────────────
+const STORAGE_KEY = 'hexgen-history';
+let hexHistory = [];
+
+function genId() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+}
+
+function saveHistory() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(hexHistory)); } catch(e) {}
+}
+
+function addEntry(type, data) {
+    const entry = { id: genId(), type, data };
+    hexHistory.unshift(entry);
+    saveHistory();
+    return entry.id;
+}
+
+function removeEntry(id) {
+    hexHistory = hexHistory.filter(e => e.id !== id);
+    saveHistory();
+}
+
 // ── Roll a full hex ──────────────────────────────
-function rollHex(terrain) {
+// prevHex: optional previous hex object for journey bias
+function rollHex(terrain, prevHex) {
     const t = (!terrain || terrain === 'all') ? 'all' : terrain;
     const envTable = HEX.environments[t] || HEX.environments.all;
+    const p = prevHex || null;
 
-    const lord = weightedPick(HEX.lords).name;
-    const env = weightedPick(envTable).name;
-    const enemy = weightedPick(HEX.enemies).name;
-    const population = weightedPick(HEX.populations);
+    const lord = weightedPickBiased(HEX.lords, null, 'name', p?.lord).name;
+    const env = weightedPickBiased(envTable, null, 'name', p?.env).name;
+    const enemy = weightedPickBiased(HEX.enemies, null, 'name', p?.enemy).name;
+    const population = weightedPickBiased(HEX.populations, null, 'name', p?.population);
     const counts = popCounts(population);
-    const temperament = counts.forceTemperament || weightedPick(HEX.temperaments).name;
-    const food = weightedPick(HEX.foods).name;
+    const temperament = counts.forceTemperament || weightedPickBiased(HEX.temperaments, null, 'name', p?.temperament).name;
+    const food = weightedPickBiased(HEX.foods, null, 'name', p?.food).name;
 
     const features = counts.features > 0 ? pickUnique(HEX.features, counts.features) : [];
     const resources = counts.resources > 0 ? pickUnique(HEX.resources, counts.resources) : [];
@@ -103,11 +144,13 @@ function rollHex(terrain) {
         ? Array.from({ length: counts.species }, () => formatSpecies(weightedPick(SPECIES_LIST, rarityWeight)))
         : [];
 
-    return { lord, env, enemy, population: population.name, temperament, food, features, resources, species, terrain: t };
+    const pl = weightedPickBiased(HEX.powerLevels, item => item.weight, 'pl', p?.pl).pl;
+
+    return { lord, env, enemy, population: population.name, temperament, food, features, resources, species, pl, terrain: t };
 }
 
 // ── Build a single hex card ──────────────────────
-function buildHexCard(hex, hexNum) {
+function buildHexCard(hex, hexNum, entryId) {
     const card = document.createElement('div');
     card.className = 'hex-result-card';
 
@@ -127,8 +170,8 @@ function buildHexCard(hex, hexNum) {
         : '<span class="hex-tag tag-empty">None</span>';
 
     const enemyHTML = hex.enemy !== 'None'
-        ? `<div class="hex-mod-row"><span class="mod-key">Enemy</span><span class="mod-val enemy-val">${hex.enemy}</span></div>`
-        : '';
+        ? `<div class="hex-mod-row"><span class="mod-key">Enemy</span><span class="mod-val enemy-val">${hex.enemy}</span><span class="hex-divider"></span><span class="mod-key">PL</span><span class="mod-val pl-val">${hex.pl}</span></div>`
+        : `<div class="hex-mod-row"><span class="mod-key">PL</span><span class="mod-val pl-val">${hex.pl}</span></div>`;
 
     const numLabel = hexNum != null ? `<span class="hex-num">Hex ${hexNum}</span>` : '';
 
@@ -136,46 +179,53 @@ function buildHexCard(hex, hexNum) {
         <div class="hex-card-inner ${isBarren ? 'void-card' : ''}">
             <div class="hex-terrain-label">
                 ${numLabel}
-                <span class="hex-env">${hex.env}</span>
+                <span class="hex-env" style="color:${lordColor}">${hex.lord}</span>
             </div>
-            <div class="hex-title" style="color:${lordColor}">${hex.lord}</div>
+            <div class="hex-title">${hex.env}</div>
             <div class="hex-mods">
-                <div class="hex-mod-row">
-                    <span class="mod-key">People</span>
+                <div class="hex-mod-row hex-mod-row--species">
+                    <span class="mod-key">Size</span>
                     <span class="mod-val">${hex.population}</span>
+                    <span class="hex-divider"></span>
+                    <div class="hex-tags hex-tags--inline">${speciesHTML}</div>
+                </div>
+                <div class="hex-mod-row">
+                    <span class="mod-key">Food</span>
+                    <span class="mod-val">${hex.food}</span>
                     <span class="hex-divider"></span>
                     <span class="mod-key">Mood</span>
                     <span class="mod-val">${hex.temperament}</span>
                 </div>
                 ${enemyHTML}
-                <div class="hex-mod-row">
-                    <span class="mod-key">Food</span>
-                    <span class="mod-val">${hex.food}</span>
-                </div>
-            </div>
-            <div class="hex-tag-section">
-                <div class="tag-group-label">Features</div>
-                <div class="hex-tags">${featuresHTML}</div>
             </div>
             <div class="hex-tag-section">
                 <div class="tag-group-label">Resources</div>
                 <div class="hex-tags">${resourcesHTML}</div>
             </div>
             <div class="hex-tag-section">
-                <div class="tag-group-label">Species</div>
-                <div class="hex-tags">${speciesHTML}</div>
+                <div class="tag-group-label">Features</div>
+                <div class="hex-tags">${featuresHTML}</div>
             </div>
             <button class="delete-hex">x</button>
         </div>`;
 
-    card.querySelector('.delete-hex').addEventListener('click', () => card.remove());
+    card.querySelector('.delete-hex').addEventListener('click', () => {
+        if (entryId) removeEntry(entryId);
+        card.remove();
+    });
     return card;
 }
 
 // ── Build a journey (travel mode) — paginated ───
-function buildJourney(terrain, hexCount) {
-    const hexes = Array.from({ length: hexCount }, () => rollHex(terrain));
-    const connectors = Array.from({ length: hexCount - 1 }, () => pickArr(HEX.travelConnectors));
+function buildJourney(terrain, hexCount, savedData, entryId) {
+    const hexes = savedData ? savedData.hexes : (() => {
+        const h = [];
+        for (let i = 0; i < hexCount; i++) h.push(rollHex(terrain, h[i - 1] || null));
+        return h;
+    })();
+    const count = hexes.length;
+    const connectors = savedData ? savedData.connectors
+        : Array.from({ length: count - 1 }, () => pickArr(HEX.travelConnectors));
     let page = 0;
 
     const wrap = document.createElement('div');
@@ -183,7 +233,7 @@ function buildJourney(terrain, hexCount) {
 
     const header = document.createElement('div');
     header.className = 'journey-header';
-    header.innerHTML = `<span class="journey-title">Journey</span> <span class="journey-meta">${hexCount} hex${hexCount > 1 ? 'es' : ''} &middot; ~${hexCount} week${hexCount > 1 ? 's' : ''} travel &middot; ${cap(terrain)}</span>
+    header.innerHTML = `<span class="journey-title">Journey</span> <span class="journey-meta">${count} hex${count > 1 ? 'es' : ''} &middot; ~${count} week${count > 1 ? 's' : ''} travel &middot; ${cap(terrain)}</span>
         <button class="delete-hex journey-del">Remove Journey</button>`;
     wrap.appendChild(header);
 
@@ -198,7 +248,7 @@ function buildJourney(terrain, hexCount) {
         card.querySelector('.delete-hex').style.display = 'none';
         pageArea.appendChild(card);
 
-        if (page < hexCount - 1) {
+        if (page < count - 1) {
             const connBlock = document.createElement('div');
             connBlock.className = 'journey-connector-block';
             connBlock.innerHTML = `<div class="travel-connector"><span class="connector-arrow">&#8595;</span><em>${connectors[page]}</em></div>`;
@@ -216,9 +266,9 @@ function buildJourney(terrain, hexCount) {
         }
         const counter = document.createElement('span');
         counter.className = 'journey-page-counter';
-        counter.textContent = `${page + 1} / ${hexCount}`;
+        counter.textContent = `${page + 1} / ${count}`;
         nav.appendChild(counter);
-        if (page < hexCount - 1) {
+        if (page < count - 1) {
             const nextBtn = document.createElement('button');
             nextBtn.className = 'button journey-nav-btn';
             nextBtn.textContent = 'Next →';
@@ -229,30 +279,61 @@ function buildJourney(terrain, hexCount) {
     }
 
     render();
-    header.querySelector('.journey-del').addEventListener('click', () => wrap.remove());
+    header.querySelector('.journey-del').addEventListener('click', () => {
+        if (entryId) removeEntry(entryId);
+        wrap.remove();
+    });
     return wrap;
 }
 
 // ── Events ──────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    const history = document.getElementById('hex-history');
+    const historyEl = document.getElementById('hex-history');
     const terrain = () => document.getElementById('terrain-pick').value;
 
     document.getElementById('roll-hex-btn').addEventListener('click', () => {
         if (!HEX) return;
-        history.prepend(buildHexCard(rollHex(terrain())));
+        const hex = rollHex(terrain());
+        const id = addEntry('hex', hex);
+        historyEl.prepend(buildHexCard(hex, null, id));
     });
 
     document.getElementById('roll-travel-btn').addEventListener('click', () => {
         if (!HEX) return;
-        const count = parseInt(document.getElementById('travel-hexes').value) || 4;
-        history.prepend(buildJourney(terrain(), Math.min(Math.max(count, 1), 12)));
+        const n = Math.min(Math.max(parseInt(document.getElementById('travel-hexes').value) || 4, 1), 12);
+        const t = terrain();
+        const hexes = [];
+        for (let i = 0; i < n; i++) hexes.push(rollHex(t, hexes[i - 1] || null));
+        const connectors = Array.from({ length: n - 1 }, () => pickArr(HEX.travelConnectors));
+        const journeyData = { hexes, connectors, terrain: t, count: n };
+        const id = addEntry('journey', journeyData);
+        historyEl.prepend(buildJourney(t, n, journeyData, id));
     });
 
     document.getElementById('clear-hexes').addEventListener('click', () => {
-        history.innerHTML = '';
+        historyEl.innerHTML = '';
+        hexHistory = [];
+        saveHistory();
     });
 });
+
+function loadHistory() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) return;
+        hexHistory = JSON.parse(saved);
+    } catch(e) { hexHistory = []; return; }
+
+    const historyEl = document.getElementById('hex-history');
+    if (!historyEl) return;
+    [...hexHistory].reverse().forEach(entry => {
+        if (entry.type === 'hex') {
+            historyEl.prepend(buildHexCard(entry.data, null, entry.id));
+        } else if (entry.type === 'journey') {
+            historyEl.prepend(buildJourney(entry.data.terrain, entry.data.count, entry.data, entry.id));
+        }
+    });
+}
 
 // ── Modifier tables ─────────────────────────────
 function buildModTables() {
@@ -265,6 +346,7 @@ function buildModTables() {
             tbody.appendChild(tr);
         });
     };
+    fill('t-pl', HEX?.powerLevels, ['pl', 'weight']);
     fill('t-lords', HEX?.lords, ['name', 'weight']);
     fill('t-enemies', HEX?.enemies, ['name', 'weight']);
     fill('t-pops', HEX?.populations, ['name', 'tier', 'weight']);

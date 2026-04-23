@@ -199,7 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const infoLine = joinDistinct([base?.baseType, add?.baseType], " + ");
         const description = [base?.description, add?.description].filter(nonEmpty).join(" ");
-        const movementText = buildMovementLine(base, add, numbersAdd);
+        const moveResult   = buildMovementLine(base, add, numbersAdd);
+        const movementText = moveResult.text;
         const environment = joinDistinct([base?.environment, add?.environment], " / ") || "—";
         const behavior = joinDistinct([base?.behavior, add?.behavior], " / ") || "—";
         const rarity = joinDistinct([base?.rarity, add?.rarity], " / ") || "—";
@@ -211,7 +212,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (bf) features.push(bf);
         if (af) features.push(af);
 
-        return { name, origins, infoLine, description, movementText, environment, behavior, rarity, size, features };
+        return { name, origins, infoLine, description, movementText,
+                 moveWalk: moveResult.walk, moveFly: moveResult.fly,
+                 moveSwim: moveResult.swim, moveClimb: moveResult.climb,
+                 environment, behavior, rarity, size, features };
     }
 
     function joinDistinct(vals, sep = " ") {
@@ -246,7 +250,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (out.climb) parts.push(modeText("Climb", out.climb));
         if (out.burrow) parts.push(modeText("Burrow", out.burrow));
 
-        return `Movement: ${parts.length ? parts.join(", ") : "—"}`;
+        return {
+            text: `Movement: ${parts.length ? parts.join(", ") : "—"}`,
+            walk:  isFinite(out.movement) ? +out.movement : 0,
+            fly:   isFinite(out.fly)      ? +out.fly      : 0,
+            swim:  isFinite(out.swim)     ? +out.swim     : 0,
+            climb: isFinite(out.climb)    ? +out.climb    : 0,
+        };
     }
 
     function coerceMove(row = {}, baseWalk = BASE_MOVE) {
@@ -311,7 +321,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const metaTxt = meta.length ? ` (${meta.join(" · ")})` : "";
         const eff = nonEmpty(src.featureEffect) ? `: ${src.featureEffect}` : "";
 
-        return { text: `${name}${metaTxt}${eff}`, isAdd: !!isAdd };
+        return { text: `${name}${metaTxt}${eff}`, isAdd: !!isAdd,
+                 name, action: src.featureAction, range: src.featureRange,
+                 duration: src.featureDuration, damage: src.featureDamage,
+                 effect: src.featureEffect };
     }
 
     function renderCard(mon) {
@@ -347,12 +360,29 @@ document.addEventListener('DOMContentLoaded', () => {
       ${featuresHTML}
       <div class="button-row">
         <button class="secondary btn-copy">Copy</button>
+        <button class="secondary btn-add-book">Add to Book</button>
         <button class="ghost btn-remove">Remove</button>
       </div>
     `.trim();
 
         el.__mon = mon;
         el.querySelector(".btn-remove")?.addEventListener("click", () => { el.remove(); autosaveNow(); });
+        el.querySelector(".btn-add-book")?.addEventListener("click", (e) => {
+            if (typeof window.addToBookFromGenerator === "function") {
+                // Capture any in-place edits the user made to the contenteditable fields
+                const mon = {
+                    ...el.__mon,
+                    name:        el.querySelector(".title")?.textContent.trim()    || el.__mon.name,
+                    infoLine:    el.querySelector(".pillline")?.textContent.trim() || el.__mon.infoLine,
+                    description: el.querySelector(".mon-meta")?.textContent.trim() || el.__mon.description,
+                };
+                window.addToBookFromGenerator(mon);
+                const btn = e.currentTarget;
+                btn.textContent = "Added!";
+                btn.disabled = true;
+                setTimeout(() => { btn.textContent = "Add to Book"; btn.disabled = false; }, 1500);
+            }
+        });
         el.querySelector(".btn-copy")?.addEventListener("click", async () => {
             const text = [
                 el.querySelector(".title")?.textContent.trim(),

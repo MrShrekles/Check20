@@ -53,6 +53,7 @@
                     <button class="raw-tab" onclick="showTab('foods',this)">Food</button>
                     <button class="raw-tab" onclick="showTab('resources',this)">Resources</button>
                     <button class="raw-tab" onclick="showTab('species',this)">Species</button>
+                    <button class="raw-tab" onclick="showTab('pl',this)">Power Level</button>
                 </div>
 
                 <div id="tab-lords" class="raw-panel active">
@@ -156,6 +157,21 @@
                             </tr>
                         </thead>
                         <tbody id="t-species"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-pl" class="raw-panel">
+                    <p style="color:var(--cream);font-size:.85rem;margin-bottom:.5vw;">
+                        Power Level indicates the strength of monsters and threats found in the area. PL 1 is weakest, PL 10 is most dangerous. Lower PLs roll more frequently.
+                    </p>
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>PL</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-pl"></tbody>
                     </table>
                 </div>
 

@@ -144,6 +144,11 @@
     color: var(--red-2);
 }
 
+.pl-val {
+    color: var(--gold);
+    font-weight: bold;
+}
+
 .hex-divider {
     display: inline-block;
     width: 1px;
@@ -173,6 +178,20 @@
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
+}
+
+.hex-tags--inline {
+    flex: 1;
+    min-width: 0;
+}
+
+.hex-mod-row--species {
+    align-items: flex-start;
+}
+
+.hex-mod-row--species .mod-key,
+.hex-mod-row--species .mod-val {
+    padding-top: 2px;
 }
 
 .hex-tag {

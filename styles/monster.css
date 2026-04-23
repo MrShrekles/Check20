@@ -422,6 +422,13 @@
     font-size: 0.9em;
     font-family: inherit;
     resize: vertical;
+    width: 90%;
+}
+
+.nm-field textarea {
+    min-height: fit-content;
+    height: 60px;
+    max-height: 120px;
 }
 
 .nm-field input:focus,

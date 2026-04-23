@@ -714,86 +714,16 @@
     }
   ],
   "powerLevels": [
-    {
-      "pl": 1,
-      "weight": 1
-    },
-    {
-      "pl": 2,
-      "weight": 2
-    },
-    {
-      "pl": 3,
-      "weight": 3
-    },
-    {
-      "pl": 4,
-      "weight": 4
-    },
-    {
-      "pl": 5,
-      "weight": 5
-    },
-    {
-      "pl": 6,
-      "weight": 6
-    },
-    {
-      "pl": 7,
-      "weight": 7
-    },
-    {
-      "pl": 8,
-      "weight": 7
-    },
-    {
-      "pl": 9,
-      "weight": 6
-    },
-    {
-      "pl": 10,
-      "weight": 5
-    },
-    {
-      "pl": 11,
-      "weight": 4
-    },
-    {
-      "pl": 12,
-      "weight": 3
-    },
-    {
-      "pl": 13,
-      "weight": 2
-    },
-    {
-      "pl": 14,
-      "weight": 1
-    },
-    {
-      "pl": 15,
-      "weight": 1
-    },
-    {
-      "pl": 16,
-      "weight": 1
-    },
-    {
-      "pl": 17,
-      "weight": 1
-    },
-    {
-      "pl": 18,
-      "weight": 1
-    },
-    {
-      "pl": 19,
-      "weight": 1
-    },
-    {
-      "pl": 20,
-      "weight": 1
-    }
+    { "pl": 1, "weight": 6 },
+    { "pl": 2, "weight": 5 },
+    { "pl": 3, "weight": 5 },
+    { "pl": 4, "weight": 4 },
+    { "pl": 5, "weight": 4 },
+    { "pl": 6, "weight": 3 },
+    { "pl": 7, "weight": 3 },
+    { "pl": 8, "weight": 2 },
+    { "pl": 9, "weight": 2 },
+    { "pl": 10, "weight": 1 }
   ],
   "travelConnectors": [
     "The route ahead is open but the heat builds steadily.",
