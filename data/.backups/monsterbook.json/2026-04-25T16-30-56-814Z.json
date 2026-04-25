@@ -11,7 +11,7 @@
     "lore": "Ironhide Brutes roam the broken badlands and deep forests of the Prime. Hunters who survive an encounter describe the sound of cracking earth beneath their charge — and the silence after.",
     "walk": 35,
     "fly": 0,
-    "swim": 0,
+    "swim": 10,
     "climb": 0,
     "feature_name": "Ironhide Charge",
     "feature_type": "Action",
@@ -118,7 +118,7 @@
     "swim": 0,
     "climb": 0,
     "feature_name": "Undeath",
-    "feature_type": "Special",
+    "feature_type": "passive",
     "feature_range": "Self",
     "feature_effect": "If brought to 0 wounds, make a Physical check. Per success gain [PL] healing, on a failure the undead is destroyed.",
     "feature_duration": "Instant",
@@ -141,7 +141,16 @@
       "damage": "1",
       "damage_type": "Psychic"
     },
-    "features": [],
+    "features": [
+      {
+        "name": "",
+        "type": "",
+        "range": "",
+        "effect": "",
+        "duration": "",
+        "damage": ""
+      }
+    ],
     "art": ""
   },
   {
