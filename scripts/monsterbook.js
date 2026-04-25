@@ -19,6 +19,7 @@ async function loadMonsterBook() {
         const custom = getCustomEntries().map(m => ({ ...m, _custom: true }));
         bookData = [...jsonData, ...custom];
         bookFiltered = [...bookData];
+        populateBookFilters();
         renderBook();
     } catch (e) {
         console.error("Failed to load monsterbook.json:", e);
@@ -26,11 +27,48 @@ async function loadMonsterBook() {
     }
 }
 
+function populateBookFilters() {
+    const uniq = key => [...new Set(bookData.map(m => m[key]).filter(Boolean))].sort();
+    function fill(id, values, placeholder) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const cur = el.value;
+        el.innerHTML = `<option value="">${placeholder}</option>`;
+        values.forEach(v => {
+            const o = document.createElement("option");
+            o.value = v; o.textContent = v;
+            el.appendChild(o);
+        });
+        if (cur) el.value = cur;
+    }
+    fill("filterBookGroup",  uniq("_group"), "All Groups");
+    fill("filterBookOrigin", uniq("origin"), "All Origins");
+    fill("filterBookSize",   uniq("size"),   "Any Size");
+    fill("filterBookRarity", uniq("rarity"), "Any Rarity");
+}
+
+function clearBookFilters() {
+    document.getElementById("bookSearch").value = "";
+    ["filterBookGroup", "filterBookOrigin", "filterBookSize", "filterBookRarity"]
+        .forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+    filterBook();
+}
+
 function filterBook() {
     const q = document.getElementById("bookSearch").value.toLowerCase();
-    bookFiltered = q
-        ? bookData.filter(m => JSON.stringify(m).toLowerCase().includes(q))
-        : [...bookData];
+    const gF = document.getElementById("filterBookGroup")?.value  || "";
+    const oF = document.getElementById("filterBookOrigin")?.value || "";
+    const sF = document.getElementById("filterBookSize")?.value   || "";
+    const rF = document.getElementById("filterBookRarity")?.value || "";
+
+    bookFiltered = bookData.filter(m => {
+        if (q  && !JSON.stringify(m).toLowerCase().includes(q)) return false;
+        if (gF && (m._group  || "") !== gF) return false;
+        if (oF && (m.origin  || "") !== oF) return false;
+        if (sF && (m.size    || "") !== sF) return false;
+        if (rF && (m.rarity  || "") !== rF) return false;
+        return true;
+    });
     renderBook();
 }
 
@@ -40,8 +78,34 @@ function renderBook() {
         out.innerHTML = `<p style="opacity:0.5">No monsters found.</p>`;
         return;
     }
+
+    const groups = new Map();
+    bookFiltered.forEach(m => {
+        const key = m._group || m.origin || "Other";
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(m);
+    });
+
+    const sortedKeys = [...groups.keys()].sort((a, b) => {
+        if (a === "Other") return 1;
+        if (b === "Other") return -1;
+        return a.localeCompare(b);
+    });
+
     out.innerHTML = "";
-    bookFiltered.forEach(m => out.append(createBookCard(m)));
+    sortedKeys.forEach(key => {
+        const section = document.createElement("div");
+        section.className = "book-group";
+        const heading = document.createElement("h3");
+        heading.className = "book-group-heading";
+        heading.textContent = key;
+        section.appendChild(heading);
+        const grid = document.createElement("div");
+        grid.className = "monster-grid";
+        groups.get(key).forEach(m => grid.append(createBookCard(m)));
+        section.appendChild(grid);
+        out.append(section);
+    });
 }
 
 function createBookCard(m) {
@@ -76,10 +140,8 @@ function createBookCard(m) {
     }
 
     const customBtns = m._custom
-        ? `<div style="margin-top:8px;display:flex;gap:6px">
-               <button class="secondary btn-edit-card">Edit</button>
-               <button class="btn-remove btn-delete-card">Delete</button>
-           </div>`
+        ? `<button class="secondary btn-edit-card">Edit</button>
+           <button class="btn-remove btn-delete-card">Delete</button>`
         : "";
 
     card.innerHTML = `
@@ -96,15 +158,94 @@ function createBookCard(m) {
         </div>
         ${featuresHTML}
         ${m.lore ? `<p style="font-style:italic;opacity:0.7;margin-top:8px;font-size:0.9em">${m.lore}</p>` : ""}
-        ${customBtns}
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+            ${customBtns}
+            <button class="btn-roll20-card">⬡ Roll20</button>
+        </div>
     `;
 
     if (m._custom) {
         card.querySelector(".btn-edit-card").addEventListener("click", () => openCardEdit(card, m));
         card.querySelector(".btn-delete-card").addEventListener("click", () => deleteCustomMonster(m.name));
     }
+    card.querySelector(".btn-roll20-card").addEventListener("click", function() {
+        copyMonsterForRoll20(m, this);
+    });
 
     return card;
+}
+
+// ===== Roll20 Export =====
+function copyMonsterForRoll20(m, btn) {
+    const melee  = m.melee_attack  || {};
+    const ranged = m.ranged_attack || {};
+
+    const packet = {
+        name:           m.name            || "Unknown Monster",
+        size:           m.size            || "",
+        type:           m.origin          || "",
+        description:    m.description     || "",
+        environment:    m.environment     || "",
+        behavior:       m.behavior        || "",
+        motivation:     m.motivation      || "",
+        pl:             m.pl              ?? 1,
+        check_physical: m.check_physical  ?? 0,
+        check_mental:   m.check_mental    ?? 0,
+        move_walk:      m.walk            ?? 0,
+        move_fly:       m.fly             ?? 0,
+        move_swim:      m.swim            ?? 0,
+        move_climb:     m.climb           ?? 0,
+        melee: {
+            name:     melee.name        || "",
+            damage:   melee.damage      || "1d6",
+            type:     melee.damage_type || "",
+            equipped: !!melee.equipped,
+        },
+        ranged: {
+            name:     ranged.name        || "",
+            damage:   ranged.damage      || "1d6",
+            type:     ranged.damage_type || "",
+            equipped: !!ranged.equipped,
+        },
+        feature: {
+            name:   m.feature_name     || "",
+            action: m.feature_type     || "Action",
+            range:  m.feature_range    || "Melee",
+            effect: m.feature_effect   || "",
+            damage: m.feature_damage   || "",
+        },
+    };
+
+    const cmd = `!importmonster ${JSON.stringify(packet)}`;
+
+    const flash = () => {
+        btn.textContent = "✓ Copied!";
+        btn.style.background = "var(--green-2)";
+        btn.style.color = "var(--gold)";
+        btn.disabled = true;
+        setTimeout(() => {
+            btn.textContent = "⬡ Roll20";
+            btn.style.background = "";
+            btn.style.color = "";
+            btn.disabled = false;
+        }, 2000);
+    };
+
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(cmd).then(flash).catch(() => fallbackCopy(cmd, flash));
+    } else {
+        fallbackCopy(cmd, flash);
+    }
+}
+
+function fallbackCopy(text, callback) {
+    const el = document.createElement("textarea");
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+    callback();
 }
 
 // ===== Inline Card Editor =====
@@ -449,6 +590,8 @@ function addToBookFromGenerator(mon) {
     });
 }
 window.addToBookFromGenerator = addToBookFromGenerator;
+
+document.addEventListener('DOMContentLoaded', () => loadMonsterBook());
 
 // ===== Tab switching =====
 function showTab(tab) {

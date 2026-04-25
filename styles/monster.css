@@ -1,3 +1,49 @@
+/* ===== Monster Page — Red Theme ===== */
+body[data-page-title="Monsters"] {
+    /* replace teal slate with blood-red slate */
+    --theme-1:  #2a0f0f;
+    --theme-2:  #4a1515;
+    --theme-3:  #6b2c2c;
+    /* replace greens (used for hovers + active tab) with crimson */
+    --green-1:  #180808;
+    --green-2:  #7b1c1c;
+    --green-3:  #c46060;
+    /* deepen warm tones */
+    --warm-1:   #6b1010;
+    --warm-2:   #991a1a;
+    /* page + card backgrounds */
+    --dark:     #1a0e0e;
+    --dark-2:   #210f0f;
+    --dark-3:   #3a1a1a;
+    /* glow on hover */
+    --box-hover: 0 2px 8px rgb(140, 0, 0);
+}
+
+body[data-page-title="Monsters"] .monster-card {
+    background: rgba(36, 10, 10, 0.92);
+}
+
+body[data-page-title="Monsters"] .monster-card:hover {
+    background-color: #2e0d0d;
+}
+
+/* ===== Roll20 Export Button ===== */
+.btn-roll20-card {
+    background: transparent;
+    border: 1px solid var(--gold-2, #af8000);
+    color: var(--gold-3, #ffd700);
+    padding: 4px 12px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: background 0.15s, color 0.15s;
+}
+.btn-roll20-card:hover {
+    background: var(--gold-2, #af8000);
+    color: var(--dark, #000);
+}
+
 /* ===== Generate buttons ===== */
 #generate-npc,
 #generate-business,
@@ -377,6 +423,94 @@
 
 .tag-condition {
     background: #3949ab;
+}
+
+/* ===== Book Top Row Layout ===== */
+.book-top-row {
+    display: flex;
+    gap: 12px;
+    padding: 8px;
+    align-items: flex-start;
+}
+
+.book-controls-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 230px;
+    flex-shrink: 0;
+}
+
+.book-controls-panel #bookSearch {
+    width: 100%;
+    padding: 6px 10px;
+    background: var(--dark);
+    color: var(--white);
+    border: 1px solid var(--theme-1);
+    border-radius: var(--border-radius);
+    box-sizing: border-box;
+}
+
+.book-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.book-filters select {
+    width: 100%;
+    padding: 4px 8px;
+    background: var(--dark);
+    color: var(--white);
+    border: 1px solid var(--theme-1);
+    border-radius: var(--border-radius);
+    font-size: 0.85em;
+    box-sizing: border-box;
+}
+
+.book-filter-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 2px;
+}
+
+.book-filter-actions .button {
+    width: 100%;
+    font-size: 0.85em;
+    padding: 5px 8px;
+    text-align: center;
+}
+
+.book-new-panel {
+    flex: 1;
+    min-width: 0;
+}
+
+@media (max-width: 700px) {
+    .book-top-row {
+        flex-direction: column;
+    }
+    .book-controls-panel {
+        width: 100%;
+    }
+}
+
+/* ===== Book Groups ===== */
+.book-group {
+    width: 100%;
+    flex-basis: 100%;
+}
+
+.book-group-heading {
+    font-size: 0.8em;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 16px 0 6px 5px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--theme-1);
 }
 
 /* ===== New Monster Form ===== */

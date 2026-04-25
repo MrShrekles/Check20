@@ -9,7 +9,7 @@
     "behavior": "Aggressive",
     "description": "A hulking predator with iron-tough hide, known for charging through barriers and overwhelming prey with raw force.",
     "lore": "Ironhide Brutes roam the broken badlands and deep forests of the Prime. Hunters who survive an encounter describe the sound of cracking earth beneath their charge — and the silence after.",
-    "walk": 40,
+    "walk": 35,
     "fly": 0,
     "swim": 0,
     "climb": 0,
