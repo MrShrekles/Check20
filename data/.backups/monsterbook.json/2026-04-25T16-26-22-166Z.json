@@ -376,50 +376,5 @@
       }
     ],
     "art": ""
-  },
-  {
-    "name": "Berserker",
-    "_group": "Brute",
-    "origin": "Chaos",
-    "size": "Medium",
-    "rarity": "Common",
-    "environment": "",
-    "behavior": "Aggressive",
-    "description": "",
-    "lore": "",
-    "motivation": "",
-    "pl": 6,
-    "check_physical": 6,
-    "check_mental": 0,
-    "walk": 45,
-    "fly": 0,
-    "swim": 0,
-    "climb": 0,
-    "feature_name": "Destroyer",
-    "feature_type": "Passive",
-    "feature_range": "",
-    "feature_effect": "deal an additional 1d6 melee damage",
-    "feature_duration": "",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "Great Club",
-      "equipped": true,
-      "damage": "3d6",
-      "damage_type": "Impact"
-    },
-    "ranged_attack": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "spell": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "features": [],
-    "art": ""
   }
 ]

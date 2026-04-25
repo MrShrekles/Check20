@@ -54,7 +54,7 @@
     "feature_type": "Action",
     "feature_range": "Short",
     "feature_effect": "One creature within short range that can hear the Gloomwing must succeed on a Spirit check or be Charmed until the end of their next turn. While Charmed, they must move toward the Gloomwing on their turn.",
-    "feature_duration": "Until end of their next turn",
+    "feature_duration": "Until end of next turn",
     "feature_damage": "",
     "motivation": "Playing tricks or misleading travelers"
   },
@@ -76,7 +76,7 @@
     "feature_type": "Off-Action",
     "feature_range": "Short",
     "feature_effect": "The Ashveil releases a burst of choking ash in a short radius. Creatures in range must succeed on a Survival check or gain the Coughing condition until the end of their next turn.",
-    "feature_duration": "Until end of their next turn",
+    "feature_duration": "Until end of next turn",
     "feature_damage": "Toxic",
     "motivation": "Wandering aimlessly"
   },
@@ -170,10 +170,10 @@
     "climb": 0,
     "feature_name": "Splinter",
     "feature_type": "Passive",
-    "feature_range": "Melee",
-    "feature_effect": "When struck with a physical melee attack, deal [PL] piercing damage to the melee attacker",
+    "feature_range": "",
+    "feature_effect": "",
     "feature_duration": "",
-    "feature_damage": "Piercing",
+    "feature_damage": "",
     "pl": 6,
     "check_physical": 6,
     "check_mental": 6,
@@ -197,229 +197,14 @@
     },
     "features": [
       {
-        "name": "Encase",
-        "type": "Action",
-        "range": "Melee",
-        "effect": "As an action make a contested physical check with a creature you touch. if the creature fails they are encased inside your ice and take [[1d6]] ice damage at the start of each of your turns and they are constrained and pinned. On their turn they can attempt to escape as a half-action",
-        "duration": "1 minute",
-        "damage": "Ice"
-      }
-    ],
-    "art": ""
-  },
-  {
-    "name": "Crystal Psion",
-    "_group": "Crystal",
-    "origin": "Crystal",
-    "size": "Medium",
-    "rarity": "Rare",
-    "environment": "prime, dreamsea, void",
-    "behavior": "Solitary",
-    "description": "",
-    "lore": "",
-    "motivation": "",
-    "walk": 0,
-    "fly": 30,
-    "swim": 0,
-    "climb": 0,
-    "feature_name": "Radiant Dispersion",
-    "feature_type": "Special",
-    "feature_range": "Reach",
-    "feature_effect": "When you take Solar damage, deal half damage to all creatures within reach range",
-    "feature_duration": "Instant",
-    "feature_damage": "Solar",
-    "pl": 6,
-    "check_physical": 1,
-    "check_mental": 5,
-    "melee_attack": {
-      "name": "Slam",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Impact"
-    },
-    "ranged_attack": {
-      "name": "Shattershot",
-      "equipped": true,
-      "damage": "1d4!",
-      "damage_type": "Piercing"
-    },
-    "spell": {
-      "name": "Psiblast",
-      "equipped": true,
-      "damage": "1d4",
-      "damage_type": "Psychic"
-    },
-    "features": [
-      {
-        "name": "Solar Siphon",
-        "type": "Special",
-        "range": "Self",
-        "effect": "When you take solar damage, gain half as much as armor",
-        "duration": "",
-        "damage": ""
-      }
-    ],
-    "art": ""
-  },
-  {
-    "name": "Child of Vassago",
-    "_group": "Demon",
-    "origin": "Vozian",
-    "size": "Medium",
-    "rarity": "Uncommon",
-    "environment": "ordealis, prime",
-    "behavior": "Aggressive",
-    "description": "",
-    "lore": "",
-    "motivation": "causing pain",
-    "walk": 45,
-    "fly": 0,
-    "swim": 0,
-    "climb": 0,
-    "feature_name": "Reckless",
-    "feature_type": "Special",
-    "feature_range": "Self",
-    "feature_effect": "At the start of its turn, you gain advantage on all melee weapon attack rolls you make during that turn, but attack rolls against you have advantage until the end of your next turn.",
-    "feature_duration": "Until end of your next turn",
-    "feature_damage": "",
-    "pl": 6,
-    "check_physical": 5,
-    "check_mental": 1,
-    "melee_attack": {
-      "name": "Chain Whip",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Slashing"
-    },
-    "ranged_attack": {
-      "name": "Heliron Spear (3)",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Piercing"
-    },
-    "spell": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "features": [
-      {
-        "name": "Charge",
-        "type": "Passive",
+        "name": "",
+        "type": "",
         "range": "",
-        "effect": "When you move at least 15 ft on your turn, gain +5 damage on your next attack check on that turn.",
-        "duration": "",
-        "damage": ""
-      },
-      {
-        "name": "Recall Heliron",
-        "type": "Half Action",
-        "range": "Short",
-        "effect": "Recall a thrown Heliron weapon within short range as a capacity point. Doing so causes the creature to be pulled 10ft to you, and take [PL] slashing damage as it is torn from the flesh of the target",
+        "effect": "",
         "duration": "",
         "damage": ""
       }
     ],
-    "art": ""
-  },
-  {
-    "name": "Red Lizard",
-    "_group": "Reptile",
-    "origin": "Nature",
-    "size": "Medium",
-    "rarity": "Uncommon",
-    "environment": "prime, fey, void",
-    "behavior": "Aggressive",
-    "description": "",
-    "lore": "",
-    "motivation": "",
-    "walk": 50,
-    "fly": 0,
-    "swim": 0,
-    "climb": 35,
-    "feature_name": "Fire Immunity",
-    "feature_type": "Passive",
-    "feature_range": "Self",
-    "feature_effect": "Immune to fire damage",
-    "feature_duration": "",
-    "feature_damage": "Fire",
-    "pl": 6,
-    "check_physical": 5,
-    "check_mental": 1,
-    "melee_attack": {
-      "name": "Spear",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Piercing"
-    },
-    "ranged_attack": {
-      "name": "Longbow",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Piercing"
-    },
-    "spell": {
-      "name": "Firebolt",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Fire"
-    },
-    "features": [
-      {
-        "name": "Magma Queen",
-        "type": "Action",
-        "range": "Short",
-        "effect": "The queen twirls in her bath of flames, all creatures within short range take [[3d6]] fire damage or half per success on an agility check",
-        "duration": "",
-        "damage": "Fire"
-      }
-    ],
-    "art": ""
-  },
-  {
-    "name": "Berserker",
-    "_group": "Brute",
-    "origin": "Chaos",
-    "size": "Medium",
-    "rarity": "Common",
-    "environment": "",
-    "behavior": "Aggressive",
-    "description": "",
-    "lore": "",
-    "motivation": "",
-    "pl": 6,
-    "check_physical": 6,
-    "check_mental": 0,
-    "walk": 45,
-    "fly": 0,
-    "swim": 0,
-    "climb": 0,
-    "feature_name": "Destroyer",
-    "feature_type": "Passive",
-    "feature_range": "",
-    "feature_effect": "deal an additional 1d6 melee damage",
-    "feature_duration": "",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "Great Club",
-      "equipped": true,
-      "damage": "3d6",
-      "damage_type": "Impact"
-    },
-    "ranged_attack": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "spell": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "features": [],
     "art": ""
   }
 ]

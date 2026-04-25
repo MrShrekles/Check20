@@ -16,8 +16,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "passive",
-            "featureRange": "melee",
-            "featureDuration": "instant",
+            "featureRange": "Melee",
+            "featureDuration": "Instant",
             "featureDamage": ""
         },
         {
@@ -36,8 +36,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Short",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": ""
         },
         {
@@ -156,8 +156,8 @@
             "swim": "none",
             "climb": "none",
             "featureAction": "action",
-            "featureRange": "melee",
-            "featureDuration": "instant",
+            "featureRange": "Melee",
+            "featureDuration": "Instant",
             "featureDamage": "1d6"
         },
         {
@@ -216,8 +216,8 @@
             "swim": "none",
             "climb": "none",
             "featureAction": "action",
-            "featureRange": "reach",
-            "featureDuration": "instant",
+            "featureRange": "Reach",
+            "featureDuration": "Instant",
             "featureDamage": "none"
         },
         {
@@ -236,8 +236,8 @@
             "swim": "none",
             "climb": "none",
             "featureAction": "half-action",
-            "featureRange": "short",
-            "featureDuration": "instant",
+            "featureRange": "Short",
+            "featureDuration": "Instant",
             "featureDamage": "none"
         },
         {
@@ -256,8 +256,8 @@
             "swim": "none",
             "climb": "none",
             "featureAction": "action",
-            "featureRange": "reach",
-            "featureDuration": "instant",
+            "featureRange": "Reach",
+            "featureDuration": "Instant",
             "featureDamage": "double PL"
         },
         {
@@ -276,8 +276,8 @@
             "swim": "none",
             "climb": "none",
             "featureAction": "action",
-            "featureRange": "melee",
-            "featureDuration": "instant",
+            "featureRange": "Melee",
+            "featureDuration": "Instant",
             "featureDamage": "equal to PL"
         },
         {
@@ -296,8 +296,8 @@
             "swim": "none",
             "climb": "none",
             "featureAction": "off-action",
-            "featureRange": "short",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Short",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": "none"
         },
         {
@@ -316,8 +316,8 @@
             "swim": "none",
             "climb": "none",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Short",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": "none"
         },
         {
@@ -336,8 +336,8 @@
             "swim": "none",
             "climb": "none",
             "featureAction": "action",
-            "featureRange": "medium",
-            "featureDuration": "instant",
+            "featureRange": "Medium",
+            "featureDuration": "Instant",
             "featureDamage": "none"
         },
         {
@@ -396,8 +396,8 @@
             "swim": "none",
             "climb": "none",
             "featureAction": "off-action",
-            "featureRange": "short",
-            "featureDuration": "instant",
+            "featureRange": "Short",
+            "featureDuration": "Instant",
             "featureDamage": "none"
         },
         {
@@ -456,8 +456,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "reach",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Reach",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": "none"
         },
         {
@@ -476,8 +476,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "instant",
+            "featureRange": "Short",
+            "featureDuration": "Instant",
             "featureDamage": "1d6"
         },
         {
@@ -496,8 +496,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "instant",
+            "featureRange": "Short",
+            "featureDuration": "Instant",
             "featureDamage": "equal to PL"
         },
         {
@@ -516,7 +516,7 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "melee",
+            "featureRange": "Melee",
             "featureDuration": "1 hour",
             "featureDamage": ""
         },
@@ -536,8 +536,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "reach",
-            "featureDuration": "instant",
+            "featureRange": "Reach",
+            "featureDuration": "Instant",
             "featureDamage": "double PL"
         },
         {
@@ -556,8 +556,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "melee",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Melee",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": ""
         },
         {
@@ -576,8 +576,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "instant",
+            "featureRange": "Short",
+            "featureDuration": "Instant",
             "featureDamage": "1d6"
         },
         {
@@ -596,7 +596,7 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "reach",
+            "featureRange": "Reach",
             "featureDuration": "1 minute",
             "featureDamage": ""
         },
@@ -616,8 +616,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "reach",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Reach",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": "1d6"
         },
         {
@@ -636,8 +636,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Short",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": "equal to PL"
         },
         {
@@ -656,8 +656,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "instant",
+            "featureRange": "Short",
+            "featureDuration": "Instant",
             "featureDamage": "1d6"
         },
         {
@@ -676,8 +676,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "instant",
+            "featureRange": "Short",
+            "featureDuration": "Instant",
             "featureDamage": ""
         },
         {
@@ -696,8 +696,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Short",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": "1d6"
         },
         {
@@ -716,8 +716,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "reach",
-            "featureDuration": "instant",
+            "featureRange": "Reach",
+            "featureDuration": "Instant",
             "featureDamage": "triple PL"
         },
         {
@@ -736,8 +736,8 @@
             "swim": "Equal to movement",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "melee",
-            "featureDuration": "instant",
+            "featureRange": "Melee",
+            "featureDuration": "Instant",
             "featureDamage": ""
         },
         {
@@ -756,8 +756,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "melee",
-            "featureDuration": "instant",
+            "featureRange": "Melee",
+            "featureDuration": "Instant",
             "featureDamage": ""
         },
         {
@@ -776,8 +776,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Short",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": ""
         },
         {
@@ -816,8 +816,8 @@
             "swim": "none",
             "climb": "none",
             "featureAction": "passive",
-            "featureRange": "reach",
-            "featureDuration": "instant",
+            "featureRange": "Reach",
+            "featureDuration": "Instant",
             "featureDamage": "none"
         },
         {
@@ -856,8 +856,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "reach",
-            "featureDuration": "instant",
+            "featureRange": "Reach",
+            "featureDuration": "Instant",
             "featureDamage": "equal to PL"
         },
         {
@@ -896,8 +896,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "instant",
+            "featureRange": "Short",
+            "featureDuration": "Instant",
             "featureDamage": "1d6"
         },
         {
@@ -916,8 +916,8 @@
             "swim": "Double movement",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "instant",
+            "featureRange": "Short",
+            "featureDuration": "Instant",
             "featureDamage": "1d6"
         },
         {
@@ -936,7 +936,7 @@
             "swim": "",
             "climb": "",
             "featureAction": "special",
-            "featureRange": "short",
+            "featureRange": "Short",
             "featureDuration": "1 minute",
             "featureDamage": "equal to PL"
         },
@@ -956,8 +956,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "medium",
-            "featureDuration": "instant",
+            "featureRange": "Medium",
+            "featureDuration": "Instant",
             "featureDamage": ""
         },
         {
@@ -976,7 +976,7 @@
             "swim": "",
             "climb": "",
             "featureAction": "special",
-            "featureRange": "medium",
+            "featureRange": "Medium",
             "featureDuration": "",
             "featureDamage": ""
         },
@@ -996,8 +996,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "self",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Self",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": ""
         },
         {
@@ -1016,7 +1016,7 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
+            "featureRange": "Short",
             "featureDuration": "1 minute",
             "featureDamage": "none"
         },
@@ -1036,7 +1036,7 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "reach",
+            "featureRange": "Reach",
             "featureDuration": "",
             "featureDamage": ""
         },
@@ -1076,8 +1076,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "reach",
-            "featureDuration": "instant",
+            "featureRange": "Reach",
+            "featureDuration": "Instant",
             "featureDamage": ""
         },
         {
@@ -1096,7 +1096,7 @@
             "swim": "",
             "climb": "",
             "featureAction": "passive",
-            "featureRange": "melee",
+            "featureRange": "Melee",
             "featureDuration": "",
             "featureDamage": "equal to PL"
         },
@@ -1116,8 +1116,8 @@
             "swim": "",
             "climb": "Equal to movement",
             "featureAction": "off-action",
-            "featureRange": "melee",
-            "featureDuration": "instant",
+            "featureRange": "Melee",
+            "featureDuration": "Instant",
             "featureDamage": "1d6"
         },
         {
@@ -1136,7 +1136,7 @@
             "swim": "",
             "climb": "Double movement",
             "featureAction": "passive",
-            "featureRange": "self",
+            "featureRange": "Self",
             "featureDuration": "",
             "featureDamage": ""
         },
@@ -1156,8 +1156,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "melee",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Melee",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": ""
         },
         {
@@ -1176,8 +1176,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "long",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Long",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": ""
         },
         {
@@ -1736,8 +1736,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "melee",
-            "featureDuration": "instant",
+            "featureRange": "Melee",
+            "featureDuration": "Instant",
             "featureDamage": "none"
         },
         {
@@ -1896,8 +1896,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "instant",
+            "featureRange": "Short",
+            "featureDuration": "Instant",
             "featureDamage": ""
         },
         {
@@ -1916,8 +1916,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "special",
-            "featureRange": "melee",
-            "featureDuration": "instant",
+            "featureRange": "Melee",
+            "featureDuration": "Instant",
             "featureDamage": "1d6"
         },
         {
@@ -1936,8 +1936,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "off-action",
-            "featureRange": "self",
-            "featureDuration": "instant",
+            "featureRange": "Self",
+            "featureDuration": "Instant",
             "featureDamage": ""
         },
         {
@@ -1956,7 +1956,7 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "self",
+            "featureRange": "Self",
             "featureDuration": "1 minute",
             "featureDamage": ""
         },
@@ -1976,8 +1976,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "special",
-            "featureRange": "melee",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Melee",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": ""
         },
         {
@@ -2176,8 +2176,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "off-action",
-            "featureRange": "short",
-            "featureDuration": "instant",
+            "featureRange": "Short",
+            "featureDuration": "Instant",
             "featureDamage": ""
         },
         {
@@ -2196,8 +2196,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "instant",
+            "featureRange": "Short",
+            "featureDuration": "Instant",
             "featureDamage": ""
         },
         {
@@ -2356,8 +2356,8 @@
             "swim": "none",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "melee",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Melee",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": ""
         },
         {
@@ -2376,8 +2376,8 @@
             "swim": "none",
             "climb": "",
             "featureAction": "off-action",
-            "featureRange": "self",
-            "featureDuration": "instant",
+            "featureRange": "Self",
+            "featureDuration": "Instant",
             "featureDamage": ""
         },
         {
@@ -2396,7 +2396,7 @@
             "swim": "none",
             "climb": "",
             "featureAction": "passive",
-            "featureRange": "self",
+            "featureRange": "Self",
             "featureDuration": "",
             "featureDamage": ""
         },
@@ -2416,8 +2416,8 @@
             "swim": "none",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "self",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Self",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": ""
         },
         {
@@ -2436,7 +2436,7 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "melee",
+            "featureRange": "Melee",
             "featureDuration": "1 minute",
             "featureDamage": "double PL"
         },
@@ -2456,8 +2456,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "melee",
-            "featureDuration": "instant",
+            "featureRange": "Melee",
+            "featureDuration": "Instant",
             "featureDamage": "equal to PL"
         },
         {
@@ -2716,8 +2716,8 @@
             "swim": "",
             "climb": "Equal to movement",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "instant",
+            "featureRange": "Short",
+            "featureDuration": "Instant",
             "featureDamage": "1d4"
         },
         {
@@ -2736,8 +2736,8 @@
             "swim": "Equal to movement",
             "climb": "",
             "featureAction": "special",
-            "featureRange": "reach",
-            "featureDuration": "instant",
+            "featureRange": "Reach",
+            "featureDuration": "Instant",
             "featureDamage": "1d6"
         },
         {
@@ -3096,8 +3096,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "melee",
-            "featureDuration": "instant",
+            "featureRange": "Melee",
+            "featureDuration": "Instant",
             "featureDamage": ""
         },
         {
@@ -3116,7 +3116,7 @@
             "swim": "",
             "climb": "Double movement",
             "featureAction": "action",
-            "featureRange": "short",
+            "featureRange": "Short",
             "featureDuration": "",
             "featureDamage": "1d6"
         },
@@ -3136,7 +3136,7 @@
             "swim": "",
             "climb": "",
             "featureAction": "passive",
-            "featureRange": "short",
+            "featureRange": "Short",
             "featureDuration": "",
             "featureDamage": "1d4"
         },
@@ -3256,8 +3256,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Short",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": "1d6"
         },
         {
@@ -3276,8 +3276,8 @@
             "swim": "none",
             "climb": "none",
             "featureAction": "special",
-            "featureRange": "melee",
-            "featureDuration": "instant",
+            "featureRange": "Melee",
+            "featureDuration": "Instant",
             "featureDamage": "none"
         },
         {
@@ -3296,8 +3296,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "special",
-            "featureRange": "melee",
-            "featureDuration": "instant",
+            "featureRange": "Melee",
+            "featureDuration": "Instant",
             "featureDamage": "none"
         },
         {
@@ -3316,8 +3316,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "special",
-            "featureRange": "self",
-            "featureDuration": "instant",
+            "featureRange": "Self",
+            "featureDuration": "Instant",
             "featureDamage": "none"
         },
         {
@@ -3516,7 +3516,7 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "melee",
+            "featureRange": "Melee",
             "featureDuration": "",
             "featureDamage": "1d6"
         },
@@ -3536,8 +3536,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "reach",
-            "featureDuration": "instant",
+            "featureRange": "Reach",
+            "featureDuration": "Instant",
             "featureDamage": "1d6"
         },
         {
@@ -3556,7 +3556,7 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "reach",
+            "featureRange": "Reach",
             "featureDuration": "",
             "featureDamage": ""
         },
@@ -3576,7 +3576,7 @@
             "swim": "",
             "climb": "",
             "featureAction": "passive",
-            "featureRange": "self",
+            "featureRange": "Self",
             "featureDuration": "",
             "featureDamage": ""
         },
@@ -3596,7 +3596,7 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "self",
+            "featureRange": "Self",
             "featureDuration": "",
             "featureDamage": "triple PL"
         },
@@ -3616,8 +3616,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "reach",
-            "featureDuration": "until the end of your next turn",
+            "featureRange": "Reach",
+            "featureDuration": "Until end of their next turn",
             "featureDamage": ""
         },
         {
@@ -3636,8 +3636,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "short",
-            "featureDuration": "instant",
+            "featureRange": "Short",
+            "featureDuration": "Instant",
             "featureDamage": "double PL"
         },
         {
@@ -3676,8 +3676,8 @@
             "swim": "",
             "climb": "",
             "featureAction": "action",
-            "featureRange": "medium",
-            "featureDuration": "instant",
+            "featureRange": "Medium",
+            "featureDuration": "Instant",
             "featureDamage": "double PL"
         },
         {

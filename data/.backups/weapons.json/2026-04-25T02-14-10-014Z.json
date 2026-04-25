@@ -1572,18 +1572,5 @@
     "properties": "1 hand, light",
     "bulk": 1,
     "description": "A simple weapon that hurls small stones or bullets, used for speed over power."
-  },
-  {
-    "name": "Spear",
-    "category": "melee",
-    "check": "Agility, Strength",
-    "range": "Melee, Short",
-    "damage": "1d6",
-    "damageType": "Piercing",
-    "cost": 2,
-    "rarity": "common",
-    "properties": "1 or 2 hand, thrown: short",
-    "bulk": 1,
-    "description": ""
   }
 ]
