@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Share+Tech+Mono&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="titlebar">
+    <div class="titlebar-brand">⚙ FORGE</div>
+    <div class="titlebar-sep"></div>
+    <div class="titlebar-path" id="titlePath">Loading...</div>
+    <div class="titlebar-right">
+      <div class="file-type-badge" id="fileTypeBadge"></div>
+      <div class="status-dot" id="statusDot"></div>
+      <div class="status-text" id="statusText">LOADING</div>
+    </div>
+  </div>
+
+  <div class="app-body">
+
+    <div class="sidebar">
+      <div class="sidebar-panel sidebar-panel-files">
+        <div class="sidebar-header">
+          <div class="sidebar-label">Data Folder</div>
+          <div class="folder-info" onclick="changeFolder()">
+            <span style="font-size:12px;opacity:0.5;">📁</span>
+            <div class="folder-name" id="folderName">—</div>
+            <div class="folder-change">change</div>
+          </div>
+        </div>
+        <div class="sidebar-files" id="fileList"></div>
+      </div>
+
+      <div class="sidebar-divider" id="sidebarDivider"><div class="sidebar-divider-grip"></div></div>
+
+      <div class="sidebar-panel sidebar-panel-entries">
+        <div class="sidebar-header">
+          <div class="sidebar-label" id="entryPanelLabel">Entries</div>
+          <div class="group-select" id="groupSelect"></div>
+          <input class="search-input" type="text" placeholder="Search..." id="searchInput" oninput="filterEntries()">
+        </div>
+        <div class="entry-scroll" id="entryList">
+          <div class="empty-state" style="padding:20px 0;">
+            <div class="empty-sub">No file open</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="editor-area">
+      <div class="toolbar">
+        <div class="toolbar-title" id="toolbarTitle">—</div>
+        <div class="toolbar-sep"></div>
+        <div class="toolbar-count" id="toolbarCount"></div>
+        <div class="toolbar-right">
+          <button class="btn btn-ghost" onclick="reloadFile()" id="btnReload" disabled>↺ Reload</button>
+          <button class="btn btn-ghost" onclick="toggleAutoUpdate()" id="btnAuto">Auto: ON</button>
+          <button class="btn btn-ghost" onclick="openBackups()" id="btnBackups" disabled>Backups</button>
+          <button class="btn btn-green" onclick="newEntry()" id="btnNew" disabled>+ New</button>
+          <button class="btn btn-ghost" onclick="saveFile()" id="btnSave" disabled>💾 Save</button>
+          <button class="btn btn-gold" onclick="exportFile()" id="btnExport" disabled>↓ Export</button>
+        </div>
+      </div>
+
+      <div class="field-editor" id="fieldEditor">
+        <div class="empty-state" style="flex:1;">
+          <div class="empty-glyph" style="font-size:48px;">⚙</div>
+          <div class="empty-text">Forge</div>
+          <div class="empty-sub">Select a file to begin</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="statusbar">
+    <div class="status-item" id="sbFile">⚙ <span>—</span></div>
+    <div class="status-item" id="sbEntry"></div>
+    <div class="status-right">
+      <div class="status-item" id="sbType"></div>
+      <div class="status-item">Forge <span>v1.0</span></div>
+      <div class="status-item">localhost:<span>3000</span></div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <div class="dialog-overlay hidden" id="dialogOverlay">
+    <div class="dialog-box">
+      <div class="dialog-title" id="dialogTitle">Confirm</div>
+      <div class="dialog-text" id="dialogText">Are you sure?</div>
+      <div class="dialog-actions">
+        <button class="btn btn-ghost" onclick="dialogCancel()">Cancel</button>
+        <button class="btn btn-danger" id="dialogConfirmBtn" onclick="dialogConfirm()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core shell — always loaded -->
+  <script src="app.js"></script>
+  <!-- Editor modules — each registers into window.EDITORS -->
+  <script src="editor-monster.js"></script>
+  <script src="editor-gear.js"></script>
+  <script src="editor-hexgen.js"></script>
+  <script src="editor-class.js"></script>
+  <script src="editor-generic.js"></script>
+  <script src="editor-toolbar.js"></script>
+</body>
+</html>

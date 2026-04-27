@@ -134,7 +134,7 @@ function createBookCard(m) {
     if (featList.length) {
         const items = featList.map(f => {
             const meta = [f.type, f.range].filter(Boolean).join(" · ");
-            return `<li><strong>${f.name}</strong>${meta ? ` (${meta})` : ""}: ${f.effect || ""}</li>`;
+            return `<li><strong>${f.name}</strong>${meta ? ` (${meta})` : ""}: ${parseLinks(f.effect || "")}</li>`;
         }).join("");
         featuresHTML = `<div class="feature-block"><ul class="features">${items}</ul></div>`;
     }
@@ -144,10 +144,16 @@ function createBookCard(m) {
            <button class="btn-remove btn-delete-card">Delete</button>`
         : "";
 
+    const meleeAtk  = m.melee  || m.melee_attack  || null;
+    const rangedAtk = m.ranged || m.ranged_attack || null;
+    const attackLine = (atk, label) => atk?.name
+        ? `<span><strong>${label}:</strong> ${atk.name}${atk.damage ? ` ${atk.damage}` : ""}${(atk.type || atk.damage_type) ? ` (${atk.type || atk.damage_type})` : ""}</span>`
+        : "";
+
     card.innerHTML = `
         <h3 class="title">${m.name}${m._custom ? ` <span style="font-size:0.65em;opacity:0.45;font-weight:normal">[custom]</span>` : ""}</h3>
         ${m._group ? `<div class="pillline">${m._group}${m.origin ? ` · ${m.origin}` : ""}</div>` : ""}
-        ${m.description ? `<p class="mon-meta">${m.description}</p>` : ""}
+        ${m.description ? `<p class="mon-meta">${parseLinks(m.description)}</p>` : ""}
         <div class="info-mon">
             <span><strong>Move:</strong> ${moveText}</span>
             ${m.environment ? `<span><strong>Env:</strong> ${m.environment}</span>`  : ""}
@@ -156,8 +162,14 @@ function createBookCard(m) {
             ${m.size        ? `<span><strong>Size:</strong> ${m.size}</span>`        : ""}
             ${m.motivation  ? `<span><strong>Motiv:</strong> ${m.motivation}</span>` : ""}
         </div>
+        ${m.pl != null ? `<div class="pl-chips"><div class="pl-bubble">
+            <span class="pl-seg pl-seg-pl"><strong>PL</strong> ${m.pl}</span>
+            ${m.check_physical != null ? `<span class="pl-seg pl-seg-ph"><strong>Ph</strong> ${m.check_physical}</span>` : ""}
+            ${m.check_mental   != null ? `<span class="pl-seg pl-seg-mt"><strong>Mt</strong> ${m.check_mental}</span>`   : ""}
+        </div></div>` : ""}
+        ${(meleeAtk?.name || rangedAtk?.name) ? `<div class="info-mon">${attackLine(meleeAtk, "Melee")}${attackLine(rangedAtk, "Ranged")}</div>` : ""}
         ${featuresHTML}
-        ${m.lore ? `<p style="font-style:italic;opacity:0.7;margin-top:8px;font-size:0.9em">${m.lore}</p>` : ""}
+        ${m.lore ? `<p style="font-style:italic;opacity:0.7;margin-top:8px;font-size:0.9em">${parseLinks(m.lore)}</p>` : ""}
         <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
             ${customBtns}
             <button class="btn-roll20-card">⬡ Roll20</button>
@@ -175,12 +187,20 @@ function createBookCard(m) {
     return card;
 }
 
-// ===== Roll20 Export =====
-function copyMonsterForRoll20(m, btn) {
-    const melee  = m.melee_attack  || {};
-    const ranged = m.ranged_attack || {};
+// ===== Monster Link Utilities =====
 
-    const packet = {
+function parseLinks(text) {
+    if (!text) return "";
+    return String(text).replace(/\[([^\]]+)\]/g, (_, name) =>
+        `<span class="monster-link" data-target="${name.replace(/"/g, "&quot;")}">${name}</span>`
+    );
+}
+
+function buildMonsterPacket(m) {
+    const meleeAtk  = m.melee  || m.melee_attack  || {};
+    const rangedAtk = m.ranged || m.ranged_attack  || {};
+    const f0 = (Array.isArray(m.features) && m.features.length) ? m.features[0] : {};
+    return {
         name:           m.name            || "Unknown Monster",
         size:           m.size            || "",
         type:           m.origin          || "",
@@ -195,31 +215,42 @@ function copyMonsterForRoll20(m, btn) {
         move_fly:       m.fly             ?? 0,
         move_swim:      m.swim            ?? 0,
         move_climb:     m.climb           ?? 0,
-        melee: {
-            name:     melee.name        || "",
-            damage:   melee.damage      || "1d6",
-            type:     melee.damage_type || "",
-            equipped: !!melee.equipped,
-        },
-        ranged: {
-            name:     ranged.name        || "",
-            damage:   ranged.damage      || "1d6",
-            type:     ranged.damage_type || "",
-            equipped: !!ranged.equipped,
-        },
+        melee:  { name: meleeAtk.name  || "", damage: meleeAtk.damage  || "1d6", type: meleeAtk.type  || meleeAtk.damage_type  || "", equipped: !!meleeAtk.equipped },
+        ranged: { name: rangedAtk.name || "", damage: rangedAtk.damage || "1d6", type: rangedAtk.type || rangedAtk.damage_type || "", equipped: !!rangedAtk.equipped },
         feature: {
-            name:   m.feature_name     || "",
-            action: m.feature_type     || "Action",
-            range:  m.feature_range    || "Melee",
-            effect: m.feature_effect   || "",
-            damage: m.feature_damage   || "",
+            name:   m.feature_name   || f0.name   || "",
+            action: m.feature_type   || f0.type   || "Action",
+            range:  m.feature_range  || f0.range  || "Melee",
+            effect: m.feature_effect || f0.effect || "",
+            damage: m.feature_damage || f0.damage || "",
         },
     };
+}
 
-    const cmd = `!importmonster ${JSON.stringify(packet)}`;
+function extractLinkedNames(m) {
+    const blob = [
+        m.description, m.lore, m.motivation, m.feature_effect,
+        ...(Array.isArray(m.features) ? m.features.map(f => f.effect) : [])
+    ].filter(Boolean).join(" ");
+    const names = new Set();
+    for (const match of blob.matchAll(/\[([^\]]+)\]/g)) names.add(match[1]);
+    names.delete(m.name);
+    return [...names];
+}
+
+// ===== Roll20 Export =====
+function copyMonsterForRoll20(m, btn) {
+    const mainCmd    = `!importmonster ${JSON.stringify(buildMonsterPacket(m))}`;
+    const linkedCmds = extractLinkedNames(m)
+        .map(name => bookData.find(b => b.name === name))
+        .filter(Boolean)
+        .map(linked => `!importmonster ${JSON.stringify(buildMonsterPacket(linked))}`);
+
+    const allCmds = [mainCmd, ...linkedCmds].join("\n");
+    const count   = 1 + linkedCmds.length;
 
     const flash = () => {
-        btn.textContent = "✓ Copied!";
+        btn.textContent = count > 1 ? `✓ ${count} monsters!` : "✓ Copied!";
         btn.style.background = "var(--green-2)";
         btn.style.color = "var(--gold)";
         btn.disabled = true;
@@ -232,9 +263,9 @@ function copyMonsterForRoll20(m, btn) {
     };
 
     if (navigator.clipboard) {
-        navigator.clipboard.writeText(cmd).then(flash).catch(() => fallbackCopy(cmd, flash));
+        navigator.clipboard.writeText(allCmds).then(flash).catch(() => fallbackCopy(allCmds, flash));
     } else {
-        fallbackCopy(cmd, flash);
+        fallbackCopy(allCmds, flash);
     }
 }
 
@@ -567,6 +598,9 @@ function addToBookFromGenerator(mon) {
         swim:        mon.moveSwim  || moveFb.swim  || 0,
         climb:       mon.moveClimb || moveFb.climb || 0,
         features:    features.length ? features : undefined,
+        pl:          mon.pl     || undefined,
+        melee:       mon.melee  || undefined,
+        ranged:      mon.ranged || undefined,
     };
 
     Object.keys(entry).forEach(k => {
@@ -591,7 +625,77 @@ function addToBookFromGenerator(mon) {
 }
 window.addToBookFromGenerator = addToBookFromGenerator;
 
-document.addEventListener('DOMContentLoaded', () => loadMonsterBook());
+document.addEventListener('DOMContentLoaded', () => {
+    loadMonsterBook();
+
+    // ===== Monster Link Tooltip & Navigation =====
+    const tip = document.createElement("div");
+    tip.id = "monster-link-tooltip";
+    document.body.appendChild(tip);
+
+    function showTip(name, e) {
+        const found = bookData.find(b => b.name === name);
+        if (!found) {
+            tip.innerHTML = `<span class="mlt-name">${name}</span><span class="mlt-miss">Not in book</span>`;
+        } else {
+            const moves = [];
+            if (found.walk)  moves.push(`Walk ${found.walk}ft`);
+            if (found.fly)   moves.push(`Fly ${found.fly}ft`);
+            if (found.swim)  moves.push(`Swim ${found.swim}ft`);
+            if (found.climb) moves.push(`Climb ${found.climb}ft`);
+            const featList = Array.isArray(found.features) && found.features.length
+                ? found.features
+                : (found.feature_name ? [{ name: found.feature_name, type: found.feature_type }] : []);
+            const featNames = featList.map(f => f.name).filter(Boolean).join(", ");
+            tip.innerHTML = `
+                <span class="mlt-name">${found.name}</span>
+                ${(found.size || found.rarity) ? `<span class="mlt-row">${[found.size, found.rarity].filter(Boolean).join(" · ")}</span>` : ""}
+                ${found.pl != null ? `<span class="mlt-row">PL ${found.pl}${found.check_physical != null ? ` · Ph ${found.check_physical}` : ""}${found.check_mental != null ? ` · Mt ${found.check_mental}` : ""}</span>` : ""}
+                ${moves.length ? `<span class="mlt-row">${moves.join(" · ")}</span>` : ""}
+                ${featNames ? `<span class="mlt-feat">⚔ ${featNames}</span>` : ""}
+            `;
+        }
+        tip.style.display = "flex";
+        moveTip(e);
+    }
+
+    function moveTip(e) {
+        const x = e.clientX + 16;
+        const y = e.clientY + 16;
+        tip.style.left = `${Math.min(x, window.innerWidth  - (tip.offsetWidth  || 220) - 8)}px`;
+        tip.style.top  = `${Math.min(y, window.innerHeight - (tip.offsetHeight || 120) - 8)}px`;
+    }
+
+    const out = document.getElementById("bookOutput");
+
+    out.addEventListener("click", e => {
+        const link = e.target.closest(".monster-link");
+        if (!link) return;
+        const name = link.dataset.target;
+        for (const card of out.querySelectorAll(".monster-card")) {
+            const title = card.querySelector(".title");
+            if (title && title.textContent.trim().startsWith(name)) {
+                card.scrollIntoView({ behavior: "smooth", block: "center" });
+                card.classList.remove("monster-highlight");
+                void card.offsetWidth;
+                card.classList.add("monster-highlight");
+                setTimeout(() => card.classList.remove("monster-highlight"), 1800);
+                return;
+            }
+        }
+    });
+
+    out.addEventListener("mouseover", e => {
+        const link = e.target.closest(".monster-link");
+        if (link) showTip(link.dataset.target, e);
+    });
+    out.addEventListener("mousemove", e => {
+        if (e.target.closest(".monster-link")) moveTip(e);
+    });
+    out.addEventListener("mouseout", e => {
+        if (!e.relatedTarget?.closest?.(".monster-link")) tip.style.display = "none";
+    });
+});
 
 // ===== Tab switching =====
 function showTab(tab) {

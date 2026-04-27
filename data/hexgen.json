@@ -26,7 +26,7 @@
     },
     {
       "name": "Ink Lord",
-      "weight": 4
+      "weight": 5
     },
     {
       "name": "Spice Lord",
@@ -39,6 +39,14 @@
     {
       "name": "No Scarab Influence",
       "weight": 4
+    },
+    {
+      "name": "Civilian Controlled",
+      "weight": 1
+    },
+    {
+      "name": "Monster Controlled",
+      "weight": 1
     }
   ],
   "environments": {
@@ -347,6 +355,10 @@
     {
       "name": "Dune Dogs",
       "weight": 2
+    },
+    {
+      "name": "Sand Serpents",
+      "weight": 1
     }
   ],
   "populations": [

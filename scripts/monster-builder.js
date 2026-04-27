@@ -79,6 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
         r.featureDuration ??= "Instant";
         r.featureDamage ??= "";
 
+        r.pl     = nonEmpty(r.pl)     ? Number(r.pl)    : 0;
+        r.melee  = (r.melee  && r.melee.name)  ? r.melee  : null;
+        r.ranged = (r.ranged && r.ranged.name) ? r.ranged : null;
+
         // Normalize add-type movement fields to standard names
         if (!nonEmpty(r.movement) && nonEmpty(r.movementAdd)) r.movement = r.movementAdd;
         if (!nonEmpty(r.fly)      && nonEmpty(r.flyAdd))      r.fly      = r.flyAdd;
@@ -215,7 +219,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return { name, origins, infoLine, description, movementText,
                  moveWalk: moveResult.walk, moveFly: moveResult.fly,
                  moveSwim: moveResult.swim, moveClimb: moveResult.climb,
-                 environment, behavior, rarity, size, features };
+                 environment, behavior, rarity, size, features,
+                 pl:     base?.pl     || 0,
+                 melee:  base?.melee  || null,
+                 ranged: base?.ranged || null };
     }
 
     function joinDistinct(vals, sep = " ") {
@@ -341,6 +348,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }</ul></div>`
             : "");
 
+        const attackHTML = (mon.melee?.name || mon.ranged?.name) ? `
+      <div class="info-mon">
+        ${mon.pl ? `<span><strong>PL:</strong> ${esc(String(mon.pl))}</span>` : ""}
+        ${mon.melee?.name  ? `<span><strong>Melee:</strong> ${esc(mon.melee.name)} ${esc(mon.melee.damage || "")}${mon.melee.type ? ` (${esc(mon.melee.type)})` : ""}</span>` : ""}
+        ${mon.ranged?.name ? `<span><strong>Ranged:</strong> ${esc(mon.ranged.name)} ${esc(mon.ranged.damage || "")}${mon.ranged.type ? ` (${esc(mon.ranged.type)})` : ""}</span>` : ""}
+      </div>` : (mon.pl ? `<div class="info-mon"><span><strong>PL:</strong> ${esc(String(mon.pl))}</span></div>` : "");
+
         const infoBlock = `
       <div class="info-mon">
         <span><strong>Move:</strong> ${esc(mon.movementText)}</span>
@@ -357,6 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ${mon.infoLine ? `<div class="pillline" contenteditable="true">${esc(mon.infoLine)}</div>` : ""}
       ${mon.description ? `<p class="mon-meta" contenteditable="true">${esc(mon.description)}</p>` : ""}
       ${infoBlock}
+      ${attackHTML}
       ${featuresHTML}
       <div class="button-row">
         <button class="secondary btn-copy">Copy</button>

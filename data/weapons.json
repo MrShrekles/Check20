@@ -1585,5 +1585,57 @@
     "properties": "1 or 2 hand, thrown: short",
     "bulk": 1,
     "description": ""
+  },
+  {
+    "name": "Claw (NPC)",
+    "category": "melee",
+    "check": "Physical",
+    "range": "Melee",
+    "damage": "1d6",
+    "damageType": "Slashing",
+    "cost": 0,
+    "rarity": "common",
+    "properties": "Light",
+    "bulk": 1,
+    "description": ""
+  },
+  {
+    "name": "Bite (NPC)",
+    "category": "melee",
+    "check": "Physical",
+    "range": "Melee",
+    "damage": "1d6",
+    "damageType": "Piercing",
+    "cost": 0,
+    "rarity": "common",
+    "properties": "Light",
+    "bulk": 1,
+    "description": ""
+  },
+  {
+    "name": "Slam (NPC)",
+    "category": "melee",
+    "check": "P:hysical",
+    "range": "Melee",
+    "damage": "1d6",
+    "damageType": "Impact",
+    "cost": 0,
+    "rarity": "common",
+    "properties": "Light",
+    "bulk": 1,
+    "description": ""
+  },
+  {
+    "name": "Vile Spit (NPC)",
+    "category": "ranged",
+    "check": "Physical",
+    "range": "Short",
+    "damage": "1d6",
+    "damageType": "Acid",
+    "cost": 0,
+    "rarity": "common",
+    "properties": "",
+    "bulk": 1,
+    "description": ""
   }
 ]
