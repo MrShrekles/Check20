@@ -20,7 +20,13 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.6);
             pointer-events: auto;
             user-select: none;
+            opacity: 0;
         }
+        #forge-toolbar.tb-slow  { transition: opacity 0.5s ease 0.2s; }
+        #forge-toolbar.tb-fast  { transition: opacity 0.12s ease; }
+        #forge-toolbar.tb-visible { opacity: 1; }
+        /* Hide selection-only buttons when no text is selected */
+        #forge-toolbar.tb-insert .tb-select-only { display: none !important; }
         .tb-btn {
             background: transparent;
             border: none;
@@ -84,19 +90,68 @@
         }
         .mp-item:hover { background: #2a2a3a; color: #fff; }
         .mp-empty { padding: 10px 8px; color: #555; font-size: 11px; text-align: center; font-family: 'Share Tech Mono', monospace; }
+
+        /* Case & Check subpanels */
+        #forge-case-panel, #forge-check-panel {
+            position: fixed; z-index: 501; display: none;
+            flex-direction: column; gap: 2px;
+            background: #16161f; border: 1px solid #3a3a50;
+            border-radius: 6px; padding: 4px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+            min-width: 110px;
+        }
+        .sub-item {
+            padding: 4px 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px; color: #b0b0c8;
+            cursor: pointer; border-radius: 3px;
+            white-space: nowrap;
+        }
+        .sub-item:hover { background: #2a2a3a; color: #fff; }
+        .sub-item.sub-check { color: #a0e8a0; }
+        .sub-item.sub-check:hover { background: #152515; color: #c0ffc0; }
+        .sub-item.sub-condition { color: #ffb87a; }
+        .sub-item.sub-condition:hover { background: #251508; color: #ffd4a0; }
+
+        /* Condition inline toolbar views */
+        #forge-toolbar .tb-view { display: none; align-items: center; gap: 2px; }
+        #forge-toolbar[data-view="main"]      .tb-main-view { display: flex; }
+        #forge-toolbar[data-view="cond-cats"] .tb-cond-cats { display: flex; }
+        #forge-toolbar[data-view="cond-list"] .tb-cond-list { display: flex; }
+        .tb-back { color: #666; font-size: 10px; padding: 3px 6px; }
+        .tb-back:hover { color: #aaa; background: #2a2a3a; }
+        .tb-cond-cat { color: #ffb87a; }
+        .tb-cond-cat:hover { background: #251508; color: #ffd4a0; }
+        .tb-cond-item { color: #ffb87a; }
+        .tb-cond-item:hover { background: #251508; color: #ffd4a0; }
     `;
     document.head.appendChild(css);
 
     // ── TOOLBAR DOM ───────────────────────────────────────────────────────────
     const toolbar = document.createElement('div');
     toolbar.id = 'forge-toolbar';
+    toolbar.dataset.view = 'main';
     toolbar.innerHTML = `
-        <button class="tb-btn tb-dice"    title="Wrap in dice notation  [[...]]">⚄ [[dice]]</button>
-        <div class="tb-sep"></div>
-        <button class="tb-btn tb-cap"     title="Capitalize first letter">Aa</button>
-        <button class="tb-btn tb-upper"   title="ALL CAPS">⬆ Caps</button>
-        <div class="tb-sep"></div>
-        <button class="tb-btn tb-monster" title="Link to a monster entry">⚔ Monster</button>
+        <div class="tb-view tb-main-view">
+            <button class="tb-btn tb-dice tb-select-only" title="Wrap in dice notation [[...]]">⚄ [[dice]]</button>
+            <div    class="tb-sep tb-select-only"></div>
+            <button class="tb-btn tb-case tb-select-only" title="Change case">Aa ▾</button>
+            <div    class="tb-sep tb-select-only"></div>
+            <button class="tb-btn tb-check"     title="Insert a check">☑ Check</button>
+            <button class="tb-btn tb-condition" title="Insert a condition">⚠ Cond</button>
+            <div class="tb-sep"></div>
+            <button class="tb-btn tb-monster"   title="Link to a monster entry">⚔ Monster</button>
+        </div>
+        <div class="tb-view tb-cond-cats">
+            <button class="tb-btn tb-back">◂</button>
+            <div class="tb-sep"></div>
+            <span id="tb-cats"></span>
+        </div>
+        <div class="tb-view tb-cond-list">
+            <button class="tb-btn tb-back-cats tb-back">◂</button>
+            <div class="tb-sep"></div>
+            <span id="tb-cond-items"></span>
+        </div>
     `;
     document.body.appendChild(toolbar);
 
@@ -111,6 +166,68 @@
 
     const mpSearch = picker.querySelector('#forge-mp-search');
     const mpList   = picker.querySelector('#forge-mp-list');
+
+    // ── CASE PANEL ────────────────────────────────────────────────────────────
+    const casePanel = document.createElement('div');
+    casePanel.id = 'forge-case-panel';
+    casePanel.innerHTML = `
+        <div class="sub-item" data-case="cap">Aa  First letter</div>
+        <div class="sub-item" data-case="upper">ALL  All caps</div>
+        <div class="sub-item" data-case="lower">lower  No caps</div>
+    `;
+    document.body.appendChild(casePanel);
+
+    // ── CHECK PANEL ───────────────────────────────────────────────────────────
+    const CHECKS = ['Agility','Crafting','Influence','Intellect','Luck','Observation','Spirit','Stealth','Strength','Survival'];
+    const checkPanel = document.createElement('div');
+    checkPanel.id = 'forge-check-panel';
+    checkPanel.innerHTML = CHECKS.map(c =>
+        `<div class="sub-item sub-check" data-check="${c}">${c} check</div>`
+    ).join('');
+    document.body.appendChild(checkPanel);
+
+    // ── CONDITION INLINE VIEWS ────────────────────────────────────────────────
+    const CONDITION_CATS = {
+        'Corpus':    ['Bleeding','Broken','Concussion','Coughing','Dislocation','Pinned','Prone','Slowed'],
+        'Cognition': ['Blind','Charmed','Confused','Deaf','Fear'],
+        'Special':   ['Intangible','Invisible'],
+        'Major':     ['Constrained','Death','Exhaustion','Exposed','Injured','Stunned','Unconscious'],
+    };
+
+    function setView(view) {
+        toolbar.dataset.view = view;
+        requestAnimationFrame(() => positionAbove(activeEl, toolbar));
+    }
+
+    function buildCondCats() {
+        const el = toolbar.querySelector('#tb-cats');
+        el.innerHTML = Object.keys(CONDITION_CATS).map(cat =>
+            `<button class="tb-btn tb-cond-cat" data-cat="${cat}">${cat}</button>`
+        ).join('');
+        el.querySelectorAll('.tb-cond-cat').forEach(btn => {
+            btn.addEventListener('mousedown', e => {
+                e.preventDefault();
+                buildCondList(btn.dataset.cat);
+                setView('cond-list');
+            });
+        });
+    }
+
+    function buildCondList(cat) {
+        const el = toolbar.querySelector('#tb-cond-items');
+        el.innerHTML = CONDITION_CATS[cat].map(c =>
+            `<button class="tb-btn tb-cond-item" data-condition="${c}">${c}</button>`
+        ).join('');
+        el.querySelectorAll('.tb-cond-item').forEach(btn => {
+            btn.addEventListener('mousedown', e => {
+                e.preventDefault();
+                apply(btn.dataset.condition);
+                setView('main');
+            });
+        });
+    }
+
+    buildCondCats();
 
     // ── LOCAL STATE ───────────────────────────────────────────────────────────
     let activeEl   = null;   // the focused .field-input
@@ -131,19 +248,29 @@
     }
 
     // ── SHOW / HIDE ───────────────────────────────────────────────────────────
-    function showToolbar(el) {
+    function showToolbar(el, hasSelection) {
         activeEl   = el;
         savedStart = el.selectionStart;
         savedEnd   = el.selectionEnd;
 
+        toolbar.classList.remove('tb-slow', 'tb-fast', 'tb-insert', 'tb-select', 'tb-visible');
+        if (hasSelection) {
+            toolbar.classList.add('tb-fast', 'tb-select');
+        } else {
+            toolbar.classList.add('tb-slow', 'tb-insert');
+        }
+
         toolbar.style.display = 'flex';
-        // Measure after display so getBoundingClientRect is valid
-        requestAnimationFrame(() => positionAbove(el, toolbar));
+        requestAnimationFrame(() => {
+            positionAbove(el, toolbar);
+            requestAnimationFrame(() => toolbar.classList.add('tb-visible'));
+        });
     }
 
     function hideToolbar() {
         toolbar.style.display = 'none';
-        hidePicker();
+        toolbar.classList.remove('tb-visible', 'tb-slow', 'tb-fast', 'tb-insert', 'tb-select');
+        hideAllSub();
         activeEl = null;
     }
 
@@ -169,6 +296,11 @@
     // ── APPLY A TEXT TRANSFORM ────────────────────────────────────────────────
     function apply(newText) {
         if (!activeEl) return;
+        // In insert mode (no selection), refresh to current cursor before applying
+        if (savedStart === savedEnd) {
+            savedStart = activeEl.selectionStart ?? savedStart;
+            savedEnd   = activeEl.selectionEnd   ?? savedEnd;
+        }
         const val    = activeEl.value;
         const before = val.slice(0, savedStart);
         const after  = val.slice(savedEnd);
@@ -189,21 +321,78 @@
         return activeEl ? activeEl.value.slice(savedStart, savedEnd) : '';
     }
 
+    // ── SUBPANEL HELPERS ──────────────────────────────────────────────────────
+    function positionBelow(anchor, panel) {
+        const r = anchor.getBoundingClientRect();
+        panel.style.top  = `${r.bottom + 4}px`;
+        panel.style.left = `${r.left}px`;
+    }
+
+    function hideAllSub() {
+        casePanel.style.display  = 'none';
+        checkPanel.style.display = 'none';
+        toolbar.dataset.view     = 'main';
+        hidePicker();
+    }
+
+    function toggleSub(panel, anchorBtn) {
+        const visible = panel.style.display === 'flex';
+        hideAllSub();
+        if (!visible) {
+            panel.style.display = 'flex';
+            requestAnimationFrame(() => positionBelow(anchorBtn, panel));
+        }
+    }
+
     // ── BUTTON WIRING ─────────────────────────────────────────────────────────
     toolbar.querySelector('.tb-dice').addEventListener('mousedown', e => {
-        e.preventDefault();   // keep focus on the input
+        e.preventDefault();
         apply(`[[${selected()}]]`);
     });
 
-    toolbar.querySelector('.tb-cap').addEventListener('mousedown', e => {
+    toolbar.querySelector('.tb-case').addEventListener('mousedown', e => {
         e.preventDefault();
-        const s = selected();
-        apply(s.charAt(0).toUpperCase() + s.slice(1));
+        e.stopPropagation();
+        toggleSub(casePanel, e.currentTarget);
     });
 
-    toolbar.querySelector('.tb-upper').addEventListener('mousedown', e => {
+    casePanel.querySelectorAll('.sub-item').forEach(item => {
+        item.addEventListener('mousedown', e => {
+            e.preventDefault();
+            const s = selected();
+            if (item.dataset.case === 'cap')   apply(s.charAt(0).toUpperCase() + s.slice(1));
+            if (item.dataset.case === 'upper') apply(s.toUpperCase());
+            if (item.dataset.case === 'lower') apply(s.toLowerCase());
+        });
+    });
+
+    toolbar.querySelector('.tb-check').addEventListener('mousedown', e => {
         e.preventDefault();
-        apply(selected().toUpperCase());
+        e.stopPropagation();
+        toggleSub(checkPanel, e.currentTarget);
+    });
+
+    checkPanel.querySelectorAll('.sub-item').forEach(item => {
+        item.addEventListener('mousedown', e => {
+            e.preventDefault();
+            apply(`${item.dataset.check} check`);
+        });
+    });
+
+    toolbar.querySelector('.tb-condition').addEventListener('mousedown', e => {
+        e.preventDefault();
+        buildCondCats();
+        setView('cond-cats');
+    });
+
+    toolbar.querySelector('.tb-cond-cats .tb-back').addEventListener('mousedown', e => {
+        e.preventDefault();
+        setView('main');
+    });
+
+    toolbar.querySelector('.tb-back-cats').addEventListener('mousedown', e => {
+        e.preventDefault();
+        setView('cond-cats');
     });
 
     toolbar.querySelector('.tb-monster').addEventListener('mousedown', e => {
@@ -241,9 +430,9 @@
 
     // ── SELECTION DETECTION ───────────────────────────────────────────────────
     document.addEventListener('mouseup', e => {
-        if (toolbar.contains(e.target) || picker.contains(e.target)) return;
+        if (toolbar.contains(e.target) || picker.contains(e.target) ||
+            casePanel.contains(e.target) || checkPanel.contains(e.target)) return;
 
-        // Small delay — let the browser commit the selection range
         setTimeout(() => {
             const el = document.activeElement;
 
@@ -253,11 +442,15 @@
                 return;
             }
 
-            const start = el.selectionStart ?? 0;
-            const end   = el.selectionEnd   ?? 0;
-            if (start === end) { hideToolbar(); return; }
+            const start        = el.selectionStart ?? 0;
+            const end          = el.selectionEnd   ?? 0;
+            const hasSelection = start !== end;
 
-            showToolbar(el);
+            // Re-use existing toolbar if already showing for same field & same mode
+            const alreadyCorrectMode = toolbar.style.display !== 'none' &&
+                activeEl === el &&
+                toolbar.classList.contains(hasSelection ? 'tb-select' : 'tb-insert');
+            if (!alreadyCorrectMode) showToolbar(el, hasSelection);
         }, 20);
     });
 
@@ -266,24 +459,25 @@
         if (e.key === 'Escape') { hideToolbar(); hideQB(); }
     });
 
-    // Click outside both panels → hide
+    // Click outside all panels → hide
     document.addEventListener('mousedown', e => {
         if (toolbar.style.display === 'none') return;
-        if (toolbar.contains(e.target) || picker.contains(e.target)) return;
-        if (e.target.classList?.contains('field-input')) return; // new selection starting
+        if (toolbar.contains(e.target) || picker.contains(e.target) ||
+            casePanel.contains(e.target) || checkPanel.contains(e.target)) return;
+        if (e.target.classList?.contains('field-input')) return;
         hideToolbar();
     });
 
     // ── QUICK-BUILD ───────────────────────────────────────────────────────────
     const QB_S1 = [
-        { label: 'Action',        value: 'Action' },
-        { label: 'Half Action',   value: 'Half Action' },
-        { label: 'Off Action',    value: 'Off Action' },
-        { label: 'Passive',       value: 'Passive' },
-        { label: 'Press On',      value: 'Press On' },
-        { label: 'Start of Turn', value: 'Start of turn' },
-        { label: 'End of Turn',   value: 'End of turn' },
-        { label: 'Special',       value: 'Special' },
+        { label: 'Action',        value: 'Action',        text: 'As an Action, ' },
+        { label: 'Half Action',   value: 'Half Action',   text: 'As a Half Action, ' },
+        { label: 'Off Action',    value: 'Off Action',    text: 'As an Off Action, ' },
+        { label: 'Passive',       value: 'Passive',       text: 'Passively, ' },
+        { label: 'Press On',      value: 'Press On',      text: 'As a Press On, ' },
+        { label: 'Start of Turn', value: 'Start of turn', text: 'At the start of the turn, ' },
+        { label: 'End of Turn',   value: 'End of turn',   text: 'At the end of the turn, ' },
+        { label: 'Special',       value: 'Special',       text: 'As a Special action, ' },
     ];
 
     const QB_S2 = [
@@ -350,10 +544,11 @@
         if (qbStage === 1) {
             label.textContent = 'Economy…';
             chips.innerHTML = QB_S1.map(s =>
-                `<button class="qb-chip" data-v="${s.value}">${s.label}</button>`
+                `<button class="qb-chip" data-v="${s.value}" data-text="${s.text}">${s.label}</button>`
             ).join('');
             chips.querySelectorAll('.qb-chip').forEach(btn => setChip(btn, () => {
-                const val = btn.dataset.v;
+                const val  = btn.dataset.v;
+                const text = btn.dataset.text;
 
                 // Sync the nearest Action Type select
                 const grid = qbTarget.closest('.extra-feature-body') || qbTarget.closest('.field-grid');
@@ -363,7 +558,7 @@
                 }
 
                 qbSkipHide = true;
-                qbTarget.value = val + ' · ';
+                qbTarget.value = text;
                 qbTarget.dispatchEvent(new Event('input',  { bubbles: true }));
                 qbTarget.dispatchEvent(new Event('change', { bubbles: true }));
                 qbTarget.focus();

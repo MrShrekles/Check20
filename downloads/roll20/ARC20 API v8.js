@@ -804,22 +804,19 @@ on('chat:message', function (msg) {
     if (data.behavior)    setAttr('behavior',    data.behavior);
     if (data.motivation)  setAttr('motivation',  data.motivation);
 
-    // Combat stats — derive capacity, actions, spell points from PL (sheet workers don't fire via API)
+    // Combat stats — derive capacity and actions from PL (sheet workers don't fire via API)
     const pl = data.pl ?? 1;
-    const capacityMax    = Math.floor(pl / 2);
-    const numAttacks     = Math.max(1, Math.floor(pl / 3));
-    const checkPh        = data.check_physical > 0 ? data.check_physical : Math.ceil(pl / 2);
-    const checkMt        = data.check_mental   > 0 ? data.check_mental   : Math.floor(pl / 2);
-    const spellPointsMax = data.spell_points_max ?? (checkMt * 2);
+    const capacityMax = Math.floor(pl / 2);
+    const numAttacks  = Math.max(1, Math.floor(pl / 3));
+    const checkPh     = data.check_physical > 0 ? data.check_physical : Math.ceil(pl / 2);
+    const checkMt     = data.check_mental   > 0 ? data.check_mental   : Math.floor(pl / 2);
 
-    setAttr('PL',               pl);
-    setAttr('capacity_max',     capacityMax);
-    setAttr('capacity',         capacityMax);
-    setAttr('num_attacks',      numAttacks);
-    setAttr('check_physical',   checkPh);
-    setAttr('check_mental',     checkMt);
-    setAttr('spell_points_max', spellPointsMax);
-    setAttr('sp',               spellPointsMax);
+    setAttr('PL',             pl);
+    setAttr('capacity_max',   capacityMax);
+    setAttr('capacity',       capacityMax);
+    setAttr('num_attacks',    numAttacks);
+    setAttr('check_physical', checkPh);
+    setAttr('check_mental',   checkMt);
 
     // Movement
     setAttr('move_walk',  data.move_walk  ?? 0);
@@ -866,38 +863,6 @@ on('chat:message', function (msg) {
             reporder.set('current', list.join(','));
         } else {
             createObj('attribute', { characterid: cid, name: reporderKey, current: rowId });
-        }
-    }
-
-    // Monster spells — one repeating row per intent level per spell
-    if (Array.isArray(data.spells) && data.spells.length) {
-        const reporderKey = '_reporder_repeating_mspells';
-        const rowIds = [];
-
-        data.spells.forEach(spell => {
-            (spell.effects || [{ intent: 'Whisper', cost: 1 }]).forEach(effect => {
-                const rowId = generateRowID();
-                const prefix = `repeating_mspells_${rowId}`;
-                createObj('attribute', { characterid: cid, name: `${prefix}_mspell-name`,         current: spell.name         || '' });
-                createObj('attribute', { characterid: cid, name: `${prefix}_mspell-manner`,       current: spell.manner       || '' });
-                createObj('attribute', { characterid: cid, name: `${prefix}_mspell-transmission`, current: spell.transmission || '' });
-                createObj('attribute', { characterid: cid, name: `${prefix}_mspell-intent`,       current: effect.intent      || 'Whisper' });
-                createObj('attribute', { characterid: cid, name: `${prefix}_mspell-cost`,         current: String(effect.cost ?? 1) });
-                createObj('attribute', { characterid: cid, name: `${prefix}_mspell-range`,        current: effect.range       || 'Short' });
-                createObj('attribute', { characterid: cid, name: `${prefix}_mspell-damage`,       current: effect.damage      || '1d6' });
-                createObj('attribute', { characterid: cid, name: `${prefix}_mspell-type`,         current: effect.type        || '' });
-                createObj('attribute', { characterid: cid, name: `${prefix}_mspell-effect`,       current: effect.effect      || '' });
-                rowIds.push(rowId);
-            });
-        });
-
-        const reporder = findObjs({ type: 'attribute', characterid: cid, name: reporderKey })[0];
-        if (reporder) {
-            const list = (reporder.get('current') || '').split(',').filter(Boolean);
-            rowIds.forEach(id => list.push(id));
-            reporder.set('current', list.join(','));
-        } else {
-            createObj('attribute', { characterid: cid, name: reporderKey, current: rowIds.join(',') });
         }
     }
 

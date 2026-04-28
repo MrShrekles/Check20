@@ -231,6 +231,8 @@ function copyForRoll20(idx, btn) {
             range: normalizeRange(entry[sch.featureRangeKey] || ''), effect: entry[sch.featureEffectKey] || '',
             damage: stripEmojiPrefix(entry[sch.featureDamageKey] || ''),
         },
+        spells:           Array.isArray(entry.spells) ? entry.spells : [],
+        spell_points_max: (entry.check_mental ?? 0) * 2,
     };
     const cmd = `!importmonster ${JSON.stringify(packet)}`;
     const flashBtn = () => {
@@ -242,6 +244,172 @@ function copyForRoll20(idx, btn) {
     };
     const fallback = () => { const el = document.createElement('textarea'); el.value = cmd; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el); flashBtn(); };
     if (navigator.clipboard) navigator.clipboard.writeText(cmd).then(flashBtn).catch(fallback); else fallback();
+}
+
+// ── MONSTER SPELLS ────────────────────────────────────────────────────────────
+let spellsData = [];
+const INTENT_COSTS = { 'light whisper':0,'whisper':1,'surge':3,'shout':6,'roar':9,'storm':12,'cataclysm':24 };
+
+async function loadSpellsData() {
+    if (spellsData.length) return;
+    try {
+        const res = await fetch('/api/file/spells.json');
+        const json = await res.json();
+        spellsData = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : []);
+    } catch (e) { console.warn('[forge] Could not load spells.json', e); }
+}
+
+function spellCost(intent) {
+    return INTENT_COSTS[String(intent || '').toLowerCase()] ?? '';
+}
+
+function renderMonsterSpell(idx, si, s) {
+    const effects = (s.effects || []).map((e, ei) => `
+        <div class="extra-feature-body field-grid" style="padding:4px 0 2px 8px;border-left:2px solid var(--border)">
+            <div class="field-wrap">
+                <label class="field-label">Intent</label>
+                <input class="field-input" type="text" value="${escAttr(e.intent || '')}"
+                    onchange="updateMonsterSpellEffect(${idx},${si},${ei},'intent',this.value)" oninput="markUnsaved()">
+            </div>
+            <div class="field-wrap">
+                <label class="field-label">SP Cost</label>
+                <input class="field-input" type="number" min="0" value="${e.cost ?? spellCost(e.intent)}"
+                    onchange="updateMonsterSpellEffect(${idx},${si},${ei},'cost',+this.value)" oninput="markUnsaved()" style="width:60px">
+            </div>
+            <div class="field-wrap">
+                <label class="field-label">Range</label>
+                <input class="field-input" type="text" value="${escAttr(e.range || '')}"
+                    onchange="updateMonsterSpellEffect(${idx},${si},${ei},'range',this.value)" oninput="markUnsaved()">
+            </div>
+            <div class="field-wrap">
+                <label class="field-label">Damage</label>
+                <input class="field-input" type="text" placeholder="e.g. 2d6" value="${escAttr(e.damage || '')}"
+                    onchange="updateMonsterSpellEffect(${idx},${si},${ei},'damage',this.value)" oninput="markUnsaved()">
+            </div>
+            <div class="field-wrap">
+                <label class="field-label">Type</label>
+                <select class="field-input" onchange="updateMonsterSpellEffect(${idx},${si},${ei},'type',this.value)">
+                    ${buildSelect(MD.featureDamage, e.type || '')}
+                </select>
+            </div>
+            <div class="field-wrap full">
+                <label class="field-label">Effect</label>
+                <textarea class="field-input" rows="2" data-quick-build="feature"
+                    onchange="updateMonsterSpellEffect(${idx},${si},${ei},'effect',this.value)"
+                    oninput="markUnsaved()">${escHtml(e.effect || '')}</textarea>
+            </div>
+        </div>`).join('');
+
+    return `
+    <div class="extra-feature" id="mspell-${idx}-${si}">
+        <div class="extra-feature-header">
+            <span style="font-weight:600;color:var(--gold)">${escHtml(s.name || 'Spell')}</span>
+            <span style="font-size:0.75em;opacity:0.5;margin-left:6px">${escHtml([s.manner, s.transmission].filter(Boolean).join(' · '))}</span>
+            <button class="extra-feature-delete" onclick="removeMonsterSpell(${idx},${si})">✕</button>
+        </div>
+        ${effects}
+        <button class="btn btn-ghost" style="font-size:10px;margin-top:4px"
+            onclick="addMonsterSpellEffect(${idx},${si})">+ Intent Level</button>
+    </div>`;
+}
+
+function renderMonsterSpellsList(idx) {
+    const el = document.getElementById(`monster-spells-${idx}`);
+    if (!el) return;
+    const spells = state.data[idx].spells || [];
+    el.innerHTML = spells.length
+        ? spells.map((s, si) => renderMonsterSpell(idx, si, s)).join('')
+        : '<div class="extra-features-empty">No spells — use search to add</div>';
+}
+
+function removeMonsterSpell(idx, si) {
+    if (!state.data[idx].spells) return;
+    state.data[idx].spells.splice(si, 1);
+    markUnsaved();
+    renderMonsterSpellsList(idx);
+}
+
+function updateMonsterSpellEffect(idx, si, ei, key, value) {
+    const s = state.data[idx].spells?.[si];
+    if (!s?.effects?.[ei]) return;
+    s.effects[ei][key] = value;
+    markUnsaved();
+}
+
+function addMonsterSpellEffect(idx, si) {
+    const s = state.data[idx].spells?.[si];
+    if (!s) return;
+    if (!s.effects) s.effects = [];
+    s.effects.push({ intent: 'Whisper', cost: 1, range: 'Short', damage: '', type: '', effect: '' });
+    markUnsaved();
+    renderMonsterSpellsList(idx);
+}
+
+function openSpellPicker(idx) {
+    loadSpellsData().then(() => {
+        const overlay = document.createElement('div');
+        overlay.className = 'dialog-overlay';
+        overlay.style.zIndex = '200';
+
+        const box = document.createElement('div');
+        box.className = 'dialog-box';
+        box.style.cssText = 'max-width:520px;max-height:80vh;display:flex;flex-direction:column;gap:8px';
+
+        box.innerHTML = `
+            <div class="dialog-title">Add Spell</div>
+            <input type="text" id="spell-picker-search" class="field-input"
+                placeholder="Search spells…" autocomplete="off"
+                style="width:100%;box-sizing:border-box">
+            <div id="spell-picker-list" style="overflow-y:auto;max-height:380px;display:flex;flex-direction:column;gap:4px"></div>
+            <div class="dialog-actions">
+                <button class="btn btn-ghost" onclick="this.closest('.dialog-overlay').remove()">Cancel</button>
+            </div>`;
+
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+
+        const input = box.querySelector('#spell-picker-search');
+        const list  = box.querySelector('#spell-picker-list');
+
+        function renderList(q) {
+            const filtered = spellsData.filter(s =>
+                !q || s.name.toLowerCase().includes(q.toLowerCase())
+            );
+            list.innerHTML = filtered.slice(0, 40).map(s => `
+                <div class="entry-row" style="cursor:pointer;padding:6px 10px;border-radius:4px" data-name="${escAttr(s.name)}">
+                    <div class="entry-row-name">${escHtml(s.name)}</div>
+                    <div class="entry-row-meta">${escHtml([s.manner, s.transmission, s.origin].filter(Boolean).join(' · '))}
+                        — ${(s.effects||[]).map(e=>escHtml(e.intent)).join(', ')}</div>
+                </div>`).join('');
+            list.querySelectorAll('.entry-row').forEach(row => {
+                row.addEventListener('click', () => {
+                    const spell = spellsData.find(s => s.name === row.dataset.name);
+                    if (!spell) return;
+                    if (!state.data[idx].spells) state.data[idx].spells = [];
+                    state.data[idx].spells.push({
+                        name:         spell.name,
+                        manner:       spell.manner || '',
+                        transmission: spell.transmission || '',
+                        effects:      (spell.effects || []).map(e => ({
+                            intent: e.intent,
+                            cost:   spellCost(e.intent),
+                            range:  e.range  || '',
+                            damage: '',
+                            type:   '',
+                            effect: e.effect || '',
+                        })),
+                    });
+                    markUnsaved();
+                    renderMonsterSpellsList(idx);
+                    overlay.remove();
+                });
+            });
+        }
+
+        renderList('');
+        input.addEventListener('input', () => renderList(input.value));
+        requestAnimationFrame(() => input.focus());
+    });
 }
 
 // ── REGISTER ──────────────────────────────────────────────────────────────────
@@ -432,7 +600,7 @@ registerEditor('monster', {
                         <div class="field-grid">
                             <div class="field-wrap">
                                 <label class="field-label">Environment</label>
-                                <input class="field-input" type="text" value="${fa('environment')}"
+                                <input class="field-input" type="text" list="env-options" value="${fa('environment')}"
                                     onchange="updateField(${idx},'environment',this.value)" oninput="markUnsaved()">
                             </div>
                             <div class="field-wrap">
@@ -530,6 +698,21 @@ registerEditor('monster', {
                     ${(entry.features?.length)
                         ? entry.features.map((f, fi) => renderExtraFeature(idx, fi, f)).join('')
                         : '<div class="extra-features-empty">No additional features</div>'}
+                </div>
+            </div>
+
+            <div class="forge-section">
+                <div class="section-header section-header-split">
+                    <span>Spells <span style="font-size:0.75em;opacity:0.5">(SP: ${((entry.check_mental ?? 0) * 2)} max)</span></span>
+                    <button class="btn-section-add" onclick="openSpellPicker(${idx})">+ Add</button>
+                </div>
+                <div class="extra-features-list" id="monster-spells-${idx}">
+                    ${(() => {
+                        const spells = entry.spells || [];
+                        return spells.length
+                            ? spells.map((s, si) => renderMonsterSpell(idx, si, s)).join('')
+                            : '<div class="extra-features-empty">No spells — use search to add</div>';
+                    })()}
                 </div>
             </div>
 

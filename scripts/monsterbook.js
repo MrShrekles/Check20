@@ -1,6 +1,8 @@
 // ===== Monster Book =====
 let bookData = [];
 let bookFiltered = [];
+const bookCollapsed = new Set();
+let activeGroupFilter = "";
 const STORAGE_KEY = "monsterbook_custom";
 
 function getCustomEntries() {
@@ -29,6 +31,27 @@ async function loadMonsterBook() {
 
 function populateBookFilters() {
     const uniq = key => [...new Set(bookData.map(m => m[key]).filter(Boolean))].sort();
+
+    // Group pills
+    const pillContainer = document.getElementById("filterBookGroup");
+    if (pillContainer) {
+        const groups = uniq("_group");
+        pillContainer.innerHTML = ["", ...groups].map(g =>
+            `<button class="group-pill${activeGroupFilter === g ? " active" : ""}" data-group="${g}">
+                ${g || "All"}
+            </button>`
+        ).join("");
+        pillContainer.querySelectorAll(".group-pill").forEach(btn => {
+            btn.addEventListener("click", () => {
+                activeGroupFilter = btn.dataset.group === activeGroupFilter ? "" : btn.dataset.group;
+                pillContainer.querySelectorAll(".group-pill").forEach(b =>
+                    b.classList.toggle("active", b.dataset.group === activeGroupFilter)
+                );
+                filterBook();
+            });
+        });
+    }
+
     function fill(id, values, placeholder) {
         const el = document.getElementById(id);
         if (!el) return;
@@ -41,7 +64,6 @@ function populateBookFilters() {
         });
         if (cur) el.value = cur;
     }
-    fill("filterBookGroup",  uniq("_group"), "All Groups");
     fill("filterBookOrigin", uniq("origin"), "All Origins");
     fill("filterBookSize",   uniq("size"),   "Any Size");
     fill("filterBookRarity", uniq("rarity"), "Any Rarity");
@@ -49,26 +71,43 @@ function populateBookFilters() {
 
 function clearBookFilters() {
     document.getElementById("bookSearch").value = "";
-    ["filterBookGroup", "filterBookOrigin", "filterBookSize", "filterBookRarity"]
+    activeGroupFilter = "";
+    ["filterBookOrigin", "filterBookSize", "filterBookRarity"]
         .forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+    document.querySelectorAll(".group-pill").forEach(b =>
+        b.classList.toggle("active", b.dataset.group === "")
+    );
     filterBook();
 }
 
 function filterBook() {
-    const q = document.getElementById("bookSearch").value.toLowerCase();
-    const gF = document.getElementById("filterBookGroup")?.value  || "";
+    const q  = document.getElementById("bookSearch").value.toLowerCase();
     const oF = document.getElementById("filterBookOrigin")?.value || "";
     const sF = document.getElementById("filterBookSize")?.value   || "";
     const rF = document.getElementById("filterBookRarity")?.value || "";
 
     bookFiltered = bookData.filter(m => {
-        if (q  && !JSON.stringify(m).toLowerCase().includes(q)) return false;
-        if (gF && (m._group  || "") !== gF) return false;
-        if (oF && (m.origin  || "") !== oF) return false;
-        if (sF && (m.size    || "") !== sF) return false;
-        if (rF && (m.rarity  || "") !== rF) return false;
+        if (q              && !JSON.stringify(m).toLowerCase().includes(q)) return false;
+        if (activeGroupFilter && (m._group || "") !== activeGroupFilter)    return false;
+        if (oF             && (m.origin || "") !== oF)                      return false;
+        if (sF             && (m.size   || "") !== sF)                      return false;
+        if (rF             && (m.rarity || "") !== rF)                      return false;
         return true;
     });
+    renderBook();
+}
+
+function toggleCollapseAll() {
+    const btn = document.getElementById("btnCollapseAll");
+    const allKeys = [...new Set(bookFiltered.map(m => m._group || m.origin || "Other"))];
+    const anyExpanded = allKeys.some(k => !bookCollapsed.has(k));
+    if (anyExpanded) {
+        allKeys.forEach(k => bookCollapsed.add(k));
+        if (btn) btn.textContent = "Expand All";
+    } else {
+        bookCollapsed.clear();
+        if (btn) btn.textContent = "Collapse All";
+    }
     renderBook();
 }
 
@@ -94,15 +133,30 @@ function renderBook() {
 
     out.innerHTML = "";
     sortedKeys.forEach(key => {
+        const collapsed = bookCollapsed.has(key);
+
         const section = document.createElement("div");
         section.className = "book-group";
+
         const heading = document.createElement("h3");
-        heading.className = "book-group-heading";
-        heading.textContent = key;
-        section.appendChild(heading);
+        heading.className = "book-group-heading" + (collapsed ? " collapsed" : "");
+        heading.innerHTML = `<span class="book-group-arrow">${collapsed ? "▶" : "▼"}</span>${key} <span class="book-group-count">${groups.get(key).length}</span>`;
+        heading.style.cursor = "pointer";
+
         const grid = document.createElement("div");
         grid.className = "monster-grid";
+        if (collapsed) grid.style.display = "none";
         groups.get(key).forEach(m => grid.append(createBookCard(m)));
+
+        heading.addEventListener("click", () => {
+            const isNowCollapsed = !bookCollapsed.has(key);
+            if (isNowCollapsed) bookCollapsed.add(key); else bookCollapsed.delete(key);
+            grid.style.display = isNowCollapsed ? "none" : "";
+            heading.querySelector(".book-group-arrow").textContent = isNowCollapsed ? "▶" : "▼";
+            heading.classList.toggle("collapsed", isNowCollapsed);
+        });
+
+        section.appendChild(heading);
         section.appendChild(grid);
         out.append(section);
     });
@@ -169,6 +223,18 @@ function createBookCard(m) {
         </div></div>` : ""}
         ${(meleeAtk?.name || rangedAtk?.name) ? `<div class="info-mon">${attackLine(meleeAtk, "Melee")}${attackLine(rangedAtk, "Ranged")}</div>` : ""}
         ${featuresHTML}
+        ${Array.isArray(m.spells) && m.spells.length ? `
+        <div class="feature-block">
+            <div style="font-size:0.7em;font-weight:bold;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:4px;">Spells · SP: ${m.check_mental != null ? m.check_mental * 2 : "—"}</div>
+            <ul class="features">
+                ${m.spells.map(s => `
+                <li><strong>${s.name}</strong> <span style="opacity:0.5;font-size:0.85em">${[s.manner, s.transmission].filter(Boolean).join(" · ")}</span>
+                    <ul style="list-style:none;padding-left:0.8em;margin:2px 0 0">
+                        ${(s.effects || []).map(e => `<li style="font-size:0.9em"><span style="color:var(--gold);opacity:0.8">${e.intent}${e.cost ? ` (${e.cost} SP)` : ""}</span> — ${[e.range, e.damage ? e.damage + (e.type ? " " + e.type : "") : ""].filter(Boolean).join(" · ")}${e.effect ? ": " + parseLinks(e.effect) : ""}</li>`).join("")}
+                    </ul>
+                </li>`).join("")}
+            </ul>
+        </div>` : ""}
         ${m.lore ? `<p style="font-style:italic;opacity:0.7;margin-top:8px;font-size:0.9em">${parseLinks(m.lore)}</p>` : ""}
         <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
             ${customBtns}
@@ -224,6 +290,8 @@ function buildMonsterPacket(m) {
             effect: m.feature_effect || f0.effect || "",
             damage: m.feature_damage || f0.damage || "",
         },
+        spells:          Array.isArray(m.spells) ? m.spells : [],
+        spell_points_max: m.check_mental != null ? m.check_mental * 2 : 0,
     };
 }
 

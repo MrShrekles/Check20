@@ -81,14 +81,15 @@
                 <!-- Left: search, filters, controls -->
                 <div class="book-controls-panel">
                     <input type="text" id="bookSearch" placeholder="Search monsters..." oninput="filterBook()">
+                    <div id="filterBookGroup" class="book-group-pills"></div>
                     <div class="book-filters">
-                        <select id="filterBookGroup" onchange="filterBook()"><option value="">All Groups</option></select>
                         <select id="filterBookOrigin" onchange="filterBook()"><option value="">All Origins</option></select>
                         <select id="filterBookSize" onchange="filterBook()"><option value="">Any Size</option></select>
                         <select id="filterBookRarity" onchange="filterBook()"><option value="">Any Rarity</option></select>
                     </div>
                     <div class="book-filter-actions">
                         <button class="button" onclick="clearBookFilters()">Clear Filters</button>
+                        <button class="button" id="btnCollapseAll" onclick="toggleCollapseAll()">Collapse All</button>
                         <button class="button" onclick="exportMonsterBook()">Export Custom JSON</button>
                     </div>
                 </div>

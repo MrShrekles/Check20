@@ -153,9 +153,7 @@
                                         <input type="number" name="attr_capacity" class="power-input-small">
                                     </div>
                                     <div class="power-stat">
-                                        <label class="power-label">Spell Pts</label>
-                                        <input type="number" name="attr_spell_points_max" readonly class="power-input-small">
-                                        <span class="power-slash">/</span>
+                                        <label class="power-label">SP</label>
                                         <input type="number" name="attr_sp" class="power-input-small">
                                     </div>
                                 </div>
@@ -431,80 +429,6 @@
                                     </details>
                                 </fieldset>
                             </div>
-
-                            <!-- Monster Spells -->
-                            <h2>Spells</h2>
-                            <div class="feature">
-                                <fieldset class="repeating_mspells">
-                                    <details>
-                                        <summary>
-                                            <div class="flex-group">
-                                                <input type="text" name="attr_mspell-name" placeholder="Spell Name" class="npc-action-name">
-                                                <select name="attr_mspell-intent" style="width:fit-content;">
-                                                    <option>Light Whisper</option>
-                                                    <option>Whisper</option>
-                                                    <option>Surge</option>
-                                                    <option>Shout</option>
-                                                    <option>Roar</option>
-                                                    <option>Storm</option>
-                                                    <option>Cataclysm</option>
-                                                </select>
-                                                <input type="number" name="attr_mspell-cost" value="1" style="width:36px;" title="SP Cost">
-                                                <button type="roll" name="roll_mspell" class="npc-roll" value="&{template:shek} {{name=@{character_name}}} {{Spell=@{mspell-name}}} {{Intent=@{mspell-intent}}} {{SP Cost=@{mspell-cost}}} {{Range=@{mspell-range}}} {{Check=[[@{d20} + @{check_mental}]] | [[@{d20} + @{check_mental}]] @{provoke}}} {{Damage=[[@{mspell-damage}+@{check_mental}]] @{mspell-type} [+Table!](!damage @{mspell-type})}} {{desc=@{mspell-effect}}}"></button>
-                                                <span class="expand">▼</span>
-                                            </div>
-                                        </summary>
-                                        <div class="npc-action-details" style="display:flex;flex-wrap:wrap;gap:8px;padding:6px 0">
-                                            <label>Manner
-                                                <select name="attr_mspell-manner">
-                                                    <option>Decay</option>
-                                                    <option>Discern</option>
-                                                    <option>Domineer</option>
-                                                    <option>Manifest</option>
-                                                </select>
-                                            </label>
-                                            <label>Transmission
-                                                <select name="attr_mspell-transmission">
-                                                    <option>Aether</option>
-                                                    <option>Astral</option>
-                                                    <option>Corpus</option>
-                                                    <option>Elemental</option>
-                                                    <option>Material</option>
-                                                </select>
-                                            </label>
-                                            <label>Range
-                                                <select name="attr_mspell-range">
-                                                    <option>Self</option>
-                                                    <option>Melee</option>
-                                                    <option>Short</option>
-                                                    <option>Medium</option>
-                                                    <option>Long</option>
-                                                </select>
-                                            </label>
-                                            <label>Damage
-                                                <input type="text" name="attr_mspell-damage" value="1d6" style="width:60px">
-                                            </label>
-                                            <label>Type
-                                                <select name="attr_mspell-type" style="background-color:var(--theme-1);">
-                                                    <option value="">None</option>
-                                                    <option disabled>Physical</option>
-                                                    <option>Impact</option><option>Piercing</option><option>Slashing</option>
-                                                    <option disabled>Elemental</option>
-                                                    <option>Acid</option><option>Eclipse</option><option>Fire</option>
-                                                    <option>Ice</option><option>Lightning</option><option>Solar</option>
-                                                    <option>Thunder</option><option>Toxic</option><option>Fluid</option>
-                                                    <option disabled>Realm</option>
-                                                    <option>Vozian</option><option>Nature</option><option>Psychic</option><option>Healing</option>
-                                                </select>
-                                            </label>
-                                            <div style="width:100%">
-                                                <textarea name="attr_mspell-effect" class="description" placeholder="Spell effect for this intent level..."></textarea>
-                                            </div>
-                                        </div>
-                                    </details>
-                                </fieldset>
-                            </div>
-
                             </details>
                         </div>
 
@@ -1377,9 +1301,7 @@
                                         <input type="number" name="attr_capacity" class="power-input-small">
                                     </div>
                                     <div class="power-stat">
-                                        <label class="power-label">Spell Pts</label>
-                                        <input type="number" name="attr_spell_points_max" readonly class="power-input-small">
-                                        <span class="power-slash">/</span>
+                                        <label class="power-label">SP</label>
                                         <input type="number" name="attr_sp" class="power-input-small">
                                     </div>
                                 </div>
@@ -1771,79 +1693,6 @@
                                         });
                                     });
                                 </script>
-                            </div>
-
-                            <!-- NPC Spells -->
-                            <h2>Spells</h2>
-                            <div class="feature">
-                                <fieldset class="repeating_mspells">
-                                    <details>
-                                        <summary>
-                                            <div class="flex-group">
-                                                <input type="text" name="attr_mspell-name" placeholder="Spell Name" class="npc-action-name">
-                                                <select name="attr_mspell-intent" style="width:fit-content;">
-                                                    <option>Light Whisper</option>
-                                                    <option>Whisper</option>
-                                                    <option>Surge</option>
-                                                    <option>Shout</option>
-                                                    <option>Roar</option>
-                                                    <option>Storm</option>
-                                                    <option>Cataclysm</option>
-                                                </select>
-                                                <input type="number" name="attr_mspell-cost" value="1" style="width:36px;" title="SP Cost">
-                                                <button type="roll" name="roll_mspell" class="npc-roll" value="&{template:shek} {{name=@{character_name}}} {{Spell=@{mspell-name}}} {{Intent=@{mspell-intent}}} {{SP Cost=@{mspell-cost}}} {{Range=@{mspell-range}}} {{Check=[[@{d20} + @{check_mental}]] | [[@{d20} + @{check_mental}]] @{provoke}}} {{Damage=[[@{mspell-damage}+@{check_mental}]] @{mspell-type} [+Table!](!damage @{mspell-type})}} {{desc=@{mspell-effect}}}"></button>
-                                                <span class="expand">▼</span>
-                                            </div>
-                                        </summary>
-                                        <div class="npc-action-details" style="display:flex;flex-wrap:wrap;gap:8px;padding:6px 0">
-                                            <label>Manner
-                                                <select name="attr_mspell-manner">
-                                                    <option>Decay</option>
-                                                    <option>Discern</option>
-                                                    <option>Domineer</option>
-                                                    <option>Manifest</option>
-                                                </select>
-                                            </label>
-                                            <label>Transmission
-                                                <select name="attr_mspell-transmission">
-                                                    <option>Aether</option>
-                                                    <option>Astral</option>
-                                                    <option>Corpus</option>
-                                                    <option>Elemental</option>
-                                                    <option>Material</option>
-                                                </select>
-                                            </label>
-                                            <label>Range
-                                                <select name="attr_mspell-range">
-                                                    <option>Self</option>
-                                                    <option>Melee</option>
-                                                    <option>Short</option>
-                                                    <option>Medium</option>
-                                                    <option>Long</option>
-                                                </select>
-                                            </label>
-                                            <label>Damage
-                                                <input type="text" name="attr_mspell-damage" value="1d6" style="width:60px">
-                                            </label>
-                                            <label>Type
-                                                <select name="attr_mspell-type" style="background-color:var(--theme-1);">
-                                                    <option value="">None</option>
-                                                    <option disabled>Physical</option>
-                                                    <option>Impact</option><option>Piercing</option><option>Slashing</option>
-                                                    <option disabled>Elemental</option>
-                                                    <option>Acid</option><option>Eclipse</option><option>Fire</option>
-                                                    <option>Ice</option><option>Lightning</option><option>Solar</option>
-                                                    <option>Thunder</option><option>Toxic</option><option>Fluid</option>
-                                                    <option disabled>Realm</option>
-                                                    <option>Vozian</option><option>Nature</option><option>Psychic</option><option>Healing</option>
-                                                </select>
-                                            </label>
-                                            <div style="width:100%">
-                                                <textarea name="attr_mspell-effect" class="description" placeholder="Spell effect for this intent level..."></textarea>
-                                            </div>
-                                        </div>
-                                    </details>
-                                </fieldset>
                             </div>
 
                             <!--Health-->
@@ -4591,13 +4440,11 @@ on("change:PL", function() {
     getAttrs(["PL"], function(values) {
         let pl = parseInt(values.PL) || 0;
 
-        const checkMt = Math.floor(pl / 2);
         setAttrs({
-            capacity_max:      Math.floor(pl / 2),
-            num_attacks:       Math.max(1, Math.floor(pl / 3)),
-            check_physical:    Math.ceil(pl / 2),
-            check_mental:      checkMt,
-            spell_points_max:  checkMt * 2,
+            capacity_max:    Math.floor(pl / 2),
+            num_attacks:     Math.max(1, Math.floor(pl / 3)),
+            check_physical:  Math.ceil(pl / 2),
+            check_mental:    Math.floor(pl / 2)
         });
     });
 });

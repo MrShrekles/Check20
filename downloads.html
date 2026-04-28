@@ -7,24 +7,170 @@
     <title>Downloads</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
-    <script src="scripts/downloads.js" defer></script>
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
+    <style>
+        .dl-section {
+            margin: 2rem 0;
+        }
+        .dl-section h2 {
+            font-size: 0.75rem;
+            font-weight: bold;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            border-bottom: 1px solid var(--theme-1);
+            padding-bottom: 6px;
+            margin-bottom: 1rem;
+        }
+        .dl-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .dl-card {
+            background: var(--theme-dark, rgba(40,40,40,0.9));
+            border: 1px solid var(--theme-2, #333);
+            border-radius: var(--border-radius);
+            padding: 1.2rem 1.4rem;
+            width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .dl-card:hover {
+            border-color: var(--gold-2, #af8000);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+        }
+        .dl-card-icon {
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+        .dl-card-name {
+            font-weight: bold;
+            font-size: 1rem;
+            color: var(--cream, #f0e6cc);
+        }
+        .dl-card-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted, #888);
+            line-height: 1.5;
+            flex: 1;
+        }
+        .dl-card-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted, #777);
+            font-family: monospace;
+        }
+        .dl-card-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .dl-btn {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: var(--border-radius);
+            font-size: 0.82rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            border: none;
+            transition: filter 0.15s;
+        }
+        .dl-btn:hover { filter: brightness(115%); }
+        .dl-btn-primary {
+            background: var(--gold-2, #af8000);
+            color: #111;
+        }
+        .dl-btn-ghost {
+            background: transparent;
+            border: 1px solid var(--theme-3, #555);
+            color: var(--cream, #f0e6cc);
+        }
+        .dl-instructions {
+            background: var(--theme-1, #1a1a1a);
+            border: 1px solid var(--theme-2, #333);
+            border-radius: var(--border-radius);
+            padding: 1rem 1.2rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted, #888);
+            line-height: 1.7;
+        }
+        .dl-instructions strong { color: var(--cream, #f0e6cc); }
+        .dl-instructions ol { margin: 0.5rem 0 0 1.2rem; padding: 0; }
+        .dl-instructions li { margin-bottom: 4px; }
+        .dl-instructions code {
+            background: rgba(255,255,255,0.07);
+            border-radius: 3px;
+            padding: 1px 5px;
+            font-family: monospace;
+            font-size: 0.85em;
+            color: var(--gold, #c8a000);
+        }
+    </style>
 </head>
 
 <body data-page-title="Downloads">
     <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
 
     <main>
 
+        <div class="dl-section">
+            <h2>⬡ Roll20 Integration</h2>
+            <div class="dl-grid">
 
+                <div class="dl-card">
+                    <div class="dl-card-icon">📄</div>
+                    <div class="dl-card-name">ARC20 Character Sheet</div>
+                    <div class="dl-card-desc">The full CODEMONKEY character sheet for Roll20. Supports characters, minions, starships, and spellcasting.</div>
+                    <div class="dl-card-meta">ARC20 Charsheet v8.html</div>
+                    <div class="dl-card-actions">
+                        <a class="dl-btn dl-btn-primary" href="downloads/roll20/ARC20 Charsheet v8.html" download>↓ Download</a>
+                        <a class="dl-btn dl-btn-ghost" href="downloads/roll20/ARC20 Charsheet v8.html" target="_blank">Preview</a>
+                    </div>
+                </div>
 
-        
+                <div class="dl-card">
+                    <div class="dl-card-icon">⚙</div>
+                    <div class="dl-card-name">ARC20 API Script</div>
+                    <div class="dl-card-desc">Roll20 API script powering damage tables, monster import, spell and armor injection, motivation rolls, and more.</div>
+                    <div class="dl-card-meta">ARC20 API v8.js</div>
+                    <div class="dl-card-actions">
+                        <a class="dl-btn dl-btn-primary" href="downloads/roll20/ARC20 API v8.js" download>↓ Download</a>
+                    </div>
+                </div>
+
+                <div class="dl-card">
+                    <div class="dl-card-icon">🎨</div>
+                    <div class="dl-card-name">ARC20 Style Sheet</div>
+                    <div class="dl-card-desc">The CSS companion to the ARC20 character sheet. Required for correct sheet appearance in Roll20.</div>
+                    <div class="dl-card-meta">ARC20 Style v8.css</div>
+                    <div class="dl-card-actions">
+                        <a class="dl-btn dl-btn-primary" href="downloads/roll20/ARC20 Style v8.css" download>↓ Download</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="dl-instructions">
+                <strong>How to install in Roll20</strong>
+                <ol>
+                    <li>In your Roll20 game, go to <strong>Game Settings → Character Sheet Template</strong> and choose <code>Custom</code>.</li>
+                    <li>Paste the contents of <code>ARC20 Charsheet v8.html</code> into the <strong>HTML</strong> tab.</li>
+                    <li>Paste the contents of <code>ARC20 Style v8.css</code> into the <strong>CSS</strong> tab. Save.</li>
+                    <li>For the API script, go to <strong>API Scripts</strong> and create a new script. Paste the contents of <code>ARC20 API v8.js</code> and save.</li>
+                    <li>Use <code>!importmonster</code> from the Monster Book on this site to send monsters directly to Roll20.</li>
+                </ol>
+            </div>
+        </div>
 
     </main>
 
-    <div id="sidebar-placeholder"></div>
 </body>
-
 </html>

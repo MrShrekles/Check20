@@ -16,7 +16,7 @@
     "feature_name": "Ironhide Charge",
     "feature_type": "Action",
     "feature_range": "Melee",
-    "feature_effect": "The Ironhide Brute charges up to its full walk speed in a straight line. Each creature in its path must succeed on a Strength check or be knocked Prone and take [PL] Physical damage.",
+    "feature_effect": "The Ironhide Brute charges up to its full walk speed in a straight line. Each creature in its path must succeed on a Strength check or be knocked Prone and take [[1+@{PL}]] Physical damage.\n",
     "feature_duration": "Instant",
     "feature_damage": "Impact",
     "motivation": "Hunting prey",
@@ -34,7 +34,17 @@
     },
     "pl": 6,
     "check_physical": 6,
-    "check_mental": 0
+    "check_mental": 0,
+    "features": [
+      {
+        "name": "Ironhide",
+        "type": "Passive",
+        "range": "",
+        "effect": "Has additional [[5 * @{PL}]] armor",
+        "duration": "",
+        "damage": ""
+      }
+    ]
   },
   {
     "name": "Gloomwing Siren",
@@ -97,7 +107,7 @@
   },
   {
     "name": "Booy",
-    "_group": "Predator",
+    "_group": "Weirdo",
     "origin": "arcane",
     "size": "Medium",
     "rarity": "Rare",
@@ -425,7 +435,16 @@
       "damage": "",
       "damage_type": ""
     },
-    "features": [],
+    "features": [
+      {
+        "name": "Fury",
+        "type": "Special",
+        "range": "",
+        "effect": "While at half or less wounds deal double damage",
+        "duration": "",
+        "damage": ""
+      }
+    ],
     "art": ""
   },
   {
@@ -535,7 +554,7 @@
     "feature_name": "Metallic Hide",
     "feature_type": "Passive",
     "feature_range": "",
-    "feature_effect": "Has additional +10 * PL armor",
+    "feature_effect": "Has additional [[5 * @{PL}]] armor",
     "feature_duration": "",
     "feature_damage": "",
     "melee_attack": {
@@ -631,7 +650,7 @@
   },
   {
     "name": "Spider",
-    "_group": "Arachnid",
+    "_group": "Insect",
     "origin": "Nature",
     "size": "Small",
     "rarity": "Common",
@@ -685,7 +704,7 @@
   },
   {
     "name": "Spiderlings",
-    "_group": "Arachnid",
+    "_group": "Insect",
     "origin": "Nature",
     "size": "Tiny",
     "rarity": "Common",
@@ -724,6 +743,501 @@
       "equipped": false,
       "damage": "",
       "damage_type": ""
+    },
+    "features": [],
+    "art": ""
+  },
+  {
+    "name": "Eye Knobbler",
+    "_group": "Weirdo",
+    "origin": "Chaos",
+    "size": "Small",
+    "rarity": "Rare",
+    "environment": "Eclipse, Prime, Fey, Dreamsea",
+    "behavior": "Trickster",
+    "description": "Engages in cryptic talk, potentially distracting or misleading opponents",
+    "lore": "They have various magical and non-magical eyes in its collection, each with different abilities or effects",
+    "motivation": "Stealing eyes from the unluckiest",
+    "pl": 6,
+    "check_physical": 1,
+    "check_mental": 5,
+    "walk": 0,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Eye Snatch (Action)",
+    "feature_type": "Action",
+    "feature_range": "Melee",
+    "feature_effect": "Choose a creature to make an Observation check, On a failure, the target loses an eye and gains Confused permanently. A second success leaves them Blind permanently. Lost eyes can be reattached or replaced with another creature's eye if treated within 24 hours.",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Eye Gouge",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Piercing"
+    },
+    "ranged_attack": {
+      "name": "Tendril Flick",
+      "equipped": true,
+      "damage": "1d4!",
+      "damage_type": "Fluid"
+    },
+    "spell": {
+      "name": "Flesh Rend",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Fluid"
+    },
+    "features": [
+      {
+        "name": "The Collector",
+        "type": "Long Rest",
+        "range": "",
+        "effect": "After each long rest, if any creature within the region is missing an eye taken by this monster, the GM rolls a Luck check. On a failure, another creature in the party wakes without an eye. No sound, no struggle, no memory. A trail of faint tracks and the smell of something wet leads away from camp.",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Shadow Slip",
+        "type": "Action",
+        "range": "Medium",
+        "effect": "As an action moves quickly to a new location within medium range without provoking opportunity attacks, teleporting through shadows",
+        "duration": "Instant",
+        "damage": ""
+      },
+      {
+        "name": "Glimmering Gaze",
+        "type": "Action",
+        "range": "Short",
+        "effect": "target a creature, they must make an Observation check or take the blind condition until the end of their next turn",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Beetle Guardian",
+    "_group": "Insect",
+    "origin": "Nature",
+    "size": "Medium",
+    "rarity": "Common",
+    "environment": "Prime, Fey, dreamsea",
+    "behavior": "Territorial",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 6,
+    "check_physical": 6,
+    "check_mental": 0,
+    "walk": 30,
+    "fly": 0,
+    "swim": 0,
+    "climb": 30,
+    "feature_name": "Impenetrable Armor",
+    "feature_type": "Passive",
+    "feature_range": "",
+    "feature_effect": "Has additional [[5 * @{PL}]] armor",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Slam (NPC)",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Impact"
+    },
+    "ranged_attack": {
+      "name": "Rock Toss",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Impact"
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [
+      {
+        "name": "Luminescent Eyes",
+        "type": "Action",
+        "range": "Short",
+        "effect": "As an action, the beetle guardian make a check to see invisible creatures within short range not behind cover",
+        "duration": "Instant",
+        "damage": ""
+      },
+      {
+        "name": "Charge",
+        "type": "Action",
+        "range": "",
+        "effect": "As an action charge your full movement in a line, all enemies within that line are knocked prone on a failed Agility check",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Wisp ",
+    "_group": "Spirit",
+    "origin": "Nature",
+    "size": "Tiny",
+    "rarity": "Rare",
+    "environment": "Prime, Fey, Dreamsea",
+    "behavior": "Trickster",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 6,
+    "check_physical": 0,
+    "check_mental": 6,
+    "walk": 0,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Ethereal Shift",
+    "feature_type": "Action",
+    "feature_range": "Self",
+    "feature_effect": "As an action gain the intangible condition or remove it",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "ranged_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "spell": {
+      "name": "Luminous Bolt",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Solar"
+    },
+    "features": [
+      {
+        "name": "Roots of Protection",
+        "type": "Action",
+        "range": "",
+        "effect": "Summons a tangle of ethereal roots in a reach-range area within short range. Each enemy in the area must succeed on a Physical check or be Pinned until the end of your next turn.",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Clown",
+    "_group": "Weirdo",
+    "origin": "Chaos",
+    "size": "Medium",
+    "rarity": "Epic",
+    "environment": "Prime, Dreamsea",
+    "behavior": "Trickster",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 10,
+    "check_physical": 5,
+    "check_mental": 5,
+    "walk": 35,
+    "fly": 5,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Illusionist's Gambit",
+    "feature_type": "Action",
+    "feature_range": "Short",
+    "feature_effect": "The clown conjures a PL 3 illusion of itself within short range for up to 1 minute. While active, the clown occupies both locations simultaneously. Both bodies draw from a shared PL 3 health pool. When that pool reaches zero, the illusion collapses and the clown returns to a single location with whatever health remains.",
+    "feature_duration": "1 minute",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Mallet",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Impact"
+    },
+    "ranged_attack": {
+      "name": "Honk Honk",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Thunder"
+    },
+    "spell": {
+      "name": "Panic",
+      "equipped": true,
+      "damage": "1d4",
+      "damage_type": "Psychic"
+    },
+    "features": [
+      {
+        "name": "Manic Laughter",
+        "type": "Action",
+        "range": "Short",
+        "effect": "As an Action, The clown lets out a chilling, hysterical laugh. All enemies within Short range must succeed on a Spirit check or be inflicted with Confusion until the end of their next turn.",
+        "duration": "Until end of their next turn",
+        "damage": ""
+      },
+      {
+        "name": "Unsettling ",
+        "type": "Passive",
+        "range": "",
+        "effect": "the clown contorts their body in unnatural ways, attacks against the clown have -2 to hit",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Madness",
+        "type": "Action",
+        "range": "Short",
+        "effect": "As an Action, the clown makes a mental check at a target within short range, on a success causes Fear",
+        "duration": "Instant",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Treant",
+    "_group": "Verdance",
+    "origin": "Nature",
+    "size": "Giant",
+    "rarity": "Epic",
+    "environment": "Prime, Fey",
+    "behavior": "Solitary",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 10,
+    "check_physical": 6,
+    "check_mental": 4,
+    "walk": 25,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Return To Nature",
+    "feature_type": "Passive",
+    "feature_range": "",
+    "feature_effect": "Deal double damage to vehicles and structures",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Slam (Giant)",
+      "equipped": true,
+      "damage": "2d6",
+      "damage_type": "Impact"
+    },
+    "ranged_attack": {
+      "name": "Root Spear",
+      "equipped": true,
+      "damage": "2d4",
+      "damage_type": "Piercing"
+    },
+    "spell": {
+      "name": "Rot",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Nature"
+    },
+    "features": [
+      {
+        "name": "Summon Rootlings",
+        "type": "Action",
+        "range": "Reach",
+        "effect": "As an Action, Summon [[1d4]] PL3 [Rootlings] within reach that remain for 1 minute. MAX Rootlings: 6",
+        "duration": "1 minute",
+        "damage": ""
+      },
+      {
+        "name": "Animate Tree (PL14)",
+        "type": "Action",
+        "range": "Short",
+        "effect": "As an Action once per day, Target a tree within short range. The tree becomes a PL6 [Awakened Tree] minion for 1 minute",
+        "duration": "1 minute",
+        "damage": ""
+      },
+      {
+        "name": "Verdant Veil",
+        "type": "Special",
+        "range": "",
+        "effect": "While in a natural environment or within reach range of plant life, this creature is treated as invisible. This effect ends immediately if the creature attacks or is touched by another creature. It resumes at the start of this creature's next turn if the conditions are still met.",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Root Grasp",
+        "type": "Action",
+        "range": "Short",
+        "effect": "While in nature or on dirt, as an Action target a creature within short ranger and make a physical check as roots grasp at the target. On a success cause the Pinned condition until the end of your next turn",
+        "duration": "Until end of your next turn",
+        "damage": ""
+      },
+      {
+        "name": "Entomb",
+        "type": "Action",
+        "range": "Melee",
+        "effect": "While in nature or on dirt as an action, touch a creature and make a Physical check. On a success, roots and soil surge up around them, leaving the target Pinned and Constrained until the end of your next turn.",
+        "duration": "Until end of your next turn",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Rootlings",
+    "_group": "Verdance",
+    "origin": "Nature",
+    "size": "Small",
+    "rarity": "Uncommon",
+    "environment": "Prime, Fey",
+    "behavior": "Mindless",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 3,
+    "check_physical": 3,
+    "check_mental": 0,
+    "walk": 25,
+    "fly": 0,
+    "swim": 0,
+    "climb": 20,
+    "feature_name": "Verdant Veil",
+    "feature_type": "Special",
+    "feature_range": "",
+    "feature_effect": "While in a natural environment or within reach range of plant life, this creature is treated as invisible. This effect ends immediately if the creature attacks or is touched by another creature. It resumes at the start of this creature's next turn if the conditions are still met.",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Root Slap",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Slashing"
+    },
+    "ranged_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [
+      {
+        "name": "Root",
+        "type": "Action",
+        "range": "",
+        "effect": "While in nature or on dirt, as an Action touch a creature and make a physical check. On a success cause the Pinned condition",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Awakened Tree",
+    "_group": "Verdance",
+    "origin": "Nature",
+    "size": "Large",
+    "rarity": "Rare",
+    "environment": "Prime, Fey",
+    "behavior": "Mindless",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 6,
+    "check_physical": 6,
+    "check_mental": 0,
+    "walk": 25,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Verdant Veil",
+    "feature_type": "Special",
+    "feature_range": "",
+    "feature_effect": "While in a natural environment or within reach range of plant life, this creature is treated as invisible. This effect ends immediately if the creature attacks or is touched by another creature. It resumes at the start of this creature's next turn if the conditions are still met.",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "ranged_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [
+      {
+        "name": "Entomb",
+        "type": "",
+        "range": "",
+        "effect": "While in nature or on dirt, as an Action touch a creature and make a Physical check. On a success cause the Pinned and Constrained conditions until the end of your next turn",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Rot Hag",
+    "_group": "Rot",
+    "origin": "Nature",
+    "size": "Medium",
+    "rarity": "Rare",
+    "environment": "Prime, Fey",
+    "behavior": "Aggressive",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 6,
+    "check_physical": 1,
+    "check_mental": 5,
+    "walk": 30,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Bog Grasp",
+    "feature_type": "Action",
+    "feature_range": "Melee",
+    "feature_effect": "As an Action touch a creature and make a Mental check. On a success cause the Pinned condition",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Bog Claws (NPC)",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Slashing"
+    },
+    "ranged_attack": {
+      "name": "Vile Spit (NPC)",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Acid"
+    },
+    "spell": {
+      "name": "Rotbite",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Toxic"
     },
     "features": [],
     "art": ""
