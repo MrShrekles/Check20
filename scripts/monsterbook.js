@@ -3,23 +3,40 @@ let bookData = [];
 let bookFiltered = [];
 const bookCollapsed = new Set();
 let activeGroupFilter = "";
-const STORAGE_KEY = "monsterbook_custom";
+let bookEditMode = false;
+const STORAGE_KEY          = "monsterbook_custom";
+const STORAGE_KEY_OVERRIDE = "monsterbook_overrides";
 
 function getCustomEntries() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
     catch { return []; }
 }
-
 function saveCustomEntries(entries) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}
+function getOverrides() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY_OVERRIDE) || "{}"); }
+    catch { return {}; }
+}
+function saveOverrides(overrides) {
+    localStorage.setItem(STORAGE_KEY_OVERRIDE, JSON.stringify(overrides));
+}
+
+function toggleEditMode() {
+    bookEditMode = !bookEditMode;
+    document.body.classList.toggle("book-edit-mode", bookEditMode);
+    const btn = document.getElementById("btnEditMode");
+    if (btn) btn.classList.toggle("active", bookEditMode);
 }
 
 async function loadMonsterBook() {
     try {
         const res = await fetch("data/monsterbook.json");
         const jsonData = await res.json();
+        const overrides = getOverrides();
         const custom = getCustomEntries().map(m => ({ ...m, _custom: true }));
-        bookData = [...jsonData, ...custom];
+        const base = jsonData.map(m => overrides[m.name] ? { ...m, ...overrides[m.name] } : m);
+        bookData = [...base, ...custom];
         bookFiltered = [...bookData];
         populateBookFilters();
         renderBook();
@@ -193,9 +210,8 @@ function createBookCard(m) {
         featuresHTML = `<div class="feature-block"><ul class="features">${items}</ul></div>`;
     }
 
-    const customBtns = m._custom
-        ? `<button class="secondary btn-edit-card">Edit</button>
-           <button class="btn-remove btn-delete-card">Delete</button>`
+    const deleteBtnHtml = m._custom
+        ? `<button class="btn-remove btn-delete-card">Delete</button>`
         : "";
 
     const meleeAtk  = m.melee  || m.melee_attack  || null;
@@ -205,6 +221,7 @@ function createBookCard(m) {
         : "";
 
     card.innerHTML = `
+        <button class="card-edit-cog" title="Edit">⚙</button>
         <h3 class="title">${m.name}${m._custom ? ` <span style="font-size:0.65em;opacity:0.45;font-weight:normal">[custom]</span>` : ""}</h3>
         ${m._group ? `<div class="pillline">${m._group}${m.origin ? ` · ${m.origin}` : ""}</div>` : ""}
         ${m.description ? `<p class="mon-meta">${parseLinks(m.description)}</p>` : ""}
@@ -224,28 +241,37 @@ function createBookCard(m) {
         ${(meleeAtk?.name || rangedAtk?.name) ? `<div class="info-mon">${attackLine(meleeAtk, "Melee")}${attackLine(rangedAtk, "Ranged")}</div>` : ""}
         ${featuresHTML}
         ${Array.isArray(m.spells) && m.spells.length ? `
-        <div class="feature-block">
-            <div style="font-size:0.7em;font-weight:bold;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:4px;">Spells · SP: ${m.check_mental != null ? m.check_mental * 2 : "—"}</div>
-            <ul class="features">
-                ${m.spells.map(s => `
-                <li><strong>${s.name}</strong> <span style="opacity:0.5;font-size:0.85em">${[s.manner, s.transmission].filter(Boolean).join(" · ")}</span>
-                    <ul style="list-style:none;padding-left:0.8em;margin:2px 0 0">
-                        ${(s.effects || []).map(e => `<li style="font-size:0.9em"><span style="color:var(--gold);opacity:0.8">${e.intent}${e.cost ? ` (${e.cost} SP)` : ""}</span> — ${[e.range, e.damage ? e.damage + (e.type ? " " + e.type : "") : ""].filter(Boolean).join(" · ")}${e.effect ? ": " + parseLinks(e.effect) : ""}</li>`).join("")}
-                    </ul>
-                </li>`).join("")}
-            </ul>
+        <div class="feature-block" style="margin-top:6px">
+            <div style="font-size:0.7em;font-weight:bold;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:4px;">
+                Spells · MN: ${m.check_mental != null ? m.check_mental * 2 : "—"}
+            </div>
+            ${m.spells.map(s => `
+            <details class="spell-entry">
+                <summary style="cursor:pointer;list-style:none;display:flex;align-items:center;gap:5px;padding:3px 0">
+                    <span class="spell-arrow">▶</span>
+                    <strong>${s.name}</strong>
+                    <span style="opacity:0.4;font-size:0.82em">${[s.manner, s.transmission].filter(Boolean).join(" · ")}</span>
+                </summary>
+                <ul style="list-style:none;padding-left:1em;margin:4px 0 6px;font-size:0.88em">
+                    ${(s.effects || []).map(e => `<li style="margin-bottom:3px"><span style="color:var(--gold);opacity:0.85">${e.intent}${e.cost ? ` (${e.cost} MN)` : ""}</span> — ${[e.range, e.damage ? e.damage + (e.type ? " " + e.type : "") : ""].filter(Boolean).join(" · ")}${e.effect ? ": " + parseLinks(e.effect) : ""}</li>`).join("")}
+                </ul>
+            </details>`).join("")}
         </div>` : ""}
         ${m.lore ? `<p style="font-style:italic;opacity:0.7;margin-top:8px;font-size:0.9em">${parseLinks(m.lore)}</p>` : ""}
         <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
-            ${customBtns}
+            ${deleteBtnHtml}
+            <button class="btn-chat-card">✦ Chat</button>
             <button class="btn-roll20-card">⬡ Roll20</button>
         </div>
     `;
 
+    card.querySelector(".card-edit-cog").addEventListener("click", () => openCardEdit(card, m));
     if (m._custom) {
-        card.querySelector(".btn-edit-card").addEventListener("click", () => openCardEdit(card, m));
         card.querySelector(".btn-delete-card").addEventListener("click", () => deleteCustomMonster(m.name));
     }
+    card.querySelector(".btn-chat-card").addEventListener("click", function() {
+        copyMonsterForChat(m, this);
+    });
     card.querySelector(".btn-roll20-card").addEventListener("click", function() {
         copyMonsterForRoll20(m, this);
     });
@@ -257,7 +283,9 @@ function createBookCard(m) {
 
 function parseLinks(text) {
     if (!text) return "";
-    return String(text).replace(/\[([^\]]+)\]/g, (_, name) =>
+    // parseDice first so [[...]] are gone before the single-bracket link matcher runs
+    const diced = typeof parseDice === 'function' ? parseDice(String(text)) : String(text);
+    return diced.replace(/(?<!\[)\[([^\[\]]+)\](?!\])/g, (_, name) =>
         `<span class="monster-link" data-target="${name.replace(/"/g, "&quot;")}">${name}</span>`
     );
 }
@@ -291,7 +319,7 @@ function buildMonsterPacket(m) {
             damage: m.feature_damage || f0.damage || "",
         },
         spells:          Array.isArray(m.spells) ? m.spells : [],
-        spell_points_max: m.check_mental != null ? m.check_mental * 2 : 0,
+        mana_max: m.check_mental != null ? m.check_mental * 2 : 0,
     };
 }
 
@@ -304,6 +332,103 @@ function extractLinkedNames(m) {
     for (const match of blob.matchAll(/\[([^\]]+)\]/g)) names.add(match[1]);
     names.delete(m.name);
     return [...names];
+}
+
+// ===== Chat Copy =====
+function stripHtml(str) {
+    return String(str || "").replace(/<[^>]+>/g, "");
+}
+
+function copyMonsterForChat(m, btn) {
+    const lines = [];
+
+    lines.push(`**${(m.name || "Unknown Monster").toUpperCase()}**`);
+
+    const identity = [m.size, m.origin, m.rarity].filter(Boolean).join(" · ");
+    if (identity) lines.push(identity);
+
+    const envBeh = [m.environment, m.behavior].filter(Boolean).join(" · ");
+    if (envBeh) lines.push(envBeh);
+    if (m.motivation) lines.push(`Motivation: ${m.motivation}`);
+
+    const pl   = m.pl            ?? 0;
+    const phys = m.check_physical ?? 0;
+    const ment = m.check_mental   ?? 0;
+    if (pl) {
+        lines.push("");
+        lines.push(`PL ${pl}  (PHY ${phys} / MNT ${ment})  •  MN: ${ment * 2} max`);
+    }
+
+    const moveParts = [
+        m.walk  && `Walk ${m.walk}`,
+        m.fly   && `Fly ${m.fly}`,
+        m.swim  && `Swim ${m.swim}`,
+        m.climb && `Climb ${m.climb}`,
+    ].filter(Boolean);
+    if (moveParts.length) lines.push(`Move: ${moveParts.join(" / ")}`);
+
+    // Attacks
+    const meleeAtk  = m.melee  || m.melee_attack  || null;
+    const rangedAtk = m.ranged || m.ranged_attack  || null;
+    const atkLines  = [];
+    const fmtAtk = (atk, label) => {
+        if (!atk?.name) return;
+        const dmg  = [atk.damage, atk.type || atk.damage_type].filter(Boolean).join(" ");
+        atkLines.push(`${label}: ${atk.name}${dmg ? " — " + dmg : ""}`);
+    };
+    fmtAtk(meleeAtk,  "Melee");
+    fmtAtk(rangedAtk, "Ranged");
+    if (atkLines.length) { lines.push(""); lines.push("**ATTACKS**"); atkLines.forEach(a => lines.push(a)); }
+
+    // Features — support both legacy fields and features array
+    const featList = Array.isArray(m.features) && m.features.length
+        ? m.features
+        : (m.feature_name ? [{
+            name:     m.feature_name,
+            type:     m.feature_type,
+            range:    m.feature_range,
+            damage:   m.feature_damage,
+            duration: m.feature_duration,
+            effect:   m.feature_effect,
+          }] : []);
+
+    featList.forEach(f => {
+        const meta = [f.type, f.range, f.damage, f.duration].filter(Boolean).join(" · ");
+        lines.push("");
+        lines.push(`**${f.name || "Feature"}**${meta ? `  [${meta}]` : ""}`);
+        if (f.effect) lines.push(stripHtml(f.effect));
+    });
+
+    // Spells
+    if (Array.isArray(m.spells) && m.spells.length) {
+        lines.push("");
+        lines.push(`**SPELLS** (MN: ${ment * 2} max)`);
+        m.spells.forEach(s => {
+            const spellMeta = [s.manner, s.transmission].filter(Boolean).join(" · ");
+            lines.push(`${s.name || "Spell"}${spellMeta ? ` (${spellMeta})` : ""}`);
+            (s.effects || []).forEach(e => {
+                const cost  = e.cost ?? "?";
+                const parts = [
+                    e.intent ? `${e.intent} (${cost} MN)` : null,
+                    e.range  || null,
+                    e.damage ? e.damage + (e.type ? " " + e.type : "") : null,
+                ].filter(Boolean).join(" · ");
+                lines.push(`  ${parts}${e.effect ? " — " + stripHtml(e.effect) : ""}`);
+            });
+        });
+    }
+
+    if (m.description) { lines.push(""); lines.push(stripHtml(m.description)); }
+
+    const text = lines.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+
+    const flash = () => {
+        btn.textContent  = "✓ Copied!";
+        btn.disabled     = true;
+        setTimeout(() => { btn.textContent = "✦ Chat"; btn.disabled = false; }, 2000);
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(flash).catch(() => fallbackCopy(text, flash));
+    else fallbackCopy(text, flash);
 }
 
 // ===== Roll20 Export =====
@@ -349,240 +474,236 @@ function fallbackCopy(text, callback) {
 
 // ===== Inline Card Editor =====
 function openCardEdit(card, m) {
-    // Pull first feature from either the features array or legacy fields
-    const feat = Array.isArray(m.features) && m.features.length
-        ? m.features[0]
-        : { name: m.feature_name, type: m.feature_type, range: m.feature_range,
-            effect: m.feature_effect, duration: m.feature_duration, damage: m.feature_damage };
+    card.classList.add("editing");
+
+    const meleeAtk  = m.melee  || m.melee_attack  || {};
+    const rangedAtk = m.ranged || m.ranged_attack  || {};
+
+    const featList = Array.isArray(m.features) && m.features.length
+        ? m.features
+        : (m.feature_name ? [{ name: m.feature_name, type: m.feature_type,
+                               range: m.feature_range, effect: m.feature_effect }] : []);
+
+    // Builds one editable feature row (innerHTML only — values set via JS after)
+    function featRowHtml() {
+        return `<li class="ce-feat-row" style="padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.07)">
+            <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin-bottom:3px">
+                <input class="ce-fi-name"  type="text" placeholder="Feature name" style="flex:1;min-width:80px;font-weight:600">
+                <input class="ce-fi-type"  type="text" placeholder="Type"  style="width:72px">
+                <input class="ce-fi-range" type="text" placeholder="Range" style="width:58px">
+                <button class="ce-rm-feat" style="background:transparent;border:1px solid #6a2020;color:#c46060;border-radius:3px;padding:1px 6px;cursor:pointer;font-size:0.78em;flex-shrink:0">✕</button>
+            </div>
+            <textarea class="ce-fi-effect" rows="2" placeholder="Effect..." style="width:100%;resize:vertical"></textarea>
+        </li>`;
+    }
 
     card.innerHTML = `
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
-            <div class="nm-field nm-full">
-                <label>Name *</label>
-                <input class="ce-name" type="text">
+        <button class="card-edit-cog" title="Cancel edit" style="color:#d46060;opacity:1">⚙</button>
+
+        <input class="ce-name" type="text" placeholder="Name *"
+            style="font-size:1.05em;font-weight:bold;width:100%;margin-bottom:7px">
+
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
+            <input class="ce-group"  type="text" placeholder="Group"  style="flex:1;min-width:80px">
+            <input class="ce-origin" type="text" placeholder="Origin" style="flex:1;min-width:80px">
+            <select class="ce-size"   style="flex:1">
+                <option value="">— Size —</option>
+                <option>Tiny</option><option>Small</option><option>Medium</option>
+                <option>Large</option><option>Giant</option><option>Monolithic</option>
+            </select>
+            <select class="ce-rarity" style="flex:1">
+                <option value="">— Rarity —</option>
+                <option>Common</option><option>Uncommon</option><option>Rare</option>
+                <option>Epic</option><option>Legendary</option>
+            </select>
+        </div>
+
+        <textarea class="ce-description" rows="2" placeholder="Description..."
+            style="width:100%;margin-bottom:6px;resize:vertical"></textarea>
+
+        <div class="info-mon" style="flex-direction:column;gap:5px;margin-bottom:6px">
+            <div style="display:flex;gap:5px;flex-wrap:wrap">
+                <span><strong>Env</strong> <input class="ce-environment" type="text" style="width:88px"></span>
+                <span><strong>Behav</strong> <input class="ce-behavior" type="text" style="width:88px"></span>
+                <span><strong>Motiv</strong> <input class="ce-motivation" type="text" style="width:88px"></span>
             </div>
-            <div class="nm-field">
-                <label>Group</label>
-                <input class="ce-group" type="text">
-            </div>
-            <div class="nm-field">
-                <label>Origin</label>
-                <input class="ce-origin" type="text">
-            </div>
-            <div class="nm-field">
-                <label>Size</label>
-                <select class="ce-size">
-                    <option value="">—</option>
-                    <option>Tiny</option><option>Small</option><option>Medium</option>
-                    <option>Large</option><option>Huge</option><option>Colossal</option>
-                </select>
-            </div>
-            <div class="nm-field">
-                <label>Rarity</label>
-                <select class="ce-rarity">
-                    <option value="">—</option>
-                    <option>Common</option><option>Uncommon</option>
-                    <option>Rare</option><option>Legendary</option>
-                </select>
-            </div>
-            <div class="nm-field">
-                <label>Environment</label>
-                <input class="ce-environment" type="text">
-            </div>
-            <div class="nm-field">
-                <label>Behavior</label>
-                <input class="ce-behavior" type="text">
-            </div>
-            <div class="nm-field nm-full">
-                <label>Motivation</label>
-                <input class="ce-motivation" type="text">
-            </div>
-            <div class="nm-field nm-full">
-                <label>Description</label>
-                <textarea class="ce-description" rows="2"></textarea>
-            </div>
-            <div class="nm-field nm-full">
-                <label>Lore</label>
-                <textarea class="ce-lore" rows="2"></textarea>
-            </div>
-            <div class="nm-field">
-                <label>Walk (ft)</label>
-                <input class="ce-walk" type="number" min="0">
-            </div>
-            <div class="nm-field">
-                <label>Fly (ft)</label>
-                <input class="ce-fly" type="number" min="0">
-            </div>
-            <div class="nm-field">
-                <label>Swim (ft)</label>
-                <input class="ce-swim" type="number" min="0">
-            </div>
-            <div class="nm-field">
-                <label>Climb (ft)</label>
-                <input class="ce-climb" type="number" min="0">
-            </div>
-            <div class="nm-field nm-full" style="margin-top:4px;font-size:0.8em;opacity:0.6;font-weight:600;letter-spacing:0.05em;text-transform:uppercase">Feature</div>
-            <div class="nm-field">
-                <label>Name</label>
-                <input class="ce-feat-name" type="text">
-            </div>
-            <div class="nm-field">
-                <label>Type</label>
-                <select class="ce-feat-type">
-                    <option value="">—</option>
-                    <option>Action</option><option>Off-Action</option>
-                    <option>Reaction</option><option>Passive</option>
-                </select>
-            </div>
-            <div class="nm-field">
-                <label>Range</label>
-                <input class="ce-feat-range" type="text">
-            </div>
-            <div class="nm-field">
-                <label>Damage Type</label>
-                <input class="ce-feat-damage" type="text">
-            </div>
-            <div class="nm-field nm-full">
-                <label>Duration</label>
-                <input class="ce-feat-duration" type="text">
-            </div>
-            <div class="nm-field nm-full">
-                <label>Effect</label>
-                <textarea class="ce-feat-effect" rows="2"></textarea>
+            <div style="display:flex;gap:5px;flex-wrap:wrap">
+                <span><strong>Walk</strong> <input class="ce-walk"  type="number" min="0" style="width:46px"></span>
+                <span><strong>Fly</strong>  <input class="ce-fly"   type="number" min="0" style="width:46px"></span>
+                <span><strong>Swim</strong> <input class="ce-swim"  type="number" min="0" style="width:46px"></span>
+                <span><strong>Climb</strong><input class="ce-climb" type="number" min="0" style="width:46px"></span>
             </div>
         </div>
-        <div style="display:flex;gap:6px;margin-top:10px">
-            <button class="button ce-save">Save</button>
-            <button class="ghost ce-cancel">Cancel</button>
+
+        <div class="pl-chips" style="margin-bottom:6px">
+            <div class="pl-bubble">
+                <span class="pl-seg pl-seg-pl"><strong>PL</strong> <input class="ce-pl"       type="number" min="1" style="width:38px"></span>
+                <span class="pl-seg pl-seg-ph"><strong>Ph</strong> <input class="ce-physical"  type="number" min="0" style="width:38px"></span>
+                <span class="pl-seg pl-seg-mt"><strong>Mt</strong> <input class="ce-mental"    type="number" min="0" style="width:38px"></span>
+            </div>
+        </div>
+
+        <div class="info-mon" style="flex-direction:column;gap:4px;margin-bottom:6px">
+            <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+                <strong style="width:52px">Melee:</strong>
+                <input class="ce-melee-name"   type="text" placeholder="name"   style="flex:2;min-width:70px">
+                <input class="ce-melee-damage" type="text" placeholder="dmg"    style="width:44px">
+                <input class="ce-melee-type"   type="text" placeholder="type"   style="width:70px">
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+                <strong style="width:52px">Ranged:</strong>
+                <input class="ce-ranged-name"   type="text" placeholder="name"   style="flex:2;min-width:70px">
+                <input class="ce-ranged-damage" type="text" placeholder="dmg"    style="width:44px">
+                <input class="ce-ranged-type"   type="text" placeholder="type"   style="width:70px">
+            </div>
+        </div>
+
+        <div class="feature-block" style="margin-bottom:6px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+                <span style="font-size:0.75em;font-weight:bold;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);opacity:0.7">Features</span>
+                <button class="ce-add-feat" style="font-size:0.78em;background:transparent;border:1px solid var(--theme-3);color:var(--cream,#f0e6cc);border-radius:3px;padding:2px 8px;cursor:pointer">+ Add</button>
+            </div>
+            <ul class="ce-feats-list" style="padding:0;margin:0;list-style:none">
+                ${featList.map(() => featRowHtml()).join("")}
+            </ul>
+        </div>
+
+        <textarea class="ce-lore" rows="2" placeholder="Lore..."
+            style="width:100%;font-style:italic;opacity:0.75;resize:vertical;margin-bottom:8px"></textarea>
+
+        <div style="display:flex;gap:6px">
+            <button class="ce-save button">Save</button>
+            <button class="ce-cancel button" style="background:var(--theme-1)">Cancel</button>
         </div>
     `;
 
-    // Populate via JS so no HTML-escaping needed
+    // ── Populate via JS (no escaping needed) ──────────────────────────────────
     const q = s => card.querySelector(s);
     q(".ce-name").value        = m.name        || "";
     q(".ce-group").value       = m._group      || "";
     q(".ce-origin").value      = m.origin      || "";
     q(".ce-size").value        = m.size        || "";
     q(".ce-rarity").value      = m.rarity      || "";
+    q(".ce-description").value = m.description || "";
     q(".ce-environment").value = m.environment || "";
     q(".ce-behavior").value    = m.behavior    || "";
     q(".ce-motivation").value  = m.motivation  || "";
-    q(".ce-description").value = m.description || "";
-    q(".ce-lore").value        = m.lore        || "";
     q(".ce-walk").value        = m.walk        || 0;
     q(".ce-fly").value         = m.fly         || 0;
     q(".ce-swim").value        = m.swim        || 0;
     q(".ce-climb").value       = m.climb       || 0;
-    q(".ce-feat-name").value     = feat.name     || "";
-    q(".ce-feat-type").value     = feat.type     || "";
-    q(".ce-feat-range").value    = feat.range    || "";
-    q(".ce-feat-damage").value   = feat.damage   || "";
-    q(".ce-feat-duration").value = feat.duration || "";
-    q(".ce-feat-effect").value   = feat.effect   || "";
+    q(".ce-pl").value          = m.pl             ?? "";
+    q(".ce-physical").value    = m.check_physical ?? "";
+    q(".ce-mental").value      = m.check_mental   ?? "";
+    q(".ce-melee-name").value   = meleeAtk.name   || "";
+    q(".ce-melee-damage").value = meleeAtk.damage  || "";
+    q(".ce-melee-type").value   = meleeAtk.type || meleeAtk.damage_type || "";
+    q(".ce-ranged-name").value   = rangedAtk.name   || "";
+    q(".ce-ranged-damage").value = rangedAtk.damage  || "";
+    q(".ce-ranged-type").value   = rangedAtk.type || rangedAtk.damage_type || "";
+    q(".ce-lore").value        = m.lore        || "";
 
-    q(".ce-cancel").addEventListener("click", () => {
-        card.replaceWith(createBookCard(m));
+    card.querySelectorAll(".ce-feat-row").forEach((li, i) => {
+        const f = featList[i] || {};
+        li.querySelector(".ce-fi-name").value   = f.name   || "";
+        li.querySelector(".ce-fi-type").value   = f.type   || "";
+        li.querySelector(".ce-fi-range").value  = f.range  || "";
+        li.querySelector(".ce-fi-effect").value = f.effect || "";
     });
 
+    // ── Cancel / cog ─────────────────────────────────────────────────────────
+    const cancel = () => { card.classList.remove("editing"); card.replaceWith(createBookCard(m)); };
+    q(".card-edit-cog").addEventListener("click", cancel);
+    q(".ce-cancel").addEventListener("click", cancel);
+
+    // ── Add / remove features ─────────────────────────────────────────────────
+    const featsList = q(".ce-feats-list");
+    function wireRemove(li) {
+        li.querySelector(".ce-rm-feat").addEventListener("click", () => li.remove());
+    }
+    card.querySelectorAll(".ce-feat-row").forEach(wireRemove);
+    q(".ce-add-feat").addEventListener("click", () => {
+        const li = document.createElement("li");
+        li.className = "ce-feat-row";
+        li.style.cssText = "padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.07)";
+        li.innerHTML = featRowHtml().replace(/^<li[^>]*>/, "").replace(/<\/li>$/, "");
+        featsList.appendChild(li);
+        wireRemove(li);
+    });
+
+    // ── Save ──────────────────────────────────────────────────────────────────
     q(".ce-save").addEventListener("click", () => {
         const get    = s => q(s)?.value.trim() || "";
-        const getNum = s => parseInt(q(s)?.value) || 0;
+        const getNum = s => { const v = parseInt(q(s)?.value); return isNaN(v) ? undefined : v; };
 
         const name = get(".ce-name");
         if (!name) { q(".ce-name").focus(); return; }
 
-        const entry = {
-            name,
-            _group:           get(".ce-group")       || undefined,
-            origin:           get(".ce-origin")      || undefined,
-            size:             get(".ce-size")        || undefined,
-            rarity:           get(".ce-rarity")      || undefined,
-            environment:      get(".ce-environment") || undefined,
-            behavior:         get(".ce-behavior")    || undefined,
-            motivation:       get(".ce-motivation")  || undefined,
-            description:      get(".ce-description") || undefined,
-            lore:             get(".ce-lore")        || undefined,
-            walk:             getNum(".ce-walk"),
-            fly:              getNum(".ce-fly"),
-            swim:             getNum(".ce-swim"),
-            climb:            getNum(".ce-climb"),
-            feature_name:     get(".ce-feat-name")     || undefined,
-            feature_type:     get(".ce-feat-type")     || undefined,
-            feature_range:    get(".ce-feat-range")    || undefined,
-            feature_damage:   get(".ce-feat-damage")   || undefined,
-            feature_duration: get(".ce-feat-duration") || undefined,
-            feature_effect:   get(".ce-feat-effect")   || undefined,
-        };
-
-        Object.keys(entry).forEach(k => {
-            if (entry[k] === undefined || entry[k] === 0) delete entry[k];
+        const features = [];
+        card.querySelectorAll(".ce-feat-row").forEach(li => {
+            const n = li.querySelector(".ce-fi-name")?.value.trim()   || "";
+            const e = li.querySelector(".ce-fi-effect")?.value.trim() || "";
+            if (n || e) features.push({
+                name:   n,
+                type:   li.querySelector(".ce-fi-type")?.value.trim()  || undefined,
+                range:  li.querySelector(".ce-fi-range")?.value.trim() || undefined,
+                effect: e || undefined,
+            });
         });
 
-        // Persist
-        const custom = getCustomEntries();
-        const idx = custom.findIndex(e => e.name === m.name);
-        if (idx !== -1) custom[idx] = entry; else custom.push(entry);
-        saveCustomEntries(custom);
+        const meleeName  = get(".ce-melee-name");
+        const rangedName = get(".ce-ranged-name");
 
-        // Update live data arrays
-        const bookEntry = { ...entry, _custom: true };
-        const bi = bookData.findIndex(e => e._custom && e.name === m.name);
-        if (bi !== -1) bookData[bi] = bookEntry;
-        const fi = bookFiltered.findIndex(e => e._custom && e.name === m.name);
-        if (fi !== -1) bookFiltered[fi] = bookEntry;
+        const entry = {
+            name,
+            _group:         get(".ce-group")       || undefined,
+            origin:         get(".ce-origin")      || undefined,
+            size:           get(".ce-size")        || undefined,
+            rarity:         get(".ce-rarity")      || undefined,
+            environment:    get(".ce-environment") || undefined,
+            behavior:       get(".ce-behavior")    || undefined,
+            motivation:     get(".ce-motivation")  || undefined,
+            description:    get(".ce-description") || undefined,
+            lore:           get(".ce-lore")        || undefined,
+            pl:             getNum(".ce-pl"),
+            check_physical: getNum(".ce-physical"),
+            check_mental:   getNum(".ce-mental"),
+            walk:           getNum(".ce-walk"),
+            fly:            getNum(".ce-fly"),
+            swim:           getNum(".ce-swim"),
+            climb:          getNum(".ce-climb"),
+            melee_attack:   meleeName  ? { name: meleeName,  damage: get(".ce-melee-damage"),  damage_type: get(".ce-melee-type")  } : undefined,
+            ranged_attack:  rangedName ? { name: rangedName, damage: get(".ce-ranged-damage"), damage_type: get(".ce-ranged-type") } : undefined,
+            features:       features.length ? features : undefined,
+        };
+        Object.keys(entry).forEach(k => { if (entry[k] === undefined) delete entry[k]; });
 
-        // Swap card in-place
-        card.replaceWith(createBookCard(bookEntry));
-    });
-}
+        card.classList.remove("editing");
 
-function submitNewMonster() {
-    const get    = id => document.getElementById(id)?.value.trim() || "";
-    const getNum = id => parseInt(document.getElementById(id)?.value) || 0;
-
-    const name = get("new-name");
-    if (!name) { alert("Name is required."); return; }
-
-    const entry = {
-        name,
-        _group:           get("new-group"),
-        origin:           get("new-origin"),
-        size:             get("new-size"),
-        rarity:           get("new-rarity"),
-        environment:      get("new-environment"),
-        behavior:         get("new-behavior"),
-        description:      get("new-description"),
-        lore:             get("new-lore"),
-        walk:             getNum("new-walk"),
-        fly:              getNum("new-fly"),
-        swim:             getNum("new-swim"),
-        climb:            getNum("new-climb"),
-        feature_name:     get("new-feat-name"),
-        feature_type:     get("new-feat-type"),
-        feature_range:    get("new-feat-range"),
-        feature_effect:   get("new-feat-effect"),
-        feature_duration: get("new-feat-duration"),
-        feature_damage:   get("new-feat-damage"),
-        motivation:       get("new-motivation"),
-    };
-
-    Object.keys(entry).forEach(k => {
-        if (entry[k] === "" || entry[k] === 0) delete entry[k];
-    });
-
-    const custom = getCustomEntries();
-    custom.push(entry);
-    saveCustomEntries(custom);
-
-    bookData.push({ ...entry, _custom: true });
-    bookFiltered = [...bookData];
-    renderBook();
-
-    document.getElementById("new-monster-form").reset();
-    document.getElementById("new-monster-details").open = false;
-
-    requestAnimationFrame(() => {
-        document.getElementById("bookOutput").lastElementChild?.scrollIntoView({ behavior: "smooth" });
+        if (m._custom) {
+            const custom = getCustomEntries();
+            const idx = custom.findIndex(e => e.name === m.name);
+            if (idx !== -1) custom[idx] = entry; else custom.push(entry);
+            saveCustomEntries(custom);
+            const bookEntry = { ...entry, _custom: true };
+            const bi = bookData.findIndex(e => e._custom && e.name === m.name);
+            if (bi !== -1) bookData[bi] = bookEntry;
+            const fi = bookFiltered.findIndex(e => e._custom && e.name === m.name);
+            if (fi !== -1) bookFiltered[fi] = bookEntry;
+            card.replaceWith(createBookCard(bookEntry));
+        } else {
+            const existing = bookData.find(e => !e._custom && e.name === m.name) || {};
+            const merged = { ...existing, ...entry };
+            const overrides = getOverrides();
+            if (name !== m.name) delete overrides[m.name];
+            overrides[name] = entry;
+            saveOverrides(overrides);
+            const bi = bookData.findIndex(e => !e._custom && e.name === m.name);
+            if (bi !== -1) bookData[bi] = merged;
+            const fi = bookFiltered.findIndex(e => !e._custom && e.name === m.name);
+            if (fi !== -1) bookFiltered[fi] = merged;
+            card.replaceWith(createBookCard(merged));
+        }
     });
 }
 
@@ -594,12 +715,12 @@ function deleteCustomMonster(name) {
 }
 
 function exportMonsterBook() {
-    const custom = getCustomEntries();
-    if (!custom.length) { alert("No custom entries to export."); return; }
-    const blob = new Blob([JSON.stringify(custom, null, 4)], { type: "application/json" });
+    // Export the full book (base + overrides + custom), stripped of internal flags
+    const clean = bookData.map(({ _custom, ...m }) => m);
+    const blob = new Blob([JSON.stringify(clean, null, 4)], { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "monsterbook_custom.json";
+    a.download = "monsterbook.json";
     a.click();
     URL.revokeObjectURL(a.href);
 }

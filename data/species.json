@@ -203,7 +203,7 @@
       "diet": "Fuel Source - Mana Crystals: Dense stones imbued with pure magical energy, mined from regions thick with arcane power.",
       "rarity": "Rare",
       "region": "global",
-      "features": "Arcane Core: At the end of character creation, convert all your wounds into armor. Your armor regenerates at a rate of 1 point per hour. As an action, you may spend 1 spell point to repair yourself, restoring [[1d10]] armor. If your armor is ever reduced to 0, you enter a dormant state where you cannot act or respond, but your regeneration continues until fully restored when you awake again. Removing the core during the dormant state resets your personality and erases all memories. If the core is damaged in this state, it can become permanently inoperable."
+      "features": "Arcane Core: At the end of character creation, convert all your wounds into armor. Your armor regenerates at a rate of 1 point per hour. As an action, you may spend 1 Mana to repair yourself, restoring [[1d10]] armor. If your armor is ever reduced to 0, you enter a dormant state where you cannot act or respond, but your regeneration continues until fully restored when you awake again. Removing the core during the dormant state resets your personality and erases all memories. If the core is damaged in this state, it can become permanently inoperable."
     },
     {
       "name": "Dryad Core",
@@ -346,7 +346,7 @@
       "diet": "Omnivore, Vegetarian",
       "rarity": "Common",
       "region": "Global, Multiplanar",
-      "features": "Manafused: Start with an additional +2 spell points. When you cast spells you have a +1 to the check and damage"
+      "features": "Manafused: Start with an additional +2 Mana. When you cast spells you have a +1 to the check and damage"
     },
     {
       "name": "water",
@@ -1122,7 +1122,7 @@
       "diet": "",
       "rarity": "",
       "region": "",
-      "features": "Solar Powered: As an action, gain +3 spell points until the end of your next turn."
+      "features": "Solar Powered: As an action, gain +3 Mana until the end of your next turn."
     },
     {
       "name": "Ashen Wisp (Eclipse)",

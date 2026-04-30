@@ -30,6 +30,7 @@ function detectFileType(data) {
     if ('featureName' in e || 'baseType' in e || 'movement' in e) return 'monster';
     if ('damage' in e && 'damageType' in e && 'bulk' in e) return 'weapon';
     if ('armor' in e && 'movePenalty' in e) return 'armor';
+    if ('manner' in e && 'transmission' in e && 'effects' in e) return 'spell';
     return 'generic';
 }
 

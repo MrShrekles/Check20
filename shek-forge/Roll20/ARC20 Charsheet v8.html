@@ -147,16 +147,16 @@
                                         <input type="number" name="attr_num_attacks" readonly class="power-input-small">
                                     </div>
                                     <div class="power-stat">
-                                        <label class="power-label">Capacity</label>
-                                        <input type="number" name="attr_capacity_max" readonly class="power-input-small">
+                                        <label class="power-label">Threat</label>
+                                        <input type="number" name="attr_threat_max" readonly class="power-input-small">
                                         <span class="power-slash">/</span>
-                                        <input type="number" name="attr_capacity" class="power-input-small">
+                                        <input type="number" name="attr_Threat" class="power-input-small">
                                     </div>
                                     <div class="power-stat">
-                                        <label class="power-label">Spell Pts</label>
-                                        <input type="number" name="attr_spell_points_max" readonly class="power-input-small">
+                                        <label class="power-label">Mana</label>
+                                        <input type="number" name="attr_mana_max" readonly class="power-input-small">
                                         <span class="power-slash">/</span>
-                                        <input type="number" name="attr_sp" class="power-input-small">
+                                        <input type="number" name="attr_mn" class="power-input-small">
                                     </div>
                                 </div>
 
@@ -449,8 +449,8 @@
                                                     <option>Storm</option>
                                                     <option>Cataclysm</option>
                                                 </select>
-                                                <input type="number" name="attr_mspell-cost" value="1" style="width:36px;" title="SP Cost">
-                                                <button type="roll" name="roll_mspell" class="npc-roll" value="&{template:shek} {{name=@{character_name}}} {{Spell=@{mspell-name}}} {{Intent=@{mspell-intent}}} {{SP Cost=@{mspell-cost}}} {{Range=@{mspell-range}}} {{Check=[[@{d20} + @{check_mental}]] | [[@{d20} + @{check_mental}]] @{provoke}}} {{Damage=[[@{mspell-damage}+@{check_mental}]] @{mspell-type} [+Table!](!damage @{mspell-type})}} {{desc=@{mspell-effect}}}"></button>
+                                                <input type="number" name="attr_mspell-cost" value="1" style="width:36px;" title="MN Cost">
+                                                <button type="roll" name="roll_mspell" class="npc-roll" value="&{template:shek} {{name=@{character_name}}} {{Spell=@{mspell-name}}} {{Intent=@{mspell-intent}}} {{MN Cost=@{mspell-cost}}} {{Range=@{mspell-range}}} {{Check=[[@{d20} + @{check_mental}]] | [[@{d20} + @{check_mental}]] @{provoke}}} {{Damage=[[@{mspell-damage}+@{check_mental}]] @{mspell-type} [+Table!](!damage @{mspell-type})}} {{desc=@{mspell-effect}}}"></button>
                                                 <span class="expand">▼</span>
                                             </div>
                                         </summary>
@@ -1371,16 +1371,16 @@
                                         <input type="number" name="attr_num_attacks" readonly class="power-input-small">
                                     </div>
                                     <div class="power-stat">
-                                        <label class="power-label">Capacity</label>
-                                        <input type="number" name="attr_capacity_max" readonly class="power-input-small">
+                                        <label class="power-label">Threat</label>
+                                        <input type="number" name="attr_threat_max" readonly class="power-input-small">
                                         <span class="power-slash">/</span>
-                                        <input type="number" name="attr_capacity" class="power-input-small">
+                                        <input type="number" name="attr_Threat" class="power-input-small">
                                     </div>
                                     <div class="power-stat">
-                                        <label class="power-label">Spell Pts</label>
-                                        <input type="number" name="attr_spell_points_max" readonly class="power-input-small">
+                                        <label class="power-label">Mana</label>
+                                        <input type="number" name="attr_mana_max" readonly class="power-input-small">
                                         <span class="power-slash">/</span>
-                                        <input type="number" name="attr_sp" class="power-input-small">
+                                        <input type="number" name="attr_mn" class="power-input-small">
                                     </div>
                                 </div>
 
@@ -1539,77 +1539,77 @@
                                 </details>
                             </div>
 
-                            <!-- NPC Capacity (Card Grid) -->
+                            <!-- NPC Threat (Card Grid) -->
                             <details class="section-container">
                                 <summary class="npc-sum">
-                                    <h3 style="color: wheat;">Capacity Actions</h3>
+                                    <h3 style="color: wheat;">Threat Actions</h3>
                                 </summary>
                                 <p>
-                                    Capacity represents a creature’s reserve of extra effort, provokes, or dramatic maneuvers. It does not replace their normal Action on their turn. Instead, Capacity can be spent to react to events outside their turn or to take an additional Action on their turn
+                                    Threat represents a creature’s reserve of extra effort, provokes, or dramatic maneuvers. It does not replace their normal Action on their turn. Instead, Threat can be spent to react to events outside their turn or to take an additional Action on their turn
                                 </p>
                                 <div class="spell-grid">
 
                                     <!-- Attack -->
                                     <div class="spell-card">
-                                        <button class="sroll" type="roll" name="roll_capacity-attack" value="&{template:shek} {{name=@{character_name}}} {{Capacity=Attack}} {{Cost=1 Capacity}} {{desc=Make an additional attack immediately.}}">
+                                        <button class="sroll" type="roll" name="roll_Threat-attack" value="&{template:shek} {{name=@{character_name}}} {{Threat=Attack}} {{Cost=1 Threat}} {{desc=Make an additional attack immediately.}}">
                                             Attack
                                         </button>
                                         <p>Make an additional attack immediately.</p>
                                         <div class="spell-cost">
-                                            <p>1 Capacity</p>
+                                            <p>1 Threat</p>
                                         </div>
                                     </div>
 
                                     <!-- Remove Condition -->
                                     <div class="spell-card">
-                                        <button class="sroll" type="roll" name="roll_capacity-remove" value="&{template:shek} {{name=@{character_name}}} {{Capacity=Remove Condition}} {{Cost=1 Capacity}} {{desc=End one condition currently affecting this creature.}}">
+                                        <button class="sroll" type="roll" name="roll_Threat-remove" value="&{template:shek} {{name=@{character_name}}} {{Threat=Remove Condition}} {{Cost=1 Threat}} {{desc=End one condition currently affecting this creature.}}">
                                             Remove Condition
                                         </button>
                                         <p>End one condition currently affecting this creature.</p>
                                         <div class="spell-cost">
-                                            <p>1 Capacity</p>
+                                            <p>1 Threat</p>
                                         </div>
                                     </div>
 
                                     <!-- Disengage -->
                                     <div class="spell-card">
-                                        <button class="sroll" type="roll" name="roll_capacity-disengage" value="&{template:shek} {{name=@{character_name}}} {{Capacity=Disengage}} {{Cost=1 Capacity}} {{desc=Move without provoking opportunity attacks.}}">
+                                        <button class="sroll" type="roll" name="roll_Threat-disengage" value="&{template:shek} {{name=@{character_name}}} {{Threat=Disengage}} {{Cost=1 Threat}} {{desc=Move without provoking opportunity attacks.}}">
                                             Disengage
                                         </button>
                                         <p>Move without provoking opportunity attacks.</p>
                                         <div class="spell-cost">
-                                            <p>1 Capacity</p>
+                                            <p>1 Threat</p>
                                         </div>
                                     </div>
 
                                     <!-- Reduce Damage (Half) -->
                                     <div class="spell-card">
-                                        <button class="sroll" type="roll" name="roll_capacity-reduce" value="&{template:shek} {{name=@{character_name}}} {{Capacity=Reduce Damage}} {{Cost=1 Capacity}} {{desc=Reduce incoming damage by half.}}">
+                                        <button class="sroll" type="roll" name="roll_Threat-reduce" value="&{template:shek} {{name=@{character_name}}} {{Threat=Reduce Damage}} {{Cost=1 Threat}} {{desc=Reduce incoming damage by half.}}">
                                             Reduce Damage
                                         </button>
                                         <p>Reduce incoming damage by half.</p>
                                         <div class="spell-cost">
-                                            <p>1 Capacity</p>
+                                            <p>1 Threat</p>
                                         </div>
                                     </div>
 
                                     <!-- Environment Shift -->
                                     <div class="spell-card">
-                                        <button class="sroll" type="roll" name="roll_capacity-environment" value="&{template:shek} {{name=@{character_name}}} {{Capacity=Environment Shift}} {{Cost=2 Capacity}} {{desc=Add or remove an environmental element such as cover, difficult terrain, hazards, or line-of-sight blockers within Short range. Narrator adjudicates impact.}}">
+                                        <button class="sroll" type="roll" name="roll_Threat-environment" value="&{template:shek} {{name=@{character_name}}} {{Threat=Environment Shift}} {{Cost=2 Threat}} {{desc=Add or remove an environmental element such as cover, difficult terrain, hazards, or line-of-sight blockers within Short range. Narrator adjudicates impact.}}">
                                             Environment Shift
                                         </button>
                                         <p>Add or remove an environmental element like cover, difficult terrain, hazards, or LoS blockers within Short range.</p>
                                         <div class="spell-cost">
-                                            <p>2 Capacity</p>
+                                            <p>2 Threat</p>
                                         </div>
                                     </div>
 
                                     <!-- Flee (variable spend) -->
                                     <div class="spell-card">
-                                        <button class="sroll" type="roll" name="roll_capacity-flee" value="&{template:shek} {{name=@{character_name}}} {{Capacity=Flee}} {{Cost=Variable}} {{desc=Attempt to escape the scene. Initiate a chase or skill contest: the party must achieve a number of successes equal to the Capacity spent to prevent escape. On failure, this creature escapes; on success, the chase continues or the creature is cornered.}}">
+                                        <button class="sroll" type="roll" name="roll_Threat-flee" value="&{template:shek} {{name=@{character_name}}} {{Threat=Flee}} {{Cost=Variable}} {{desc=Attempt to escape the scene. Initiate a chase or skill contest: the party must achieve a number of successes equal to the Threat spent to prevent escape. On failure, this creature escapes; on success, the chase continues or the creature is cornered.}}">
                                             Flee
                                         </button>
-                                        <p>Attempt to escape and kick off a chase. Party needs successes equal to Capacity spent to stop the escape.</p>
+                                        <p>Attempt to escape and kick off a chase. Party needs successes equal to Threat spent to stop the escape.</p>
                                         <div class="spell-cost">
                                             <p>Variable</p>
                                         </div>
@@ -1790,8 +1790,8 @@
                                                     <option>Storm</option>
                                                     <option>Cataclysm</option>
                                                 </select>
-                                                <input type="number" name="attr_mspell-cost" value="1" style="width:36px;" title="SP Cost">
-                                                <button type="roll" name="roll_mspell" class="npc-roll" value="&{template:shek} {{name=@{character_name}}} {{Spell=@{mspell-name}}} {{Intent=@{mspell-intent}}} {{SP Cost=@{mspell-cost}}} {{Range=@{mspell-range}}} {{Check=[[@{d20} + @{check_mental}]] | [[@{d20} + @{check_mental}]] @{provoke}}} {{Damage=[[@{mspell-damage}+@{check_mental}]] @{mspell-type} [+Table!](!damage @{mspell-type})}} {{desc=@{mspell-effect}}}"></button>
+                                                <input type="number" name="attr_mspell-cost" value="1" style="width:36px;" title="MN Cost">
+                                                <button type="roll" name="roll_mspell" class="npc-roll" value="&{template:shek} {{name=@{character_name}}} {{Spell=@{mspell-name}}} {{Intent=@{mspell-intent}}} {{MN Cost=@{mspell-cost}}} {{Range=@{mspell-range}}} {{Check=[[@{d20} + @{check_mental}]] | [[@{d20} + @{check_mental}]] @{provoke}}} {{Damage=[[@{mspell-damage}+@{check_mental}]] @{mspell-type} [+Table!](!damage @{mspell-type})}} {{desc=@{mspell-effect}}}"></button>
                                                 <span class="expand">▼</span>
                                             </div>
                                         </summary>
@@ -1885,7 +1885,7 @@
                                         <div class="sheet-rest-actions">
 
                                             <div class="sheet-rest-group">
-                                                <button class="croll" type="roll" name="roll_presson" value="&{template:shek} {{name=@{character_name} Press On!}} {{Regain=@{presson_regain_resource} Class Resource}} {{Recover=@{presson_recover_sp} Spell Point}} {{Repair Armor=[[1d@{presson_repair_die} + @{crafting} + @{presson_repair_bonus}]]}} {{Healing=[[1d@{presson_heal_die} + @{survival} + @{presson_heal_bonus}]]}} {{desc=@{presson_desc}}}">
+                                                <button class="croll" type="roll" name="roll_presson" value="&{template:shek} {{name=@{character_name} Press On!}} {{Regain=@{presson_regain_resource} Class Resource}} {{Recover=@{presson_recover_sp} Mana}} {{Repair Armor=[[1d@{presson_repair_die} + @{crafting} + @{presson_repair_bonus}]]}} {{Healing=[[1d@{presson_heal_die} + @{survival} + @{presson_heal_bonus}]]}} {{desc=@{presson_desc}}}">
                                                     Press On
                                                 </button>
                                                 <div class="sheet-presson-uses">
@@ -1914,7 +1914,7 @@
                                                 <td><input type="number" name="attr_presson_regain_resource" value="1" min="0" /></td>
                                             </tr>
                                             <tr>
-                                                <td>SP Recover</td>
+                                                <td>MN Recover</td>
                                                 <td><input type="number" name="attr_presson_recover_sp" value="1" min="0" /></td>
                                                 <td>Repair</td>
                                                 <td>
@@ -2936,7 +2936,7 @@
                                     <input type="number" name="attr_xp_spent" id="xp-spent" readonly />
                                 </div>
                                 <div class="section">
-                                    <p>At every PATH Progression Step gain one of the following: +1 to any check (max 15), +1 Spell Point, or +1 Class Resource.</p>
+                                    <p>At every PATH Progression Step gain one of the following: +1 to any check (max 15), +1 Mana, or +1 Class Resource.</p>
                                 </div>
 
                                 <!-- Path Progression -->
@@ -3120,7 +3120,7 @@
                                 <details id="res-block">
                                     <summary class="equipment-summary">Resources & Modifiers</summary>
                                     <div class="equipment-block" id="res-block">
-                                        <!-- $ and SP -->
+                                        <!-- $ and MN -->
                                         <div class="two-column">
                                             <!-- Currency -->
                                             <div class="column">
@@ -3129,10 +3129,10 @@
                                                 <input type="number" name="attr_GP" value="0" min="0">
                                             </div>
 
-                                            <!-- Spell Points -->
+                                            <!-- Mana -->
                                             <div class="column">
-                                                <label>Spell Points</label>
-                                                <input type="number" name="attr_sp" value="0" placeholder="Current">
+                                                <label>Mana</label>
+                                                <input type="number" name="attr_mn" value="0" placeholder="Current">
                                                 <input type="number" name="attr_spMax" value="0" placeholder="Total">
                                             </div>
                                         </div>
@@ -3563,8 +3563,8 @@
                                 <!-- Spell Components -->
                                 <div class="section">
                                     <div class="flex-group">
-                                        <label for="spell-points">Spell Points</label>
-                                        <input type="number" name="attr_sp" value="0" id="spell-points">
+                                        <label for="spell-points">Mana</label>
+                                        <input type="number" name="attr_mn" value="0" id="spell-points">
                                         <input type="number" name="attr_spMax" value="0">
 
                                         <label for="Spellcasting Check">Spellcasting Check</label>
@@ -3798,7 +3798,7 @@
 
                                     <div class="section">
                                         <input type="hidden" name="attr_mt-macro" value="{{?{Manner| Decay | Discern | Domineer | Manifest}=?{Transmission| Aether | Astral | Corpus | Elemental | Material}}}">
-                                        <input type="hidden" name="attr_sp-check" value="{{Check=[[@{d20}+@{spellcasting}]] | [[@{d20}+@{spellcasting}]]@{provoke}}}">
+                                        <input type="hidden" name="attr_mn-check" value="{{Check=[[@{d20}+@{spellcasting}]] | [[@{d20}+@{spellcasting}]]@{provoke}}}">
 
                                         <!-- Intent Damage Type -->
                                         <div class="flex-group">
@@ -3832,7 +3832,7 @@
 
                                             <!-- Whisper -->
                                             <div class="spell-card">
-                                                <button class="sroll" type="roll" name="roll_whisper" value="&{template:shek} {{name=@{character_name}}} {{Intent Level=Whisper (1 SP)}} @{mt-macro} @{sp-check} {{Damage=[[1d6+1]] @{intent-dmg}
+                                                <button class="sroll" type="roll" name="roll_whisper" value="&{template:shek} {{name=@{character_name}}} {{Intent Level=Whisper (1 MN)}} @{mt-macro} @{MN-check} {{Damage=[[1d6+1]] @{intent-dmg}
                                                          [+Table!](!damage @{intent-dmg})}} {{desc=Small objects, tiny elemental effects, light damage, basic illusions, or lights.
 
                                                         Spell Attack: Deal 1d6 + 1 damage or inflict a Corpus condition.
@@ -3847,14 +3847,14 @@
                                                     Short range.</p>
                                                 <div class="spell-cost">
                                                     <p>
-                                                        1 Spell point
+                                                        1 Mana
                                                     </p>
                                                 </div>
                                             </div>
 
                                             <!-- Surge -->
                                             <div class="spell-card">
-                                                <button class="sroll" type="roll" name="roll_surge" value="&{template:shek} {{name=@{character_name}}} {{Intent Level=Surge (3 SP)}} @{mt-macro} @{sp-check} {{Damage=[[2d6+3]] @{intent-dmg} [+Table!](!damage @{intent-dmg})}} {{desc=Move medium objects, open doors, create small elemental effects, or enhance abilities.
+                                                <button class="sroll" type="roll" name="roll_surge" value="&{template:shek} {{name=@{character_name}}} {{Intent Level=Surge (3 MN)}} @{mt-macro} @{MN-check} {{Damage=[[2d6+3]] @{intent-dmg} [+Table!](!damage @{intent-dmg})}} {{desc=Move medium objects, open doors, create small elemental effects, or enhance abilities.
 
                                                         Spell Attack: Deal 2d6 + 3 damage or inflict a Corpus condition and then deal the damage on a success+.
                                                         Spell Detonation: Deal half of 2d6 + 3damage to all creatures within Short range.}} {{cond=@{disadvantages}}}">
@@ -3869,14 +3869,14 @@
                                                     Short range.</p>
                                                 <div class="spell-cost">
                                                     <p>
-                                                        3 Spell points
+                                                        3 Mana
                                                     </p>
                                                 </div>
                                             </div>
 
                                             <!-- Shout -->
                                             <div class="spell-card">
-                                                <button class="sroll" type="roll" name="roll_shout" value="&{template:shek} {{name=@{character_name}}} {{Intent Level=Shout (6 SP)}} @{mt-macro} @{sp-check} {{Damage=[[4d6+6]] @{intent-dmg} [+Table!](!damage @{intent-dmg})}} {{desc=Move large objects, break barriers, create medium elemental effects, moderate healing, or protection.
+                                                <button class="sroll" type="roll" name="roll_shout" value="&{template:shek} {{name=@{character_name}}} {{Intent Level=Shout (6 MN)}} @{mt-macro} @{MN-check} {{Damage=[[4d6+6]] @{intent-dmg} [+Table!](!damage @{intent-dmg})}} {{desc=Move large objects, break barriers, create medium elemental effects, moderate healing, or protection.
 
                                                         Spell Attack: Deal 4d6 + 6 damage or inflict a Corpus or Cognition condition and then deal the damage on a success+.
                                                         Spell Detonation: Deal half of 4d6 + 6damage to all creatures within Short range.}} {{cond=@{disadvantages}}}">
@@ -3891,14 +3891,14 @@
                                                     Short range.</p>
                                                 <div class="spell-cost">
                                                     <p>
-                                                        6 Spell points
+                                                        6 Mana
                                                     </p>
                                                 </div>
                                             </div>
 
                                             <!-- Roar -->
                                             <div class="spell-card">
-                                                <button class="sroll" type="roll" name="roll_roar" value="&{template:shek} {{name=@{character_name}}} {{Intent Level=Roar (9 SP)}} @{mt-macro} @{sp-check} {{Damage=[[8d6+9]] @{intent-dmg} [+Table!](!damage @{intent-dmg})}} {{desc=Devastate battlefields, summon large creatures, moderate area healing, or topple walls.
+                                                <button class="sroll" type="roll" name="roll_roar" value="&{template:shek} {{name=@{character_name}}} {{Intent Level=Roar (9 MN)}} @{mt-macro} @{MN-check} {{Damage=[[8d6+9]] @{intent-dmg} [+Table!](!damage @{intent-dmg})}} {{desc=Devastate battlefields, summon large creatures, moderate area healing, or topple walls.
 
                                                         Spell Attack: Deal 9d6 + 9 damage or inflict a Corpus or Cognition condition and then deal the damage on a success+.
                                                         Spell Detonation: Deal half of 9d6 + 9damage to all creatures within Short range.}} {{cond=@{disadvantages}}}">
@@ -3913,14 +3913,14 @@
                                                     Short range.</p>
                                                 <div class="spell-cost">
                                                     <p>
-                                                        9 Spell points
+                                                        9 Mana
                                                     </p>
                                                 </div>
                                             </div>
 
                                             <!-- Storm -->
                                             <div class="spell-card">
-                                                <button class="sroll" type="roll" name="roll_storm" value="&{template:shek} {{name=@{character_name}}} {{Intent Level=Storm (12 SP)}} @{mt-macro} @{sp-check} {{Damage=[[12d6+12]] @{intent-dmg} [+Table!](!damage @{intent-dmg})}} {{desc=Collapse buildings, summon powerful creatures, large-scale destruction, or long-lasting barriers.
+                                                <button class="sroll" type="roll" name="roll_storm" value="&{template:shek} {{name=@{character_name}}} {{Intent Level=Storm (12 MN)}} @{mt-macro} @{MN-check} {{Damage=[[12d6+12]] @{intent-dmg} [+Table!](!damage @{intent-dmg})}} {{desc=Collapse buildings, summon powerful creatures, large-scale destruction, or long-lasting barriers.
 
                                                         Spell Attack: Deal 12d6 + 12 damage and inflict a Corpus condition or inflict a Major condition then deal the damage on a success+.
                                                         Spell Detonation: Deal half of 12d6 + 12damage to all creatures within Medium range.}} {{cond=@{disadvantages}}}">
@@ -3935,14 +3935,14 @@
                                                     within Medium range.</p>
                                                 <div class="spell-cost">
                                                     <p>
-                                                        12 Spell points
+                                                        12 Mana
                                                     </p>
                                                 </div>
                                             </div>
 
                                             <!-- Cataclysm -->
                                             <div class="spell-card">
-                                                <button class="sroll" type="roll" name="roll_cataclysm" value="&{template:shek} {{name=@{character_name}}} {{Intent Level=Cataclysm (24 SP)}} @{mt-macro} @{sp-check} {{Damage=[[24d6+24]] @{intent-dmg} [+Table!](!damage @{intent-dmg})}} {{desc=Affect expansive areas, summon immense storms, reshape terrain, raise the dead, or potentially grant wishes.
+                                                <button class="sroll" type="roll" name="roll_cataclysm" value="&{template:shek} {{name=@{character_name}}} {{Intent Level=Cataclysm (24 MN)}} @{mt-macro} @{MN-check} {{Damage=[[24d6+24]] @{intent-dmg} [+Table!](!damage @{intent-dmg})}} {{desc=Affect expansive areas, summon immense storms, reshape terrain, raise the dead, or potentially grant wishes.
 
                                                         Spell Attack: Deal 24d6 + 24 damage and inflict a Corpus or Cognition condition or inflict a Major condition and then deal the damage on a success+.
                                                         Spell Detonation: Deal half of 24d6 + 24damage to all creatures within Long range.
@@ -3960,7 +3960,7 @@
                                                 </p>
                                                 <div class="spell-cost">
                                                     <p>
-                                                        24 Spell points
+                                                        24 Mana
                                                     </p>
                                                 </div>
                                             </div>
@@ -4585,7 +4585,7 @@ function combinePenaltyTotals(penaltyAttr, totalAttr) {
 }
 
 // ============================================================
-// POWER LEVEL — capacity, attacks, check split (merged)
+// POWER LEVEL — Threat, attacks, check split (merged)
 // ============================================================
 on("change:PL", function() {
     getAttrs(["PL"], function(values) {
@@ -4593,11 +4593,11 @@ on("change:PL", function() {
 
         const checkMt = Math.floor(pl / 2);
         setAttrs({
-            capacity_max:      Math.floor(pl / 2),
+            threat_max:      Math.floor(pl / 2),
             num_attacks:       Math.max(1, Math.floor(pl / 3)),
             check_physical:    Math.ceil(pl / 2),
             check_mental:      checkMt,
-            spell_points_max:  checkMt * 2,
+            mana_max:  checkMt * 2,
         });
     });
 });

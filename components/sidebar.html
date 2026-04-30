@@ -1,619 +1,617 @@
-<!-- Sidebar -->
-<div id="sidebar" class="closed">
-    <a id="toggle-top" href="#header-placeholder" title="Back to Top"></a>
-    <button id="toggle-sidebar" title="Dice Roller"></button>
-    <button id="toggle-reference" title="Reference">⚔</button>
-    <button id="toggle-lore" title="Lore">🏛</button>
-    <a id="toggle-worldbuilding" href="worldbuilding.html" title="Worldbuilding">🗺</a>
-    <a id="toggle-monsters" href="monster.html" title="Monsters"></a>
-    <button id="toggle-spellbook" title="Spellbook"></button>
-    <div id="floating-search">
-        <button id="toggle-search" title="Search"></button>
-        <input type="search" id="sidebar-search-input" placeholder="Search page...">
-        <span id="sidebar-search-count"></span>
+<!-- ── Left strip (always visible) ─────────────────────────────────────── -->
+<div id="sidebar-strip">
+
+    <!-- Generic open/close toggle -->
+    <button class="strip-btn strip-emoji" id="sidebar-open"
+            data-label="Toggle Sidebar" title="Toggle Sidebar">☰</button>
+
+    <div class="strip-divider"></div>
+
+    <!-- Group 1: Sidebar panel openers -->
+    <div class="strip-group">
+        <button class="strip-btn strip-icon" id="toggle-sidebar"
+                data-mode="dice" data-label="Dice Roller" title="Dice Roller"></button>
+        <button class="strip-btn strip-emoji" id="toggle-reference"
+                data-mode="reference" data-label="Rules" title="Reference">⚔</button>
+        <button class="strip-btn strip-emoji" id="toggle-lore"
+                data-mode="lore" data-label="Lore" title="Lore">🏛</button>
+        <button class="strip-btn strip-emoji" id="toggle-tables"
+                data-mode="tables" data-label="Tables" title="Tables">📋</button>
+        <button class="strip-btn strip-icon" id="toggle-search-mode"
+                data-mode="search" data-label="Search" title="Search"></button>
+    </div>
+
+    <div class="strip-divider"></div>
+
+    <!-- Group 2: Page shortcuts -->
+    <div class="strip-group">
+        <a class="strip-btn strip-icon" id="toggle-top"
+           href="#header-placeholder" data-label="Back to Top" title="Back to Top"></a>
+        <button class="strip-btn strip-icon" id="toggle-spellbook"
+                data-label="Spellbook" title="Spellbook"></button>
+        <a class="strip-btn strip-emoji" id="toggle-worldbuilding"
+           href="worldbuilding.html" data-label="Worldbuilding" title="Worldbuilding">🗺</a>
+        <a class="strip-btn strip-icon" id="toggle-monsters"
+           href="monster.html" data-label="Monsters" title="Monsters"></a>
+    </div>
+
+</div>
+
+<!-- ── Sidebar panel ────────────────────────────────────────────────────── -->
+<div id="sidebar">
+
+    <div id="sidebar-header">
+        <span id="sidebar-title">Utility</span>
+        <button id="sidebar-close" title="Close sidebar">✕</button>
+    </div>
+
+    <div id="sidebar-tabs">
+        <div class="tab-group" id="tabs-dice">
+            <button class="stab active" data-block="check-block">Check20</button>
+            <button class="stab" data-block="standard-block">Standard</button>
+        </div>
+        <div class="tab-group" id="tabs-reference" hidden>
+            <button class="stab active" data-block="reference-block">Reference</button>
+            <button class="stab" data-block="condition-block">Conditions</button>
+        </div>
+        <div class="tab-group" id="tabs-lore" hidden></div>
+        <div class="tab-group" id="tabs-tables" hidden>
+            <a class="stab" href="tables.html">Full Tables ↗</a>
+        </div>
+        <div class="tab-group" id="tabs-search" hidden></div>
     </div>
 
     <div id="sidebar-content">
-        <div class="roller-switch">
-            <!-- Radio Toggles -->
-            <input type="radio" name="roller-mode" id="check-mode" checked>
-            <label for="check-mode" data-group="dice">Check20 Roller</label>
 
-            <input type="radio" name="roller-mode" id="standard-mode">
-            <label for="standard-mode" data-group="dice">Standard Roller</label>
-
-            <input type="radio" name="roller-mode" id="reference-mode">
-            <label for="reference-mode" data-group="reference">Reference</label>
-
-            <input type="radio" name="roller-mode" id="condition-mode">
-            <label for="condition-mode" data-group="reference">Conditions</label>
-
-            <input type="radio" name="roller-mode" id="lore-mode">
-            <label for="lore-mode" data-group="lore">Lore</label>
-
-            <!-- Sidebar -->
-            <div class="roller-content">
-                <!-- Check20 Roller -->
-                <div class="roller-block" id="check-block">
-                    <h3>Check20 Roller</h3>
-                    <form id="d20-check-roller-form">
-                        <div class="flex-container">
-                            <div class="flex-item">
-                                <div class="mod-adjust">
-                                    <label for="check-modifier">Modifier</label>
-                                    <div class="mod-input-group">
-                                        <button type="button" id="decrease-check-mod" class="mod-button">−</button>
-                                        <input type="number" id="check-modifier" value="0" style="width: 50px;">
-                                        <button type="button" id="increase-check-mod" class="mod-button">+</button>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="flex-item">
-                                <label>Advantage
-                                    <select id="check-advantage">
-                                        <option value="none">None</option>
-                                        <option value="advantage">Advantage</option>
-                                        <option value="disadvantage">Disadvantage</option>
-                                    </select>
-                                </label>
-                            </div>
-                            <div class="flex-item">
-                                <button type="button" id="roll-d20-check">Roll</button>
+        <!-- ── Check20 Roller ─────────────────────── -->
+        <div class="roller-block active" id="check-block">
+            <h3>Check20 Roller</h3>
+            <form id="d20-check-roller-form">
+                <div class="flex-container">
+                    <div class="flex-item">
+                        <div class="mod-adjust">
+                            <label for="check-modifier">Modifier</label>
+                            <div class="mod-input-group">
+                                <button type="button" id="decrease-check-mod" class="mod-button">−</button>
+                                <input type="number" id="check-modifier" value="0" style="width:50px">
+                                <button type="button" id="increase-check-mod" class="mod-button">+</button>
                             </div>
                         </div>
-                    </form>
-                    <h4>Check History</h4>
-                    <ul id="check-history" class="roll-history"></ul>
+                    </div>
+                    <div class="flex-item">
+                        <label>Advantage
+                            <select id="check-advantage">
+                                <option value="none">None</option>
+                                <option value="advantage">Advantage</option>
+                                <option value="disadvantage">Disadvantage</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="flex-item">
+                        <button type="button" id="roll-d20-check">Roll</button>
+                    </div>
                 </div>
+            </form>
+            <h4>Check History</h4>
+            <ul id="check-history" class="roll-history"></ul>
+        </div>
 
-                <!-- Standard Roller -->
-                <div class="roller-block" id="standard-block">
-                    <h3>Standard Dice</h3>
-                    <form id="dice-roller-form">
-                        <div class="flex-container">
-                            <div class="flex-item">
-                                <div class="dice-adjust">
-                                    <label for="number-of-dice">Dice</label>
-                                    <div class="dice-input-group">
-                                        <button type="button" id="decrease-dice" class="dice-button">−</button>
-                                        <input type="number" id="number-of-dice" value="1" min="1">
-                                        <button type="button" id="increase-dice" class="dice-button">+</button>
-                                    </div>
-                                </div>
-                                <label>Type
-                                    <select id="dice-type">
-                                        <option value="4">d4</option>
-                                        <option value="6" selected>d6</option>
-                                        <option value="8">d8</option>
-                                        <option value="10">d10</option>
-                                        <option value="12">d12</option>
-                                        <option value="20">d20</option>
-                                        <option value="100">d100</option>
-                                    </select>
-                                </label>
-                            </div>
-                            <div class="flex-item">
-                                <div class="mod-adjust">
-                                    <label for="modifier">Mod</label>
-                                    <div class="mod-input-group">
-                                        <button type="button" id="decrease-mod" class="mod-button">−</button>
-                                        <input type="number" id="modifier" value="0">
-                                        <button type="button" id="increase-mod" class="mod-button">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex-item" hidden>
-                                <label>Advantage
-                                    <select id="advantage">
-                                        <option value="none">None</option>
-                                        <option value="advantage">Advantage</option>
-                                        <option value="disadvantage">Disadvantage</option>
-                                    </select>
-                                </label>
-                            </div>
-                            <div class="flex-item">
-                                <button type="button" id="roll-dice">Roll</button>
+        <!-- ── Standard Roller ───────────────────── -->
+        <div class="roller-block" id="standard-block">
+            <h3>Standard Dice</h3>
+            <form id="dice-roller-form">
+                <div class="flex-container">
+                    <div class="flex-item">
+                        <div class="dice-adjust">
+                            <label for="number-of-dice">Dice</label>
+                            <div class="dice-input-group">
+                                <button type="button" id="decrease-dice" class="dice-button">−</button>
+                                <input type="number" id="number-of-dice" value="1" min="1">
+                                <button type="button" id="increase-dice" class="dice-button">+</button>
                             </div>
                         </div>
-                    </form>
-                    <h4>Roll History</h4>
-                    <ul id="roll-history" class="roll-history"></ul>
+                        <label>Type
+                            <select id="dice-type">
+                                <option value="4">d4</option>
+                                <option value="6" selected>d6</option>
+                                <option value="8">d8</option>
+                                <option value="10">d10</option>
+                                <option value="12">d12</option>
+                                <option value="20">d20</option>
+                                <option value="100">d100</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="flex-item">
+                        <div class="mod-adjust">
+                            <label for="modifier">Mod</label>
+                            <div class="mod-input-group">
+                                <button type="button" id="decrease-mod" class="mod-button">−</button>
+                                <input type="number" id="modifier" value="0">
+                                <button type="button" id="increase-mod" class="mod-button">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-item">
+                        <button type="button" id="roll-dice">Roll</button>
+                    </div>
                 </div>
+            </form>
+            <h4>Roll History</h4>
+            <ul id="roll-history" class="roll-history"></ul>
+        </div>
 
-                <!-- Reference -->
-                <div class="roller-block" id="reference-block">
-                    <section class="reference-grid">
+        <!-- ── Reference ─────────────────────────── -->
+        <div class="roller-block" id="reference-block">
+            <section class="reference-grid">
 
-                        <details class="ref-card">
-                            <summary>Action Types</summary>
-                            <ul>
-                                <li><strong>Move:</strong> Up to your Speed</li>
-                                <li><strong>Action:</strong> The primary activity you perform, like attacking or casting a spell. You get one action per turn, though certain abilities may offer more.</li>
-                                <li><strong>Half-Action:</strong> Instead of a single action, take 2 half-actions. These are things like picking things up or Stances</li>
-                                <li><strong>Off-Action:</strong> Can be used on your turn or after. Most used for Provoke attacks or light weapon strikes</li>
-                                <li><strong>Non-Action:</strong> Talk, switch items, other</li>
-                                <li><strong>Finisher:</strong> Eliminate locked or submitted foes</li>
-                            </ul>
-                        </details>
+                <details class="ref-card">
+                    <summary>Action Types</summary>
+                    <ul>
+                        <li><strong>Move:</strong> Up to your Speed</li>
+                        <li><strong>Action:</strong> The primary activity you perform, like attacking or casting a spell. You get one action per turn, though certain abilities may offer more.</li>
+                        <li><strong>Half-Action:</strong> Instead of a single action, take 2 half-actions. These are things like picking things up or Stances</li>
+                        <li><strong>Off-Action:</strong> Can be used on your turn or after. Most used for Provoke attacks or light weapon strikes</li>
+                        <li><strong>Non-Action:</strong> Talk, switch items, other</li>
+                        <li><strong>Finisher:</strong> Eliminate locked or submitted foes</li>
+                    </ul>
+                </details>
 
-                        <details class="ref-card">
-                            <summary>Actions</summary>
-                            <ul>
-                                <li><strong>Attack:</strong> Make a melee or ranged attack. Unarmed deal 1 dmg</li>
-                                <li><strong>Grab or Hold</strong> Contested Physical Check (Strength Default)</li>
-                                <li><strong>Cast Spell:</strong> Requires seeing and perceiving the target, and having free hands.</li>
-                                <li><strong>Administer Potion:</strong> Use an action to give a potion to a downed ally.</li>
-                                <li><strong>Stealth: </strong>Attempt to hide for advantage on the next attack.</li>
-                            </ul>
-                        </details>
+                <details class="ref-card">
+                    <summary>Actions</summary>
+                    <ul>
+                        <li><strong>Attack:</strong> Make a melee or ranged attack. Unarmed deal 1 dmg</li>
+                        <li><strong>Grab or Hold</strong> Contested Physical Check (Strength Default)</li>
+                        <li><strong>Cast Spell:</strong> Requires seeing and perceiving the target, and having free hands.</li>
+                        <li><strong>Administer Potion:</strong> Use an action to give a potion to a downed ally.</li>
+                        <li><strong>Stealth: </strong>Attempt to hide for advantage on the next attack.</li>
+                    </ul>
+                </details>
 
-                        <details class="ref-card">
-                            <summary>Half-Actions</summary>
-                            <ul>
-                                <li><strong>Stances:</strong> Choose a stance to remain in until your next turn.
-                                </li>
-                                <li><strong>Disarm:</strong> Make a contested Strength or Agility check to disarm a creature.
-                                </li>
-                                <li><strong>Help:</strong> Give a creature +1 to a check</li>
-                                <li><strong>Pick up an Item:</strong> Picking up an item is a Half-Action.</li>
-                                <li><strong>Use an Object:</strong> Interact with objects like levers or buttons.</li>
-                                <li><strong>Disengage:</strong> Move out of a creature's range without provoking opportunity
-                                    attacks.</li>
-                            </ul>
-                        </details>
+                <details class="ref-card">
+                    <summary>Half-Actions</summary>
+                    <ul>
+                        <li><strong>Stances:</strong> Choose a stance to remain in until your next turn.</li>
+                        <li><strong>Disarm:</strong> Make a contested Strength or Agility check to disarm a creature.</li>
+                        <li><strong>Help:</strong> Give a creature +1 to a check</li>
+                        <li><strong>Pick up an Item:</strong> Picking up an item is a Half-Action.</li>
+                        <li><strong>Use an Object:</strong> Interact with objects like levers or buttons.</li>
+                        <li><strong>Disengage:</strong> Move out of a creature's range without provoking opportunity attacks.</li>
+                    </ul>
+                </details>
 
-                        <details class="ref-card">
-                            <summary>Off-Actions</summary>
-                            <ul>
-                                <li><strong>Provoke:</strong> Make an attack against a creature that has missed an attack directly targeting you, or against a creature that willingly leaves your melee weapon range.</li>
-                                <li><strong>Block:</strong> As an Off-Action, reduce incoming damage by half if you have Armor from a shield</li>
-                                <li><strong>Demoralize:</strong> Make a contested Influence check against an intelligent creature. On a success, the target gains the Fear condition.</li>
-                            </ul>
-                        </details>
+                <details class="ref-card">
+                    <summary>Off-Actions</summary>
+                    <ul>
+                        <li><strong>Provoke:</strong> Make an attack against a creature that has missed an attack directly targeting you, or against a creature that willingly leaves your melee weapon range.</li>
+                        <li><strong>Block:</strong> As an Off-Action, reduce incoming damage by half if you have Armor from a shield</li>
+                        <li><strong>Demoralize:</strong> Make a contested Influence check against an intelligent creature. On a success, the target gains the Fear condition.</li>
+                    </ul>
+                </details>
 
-                        <details class="ref-card">
-                            <summary>Non-Actions</summary>
-                            <ul>
-                                <li><strong>Switch Weapons:</strong> Drop a weapon and draw another.</li>
-                                <li><strong>Stress Push:</strong> Take 4 stress damage for +3 on a low roll.</li>
-                                <li><strong>Roleplay:</strong> Briefly communicate or give orders.</li>
-                            </ul>
-                        </details>
+                <details class="ref-card">
+                    <summary>Non-Actions</summary>
+                    <ul>
+                        <li><strong>Switch Weapons:</strong> Drop a weapon and draw another.</li>
+                        <li><strong>Stress Push:</strong> Take 4 stress damage for +3 on a low roll.</li>
+                        <li><strong>Roleplay:</strong> Briefly communicate or give orders.</li>
+                    </ul>
+                </details>
 
-                        <details class="ref-card">
-                            <summary>Stances</summary>
-                            <ul>
-                                <li><strong>Advantage Stance:</strong> Gain advantage on your next attack.</li>
-                                <li><strong>Disadvantage Stance:</strong> Give disadvantage to enemies attacking you
-                                    or
-                                    allies in range.
-                                </li>
-                                <li><strong>Guard Stance:</strong> When a creature attacks you, Provoke without using an Off-Action once. On all failed attacks, you may also Provoke at disadvantage.</li>
-                            </ul>
-                        </details>
+                <details class="ref-card">
+                    <summary>Stances</summary>
+                    <ul>
+                        <li><strong>Advantage Stance:</strong> Gain advantage on your next attack.</li>
+                        <li><strong>Disadvantage Stance:</strong> Give disadvantage to enemies attacking you or allies in range.</li>
+                        <li><strong>Guard Stance:</strong> When a creature attacks you, Provoke without using an Off-Action once. On all failed attacks, you may also Provoke at disadvantage.</li>
+                    </ul>
+                </details>
 
-                        <details class="ref-card">
-                            <summary>Special</summary>
-                            <ul>
-                                <li><strong>Called Shot:</strong> −10 for a condition.</li>
-                                <li><strong>Surprise:</strong> Additional action.</li>
-                                <li><strong>Cover:</strong> Disadvantage to be hit.</li>
-                                <li><strong>Full Cover:</strong> Cannot be targeted without line of sight.</li>
-                            </ul>
-                        </details>
+                <details class="ref-card">
+                    <summary>Special</summary>
+                    <ul>
+                        <li><strong>Called Shot:</strong> −10 for a condition.</li>
+                        <li><strong>Surprise:</strong> Additional action.</li>
+                        <li><strong>Cover:</strong> Disadvantage to be hit.</li>
+                        <li><strong>Full Cover:</strong> Cannot be targeted without line of sight.</li>
+                    </ul>
+                </details>
 
-                        <details class="ref-card" id="movement-desc">
-                            <summary>Movement</summary>
-                            <ul>
-                                <li><strong>Difficult Terrain:</strong> Halved speed.</li>
-                                <li><strong>Jump:</strong> 2ft × Agility or Strength.</li>
-                                <li><strong>Climb/Swim:</strong> Counts as difficult terrain.</li>
-                                <li><strong>Prone:</strong> Disadv on ranged attacks against you; adv on melee. Standing costs 15ft.</li>
-                                <li><strong>Moving Past:</strong> Can only pass smaller creatures.</li>
-                                <li><strong>Dash:</strong> Double distance (Action).</li>
-                                <li><strong>Fall:</strong> 5 dmg per 10ft.</li>
-                                <li><strong>Extreme Hazard:</strong> 10 dmg/sec.</li>
-                                <li><strong>Burrowing:</strong> Unseen. Cannot target or breathe.</li>
-                                <li><strong>Teleport:</strong> Unoccupied space; no opportunity attacks.</li>
-                            </ul>
-                        </details>
+                <details class="ref-card" id="movement-desc">
+                    <summary>Movement</summary>
+                    <ul>
+                        <li><strong>Difficult Terrain:</strong> Halved speed.</li>
+                        <li><strong>Jump:</strong> 2ft × Agility or Strength.</li>
+                        <li><strong>Climb/Swim:</strong> Counts as difficult terrain.</li>
+                        <li><strong>Prone:</strong> Disadv on ranged attacks against you; adv on melee. Standing costs 15ft.</li>
+                        <li><strong>Moving Past:</strong> Can only pass smaller creatures.</li>
+                        <li><strong>Dash:</strong> Double distance (Action).</li>
+                        <li><strong>Fall:</strong> 5 dmg per 10ft.</li>
+                        <li><strong>Extreme Hazard:</strong> 10 dmg/sec.</li>
+                        <li><strong>Burrowing:</strong> Unseen. Cannot target or breathe.</li>
+                        <li><strong>Teleport:</strong> Unoccupied space; no opportunity attacks.</li>
+                    </ul>
+                </details>
 
-                        <details class="ref-card" id="size-desc">
-                            <summary>Size Scale</summary>
-                            <ul>
-                                <li><strong>Tiny:</strong>
-                                    < 1 ft; pixies, potions</li>
-                                <li><strong>Small:</strong> 1–4 ft; goblins</li>
-                                <li><strong>Medium:</strong> 5–7 ft; humans</li>
-                                <li><strong>Large:</strong> 8–15 ft; ogres</li>
-                                <li><strong>Giant:</strong> 15–25 ft; siege equipment</li>
-                                <li><strong>Monolithic:</strong> 25–100 ft; building</li>
-                            </ul>
-                        </details>
+                <details class="ref-card" id="size-desc">
+                    <summary>Size Scale</summary>
+                    <ul>
+                        <li><strong>Tiny:</strong> &lt; 1 ft; pixies, potions</li>
+                        <li><strong>Small:</strong> 1–4 ft; goblins</li>
+                        <li><strong>Medium:</strong> 5–7 ft; humans</li>
+                        <li><strong>Large:</strong> 8–15 ft; ogres</li>
+                        <li><strong>Giant:</strong> 15–25 ft; siege equipment</li>
+                        <li><strong>Monolithic:</strong> 25–100 ft; building</li>
+                    </ul>
+                </details>
 
-                        <details class="ref-card">
-                            <summary>Press On</summary>
-                            <div class="ref-body-prose">
-                                <p>After a combat encounter, characters may Press On to recover:</p>
-                                <ul>
-                                    <li>1 class resource and 1 spell point</li>
-                                    <li><strong>Armor repair:</strong> <code>[[1d6]]</code> + Crafting</li>
-                                    <li><strong>Healing:</strong> <code>[[1d6]]</code> + Survival</li>
-                                    <li>Remove all conditions and effects lasting 1 minute or less</li>
-                                </ul>
-                                <p>Press On may be used twice per day.</p>
-                            </div>
-                        </details>
+                <details class="ref-card">
+                    <summary>Press On</summary>
+                    <div class="ref-body-prose">
+                        <p>After a combat encounter, characters may Press On to recover:</p>
+                        <ul>
+                            <li>1 class resource and 1 Mana</li>
+                            <li><strong>Armor repair:</strong> <code>[[1d6]]</code> + Crafting</li>
+                            <li><strong>Healing:</strong> <code>[[1d6]]</code> + Survival</li>
+                            <li>Remove all conditions and effects lasting 1 minute or less</li>
+                        </ul>
+                        <p>Press On may be used twice per day.</p>
+                    </div>
+                </details>
 
-                        <details class="ref-card">
-                            <summary>Long Rest</summary>
-                            <div class="ref-body-prose">
-                                <p>Requires 10 hours of uninterrupted downtime in a safe environment. Restores:</p>
-                                <ul>
-                                    <li>All wounds</li>
-                                    <li>All class resources and spell points</li>
-                                    <li>Armor repaired to at least half</li>
-                                    <li>Remove all conditions lasting one day or less</li>
-                                </ul>
-                                <p>Can only be taken once per day.</p>
-                            </div>
-                        </details>
+                <details class="ref-card">
+                    <summary>Long Rest</summary>
+                    <div class="ref-body-prose">
+                        <p>Requires 10 hours of uninterrupted downtime in a safe environment. Restores:</p>
+                        <ul>
+                            <li>All wounds</li>
+                            <li>All class resources and Mana</li>
+                            <li>Armor repaired to at least half</li>
+                            <li>Remove all conditions lasting one day or less</li>
+                        </ul>
+                        <p>Can only be taken once per day.</p>
+                    </div>
+                </details>
 
-                        <details class="ref-card">
-                            <summary>Check Result Outcomes</summary>
-                            <ul class="ref-list">
-                                <li><strong>1–4:</strong> Fail — Provoke @Adv</li>
-                                <li><strong>5–9:</strong> Fail — Provoke</li>
-                                <li><strong>10–14:</strong> Fail — Provoke @Dis</li>
-                                <li><strong>15–19:</strong> Success</li>
-                                <li><strong>20–24:</strong> Success+ (1 roll)</li>
-                                <li><strong>25–29:</strong> Success++ (2 rolls)</li>
-                                <li><strong>30–34:</strong> Success+++ (3 rolls)</li>
-                            </ul>
-                        </details>
+                <details class="ref-card">
+                    <summary>Check Result Outcomes</summary>
+                    <ul class="ref-list">
+                        <li><strong>1–4:</strong> Fail — Provoke @Adv</li>
+                        <li><strong>5–9:</strong> Fail — Provoke</li>
+                        <li><strong>10–14:</strong> Fail — Provoke @Dis</li>
+                        <li><strong>15–19:</strong> Success</li>
+                        <li><strong>20–24:</strong> Success+ (1 roll)</li>
+                        <li><strong>25–29:</strong> Success++ (2 rolls)</li>
+                        <li><strong>30–34:</strong> Success+++ (3 rolls)</li>
+                    </ul>
+                </details>
 
+            </section>
+        </div>
+
+        <!-- ── Conditions ─────────────────────────── -->
+        <div class="roller-block" id="condition-block">
+            <div class="condition">
+                <table class="condition">
+                    <thead>
+                        <tr>
+                            <th>Condition</th>
+                            <th>Effect</th>
+                            <th>Duration / Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="conditions">
+                        <tr><td colspan="3" class="category-row">Corpus Conditions</td></tr>
+                        <tr>
+                            <td>Bleeding</td>
+                            <td>Cannot recover wounds or receive healing.</td>
+                            <td>Lasts 1 minute</td>
+                        </tr>
+                        <tr>
+                            <td>Broken</td>
+                            <td>Physical Disadvantage</td>
+                            <td>Lasts 6 weeks</td>
+                        </tr>
+                        <tr>
+                            <td>Concussion</td>
+                            <td>Mental Disadvantage, Spellcasting Disadvantage</td>
+                            <td>Until a Long Rest</td>
+                        </tr>
+                        <tr>
+                            <td>Coughing</td>
+                            <td>Mental Disadvantage</td>
+                            <td>Until a Press On or irritant removed</td>
+                        </tr>
+                        <tr>
+                            <td>Dislocation</td>
+                            <td>Physical Disadvantage</td>
+                            <td>Until a Long Rest, or Survival Check</td>
+                        </tr>
+                        <tr>
+                            <td>Slowed</td>
+                            <td>Movement halved</td>
+                            <td>Until source removed</td>
+                        </tr>
+                        <tr>
+                            <td>Pinned</td>
+                            <td>Cannot move; restrained by an object or creature.</td>
+                            <td>Until source removed, or Off-Action removal</td>
+                        </tr>
+                        <tr>
+                            <td>Prone</td>
+                            <td>Disadvantage on ranged attacks; advantage for melee attacks against you.</td>
+                            <td>Requires 15 ft of movement to stand.</td>
+                        </tr>
+
+                        <tr><td colspan="3" class="category-row">Cognition Conditions</td></tr>
+                        <tr>
+                            <td>Blind</td>
+                            <td>Your attacks have -5, attacks against you have +5; You cannot target creatures with spells</td>
+                            <td>Off-Action removal if possible or permanent effects require a healer</td>
+                        </tr>
+                        <tr>
+                            <td>Charmed</td>
+                            <td>Mental Disadvantage; cannot attack the source of the charm.</td>
+                            <td>Ends based on the charm's source</td>
+                        </tr>
+                        <tr>
+                            <td>Confused</td>
+                            <td>Mental Disadvantage, attacks against you have advantage.</td>
+                            <td>Until end of next turn or Press On</td>
+                        </tr>
+                        <tr>
+                            <td>Deaf</td>
+                            <td>Stealth disadvantage; Spellcasting disadvantage</td>
+                            <td>Lasts 1 minute or source removed</td>
+                        </tr>
+                        <tr>
+                            <td>Fear</td>
+                            <td>Must dash away or hide until the end of your next turn.</td>
+                            <td>Ends if you cannot see the source for a full round; typically cannot be the same source twice.</td>
+                        </tr>
+
+                        <tr><td colspan="3" class="category-row">Special Conditions</td></tr>
+                        <tr>
+                            <td>Intangible</td>
+                            <td>Immune to physical damage; cannot attack non Intangible; movement halved.</td>
+                            <td>Ends after the effect's duration or through magical disruption. Cannot move through inorganic material.</td>
+                        </tr>
+                        <tr>
+                            <td>Invisible</td>
+                            <td>Cannot be targeted by Provoke; attacks against have disadvantage.</td>
+                            <td>Ends after making an aggressive action or when revealed by substances like powder or oil.</td>
+                        </tr>
+
+                        <tr><td colspan="3" class="category-row">Major Conditions</td></tr>
+                        <tr>
+                            <td>Stunned</td>
+                            <td>Disadvantage on all checks; movement halved.</td>
+                            <td>Until end of next turn or Press On</td>
+                        </tr>
+                        <tr>
+                            <td>Exhaustion</td>
+                            <td>Disadvantage on all checks; movement halved.</td>
+                            <td>Persists until a long rest, magical recovery, or specific intervention (e.g., caffeine).</td>
+                        </tr>
+                        <tr>
+                            <td>Constrained</td>
+                            <td>Cannot make attack actions; attacks against have advantage</td>
+                            <td>Off-Action removal if possible, escape check from restraints</td>
+                        </tr>
+                        <tr>
+                            <td>Unconscious</td>
+                            <td>Unable to act; vulnerable to critical hits and Finishers.</td>
+                            <td>Ends after a set duration, damage taken, or Off-Action ally assistance.</td>
+                        </tr>
+                        <tr>
+                            <td>Exposed</td>
+                            <td>Take double damage</td>
+                            <td>Until end of next turn or Press On</td>
+                        </tr>
+                        <tr>
+                            <td>Injured</td>
+                            <td>At 0 wounds, any further damage causes immediate Death.</td>
+                            <td>Healing removes the condition. Excess damage beyond reducing wounds to 0 is ignored.</td>
+                        </tr>
+                        <tr>
+                            <td>Death</td>
+                            <td>Character dies and cannot interact with the living world.</td>
+                            <td>Only resurrection magic can remove this condition.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── Search ────────────────────────────── -->
+        <div class="roller-block" id="search-block">
+            <div class="sb-search-bar">
+                <span class="sb-search-icon">🔍</span>
+                <input type="search" id="sb-search-input"
+                       placeholder="Spells, monsters, weapons…"
+                       autocomplete="off" spellcheck="false">
+            </div>
+            <p id="sb-search-status" class="sb-search-status"></p>
+            <div id="sb-search-results"></div>
+        </div>
+
+        <!-- ── Tables ────────────────────────────── -->
+        <div class="roller-block" id="tables-block">
+
+            <div class="sb-roll-section">
+                <h4>Motivation</h4>
+                <button type="button" id="sb-roll-motivation">Roll</button>
+                <p class="sb-roll-result" id="sb-selected-motivation"></p>
+                <button class="sb-copy-btn" data-target="sb-selected-motivation">Copy</button>
+            </div>
+
+            <div class="sb-roll-section">
+                <h4>Equipment</h4>
+                <button type="button" id="sb-roll-equipment">Roll</button>
+                <p class="sb-roll-result" id="sb-selected-equipment"></p>
+                <button class="sb-copy-btn" data-target="sb-selected-equipment">Copy</button>
+            </div>
+
+            <div class="sb-roll-section">
+                <h4>Trinket</h4>
+                <button type="button" id="sb-roll-trinket">Roll</button>
+                <p class="sb-roll-result" id="sb-selected-trinket"></p>
+                <button class="sb-copy-btn" data-target="sb-selected-trinket">Copy</button>
+            </div>
+
+            <div class="sb-roll-section">
+                <h4>Starting Wealth</h4>
+                <button type="button" id="sb-roll-wealth">Roll</button>
+                <p class="sb-roll-result" id="sb-starting-wealth"></p>
+            </div>
+
+        </div>
+
+        <!-- ── Lore ───────────────────────────────── -->
+        <div class="roller-block" id="lore-block">
+            <div class="references">
+
+                <details>
+                    <summary>Languages</summary>
+                    <section class="section-container">
+                        <h3>🗣️ Languages</h3>
+                        <p>In Shek, language shapes culture, magic, and machines.</p>
+                        <ul class="dragon-list" style="list-style: none;">
+                            <li><strong>Imperial</strong> – Common tongue of diplomacy & trade.</li>
+                            <li><strong>Orcish/Elvish</strong> – Heritage accents of orcs and elves.</li>
+                            <li><strong>Naech</strong> – Animal dialects: predator, prey, flier.</li>
+                            <li><strong>Dealig</strong> – Oreadlis speech for the otherworldly.</li>
+                            <li><strong>Etheros</strong> – Elemental commands for magic.</li>
+                            <li><strong>Night</strong> – Necromantic speech of the undead.</li>
+                            <li><strong>Clunk</strong> – Language of constructs and tech.</li>
+                            <li><strong>Yar</strong> – Nautical language of seafarers.</li>
+                            <li><strong>Drak</strong> – Draconic tongue of ancient magic.</li>
+                            <li><strong>Holy</strong> – Divine speech of celestial beings.</li>
+                            <li><strong>Jotun</strong> – Giant-tongue of old stone lore.</li>
+                        </ul>
                     </section>
-                </div>
+                </details>
 
-                <!-- Conditions -->
-                <div class="roller-block" id="condition-block">
-                    <!-- Conditions -->
-                    <div class="condition">
-                        <table class="condition">
-                            <thead>
-                                <tr>
-                                    <th>Condition</th>
-                                    <th>Effect</th>
-                                    <th>Duration / Description</th>
-                                </tr>
-                            </thead>
-                            <tbody id="conditions">
-                                <!-- Corpus Conditions -->
-                                <tr>
-                                    <td colspan="3" class="category-row">Corpus Conditions</td>
-                                </tr>
-                                <tr>
-                                    <td>Bleeding</td>
-                                    <td>Cannot recover wounds or receive healing.</td>
-                                    <td>Lasts 1 minute</td>
-                                </tr>
-                                <tr>
-                                    <td>Broken</td>
-                                    <td>Physical Disadvantage</td>
-                                    <td>Lasts 6 weeks</td>
-                                </tr>
-                                <tr>
-                                    <td>Concussion</td>
-                                    <td>Mental Disadvantage, Spellcasting Disadvantage</td>
-                                    <td>Until a Long Rest</td>
-                                </tr>
-                                <tr>
-                                    <td>Coughing</td>
-                                    <td>Mental Disadvantage</td>
-                                    <td>Until a Press On or irritant removed</td>
-                                </tr>
-                                <tr>
-                                    <td>Dislocation</td>
-                                    <td>Physical Disadvantage</td>
-                                    <td>Until a Long Rest, or Survival Check</td>
-                                </tr>
-                                <tr>
-                                    <td>Slowed</td>
-                                    <td>Movement halved</td>
-                                    <td>Until source removed</td>
-                                </tr>
-                                <tr>
-                                    <td>Pinned</td>
-                                    <td>Cannot move; restrained by an object or creature.</td>
-                                    <td>Until source removed, or Off-Action removal</td>
-                                </tr>
-                                <tr>
-                                    <td>Prone</td>
-                                    <td>Disadvantage on ranged attacks; advantage for melee attacks against you.</td>
-                                    <td>Requires 15 ft of movement to stand.</td>
-                                </tr>
+                <details>
+                    <summary>Types of Dragons</summary>
+                    <section class="dragon-section">
+                        <h3>🌋 Elemental Dragons</h3>
+                        <ul class="dragon-list">
+                            <li>Bile (Acid)</li>
+                            <li>Pyre (Fire)</li>
+                            <li>Shard (Ice)</li>
+                            <li>Cloudburst (Thunder)</li>
+                            <li>Aquarion (Water)</li>
+                            <li>Venom (Toxic)</li>
+                            <li>Voltstryke (Lightning)</li>
+                            <li>Solarflare (Solar)</li>
+                            <li>Ashen (Eclipse)</li>
+                        </ul>
+                    </section>
+                    <section class="dragon-section">
+                        <h3>💫 Planar Dragons</h3>
+                        <ul class="dragon-list">
+                            <li>Shadowraith (Eclipse)</li>
+                            <li>Radiance (Solar)</li>
+                            <li>Astraleon (Psychic)</li>
+                            <li>Vozurion (Vozian)</li>
+                        </ul>
+                    </section>
+                    <section class="dragon-section">
+                        <h3>⚔️ Neutral Dragons</h3>
+                        <ul class="dragon-list">
+                            <li>Thornspike (Piercing)</li>
+                            <li>Reaver (Slashing)</li>
+                            <li>Crystal (Impact)</li>
+                        </ul>
+                    </section>
+                </details>
 
-                                <!-- Cognition Conditions -->
-                                <tr>
-                                    <td colspan="3" class="category-row">Cognition Conditions</td>
-                                </tr>
-                                <tr>
-                                    <td>Blind</td>
-                                    <td>Your attacks have -5, attacks against you have +5; You cannot target creatures with spells</td>
-                                    <td>Off-Action removal if possible or permanent effects require a healer</td>
-                                </tr>
-                                <tr>
-                                    <td>Charmed</td>
-                                    <td>Mental Disadvantage; cannot attack the source of the charm.</td>
-                                    <td>Ends based on the charm's source</td>
-                                </tr>
-                                <tr>
-                                    <td>Confused</td>
-                                    <td>Mental Disadvantage, attacks against you have advantage.</td>
-                                    <td>Until end of next turn or Press On</td>
-                                </tr>
-                                <tr>
-                                    <td>Deaf</td>
-                                    <td>Stealth disadvantage; Spellcasting disadvantage</td>
-                                    <td>Lasts 1 minute or source removed</td>
-                                </tr>
-                                <tr>
-                                    <td>Fear</td>
-                                    <td>Must dash away or hide until the end of your next turn.</td>
-                                    <td>Ends if you cannot see the source for a full round; typically cannot be the same source
-                                        twice.</td>
-                                </tr>
+                <details>
+                    <summary>Elemental Types</summary>
+                    <section class="elemental-section">
+                        <h3>🌱 Elemental Types</h3>
+                        <ul class="dragon-list">
+                            <li>💨 Air</li>
+                            <li>🔥 Fire</li>
+                            <li>❄️ Frost</li>
+                            <li>⚡ Lightning</li>
+                            <li>🚬 Smoke</li>
+                            <li>🪨 Stone</li>
+                            <li>☢️ Toxic</li>
+                            <li>💧 Water</li>
+                        </ul>
+                    </section>
+                </details>
 
-                                <!-- Special Conditions -->
-                                <tr>
-                                    <td colspan="3" class="category-row">Special Conditions</td>
-                                </tr>
-                                <tr>
-                                    <td>Intangible</td>
-                                    <td>Immune to physical damage; cannot attack non Intangible; movement halved.</td>
-                                    <td>Ends after the effect's duration or through magical disruption. Cannot move through
-                                        inorganic material.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Invisible</td>
-                                    <td>Cannot be targeted by Provoke; attacks against have disadvantage.</td>
-                                    <td>Ends after making an aggressive action or when revealed by substances like powder or oil.
-                                    </td>
-                                </tr>
-
-                                <!-- Major Conditions -->
-                                <tr>
-                                    <td colspan="3" class="category-row">Major Conditions</td>
-                                </tr>
-                                <tr>
-                                    <td>Stunned</td>
-                                    <td>Disadvantage on all checks; movement halved.</td>
-                                    <td>Until end of next turn or Press On</td>
-                                </tr>
-                                <tr>
-                                    <td>Exhaustion</td>
-                                    <td>Disadvantage on all checks; movement halved.</td>
-                                    <td>Persists until a long rest, magical recovery, or specific intervention (e.g., caffeine).
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Constrained</td>
-                                    <td>Cannot make attack actions; attacks against have advantage</td>
-                                    <td>Off-Action removal if possible, escape check from restraints</td>
-                                </tr>
-                                <tr>
-                                    <td>Unconscious</td>
-                                    <td>Unable to act; vulnerable to critical hits and Finishers.</td>
-                                    <td>Ends after a set duration, damage taken, or Off-Action ally assistance.</td>
-                                </tr>
-                                <tr>
-                                    <td>Exposed</td>
-                                    <td>Take double damage</td>
-                                    <td>Until end of next turn or Press On</td>
-                                </tr>
-                                <tr>
-                                    <td>Injured</td>
-                                    <td>At 0 wounds, any further damage causes immediate Death.</td>
-                                    <td>Healing removes the condition. Excess damage beyond reducing wounds to 0 is ignored and does
-                                        not carry over and cause death</td>
-                                </tr>
-                                <tr>
-                                    <td>Death</td>
-                                    <td>Character dies and cannot interact with the living world.</td>
-                                    <td>Only resurrection magic can remove this condition.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- lore -->
-                <div class="roller-block" id="lore-block">
-                    <div class="references">
-                        <!-- Language -->
-                        <details>
-                            <summary>Languages</summary>
-                            <section class="section-container">
-                                <h3>🗣️ Languages</h3>
-                                <p>In Shek, language shapes culture, magic, and machines.</p>
-
-                                <ul class="dragon-list" style="list-style: none;">
-                                    <li><strong>Imperial</strong> – Common tongue of diplomacy & trade.</li>
-                                    <li><strong>Orcish/Elvish</strong> – Heritage accents of orcs and elves.</li>
-                                    <li><strong>Naech</strong> – Animal dialects: predator, prey, flier.</li>
-                                    <li><strong>Dealig</strong> – Oreadlis speech for the otherworldly.</li>
-                                    <li><strong>Etheros</strong> – Elemental commands for magic.</li>
-                                    <li><strong>Night</strong> – Necromantic speech of the undead.</li>
-                                    <li><strong>Clunk</strong> – Language of constructs and tech.</li>
-                                    <li><strong>Yar</strong> – Nautical language of seafarers.</li>
-                                    <li><strong>Drak</strong> – Draconic tongue of ancient magic.</li>
-                                    <li><strong>Holy</strong> – Divine speech of celestial beings.</li>
-                                    <li><strong>Jotun</strong> – Giant-tongue of old stone lore.</li>
-                                </ul>
-                            </section>
-                        </details>
-
-                        <!-- Dragons -->
-                        <details>
-                            <summary>Types of Dragons</summary>
-
-                            <section class="dragon-section">
-                                <h3>🌋 Elemental Dragons</h3>
-                                <ul class="dragon-list">
-                                    <li>Bile (Acid)</li>
-                                    <li>Pyre (Fire)</li>
-                                    <li>Shard (Ice)</li>
-                                    <li>Cloudburst (Thunder)</li>
-                                    <li>Aquarion (Water)</li>
-                                    <li>Venom (Toxic)</li>
-                                    <li>Voltstryke (Lightning)</li>
-                                    <li>Solarflare (Solar)</li>
-                                    <li>Ashen (Eclipse)</li>
-                                </ul>
-                            </section>
-
-                            <section class="dragon-section">
-                                <h3>💫 Planar Dragons</h3>
-                                <ul class="dragon-list">
-                                    <li>Shadowraith (Eclipse)</li>
-                                    <li>Radiance (Solar)</li>
-                                    <li>Astraleon (Psychic)</li>
-                                    <li>Vozurion (Vozian)</li>
-                                </ul>
-                            </section>
-
-                            <section class="dragon-section">
-                                <h3>⚔️ Neutral Dragons</h3>
-                                <ul class="dragon-list">
-                                    <li>Thornspike (Piercing)</li>
-                                    <li>Reaver (Slashing)</li>
-                                    <li>Crystal (Impact)</li>
-                                </ul>
-                            </section>
-                        </details>
-
-                        <!-- Eleemtnal Types -->
-                        <details>
-                            <summary>
-                                Elemental Types
-                            </summary>
-                            <section class="elemental-section">
-                                <h3>🌱 Elemental Types</h3>
-                                <ul class="dragon-list">
-                                    <li>💨 Air</li>
-                                    <li>🔥 Fire</li>
-                                    <li>❄️ Frost</li>
-                                    <li>⚡ Lightning</li>
-                                    <li>🚬 Smoke</li>
-                                    <li>🪨 Stone</li>
-                                    <li>☢️ Toxic</li>
-                                    <li>💧 Water</li>
-                                </ul>
-                            </section>
-                        </details>
-
-                        <!-- Magic Origin -->
-                        <details>
-                            <summary>
-                                Magical Origins
-                            </summary>
-                            <section class="section-container">
-                                <section class="compatibility-group">
-                                    <h4>⚔️ Conflicted <small>(hostile, volatile)</small></h4>
-                                    <p><strong>Celestial 🪽 </strong> vs <strong>Vozian😈</strong></p>
-                                </section>
-
-                                <section class="compatibility-group">
-                                    <h4>🧿 Opposed <small>(interfering, negating)</small></h4>
-                                    <p><strong>Nature 🌿</strong> vs <strong>Dragon 🐉</strong></p>
-                                </section>
-
-                                <section class="compatibility-group">
-                                    <h4>🚫 Incompatible <small>(cannot be combined)</small></h4>
-                                    <ul>
-                                        <li><strong>Arcane 📘</strong> × <strong>Chaos ⚡</strong></li>
-                                        <li><strong>Basic 🟣</strong> × <strong>Chrono ⏳</strong></li>
-                                    </ul>
-                                </section>
-
-                                <section class="compatibility-group">
-                                    <h4>🤝 Indifferent <small>(coexists, but lacks synergy)</small></h4>
-                                    <ul>
-                                        <li><strong>Life ❤️💀</strong> + <strong>Tech 🔧</strong></li>
-                                        <li><strong>Crystal 🔺</strong> + <strong>Elemental 🪨💨🔥💧</strong></li>
-                                    </ul>
-                                </section>
-                        </details>
-
-                        <!-- Unions -->
-                        <details>
-                            <summary>
-                                Unions
-                            </summary>
-                            <ul class="union-list">
-                                <li><span class="union-name">Fabrication</span><span class="union-role">Smiths, crafters, machinists</span><span class="union-opposes">⚔ Opposes: Culture</span></li>
-                                <li><span class="union-name">Refinement</span><span class="union-role">Alchemists, augmenters, tinkerers</span><span class="union-opposes">⚔ Opposes: Mysticism</span></li>
-                                <li><span class="union-name">Commerce</span><span class="union-role">Traders, brokers, financial control</span><span class="union-opposes">⚔ Opposes: Scholarship</span></li>
-                                <li><span class="union-name">Transport</span><span class="union-role">Pilots, freight runners, route controllers</span><span class="union-opposes">⚔ Opposes: Stewardship</span></li>
-                                <li><span class="union-name">Scholarship</span><span class="union-role">Academics, researchers, lorekeepers</span><span class="union-opposes">⚔ Opposes: Commerce</span></li>
-                                <li><span class="union-name">Mysticism</span><span class="union-role">Mages, relic examiners, arcane regulators</span><span class="union-opposes">⚔ Opposes: Refinement</span></li>
-                                <li><span class="union-name">Politics</span><span class="union-role">Lawmakers, clerks, administrators</span><span class="union-opposes">⚔ Opposes: Harvest</span></li>
-                                <li><span class="union-name">Culture</span><span class="union-role">Performers, media, influencers</span><span class="union-opposes">⚔ Opposes: Fabrication</span></li>
-                                <li><span class="union-name">Martial</span><span class="union-role">Enforcers, bounty hunters, guards</span><span class="union-opposes">⚔ Opposes: Subversion</span></li>
-                                <li><span class="union-name">Subversion</span><span class="union-role">Smugglers, spies, counterfeiters</span><span class="union-opposes">⚔ Opposes: Martial</span></li>
-                                <li><span class="union-name">Harvest</span><span class="union-role">Farmers, miners, gatherers</span><span class="union-opposes">⚔ Opposes: Politics</span></li>
-                                <li><span class="union-name">Stewardship</span><span class="union-role">Civil engineers, utility workers</span><span class="union-opposes">⚔ Opposes: Transport</span></li>
+                <details>
+                    <summary>Magical Origins</summary>
+                    <section class="section-container">
+                        <section class="compatibility-group">
+                            <h4>⚔️ Conflicted <small>(hostile, volatile)</small></h4>
+                            <p><strong>Celestial 🪽 </strong> vs <strong>Vozian😈</strong></p>
+                        </section>
+                        <section class="compatibility-group">
+                            <h4>🧿 Opposed <small>(interfering, negating)</small></h4>
+                            <p><strong>Nature 🌿</strong> vs <strong>Dragon 🐉</strong></p>
+                        </section>
+                        <section class="compatibility-group">
+                            <h4>🚫 Incompatible <small>(cannot be combined)</small></h4>
+                            <ul>
+                                <li><strong>Arcane 📘</strong> × <strong>Chaos ⚡</strong></li>
+                                <li><strong>Basic 🟣</strong> × <strong>Chrono ⏳</strong></li>
                             </ul>
-                        </details>
+                        </section>
+                        <section class="compatibility-group">
+                            <h4>🤝 Indifferent <small>(coexists, but lacks synergy)</small></h4>
+                            <ul>
+                                <li><strong>Life ❤️💀</strong> + <strong>Tech 🔧</strong></li>
+                                <li><strong>Crystal 🔺</strong> + <strong>Elemental 🪨💨🔥💧</strong></li>
+                            </ul>
+                        </section>
+                    </section>
+                </details>
 
-                        <!-- Realm Rules -->
-                        <details>
-                            <summary>Realm Rules</summary>
-                            <section class="section-container">
-                                <h3>🌍 Realm Rules <em>(Work in Progress)</em></h3>
-                                <p>These realm-specific effects shape rest, travel, magic, and resistance. This list is a living draft—expect updates as planar rules expand.</p>
+                <details>
+                    <summary>Unions</summary>
+                    <ul class="union-list">
+                        <li><span class="union-name">Fabrication</span><span class="union-role">Smiths, crafters, machinists</span><span class="union-opposes">⚔ Opposes: Culture</span></li>
+                        <li><span class="union-name">Refinement</span><span class="union-role">Alchemists, augmenters, tinkerers</span><span class="union-opposes">⚔ Opposes: Mysticism</span></li>
+                        <li><span class="union-name">Commerce</span><span class="union-role">Traders, brokers, financial control</span><span class="union-opposes">⚔ Opposes: Scholarship</span></li>
+                        <li><span class="union-name">Transport</span><span class="union-role">Pilots, freight runners, route controllers</span><span class="union-opposes">⚔ Opposes: Stewardship</span></li>
+                        <li><span class="union-name">Scholarship</span><span class="union-role">Academics, researchers, lorekeepers</span><span class="union-opposes">⚔ Opposes: Commerce</span></li>
+                        <li><span class="union-name">Mysticism</span><span class="union-role">Mages, relic examiners, arcane regulators</span><span class="union-opposes">⚔ Opposes: Refinement</span></li>
+                        <li><span class="union-name">Politics</span><span class="union-role">Lawmakers, clerks, administrators</span><span class="union-opposes">⚔ Opposes: Harvest</span></li>
+                        <li><span class="union-name">Culture</span><span class="union-role">Performers, media, influencers</span><span class="union-opposes">⚔ Opposes: Fabrication</span></li>
+                        <li><span class="union-name">Martial</span><span class="union-role">Enforcers, bounty hunters, guards</span><span class="union-opposes">⚔ Opposes: Subversion</span></li>
+                        <li><span class="union-name">Subversion</span><span class="union-role">Smugglers, spies, counterfeiters</span><span class="union-opposes">⚔ Opposes: Martial</span></li>
+                        <li><span class="union-name">Harvest</span><span class="union-role">Farmers, miners, gatherers</span><span class="union-opposes">⚔ Opposes: Politics</span></li>
+                        <li><span class="union-name">Stewardship</span><span class="union-role">Civil engineers, utility workers</span><span class="union-opposes">⚔ Opposes: Transport</span></li>
+                    </ul>
+                </details>
 
-                                <ul class="realm-list">
-                                    <li><strong>Prime Realm 🌐</strong><br>
-                                        The natural world. Standard mechanics apply. Rests, Realm Shifting, and spellcasting function normally.
-                                    </li>
-
-                                    <li><strong>Fey Realm ✨</strong><br>
-                                        Long Rests require 32 hours. Charm effects cannot be resisted or saved against.
-                                    </li>
-
-                                    <li><strong>Eclipse 🌑</strong><br>
-                                        You may Realm Shift <em>into</em> the Eclipse, but may only exit into <strong>Ordealis</strong>.
-                                    </li>
-
-                                    <li><strong>Ordealis 🔥</strong><br>
-                                        Realm Shift is only possible <em>from the Eclipse</em>. You cannot leave unless granted passage by a <strong>Rotalisk</strong> or <strong>Asmodeus</strong>.
-                                    </li>
-
-                                    <li><strong>Dreamsea 🌊</strong><br>
-                                        <em>(Rules in development.)</em> Expected to involve sleep, memory, illusions, and emotion-driven effects.
-                                    </li>
-
-                                    <li><strong>Void 🌀</strong><br>
-                                        Astral travel to and from this realm is easy. Teleportation spells are more effective and stable.
-                                    </li>
-
-                                    <li><strong>Abyss 🩸 <em>(includes Falling Grounds & God Prison)</em></strong><br>
-                                        You cannot Realm Shift into the Abyss by normal means.
-                                        <ul>
-                                            <li><strong>Falling Grounds 🕊️</strong> – Holy magic costs double mana; celestial beings act erratically.</li>
-                                            <li><strong>God Prison 🔒</strong> – Divine intervention and god-granted spells automatically fail.</li>
-                                            <li><strong>Abyssal Depths</strong> – Time fractures, healing spells may corrupt, and Wound accumulation is increased.</li>
-                                        </ul>
-                                    </li>
+                <details>
+                    <summary>Realm Rules</summary>
+                    <section class="section-container">
+                        <h3>🌍 Realm Rules <em>(Work in Progress)</em></h3>
+                        <p>These realm-specific effects shape rest, travel, magic, and resistance.</p>
+                        <ul class="realm-list">
+                            <li><strong>Prime Realm 🌐</strong><br>The natural world. Standard mechanics apply.</li>
+                            <li><strong>Fey Realm ✨</strong><br>Long Rests require 32 hours. Charm effects cannot be resisted or saved against.</li>
+                            <li><strong>Eclipse 🌑</strong><br>You may Realm Shift <em>into</em> the Eclipse, but may only exit into <strong>Ordealis</strong>.</li>
+                            <li><strong>Ordealis 🔥</strong><br>Realm Shift is only possible <em>from the Eclipse</em>. You cannot leave unless granted passage by a <strong>Rotalisk</strong> or <strong>Asmodeus</strong>.</li>
+                            <li><strong>Dreamsea 🌊</strong><br><em>(Rules in development.)</em> Expected to involve sleep, memory, illusions, and emotion-driven effects.</li>
+                            <li><strong>Void 🌀</strong><br>Astral travel to and from this realm is easy. Teleportation spells are more effective and stable.</li>
+                            <li><strong>Abyss 🩸</strong><br>You cannot Realm Shift into the Abyss by normal means.
+                                <ul>
+                                    <li><strong>Falling Grounds 🕊️</strong> – Holy magic costs double mana; celestial beings act erratically.</li>
+                                    <li><strong>God Prison 🔒</strong> – Divine intervention and god-granted spells automatically fail.</li>
+                                    <li><strong>Abyssal Depths</strong> – Time fractures, healing spells may corrupt, and Wound accumulation is increased.</li>
                                 </ul>
-                            </section>
-                        </details>
-                    </div>
-
-                </div>
+                            </li>
+                        </ul>
+                    </section>
+                </details>
 
             </div>
         </div>

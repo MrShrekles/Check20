@@ -16,7 +16,7 @@
     "feature_name": "Ironhide Charge",
     "feature_type": "Action",
     "feature_range": "Melee",
-    "feature_effect": "The Ironhide Brute charges up to its full walk speed in a straight line. Each creature in its path must succeed on a Strength check or be knocked Prone and take [[1+@{PL}]] Physical damage.\n",
+    "feature_effect": "Charge up to your full movement speed in a straight line. Each creature in its path must succeed on a Physical check or be knocked Prone and take [[1+@{PL}]] Physical damage.",
     "feature_duration": "Instant",
     "feature_damage": "Impact",
     "motivation": "Hunting prey",
@@ -103,7 +103,32 @@
     "feature_effect": "The Ashveil releases a burst of choking ash in a short radius. Creatures in range must succeed on a Survival check or gain the Coughing condition until the end of their next turn.",
     "feature_duration": "Until end of their next turn",
     "feature_damage": "Toxic",
-    "motivation": "Wandering aimlessly"
+    "motivation": "Wandering aimlessly",
+    "spells": [
+      {
+        "name": "Sickness",
+        "manner": "Domineer",
+        "transmission": "Corpus",
+        "effects": [
+          {
+            "intent": "Shout",
+            "cost": 6,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Choose a target within short range. They must succeed on a Survival check or become Sickened. While Sickened, the target has the Coughing, Confused, and Exhausted conditions. Each successful Survival check removes one condition of their choice. The sickness remains until all the conditions are cleared"
+          },
+          {
+            "intent": "Storm",
+            "cost": 12,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Choose a reach range area within short range. Each creature in the area makes a Survival check. On a failure, the creature becomes Plagued and immediately gains the Coughing, Confused, Exhausted, Blind, and Stunned conditions. On each of their turns, a Plagued creature may make a Survival check, removing one condition of their choice on a success. Plagued ends only when all five conditions have been cleared. While any conditions remain, if a Plagued creature moves within reach range of any living creature, that creature must make a Survival check or become Plagued under the same rules."
+          }
+        ]
+      }
+    ]
   },
   {
     "name": "Booy",
@@ -133,12 +158,12 @@
     "origin": "Life",
     "size": "Medium",
     "rarity": "Common",
-    "environment": "prime, fey, dreamsea, ordealis, eclipse, void,",
+    "environment": "Prime, Fey, Dreamsea, Void, Ordealis, Eclipse",
     "behavior": "Mindless",
     "description": "",
     "lore": "Most creatures have bones, and many powerful mages and magical effects can cause skeletons to return and serve a great power. ",
     "motivation": "serving a greater power",
-    "walk": 30,
+    "walk": 25,
     "fly": 0,
     "swim": 0,
     "climb": 0,
@@ -149,10 +174,10 @@
     "feature_duration": "Instant",
     "feature_damage": "",
     "melee_attack": {
-      "name": "Club",
+      "name": "Shortsword",
       "equipped": true,
       "damage": "1d6",
-      "damage_type": "Impact"
+      "damage_type": "Slashing"
     },
     "ranged_attack": {
       "name": "Longbow",
@@ -167,7 +192,10 @@
       "damage_type": "Psychic"
     },
     "features": [],
-    "art": ""
+    "art": "",
+    "pl": 3,
+    "check_physical": 3,
+    "check_mental": 0
   },
   {
     "name": "Ice Elemental",
@@ -175,7 +203,7 @@
     "origin": "Elemental",
     "size": "Medium",
     "rarity": "Uncommon",
-    "environment": "Prime,  Void",
+    "environment": "Prime, Void",
     "behavior": "Neutral",
     "description": "",
     "lore": "",
@@ -229,7 +257,7 @@
     "origin": "Crystal",
     "size": "Medium",
     "rarity": "Rare",
-    "environment": "prime, dreamsea, void",
+    "environment": "Prime, Dreamsea, Void",
     "behavior": "Solitary",
     "description": "",
     "lore": "",
@@ -283,7 +311,7 @@
     "origin": "Vozian",
     "size": "Medium",
     "rarity": "Uncommon",
-    "environment": "ordealis, prime",
+    "environment": "Prime, Ordealis",
     "behavior": "Aggressive",
     "description": "",
     "lore": "",
@@ -332,7 +360,7 @@
         "name": "Recall Heliron",
         "type": "Half Action",
         "range": "Short",
-        "effect": "Recall a thrown Heliron weapon within short range as a capacity point. Doing so causes the creature to be pulled 10ft to you, and take [PL] slashing damage as it is torn from the flesh of the target",
+        "effect": "Recall a thrown Heliron weapon within short range as a Threat point. Doing so causes the creature to be pulled 10ft to you, and take [PL] slashing damage as it is torn from the flesh of the target",
         "duration": "",
         "damage": ""
       }
@@ -345,7 +373,7 @@
     "origin": "Nature",
     "size": "Medium",
     "rarity": "Uncommon",
-    "environment": "prime, fey, void",
+    "environment": "Prime, Fey, Void",
     "behavior": "Aggressive",
     "description": "",
     "lore": "",
@@ -753,7 +781,7 @@
     "origin": "Chaos",
     "size": "Small",
     "rarity": "Rare",
-    "environment": "Eclipse, Prime, Fey, Dreamsea",
+    "environment": "Prime, Fey, Dreamsea, Eclipse",
     "behavior": "Trickster",
     "description": "Engages in cryptic talk, potentially distracting or misleading opponents",
     "lore": "They have various magical and non-magical eyes in its collection, each with different abilities or effects",
@@ -823,7 +851,7 @@
     "origin": "Nature",
     "size": "Medium",
     "rarity": "Common",
-    "environment": "Prime, Fey, dreamsea",
+    "environment": "Prime, Fey, Dreamsea",
     "behavior": "Territorial",
     "description": "",
     "lore": "",
@@ -1239,7 +1267,1009 @@
       "damage": "1d6",
       "damage_type": "Toxic"
     },
+    "features": [
+      {
+        "name": "Mimicry",
+        "type": "Passive",
+        "range": "Medium",
+        "effect": "The hag can mimic the natural sounds of living creatures",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "False Look",
+        "type": "Special",
+        "range": "",
+        "effect": "Hidden behind an illusion usually of a beautiful woman. Mental checks to perceive reveal the falseness of the illusion. ",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Bog Bubble",
+        "type": "Action",
+        "range": "Self",
+        "effect": "As an action blends into natural environments or dark shadows. ",
+        "duration": "Until end of your next turn",
+        "damage": ""
+      }
+    ],
+    "art": "",
+    "spells": [
+      {
+        "name": "Discern",
+        "manner": "Discern",
+        "transmission": "Astral",
+        "effects": [
+          {
+            "intent": "Whisper",
+            "cost": 1,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Reveal a hidden object, creature, or illusion within short range per success. If none are found, this spell costs 0 MN."
+          },
+          {
+            "intent": "Surge",
+            "cost": 3,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Focus on a creature to sense its motivation, emotional state, or weaknesses."
+          },
+          {
+            "intent": "Shout",
+            "cost": 6,
+            "range": "Known",
+            "damage": "",
+            "type": "",
+            "effect": "Observe a familiar distant location, object, or creature for up to 1 minute."
+          }
+        ]
+      },
+      {
+        "name": "Dispel",
+        "manner": "Decay",
+        "transmission": "Aether",
+        "effects": [
+          {
+            "intent": "Whisper",
+            "cost": 1,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Nullify a minor magical effect within short range, such as a weak illusion or simple ward, in a reach-range area. You can pool Mana with other casters to dispel stronger magic."
+          },
+          {
+            "intent": "Surge",
+            "cost": 3,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Nullify magical effects within short range cast by a mage, divine creature, or magical monster, in a short-range area. If the effect is powerful, the nullification may last only until the end of your next turn."
+          },
+          {
+            "intent": "Shout",
+            "cost": 6,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Interrupt the function of magical constructs, undead, or elementals under the control of a mage—either permanently or until the end of your next turn. If it is a minion of a powerful creature, the dispel may prevent further commands, allowing the minion to escape or fight back if it chooses."
+          }
+        ]
+      },
+      {
+        "name": "Voltus",
+        "manner": "Manifest",
+        "transmission": "Elemental",
+        "effects": [
+          {
+            "intent": "Whisper",
+            "cost": 1,
+            "range": "short",
+            "damage": "",
+            "type": "",
+            "effect": "Release a bolt of lightning that hits a target within short range dealing 4 lightning damage, and dealing half that damage to another target within reach range"
+          },
+          {
+            "intent": "Surge",
+            "cost": 3,
+            "range": "short",
+            "damage": "",
+            "type": "",
+            "effect": "Choose a metal object within short range to imbue with lightning. When any creature enters the melee range or touches the trap, it discharges, dealing 4d6 lightning damage and they must make a Survival check or take the Stunned condition until the end of their next turn. The trap remains active for 1 hour or until triggered."
+          },
+          {
+            "intent": "Storm",
+            "cost": 12,
+            "range": "medium",
+            "damage": "",
+            "type": "",
+            "effect": "Summon a localized lightning storm in a medium range area that pulses of static and roaring thunder. All creatures take 9d6 lightning damage and must make a Survival check to halve the damage per success unless the target is wet or in water"
+          }
+        ]
+      },
+      {
+        "name": "Sickness",
+        "manner": "Domineer",
+        "transmission": "Corpus",
+        "effects": [
+          {
+            "intent": "Shout",
+            "cost": 6,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Choose a target within short range. They must succeed on a Survival check or become Sickened. While Sickened, the target has the Coughing, Confused, and Exhausted conditions. Each successful Survival check removes one condition of their choice. The sickness remains until all the conditions are cleared"
+          },
+          {
+            "intent": "Storm",
+            "cost": 12,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Choose a reach range area within short range. Each creature in the area makes a Survival check. On a failure, the creature becomes Plagued and immediately gains the Coughing, Confused, Exhausted, Blind, and Stunned conditions. On each of their turns, a Plagued creature may make a Survival check, removing one condition of their choice on a success. Plagued ends only when all five conditions have been cleared. While any conditions remain, if a Plagued creature moves within reach range of any living creature, that creature must make a Survival check or become Plagued under the same rules."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Dryad",
+    "_group": "Verdance",
+    "origin": "Nature",
+    "size": "Medium",
+    "rarity": "Legendary",
+    "environment": "Fey",
+    "behavior": "Solitary",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 6,
+    "check_physical": 1,
+    "check_mental": 5,
+    "walk": 30,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Tree Hop",
+    "feature_type": "Action",
+    "feature_range": "Short",
+    "feature_effect": "As an Action, walk into a solid tree and appear in another tree within short range",
+    "feature_duration": "Instant",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Branch",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Impact"
+    },
+    "ranged_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "spell": {
+      "name": "Razorleaf",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Slashing"
+    },
+    "features": [
+      {
+        "name": "Dryad Charm",
+        "type": "Action",
+        "range": "Short",
+        "effect": "Target one creature within short range that can see you. The target makes a Spirit check. On a failure, it becomes Charmed for 24 hours or until harmed by you or your allies. While charmed, the creature treats you as a trusted friend and tries to act in your favor but is not directly controlled. When the effect ends, the creature remembers the experience but not the magic. You can charm only 1 humanoid and up to 3 beasts at a time.",
+        "duration": "1 hour",
+        "damage": ""
+      }
+    ],
+    "art": "",
+    "spells": [
+      {
+        "name": "Spellbreak",
+        "manner": "Domineer",
+        "transmission": "Aether",
+        "effects": [
+          {
+            "intent": "Surge",
+            "cost": 3,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Negate the next spell cast within short range until the end of your next turn. If no spell is cast, regain half the Mana spent."
+          },
+          {
+            "intent": "Shout",
+            "cost": 6,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Silently negate the next spell cast within medium range until the end of your next turn. If no spell is cast, regain half the Mana spent."
+          }
+        ]
+      },
+      {
+        "name": "Cleanse",
+        "manner": "Domineer",
+        "transmission": "Corpus",
+        "effects": [
+          {
+            "intent": "Surge",
+            "cost": 3,
+            "range": "melee",
+            "damage": "",
+            "type": "",
+            "effect": "Touch a creature and reduce the severity of a curse by 1 step."
+          },
+          {
+            "intent": "Roar",
+            "cost": 9,
+            "range": "short",
+            "damage": "",
+            "type": "",
+            "effect": "Target a creature and remove a disease."
+          }
+        ]
+      },
+      {
+        "name": "Grow",
+        "manner": "Domineer",
+        "transmission": "Material",
+        "effects": [
+          {
+            "intent": "Whisper",
+            "cost": 1,
+            "range": "Touch",
+            "damage": "",
+            "type": "",
+            "effect": "Touch an item and double its size for 1 minute. The item will grow but will not exceed the size of the area it's in or cause damage to creatures nearby."
+          },
+          {
+            "intent": "Surge",
+            "cost": 3,
+            "range": "Touch",
+            "damage": "",
+            "type": "",
+            "effect": "Touch a willing creature and double its size for 1 minute. The creature will grow but will not exceed the size of the area it's in or cause damage to creatures nearby. The grown creature has advantage on Strength checks but gains the Confused condition."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "oOzestrOsity",
+    "_group": "oOze",
+    "origin": "Nature",
+    "size": "Giant",
+    "rarity": "Legendary",
+    "environment": "Prime, Eclipse",
+    "behavior": "Mindless",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 10,
+    "check_physical": 10,
+    "check_mental": 0,
+    "walk": 30,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Giant",
+    "feature_type": "Passive",
+    "feature_range": "",
+    "feature_effect": "All attacks deal an additional 2d6 damage",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Slam (NPC)",
+      "equipped": true,
+      "damage": "3d6",
+      "damage_type": "Impact"
+    },
+    "ranged_attack": {
+      "name": "Vile Spit (NPC)",
+      "equipped": true,
+      "damage": "3d6",
+      "damage_type": "Acid"
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [
+      {
+        "name": "Fluid Weakness",
+        "type": "Passive",
+        "range": "",
+        "effect": "Takes double damage from Fluid damage",
+        "duration": "",
+        "damage": "Fluid"
+      },
+      {
+        "name": "Engulf",
+        "type": "Action",
+        "range": "Melee",
+        "effect": "Engulf a creature within melee range, forcing it to make a Physical check. On failure, the target takes [[3d6]] acid damage and is Pinned and Constrained inside the ooze taking damage again at the start of their next turn",
+        "duration": "",
+        "damage": "Acid"
+      },
+      {
+        "name": "oOzeling",
+        "type": "Action",
+        "range": "",
+        "effect": "As an Action, deal [[2d6 ]]damage to self and Summon [[1d4]] PL3 [oOzeling]",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Split",
+        "type": "Action",
+        "range": "Self",
+        "effect": "As an action, split into 2 identical copies with half your current health each. ",
+        "duration": "Instant",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Marksmen",
+    "_group": "Soldier",
+    "origin": "Basic",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "environment": "Prime",
+    "behavior": "Territorial",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 6,
+    "check_physical": 1,
+    "check_mental": 5,
+    "walk": 35,
+    "fly": 0,
+    "swim": 0,
+    "climb": 25,
+    "feature_name": "Sniper Rifle",
+    "feature_type": "Action",
+    "feature_range": "Long",
+    "feature_effect": "As an Action, fire the sniper rifle with a Mental Check, dealing [[3d4!]] per success",
+    "feature_duration": "Instant",
+    "feature_damage": "Piercing",
+    "melee_attack": {
+      "name": "Dagger",
+      "equipped": true,
+      "damage": "1d4",
+      "damage_type": "Slashing"
+    },
+    "ranged_attack": {
+      "name": "Sniper Rifle",
+      "equipped": false,
+      "damage": "6d4!",
+      "damage_type": "Piercing"
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [
+      {
+        "name": "Perch",
+        "type": "Special",
+        "range": "",
+        "effect": "When you do not move on your turn, your attacks have advantage until the end of your next turn",
+        "duration": "Until end of their next turn",
+        "damage": ""
+      },
+      {
+        "name": "Disarming Shot",
+        "type": "Action",
+        "range": "",
+        "effect": "When you hit with an attack, you can choose to forgo the damage and disarm the target instead",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Veteran",
+    "_group": "Soldier",
+    "origin": "Basic",
+    "size": "Medium",
+    "rarity": "Rare",
+    "environment": "Prime",
+    "behavior": "Neutral",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 10,
+    "check_physical": 6,
+    "check_mental": 4,
+    "walk": 40,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Parry",
+    "feature_type": "Off Action",
+    "feature_range": "Melee",
+    "feature_effect": "As an Off Action, When hit by a melee attack, make a contested Physical check. On success, reduce the damage by [[@{PL}]].",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Longsword",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Slashing"
+    },
+    "ranged_attack": {
+      "name": "Bolt-Action Rifle",
+      "equipped": true,
+      "damage": "4d4!",
+      "damage_type": "Piercing"
+    },
+    "spell": {
+      "name": "Firebolt",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Fire"
+    },
+    "features": [
+      {
+        "name": "Focus Fire",
+        "type": "Passive",
+        "range": "",
+        "effect": "When an ally hits a creature, gain +2 on your next attack check against that same creature.",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Rally ",
+        "type": "Action",
+        "range": "Reach",
+        "effect": "As an Action, remove a corpus condition from an ally within reach",
+        "duration": "Instant",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "oOzeling",
+    "_group": "oOze",
+    "origin": "Nature",
+    "size": "Small",
+    "rarity": "Common",
+    "environment": "Prime, Eclipse",
+    "behavior": "Mindless",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 3,
+    "check_physical": 3,
+    "check_mental": 0,
+    "walk": 25,
+    "fly": 0,
+    "swim": 0,
+    "climb": 20,
+    "feature_name": "Split",
+    "feature_type": "Action",
+    "feature_range": "Self",
+    "feature_effect": "As an action, split into 2 identical copies with half your current health each. ",
+    "feature_duration": "Instant",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "ranged_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
     "features": [],
     "art": ""
+  },
+  {
+    "name": "Demon (Humanoid)",
+    "_group": "Demon",
+    "origin": "Vozian",
+    "size": "Medium",
+    "rarity": "Common",
+    "environment": "Prime, Ordealis",
+    "behavior": "Aggressive",
+    "description": "",
+    "lore": "",
+    "motivation": "Seeking to cause pain in others",
+    "pl": 6,
+    "check_physical": 4,
+    "check_mental": 2,
+    "walk": 35,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Vozian Slash",
+    "feature_type": "Action",
+    "feature_range": "Melee",
+    "feature_effect": "As an Action, your claws glow with hate and darkness. Make a melee strike against a target within melee and deal [[6d6]] Vozian damage, and half as much to you",
+    "feature_duration": "Instant",
+    "feature_damage": "Vozian",
+    "melee_attack": {
+      "name": "Battle Axe",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Slashing"
+    },
+    "ranged_attack": {
+      "name": "Crossbow",
+      "equipped": true,
+      "damage": "2d6",
+      "damage_type": "Piercing"
+    },
+    "spell": {
+      "name": "Helfire",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Fire"
+    },
+    "features": [
+      {
+        "name": "Dark Cure",
+        "type": "Action",
+        "range": "",
+        "effect": "As an Action, remove a corpus condition and take the pinned condition",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Demonic Command",
+        "type": "Action",
+        "range": "",
+        "effect": "As an Action, Commands lesser demons or loyal humans",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": "",
+    "spells": [
+      {
+        "name": "Fear",
+        "manner": "Domineer",
+        "transmission": "Corpus",
+        "effects": [
+          {
+            "intent": "Whisper",
+            "cost": 1,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "One creature within short range must make a Spirit check or gain the Fear condition. On a success they are immune to the Fear condition from spells for 24 hours"
+          },
+          {
+            "intent": "Surge",
+            "cost": 3,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Flood a creature's mind with overwhelming dread. They must make a Spirit check or take [[1d6]] psychic damage and gain the Fear condition. On a success they are immune to the Fear condition from spells for 24 hours."
+          }
+        ]
+      },
+      {
+        "name": "Exsanguinate",
+        "manner": "Domineer",
+        "transmission": "Corpus",
+        "effects": [
+          {
+            "intent": "Whisper",
+            "cost": 1,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Draw a thin line of blood from you to a creature within reach range. They must make a Physical check or take 2 damage that ignores armor and you heal for 1 healing"
+          },
+          {
+            "intent": "Shout",
+            "cost": 6,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "You seize control of the blood of one creature within short range, wrenching their body like a puppet. The target must make a Survival check or become Pinned and Constrained until the end of their next turn. You can use your Off-Action to force them to take a movement or non-magical action of your choice. Creatures with no blood are immune."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Imp",
+    "_group": "Demon",
+    "origin": "Vozian",
+    "size": "Small",
+    "rarity": "Common",
+    "environment": "Prime, Ordealis",
+    "behavior": "Aggressive",
+    "description": "",
+    "lore": "",
+    "motivation": "Seeking to cause pain in others",
+    "pl": 3,
+    "check_physical": 3,
+    "check_mental": 0,
+    "walk": 25,
+    "fly": 15,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Hide",
+    "feature_type": "Action",
+    "feature_range": "Self",
+    "feature_effect": "As an action become invisible for 1 minute",
+    "feature_duration": "1 minute",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Dual Daggers",
+      "equipped": true,
+      "damage": "2d4",
+      "damage_type": "Slashing"
+    },
+    "ranged_attack": {
+      "name": "Weak Flintlock Pistol",
+      "equipped": true,
+      "damage": "2d4!",
+      "damage_type": "Piercing"
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [],
+    "art": "",
+    "spells": [
+      {
+        "name": "I Have a Thing for That",
+        "manner": "Domineer",
+        "transmission": "Material",
+        "effects": [
+          {
+            "intent": "Whisper",
+            "cost": 1,
+            "range": "melee",
+            "damage": "",
+            "type": "",
+            "effect": "Conjure a simple tool or item no larger than a backpack. It functions normally but vanishes at the end of your next turn. Examples: hammer, rope, lantern, basic weapon."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Vampire (Avuţie)",
+    "_group": "Undead",
+    "origin": "Life",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "environment": "Prime, Eclipse",
+    "behavior": "Social",
+    "description": "",
+    "lore": "Vampires started in the Kingslands, 3 powerful tribes formed from undead lords of necromantic magic. Powerful as it made them they were cursed by the sun.",
+    "motivation": "",
+    "pl": 8,
+    "check_physical": 3,
+    "check_mental": 5,
+    "walk": 40,
+    "fly": 15,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Undying Disease",
+    "feature_type": "Passive",
+    "feature_range": "Self",
+    "feature_effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[@{pl}]] if you have no major conditions",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Stiletto",
+      "equipped": true,
+      "damage": "1d4",
+      "damage_type": "Slashing"
+    },
+    "ranged_attack": {
+      "name": "Flintlock Pistol",
+      "equipped": true,
+      "damage": "3d4!",
+      "damage_type": "Piercing"
+    },
+    "spell": {
+      "name": "Pain",
+      "equipped": true,
+      "damage": "1d4",
+      "damage_type": "Psychic"
+    },
+    "features": [
+      {
+        "name": "Invitation (Avuţie)",
+        "type": "Passive",
+        "range": "",
+        "effect": "You cannot enter an enclosed space owned or claimed by a creature without verbal consent",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Pierced Heart",
+        "type": "",
+        "range": "",
+        "effect": "When you take piercing damage, take an additional +3 damage",
+        "duration": "",
+        "damage": "Piercing"
+      },
+      {
+        "name": "Vampire Kiss (Avuţie)",
+        "type": "Action",
+        "range": "",
+        "effect": "Make an attack check against a creature. On a hit deal [[@{pl}]] piercing damage. The target must make a Survival check or contract the Vampire Disease. While infected they have the Charmed condition. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Coughing and Slowed conditions. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Avuție.",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": "",
+    "spells": [
+      {
+        "name": "Fear",
+        "manner": "Domineer",
+        "transmission": "Corpus",
+        "effects": [
+          {
+            "intent": "Whisper",
+            "cost": 1,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "One creature within short range must make a Spirit check or gain the Fear condition. On a success they are immune to the Fear condition from spells for 24 hours"
+          },
+          {
+            "intent": "Surge",
+            "cost": 3,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Flood a creature's mind with overwhelming dread. They must make a Spirit check or take [[1d6]] psychic damage and gain the Fear condition. On a success they are immune to the Fear condition from spells for 24 hours."
+          }
+        ]
+      },
+      {
+        "name": "Exsanguinate",
+        "manner": "Domineer",
+        "transmission": "Corpus",
+        "effects": [
+          {
+            "intent": "Whisper",
+            "cost": 1,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Draw a thin line of blood from you to a creature within reach range. They must make a Physical check or take 2 damage that ignores armor and you heal for 1 healing"
+          },
+          {
+            "intent": "Shout",
+            "cost": 6,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "You seize control of the blood of one creature within short range, wrenching their body like a puppet. The target must make a Survival check or become Pinned and Constrained until the end of their next turn. You can use your Off-Action to force them to take a movement or non-magical action of your choice. Creatures with no blood are immune."
+          }
+        ]
+      },
+      {
+        "name": "Summon Wild Hunt",
+        "manner": "Manifest",
+        "transmission": "Corpus",
+        "effects": [
+          {
+            "intent": "Surge",
+            "cost": 3,
+            "range": "short",
+            "damage": "",
+            "type": "",
+            "effect": "Summon 3 PL 2 hunting beasts that act together as a pack, attacking enemies you indicate. They vanish when reduced to 0 HP or if dismissed as an off-action."
+          },
+          {
+            "intent": "Shout",
+            "cost": 6,
+            "range": "short",
+            "damage": "",
+            "type": "",
+            "effect": "Summon 4 PL 4 hunting beasts that act together as a pack, attacking enemies you indicate. When all 4 attack the same creature they have +4 to the checks and damage. They vanish when reduced to 0 HP or if dismissed as an off-action."
+          },
+          {
+            "intent": "Storm",
+            "cost": 12,
+            "range": "medium",
+            "damage": "",
+            "type": "",
+            "effect": "Summon 6 PL 6 hunting beasts that act together as a pack, attacking enemies you indicate. When all 4 attack the same creature they have +4 to the checks and damage. When they circle a creature, the creature must make a Mental check or take the fear condition. They vanish when reduced to 0 HP or if dismissed as an off-action."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Vampire (Tristeţe)",
+    "_group": "Undead",
+    "origin": "Life",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "environment": "Prime, Eclipse",
+    "behavior": "Social",
+    "description": "",
+    "lore": "Vampires started in the Kingslands, 3 powerful tribes formed from undead lords of necromantic magic. Powerful as it made them they were cursed by the sun.",
+    "motivation": "",
+    "pl": 8,
+    "check_physical": 4,
+    "check_mental": 4,
+    "walk": 30,
+    "fly": 0,
+    "swim": 0,
+    "climb": 30,
+    "feature_name": "Undying Disease",
+    "feature_type": "Passive",
+    "feature_range": "Self",
+    "feature_effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[@{pl}]] if you have no major conditions",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Claw (NPC)",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Slashing"
+    },
+    "ranged_attack": {
+      "name": "Vile Spit (NPC)",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Toxic"
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [
+      {
+        "name": "Invitation",
+        "type": "Passive",
+        "range": "",
+        "effect": "You cannot enter an enclosed space owned or claimed by a creature without verbal consent",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Pierced Heart",
+        "type": "End of turn",
+        "range": "",
+        "effect": "When you take piercing damage, take an additional +3 damage",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Plagued Breath",
+        "type": "Action",
+        "range": "Reach",
+        "effect": "Make an attack check against a creature. On a hit deal [[@{pl}]] toxic damage. The target must make a Survival check or contract the Vampire Disease. While infected they have the Coughing and Confused conditions. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Exhausted condition. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Tristețe.",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": "",
+    "spells": [
+      {
+        "name": "Sickness",
+        "manner": "Domineer",
+        "transmission": "Corpus",
+        "effects": [
+          {
+            "intent": "Shout",
+            "cost": 6,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Choose a target within short range. They must succeed on a Survival check or become Sickened. While Sickened, the target has the Coughing, Confused, and Exhausted conditions. Each successful Survival check removes one condition of their choice. The sickness remains until all the conditions are cleared"
+          },
+          {
+            "intent": "Storm",
+            "cost": 12,
+            "range": "Short",
+            "damage": "",
+            "type": "",
+            "effect": "Choose a reach range area within short range. Each creature in the area makes a Survival check. On a failure, the creature becomes Plagued and immediately gains the Coughing, Confused, Exhausted, Blind, and Stunned conditions. On each of their turns, a Plagued creature may make a Survival check, removing one condition of their choice on a success. Plagued ends only when all five conditions have been cleared. While any conditions remain, if a Plagued creature moves within reach range of any living creature, that creature must make a Survival check or become Plagued under the same rules."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Vampire (Tărie)",
+    "_group": "Undead",
+    "origin": "Life",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "environment": "Prime, Eclipse",
+    "behavior": "Social",
+    "description": "",
+    "lore": "Vampires started in the Kingslands, 3 powerful tribes formed from undead lords of necromantic magic. Powerful as it made them they were cursed by the sun.",
+    "motivation": "",
+    "pl": 8,
+    "check_physical": 8,
+    "check_mental": 0,
+    "walk": 35,
+    "fly": 35,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Undying Disease",
+    "feature_type": "Passive",
+    "feature_range": "Self",
+    "feature_effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[@{pl}]] if you have no major conditions",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Great Sword",
+      "equipped": true,
+      "damage": "2d6",
+      "damage_type": "Slashing"
+    },
+    "ranged_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [
+      {
+        "name": "Invitation (Tărie)",
+        "type": "Passive",
+        "range": "Long",
+        "effect": "You cannot enter a territory claimed by another without dominance combat",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Running Water",
+        "type": "",
+        "range": "",
+        "effect": "When you take fluid damage, take an additional +3 damage",
+        "duration": "",
+        "damage": "Fluid"
+      },
+      {
+        "name": "Vampire Claw (Tărie)",
+        "type": "Action",
+        "range": "Melee",
+        "effect": "Make an attack check against a creature. On a hit deal [[@{pl}]] slashing damage. The target must make a Survival check or contract the Vampire Disease. While infected they have the Bleeding condition. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Exhausted and Weakened conditions. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Tărie.",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": "",
+    "spells": []
   }
 ]

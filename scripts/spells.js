@@ -158,7 +158,7 @@ function highlightText(text, term) {
 let activeIntents = [];
 let cachedSpells = [];
 let activeOrigins = [];
-let selectedSort = 'name';
+let selectedSort = 'origin';
 
 document.addEventListener('DOMContentLoaded', () => {
   initTabs();
@@ -201,11 +201,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // spell-search is now #sidebar-search-input, wired in sidebar.js after sidebar loads
 
-  document.getElementById('toggle-details')?.addEventListener('click', () => {
-    document.querySelectorAll('.spell-effect').forEach(el => {
-      el.open = !el.open;
+  const expandBtn = document.getElementById('expand-all');
+  const collapseBtn = document.getElementById('collapse-all');
+  if (expandBtn) {
+    expandBtn.addEventListener('click', () => {
+      document.querySelectorAll('.spell-row').forEach(r => r.classList.add('open'));
     });
-  });
+  }
+  if (collapseBtn) {
+    collapseBtn.addEventListener('click', () => {
+      document.querySelectorAll('.spell-row').forEach(r => r.classList.remove('open'));
+    });
+  }
 
   loadSpells();
 });
@@ -226,33 +233,48 @@ function renderEffectInfo(effect) {
   return infoHTML;
 }
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+const rangeOrder = {
+  'self': 1, 'touch': 2, 'reach': 3, 'melee': 4,
+  'short': 5, 'medium': 6, 'long': 7, 'visible': 8, 'known': 9
+};
+
+function getGroupKey(spell) {
+  switch (selectedSort) {
+    case 'origin':   return toTitleCase(spell.origin || 'Unknown');
+    case 'range':    return toTitleCase(spell.effects?.[0]?.range || 'Unknown');
+    case 'duration': return spell.effects?.[0]?.duration || 'Unknown';
+    default:         return null;
+  }
+}
+
+function spellCostRange(effects) {
+  const costs = effects.map(e => getIntentCost(e.intent)).filter(c => c !== '?');
+  if (!costs.length) return '?';
+  const lo = Math.min(...costs), hi = Math.max(...costs);
+  return lo === hi ? `${lo} SP` : `${lo}–${hi} SP`;
+}
+
+// ── Main render ───────────────────────────────────────────────────────────────
 function renderSpells() {
   const container = document.getElementById('spell-grid');
   const searchTerm = document.getElementById('sidebar-search-input')?.value.toLowerCase() || '';
 
-  const rangeOrder = {
-    'self': 1, 'touch': 2, 'reach': 3, 'melee': 4,
-    'short': 5, 'medium': 6, 'long': 7, 'visible': 8, 'known': 9
-  };
-
   let filteredSpells = cachedSpells.filter(spell => {
-    const matchesIntent = activeIntents.length === 0 || spell.effects.some(e =>
-      activeIntents.includes(e.intent)
-    );
-    const matchesOrigin = activeOrigins.length === 0 || activeOrigins.includes((spell.origin || '').toLowerCase());
-    const matchesSearch = spell.name.toLowerCase().includes(searchTerm) ||
-      spell.effects.some(e => e.effect.toLowerCase().includes(searchTerm));
+    const matchesIntent  = activeIntents.length === 0 || spell.effects.some(e => activeIntents.includes(e.intent));
+    const matchesOrigin  = activeOrigins.length === 0  || activeOrigins.includes((spell.origin || '').toLowerCase());
+    const matchesSearch  = spell.name.toLowerCase().includes(searchTerm) ||
+                           spell.effects.some(e => e.effect.toLowerCase().includes(searchTerm));
     return matchesIntent && matchesOrigin && matchesSearch;
   });
 
   if (selectedSort === 'name') {
     filteredSpells.sort((a, b) => a.name.localeCompare(b.name));
   } else if (selectedSort === 'range') {
-    filteredSpells.sort((a, b) => {
-      const aRange = rangeOrder[a.effects?.[0]?.range?.toLowerCase()] || 999;
-      const bRange = rangeOrder[b.effects?.[0]?.range?.toLowerCase()] || 999;
-      return bRange - aRange;
-    });
+    filteredSpells.sort((a, b) =>
+      (rangeOrder[a.effects?.[0]?.range?.toLowerCase()] || 999) -
+      (rangeOrder[b.effects?.[0]?.range?.toLowerCase()] || 999)
+    );
   } else if (selectedSort === 'duration') {
     filteredSpells.sort((a, b) =>
       (a.effects?.[0]?.duration || '').localeCompare(b.effects?.[0]?.duration || '')
@@ -264,40 +286,97 @@ function renderSpells() {
   container.innerHTML = '';
   document.getElementById('spell-count').textContent = `${filteredSpells.length} Spells Found`;
 
+  // Group
+  const groups = new Map();
   filteredSpells.forEach(spell => {
-    const card = document.createElement('div');
-    card.className = 'spell-card';
+    const key = getGroupKey(spell);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(spell);
+  });
 
-    card.innerHTML = `
-<h4>${highlightText(toTitleCase(spell.name), searchTerm)}</h4>
-<div class="spell-tags">
-  <span class="origin">${spell.origin}</span>
-  <span class="manner">${spell.manner}</span>
-  <span class="transmission">${spell.transmission}</span>
-</div>
+  groups.forEach((spells, groupKey) => {
 
-${spell.effects
-        .filter(effect => activeIntents.length === 0 || activeIntents.includes(effect.intent))
-        .map(effect => `
-    <details class="spell-effect" open>
-      <summary class="spell-features">${effect.intent} <span class="sp-cost">${getIntentCost(effect.intent)} SP</span></summary>
-      ${renderEffectInfo(effect)}
-      <p>${highlightText(effect.effect, searchTerm)}</p>
-    </details>
-  `).join('')}
+    if (groupKey !== null) {
+      const header = document.createElement('h3');
+      header.className = 'spell-group-header';
+      header.textContent = `${groupKey}  (${spells.length})`;
+      container.appendChild(header);
+    }
 
-      <div class="spell-buttons">
-        <button class="copy-spell" data-spell="${spell.name}">Copy Spell</button>
-        <button class="copy-macro" data-spell="${spell.name}">Copy Roll20</button>
-        <button class="copy-addspell" data-spell="${spell.name}">Copy to Sheet</button>
-      </div>
-    `;
+    spells.forEach(spell => {
+      const visibleEffects = spell.effects.filter(e =>
+        activeIntents.length === 0 || activeIntents.includes(e.intent)
+      );
 
-    card.querySelector('.copy-spell').addEventListener('click', (e) => copySpellText(spell, e.target));
-    card.querySelector('.copy-macro').addEventListener('click', (e) => copyMacroText(spell, e.target));
-    card.querySelector('.copy-addspell').addEventListener('click', (e) => copyAddSpellText(spell, e.target));
+      // ── Row shell ──
+      const row = document.createElement('div');
+      row.className = 'spell-row';
 
-    container.appendChild(card);
+      // ── Collapsed header ──
+      const head = document.createElement('div');
+      head.className = 'spell-row-head';
+      head.innerHTML = `
+        <span class="spell-row-arrow">▶</span>
+        <span class="spell-row-name">${highlightText(toTitleCase(spell.name), searchTerm)}</span>
+        <span class="spell-row-tags">
+          <span class="origin">${spell.origin}</span>
+          <span class="manner">${spell.manner}</span>
+          <span class="transmission">${spell.transmission}</span>
+        </span>
+        <span class="spell-row-cost">${spellCostRange(visibleEffects)}</span>`;
+
+      // ── Expanded detail ──
+      const detail = document.createElement('div');
+      detail.className = 'spell-row-detail';
+      detail.innerHTML = visibleEffects.map(e => {
+        const meta = [
+          e.range    ? `Range: ${e.range}`       : '',
+          e.duration ? `Duration: ${e.duration}` : '',
+          e.target   ? `Target: ${e.target}`     : '',
+          e.area     ? `Area: ${e.area}`         : '',
+        ].filter(Boolean).join(' · ');
+
+        return `
+          <div class="spell-intent-block">
+            <div class="spell-intent-header">
+              <span class="intent-name">${e.intent}</span>
+              <span class="intent-cost">${getIntentCost(e.intent)} SP</span>
+              ${meta ? `<span class="intent-meta">${meta}</span>` : ''}
+            </div>
+            <p class="intent-effect">${highlightText(e.effect, searchTerm)}</p>
+          </div>`;
+      }).join('');
+
+      // actions
+      const actions = document.createElement('div');
+      actions.className = 'spell-row-actions';
+      actions.innerHTML = `
+        <button class="copy-spell">Copy Spell</button>
+        <button class="copy-macro">Copy Roll20</button>
+        <button class="copy-addspell">Copy to Sheet</button>`;
+
+      actions.querySelector('.copy-spell').addEventListener('click',    e => { e.stopPropagation(); copySpellText(spell, e.target); });
+      actions.querySelector('.copy-macro').addEventListener('click',    e => { e.stopPropagation(); copyMacroText(spell, e.target); });
+      actions.querySelector('.copy-addspell').addEventListener('click', e => { e.stopPropagation(); copyAddSpellText(spell, e.target); });
+
+      detail.appendChild(actions);
+
+      // toggle on head click
+      head.addEventListener('click', () => {
+        const open = row.classList.toggle('open');
+        head.querySelector('.spell-row-arrow').textContent = open ? '▼' : '▶';
+      });
+
+      // auto-expand when search term matches
+      if (searchTerm && spell.name.toLowerCase().includes(searchTerm)) {
+        row.classList.add('open');
+        head.querySelector('.spell-row-arrow').textContent = '▼';
+      }
+
+      row.appendChild(head);
+      row.appendChild(detail);
+      container.appendChild(row);
+    });
   });
 }
 

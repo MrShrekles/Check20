@@ -756,7 +756,7 @@ p {
     padding: var(--padding);
 }
 
-.power-item.double .capacity-pair {
+.power-item.double .Threat-pair {
     display: flex;
     align-items: center;
     gap: var(--padding);

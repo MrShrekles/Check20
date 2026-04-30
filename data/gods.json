@@ -155,7 +155,7 @@
         "desc": "The enigmatic god of magic, Hamsa governs the flow and regulation of magical energy. Hamsa dictates that spells require verbal, somatic, and material components, a system designed to maintain balance and prevent the abuse of arcane power. As the master of magical forces, Hamsa is revered by spellcasters for its wisdom and guidance.\nThe First beholder",
         "worship": "",
         "blessName": "Blessing of Hamsa",
-        "blessFeature": "grants +1 spell point",
+        "blessFeature": "grants +1 Mana",
         "curseName": "The curse of Hamsa",
         "cursePassive": "",
         "location": "Fey, Eclipse, Dreamsea",

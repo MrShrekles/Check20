@@ -804,22 +804,22 @@ on('chat:message', function (msg) {
     if (data.behavior)    setAttr('behavior',    data.behavior);
     if (data.motivation)  setAttr('motivation',  data.motivation);
 
-    // Combat stats — derive capacity, actions, spell points from PL (sheet workers don't fire via API)
+    // Combat stats — derive Threat, actions, Mana from PL (sheet workers don't fire via API)
     const pl = data.pl ?? 1;
-    const capacityMax    = Math.floor(pl / 2);
+    const ThreatMax    = Math.floor(pl / 2);
     const numAttacks     = Math.max(1, Math.floor(pl / 3));
     const checkPh        = data.check_physical > 0 ? data.check_physical : Math.ceil(pl / 2);
     const checkMt        = data.check_mental   > 0 ? data.check_mental   : Math.floor(pl / 2);
-    const spellPointsMax = data.spell_points_max ?? (checkMt * 2);
+    const spellPointsMax = data.mana_max ?? (checkMt * 2);
 
     setAttr('PL',               pl);
-    setAttr('capacity_max',     capacityMax);
-    setAttr('capacity',         capacityMax);
+    setAttr('threat_max',     ThreatMax);
+    setAttr('Threat',         ThreatMax);
     setAttr('num_attacks',      numAttacks);
     setAttr('check_physical',   checkPh);
     setAttr('check_mental',     checkMt);
-    setAttr('spell_points_max', spellPointsMax);
-    setAttr('sp',               spellPointsMax);
+    setAttr('mana_max', spellPointsMax);
+    setAttr('MN',               spellPointsMax);
 
     // Movement
     setAttr('move_walk',  data.move_walk  ?? 0);

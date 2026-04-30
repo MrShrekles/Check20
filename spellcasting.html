@@ -39,15 +39,15 @@
                     </div>
                     <div class="craft-rule">
                         <strong>Casting</strong>
-                        <p>Make a Spellcasting check (or Spirit). Default cost is 1 Action. Double SP for Half/Off-Action. Add +1 SP to no-cast spells.</p>
+                        <p>Make a Spellcasting check (or Spirit). Default cost is 1 Action. Double MN for Half/Off-Action. Add +1 MN to no-cast spells.</p>
                     </div>
                     <div class="craft-rule">
                         <strong>Targeting</strong>
                         <p>Requires sensory perception of the target.</p>
                     </div>
                     <div class="craft-rule">
-                        <strong>Spell Points</strong>
-                        <p>Recover 1 on Press On. Recover all on Long Rest. Requires Spirit 2+ to cast (grants 1 SP).</p>
+                        <strong>Mana</strong>
+                        <p>Recover 1 on Press On. Recover all on Long Rest. Requires Spirit 2+ to cast (grants 1 MN).</p>
                     </div>
                     <div class="craft-rule">
                         <strong>Summoning</strong>
@@ -203,9 +203,9 @@
                         <p class="step-sub">How much power do you pour in? Range, duration, and target will add to this cost.</p>
                     </div>
                     <div class="card-row card-row--intent" id="intent-cards">
-                        <div class="craft-card intent-card" data-value="Light Whisper" data-sp="0" data-level="0">
+                        <div class="craft-card intent-card" data-value="Light Whisper" data-MN="0" data-level="0">
                             <div class="card-inner">
-                                <div class="card-front"><span class="sp-badge">0 SP</span>
+                                <div class="card-front"><span class="MN-badge">0 MN</span>
                                     <h4>Light Whisper</h4>
                                 </div>
                                 <div class="card-back">
@@ -214,9 +214,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="craft-card intent-card" data-value="Whisper" data-sp="1" data-level="1">
+                        <div class="craft-card intent-card" data-value="Whisper" data-MN="1" data-level="1">
                             <div class="card-inner">
-                                <div class="card-front"><span class="sp-badge">1 SP</span>
+                                <div class="card-front"><span class="MN-badge">1 MN</span>
                                     <h4>Whisper</h4>
                                 </div>
                                 <div class="card-back">
@@ -225,9 +225,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="craft-card intent-card" data-value="Surge" data-sp="3" data-level="3">
+                        <div class="craft-card intent-card" data-value="Surge" data-MN="3" data-level="3">
                             <div class="card-inner">
-                                <div class="card-front"><span class="sp-badge">3 SP</span>
+                                <div class="card-front"><span class="MN-badge">3 MN</span>
                                     <h4>Surge</h4>
                                 </div>
                                 <div class="card-back">
@@ -236,9 +236,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="craft-card intent-card" data-value="Shout" data-sp="6" data-level="6">
+                        <div class="craft-card intent-card" data-value="Shout" data-MN="6" data-level="6">
                             <div class="card-inner">
-                                <div class="card-front"><span class="sp-badge">6 SP</span>
+                                <div class="card-front"><span class="MN-badge">6 MN</span>
                                     <h4>Shout</h4>
                                 </div>
                                 <div class="card-back">
@@ -247,9 +247,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="craft-card intent-card" data-value="Roar" data-sp="9" data-level="9">
+                        <div class="craft-card intent-card" data-value="Roar" data-MN="9" data-level="9">
                             <div class="card-inner">
-                                <div class="card-front"><span class="sp-badge">9 SP</span>
+                                <div class="card-front"><span class="MN-badge">9 MN</span>
                                     <h4>Roar</h4>
                                 </div>
                                 <div class="card-back">
@@ -258,9 +258,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="craft-card intent-card" data-value="Storm" data-sp="12" data-level="12">
+                        <div class="craft-card intent-card" data-value="Storm" data-MN="12" data-level="12">
                             <div class="card-inner">
-                                <div class="card-front"><span class="sp-badge">12 SP</span>
+                                <div class="card-front"><span class="MN-badge">12 MN</span>
                                     <h4>Storm</h4>
                                 </div>
                                 <div class="card-back">
@@ -269,9 +269,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="craft-card intent-card" data-value="Cataclysm" data-sp="24" data-level="24">
+                        <div class="craft-card intent-card" data-value="Cataclysm" data-MN="24" data-level="24">
                             <div class="card-inner">
-                                <div class="card-front"><span class="sp-badge">24 SP</span>
+                                <div class="card-front"><span class="MN-badge">24 MN</span>
                                     <h4>Cataclysm</h4>
                                 </div>
                                 <div class="card-back">
@@ -313,15 +313,15 @@
                                     <span class="toggle-cost-hint">Short +1 · Medium +2 · Long/Visible/Known +3</span>
                                 </div>
                                 <div class="toggle-row" id="toggle-range">
-                                    <button class="sp-toggle" data-value="Self">Self</button>
-                                    <button class="sp-toggle" data-value="Touch">Touch</button>
-                                    <button class="sp-toggle" data-value="Reach">Reach</button>
-                                    <button class="sp-toggle" data-value="Melee">Melee</button>
-                                    <button class="sp-toggle sp-toggle--cost" data-value="Short">Short <em>+1</em></button>
-                                    <button class="sp-toggle sp-toggle--cost" data-value="Medium">Medium <em>+2</em></button>
-                                    <button class="sp-toggle sp-toggle--cost" data-value="Long">Long <em>+3</em></button>
-                                    <button class="sp-toggle sp-toggle--cost" data-value="Visible">Visible <em>+3</em></button>
-                                    <button class="sp-toggle sp-toggle--cost" data-value="Known">Known <em>+3</em></button>
+                                    <button class="MN-toggle" data-value="Self">Self</button>
+                                    <button class="MN-toggle" data-value="Touch">Touch</button>
+                                    <button class="MN-toggle" data-value="Reach">Reach</button>
+                                    <button class="MN-toggle" data-value="Melee">Melee</button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="Short">Short <em>+1</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="Medium">Medium <em>+2</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="Long">Long <em>+3</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="Visible">Visible <em>+3</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="Known">Known <em>+3</em></button>
                                 </div>
                             </div>
 
@@ -329,17 +329,17 @@
                             <div class="toggle-group">
                                 <div class="toggle-group-header">
                                     <label>Duration</label>
-                                    <span class="toggle-cost-hint">1 Min +1 · 1 Hr +2 · 8 Hr +3 · 1 Day/Long Rest +4 · Permanent min 12 SP</span>
+                                    <span class="toggle-cost-hint">1 Min +1 · 1 Hr +2 · 8 Hr +3 · 1 Day/Long Rest +4 · Permanent min 12 MN</span>
                                 </div>
                                 <div class="toggle-row" id="toggle-duration">
-                                    <button class="sp-toggle" data-value="Instant">Instant</button>
-                                    <button class="sp-toggle" data-value="End of Next Turn">End of Next Turn</button>
-                                    <button class="sp-toggle sp-toggle--cost" data-value="1 Minute">1 Minute <em>+1</em></button>
-                                    <button class="sp-toggle sp-toggle--cost" data-value="1 Hour">1 Hour <em>+2</em></button>
-                                    <button class="sp-toggle sp-toggle--cost" data-value="8 Hours">8 Hours <em>+3</em></button>
-                                    <button class="sp-toggle sp-toggle--cost" data-value="1 Day">1 Day <em>+4</em></button>
-                                    <button class="sp-toggle sp-toggle--cost" data-value="Until Long Rest">Until Long Rest <em>+4</em></button>
-                                    <button class="sp-toggle sp-toggle--cost toggle-locked" data-value="Permanent" title="Requires Storm or Cataclysm base">Permanent <em>min 12</em></button>
+                                    <button class="MN-toggle" data-value="Instant">Instant</button>
+                                    <button class="MN-toggle" data-value="End of Next Turn">End of Next Turn</button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="1 Minute">1 Minute <em>+1</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="1 Hour">1 Hour <em>+2</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="8 Hours">8 Hours <em>+3</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="1 Day">1 Day <em>+4</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="Until Long Rest">Until Long Rest <em>+4</em></button>
+                                    <button class="MN-toggle MN-toggle--cost toggle-locked" data-value="Permanent" title="Requires Storm or Cataclysm base">Permanent <em>min 12</em></button>
                                 </div>
                             </div>
 
@@ -347,25 +347,25 @@
                             <div class="toggle-group">
                                 <div class="toggle-group-header">
                                     <label>Target</label>
-                                    <span class="toggle-cost-hint">Area = same range as spell +2 SP</span>
+                                    <span class="toggle-cost-hint">Area = same range as spell +2 MN</span>
                                 </div>
                                 <div class="toggle-row" id="toggle-target">
-                                    <button class="sp-toggle" data-value="Creature">Creature</button>
-                                    <button class="sp-toggle" data-value="Object">Object</button>
-                                    <button class="sp-toggle sp-toggle--cost" data-value="Area">Area <em>+2</em></button>
+                                    <button class="MN-toggle" data-value="Creature">Creature</button>
+                                    <button class="MN-toggle" data-value="Object">Object</button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="Area">Area <em>+2</em></button>
                                 </div>
                                 <span id="area-range-note" class="area-note" style="display:none;"></span>
                             </div>
 
-                            <!-- SP Counter -->
-                            <div id="sp-counter">
-                                <div class="sp-counter-left">
-                                    <span id="sp-total" class="sp-total-number tier-0">0</span>
-                                    <span class="sp-counter-label">SP</span>
+                            <!-- MN Counter -->
+                            <div id="MN-counter">
+                                <div class="MN-counter-left">
+                                    <span id="MN-total" class="MN-total-number tier-0">0</span>
+                                    <span class="MN-counter-label">MN</span>
                                 </div>
-                                <div class="sp-counter-right">
-                                    <span id="sp-intent-label" class="sp-intent-label">Light Whisper</span>
-                                    <span id="sp-breakdown" class="sp-breakdown">0 base</span>
+                                <div class="MN-counter-right">
+                                    <span id="MN-intent-label" class="MN-intent-label">Light Whisper</span>
+                                    <span id="MN-breakdown" class="MN-breakdown">0 base</span>
                                 </div>
                             </div>
 
@@ -405,50 +405,50 @@
         <!-- ===================== SPELLBOOK TAB ===================== -->
         <div id="tab-spellbook" class="tab-content active">
 
-            <!-- Origin sub-tabs — sit flush under the main tabs -->
-            <div id="origin-toggles">
-                <button class="origin-tab active" data-origin="all">All</button>
-                <button class="origin-tab" data-origin="arcane">Arcane</button>
-                <button class="origin-tab" data-origin="basic">Basic</button>
-                <button class="origin-tab" data-origin="celestial">Celestial</button>
-                <button class="origin-tab" data-origin="dragon">Dragon</button>
-                <button class="origin-tab" data-origin="elemental">Elemental</button>
-                <button class="origin-tab" data-origin="life">Life</button>
-                <button class="origin-tab" data-origin="chaos">Chaos</button>
-                <button class="origin-tab" data-origin="chrono">Chrono</button>
-                <button class="origin-tab" data-origin="vozian">Vozian</button>
-                <button class="origin-tab" data-origin="nature">Nature</button>
-                <button class="origin-tab" data-origin="crystal">Crystal</button>
-                <button class="origin-tab" data-origin="tech">Tech</button>
+            <!-- Sticky control toolbar -->
+            <div id="spellbook-toolbar">
+                <div id="origin-toggles">
+                    <button class="origin-tab active" data-origin="all">All</button>
+                    <button class="origin-tab" data-origin="arcane">Arcane</button>
+                    <button class="origin-tab" data-origin="basic">Basic</button>
+                    <button class="origin-tab" data-origin="celestial">Celestial</button>
+                    <button class="origin-tab" data-origin="dragon">Dragon</button>
+                    <button class="origin-tab" data-origin="elemental">Elemental</button>
+                    <button class="origin-tab" data-origin="life">Life</button>
+                    <button class="origin-tab" data-origin="chaos">Chaos</button>
+                    <button class="origin-tab" data-origin="chrono">Chrono</button>
+                    <button class="origin-tab" data-origin="vozian">Vozian</button>
+                    <button class="origin-tab" data-origin="nature">Nature</button>
+                    <button class="origin-tab" data-origin="crystal">Crystal</button>
+                    <button class="origin-tab" data-origin="tech">Tech</button>
+                </div>
+                <div id="spellbook-controls-row">
+                    <div id="sort-toggles">
+                        <span class="control-label">Sort</span>
+                        <button data-sort="name">Name</button>
+                        <button data-sort="range">Range</button>
+                        <button data-sort="duration">Duration</button>
+                        <button data-sort="origin" class="active">Origin</button>
+                    </div>
+                    <div id="intent-toggles">
+                        <span class="control-label">Intent</span>
+                        <button data-intent="Light Whisper">Light Whisper</button>
+                        <button data-intent="Whisper">Whisper</button>
+                        <button data-intent="Surge">Surge</button>
+                        <button data-intent="Shout">Shout</button>
+                        <button data-intent="Roar">Roar</button>
+                        <button data-intent="Storm">Storm</button>
+                        <button data-intent="Cataclysm">Cataclysm</button>
+                    </div>
+                    <div class="spellbook-actions">
+                        <button id="expand-all">Expand All</button>
+                        <button id="collapse-all">Collapse All</button>
+                        <span id="spell-count" class="spell-count"></span>
+                    </div>
+                </div>
             </div>
 
             <section id="spells">
-                <div class="two-column">
-                    <div class="column">
-                        <div id="sort-toggles" class="control">
-                            <h2>Sorting Options</h2>
-                            <button data-sort="name">Name</button>
-                            <button data-sort="range">Range</button>
-                            <button data-sort="duration">Duration</button>
-                            <button data-sort="origin">Origin</button>
-                        </div>
-                        <button id="toggle-details" class="control">Toggle Spell Details</button>
-                        <p id="spell-count" class="spell-count"></p>
-                    </div>
-                    <div class="column">
-                        <div id="intent-toggles" class="control">
-                            <h2>Intent Filter</h2>
-                            <button data-intent="Light Whisper">Light Whisper</button>
-                            <button data-intent="Whisper">Whisper</button>
-                            <button data-intent="Surge">Surge</button>
-                            <button data-intent="Shout">Shout</button>
-                            <button data-intent="Roar">Roar</button>
-                            <button data-intent="Storm">Storm</button>
-                            <button data-intent="Cataclysm">Cataclysm</button>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="spell-grid" id="spell-grid"></div>
             </section>
 

@@ -26,6 +26,7 @@ const TYPE_CONFIG = {
     armor:   { icon: '🛡', label: 'Armor',    bodyClass: 'type-armor',   badgeClass: 'badge-armor',   dotClass: 'dot-armor'   },
     hexgen:  { icon: '⬡', label: 'Tables',   bodyClass: 'type-hexgen',  badgeClass: 'badge-hexgen',  dotClass: 'dot-hexgen'  },
     class:   { icon: '⚑', label: 'Paths',    bodyClass: 'type-class',   badgeClass: 'badge-class',   dotClass: 'dot-class'   },
+    spell:   { icon: '✦', label: 'Spells',   bodyClass: 'type-spell',   badgeClass: 'badge-spell',   dotClass: 'dot-spell'   },
     generic: { icon: '◈', label: 'Entries',  bodyClass: '',             badgeClass: 'badge-generic', dotClass: 'dot-generic' },
 };
 function tc() { return TYPE_CONFIG[state.fileType] || TYPE_CONFIG.generic; }
@@ -142,6 +143,9 @@ async function openFile(filename) {
         const info = state.files.find(f => f.name === filename);
         state.currentFileModified = info ? info.modified : null;
 
+        // Let the editor refresh any autocomplete/datalist data
+        editor?.onLoad?.(state.data);
+
         // Apply type theme
         applyTypeTheme(state.fileType);
 
@@ -192,10 +196,14 @@ function setGroup(group) {
 function renderGroupSelector() {
     const el = document.getElementById('groupSelect');
     if (!el || !state.groups.length) { if (el) el.innerHTML = ''; return; }
-    el.innerHTML = ['All', ...state.groups].map(g => `
+    const gk = getGroupKey();
+    el.innerHTML = ['All', ...state.groups].map(g => {
+        const count = g === 'All' ? state.data.length : state.data.filter(e => e[gk] === g).length;
+        return `
         <button type="button" class="group-tab ${state.currentGroup === g ? 'active' : ''}" data-group="${escAttr(g)}">
-            ${escHtml(g)}${g === 'All' ? ` <span style="font-size:8px;opacity:0.6;">${state.filteredData.length}</span>` : ''}
-        </button>`).join('');
+            ${escHtml(g)} <span style="font-size:8px;opacity:0.6;">${count}</span>
+        </button>`;
+    }).join('');
     el.querySelectorAll('button[data-group]').forEach(btn => btn.addEventListener('click', () => setGroup(btn.dataset.group)));
 }
 

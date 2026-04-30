@@ -12,6 +12,7 @@
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/search.js" defer></script>
 </head>
 
 <body data-page-title="Armored noir">
@@ -41,6 +42,17 @@
     </div>
     <section id="content">
         <p>Select a section to begin.</p>
+    </section>
+
+    <section id="global-search">
+        <div class="gs-bar">
+            <span class="gs-icon">🔍</span>
+            <input type="search" id="global-search-input"
+                   placeholder="Search spells, monsters, weapons, classes, species…"
+                   autocomplete="off" spellcheck="false">
+            <span id="global-search-status" class="gs-status"></span>
+        </div>
+        <div id="global-search-results" hidden></div>
     </section>
 
     <div id="sidebar-placeholder"></div>

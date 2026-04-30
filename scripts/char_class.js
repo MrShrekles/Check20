@@ -122,7 +122,7 @@ function renderStep(s) {
     
     <li>
       <strong>${s?.name || 'Unnamed Step'}</strong> ${renderInlineTags(s)}
-      <p class="desc">${s?.description || ''}</p>
+      <p class="desc">${typeof parseDice === 'function' ? parseDice(s?.description || '') : (s?.description || '')}</p>
     </li>`;
 }
 

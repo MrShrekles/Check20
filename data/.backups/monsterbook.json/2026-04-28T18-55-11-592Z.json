@@ -1,0 +1,1051 @@
+[
+  {
+    "name": "Ironhide Brute",
+    "_group": "Brute",
+    "origin": "Basic",
+    "size": "Large",
+    "rarity": "Common",
+    "environment": "Prime",
+    "behavior": "Aggressive",
+    "description": "A hulking predator with iron-tough hide, known for charging through barriers and overwhelming prey with raw force.",
+    "lore": "Ironhide Brutes roam the broken badlands and deep forests of the Prime. Hunters who survive an encounter describe the sound of cracking earth beneath their charge — and the silence after.",
+    "walk": 40,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Ironhide Charge",
+    "feature_type": "Action",
+    "feature_range": "Melee",
+    "feature_effect": "The Ironhide Brute charges up to its full walk speed in a straight line. Each creature in its path must succeed on a Strength check or be knocked Prone and take [[1+@{PL}]] Physical damage.\n",
+    "feature_duration": "Instant",
+    "feature_damage": "Impact",
+    "motivation": "Hunting prey",
+    "melee_attack": {
+      "name": "Broadsword",
+      "damage": "1d6",
+      "damage_type": "⚔️ Slashing",
+      "equipped": true
+    },
+    "ranged_attack": {
+      "name": "Siege Crossbow",
+      "damage": "2d6",
+      "damage_type": "Piercing",
+      "equipped": true
+    },
+    "pl": 6,
+    "check_physical": 6,
+    "check_mental": 0,
+    "features": [
+      {
+        "name": "Ironhide",
+        "type": "Passive",
+        "range": "",
+        "effect": "Has additional [[5 * @{PL}]] armor",
+        "duration": "",
+        "damage": ""
+      }
+    ]
+  },
+  {
+    "name": "Gloomwing Siren",
+    "_group": "Siren",
+    "origin": "fey",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "environment": "Prime, Fey",
+    "behavior": "Trickster",
+    "description": "A feathered creature with iridescent wings and a haunting call. It lures travelers off paths and into hazardous terrain.",
+    "lore": "Gloomwings nest in old-growth canopies and sing to confuse wayfarers. Fey scholars believe their call is an evolved mimicry of distress signals from wounded prey.",
+    "walk": 20,
+    "fly": 40,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Luring Song",
+    "feature_type": "Action",
+    "feature_range": "Short",
+    "feature_effect": "One creature within short range that can hear the Gloomwing must succeed on a Spirit check or be Charmed until the end of their next turn. While Charmed, they must move toward the Gloomwing on their turn.",
+    "feature_duration": "Until end of their next turn",
+    "feature_damage": "",
+    "motivation": "Playing tricks or misleading travelers",
+    "melee_attack": {
+      "name": "Claws",
+      "damage": "1d6",
+      "damage_type": "Slashing",
+      "equipped": true
+    },
+    "check_mental": 3,
+    "check_physical": 3,
+    "pl": 6,
+    "spell": {
+      "equipped": true,
+      "name": "Agitate",
+      "damage": "1d4",
+      "damage_type": "Psychic"
+    }
+  },
+  {
+    "name": "Ashveil Rot",
+    "_group": "Rot",
+    "origin": "chaos",
+    "size": "Medium",
+    "rarity": "Rare",
+    "environment": "Prime, Eclipse",
+    "behavior": "Mindless",
+    "description": "A shambling mass of decayed matter held together by necrotic energy. It spreads a choking ash-cloud wherever it walks.",
+    "lore": "Ashveils are born from mass graves left untended during Eclipse bleeds. They don't hunger for flesh — they spread rot as a reflex, a kind of contagion given legs.",
+    "walk": 20,
+    "fly": 0,
+    "swim": 0,
+    "climb": 10,
+    "feature_name": "Ash Cloud",
+    "feature_type": "Off-Action",
+    "feature_range": "Short",
+    "feature_effect": "The Ashveil releases a burst of choking ash in a short radius. Creatures in range must succeed on a Survival check or gain the Coughing condition until the end of their next turn.",
+    "feature_duration": "Until end of their next turn",
+    "feature_damage": "Toxic",
+    "motivation": "Wandering aimlessly"
+  },
+  {
+    "name": "Booy",
+    "_group": "Weirdo",
+    "origin": "arcane",
+    "size": "Medium",
+    "rarity": "Rare",
+    "environment": "Space",
+    "behavior": "Cowardly",
+    "description": "",
+    "lore": "",
+    "motivation": "is a guy",
+    "walk": 2,
+    "fly": 4,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Hurp",
+    "feature_type": "Action",
+    "feature_range": "Melee",
+    "feature_effect": "be hurppin",
+    "feature_duration": "1 minute",
+    "feature_damage": "Fire"
+  },
+  {
+    "name": "Skeleton",
+    "_group": "Undead",
+    "origin": "Life",
+    "size": "Medium",
+    "rarity": "Common",
+    "environment": "prime, fey, dreamsea, ordealis, eclipse, void,",
+    "behavior": "Mindless",
+    "description": "",
+    "lore": "Most creatures have bones, and many powerful mages and magical effects can cause skeletons to return and serve a great power. ",
+    "motivation": "serving a greater power",
+    "walk": 30,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Undeath",
+    "feature_type": "Special",
+    "feature_range": "Self",
+    "feature_effect": "If brought to 0 wounds, make a Physical check. Per success gain [PL] healing, on a failure the undead is destroyed.",
+    "feature_duration": "Instant",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Club",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Impact"
+    },
+    "ranged_attack": {
+      "name": "Longbow",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Piercing"
+    },
+    "spell": {
+      "name": "Fear",
+      "equipped": true,
+      "damage": "1",
+      "damage_type": "Psychic"
+    },
+    "features": [],
+    "art": ""
+  },
+  {
+    "name": "Ice Elemental",
+    "_group": "Elemental",
+    "origin": "Elemental",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "environment": "Prime,  Void",
+    "behavior": "Neutral",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "walk": 30,
+    "fly": 0,
+    "swim": 45,
+    "climb": 0,
+    "feature_name": "Splinter",
+    "feature_type": "Passive",
+    "feature_range": "Melee",
+    "feature_effect": "When struck with a physical melee attack, deal [PL] piercing damage to the melee attacker",
+    "feature_duration": "",
+    "feature_damage": "Piercing",
+    "pl": 6,
+    "check_physical": 6,
+    "check_mental": 6,
+    "melee_attack": {
+      "name": "Claw",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Slashing"
+    },
+    "ranged_attack": {
+      "name": "Ice Spear",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Piercing"
+    },
+    "spell": {
+      "name": "Frost Blast",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Ice"
+    },
+    "features": [
+      {
+        "name": "Encase",
+        "type": "Action",
+        "range": "Melee",
+        "effect": "As an action make a contested physical check with a creature you touch. if the creature fails they are encased inside your ice and take [[1d6]] ice damage at the start of each of your turns and they are constrained and pinned. On their turn they can attempt to escape as a half-action",
+        "duration": "1 minute",
+        "damage": "Ice"
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Crystal Psion",
+    "_group": "Crystal",
+    "origin": "Crystal",
+    "size": "Medium",
+    "rarity": "Rare",
+    "environment": "prime, dreamsea, void",
+    "behavior": "Solitary",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "walk": 0,
+    "fly": 30,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Radiant Dispersion",
+    "feature_type": "Special",
+    "feature_range": "Reach",
+    "feature_effect": "When you take Solar damage, deal half damage to all creatures within reach range",
+    "feature_duration": "Instant",
+    "feature_damage": "Solar",
+    "pl": 6,
+    "check_physical": 1,
+    "check_mental": 5,
+    "melee_attack": {
+      "name": "Slam",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Impact"
+    },
+    "ranged_attack": {
+      "name": "Shattershot",
+      "equipped": true,
+      "damage": "1d4!",
+      "damage_type": "Piercing"
+    },
+    "spell": {
+      "name": "Psiblast",
+      "equipped": true,
+      "damage": "1d4",
+      "damage_type": "Psychic"
+    },
+    "features": [
+      {
+        "name": "Solar Siphon",
+        "type": "Special",
+        "range": "Self",
+        "effect": "When you take solar damage, gain half as much as armor",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Child of Vassago",
+    "_group": "Demon",
+    "origin": "Vozian",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "environment": "ordealis, prime",
+    "behavior": "Aggressive",
+    "description": "",
+    "lore": "",
+    "motivation": "causing pain",
+    "walk": 45,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Reckless",
+    "feature_type": "Special",
+    "feature_range": "Self",
+    "feature_effect": "At the start of its turn, you gain advantage on all melee weapon attack rolls you make during that turn, but attack rolls against you have advantage until the end of your next turn.",
+    "feature_duration": "Until end of your next turn",
+    "feature_damage": "",
+    "pl": 6,
+    "check_physical": 5,
+    "check_mental": 1,
+    "melee_attack": {
+      "name": "Chain Whip",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Slashing"
+    },
+    "ranged_attack": {
+      "name": "Heliron Spear (3)",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Piercing"
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [
+      {
+        "name": "Charge",
+        "type": "Passive",
+        "range": "",
+        "effect": "When you move at least 15 ft on your turn, gain +5 damage on your next attack check on that turn.",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Recall Heliron",
+        "type": "Half Action",
+        "range": "Short",
+        "effect": "Recall a thrown Heliron weapon within short range as a capacity point. Doing so causes the creature to be pulled 10ft to you, and take [PL] slashing damage as it is torn from the flesh of the target",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Red Lizard",
+    "_group": "Reptile",
+    "origin": "Nature",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "environment": "prime, fey, void",
+    "behavior": "Aggressive",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "walk": 50,
+    "fly": 0,
+    "swim": 0,
+    "climb": 35,
+    "feature_name": "Fire Immunity",
+    "feature_type": "Passive",
+    "feature_range": "Self",
+    "feature_effect": "Immune to fire damage",
+    "feature_duration": "",
+    "feature_damage": "Fire",
+    "pl": 6,
+    "check_physical": 5,
+    "check_mental": 1,
+    "melee_attack": {
+      "name": "Spear",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Piercing"
+    },
+    "ranged_attack": {
+      "name": "Longbow",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Piercing"
+    },
+    "spell": {
+      "name": "Firebolt",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Fire"
+    },
+    "features": [
+      {
+        "name": "Magma Queen",
+        "type": "Action",
+        "range": "Short",
+        "effect": "The queen twirls in her bath of flames, all creatures within short range take [[3d6]] fire damage or half per success on an agility check",
+        "duration": "",
+        "damage": "Fire"
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Berserker",
+    "_group": "Brute",
+    "origin": "Chaos",
+    "size": "Medium",
+    "rarity": "Common",
+    "environment": "",
+    "behavior": "Aggressive",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 6,
+    "check_physical": 6,
+    "check_mental": 0,
+    "walk": 45,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Destroyer",
+    "feature_type": "Passive",
+    "feature_range": "",
+    "feature_effect": "deal an additional 1d6 melee damage",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Great Club",
+      "equipped": true,
+      "damage": "3d6",
+      "damage_type": "Impact"
+    },
+    "ranged_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [],
+    "art": ""
+  },
+  {
+    "name": "Were Cursed",
+    "_group": "Brute",
+    "origin": "Nature",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "environment": "Prime, Fey",
+    "behavior": "Territorial",
+    "description": "A powerful creature changed by a curse to resemble that of a predatory beast",
+    "lore": "",
+    "motivation": "",
+    "pl": 6,
+    "check_physical": 6,
+    "check_mental": 0,
+    "walk": 55,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Leap",
+    "feature_type": "Action",
+    "feature_range": "Short",
+    "feature_effect": "As an action, leap at a creature within short range, they must make a Physical check and take [[2d6]] impact damage, reducing by half per success",
+    "feature_duration": "",
+    "feature_damage": "Impact",
+    "melee_attack": {
+      "name": "Claws",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Slashing"
+    },
+    "ranged_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [
+      {
+        "name": "Mundane Protection",
+        "type": "Passive",
+        "range": "",
+        "effect": "Damage from non-nature origin or silvered weapons deals half damage.",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Observant",
+        "type": "Passive",
+        "range": "Medium",
+        "effect": "You have advantage on Mental checks to perceive creatures within short range",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Pack Hunter",
+        "type": "Passive",
+        "range": "Reach",
+        "effect": "Gain +1 to checks and damage per ally within reach range",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Howl of Terror",
+        "type": "Action",
+        "range": "Short",
+        "effect": "You let out a fearsome howl, all creatures within short range must make a Mental check or take the fear condition. The next time they heal the howl they do so at advantage. After they succeed on the howl they are immune to the howl",
+        "duration": "Instant",
+        "damage": ""
+      },
+      {
+        "name": "Silver Vulnerability",
+        "type": "Passive",
+        "range": "Self",
+        "effect": "Take double damage from silvered weapons.",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Ferrus Moncher",
+    "_group": "Predator",
+    "origin": "Nature",
+    "size": "Medium",
+    "rarity": "",
+    "environment": "Prime, Fey, Ordealis",
+    "behavior": "Pack Hunter",
+    "description": "",
+    "lore": "",
+    "motivation": "Seeks metal for food",
+    "pl": 6,
+    "check_physical": 6,
+    "check_mental": 0,
+    "walk": 40,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Metallic Hide",
+    "feature_type": "Passive",
+    "feature_range": "",
+    "feature_effect": "Has additional [[5 * @{PL}]] armor",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Monch",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Acid"
+    },
+    "ranged_attack": {
+      "name": "Vile Spit",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Acid"
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [
+      {
+        "name": "Metal Hound",
+        "type": "Passive",
+        "range": "",
+        "effect": "Deals double damage to armor or metal",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Spell Reflect",
+        "type": "Off Action",
+        "range": "Short",
+        "effect": "Can make a physical check to reduce the damage by half on spells.",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Swarm Mother (PL 10)",
+        "type": "Action",
+        "range": "Self",
+        "effect": "summon a PL3 [Ferrus Moncher Larva] swarm",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Ferrus Moncher Larva",
+    "_group": "Predator",
+    "origin": "Nature",
+    "size": "Small",
+    "rarity": "Rare",
+    "environment": "Prime, Fey",
+    "behavior": "Pack Hunter",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 3,
+    "check_physical": 3,
+    "check_mental": 0,
+    "walk": 25,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "",
+    "feature_type": "",
+    "feature_range": "",
+    "feature_effect": "",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Nibbles",
+      "equipped": true,
+      "damage": "1d4",
+      "damage_type": "Slashing"
+    },
+    "ranged_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [],
+    "art": ""
+  },
+  {
+    "name": "Spider",
+    "_group": "Insect",
+    "origin": "Nature",
+    "size": "Small",
+    "rarity": "Common",
+    "environment": "Universal",
+    "behavior": "Territorial",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 4,
+    "check_physical": 3,
+    "check_mental": 1,
+    "walk": 30,
+    "fly": 0,
+    "swim": 0,
+    "climb": 30,
+    "feature_name": "Pinning Webs",
+    "feature_type": "Action",
+    "feature_range": "Short",
+    "feature_effect": "As an action spit a web at a creature within short range to pin them until the end of their next turn. This web can be broken with a physical check as an Off-Action",
+    "feature_duration": "Until end of their next turn",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Bite (NPC)",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Piercing"
+    },
+    "ranged_attack": {
+      "name": "Vile Spit",
+      "equipped": true,
+      "damage": "",
+      "damage_type": ""
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [
+      {
+        "name": "Summon Spiderlings (PL 10)",
+        "type": "Action",
+        "range": "",
+        "effect": "summon [[1d4]] PL3 [Spiderlings]",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Spiderlings",
+    "_group": "Insect",
+    "origin": "Nature",
+    "size": "Tiny",
+    "rarity": "Common",
+    "environment": "Universal",
+    "behavior": "Aggressive",
+    "description": "",
+    "lore": "",
+    "motivation": "feed",
+    "pl": 3,
+    "check_physical": 3,
+    "check_mental": 0,
+    "walk": 25,
+    "fly": 0,
+    "swim": 0,
+    "climb": 25,
+    "feature_name": "",
+    "feature_type": "",
+    "feature_range": "",
+    "feature_effect": "",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Bite (NPC)",
+      "equipped": true,
+      "damage": "1d4",
+      "damage_type": "Piercing"
+    },
+    "ranged_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [],
+    "art": ""
+  },
+  {
+    "name": "Eye Knobbler",
+    "_group": "Weirdo",
+    "origin": "Chaos",
+    "size": "Small",
+    "rarity": "Rare",
+    "environment": "Eclipse, Prime, Fey, Dreamsea",
+    "behavior": "Trickster",
+    "description": "Engages in cryptic talk, potentially distracting or misleading opponents",
+    "lore": "They have various magical and non-magical eyes in its collection, each with different abilities or effects",
+    "motivation": "Stealing eyes from the unluckiest",
+    "pl": 6,
+    "check_physical": 1,
+    "check_mental": 5,
+    "walk": 0,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Eye Snatch (Action)",
+    "feature_type": "Action",
+    "feature_range": "Melee",
+    "feature_effect": "Choose a creature to make an Observation check, On a failure, the target loses an eye and gains Confused permanently. A second success leaves them Blind permanently. Lost eyes can be reattached or replaced with another creature's eye if treated within 24 hours.",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Eye Gouge",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Piercing"
+    },
+    "ranged_attack": {
+      "name": "Tendril Flick",
+      "equipped": true,
+      "damage": "1d4!",
+      "damage_type": "Fluid"
+    },
+    "spell": {
+      "name": "Flesh Rend",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Fluid"
+    },
+    "features": [
+      {
+        "name": "The Collector",
+        "type": "Long Rest",
+        "range": "",
+        "effect": "After each long rest, if any creature within the region is missing an eye taken by this monster, the GM rolls a Luck check. On a failure, another creature in the party wakes without an eye. No sound, no struggle, no memory. A trail of faint tracks and the smell of something wet leads away from camp.",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Shadow Slip",
+        "type": "Action",
+        "range": "Medium",
+        "effect": "As an action moves quickly to a new location within medium range without provoking opportunity attacks, teleporting through shadows",
+        "duration": "Instant",
+        "damage": ""
+      },
+      {
+        "name": "Glimmering Gaze",
+        "type": "Action",
+        "range": "Short",
+        "effect": "target a creature, they must make an Observation check or take the blind condition until the end of their next turn",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Beetle Guardian",
+    "_group": "Insect",
+    "origin": "Nature",
+    "size": "Medium",
+    "rarity": "Common",
+    "environment": "Prime, Fey, dreamsea",
+    "behavior": "Territorial",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 6,
+    "check_physical": 6,
+    "check_mental": 0,
+    "walk": 30,
+    "fly": 0,
+    "swim": 0,
+    "climb": 30,
+    "feature_name": "Impenetrable Armor",
+    "feature_type": "Passive",
+    "feature_range": "",
+    "feature_effect": "Has additional [[5 * @{PL}]] armor",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Slam (NPC)",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Impact"
+    },
+    "ranged_attack": {
+      "name": "Rock Toss",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Impact"
+    },
+    "spell": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "features": [
+      {
+        "name": "Luminescent Eyes",
+        "type": "Action",
+        "range": "Short",
+        "effect": "As an action, the beetle guardian make a check to see invisible creatures within short range not behind cover",
+        "duration": "Instant",
+        "damage": ""
+      },
+      {
+        "name": "Charge",
+        "type": "Action",
+        "range": "",
+        "effect": "As an action charge your full movement in a line, all enemies within that line are knocked prone on a failed Agility check",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Wisp ",
+    "_group": "Spirit",
+    "origin": "Nature",
+    "size": "Tiny",
+    "rarity": "Rare",
+    "environment": "Prime, Fey, Dreamsea",
+    "behavior": "Trickster",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 6,
+    "check_physical": 0,
+    "check_mental": 6,
+    "walk": 0,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Ethereal Shift",
+    "feature_type": "Action",
+    "feature_range": "Self",
+    "feature_effect": "As an action gain the intangible condition or remove it",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "ranged_attack": {
+      "name": "",
+      "equipped": false,
+      "damage": "",
+      "damage_type": ""
+    },
+    "spell": {
+      "name": "Luminous Bolt",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Solar"
+    },
+    "features": [
+      {
+        "name": "Roots of Protection",
+        "type": "Action",
+        "range": "",
+        "effect": "Summons a tangle of ethereal roots in a reach-range area within short range. Each enemy in the area must succeed on a Physical check or be Pinned until the end of your next turn.",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Clown",
+    "_group": "Weirdo",
+    "origin": "Chaos",
+    "size": "Medium",
+    "rarity": "Epic",
+    "environment": "Prime, Dreamsea",
+    "behavior": "Trickster",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 10,
+    "check_physical": 5,
+    "check_mental": 5,
+    "walk": 35,
+    "fly": 5,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Illusionist's Gambit",
+    "feature_type": "Action",
+    "feature_range": "Short",
+    "feature_effect": "The clown conjures a PL 3 illusion of itself within short range for up to 1 minute. While active, the clown occupies both locations simultaneously. Both bodies draw from a shared PL 3 health pool. When that pool reaches zero, the illusion collapses and the clown returns to a single location with whatever health remains.",
+    "feature_duration": "1 minute",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Mallet",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Impact"
+    },
+    "ranged_attack": {
+      "name": "Honk Honk",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Thunder"
+    },
+    "spell": {
+      "name": "Panic",
+      "equipped": true,
+      "damage": "1d4",
+      "damage_type": "Psychic"
+    },
+    "features": [
+      {
+        "name": "Manic Laughter",
+        "type": "Action",
+        "range": "Short",
+        "effect": "As an Action, The clown lets out a chilling, hysterical laugh. All enemies within Short range must succeed on a Spirit check or be inflicted with Confusion until the end of their next turn.",
+        "duration": "Until end of their next turn",
+        "damage": ""
+      },
+      {
+        "name": "Unsettling ",
+        "type": "Passive",
+        "range": "",
+        "effect": "the clown contorts their body in unnatural ways, attacks against the clown have -2 to hit",
+        "duration": "",
+        "damage": ""
+      },
+      {
+        "name": "Madness",
+        "type": "Action",
+        "range": "Short",
+        "effect": "As an Action, the clown makes a mental check at a target within short range, on a success causes Fear",
+        "duration": "Instant",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  },
+  {
+    "name": "Treant",
+    "_group": "Verdance",
+    "origin": "Nature",
+    "size": "Giant",
+    "rarity": "Rare",
+    "environment": "Prime, Fey",
+    "behavior": "Solitary",
+    "description": "",
+    "lore": "",
+    "motivation": "",
+    "pl": 6,
+    "check_physical": 4,
+    "check_mental": 2,
+    "walk": 25,
+    "fly": 0,
+    "swim": 0,
+    "climb": 0,
+    "feature_name": "Return To Nature",
+    "feature_type": "Passive",
+    "feature_range": "",
+    "feature_effect": "Deal double damage to vehicles and structures",
+    "feature_duration": "",
+    "feature_damage": "",
+    "melee_attack": {
+      "name": "Slam (Giant)",
+      "equipped": true,
+      "damage": "2d6",
+      "damage_type": "Impact"
+    },
+    "ranged_attack": {
+      "name": "Root Spear",
+      "equipped": true,
+      "damage": "2d4",
+      "damage_type": "Piercing"
+    },
+    "spell": {
+      "name": "Rot",
+      "equipped": true,
+      "damage": "1d6",
+      "damage_type": "Nature"
+    },
+    "features": [
+      {
+        "name": "",
+        "type": "",
+        "range": "",
+        "effect": "",
+        "duration": "",
+        "damage": ""
+      }
+    ],
+    "art": ""
+  }
+]

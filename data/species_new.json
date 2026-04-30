@@ -1375,7 +1375,7 @@
       "region": "Prime",
       "origin": "dragon",
       "feature_name": "Embellish",
-      "feature_effect": "Increase your maximum spell points by +2; when you cast a spell, faint embers or smoke briefly trace the effect with no mechanical drawback.",
+      "feature_effect": "Increase your maximum Mana by +2; when you cast a spell, faint embers or smoke briefly trace the effect with no mechanical drawback.",
       "fetAction": "Passive"
     },
     {
@@ -1865,7 +1865,7 @@
       "region": "Global, Multiplanar",
       "origin": "arcane",
       "feature_name": "Manafused",
-      "feature_effect": "Start with an additional +2 spell points. When you cast spells you have a +1 to the check and damage",
+      "feature_effect": "Start with an additional +2 Mana. When you cast spells you have a +1 to the check and damage",
       "fetAction": "Resource"
     },
     {
@@ -2645,8 +2645,8 @@
       "feature_name": "Gift of Death",
       "feature_effect": "You do not need to eat, drink, sleep, or breathe, and you are immune to disease and magic can't put you to sleep. Once per month when you take the Death condition, remove it but it leaves a wound, scar, or disfigurement.\n---\nYou have the smell of Death, your body is rotten and cold. You have disadvantage on Influence checks on creatures that can smell you.",
       "fetAction": "Passive",
-      "sub-fet-name": "Strigoi Curse",
-      "sub-fet-effect": "Gain the Exhausted condition while in sunlight and take [[1d4]] solar damage every round. As an off-action, heal for 1 healing if you aren't in sunlight or running water, take solar damage, damage from holy water, take damage from silvered weapons, or have any major conditions."
+      "sub-fet-name": "Undying Disease",
+      "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions"
     },
     {
       "lineage": "strigoi",
@@ -2666,8 +2666,8 @@
       "fetCheck": "Influence",
       "fetRange": "Reach",
       "fetDuration": "1 hour",
-      "sub-fet-name": "Strigoi Curse",
-      "sub-fet-effect": "Gain the Exhausted condition while in sunlight and take [[1d4]] solar damage every round. As an off-action, heal for 1 healing if you aren't in sunlight or running water, take solar damage, damage from holy water, take damage from silvered weapons, or have any major conditions."
+      "sub-fet-name": "Undying Disease",
+      "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions."
     },
     {
       "lineage": "strigoi",
@@ -2684,8 +2684,8 @@
       "feature_name": "Wing Arms",
       "feature_effect": "You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty. While on the ground, your wings function as an additional pair of arms capable of manipulating objects, wielding weapons, or performing tasks. You cannot use your wings to manipulate objects while flying.",
       "fetAction": "Passive",
-      "sub-fet-name": "Strigoi Curse",
-      "sub-fet-effect": "Gain the Exhausted condition while in sunlight and take [[1d4]] solar damage every round. As an off-action, heal for 1 healing if you aren't in sunlight or running water, take solar damage, damage from holy water, take damage from silvered weapons, or have any major conditions."
+      "sub-fet-name": "Undying Disease",
+      "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions"
     },
     {
       "lineage": "strigoi",
@@ -2702,8 +2702,8 @@
       "feature_name": "Grotesque",
       "feature_effect": "You have a massive arm that gives +3 Strength and a second heart. As an off-action when you take a Corpus condition, make a Survival check to remove it on a success. Your rotting body gives -3 Influence and emits a short range smell of death.",
       "fetAction": "Special",
-      "sub-fet-name": "Strigoi Curse",
-      "sub-fet-effect": "Gain the Exhausted condition while in sunlight and take [[1d4]] solar damage every round. As an off-action, heal for 1 healing if you aren't in sunlight or running water, take solar damage, damage from holy water, take damage from silvered weapons, or have any major conditions."
+      "sub-fet-name": "Undying Disease",
+      "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions"
     },
     {
       "lineage": "symbiotes",

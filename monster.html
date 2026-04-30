@@ -76,161 +76,17 @@
 
         <!-- ===== Monster Book Tab ===== -->
         <div id="tab-monsterbook">
-            <div class="book-top-row">
-
-                <!-- Left: search, filters, controls -->
-                <div class="book-controls-panel">
+            <div class="book-top-bar">
+                <div class="book-controls-bar">
                     <input type="text" id="bookSearch" placeholder="Search monsters..." oninput="filterBook()">
-                    <div id="filterBookGroup" class="book-group-pills"></div>
-                    <div class="book-filters">
-                        <select id="filterBookOrigin" onchange="filterBook()"><option value="">All Origins</option></select>
-                        <select id="filterBookSize" onchange="filterBook()"><option value="">Any Size</option></select>
-                        <select id="filterBookRarity" onchange="filterBook()"><option value="">Any Rarity</option></select>
-                    </div>
-                    <div class="book-filter-actions">
-                        <button class="button" onclick="clearBookFilters()">Clear Filters</button>
-                        <button class="button" id="btnCollapseAll" onclick="toggleCollapseAll()">Collapse All</button>
-                        <button class="button" onclick="exportMonsterBook()">Export Custom JSON</button>
-                    </div>
+                    <select id="filterBookOrigin" onchange="filterBook()"><option value="">All Origins</option></select>
+                    <select id="filterBookSize" onchange="filterBook()"><option value="">Any Size</option></select>
+                    <select id="filterBookRarity" onchange="filterBook()"><option value="">Any Rarity</option></select>
+                    <button class="button book-bar-btn" onclick="clearBookFilters()">Clear</button>
+                    <button class="button book-bar-btn" id="btnCollapseAll" onclick="toggleCollapseAll()">Collapse All</button>
+                    <button class="button book-bar-btn" onclick="exportMonsterBook()">Download JSON</button>
                 </div>
-
-                <!-- Right: new monster form -->
-                <div class="book-new-panel">
-                    <details id="new-monster-details">
-                        <summary style="cursor:pointer;font-weight:bold;padding:6px 0">+ New Monster</summary>
-                        <form id="new-monster-form" onsubmit="submitNewMonster(); return false;" style="margin-top:10px">
-                            <div class="new-monster-grid">
-
-                                <div class="nm-field nm-full">
-                                    <label>Name <span style="color:#d9534f">*</span></label>
-                                    <input id="new-name" type="text" placeholder="e.g. Cindermaw Stalker" required>
-                                </div>
-
-                                <div class="nm-field">
-                                    <label>Group</label>
-                                    <input id="new-group" type="text" placeholder="e.g. Predator">
-                                </div>
-                                <div class="nm-field">
-                                    <label>Origin</label>
-                                    <select id="new-origin">
-                                        <option value="">— none —</option>
-                                        <option>nature</option>
-                                        <option>arcane</option>
-                                        <option>chaos</option>
-                                        <option>celestial</option>
-                                        <option>chrono</option>
-                                        <option>crystal</option>
-                                        <option>dragon</option>
-                                        <option>elemental</option>
-                                        <option>fey</option>
-                                        <option>life</option>
-                                        <option>tech</option>
-                                        <option>vozian</option>
-                                    </select>
-                                </div>
-                                <div class="nm-field">
-                                    <label>Size</label>
-                                    <select id="new-size">
-                                        <option value="">— none —</option>
-                                        <option>Tiny</option>
-                                        <option>Small</option>
-                                        <option>Medium</option>
-                                        <option>Large</option>
-                                        <option>Huge</option>
-                                        <option>Colossal</option>
-                                    </select>
-                                </div>
-                                <div class="nm-field">
-                                    <label>Rarity</label>
-                                    <select id="new-rarity">
-                                        <option value="">— none —</option>
-                                        <option>Common</option>
-                                        <option>Uncommon</option>
-                                        <option>Rare</option>
-                                        <option>Legendary</option>
-                                    </select>
-                                </div>
-                                <div class="nm-field">
-                                    <label>Environment</label>
-                                    <input id="new-environment" type="text" placeholder="e.g. Prime, Fey">
-                                </div>
-                                <div class="nm-field">
-                                    <label>Behavior</label>
-                                    <input id="new-behavior" type="text" placeholder="e.g. Aggressive">
-                                </div>
-                                <div class="nm-field">
-                                    <label>Motivation</label>
-                                    <input id="new-motivation" type="text" placeholder="e.g. Hunting prey">
-                                </div>
-
-                                <div class="nm-field nm-full">
-                                    <label>Description</label>
-                                    <textarea id="new-description" rows="2" placeholder="Short description of the monster..."></textarea>
-                                </div>
-                                <div class="nm-field nm-full">
-                                    <label>Lore</label>
-                                    <textarea id="new-lore" rows="2" placeholder="In-world lore and flavour text..."></textarea>
-                                </div>
-
-                                <div class="nm-field">
-                                    <label>Walk (ft)</label>
-                                    <input id="new-walk" type="number" min="0" value="0">
-                                </div>
-                                <div class="nm-field">
-                                    <label>Fly (ft)</label>
-                                    <input id="new-fly" type="number" min="0" value="0">
-                                </div>
-                                <div class="nm-field">
-                                    <label>Swim (ft)</label>
-                                    <input id="new-swim" type="number" min="0" value="0">
-                                </div>
-                                <div class="nm-field">
-                                    <label>Climb (ft)</label>
-                                    <input id="new-climb" type="number" min="0" value="0">
-                                </div>
-
-                                <div class="nm-field nm-section-label nm-full">Feature</div>
-
-                                <div class="nm-field">
-                                    <label>Feature Name</label>
-                                    <input id="new-feat-name" type="text" placeholder="e.g. Ironhide Charge">
-                                </div>
-                                <div class="nm-field">
-                                    <label>Type</label>
-                                    <select id="new-feat-type">
-                                        <option value="">— none —</option>
-                                        <option>Action</option>
-                                        <option>Off-Action</option>
-                                        <option>Reaction</option>
-                                        <option>Passive</option>
-                                    </select>
-                                </div>
-                                <div class="nm-field">
-                                    <label>Range</label>
-                                    <input id="new-feat-range" type="text" placeholder="e.g. Melee, Short">
-                                </div>
-                                <div class="nm-field">
-                                    <label>Damage Type</label>
-                                    <input id="new-feat-damage" type="text" placeholder="e.g. Physical, Toxic">
-                                </div>
-                                <div class="nm-field">
-                                    <label>Duration</label>
-                                    <input id="new-feat-duration" type="text" placeholder="e.g. Instant">
-                                </div>
-                                <div class="nm-field nm-full">
-                                    <label>Effect</label>
-                                    <textarea id="new-feat-effect" rows="2" placeholder="Describe what the feature does..."></textarea>
-                                </div>
-                            </div>
-
-                            <div style="display:flex;gap:8px;margin-top:12px">
-                                <button type="submit" class="button">Add to Book</button>
-                                <button type="reset" class="button" style="background:var(--theme-1)">Clear</button>
-                            </div>
-                        </form>
-                    </details>
-                </div>
-
+                <div id="filterBookGroup" class="book-group-pills"></div>
             </div>
 
             <div id="bookOutput" class="monster-grid" style="padding:8px"></div>

@@ -100,7 +100,7 @@
       "features": [
         {
           "name": "Merchant Token",
-          "description": "You have 3 Merchant Tokens (coin, tattoo, ring, or similar). Regain 1 on a long rest. You may spend tokens on the following: duplicate a consumable (potion, scroll, or single-use item) that lasts 1 day; restore a once per day feature; restore +3 spell points; or imbue a spell of 3 cost or higher with permanence at the moment of casting, lasting until dispelled or destroyed."
+          "description": "You have 3 Merchant Tokens (coin, tattoo, ring, or similar). Regain 1 on a long rest. You may spend tokens on the following: duplicate a consumable (potion, scroll, or single-use item) that lasts 1 day; restore a once per day feature; restore +3 Mana; or imbue a spell of 3 cost or higher with permanence at the moment of casting, lasting until dispelled or destroyed."
         },
         {
           "name": "Investment",

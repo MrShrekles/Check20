@@ -178,7 +178,7 @@
     document.body.appendChild(casePanel);
 
     // ── CHECK PANEL ───────────────────────────────────────────────────────────
-    const CHECKS = ['Agility','Crafting','Influence','Intellect','Luck','Observation','Spirit','Stealth','Strength','Survival'];
+    const CHECKS = ['Agility','Crafting','Influence','Intellect','Luck','Mental','Observation','Physical','Spirit','Stealth','Strength','Survival'];
     const checkPanel = document.createElement('div');
     checkPanel.id = 'forge-check-panel';
     checkPanel.innerHTML = CHECKS.map(c =>

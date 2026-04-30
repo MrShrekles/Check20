@@ -44,6 +44,23 @@ body[data-page-title="Monsters"] .monster-card:hover {
     color: var(--dark, #000);
 }
 
+/* ===== Chat Copy Button ===== */
+.btn-chat-card {
+    background: transparent;
+    border: 1px solid #4a7a6a;
+    color: #7ecfb0;
+    padding: 4px 12px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: background 0.15s, color 0.15s;
+}
+.btn-chat-card:hover {
+    background: #4a7a6a;
+    color: #fff;
+}
+
 /* ===== Generate buttons ===== */
 #generate-npc,
 #generate-business,
@@ -521,31 +538,80 @@ body[data-page-title="Monsters"] .monster-card:hover {
 }
 .pl-seg-mt strong { color: #a07fff; }
 
-/* ===== Book Top Row Layout ===== */
-.book-top-row {
-    display: flex;
-    gap: 12px;
-    padding: 8px;
-    align-items: flex-start;
-}
-
-.book-controls-panel {
+/* ===== Book Top Bar ===== */
+.book-top-bar {
+    padding: 8px 10px 4px;
+    background: var(--theme-1);
+    border-bottom: 1px solid var(--theme-2);
     display: flex;
     flex-direction: column;
     gap: 6px;
-    width: 230px;
-    flex-shrink: 0;
+    position: sticky;
+    top: 51px;   /* sits flush below the monster tabs bar */
+    z-index: 9;
 }
 
-.book-controls-panel #bookSearch {
-    width: 100%;
+.book-controls-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.book-controls-bar #bookSearch {
+    flex: 1 1 180px;
     padding: 6px 10px;
     background: var(--dark);
     color: var(--white);
-    border: 1px solid var(--theme-1);
+    border: 1px solid var(--theme-2);
     border-radius: var(--border-radius);
-    box-sizing: border-box;
+    min-width: 120px;
 }
+
+.book-controls-bar select {
+    padding: 5px 8px;
+    background: var(--dark);
+    color: var(--white);
+    border: 1px solid var(--theme-2);
+    border-radius: var(--border-radius);
+    font-size: 0.83em;
+    flex-shrink: 0;
+    width: auto;
+}
+
+.book-bar-btn {
+    padding: 5px 10px !important;
+    font-size: 0.83em !important;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.btn-cog {
+    background: transparent;
+    border: 1px solid var(--theme-3);
+    color: var(--cream, #f0e6cc);
+    border-radius: var(--border-radius);
+    padding: 5px 9px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    margin-left: auto;
+    flex-shrink: 0;
+    line-height: 1;
+}
+.btn-cog:hover { border-color: var(--gold); color: var(--gold); }
+.btn-cog.active {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(180,130,0,0.15);
+    box-shadow: 0 0 6px rgba(180,130,0,0.25);
+}
+
+/* ===== Spell collapse toggle ===== */
+.spell-entry summary::-webkit-details-marker { display: none; }
+.spell-entry summary { user-select: none; }
+.spell-arrow { transition: transform 0.15s; display: inline-block; font-size: 0.7em; opacity: 0.6; }
+.spell-entry[open] .spell-arrow { transform: rotate(90deg); }
 
 /* ===== Group Pills ===== */
 .book-group-pills {
@@ -578,49 +644,69 @@ body[data-page-title="Monsters"] .monster-card:hover {
     color: var(--gold);
 }
 
-.book-filters {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+/* ===== Card editing state ===== */
+.monster-card.editing {
+    max-height: 560px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--theme-3) transparent;
+    outline: 1px solid #4a1515;
+    transform: none !important;   /* suppress hover scale */
 }
+.monster-card.editing::-webkit-scrollbar       { width: 5px; }
+.monster-card.editing::-webkit-scrollbar-thumb { background: var(--theme-3); border-radius: 3px; }
 
-.book-filters select {
-    width: 100%;
-    padding: 4px 8px;
-    background: var(--dark);
+.monster-card.editing input,
+.monster-card.editing select,
+.monster-card.editing textarea {
+    background: rgba(8, 0, 0, 0.55);
+    border: 1px solid var(--theme-2, #4a1515);
     color: var(--white);
-    border: 1px solid var(--theme-1);
-    border-radius: var(--border-radius);
-    font-size: 0.85em;
+    border-radius: 3px;
+    padding: 2px 5px;
+    font-family: inherit;
+    font-size: 0.88em;
     box-sizing: border-box;
 }
-
-.book-filter-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-top: 2px;
+.monster-card.editing input:focus,
+.monster-card.editing select:focus,
+.monster-card.editing textarea:focus {
+    outline: none;
+    border-color: var(--gold-2, #af8000);
 }
-
-.book-filter-actions .button {
-    width: 100%;
-    font-size: 0.85em;
-    padding: 5px 8px;
+/* Inputs inside the pl-bubble inherit the segment bg, so keep them transparent */
+.monster-card.editing .pl-seg input {
+    background: transparent;
+    border-color: rgba(255,255,255,0.12);
     text-align: center;
+    padding: 1px 3px;
 }
 
-.book-new-panel {
-    flex: 1;
-    min-width: 0;
+/* ===== Per-card edit cog ===== */
+.card-edit-cog {
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    background: transparent;
+    border: none;
+    color: #6a2020;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 3px;
+    line-height: 1;
+    opacity: 0.55;
+    transition: color 0.15s, background 0.15s, opacity 0.15s;
+}
+.card-edit-cog:hover {
+    color: #d46060;
+    background: rgba(160, 30, 30, 0.18);
+    opacity: 1;
 }
 
 @media (max-width: 700px) {
-    .book-top-row {
-        flex-direction: column;
-    }
-    .book-controls-panel {
-        width: 100%;
-    }
+    .book-controls-bar { flex-wrap: wrap; }
+    .book-controls-bar #bookSearch { flex: 1 0 100%; }
 }
 
 /* ===== Book Groups ===== */

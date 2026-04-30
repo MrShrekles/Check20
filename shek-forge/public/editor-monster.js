@@ -1,3 +1,16 @@
+// ── DUPLICATE ─────────────────────────────────────────────────────────────────
+function duplicateMonster(idx) {
+    const original = state.data[idx];
+    if (!original) return;
+    const copy = JSON.parse(JSON.stringify(original));
+    copy.name = (original.name || 'Monster') + ' (Copy)';
+    state.data.splice(idx + 1, 0, copy);
+    state.filteredData = getVisibleData();
+    state.currentIndex = idx + 1;
+    renderGroupSelector(); renderEntryList(); renderEditor(); markUnsaved(); updateStatus();
+    showToast(`Duplicated "${original.name || 'entry'}"`, 'success');
+}
+
 // ── MONSTER DOMAIN VALUES ─────────────────────────────────────────────────────
 const MD = {
     size:            ['', 'Tiny', 'Small', 'Medium', 'Large', 'Giant', 'Monolithic'],
@@ -200,6 +213,111 @@ function updateExtraFeature(idx, fi, key, value) {
     markUnsaved();
 }
 
+// ── CHAT COPY ─────────────────────────────────────────────────────────────────
+function copyForChat(idx, btn) {
+    const entry = state.data[idx];
+    if (!entry) return;
+    const sch = getMonsterSchema();
+    const lines = [];
+
+    // Header
+    const name = (entry.name || 'Unknown Monster').toUpperCase();
+    lines.push(`**${name}**`);
+
+    const identity = [entry.size, entry.origin, entry.rarity].filter(Boolean).join(' · ');
+    if (identity) lines.push(identity);
+
+    const envBeh = [entry.environment, entry.behavior].filter(Boolean).join(' · ');
+    if (envBeh) lines.push(envBeh);
+    if (entry.motivation) lines.push(`Motivation: ${entry.motivation}`);
+
+    // Stats
+    const pl = entry.pl ?? 0;
+    const phys = entry.check_physical ?? 0;
+    const ment = entry.check_mental ?? 0;
+    if (pl) {
+        lines.push('');
+        lines.push(`PL ${pl}  (PHY ${phys} / MNT ${ment})  •  MN: ${ment * 2} max`);
+    }
+
+    // Movement — only non-zero
+    const moveParts = [
+        { label: 'Walk',  val: entry[sch.walkKey] },
+        { label: 'Fly',   val: entry.fly   },
+        { label: 'Swim',  val: entry.swim  },
+        { label: 'Climb', val: entry.climb },
+    ].filter(m => m.val).map(m => `${m.label} ${m.val}`);
+    if (moveParts.length) lines.push(`Move: ${moveParts.join(' / ')}`);
+
+    // Attacks
+    const atkLines = [];
+    const melee  = entry.melee_attack  || {};
+    const ranged  = entry.ranged_attack || {};
+    const spellAtk = entry.spell       || {};
+    if (melee.name)    atkLines.push(`Melee:  ${melee.name}${melee.damage ? ' — ' + melee.damage : ''}${melee.damage_type ? ' ' + melee.damage_type : ''}`);
+    if (ranged.name)   atkLines.push(`Ranged: ${ranged.name}${ranged.damage ? ' — ' + ranged.damage : ''}${ranged.damage_type ? ' ' + ranged.damage_type : ''}`);
+    if (spellAtk.name) atkLines.push(`Spell:  ${spellAtk.name}${spellAtk.damage ? ' — ' + spellAtk.damage : ''}${spellAtk.damage_type ? ' ' + spellAtk.damage_type : ''}`);
+    if (atkLines.length) { lines.push(''); lines.push('**ATTACKS**'); atkLines.forEach(a => lines.push(a)); }
+
+    // Main feature
+    const fName   = entry[sch.featureNameKey]   || '';
+    const fType   = entry[sch.featureTypeKey]   || '';
+    const fRange  = entry[sch.featureRangeKey]  || '';
+    const fDmg    = entry[sch.featureDamageKey] || '';
+    const fDur    = entry[sch.featureDurationKey] || '';
+    const fEffect = entry[sch.featureEffectKey] || '';
+    if (fName || fEffect) {
+        const meta = [fType, fRange, fDmg, fDur].filter(Boolean).join(' · ');
+        lines.push('');
+        lines.push(`**${fName || 'FEATURE'}**${meta ? `  [${meta}]` : ''}`);
+        if (fEffect) lines.push(fEffect);
+    }
+
+    // Additional features
+    if (entry.features?.length) {
+        entry.features.forEach(f => {
+            const meta = [f.type, f.range, f.damage, f.duration].filter(Boolean).join(' · ');
+            lines.push('');
+            lines.push(`**${f.name || 'Feature'}**${meta ? `  [${meta}]` : ''}`);
+            if (f.effect) lines.push(f.effect);
+        });
+    }
+
+    // Spells
+    if (entry.spells?.length) {
+        lines.push('');
+        lines.push(`**SPELLS** (MN: ${ment * 2} max)`);
+        entry.spells.forEach(s => {
+            const spellMeta = [s.manner, s.transmission].filter(Boolean).join(' · ');
+            lines.push(`${s.name || 'Spell'}${spellMeta ? ` (${spellMeta})` : ''}`);
+            (s.effects || []).forEach(e => {
+                const cost = INTENT_COSTS[String(e.intent || '').toLowerCase()] ?? '?';
+                const parts = [
+                    e.intent ? `${e.intent} (${cost} MN)` : null,
+                    e.range  || null,
+                    e.damage ? e.damage + (e.type ? ' ' + e.type : '') : null,
+                ].filter(Boolean).join(' · ');
+                lines.push(`  ${parts}${e.effect ? ' — ' + e.effect : ''}`);
+            });
+        });
+    }
+
+    // Description
+    if (entry.description) { lines.push(''); lines.push(entry.description); }
+
+    const text = lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+
+    const flashBtn = () => {
+        if (!btn) return;
+        const orig = btn.textContent;
+        btn.textContent = '✓ Copied!';
+        btn.disabled = true;
+        setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2000);
+    };
+    const fallback = () => { const el = document.createElement('textarea'); el.value = text; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el); flashBtn(); };
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(flashBtn).catch(fallback); else fallback();
+}
+
 // ── ROLL20 EXPORT ─────────────────────────────────────────────────────────────
 function stripEmojiPrefix(str) { return (str || '').replace(/^[^\w]+/, '').trim(); }
 function normalizeAction(val) {
@@ -232,7 +350,7 @@ function copyForRoll20(idx, btn) {
             damage: stripEmojiPrefix(entry[sch.featureDamageKey] || ''),
         },
         spells:           Array.isArray(entry.spells) ? entry.spells : [],
-        spell_points_max: (entry.check_mental ?? 0) * 2,
+        mana_max: (entry.check_mental ?? 0) * 2,
     };
     const cmd = `!importmonster ${JSON.stringify(packet)}`;
     const flashBtn = () => {
@@ -263,23 +381,32 @@ function spellCost(intent) {
     return INTENT_COSTS[String(intent || '').toLowerCase()] ?? '';
 }
 
+const SPELL_INTENTS   = ['', 'Light Whisper', 'Whisper', 'Surge', 'Shout', 'Roar', 'Storm', 'Cataclysm'];
+const SPELL_RANGES    = ['', 'Self', 'Melee', 'Reach', 'Short', 'Medium', 'Long'];
+
 function renderMonsterSpell(idx, si, s) {
-    const effects = (s.effects || []).map((e, ei) => `
+    const effects = (s.effects || []).map((e, ei) => {
+        const cost = INTENT_COSTS[String(e.intent || '').toLowerCase()] ?? '?';
+        return `
         <div class="extra-feature-body field-grid" style="padding:4px 0 2px 8px;border-left:2px solid var(--border)">
             <div class="field-wrap">
                 <label class="field-label">Intent</label>
-                <input class="field-input" type="text" value="${escAttr(e.intent || '')}"
-                    onchange="updateMonsterSpellEffect(${idx},${si},${ei},'intent',this.value)" oninput="markUnsaved()">
+                <select class="field-input" onchange="
+                    updateMonsterSpellEffect(${idx},${si},${ei},'intent',this.value);
+                    updateMonsterSpellEffect(${idx},${si},${ei},'cost', INTENT_COSTS[this.value.toLowerCase()]??0);
+                    renderMonsterSpellsList(${idx})">
+                    ${buildSelect(SPELL_INTENTS, e.intent || '')}
+                </select>
             </div>
-            <div class="field-wrap">
-                <label class="field-label">SP Cost</label>
-                <input class="field-input" type="number" min="0" value="${e.cost ?? spellCost(e.intent)}"
-                    onchange="updateMonsterSpellEffect(${idx},${si},${ei},'cost',+this.value)" oninput="markUnsaved()" style="width:60px">
+            <div class="field-wrap" style="align-self:flex-end">
+                <label class="field-label">MN Cost</label>
+                <span class="pl-bubble"><span class="pl-seg pl-seg-mt"><strong>MN</strong> ${cost}</span></span>
             </div>
             <div class="field-wrap">
                 <label class="field-label">Range</label>
-                <input class="field-input" type="text" value="${escAttr(e.range || '')}"
-                    onchange="updateMonsterSpellEffect(${idx},${si},${ei},'range',this.value)" oninput="markUnsaved()">
+                <select class="field-input" onchange="updateMonsterSpellEffect(${idx},${si},${ei},'range',this.value)">
+                    ${buildSelect(SPELL_RANGES, e.range || '')}
+                </select>
             </div>
             <div class="field-wrap">
                 <label class="field-label">Damage</label>
@@ -287,7 +414,7 @@ function renderMonsterSpell(idx, si, s) {
                     onchange="updateMonsterSpellEffect(${idx},${si},${ei},'damage',this.value)" oninput="markUnsaved()">
             </div>
             <div class="field-wrap">
-                <label class="field-label">Type</label>
+                <label class="field-label">Damage Type</label>
                 <select class="field-input" onchange="updateMonsterSpellEffect(${idx},${si},${ei},'type',this.value)">
                     ${buildSelect(MD.featureDamage, e.type || '')}
                 </select>
@@ -298,7 +425,8 @@ function renderMonsterSpell(idx, si, s) {
                     onchange="updateMonsterSpellEffect(${idx},${si},${ei},'effect',this.value)"
                     oninput="markUnsaved()">${escHtml(e.effect || '')}</textarea>
             </div>
-        </div>`).join('');
+        </div>`;
+    }).join('');
 
     return `
     <div class="extra-feature" id="mspell-${idx}-${si}">
@@ -371,39 +499,58 @@ function openSpellPicker(idx) {
         const input = box.querySelector('#spell-picker-search');
         const list  = box.querySelector('#spell-picker-list');
 
+        function addSpell(spell) {
+            if (!state.data[idx].spells) state.data[idx].spells = [];
+            state.data[idx].spells.push({
+                name:         spell.name,
+                manner:       spell.manner || '',
+                transmission: spell.transmission || '',
+                effects:      (spell.effects || [{ intent: 'Whisper' }]).map(e => ({
+                    intent: e.intent,
+                    cost:   spellCost(e.intent),
+                    range:  e.range  || '',
+                    damage: '',
+                    type:   '',
+                    effect: e.effect || '',
+                })),
+            });
+            markUnsaved();
+            renderMonsterSpellsList(idx);
+            overlay.remove();
+        }
+
         function renderList(q) {
             const filtered = spellsData.filter(s =>
                 !q || s.name.toLowerCase().includes(q.toLowerCase())
             );
-            list.innerHTML = filtered.slice(0, 40).map(s => `
+            const rows = filtered.slice(0, 40).map(s => `
                 <div class="entry-row" style="cursor:pointer;padding:6px 10px;border-radius:4px" data-name="${escAttr(s.name)}">
                     <div class="entry-row-name">${escHtml(s.name)}</div>
                     <div class="entry-row-meta">${escHtml([s.manner, s.transmission, s.origin].filter(Boolean).join(' · '))}
                         — ${(s.effects||[]).map(e=>escHtml(e.intent)).join(', ')}</div>
                 </div>`).join('');
-            list.querySelectorAll('.entry-row').forEach(row => {
+
+            const customRow = q ? `
+                <div class="entry-row" id="spell-custom-row" style="cursor:pointer;padding:6px 10px;border-radius:4px;border:1px dashed var(--border);opacity:0.7">
+                    <div class="entry-row-name">✦ Create "${escHtml(q)}" as custom spell</div>
+                    <div class="entry-row-meta">Blank spell — fill in intent levels after adding</div>
+                </div>` : '';
+
+            list.innerHTML = rows + customRow;
+
+            list.querySelectorAll('.entry-row:not(#spell-custom-row)').forEach(row => {
                 row.addEventListener('click', () => {
                     const spell = spellsData.find(s => s.name === row.dataset.name);
-                    if (!spell) return;
-                    if (!state.data[idx].spells) state.data[idx].spells = [];
-                    state.data[idx].spells.push({
-                        name:         spell.name,
-                        manner:       spell.manner || '',
-                        transmission: spell.transmission || '',
-                        effects:      (spell.effects || []).map(e => ({
-                            intent: e.intent,
-                            cost:   spellCost(e.intent),
-                            range:  e.range  || '',
-                            damage: '',
-                            type:   '',
-                            effect: e.effect || '',
-                        })),
-                    });
-                    markUnsaved();
-                    renderMonsterSpellsList(idx);
-                    overlay.remove();
+                    if (spell) addSpell(spell);
                 });
             });
+
+            const customBtn = list.querySelector('#spell-custom-row');
+            if (customBtn) {
+                customBtn.addEventListener('click', () => {
+                    addSpell({ name: q, manner: '', transmission: '', effects: [{ intent: 'Whisper' }] });
+                });
+            }
         }
 
         renderList('');
@@ -437,8 +584,22 @@ registerEditor('monster', {
         };
     },
 
+    onLoad: (data) => {
+        const list = document.getElementById('env-options');
+        if (!list) return;
+        const CANONICAL = ['Prime','Fey','Dreamsea','Void','Ordealis','Eclipse','Space','Universal','Celestia'];
+        const seen = new Set();
+        // Individual canonical values first so they always appear
+        CANONICAL.forEach(e => seen.add(e));
+        // Then all combo values found in the actual data
+        data.forEach(m => { if (m.environment) seen.add(m.environment); });
+        list.innerHTML = [...seen].map(e => `<option value="${e}">`).join('');
+    },
+
     headerActions: (entry, idx) =>
-        `<button class="btn btn-roll20" onclick="copyForRoll20(${idx}, this)">⬡ Roll20</button>`,
+        `<button class="btn btn-ghost" onclick="copyForChat(${idx}, this)">✦ Chat</button>
+         <button class="btn btn-roll20" onclick="copyForRoll20(${idx}, this)">⬡ Roll20</button>
+         <button class="btn btn-ghost" onclick="duplicateMonster(${idx})" title="Duplicate this monster">⧉ Duplicate</button>`,
 
     newEntry: (group) => {
         const sch = getMonsterSchema();
@@ -473,10 +634,14 @@ registerEditor('monster', {
 
         const groupKey   = sch.hasBaseType ? 'baseType' : '_group';
         const groupLabel = sch.hasBaseType ? 'Base Type' : 'Group';
+        const groupOptions = [...new Set(state.data.map(e => e[groupKey]).filter(Boolean))].sort()
+            .map(g => `<option value="${escAttr(g)}">`).join('');
         const groupField = `
+            <datalist id="monster-group-options">${groupOptions}</datalist>
             <div class="field-wrap">
                 <label class="field-label">${groupLabel}</label>
-                <input class="field-input" type="text" value="${escAttr(entry[groupKey] ?? '')}"
+                <input class="field-input" type="text" list="monster-group-options"
+                    value="${escAttr(entry[groupKey] ?? '')}"
                     onchange="updateField(${idx},'${groupKey}',this.value);refreshGroups()" oninput="markUnsaved()">
             </div>`;
 
@@ -703,7 +868,7 @@ registerEditor('monster', {
 
             <div class="forge-section">
                 <div class="section-header section-header-split">
-                    <span>Spells <span style="font-size:0.75em;opacity:0.5">(SP: ${((entry.check_mental ?? 0) * 2)} max)</span></span>
+                    <span>Spells <span style="font-size:0.75em;opacity:0.5">(MN: ${((entry.check_mental ?? 0) * 2)} max)</span></span>
                     <button class="btn-section-add" onclick="openSpellPicker(${idx})">+ Add</button>
                 </div>
                 <div class="extra-features-list" id="monster-spells-${idx}">

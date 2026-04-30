@@ -8,19 +8,38 @@
     "effects": [
       {
         "intent": "Light Whisper",
-        "range": "short",
+        "range": "Self",
         "target": "area",
         "area": "melee",
-        "duration": "Instant ",
-        "effect": "You manipulate a melee range area of water within short range. You can create or evaporate up to 1 gallon of water, filter dirty water, shift water to extinguish flames, clean surfaces, or fill containers"
+        "duration": "Instant",
+        "effect": "Conjure a small splash of water in your hand or at a point within short range. Enough to wet a surface, clean a wound, fill a cup, or put out a candle. Cannot hydrate a creature."
+      },
+      {
+        "intent": "Whisper",
+        "range": "Reach",
+        "target": "area",
+        "area": "melee",
+        "duration": "1 minute",
+        "effect": "Conjure up to 1 gallon of clean drinkable water at a point within short range. Can fill containers, extinguish small flames, or hydrate creatures normally. Lasts until consumed or 10 minutes pass.",
+        "cost": 1
       },
       {
         "intent": "Surge",
-        "range": "short",
-        "target": "area",
-        "area": "melee",
-        "duration": "Instant ",
-        "effect": "You conjure a wave of water that crashes forward in a short range line, dealing 2d6 fluid damage to each creature in the line. They must make a Physical check or be knocked 20ft back, or half as much per success. The area becomes difficult terrain and extinguishes any fires or exposed light sources until the end of your next turn."
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "Until end of next turn",
+        "effect": "Conjure a wave of water that crashes forward in a short range line. Each creature in the line takes [[2d6]] fluid damage and must succeed on a Physical check or be knocked back 20ft, half per success. The area becomes difficult terrain and extinguishes flames and exposed light sources until the end of your next turn.\n",
+        "cost": 3
+      },
+      {
+        "intent": "Shout",
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "1 minute",
+        "effect": "Conjure a massive wave that crashes outward in a short range around you. Each creature in the area takes [[4d6 ]] fluid damage and must succeed on a Physical check or be knocked back 60ft and gain the Prone condition, half damage and knockback per success. The area becomes difficult terrain for 1 minute and extinguishes all flames and light sources until the end of your next turn.",
+        "cost": 6
       }
     ]
   },
@@ -65,10 +84,13 @@
     "transmission": "Astral",
     "effects": [
       {
-        "intent": "Light Whisper",
-        "range": "medium",
-        "target": "creature",
-        "effect": "Take 1 damage to empower your next attack with Vozian energy. On hit withyour empowered attack, summon a PL 2 demon beside the target. Demon vanishes after 1 round and attacks everyone it can reach"
+        "intent": "Whisper",
+        "range": "Reach",
+        "target": "Self",
+        "effect": "Take 1 damage and deal an additional 3 damage on your next melee attack. After you hit with your next melee attack summon a PL[[1d4]] imp within reach that attacks any creatures it can see until the end of your next turn.",
+        "damage": "3",
+        "duration": "Until end of your next turn",
+        "cost": 1
       }
     ]
   },
@@ -146,7 +168,7 @@
         "range": "melee",
         "target": "self",
         "duration": "Special ",
-        "effect": "Summon a small creature of your design at PL equal to spell points used. It can follow command but acts more independent the longer it remains. Your familiar can speak any languages you can speak. As an action you can choose to do the following until the end of your next turn: See through its eyes, communicate telepathically, cast spells through your familiar, shift the shape of the familiar."
+        "effect": "Summon a small creature of your design at PL equal to Mana used. It can follow command but acts more independent the longer it remains. Your familiar can speak any languages you can speak. As an action you can choose to do the following until the end of your next turn: See through its eyes, communicate telepathically, cast spells through your familiar, shift the shape of the familiar."
       }
     ]
   },
@@ -317,7 +339,7 @@
         "target": "Area",
         "area": "Object",
         "duration": "Instant ",
-        "effect": "Reveal a hidden object, creature, or illusion within short range per success. If none are found, this spell costs 0 SP."
+        "effect": "Reveal a hidden object, creature, or illusion within short range per success. If none are found, this spell costs 0 MN."
       },
       {
         "intent": "Surge",
@@ -348,7 +370,7 @@
         "target": "Area",
         "area": "Reach",
         "duration": "Instant ",
-        "effect": "Nullify a minor magical effect within short range, such as a weak illusion or simple ward, in a reach-range area. You can pool spell points with other casters to dispel stronger magic."
+        "effect": "Nullify a minor magical effect within short range, such as a weak illusion or simple ward, in a reach-range area. You can pool Mana with other casters to dispel stronger magic."
       },
       {
         "intent": "Surge",
@@ -437,9 +459,13 @@
     "effects": [
       {
         "intent": "Surge",
-        "range": "medium",
-        "target": "area",
-        "effect": "Crack open the ground in a line. Elemental energy explodes upward. Creatures in the path take [[2d6 + 3]] elemental damage and must pass an Agility check or fall prone."
+        "range": "Short",
+        "target": "Area",
+        "effect": "Crack open the ground in a short range line. Elemental energy explodes upward. Creatures in the path take [[2d6 + 3]] elemental damage and must pass a Physical check or fall prone.",
+        "damage": "2d6 + 3",
+        "damageType": "Fire",
+        "area": "line",
+        "duration": "Instant"
       }
     ]
   },
@@ -452,17 +478,18 @@
     "effects": [
       {
         "intent": "Whisper",
-        "range": "reach",
-        "target": "one target",
-        "duration": "Instant ",
+        "range": "Short",
+        "target": "Creature",
+        "duration": "Instant",
         "effect": "Draw a thin line of blood from you to a creature within reach range. They must make a Physical check or take 2 damage that ignores armor and you heal for 1 healing"
       },
       {
-        "intent": "Roar",
-        "range": "reach",
-        "target": "one target",
-        "duration": "Instant ",
-        "effect": "You seize control of the blood of one creature within medium range, wrenching their body like a puppet. The target must make a Survival check or become Pinned and Constrained. You can use your Off-Action each round to force them to take a movement or non-magical action of your choice. Creatures with no blood are immune."
+        "intent": "Shout",
+        "range": "Short",
+        "target": "Creature",
+        "duration": "Until end of your next turn",
+        "effect": "You seize control of the blood of one creature within short range, wrenching their body like a puppet. The target must make a Survival check or become Pinned and Constrained until the end of their next turn. You can use your Off-Action to force them to take a movement or non-magical action of your choice. Creatures with no blood are immune.",
+        "cost": 6
       }
     ]
   },
@@ -515,8 +542,9 @@
       {
         "intent": "Whisper",
         "range": "melee",
-        "target": "self",
-        "effect": "Bend time to retrieve a small mundane item you “forgot” to pack (e.g. rope, key, vial). The item must be something you could have reasonably carried and worth no more than a few gold."
+        "target": "Self",
+        "effect": "Bend time to retrieve a small mundane item you “forgot” to pack (e.g. rope, key, vial). The item must be something you could have reasonably carried and worth no more than a few gold.",
+        "duration": "Instant"
       }
     ]
   },
@@ -740,14 +768,27 @@
     "name": "Judgment",
     "origin": "Celestial",
     "type": "spell",
-    "manner": "Decay",
-    "transmission": "Corpus",
+    "manner": "Manifest",
+    "transmission": "Astral",
     "effects": [
       {
         "intent": "Whisper",
-        "range": "melee",
-        "target": "creature",
-        "effect": "Smite a creature with Celestial fire. If the target is Vozian, they must succeed a Spirit check or gain the Stunned condition"
+        "range": "Reach",
+        "target": "Creature",
+        "effect": "Smite a creature with light within reach dealing [[1d6]] solar damage. If the target is Vozian origin, they must succeed a Spirit check or gain the Stunned condition until the end of their next turn",
+        "duration": "Until end of next turn",
+        "cost": 1,
+        "damageType": "Solar",
+        "damage": "1d6"
+      },
+      {
+        "intent": "Surge",
+        "range": "Melee",
+        "target": "Creature",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Empower your next melee attack with light, deal an additional [[2d6]] solar damage and blind Vozian creatures within reach",
+        "cost": 3
       }
     ]
   },
@@ -803,7 +844,7 @@
         "target": "Area",
         "area": "Short Range",
         "duration": "1  Minute",
-        "effect": "Prevent the use of astral spells in a short-range area for 1 minute. Any attempt to use astral spells is prevented, spell points are not spent, and you are made aware of the attempt."
+        "effect": "Prevent the use of astral spells in a short-range area for 1 minute. Any attempt to use astral spells is prevented, Mana are not spent, and you are made aware of the attempt."
       },
       {
         "intent": "Storm",
@@ -811,7 +852,7 @@
         "target": "Area",
         "area": "Medium",
         "duration": "Permanent ",
-        "effect": "Lock down an area and permanently prevent the use of astral spells in a medium-range area. Any attempt to use astral spells is prevented, spell points are not spent, and you are made aware of the attempt. You are always aware of this area and alerted when creatures enter it."
+        "effect": "Lock down an area and permanently prevent the use of astral spells in a medium-range area. Any attempt to use astral spells is prevented, Mana are not spent, and you are made aware of the attempt. You are always aware of this area and alerted when creatures enter it."
       }
     ]
   },
@@ -977,7 +1018,7 @@
         "intent": "Surge",
         "range": "Touch",
         "duration": "1  Hour",
-        "effect": "Shift to an adjacent realm for 3 spell points. For 2 additional points per creature, bring others within reach range. Specify environmental or temporal changes based on the destination."
+        "effect": "Shift to an adjacent realm for 3 Mana. For 2 additional points per creature, bring others within reach range. Specify environmental or temporal changes based on the destination."
       }
     ]
   },
@@ -999,7 +1040,7 @@
   },
   {
     "name": "Renewal",
-    "origin": "Life",
+    "origin": "Nature",
     "type": "spell",
     "manner": "Domineer",
     "transmission": "Verdance",
@@ -1008,7 +1049,8 @@
         "intent": "Surge",
         "range": "melee",
         "target": "creature",
-        "effect": "Touch a creature and plant a glowing life-seed. It heals [[1d6]] wounds now, and another [[1d6]] at the start of the next round unless the creature takes damage."
+        "effect": "Touch a creature and then plant a glowing life-seed. It heals [[1d6]] wounds now, and another [[1d6]] at the start of the next round unless the creature takes damage.",
+        "duration": "Instant"
       }
     ]
   },
@@ -1156,14 +1198,14 @@
         "range": "Short",
         "target": "Self",
         "duration": "Until  The End Of Your Next Turn",
-        "effect": "Negate the next spell cast within short range until the end of your next turn. If no spell is cast, regain half the spell points spent."
+        "effect": "Negate the next spell cast within short range until the end of your next turn. If no spell is cast, regain half the Mana spent."
       },
       {
         "intent": "Shout",
         "range": "Short",
         "target": "Self",
         "duration": "Until  The End Of Your Next Turn",
-        "effect": "Silently negate the next spell cast within medium range until the end of your next turn. If no spell is cast, regain half the spell points spent."
+        "effect": "Silently negate the next spell cast within medium range until the end of your next turn. If no spell is cast, regain half the Mana spent."
       }
     ]
   },
@@ -1315,7 +1357,7 @@
         "range": "short",
         "target": "area",
         "duration": "1  minute",
-        "effect": "Summon 3PL 2 hunting beasts that act together as a pack, attacking enemies you indicate. They vanish when reduced to 0 HP or if dismissed as an off-action."
+        "effect": "Summon 3 PL 2 hunting beasts that act together as a pack, attacking enemies you indicate. They vanish when reduced to 0 HP or if dismissed as an off-action."
       },
       {
         "intent": "Shout",
@@ -1477,7 +1519,7 @@
         "target": "creature",
         "area": "short",
         "duration": "Until  the end of your next turn",
-        "effect": "Curse a creature so that their next check or attack is made at disadvantage. If no check is made, regain the spell point spent."
+        "effect": "Curse a creature so that their next check or attack is made at disadvantage. If no check is made, regain the Mana spent."
       }
     ]
   },
@@ -1494,7 +1536,7 @@
         "target": "plants",
         "area": "reach",
         "duration": "Instant ",
-        "effect": "You coax nearby plant life to grow rapidly or bloom. Small vines curl along walls, moss spreads, flowers bloom, or crops are enriched. Can clean air, provide food, or soften terrain."
+        "effect": "You coax nearby plant life to grow rapidly or bloom. Small vines curl along walls, moss spreads, flowers bloom, or crops are enriched."
       },
       {
         "intent": "Surge",
@@ -1572,7 +1614,8 @@
         "intent": "Light Whisper",
         "range": "melee",
         "target": "self",
-        "effect": "Grow a spectral dragon tail for 1 minute. Make sweeping melee attacks to all creatures within melee range as an off-action dealing [[1d4]] Physical damage"
+        "effect": "Grow a spectral dragon tail for 1 minute. Make sweeping melee attacks to all creatures within melee range as an off-action dealing [[1d4]] Physical damage",
+        "duration": "1 minute"
       }
     ]
   },
@@ -1589,6 +1632,251 @@
         "target": "creature",
         "duration": "Until  the end of your next turn",
         "effect": "Roll 1d6. The spell either buffs, debuffs, teleports, or alters a creature randomly. Roll:\n1 = +2 to all checks, 2 = -2 to all checks, 3 = swap places with nearest creature, 4 = grow an extra limb, 5 = invert color, 6 = no effect."
+      }
+    ]
+  },
+  {
+    "name": "Sickness",
+    "origin": "Life",
+    "type": "spell",
+    "manner": "Domineer",
+    "transmission": "Corpus",
+    "effects": [
+      {
+        "intent": "Shout",
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Choose a target within short range. They must succeed on a Survival check or become Sickened. While Sickened, the target has the Coughing, Confused, and Exhausted conditions. Each successful Survival check removes one condition of their choice. The sickness remains until all the conditions are cleared",
+        "cost": 6
+      },
+      {
+        "intent": "Storm",
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Choose a reach range area within short range. Each creature in the area makes a Survival check. On a failure, the creature becomes Plagued and immediately gains the Coughing, Confused, Exhausted, Blind, and Stunned conditions. On each of their turns, a Plagued creature may make a Survival check, removing one condition of their choice on a success. Plagued ends only when all five conditions have been cleared. While any conditions remain, if a Plagued creature moves within reach range of any living creature, that creature must make a Survival check or become Plagued under the same rules.",
+        "cost": 12
+      }
+    ]
+  },
+  {
+    "name": "Sustenance ",
+    "origin": "Life",
+    "type": "spell",
+    "manner": "Manifest",
+    "transmission": "Corpus",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Conjure a small flavorless meal and enough water to count as one meal for yourself. Must be cast three times per day to remain fully nourished."
+      },
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Conjure bland but sufficient meals and water for up to 4 creatures within reach. Each target counts as having eaten one meal. Must be cast three times per day to keep a group fully nourished. Nobody is happy about it but nobody is hungry either.",
+        "cost": 3
+      },
+      {
+        "intent": "Shout",
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Conjure a proper spread of food and clean water for up to 8 creatures within reach. Each target counts as having eaten one full satisfying meal. Removes any conditions caused by hunger or thirst. The food is real, it is good, and for a moment out in the wilderness that means something.",
+        "cost": 6
+      }
+    ]
+  },
+  {
+    "name": "Suppress Menstruation",
+    "origin": "Life",
+    "type": "spell",
+    "manner": "Domineer",
+    "transmission": "Corpus",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Suppress all symptoms of menstruation for 24 hours. Removes Exhausted and any pain related conditions. No cramps, no bloating, no inconvenient timing."
+      }
+    ]
+  },
+  {
+    "name": "Flatulence ",
+    "origin": "Chaos",
+    "type": "spell",
+    "manner": "Domineer",
+    "transmission": "Corpus",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Target a creature within short range. They must succeed on a Survival check or produce a loud and odorous emission. Creatures within reach range of the target have -1 Loyalty with the target until; the end of their next turn."
+      }
+    ]
+  },
+  {
+    "name": "Fear",
+    "origin": "Vozian",
+    "type": "spell",
+    "manner": "Domineer",
+    "transmission": "Corpus",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "Instant",
+        "effect": "One creature within short range must make a Spirit check or gain the Fear condition. On a success they are immune to the Fear condition from spells for 24 hours"
+      },
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Flood a creature's mind with overwhelming dread. They must make a Spirit check or take [[1d6]] psychic damage and gain the Fear condition. On a success they are immune to the Fear condition from spells for 24 hours.",
+        "cost": 3
+      }
+    ]
+  },
+  {
+    "name": "Hail Taxi",
+    "origin": "Tech",
+    "type": "spell",
+    "manner": "Domineer",
+    "transmission": "Aether",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Self",
+        "target": "Self",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Signal the nearest Guild Taxi dispatch. A cab arrives within a reasonable amount of time. The fare is paid in mana on arrival, siphoned directly by the driver's collection device."
+      },
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Ping the Guild relay from outside city limits. A driver will come to you for an additional mana surcharge on top of the standard fare.\n",
+        "cost": 3
+      },
+      {
+        "intent": "Shout",
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Broadcast an emergency signal through the Guild network. A reinforced Guild cab arrives wherever you are. The fare is steep. The interior is lined with arcane dampeners, astral magic cannot be cast inside or into the cab.",
+        "cost": 6
+      }
+    ]
+  },
+  {
+    "name": "Portal",
+    "origin": "Arcane",
+    "type": "spell",
+    "manner": "Manifest",
+    "transmission": "Astral",
+    "effects": [
+      {
+        "intent": "Surge",
+        "range": "Medium",
+        "target": "Creature",
+        "area": "",
+        "duration": "1 hour",
+        "effect": "Create a portal on a solid surface within medium range. At the start of your next turn, create a second portal within medium range. The two portals become linked for 1 hour. Creatures, objects, and projectiles entering one portal immediately exit the other, preserving momentum.",
+        "cost": 3
+      }
+    ]
+  },
+  {
+    "name": "Evict",
+    "origin": "Celestial",
+    "type": "spell",
+    "manner": "Domineer",
+    "transmission": "Astral",
+    "effects": [
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "Until end of your next turn",
+        "effect": "Target a creature within short range. If the creature is not native to the current realm and the realm allows astral travel, it must make a Spirit check or be forcibly expelled from the realm until the end of their next turn. When they return, they appear in the nearest unoccupied space and act immediately if in combat",
+        "cost": 3
+      }
+    ]
+  },
+  {
+    "name": "Translucent",
+    "origin": "Basic",
+    "type": "spell",
+    "manner": "Domineer",
+    "transmission": "Astral",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Self",
+        "target": "Self",
+        "area": "",
+        "duration": "Until end of your next turn",
+        "effect": "Your outline fades into a glass-like shimmer for a brief moment. Gain the Invisible condition until the end of your next turn."
+      },
+      {
+        "intent": "Surge",
+        "range": "Reach",
+        "target": "Creature",
+        "area": "",
+        "duration": "1 minute",
+        "effect": "Light bends unnaturally around a creature you can see within range, reducing them to a faint distortion in the air. The target gains the Invisible condition for 1 minute.",
+        "cost": 3
+      },
+      {
+        "intent": "Shout",
+        "range": "Short",
+        "target": "Area",
+        "area": "reach",
+        "duration": "1 hour",
+        "effect": "A wave of warped light washes across the area, causing creatures of your choice to fade from sight like passing reflections. Targets gain the Invisible condition for 1 hour.",
+        "cost": 6
+      }
+    ]
+  },
+  {
+    "name": "Flashbang",
+    "origin": "Tech",
+    "type": "spell",
+    "manner": "Manifest",
+    "transmission": "Material",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Short",
+        "target": "Creature",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Throw a compact explosive device into a reach range area within short range. Creatures in the area must make a Mental check or gain the Slowed, Blind and Deaf conditions, preventing one per success until the end of their next turn."
       }
     ]
   }

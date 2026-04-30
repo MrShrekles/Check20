@@ -1,3 +1,18 @@
+// ── Roll20 [[expression]] → readable badge ─────────────────────────────────
+// Call parseDice(text) before setting innerHTML anywhere [[...]] may appear.
+function parseDice(text) {
+    if (!text) return text;
+    return String(text).replace(/\[\[([^\]]+)\]\]/g, (_, inner) => {
+        const expr = inner.trim()
+            .replace(/@\{pl\}/gi, 'PL')   // only attribute used in current data
+            .replace(/\s*\*\s*/g, '×')    // 5 * PL  →  5×PL
+            .replace(/\s*\+\s*/g, '+')    // 1 + PL  →  1+PL
+            .replace(/\s*-\s*/g, '-')
+            .trim();
+        return `<span class="dice-expr">${expr}</span>`;
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     console.log("✅ Tooltips active.");
 

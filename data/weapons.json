@@ -295,7 +295,7 @@
     "properties": "1 hand, light",
     "bulk": 1,
     "featureName": "Arcane Empowerment",
-    "featureEffect": "Gain +1 Spell points. When you cast arcane spells deal an additional +2 damage",
+    "featureEffect": "Gain +1 Mana. When you cast arcane spells deal an additional +2 damage",
     "description": "A long, ornate staff used to channel potent magical energies with precision and flair."
   },
   {
@@ -310,7 +310,7 @@
     "properties": "1 hand, light",
     "bulk": 1,
     "featureName": "Basic Empowerment",
-    "featureEffect": "Gain +1 Spell points. You have +1 to the check while casting basic spells",
+    "featureEffect": "Gain +1 Mana. You have +1 to the check while casting basic spells",
     "description": "A simple wooden staff that amplifies spells and helps maintain focus."
   },
   {
@@ -325,7 +325,7 @@
     "properties": "2 hand, light",
     "bulk": 1,
     "featureName": "Crystal Resonance",
-    "featureEffect": "Gain +1 Spell points. When a creature casts a spell on you gain +1 spell points",
+    "featureEffect": "Gain +1 Mana. When a creature casts a spell on you gain +1 Mana",
     "description": "A finely cut magical conduit used to direct and shape arcane power in delicate forms."
   },
   {

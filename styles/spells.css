@@ -14,31 +14,210 @@
   mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
 }
 
+/* ═══════════════════════════════════════════════════════════
+   SPELL LIST — expandable rows
+   ═══════════════════════════════════════════════════════════ */
+
 .spell-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: start;
+  gap: 4px var(--padding);
   padding: var(--padding);
-  gap: var(--padding);
 }
 
-.spell-card {
-  width: 300px;
-  padding: var(--padding);
-  background-color: var(--green-1);
+@media (max-width: 900px) {
+  .spell-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 580px) {
+  .spell-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Section headers span all columns ── */
+.spell-group-header {
+  grid-column: 1 / -1;
+  font-size: 0.72rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--gold);
+  border-bottom: 2px solid var(--green-3);
+  padding: 1.25rem 0 0.35rem;
+  margin-bottom: 0.2rem;
+}
+
+/* ── Row (collapsed) ── */
+.spell-row {
+  align-self: start;
+  background: var(--dark-2);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  transition: background .15s ease, border-color .15s ease;
+}
+
+.spell-row:hover {
+  background: #2a1e08;
+  border-color: var(--gold);
+}
+
+.spell-row.open {
+  background: #1e1608;
+  border-color: var(--gold);
+}
+
+.spell-row-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.6rem;
+  cursor: pointer;
+  user-select: none;
+  flex-wrap: wrap;
+}
+
+.spell-row-arrow {
+  font-size: 0.6rem;
+  color: var(--green-3);
+  flex-shrink: 0;
+  width: 12px;
+  transition: color .15s ease;
+}
+
+.spell-row.open .spell-row-arrow {
+  color: var(--gold);
+}
+
+.spell-row-name {
+  font-weight: bold;
+  font-size: 0.88rem;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+  min-width: 140px;
+}
+
+.spell-row-tags {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.spell-row-tags span {
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--white);
+}
+
+.spell-row-tags .origin { background-color: var(--theme-1); }
+
+.spell-row-cost {
+  font-size: 0.75rem;
+  color: var(--text-cream);
+  font-family: monospace;
+  margin-left: auto;
+  white-space: nowrap;
+  padding-left: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* ── Expanded detail ── */
+.spell-row-detail {
+  display: none;
+  padding: 0.1rem 1rem 0.85rem 1.65rem;
+  border-top: 1px solid rgba(180,140,40,.3);
+  background: #1a1200;
+}
+
+.spell-row.open .spell-row-detail {
+  display: block;
+}
+
+/* ── Intent block ── */
+.spell-intent-block {
+  margin: 0.55rem 0;
+  padding: 0.55rem 0.75rem;
+  background: var(--dark-2);
+  border-left: 3px solid var(--green-3);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+.spell-row.open .spell-intent-block:first-child {
+  border-left-color: var(--gold);
+}
+
+.spell-intent-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.3rem;
+}
+
+.intent-name {
+  font-weight: bold;
+  font-size: 0.82rem;
+  color: var(--gold);
+}
+
+.intent-cost {
+  font-size: 0.72rem;
+  color: var(--white);
+  background: var(--dark-1);
+  border: 1px solid var(--green-3);
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-family: monospace;
+}
+
+.intent-meta {
+  font-size: 0.7rem;
+  color: var(--text-cream);
+  opacity: .75;
+}
+
+.intent-effect {
+  font-size: 0.83rem;
+  color: var(--white);
+  margin: 0;
+  line-height: 1.5;
+  font-weight: normal;
+}
+
+/* ── Copy buttons ── */
+.spell-row-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.spell-row-actions button {
+  padding: 0.28rem 0.7rem;
+  font-size: 0.75rem;
+  background: var(--dark-2);
+  color: var(--text-cream);
   border: 1px solid var(--green-3);
   border-radius: var(--border-radius);
-  box-shadow: 0 0 6px var(--green-3);
-  color: var(--text-cream);
-  font-weight: bold;
-  cursor: default;
-  flex-wrap: wrap;
-  word-break: break-word;
+  cursor: pointer;
+  transition: background .15s, color .15s;
 }
 
-@media (max-width: 690px) {
-  .spell-card {
-    width: 100%;
-  }
+.spell-row-actions button:hover {
+  background: var(--green-3);
+  color: var(--white);
+}
+
+.spell-row-actions button.copied {
+  background: var(--gold);
+  color: var(--dark-2);
+  border-color: var(--gold);
 }
 
 .spell-card:hover {
@@ -187,51 +366,113 @@ ul.transmission strong {
 /* Sort Toggles */
 #sort-toggles {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 0.3rem;
-  margin: var(--padding) 0;
+  gap: 0.25rem;
 }
 
 #sort-toggles button {
-  padding: 0.4rem 0.8rem;
-  background: var(--theme-dark);
-  color: var(--cream);
+  padding: 0.25rem 0.65rem;
+  background: var(--theme-1);
+  color: var(--text-cream);
   border: 1px solid var(--theme-2);
-  border-radius: var(--border-radius);
+  border-radius: 4px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  font-size: 0.78rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+#sort-toggles button:hover {
+  background: var(--green-2);
+  border-color: var(--green-3);
+  color: var(--white);
+  transform: none;
 }
 
 #sort-toggles button.active {
   background: var(--green-2);
-  font-weight: bold;
+  border-color: var(--gold);
+  color: var(--gold);
 }
 
-/* Intent Toggles */
+/* Expand / Collapse + Count */
+.spellbook-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.spellbook-actions button {
+  padding: 0.25rem 0.7rem;
+  background: var(--dark-2);
+  color: var(--text-cream);
+  border: 1px solid var(--green-3);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: background 0.15s, color 0.15s;
+}
+
+.spellbook-actions button:hover {
+  background: var(--green-2);
+  color: var(--white);
+  transform: none;
+}
+
+.spell-count {
+  font-size: 0.72rem;
+  color: var(--gold);
+  white-space: nowrap;
+  opacity: 0.8;
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--theme-2);
+}
+
+/* Intent Toggles — inline in controls row */
 #intent-toggles {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 0.3rem;
-  margin: var(--padding) 0;
+  gap: 0.25rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid var(--theme-2);
 }
 
 #intent-toggles button {
-  padding: 0.3rem 0.6rem;
+  padding: 0.25rem 0.55rem;
   background: var(--dark-2);
-  color: var(--cream);
+  color: var(--text-cream);
   border: 1px solid var(--theme-2);
-  border-radius: var(--border-radius);
+  border-radius: 4px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+#intent-toggles button:hover {
+  background: var(--green-2);
+  color: var(--white);
+  transform: none;
 }
 
 #intent-toggles button.active {
   background: var(--green-2);
-  font-weight: bold;
+  border-color: var(--gold);
+  color: var(--gold);
 }
 
 main {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 @media (max-width: 690px) {
@@ -249,7 +490,7 @@ main {
 #spell-tabs {
   display: flex;
   width: 100%;
-  margin: 0 0 0 0;
+  margin: 0;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -289,44 +530,72 @@ main {
   display: block;
 }
 
+/* ── Spellbook Sticky Toolbar ────────────────────────────────────── */
+#spellbook-toolbar {
+  position: sticky;
+  top: 50px;
+  z-index: 9;
+  background: var(--dark-1);
+  border-bottom: 2px solid var(--green-3);
+  display: flex;
+  flex-direction: column;
+}
+
 /* ── Origin Sub-tabs ─────────────────────────────────────────────── */
 #origin-toggles {
   display: flex;
   flex-wrap: wrap;
-  background: var(--green-1);
-  border-bottom: 2px solid var(--green-3);
-  margin: 0 0 1.5rem 0;
-  padding: 5px;
-  gap: 5px;
-  border-radius: var(--border-radius);
+  background: var(--theme-1);
+  border-bottom: 1px solid rgba(143, 191, 143, 0.2);
+  padding: 4px 6px;
+  gap: 3px;
 }
 
 .origin-tab {
-  padding: 0.45rem 0.9rem;
-  background: var(--theme-1);
+  padding: 0.45rem 0.8rem;
+  background: transparent;
   border: none;
-  border-bottom: 3px solid transparent;
+  border-bottom: 2px solid transparent;
   cursor: pointer;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: bold;
-  color: var(--cream);
+  color: var(--text-cream);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
-  position: relative;
-  bottom: -2px;
   white-space: nowrap;
+  border-radius: 4px 4px 0 0;
 }
 
 .origin-tab:hover {
   color: var(--white);
   background: var(--green-2);
+  transform: none;
 }
 
 .origin-tab.active {
   color: var(--gold);
   border-bottom-color: var(--gold);
   background: var(--green-2);
+}
+
+/* ── Controls Row ────────────────────────────────────────────────── */
+#spellbook-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 6px 10px;
+  background: var(--dark-2);
+  flex-wrap: wrap;
+}
+
+.control-label {
+  font-size: 0.68rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--green-3);
+  flex-shrink: 0;
 }
 
 /* ── Spell Builder ───────────────────────────────────────────────── */
