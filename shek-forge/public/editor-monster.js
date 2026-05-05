@@ -143,44 +143,138 @@ document.addEventListener('click', e => {
         document.querySelectorAll('.autocomplete-list.open').forEach(el => el.classList.remove('open'));
 });
 
+// ── FEATURE AUTOCOMPLETE ──────────────────────────────────────────────────────
+function buildFeaturePool() {
+    const seen = new Set();
+    const pool = [];
+    const sch = getMonsterSchema();
+    state.data.forEach(monster => {
+        const name = (monster[sch.featureNameKey] || '').trim();
+        if (name && !seen.has(name)) {
+            seen.add(name);
+            pool.push({
+                name,
+                type:     monster[sch.featureTypeKey]     || '',
+                range:    monster[sch.featureRangeKey]    || '',
+                damage:   monster[sch.featureDamageKey]   || '',
+                duration: monster[sch.featureDurationKey] || '',
+                effect:   monster[sch.featureEffectKey]   || '',
+            });
+        }
+        (monster.features || []).forEach(f => {
+            const fname = (f.name || '').trim();
+            if (fname && !seen.has(fname)) {
+                seen.add(fname);
+                pool.push({ name: fname, type: f.type || '', range: f.range || '',
+                    damage: f.damage || '', duration: f.duration || '', effect: f.effect || '' });
+            }
+        });
+    });
+    return pool.sort((a, b) => a.name.localeCompare(b.name));
+}
+function filterFeatureAC(input, acId, idx, fi) {
+    const val = input.value;
+    if (fi === -1) {
+        state.data[idx][getMonsterSchema().featureNameKey] = val;
+    } else {
+        if (state.data[idx].features?.[fi]) state.data[idx].features[fi].name = val;
+    }
+    markUnsaved();
+    const q = val.toLowerCase().trim();
+    const list = document.getElementById(acId);
+    if (!list) return;
+    const pool = buildFeaturePool();
+    const hits = q ? pool.filter(f => f.name.toLowerCase().includes(q)) : [];
+    if (!hits.length) { list.classList.remove('open'); return; }
+    list.innerHTML = hits.slice(0, 12).map(f => {
+        const pi = pool.indexOf(f);
+        const call = fi === -1 ? `applyMainFeature(${idx},${pi})` : `applyExtraFeature(${idx},${fi},${pi})`;
+        return `
+        <div class="autocomplete-item" onmousedown="${call}">
+            <span class="autocomplete-item-name">${escHtml(f.name)}</span>
+            <span class="autocomplete-item-meta">${escHtml([f.type, f.range].filter(Boolean).join(' · '))}</span>
+        </div>`;
+    }).join('');
+    list.classList.add('open');
+}
+function applyMainFeature(idx, pi) {
+    const f = buildFeaturePool()[pi];
+    if (!f) return;
+    const sch = getMonsterSchema();
+    state.data[idx][sch.featureNameKey]     = f.name;
+    state.data[idx][sch.featureTypeKey]     = f.type;
+    state.data[idx][sch.featureRangeKey]    = f.range;
+    state.data[idx][sch.featureDamageKey]   = f.damage;
+    state.data[idx][sch.featureDurationKey] = f.duration;
+    state.data[idx][sch.featureEffectKey]   = f.effect;
+    markUnsaved();
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+    set(`mfeat-name-${idx}`,     f.name);
+    set(`mfeat-type-${idx}`,     f.type);
+    set(`mfeat-range-${idx}`,    f.range);
+    set(`mfeat-damage-${idx}`,   f.damage);
+    set(`mfeat-duration-${idx}`, f.duration);
+    set(`mfeat-effect-${idx}`,   f.effect);
+    closeAutocomplete(`mfeat-${idx}`, 0);
+}
+function applyExtraFeature(idx, fi, pi) {
+    const f = buildFeaturePool()[pi];
+    if (!f || !state.data[idx].features?.[fi]) return;
+    Object.assign(state.data[idx].features[fi], {
+        name: f.name, type: f.type, range: f.range,
+        damage: f.damage, duration: f.duration, effect: f.effect,
+    });
+    markUnsaved();
+    renderExtraFeaturesList(idx);
+}
+
 // ── EXTRA FEATURES ────────────────────────────────────────────────────────────
 function renderExtraFeature(idx, fi, f) {
     return `
     <div class="extra-feature">
-        <div class="extra-feature-header">
-            <input class="field-input extra-feature-name" type="text" placeholder="Feature name..."
-                value="${escAttr(f.name || '')}"
-                onchange="updateExtraFeature(${idx},${fi},'name',this.value)" oninput="markUnsaved()">
-            <button class="extra-feature-delete" onclick="removeExtraFeature(${idx},${fi})">✕</button>
-        </div>
-        <div class="field-grid extra-feature-body">
-            <div class="field-wrap">
-                <label class="field-label">Action Type</label>
-                <select class="field-input" onchange="updateExtraFeature(${idx},${fi},'type',this.value)">
-                    ${buildSelect(MD.featureType, f.type || '')}
-                </select>
+        <div class="extra-feature-split">
+            <div class="extra-feature-fields">
+                <div class="field-wrap">
+                    <div class="extra-feature-label-row">
+                        <label class="field-label">Feature Name</label>
+                        <button class="extra-feature-delete" onclick="removeExtraFeature(${idx},${fi})">✕</button>
+                    </div>
+                    <div class="autocomplete-wrap">
+                        <input class="field-input" type="text" placeholder="Feature name..."
+                            value="${escAttr(f.name || '')}"
+                            oninput="filterFeatureAC(this,'ac-efeat-${idx}-${fi}',${idx},${fi})"
+                            onblur="closeAutocomplete('efeat-${idx}-${fi}')">
+                        <div class="autocomplete-list" id="ac-efeat-${idx}-${fi}"></div>
+                    </div>
+                </div>
+                <div class="field-wrap">
+                    <label class="field-label">Action Type</label>
+                    <select class="field-input" onchange="updateExtraFeature(${idx},${fi},'type',this.value)">
+                        ${buildSelect(MD.featureType, f.type || '')}
+                    </select>
+                </div>
+                <div class="field-wrap">
+                    <label class="field-label">Range</label>
+                    <select class="field-input" onchange="updateExtraFeature(${idx},${fi},'range',this.value)">
+                        ${buildSelect(MD.featureRange, f.range || '')}
+                    </select>
+                </div>
+                <div class="field-wrap">
+                    <label class="field-label">Damage Type</label>
+                    <select class="field-input" onchange="updateExtraFeature(${idx},${fi},'damage',this.value)">
+                        ${buildSelect(MD.featureDamage, f.damage || '')}
+                    </select>
+                </div>
+                <div class="field-wrap">
+                    <label class="field-label">Duration</label>
+                    <select class="field-input" onchange="updateExtraFeature(${idx},${fi},'duration',this.value)">
+                        ${buildSelect(MD.featureDuration, f.duration || '')}
+                    </select>
+                </div>
             </div>
-            <div class="field-wrap">
-                <label class="field-label">Range</label>
-                <select class="field-input" onchange="updateExtraFeature(${idx},${fi},'range',this.value)">
-                    ${buildSelect(MD.featureRange, f.range || '')}
-                </select>
-            </div>
-            <div class="field-wrap">
-                <label class="field-label">Damage Type</label>
-                <select class="field-input" onchange="updateExtraFeature(${idx},${fi},'damage',this.value)">
-                    ${buildSelect(MD.featureDamage, f.damage || '')}
-                </select>
-            </div>
-            <div class="field-wrap">
-                <label class="field-label">Duration</label>
-                <select class="field-input" onchange="updateExtraFeature(${idx},${fi},'duration',this.value)">
-                    ${buildSelect(MD.featureDuration, f.duration || '')}
-                </select>
-            </div>
-            <div class="field-wrap full">
+            <div class="extra-feature-effect">
                 <label class="field-label">Effect</label>
-                <textarea class="field-input" rows="3" data-quick-build="feature"
+                <textarea class="field-input" data-quick-build="feature"
                     onchange="updateExtraFeature(${idx},${fi},'effect',this.value)"
                     oninput="markUnsaved()">${escHtml(f.effect || '')}</textarea>
             </div>
@@ -364,6 +458,22 @@ function copyForRoll20(idx, btn) {
     if (navigator.clipboard) navigator.clipboard.writeText(cmd).then(flashBtn).catch(fallback); else fallback();
 }
 
+// ── SPELL ATTACK AUTOFILL ─────────────────────────────────────────────────────
+let spellAttackPool = {};   // name → { damage, damage_type }
+
+function autoFillSpellAttack(input, idx) {
+    markUnsaved();
+    const match = spellAttackPool[input.value];
+    if (!match) return;
+    updateField(idx, 'spell.name',        input.value);
+    updateField(idx, 'spell.damage',      match.damage);
+    updateField(idx, 'spell.damage_type', match.damage_type);
+    const dmgEl  = document.getElementById(`atk-damage-spell-${idx}`);
+    const typeEl = document.getElementById(`atk-type-spell-${idx}`);
+    if (dmgEl)  dmgEl.value  = match.damage;
+    if (typeEl) typeEl.value = match.damage_type;
+}
+
 // ── MONSTER SPELLS ────────────────────────────────────────────────────────────
 let spellsData = [];
 const INTENT_COSTS = { 'light whisper':0,'whisper':1,'surge':3,'shout':6,'roar':9,'storm':12,'cataclysm':24 };
@@ -403,10 +513,16 @@ function renderMonsterSpell(idx, si, s) {
                 <span class="pl-bubble"><span class="pl-seg pl-seg-mt"><strong>MN</strong> ${cost}</span></span>
             </div>
             <div class="field-wrap">
-                <label class="field-label">Range</label>
+                <label class="field-label">Target</label>
                 <select class="field-input" onchange="updateMonsterSpellEffect(${idx},${si},${ei},'range',this.value)">
                     ${buildSelect(SPELL_RANGES, e.range || '')}
                 </select>
+            </div>
+            <div class="field-wrap">
+                <label class="field-label">Area</label>
+                <input class="field-input" type="text" placeholder="e.g. 10ft cone"
+                    value="${escAttr(e.area || '')}"
+                    onchange="updateMonsterSpellEffect(${idx},${si},${ei},'area',this.value)" oninput="markUnsaved()">
             </div>
             <div class="field-wrap">
                 <label class="field-label">Damage</label>
@@ -468,7 +584,7 @@ function addMonsterSpellEffect(idx, si) {
     const s = state.data[idx].spells?.[si];
     if (!s) return;
     if (!s.effects) s.effects = [];
-    s.effects.push({ intent: 'Whisper', cost: 1, range: 'Short', damage: '', type: '', effect: '' });
+    s.effects.push({ intent: 'Whisper', cost: 1, range: 'Short', area: '', damage: '', type: '', effect: '' });
     markUnsaved();
     renderMonsterSpellsList(idx);
 }
@@ -501,6 +617,11 @@ function openSpellPicker(idx) {
 
         function addSpell(spell) {
             if (!state.data[idx].spells) state.data[idx].spells = [];
+            if (state.data[idx].spells.some(s => s.name === spell.name)) {
+                showToast(`${spell.name} already added`, 'info');
+                overlay.remove();
+                return;
+            }
             state.data[idx].spells.push({
                 name:         spell.name,
                 manner:       spell.manner || '',
@@ -509,6 +630,7 @@ function openSpellPicker(idx) {
                     intent: e.intent,
                     cost:   spellCost(e.intent),
                     range:  e.range  || '',
+                    area:   e.area   || '',
                     damage: '',
                     type:   '',
                     effect: e.effect || '',
@@ -523,12 +645,16 @@ function openSpellPicker(idx) {
             const filtered = spellsData.filter(s =>
                 !q || s.name.toLowerCase().includes(q.toLowerCase())
             );
-            const rows = filtered.slice(0, 40).map(s => `
-                <div class="entry-row" style="cursor:pointer;padding:6px 10px;border-radius:4px" data-name="${escAttr(s.name)}">
-                    <div class="entry-row-name">${escHtml(s.name)}</div>
+            const already = new Set((state.data[idx].spells || []).map(s => s.name));
+            const rows = filtered.slice(0, 40).map(s => {
+                const has = already.has(s.name);
+                return `
+                <div class="entry-row" style="cursor:pointer;padding:6px 10px;border-radius:4px${has ? ';opacity:0.4;pointer-events:none' : ''}" data-name="${escAttr(s.name)}">
+                    <div class="entry-row-name">${escHtml(s.name)}${has ? ' ✓' : ''}</div>
                     <div class="entry-row-meta">${escHtml([s.manner, s.transmission, s.origin].filter(Boolean).join(' · '))}
                         — ${(s.effects||[]).map(e=>escHtml(e.intent)).join(', ')}</div>
-                </div>`).join('');
+                </div>`;
+            }).join('');
 
             const customRow = q ? `
                 <div class="entry-row" id="spell-custom-row" style="cursor:pointer;padding:6px 10px;border-radius:4px;border:1px dashed var(--border);opacity:0.7">
@@ -586,14 +712,26 @@ registerEditor('monster', {
 
     onLoad: (data) => {
         const list = document.getElementById('env-options');
-        if (!list) return;
-        const CANONICAL = ['Prime','Fey','Dreamsea','Void','Ordealis','Eclipse','Space','Universal','Celestia'];
-        const seen = new Set();
-        // Individual canonical values first so they always appear
-        CANONICAL.forEach(e => seen.add(e));
-        // Then all combo values found in the actual data
-        data.forEach(m => { if (m.environment) seen.add(m.environment); });
-        list.innerHTML = [...seen].map(e => `<option value="${e}">`).join('');
+        if (list) {
+            const CANONICAL = ['Prime','Fey','Dreamsea','Void','Ordealis','Eclipse','Space','Universal','Celestia'];
+            const seen = new Set();
+            CANONICAL.forEach(e => seen.add(e));
+            data.forEach(m => { if (m.environment) seen.add(m.environment); });
+            list.innerHTML = [...seen].map(e => `<option value="${e}">`).join('');
+        }
+
+        let spellDL = document.getElementById('forge-spell-datalist');
+        if (!spellDL) {
+            spellDL = document.createElement('datalist');
+            spellDL.id = 'forge-spell-datalist';
+            document.body.appendChild(spellDL);
+        }
+        spellAttackPool = {};
+        data.forEach(m => {
+            if (m.spell?.name) spellAttackPool[m.spell.name] = { damage: m.spell.damage || '', damage_type: m.spell.damage_type || '' };
+        });
+        const spellNames = Object.keys(spellAttackPool).sort();
+        spellDL.innerHTML = spellNames.map(n => `<option value="${escAttr(n)}">`).join('');
     },
 
     headerActions: (entry, idx) =>
@@ -698,8 +836,9 @@ registerEditor('monster', {
                                     <div class="autocomplete-list" id="ac-${key}-${idx}"></div>
                                    </div>`
                                 : `<input id="atk-name-${key}-${idx}" class="field-input attack-name" type="text" placeholder="Name..."
+                                    list="forge-spell-datalist"
                                     value="${escAttr(atk.name || '')}"
-                                    onchange="updateField(${idx},'${key}.name',this.value)" oninput="markUnsaved()">`;
+                                    onchange="updateField(${idx},'${key}.name',this.value)" oninput="autoFillSpellAttack(this,${idx})">`;
                             return `
                             <div class="attack-row">
                                 <div class="attack-label">${label}</div>
@@ -817,36 +956,40 @@ registerEditor('monster', {
                     <div class="field-grid">
                         <div class="field-wrap">
                             <label class="field-label">Feature Name</label>
-                            <input class="field-input" type="text" value="${escAttr(featureNameVal)}"
-                                onchange="updateField(${idx},'${sch.featureNameKey}',this.value)" oninput="markUnsaved()">
+                            <div class="autocomplete-wrap">
+                                <input id="mfeat-name-${idx}" class="field-input" type="text" value="${escAttr(featureNameVal)}"
+                                    oninput="filterFeatureAC(this,'ac-mfeat-${idx}',${idx},-1)"
+                                    onblur="closeAutocomplete('mfeat-${idx}')">
+                                <div class="autocomplete-list" id="ac-mfeat-${idx}"></div>
+                            </div>
                         </div>
                         <div class="field-wrap">
                             <label class="field-label">Action Type</label>
-                            <select class="field-input" onchange="updateField(${idx},'${sch.featureTypeKey}',this.value)">
+                            <select id="mfeat-type-${idx}" class="field-input" onchange="updateField(${idx},'${sch.featureTypeKey}',this.value)">
                                 ${sel(MD.featureType, featureTypeVal)}
                             </select>
                         </div>
                         <div class="field-wrap">
                             <label class="field-label">Range</label>
-                            <select class="field-input" onchange="updateField(${idx},'${sch.featureRangeKey}',this.value)">
+                            <select id="mfeat-range-${idx}" class="field-input" onchange="updateField(${idx},'${sch.featureRangeKey}',this.value)">
                                 ${sel(MD.featureRange, featureRangeVal)}
                             </select>
                         </div>
                         <div class="field-wrap">
                             <label class="field-label">Damage Type</label>
-                            <select class="field-input" onchange="updateField(${idx},'${sch.featureDamageKey}',this.value)">
+                            <select id="mfeat-damage-${idx}" class="field-input" onchange="updateField(${idx},'${sch.featureDamageKey}',this.value)">
                                 ${sel(MD.featureDamage, featureDmgVal)}
                             </select>
                         </div>
                         <div class="field-wrap full">
                             <label class="field-label">Duration</label>
-                            <select class="field-input" onchange="updateField(${idx},'${sch.featureDurationKey}',this.value)">
+                            <select id="mfeat-duration-${idx}" class="field-input" onchange="updateField(${idx},'${sch.featureDurationKey}',this.value)">
                                 ${sel(MD.featureDuration, featureDurVal)}
                             </select>
                         </div>
                         <div class="field-wrap full">
                             <label class="field-label">Effect</label>
-                            <textarea class="field-input" rows="4" data-quick-build="feature"
+                            <textarea id="mfeat-effect-${idx}" class="field-input" rows="4" data-quick-build="feature"
                                 onchange="updateField(${idx},'${sch.featureEffectKey}',this.value)"
                                 oninput="markUnsaved()">${escHtml(featureEffectVal)}</textarea>
                         </div>

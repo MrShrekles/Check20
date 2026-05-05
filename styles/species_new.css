@@ -243,6 +243,7 @@
     padding: .6rem .7rem;
     font-size: .92rem;
     position: relative;
+    white-space: pre-wrap;
 }
 
 .species-body.collapsed {
@@ -378,8 +379,9 @@ h2 {
 }
 
 .feature-effect {
-    display: inline;
+    display: block;
     opacity: .95;
+    white-space: pre-wrap;
 }
 
 .feature-pills {

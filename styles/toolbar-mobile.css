@@ -1,0 +1,73 @@
+/* ── COLLAPSIBLE STICKY TOOLBAR (mobile) ─────────────────────────────────── */
+
+.toolbar-toggle-btn {
+    display: none;
+}
+
+@media (max-width: 680px) {
+
+    .toolbar-toggle-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 8px 14px;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        cursor: pointer;
+        font-size: 11px;
+        font-family: inherit;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.5);
+        box-sizing: border-box;
+        transition: color 0.15s;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .toolbar-toggle-btn:active {
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .toolbar-toggle-left {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .toolbar-toggle-pip {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0.6;
+        transition: background 0.2s;
+    }
+
+    .toolbar-toggle-btn.has-filters .toolbar-toggle-pip {
+        background: #e8a050;
+        opacity: 1;
+        box-shadow: 0 0 4px #e8a050;
+    }
+
+    .toolbar-toggle-chevron {
+        font-size: 9px;
+        transition: transform 0.2s ease;
+        display: inline-block;
+        opacity: 0.7;
+    }
+
+    .toolbar-toggle-btn.open .toolbar-toggle-chevron {
+        transform: rotate(180deg);
+    }
+
+    .toolbar-collapsible {
+        display: none;
+        overflow: hidden;
+    }
+
+    .toolbar-collapsible.open {
+        display: block;
+    }
+}

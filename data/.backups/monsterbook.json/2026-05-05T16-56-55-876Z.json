@@ -5030,59 +5030,5 @@
         ]
       }
     ]
-  },
-  {
-    "name": "Gunslinger",
-    "_group": "Soldier",
-    "origin": "Basic",
-    "size": "Medium",
-    "rarity": "Common",
-    "environment": "Prime",
-    "behavior": "Social",
-    "description": "",
-    "lore": "",
-    "motivation": "",
-    "pl": 6,
-    "check_physical": 6,
-    "check_mental": 0,
-    "walk": 30,
-    "fly": 0,
-    "swim": 0,
-    "climb": 0,
-    "feature_name": "Burst Fire",
-    "feature_type": "Passive",
-    "feature_range": "",
-    "feature_effect": "When you attack with a firearm, make an additional firearm attack at disadvantage.",
-    "feature_duration": "",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "Dagger",
-      "equipped": true,
-      "damage": "1d4",
-      "damage_type": "Slashing"
-    },
-    "ranged_attack": {
-      "name": "Revolver",
-      "equipped": true,
-      "damage": "3d4!",
-      "damage_type": "Piercing"
-    },
-    "spell": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "features": [
-      {
-        "name": "Shot on the Run",
-        "type": "Action",
-        "range": "",
-        "effect": "Dash as an action, then you may make a firearm attack at disadvantage",
-        "duration": "",
-        "damage": ""
-      }
-    ],
-    "art": ""
   }
 ]

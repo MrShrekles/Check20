@@ -297,17 +297,17 @@
     "effects": [
       {
         "intent": "Whisper",
-        "range": "Short",
-        "target": "Point",
-        "duration": "1 minute",
-        "effect": "Deploy a PL 2 Sentry for 1 minute at an unoccupied space within range, it can be applied to walls and ceilings made of metal. It acts on your command each round"
+        "range": "reach",
+        "target": "creature",
+        "duration": "1  minute",
+        "effect": "Deploy a PL 1 stationary machine gun turret. It acts on your command each round, firing [[1d6]] piercing damage."
       },
       {
         "intent": "Shout",
-        "range": "Short",
-        "target": "Point",
-        "duration": "8 hours",
-        "effect": "Summon a PL 6 walker for 8 hours at an unoccupied space within range equipped with a mounted sentrygun and stabilizer legs. It acts on its own on your turn in combat"
+        "range": "reach",
+        "target": "creature",
+        "duration": "1  minute",
+        "effect": "Summon a PL 8 autonomous walker equipped with a mounted cannon and stabilizer legs. It can move on its own, take cover, and use Suppressive Fire: Target an area. All enemies must pass a Mental check or suffer Disadvantage until end of turn."
       }
     ]
   },
@@ -1988,60 +1988,6 @@
         "duration": "1 minute",
         "effect": "Chains infused with dragon spirits link 2 creatures together. When one takes damage they each take half the damage. When one takes a condition they both take the condition. \n\nThe creatures cannot move farther apart than their starting distance or reach range, whichever is greater. If either creature attempts to move beyond the limit, both creatures make contested Strength checks. On a success, the moving creature may drag the other.\n\nCreatures each size larger than the other gain +3 on these checks. If one creature falls or is forcibly moved, the other may be pulled with them unless they succeed a Strength check.",
         "cost": 9
-      }
-    ]
-  },
-  {
-    "name": "Breach Plate",
-    "origin": "Tech",
-    "type": "spell",
-    "manner": "Manifest",
-    "transmission": "Material",
-    "effects": [
-      {
-        "intent": "Whisper",
-        "range": "Reach",
-        "target": "Creature",
-        "area": "",
-        "duration": "Instant",
-        "effect": "Deploy a compact breach device on the ground within reach. When triggered by pressure, it erupts outward with force and sparks. Creatures that pass within reach make a Physical check and are knocked back short range and become Stunned until the end of their next turn or half as much per success and are not stunned"
-      }
-    ]
-  },
-  {
-    "name": " Become A Car",
-    "origin": "Chaos",
-    "type": "spell",
-    "manner": "Domineer",
-    "transmission": "Elemental",
-    "effects": [
-      {
-        "intent": "Whisper",
-        "range": "Short",
-        "target": "Creature",
-        "area": "",
-        "duration": "Instant",
-        "effect": "You create a subdermal implant that activates manabots that turn you into a car. You do not have control of the car"
-      }
-    ]
-  },
-  {
-    "name": "Mindfog Grenade",
-    "origin": "Tech",
-    "type": "spell",
-    "manner": "Manifest",
-    "transmission": "Material",
-    "effects": [
-      {
-        "intent": "Surge",
-        "range": "Short",
-        "target": "Point",
-        "area": "",
-        "duration": "Instant",
-        "effect": "Throw a grenade of unstable mana vapor at a point within short range. Creatures within reach range take 1d4 Psychic damage and gain Confused on a failed Spirit check.",
-        "cost": 3,
-        "damage": "1d4",
-        "damageType": "Psychic"
       }
     ]
   }

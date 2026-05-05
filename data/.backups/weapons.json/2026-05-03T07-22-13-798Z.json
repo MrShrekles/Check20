@@ -13,19 +13,6 @@
     "description": "A reliable, rapid-fire weapon favored by soldiers and raiders alike for its balanced accuracy and fire rate."
   },
   {
-    "name": "Divine Carbine",
-    "category": "firearm",
-    "check": "Agility, Luck, Observation",
-    "range": "Medium",
-    "damage": "3d4!",
-    "damageType": "Solar",
-    "cost": 1500,
-    "rarity": "very rare",
-    "properties": "2 Hand",
-    "bulk": 2,
-    "description": ""
-  },
-  {
     "name": "Blunderbuss",
     "category": "firearm",
     "check": "Agility, Intellect, Luck, Observation",
@@ -905,19 +892,6 @@
     "properties": "2 Hand",
     "bulk": 1,
     "description": "A long weapon designed for mounted charges, with devastating force behind its point."
-  },
-  {
-    "name": "Light Lance",
-    "category": "melee",
-    "check": "Agility, Strength",
-    "range": "Reach",
-    "damage": "2d6",
-    "damageType": "Solar",
-    "cost": 1500,
-    "rarity": "very rare",
-    "properties": "2 Hand",
-    "bulk": 1,
-    "description": ""
   },
   {
     "name": "Lantern Mace",

@@ -186,6 +186,7 @@
   font-size: 0.83rem;
   color: var(--white);
   margin: 0;
+  white-space: pre-wrap;
   line-height: 1.5;
   font-weight: normal;
 }

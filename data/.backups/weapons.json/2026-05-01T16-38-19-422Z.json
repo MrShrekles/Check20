@@ -13,19 +13,6 @@
     "description": "A reliable, rapid-fire weapon favored by soldiers and raiders alike for its balanced accuracy and fire rate."
   },
   {
-    "name": "Divine Carbine",
-    "category": "firearm",
-    "check": "Agility, Luck, Observation",
-    "range": "Medium",
-    "damage": "3d4!",
-    "damageType": "Solar",
-    "cost": 1500,
-    "rarity": "very rare",
-    "properties": "2 Hand",
-    "bulk": 2,
-    "description": ""
-  },
-  {
     "name": "Blunderbuss",
     "category": "firearm",
     "check": "Agility, Intellect, Luck, Observation",
@@ -907,19 +894,6 @@
     "description": "A long weapon designed for mounted charges, with devastating force behind its point."
   },
   {
-    "name": "Light Lance",
-    "category": "melee",
-    "check": "Agility, Strength",
-    "range": "Reach",
-    "damage": "2d6",
-    "damageType": "Solar",
-    "cost": 1500,
-    "rarity": "very rare",
-    "properties": "2 Hand",
-    "bulk": 1,
-    "description": ""
-  },
-  {
     "name": "Lantern Mace",
     "category": "melee",
     "check": "Agility, Strength",
@@ -1663,44 +1637,5 @@
     "properties": "",
     "bulk": 1,
     "description": ""
-  },
-  {
-    "name": "Sentrygun (NPC)",
-    "category": "firearm",
-    "check": "Physical",
-    "range": "Medium",
-    "damage": "1d4!",
-    "damageType": "Piercing",
-    "cost": 0,
-    "rarity": "common",
-    "properties": "",
-    "bulk": 1,
-    "description": ""
-  },
-  {
-    "name": "Flame Whip",
-    "category": "melee",
-    "check": "Agility, Strength, Luck",
-    "range": "Reach",
-    "damage": "1d6",
-    "damageType": "Fire",
-    "cost": 120,
-    "rarity": "rare",
-    "properties": "1 hand, light",
-    "bulk": 1,
-    "description": "A cruel leather whip that stretches unnaturally as it cracks through the air, igniting into searing flame with each strike. The farther it lashes, the hotter the fire burns, leaving scorched trails and the smell of burning ash behind it."
-  },
-  {
-    "name": "Flare Gun",
-    "category": "firearm",
-    "check": "Agility, Strength, Luck, Observation",
-    "range": "Long",
-    "damage": "1d6",
-    "damageType": "Fire",
-    "cost": 20,
-    "rarity": "common",
-    "properties": "1 hand, firearm, loud",
-    "bulk": 1,
-    "description": "Usually only has 1 shot before expended"
   }
 ]

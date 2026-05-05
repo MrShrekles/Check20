@@ -83,10 +83,9 @@ function renderSpellEffectRow(idx, ei, e) {
                 </select>
             </div>
             <div class="field-wrap">
-                <label class="field-label">Damage Type</label>
-                <select class="field-input" onchange="updateSpellEffect(${idx},${ei},'damageType',this.value)">
-                    ${buildSelect(SD.damageTypes, e.damageType || '')}
-                </select>
+                <label class="field-label">Area</label>
+                <input class="field-input" type="text" placeholder="e.g. 10ft cone" value="${escAttr(e.area || '')}"
+                    onchange="updateSpellEffect(${idx},${ei},'area',this.value)" oninput="markUnsaved()">
             </div>
             <div class="field-wrap">
                 <label class="field-label">Damage</label>
@@ -94,9 +93,10 @@ function renderSpellEffectRow(idx, ei, e) {
                     onchange="updateSpellEffect(${idx},${ei},'damage',this.value)" oninput="markUnsaved()">
             </div>
             <div class="field-wrap">
-                <label class="field-label">Area</label>
-                <input class="field-input" type="text" value="${escAttr(e.area || '')}"
-                    onchange="updateSpellEffect(${idx},${ei},'area',this.value)" oninput="markUnsaved()">
+                <label class="field-label">Damage Type</label>
+                <select class="field-input" onchange="updateSpellEffect(${idx},${ei},'damageType',this.value)">
+                    ${buildSelect(SD.damageTypes, e.damageType || '')}
+                </select>
             </div>
             <div class="field-wrap">
                 <label class="field-label">Duration</label>

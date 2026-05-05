@@ -1,3 +1,16 @@
+// ── DUPLICATE ─────────────────────────────────────────────────────────────────
+function duplicateWeapon(idx) {
+    const original = state.data[idx];
+    if (!original) return;
+    const copy = JSON.parse(JSON.stringify(original));
+    copy.name = (original.name || 'Weapon') + ' (Copy)';
+    state.data.splice(idx + 1, 0, copy);
+    state.filteredData = getVisibleData();
+    state.currentIndex = idx + 1;
+    renderGroupSelector(); renderEntryList(); renderEditor(); markUnsaved(); updateStatus();
+    showToast(`Duplicated "${original.name || 'entry'}"`, 'success');
+}
+
 // ── GEAR DOMAIN VALUES ────────────────────────────────────────────────────────
 const GD = {
     weaponCategory: ['', 'melee', 'ranged', 'firearm', 'magic'],
@@ -292,7 +305,7 @@ registerEditor('weapon', {
     groupKey:   () => 'category',
     entryTitle: (entry) => entry.name || '(unnamed)',
     entryRow:   gearEntryRow,
-    headerActions: () => '',
+    headerActions: (entry, idx) => `<button class="btn btn-ghost" onclick="duplicateWeapon(${idx})" title="Duplicate this weapon">⧉ Duplicate</button>`,
     newEntry: (group) => ({
         name: '', category: group || 'melee', check: '', range: '', damage: '',
         damageType: '', cost: 0, rarity: 'common', properties: '', bulk: 1, description: '',

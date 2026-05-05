@@ -27,6 +27,7 @@ const TYPE_CONFIG = {
     hexgen:  { icon: '⬡', label: 'Tables',   bodyClass: 'type-hexgen',  badgeClass: 'badge-hexgen',  dotClass: 'dot-hexgen'  },
     class:   { icon: '⚑', label: 'Paths',    bodyClass: 'type-class',   badgeClass: 'badge-class',   dotClass: 'dot-class'   },
     spell:   { icon: '✦', label: 'Spells',   bodyClass: 'type-spell',   badgeClass: 'badge-spell',   dotClass: 'dot-spell'   },
+    species: { icon: '❧', label: 'Species',  bodyClass: 'type-species', badgeClass: 'badge-species', dotClass: 'dot-species'  },
     generic: { icon: '◈', label: 'Entries',  bodyClass: '',             badgeClass: 'badge-generic', dotClass: 'dot-generic' },
 };
 function tc() { return TYPE_CONFIG[state.fileType] || TYPE_CONFIG.generic; }

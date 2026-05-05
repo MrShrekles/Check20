@@ -26,6 +26,7 @@ function detectFileType(data) {
     const groups = new Set(data.map(d => d && d._group).filter(Boolean));
     if (groups.has('lords') && groups.has('enemies') && groups.has('travelConnectors')) return 'hexgen';
     if ('path' in e && 'talent' in e && 'class' in e && 'origin' in e) return 'class';
+    if ('lineage' in e && 'option' in e) return 'species';
     if ('feature_name' in e || 'walk' in e || 'feature_effect' in e) return 'monster';
     if ('featureName' in e || 'baseType' in e || 'movement' in e) return 'monster';
     if ('damage' in e && 'damageType' in e && 'bulk' in e) return 'weapon';
@@ -251,6 +252,7 @@ app.get('/api/weapons', (req, res) => {
         res.json({ weapons: Array.isArray(data) ? data : [] });
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
+
 
 // ── START ─────────────────────────────────────────────────────────────────────
 app.listen(PORT, () => {

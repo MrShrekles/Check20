@@ -7,6 +7,7 @@
     <title>Spellcasting | Armored Noir - Check20</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/spells.css">
+    <link rel="stylesheet" href="styles/toolbar-mobile.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
     <script src="scripts/main.js" defer></script>
     <script src="scripts/spells.js"></script>
@@ -14,6 +15,7 @@
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
     <script src="scripts/spellcraft.js" defer></script>
+    <script src="scripts/toolbar-mobile.js" defer></script>
 </head>
 
 <body data-page-title="Spellcasting">
@@ -407,43 +409,52 @@
 
             <!-- Sticky control toolbar -->
             <div id="spellbook-toolbar">
-                <div id="origin-toggles">
-                    <button class="origin-tab active" data-origin="all">All</button>
-                    <button class="origin-tab" data-origin="arcane">Arcane</button>
-                    <button class="origin-tab" data-origin="basic">Basic</button>
-                    <button class="origin-tab" data-origin="celestial">Celestial</button>
-                    <button class="origin-tab" data-origin="dragon">Dragon</button>
-                    <button class="origin-tab" data-origin="elemental">Elemental</button>
-                    <button class="origin-tab" data-origin="life">Life</button>
-                    <button class="origin-tab" data-origin="chaos">Chaos</button>
-                    <button class="origin-tab" data-origin="chrono">Chrono</button>
-                    <button class="origin-tab" data-origin="vozian">Vozian</button>
-                    <button class="origin-tab" data-origin="nature">Nature</button>
-                    <button class="origin-tab" data-origin="crystal">Crystal</button>
-                    <button class="origin-tab" data-origin="tech">Tech</button>
-                </div>
-                <div id="spellbook-controls-row">
-                    <div id="sort-toggles">
-                        <span class="control-label">Sort</span>
-                        <button data-sort="name">Name</button>
-                        <button data-sort="range">Range</button>
-                        <button data-sort="duration">Duration</button>
-                        <button data-sort="origin" class="active">Origin</button>
+                <button class="toolbar-toggle-btn" aria-label="Toggle filters">
+                    <span class="toolbar-toggle-left">
+                        <span class="toolbar-toggle-pip"></span>
+                        Filters
+                    </span>
+                    <span class="toolbar-toggle-chevron">▼</span>
+                </button>
+                <div class="toolbar-collapsible">
+                    <div id="origin-toggles">
+                        <button class="origin-tab active" data-origin="all">All</button>
+                        <button class="origin-tab" data-origin="arcane">Arcane</button>
+                        <button class="origin-tab" data-origin="basic">Basic</button>
+                        <button class="origin-tab" data-origin="celestial">Celestial</button>
+                        <button class="origin-tab" data-origin="dragon">Dragon</button>
+                        <button class="origin-tab" data-origin="elemental">Elemental</button>
+                        <button class="origin-tab" data-origin="life">Life</button>
+                        <button class="origin-tab" data-origin="chaos">Chaos</button>
+                        <button class="origin-tab" data-origin="chrono">Chrono</button>
+                        <button class="origin-tab" data-origin="vozian">Vozian</button>
+                        <button class="origin-tab" data-origin="nature">Nature</button>
+                        <button class="origin-tab" data-origin="crystal">Crystal</button>
+                        <button class="origin-tab" data-origin="tech">Tech</button>
                     </div>
-                    <div id="intent-toggles">
-                        <span class="control-label">Intent</span>
-                        <button data-intent="Light Whisper">Light Whisper</button>
-                        <button data-intent="Whisper">Whisper</button>
-                        <button data-intent="Surge">Surge</button>
-                        <button data-intent="Shout">Shout</button>
-                        <button data-intent="Roar">Roar</button>
-                        <button data-intent="Storm">Storm</button>
-                        <button data-intent="Cataclysm">Cataclysm</button>
-                    </div>
-                    <div class="spellbook-actions">
-                        <button id="expand-all">Expand All</button>
-                        <button id="collapse-all">Collapse All</button>
-                        <span id="spell-count" class="spell-count"></span>
+                    <div id="spellbook-controls-row">
+                        <div id="sort-toggles">
+                            <span class="control-label">Sort</span>
+                            <button data-sort="name">Name</button>
+                            <button data-sort="range">Range</button>
+                            <button data-sort="duration">Duration</button>
+                            <button data-sort="origin" class="active">Origin</button>
+                        </div>
+                        <div id="intent-toggles">
+                            <span class="control-label">Intent</span>
+                            <button data-intent="Light Whisper">Light Whisper</button>
+                            <button data-intent="Whisper">Whisper</button>
+                            <button data-intent="Surge">Surge</button>
+                            <button data-intent="Shout">Shout</button>
+                            <button data-intent="Roar">Roar</button>
+                            <button data-intent="Storm">Storm</button>
+                            <button data-intent="Cataclysm">Cataclysm</button>
+                        </div>
+                        <div class="spellbook-actions">
+                            <button id="expand-all">Expand All</button>
+                            <button id="collapse-all">Collapse All</button>
+                            <span id="spell-count" class="spell-count"></span>
+                        </div>
                     </div>
                 </div>
             </div>

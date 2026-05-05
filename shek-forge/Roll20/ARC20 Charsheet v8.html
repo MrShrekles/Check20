@@ -4201,7 +4201,7 @@
                                         <input type="number" name="attr_ship-crew-max" placeholder="8" class="vessel-num-input">
                                     </div>
                                     <div class="ship-row">
-                                        <label>Passenger capacity</label>
+                                        <label>Passenger Threat</label>
                                         <input type="number" name="attr_ship-passengers" placeholder="0">
                                     </div>
                                     <div class="ship-row">
@@ -4695,7 +4695,7 @@ function updateShipAttributes() {
             "life-supported":   (lifeSupport + 1) * shipsize,
             "ship-speed":       (engines + 1) * 2,
             "fuel_max":         engines * 2,
-            "shipcapacity_max": shipsize + 1,
+            "shipthreat_max": shipsize + 1,
             "shippower_max":    power + 1
         });
     });

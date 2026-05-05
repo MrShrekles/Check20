@@ -45,6 +45,8 @@
         .tb-btn.tb-dice:hover{ background: #2a2515; color: #ffe555; }
         .tb-btn.tb-monster   { color: #7ecfff; }
         .tb-btn.tb-monster:hover { background: #152030; color: #aee8ff; }
+        .tb-btn.tb-economy   { color: #ffd060; }
+        .tb-btn.tb-economy:hover { background: #2a2515; color: #ffe080; }
         .tb-sep { width: 1px; height: 14px; background: #3a3a50; margin: 0 2px; flex-shrink: 0; }
 
         #forge-monster-picker {
@@ -108,10 +110,28 @@
             white-space: nowrap;
         }
         .sub-item:hover { background: #2a2a3a; color: #fff; }
-        .sub-item.sub-check { color: #a0e8a0; }
+        .sub-item.sub-check { color: #a0e8a0; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
         .sub-item.sub-check:hover { background: #152515; color: #c0ffc0; }
         .sub-item.sub-condition { color: #ffb87a; }
         .sub-item.sub-condition:hover { background: #251508; color: #ffd4a0; }
+        .check-suffix {
+            font-size: 9px; color: #444; border: 1px solid #333;
+            border-radius: 3px; padding: 1px 5px; white-space: nowrap;
+            transition: color 0.12s, border-color 0.12s; flex-shrink: 0;
+        }
+        .sub-item.sub-check:hover .check-suffix { color: #666; border-color: #555; }
+        .check-suffix:hover { color: #a0e8a0 !important; border-color: #a0e8a0 !important; }
+        .sub-item.sub-economy { color: #ffd060; }
+        .sub-item.sub-economy:hover { background: #2a2515; color: #ffe080; }
+
+        #forge-economy-panel {
+            position: fixed; z-index: 501; display: none;
+            flex-direction: column; gap: 2px;
+            background: #16161f; border: 1px solid #3a3a50;
+            border-radius: 6px; padding: 4px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+            min-width: 130px;
+        }
 
         /* Condition inline toolbar views */
         #forge-toolbar .tb-view { display: none; align-items: center; gap: 2px; }
@@ -139,6 +159,7 @@
             <div    class="tb-sep tb-select-only"></div>
             <button class="tb-btn tb-check"     title="Insert a check">☑ Check</button>
             <button class="tb-btn tb-condition" title="Insert a condition">⚠ Cond</button>
+            <button class="tb-btn tb-economy"   title="Insert economy opener">Action ▾</button>
             <div class="tb-sep"></div>
             <button class="tb-btn tb-monster"   title="Link to a monster entry">⚔ Monster</button>
         </div>
@@ -182,9 +203,25 @@
     const checkPanel = document.createElement('div');
     checkPanel.id = 'forge-check-panel';
     checkPanel.innerHTML = CHECKS.map(c =>
-        `<div class="sub-item sub-check" data-check="${c}">${c} check</div>`
+        `<div class="sub-item sub-check" data-check="${c}">
+            <span>${c}</span>
+            <span class="check-suffix" data-check="${c} check">+ check</span>
+        </div>`
     ).join('');
     document.body.appendChild(checkPanel);
+
+    // ── ECONOMY PANEL ─────────────────────────────────────────────────────────
+    const ECONOMY = [
+        { label: 'Action',                   text: 'As an Action, ',              selectVal: 'Action' },
+        { label: 'On a success',             text: 'On a success, ',              selectVal: null },
+        { label: 'target a creature within', text: 'target a creature within ',   selectVal: null },
+    ];
+    const economyPanel = document.createElement('div');
+    economyPanel.id = 'forge-economy-panel';
+    economyPanel.innerHTML = ECONOMY.map(e =>
+        `<div class="sub-item sub-economy" data-text="${e.text}" data-select="${e.selectVal || ''}">${e.label}</div>`
+    ).join('');
+    document.body.appendChild(economyPanel);
 
     // ── CONDITION INLINE VIEWS ────────────────────────────────────────────────
     const CONDITION_CATS = {
@@ -329,9 +366,10 @@
     }
 
     function hideAllSub() {
-        casePanel.style.display  = 'none';
-        checkPanel.style.display = 'none';
-        toolbar.dataset.view     = 'main';
+        casePanel.style.display    = 'none';
+        checkPanel.style.display   = 'none';
+        economyPanel.style.display = 'none';
+        toolbar.dataset.view       = 'main';
         hidePicker();
     }
 
@@ -375,7 +413,29 @@
     checkPanel.querySelectorAll('.sub-item').forEach(item => {
         item.addEventListener('mousedown', e => {
             e.preventDefault();
-            apply(`${item.dataset.check} check`);
+            const suffix = e.target.closest('.check-suffix');
+            apply(suffix ? suffix.dataset.check : item.dataset.check);
+        });
+    });
+
+    toolbar.querySelector('.tb-economy').addEventListener('mousedown', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleSub(economyPanel, e.currentTarget);
+    });
+
+    economyPanel.querySelectorAll('.sub-item').forEach(item => {
+        item.addEventListener('mousedown', e => {
+            e.preventDefault();
+            const selectVal = item.dataset.select;
+            if (selectVal && activeEl) {
+                const grid = activeEl.closest('.extra-feature-body') || activeEl.closest('.field-grid');
+                if (grid) {
+                    const sel = grid.querySelector('select');
+                    if (sel) { sel.value = selectVal; sel.dispatchEvent(new Event('change', { bubbles: true })); }
+                }
+            }
+            apply(item.dataset.text);
         });
     });
 
@@ -431,7 +491,8 @@
     // ── SELECTION DETECTION ───────────────────────────────────────────────────
     document.addEventListener('mouseup', e => {
         if (toolbar.contains(e.target) || picker.contains(e.target) ||
-            casePanel.contains(e.target) || checkPanel.contains(e.target)) return;
+            casePanel.contains(e.target) || checkPanel.contains(e.target) ||
+            economyPanel.contains(e.target)) return;
 
         setTimeout(() => {
             const el = document.activeElement;
@@ -456,158 +517,17 @@
 
     // Keyboard shortcut: Escape dismisses
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') { hideToolbar(); hideQB(); }
+        if (e.key === 'Escape') { hideToolbar(); }
     });
 
     // Click outside all panels → hide
     document.addEventListener('mousedown', e => {
         if (toolbar.style.display === 'none') return;
         if (toolbar.contains(e.target) || picker.contains(e.target) ||
-            casePanel.contains(e.target) || checkPanel.contains(e.target)) return;
+            casePanel.contains(e.target) || checkPanel.contains(e.target) ||
+            economyPanel.contains(e.target)) return;
         if (e.target.classList?.contains('field-input')) return;
         hideToolbar();
     });
-
-    // ── QUICK-BUILD ───────────────────────────────────────────────────────────
-    const QB_S1 = [
-        { label: 'Action',        value: 'Action',        text: 'As an Action, ' },
-        { label: 'Half Action',   value: 'Half Action',   text: 'As a Half Action, ' },
-        { label: 'Off Action',    value: 'Off Action',    text: 'As an Off Action, ' },
-        { label: 'Passive',       value: 'Passive',       text: 'Passively, ' },
-        { label: 'Press On',      value: 'Press On',      text: 'As a Press On, ' },
-        { label: 'Start of Turn', value: 'Start of turn', text: 'At the start of the turn, ' },
-        { label: 'End of Turn',   value: 'End of turn',   text: 'At the end of the turn, ' },
-        { label: 'Special',       value: 'Special',       text: 'As a Special action, ' },
-    ];
-
-    const QB_S2 = [
-        'Attack', 'Move', 'Deal', 'Summon', 'Gain',
-        'Push', 'Pull', 'Teleport', 'Heal', 'Create',
-        'Apply', 'Target', 'Reduce', 'Increase',
-    ];
-
-    // Inject styles
-    const qbStyle = document.createElement('style');
-    qbStyle.textContent = `
-        #forge-quickbuild {
-            position: fixed; z-index: 498; display: none;
-            flex-direction: column; gap: 6px;
-            background: #16161f; border: 1px solid #3a3a50;
-            border-radius: 6px; padding: 6px 8px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.55);
-            max-width: 520px;
-        }
-        .qb-label {
-            font-family: 'Share Tech Mono', monospace; font-size: 10px;
-            color: #555; text-transform: uppercase; letter-spacing: 0.08em;
-        }
-        .qb-chips { display: flex; flex-wrap: wrap; gap: 4px; }
-        .qb-chip {
-            background: #1e1e2e; border: 1px solid #3a3a50; color: #b0b0c8;
-            font-family: 'Share Tech Mono', monospace; font-size: 11px;
-            padding: 2px 10px; border-radius: 20px; cursor: pointer;
-            white-space: nowrap; transition: background 0.1s, border-color 0.1s, color 0.1s;
-        }
-        .qb-chip:hover { background: #2a2a3a; border-color: #6a6a8a; color: #fff; }
-        .qb-chip-verb { border-color: #1a3040; color: #7ecfff; }
-        .qb-chip-verb:hover { background: #152030; border-color: #7ecfff; color: #aee8ff; }
-    `;
-    document.head.appendChild(qbStyle);
-
-    const qbPanel = document.createElement('div');
-    qbPanel.id = 'forge-quickbuild';
-    qbPanel.innerHTML = `<div class="qb-label" id="qb-label"></div><div class="qb-chips" id="qb-chips"></div>`;
-    document.body.appendChild(qbPanel);
-
-    let qbTarget   = null;
-    let qbStage    = 0;
-    let qbSkipHide = false;   // set true during programmatic input dispatches
-
-    function hideQB() { qbPanel.style.display = 'none'; qbTarget = null; qbStage = 0; }
-
-    function positionQB() {
-        if (!qbTarget) return;
-        const r = qbTarget.getBoundingClientRect();
-        qbPanel.style.left  = `${r.left}px`;
-        qbPanel.style.top   = `${r.bottom + 4}px`;
-        qbPanel.style.width = `${r.width}px`;
-    }
-
-    function setChip(btn, onClick) {
-        btn.addEventListener('mousedown', e => { e.preventDefault(); onClick(); });
-    }
-
-    function renderQB() {
-        const label = document.getElementById('qb-label');
-        const chips = document.getElementById('qb-chips');
-
-        if (qbStage === 1) {
-            label.textContent = 'Economy…';
-            chips.innerHTML = QB_S1.map(s =>
-                `<button class="qb-chip" data-v="${s.value}" data-text="${s.text}">${s.label}</button>`
-            ).join('');
-            chips.querySelectorAll('.qb-chip').forEach(btn => setChip(btn, () => {
-                const val  = btn.dataset.v;
-                const text = btn.dataset.text;
-
-                // Sync the nearest Action Type select
-                const grid = qbTarget.closest('.extra-feature-body') || qbTarget.closest('.field-grid');
-                if (grid) {
-                    const sel = grid.querySelector('select');
-                    if (sel) { sel.value = val; sel.dispatchEvent(new Event('change', { bubbles: true })); }
-                }
-
-                qbSkipHide = true;
-                qbTarget.value = text;
-                qbTarget.dispatchEvent(new Event('input',  { bubbles: true }));
-                qbTarget.dispatchEvent(new Event('change', { bubbles: true }));
-                qbTarget.focus();
-                qbTarget.setSelectionRange(qbTarget.value.length, qbTarget.value.length);
-                qbSkipHide = false;
-
-                qbStage = 2;
-                renderQB();
-            }));
-
-        } else if (qbStage === 2) {
-            label.textContent = 'Opens with…';
-            chips.innerHTML = QB_S2.map(v =>
-                `<button class="qb-chip qb-chip-verb" data-v="${v}">${v}</button>`
-            ).join('');
-            chips.querySelectorAll('.qb-chip').forEach(btn => setChip(btn, () => {
-                qbSkipHide = true;
-                qbTarget.value += btn.dataset.v + ' ';
-                qbTarget.dispatchEvent(new Event('input',  { bubbles: true }));
-                qbTarget.dispatchEvent(new Event('change', { bubbles: true }));
-                qbTarget.focus();
-                qbTarget.setSelectionRange(qbTarget.value.length, qbTarget.value.length);
-                qbSkipHide = false;
-                hideQB();
-            }));
-        }
-    }
-
-    // Focus an empty quick-build field → show Stage 1
-    document.addEventListener('focus', e => {
-        const el = e.target;
-        if (!el.matches('[data-quick-build="feature"]')) return;
-        if (el.value.trim() !== '') return;
-        qbTarget = el;
-        qbStage  = 1;
-        qbPanel.style.display = 'flex';
-        renderQB();
-        positionQB();
-    }, true);
-
-    // User types manually → hide
-    document.addEventListener('input', e => {
-        if (e.target === qbTarget && !qbSkipHide) hideQB();
-    }, true);
-
-    // Blur → hide unless focus returns to the same field
-    document.addEventListener('blur', e => {
-        if (e.target !== qbTarget) return;
-        setTimeout(() => { if (document.activeElement !== qbTarget) hideQB(); }, 160);
-    }, true);
 
 })();
