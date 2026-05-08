@@ -26,8 +26,13 @@ const TYPE_CONFIG = {
     armor:   { icon: '🛡', label: 'Armor',    bodyClass: 'type-armor',   badgeClass: 'badge-armor',   dotClass: 'dot-armor'   },
     hexgen:  { icon: '⬡', label: 'Tables',   bodyClass: 'type-hexgen',  badgeClass: 'badge-hexgen',  dotClass: 'dot-hexgen'  },
     class:   { icon: '⚑', label: 'Paths',    bodyClass: 'type-class',   badgeClass: 'badge-class',   dotClass: 'dot-class'   },
-    spell:   { icon: '✦', label: 'Spells',   bodyClass: 'type-spell',   badgeClass: 'badge-spell',   dotClass: 'dot-spell'   },
-    species: { icon: '❧', label: 'Species',  bodyClass: 'type-species', badgeClass: 'badge-species', dotClass: 'dot-species'  },
+    spell:      { icon: '✦', label: 'Spells',    bodyClass: 'type-spell',      badgeClass: 'badge-spell',      dotClass: 'dot-spell'      },
+    species:    { icon: '❧', label: 'Species',   bodyClass: 'type-species',    badgeClass: 'badge-species',    dotClass: 'dot-species'    },
+    enchanted:    { icon: '✧', label: 'Enchanted',    bodyClass: 'type-enchanted',    badgeClass: 'badge-enchanted',    dotClass: 'dot-enchanted'    },
+    medicine:     { icon: '⚕', label: 'Medicine',   bodyClass: 'type-medicine',   badgeClass: 'badge-medicine',   dotClass: 'dot-medicine'   },
+    quest:        { icon: '⚔', label: 'Quests',       bodyClass: 'type-quest',        badgeClass: 'badge-quest',        dotClass: 'dot-quest'        },
+    traps:        { icon: '⚠', label: 'Traps',        bodyClass: 'type-traps',        badgeClass: 'badge-traps',        dotClass: 'dot-traps'        },
+    worldbuilding:{ icon: '🌐', label: 'Worldbuilding',bodyClass: 'type-worldbuilding',badgeClass: 'badge-worldbuilding',dotClass: 'dot-worldbuilding'},
     generic: { icon: '◈', label: 'Entries',  bodyClass: '',             badgeClass: 'badge-generic', dotClass: 'dot-generic' },
 };
 function tc() { return TYPE_CONFIG[state.fileType] || TYPE_CONFIG.generic; }

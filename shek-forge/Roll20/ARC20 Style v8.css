@@ -375,10 +375,6 @@ p {
 }
 
 /* Show content based on radio button */
-#minion:checked~.tabs+.minion-content {
-    display: block;
-}
-
 #npc:checked~.tabs+.npc-content {
     display: block;
 }
@@ -392,11 +388,26 @@ p {
 }
 
 #npc:checked~.content #npc-content,
-#minion:checked~.content #minion-content,
 #player:checked~.content #player-content,
 #ship:checked~.content #ship-content {
     display: block;
 }
+
+/* Minion checkbox toggle */
+.minion-toggle-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Share Tech Mono', monospace; font-size: 11px;
+    color: var(--text-cream); cursor: pointer;
+    padding: 3px 8px; margin: 4px 0 2px 4px;
+    border: 1px solid var(--theme-3); border-radius: var(--border-radius);
+    background: var(--dark-2);
+}
+.minion-toggle-label:hover { background: var(--theme-2); }
+input[name="attr_is_minion"] { display: none; }
+.minion-only { display: none; }
+.npc-full-only { display: block; }
+input[name="attr_is_minion"]:checked ~ .npcSheet .minion-only { display: block; }
+input[name="attr_is_minion"]:checked ~ .npcSheet .npc-full-only { display: none; }
 
 /* NPC */
 .npcSheet {

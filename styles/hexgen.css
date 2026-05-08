@@ -1,5 +1,9 @@
-/* ── Hex Generator v2 ── */
+/* ══════════════════════════════════════════════════════════════
+   HEX GENERATOR COMPONENT
+   Controls, cards, journey, reference tables
+   ══════════════════════════════════════════════════════════════ */
 
+/* ── Controls ──────────────────────────────────────────────── */
 .hexgen-controls {
     display: flex;
     flex-wrap: wrap;
@@ -7,13 +11,8 @@
     align-items: center;
     padding: .5vw 0;
 }
-
 .hexgen-controls select,
-.hexgen-controls input[type="number"] {
-    width: auto;
-    font-size: 1rem;
-}
-
+.hexgen-controls input[type="number"] { width: auto; font-size: 1rem; }
 .hexgen-controls input[type="number"] {
     min-width: 60px;
     max-width: 70px;
@@ -24,372 +23,70 @@
     padding: .5vw;
     text-align: center;
 }
+.ctrl-label { font-size: .8rem; color: var(--cream); opacity: .7; }
 
-.ctrl-label {
-    font-size: .8rem;
-    color: var(--cream);
-    opacity: .7;
-}
+/* ── Card shell ────────────────────────────────────────────── */
+.hex-result-card { border-radius: var(--border-radius); box-shadow: var(--box-shadow); border-top: 3px solid var(--gold); background-color: var(--medium); }
+.hex-card-inner  { padding: 10px 12px; display: flex; flex-direction: column; gap: 5px; height: 100%; }
+.void-card       { opacity: .5; border-top-color: #555; }
+.hex-single-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
 
-/* ── Hex history wrapper ── */
-#hex-history {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: flex-start;
-}
+/* Card header */
+.hex-terrain-label { font-size: .65rem; color: var(--cream); text-transform: uppercase; letter-spacing: .1em; opacity: .7; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.hex-num           { background: var(--theme-dark); color: var(--cream); padding: 1px 6px; border-radius: 10px; font-size: .6rem; }
+.hex-env           { font-weight: bold; }
+.hex-title         { font-size: 1rem; font-weight: bold; color: var(--gold); line-height: 1.2; }
 
-/* Single roll card — constrained width */
-#hex-history>.hex-result-card {
-    width: 100%;
-    max-width: 300px;
-}
+/* ── Stat rows ─────────────────────────────────────────────── */
+.hex-mods    { display: flex; flex-direction: column; gap: 3px; padding: 5px 0; border-top: 1px solid var(--theme-dark); border-bottom: 1px solid var(--theme-dark); }
+.hex-mod-row { font-size: .78rem; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px; }
+.mod-key     { color: var(--cream); font-size: .62rem; text-transform: uppercase; letter-spacing: .05em; opacity: .65; min-width: 42px; flex-shrink: 0; }
+.mod-val     { color: var(--white); font-weight: bold; line-height: 1.2; }
+.enemy-val   { color: var(--red-2); }
+.pl-val      { color: var(--gold); font-weight: bold; }
+.hex-divider { display: inline-block; width: 1px; height: 10px; background: var(--theme-3); opacity: .4; margin: 0 2px; align-self: center; }
 
-/* ── Single hex card grid ── */
-.hex-single-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-    gap: 10px;
-}
-
-/* ── Card shell ── */
-.hex-result-card {
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    border-top: 3px solid var(--gold);
-    background-color: var(--medium);
-}
-
-.hex-card-inner {
-    padding: 10px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    height: 100%;
-}
-
-.void-card {
-    opacity: .5;
-    border-top-color: #555;
-}
-
-/* ── Card header ── */
-.hex-terrain-label {
-    font-size: .65rem;
-    color: var(--cream);
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    opacity: .7;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-}
-
-.hex-num {
-    background: var(--theme-dark);
-    color: var(--cream);
-    padding: 1px 6px;
-    border-radius: 10px;
-    font-size: .6rem;
-}
-
-.hex-env {
-    font-weight: bold;
-}
-
-.hex-title {
-    font-size: 1rem;
-    font-weight: bold;
-    color: var(--gold);
-    line-height: 1.2;
-}
-
-/* ── Stat rows ── */
-.hex-mods {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    padding: 5px 0;
-    border-top: 1px solid var(--theme-dark);
-    border-bottom: 1px solid var(--theme-dark);
-}
-
-.hex-mod-row {
-    font-size: .78rem;
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 4px;
-}
-
-.mod-key {
-    color: var(--cream);
-    font-size: .62rem;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    opacity: .65;
-    min-width: 42px;
-    flex-shrink: 0;
-}
-
-.mod-val {
-    color: var(--white);
-    font-weight: bold;
-    line-height: 1.2;
-}
-
-.enemy-val {
-    color: var(--red-2);
-}
-
-.pl-val {
-    color: var(--gold);
-    font-weight: bold;
-}
-
-.hex-divider {
-    display: inline-block;
-    width: 1px;
-    height: 10px;
-    background: var(--theme-3);
-    opacity: .4;
-    margin: 0 2px;
-    align-self: center;
-}
-
-/* ── Tag sections ── */
-.hex-tag-section {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.tag-group-label {
-    font-size: .6rem;
-    color: var(--cream);
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    opacity: .5;
-}
-
-.hex-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-}
-
-.hex-tags--inline {
-    flex: 1;
-    min-width: 0;
-}
-
-.hex-mod-row--species {
-    align-items: flex-start;
-}
-
+/* ── Tags ──────────────────────────────────────────────────── */
+.hex-tag-section { display: flex; flex-direction: column; gap: 3px; }
+.tag-group-label { font-size: .6rem; color: var(--cream); text-transform: uppercase; letter-spacing: .08em; opacity: .5; }
+.hex-tags        { display: flex; flex-wrap: wrap; gap: 4px; }
+.hex-tags--inline{ flex: 1; min-width: 0; }
+.hex-mod-row--species { align-items: flex-start; }
 .hex-mod-row--species .mod-key,
-.hex-mod-row--species .mod-val {
-    padding-top: 2px;
-}
+.hex-mod-row--species .mod-val { padding-top: 2px; }
+.hex-tag      { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: .7rem; font-weight: bold; line-height: 1.4; }
+.tag-feature  { background: var(--theme-1); color: var(--green-3); }
+.tag-resource { background: var(--gold-1);  color: var(--gold-3); }
+.tag-species  { background: var(--warm-1);  color: var(--cream); }
+.tag-empty    { background: var(--dark-3);  color: #555; font-style: italic; font-weight: normal; }
 
-.hex-tag {
-    display: inline-block;
-    padding: 2px 7px;
-    border-radius: 10px;
-    font-size: .7rem;
-    font-weight: bold;
-    line-height: 1.4;
-}
+/* Remove button */
+.delete-hex       { margin-top: auto; align-self: flex-end; background: transparent; color: #555; border: none; cursor: pointer; font-size: .75rem; padding: 2px 4px; border-radius: 3px; }
+.delete-hex:hover { color: var(--red-2); }
 
-.tag-feature {
-    background: var(--theme-1);
-    color: var(--green-3);
-}
+/* ── Journey ───────────────────────────────────────────────── */
+.journey-wrap        { border: 1px solid var(--theme-2); border-radius: var(--border-radius); overflow: hidden; }
+.journey-header      { background: var(--theme-dark); padding: 8px 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.journey-title       { color: var(--gold); font-weight: bold; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+.journey-meta        { color: var(--cream); font-size: .8rem; opacity: .7; flex: 1; }
+.journey-del         { margin-left: auto; background: var(--hate); color: var(--white); border: none; border-radius: var(--border-radius); padding: 3px 10px; cursor: pointer; font-size: .78rem; }
+.journey-page-area   { padding: 12px; background: var(--dark-2); display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.journey-page-area .hex-result-card { width: 100%; max-width: 300px; }
+.journey-connector-block { display: flex; justify-content: center; }
+.travel-connector    { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--cream); font-size: .75rem; opacity: .6; line-height: 1.4; text-align: center; padding: 4px 0; }
+.connector-arrow     { font-size: 1.2rem; color: var(--theme-3); opacity: .8; }
+.journey-nav         { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 4px 0 8px; width: 100%; max-width: 300px; }
+.journey-page-counter{ color: var(--cream); font-size: .8rem; opacity: .6; min-width: 44px; text-align: center; }
+.journey-nav-btn     { padding: 4px 14px; font-size: .85rem; }
 
-.tag-resource {
-    background: var(--gold-1);
-    color: var(--gold-3);
-}
-
-.tag-species {
-    background: var(--warm-1);
-    color: var(--cream);
-}
-
-.tag-empty {
-    background: var(--dark-3);
-    color: #555;
-    font-style: italic;
-    font-weight: normal;
-}
-
-/* ── Remove button ── */
-.delete-hex {
-    margin-top: auto;
-    align-self: flex-end;
-    background: transparent;
-    color: #555;
-    border: none;
-    cursor: pointer;
-    font-size: .75rem;
-    padding: 2px 4px;
-    border-radius: 3px;
-}
-
-.delete-hex:hover {
-    color: var(--red-2);
-}
-
-/* ── Journey wrapper ── */
-.journey-wrap {
-    border: 1px solid var(--theme-2);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    width: 340px;
-    flex-shrink: 0;
-}
-
-.journey-header {
-    background: var(--theme-dark);
-    padding: 8px 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.journey-title {
-    color: var(--gold);
-    font-weight: bold;
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.journey-meta {
-    color: var(--cream);
-    font-size: .8rem;
-    opacity: .7;
-    flex: 1;
-}
-
-.journey-del {
-    margin-left: auto;
-    background: var(--hate);
-    color: var(--white);
-    border: none;
-    border-radius: var(--border-radius);
-    padding: 3px 10px;
-    cursor: pointer;
-    font-size: .78rem;
-}
-
-/* ── Journey paginated layout ── */
-.journey-page-area {
-    padding: 12px;
-    background: var(--dark-2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.journey-page-area .hex-result-card {
-    width: 100%;
-    max-width: 300px;
-}
-
-.journey-connector-block {
-    display: flex;
-    justify-content: center;
-}
-
-.travel-connector {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    color: var(--cream);
-    font-size: .75rem;
-    opacity: .6;
-    line-height: 1.4;
-    text-align: center;
-    padding: 4px 0;
-}
-
-.connector-arrow {
-    font-size: 1.2rem;
-    color: var(--theme-3);
-    opacity: .8;
-}
-
-/* ── Journey nav ── */
-.journey-nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    padding: 4px 0 8px;
-    width: 100%;
-    max-width: 300px;
-}
-
-.journey-page-counter {
-    color: var(--cream);
-    font-size: .8rem;
-    opacity: .6;
-    min-width: 44px;
-    text-align: center;
-}
-
-.journey-nav-btn {
-    padding: 4px 14px;
-    font-size: .85rem;
-}
-
-/* ── Modifier tables ── */
-.raw-tabs {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-bottom: .5vw;
-}
-
-.raw-tab {
-    background: var(--dark-3);
-    color: var(--cream);
-    border: 2px solid var(--theme-2);
-    border-radius: var(--border-radius);
-    padding: 4px 12px;
-    cursor: pointer;
-    font-size: .85rem;
-    transition: background .2s;
-}
-
+/* ── Reference tables ──────────────────────────────────────── */
+.raw-tabs      { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: .5vw; }
+.raw-tab       { background: var(--dark-3); color: var(--cream); border: 2px solid var(--theme-2); border-radius: var(--border-radius); padding: 4px 12px; cursor: pointer; font-size: .85rem; transition: background .2s; }
 .raw-tab.active,
-.raw-tab:hover {
-    background: var(--theme-2);
-    color: var(--white);
-}
+.raw-tab:hover { background: var(--theme-2); color: var(--white); }
+.raw-panel        { display: none; }
+.raw-panel.active { display: block; }
+.hex-table tbody td:first-child { background-color: var(--dark-3) !important; color: var(--cream) !important; text-transform: none !important; font-weight: normal !important; }
 
-.raw-panel {
-    display: none;
-}
-
-.raw-panel.active {
-    display: block;
-}
-
-/* ── Override first-col for hex tables ── */
-.hex-table tbody td:first-child {
-    background-color: var(--dark-3) !important;
-    color: var(--cream) !important;
-    text-transform: none !important;
-    font-weight: normal !important;
-}
-
-section {
-    padding: .5vw;
-}
+/* scoped — only hex reference table sections */
+details > section { padding: .5vw; }

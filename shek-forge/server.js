@@ -32,6 +32,11 @@ function detectFileType(data) {
     if ('damage' in e && 'damageType' in e && 'bulk' in e) return 'weapon';
     if ('armor' in e && 'movePenalty' in e) return 'armor';
     if ('manner' in e && 'transmission' in e && 'effects' in e) return 'spell';
+    if ('type' in e && 'text' in e && ['prefix','effect','damageType','check','itemType'].includes(e.type)) return 'enchanted';
+    if ('category' in e && 'value' in e && ['prefix','base','suffix'].includes(e.category)) return 'medicine';
+    if ('type' in e && 'text' in e && ['giver','target','twist','reward'].includes(e.type)) return 'quest';
+    if ('type' in e && ['door','lock','trap'].includes(e.type)) return 'traps';
+    if (groups.has('affinities') && groups.has('motivations')) return 'worldbuilding';
     return 'generic';
 }
 

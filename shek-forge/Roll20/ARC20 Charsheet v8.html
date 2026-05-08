@@ -2,518 +2,21 @@
 <div class="charsheet">
     <div class="sheet-tabs">
         <!-- Using Roll20 attribute system for state persistence -->
-        <input type="radio" name="attr_tab" id="minion" value="minion" {{#tab-minion}}checked{{/tab-minion}}>
         <input type="radio" name="attr_tab" id="npc" value="npc" {{#tab-npc}}checked{{/tab-npc}}>
         <input type="radio" name="attr_tab" id="player" value="player" {{#tab-player}}checked{{/tab-player}}>
         <input type="radio" name="attr_tab" id="ship" value="ship" {{#tab-ship}}checked{{/tab-ship}}>
 
         <nav class="tabs">
-            <label for="minion" class="tab">Minion</label>
             <label for="npc" class="tab">NPC</label>
             <label for="player" class="tab">Player</label>
             <label for="ship" class="tab">Ship</label>
         </nav>
 
         <div class="content">
-            <!-- Minion -->
-            <section class="content" id="minion-content">
-                <div class="npcSheet">
-                    <div class="two-column">
-
-                        <!-- Left Column -->
-                        <div class="left-column">
-
-                            <!-- NPC Information -->
-                            <details>
-                                <summary class="section-container">NPC Information</summary>
-                                <div class="section">
-                                    <label>Type<input type="text" name="attr_npcType" placeholder="Humanoid" maxlength="50"></label>
-                                    <label>Size<select name="attr_size">
-                                            <option value="Minuscule">Minuscule</option>
-                                            <option value="Tiny">Tiny</option>
-                                            <option value="Very Small">Very Small</option>
-                                            <option value="Small">Small</option>
-                                            <option value="Moderate">Moderate</option>
-                                            <option value="Medium" selected>Medium</option>
-                                            <option value="Above Average">Above Average</option>
-                                            <option value="Large">Large</option>
-                                            <option value="Very Large">Very Large</option>
-                                            <option value="Giant">Giant</option>
-                                            <option value="Massive">Massive</option>
-                                            <option value="Enormous">Enormous</option>
-                                            <option value="Immense">Immense</option>
-                                            <option value="Colossal">Colossal</option>
-                                            <option value="Monolithic">Monolithic</option>
-                                        </select></label>
-                                    <label>Description<textarea name="attr_backstory" placeholder="NPC physical description"></textarea></label>
-                                    <label>Environment<input type="text" name="attr_environment" placeholder="Prime, Fey..."></label>
-                                    <label>Behavior<select name="attr_behavior">
-                                            <option value="">—</option>
-                                            <option>Aggressive</option>
-                                            <option>Trickster</option>
-                                            <option>Mindless</option>
-                                            <option>Neutral</option>
-                                            <option>Cowardly</option>
-                                            <option>Territorial</option>
-                                            <option>Pack Hunter</option>
-                                            <option>Solitary</option>
-                                            <option>Social</option>
-                                        </select></label>
-                                    <label>Motivation<input type="text" name="attr_motivation" placeholder="Hunting prey..."></label>
-                                </div>
-                            </details>
-
-                            <!-- + Tables -->
-                            <details id="damage-rollers">
-                                <summary class="section-container">+Tables</summary>
-                                <div class="info" id="weak-damage">
-                                    <h3>Physical Damage</h3>
-                                    <div class="rollbps">
-                                        <button class="croll" type="roll" name="roll_bludge" value="!damage impact">Impact</button>
-                                        <button class="croll" type="roll" name="roll_pierce" value="!damage piercing">Piercing</button>
-                                        <button class="croll" type="roll" name="roll_slash" value="!damage slashing">Slashing</button>
-                                    </div>
-                                </div>
-                                <div class="info" id="strong-damage">
-                                    <h3>Elemental Damage</h3>
-                                    <button class="croll" type="roll" name="roll_acid" value="!damage acid">Acid</button>
-                                    <button class="croll" type="roll" name="roll_eclipse" value="!damage eclipse">Eclipse</button>
-                                    <button class="croll" type="roll" name="roll_fire" value="!damage fire">Fire</button>
-                                    <button class="croll" type="roll" name="roll_ice" value="!damage ice">Ice</button>
-                                    <button class="croll" type="roll" name="roll_lightning" value="!damage lightning">Lightning</button>
-                                    <button class="croll" type="roll" name="roll_solar" value="!damage solar">Solar</button>
-                                    <button class="croll" type="roll" name="roll_thunder" value="!damage thunder">Thunder</button>
-                                    <button class="croll" type="roll" name="roll_toxic" value="!damage toxic">Toxic</button>
-                                    <button class="croll" type="roll" name="roll_Fluid" value="!damage fluid">Fluid</button>
-                                </div>
-                                <div class="info" id="powerful-damage">
-                                    <h3>Realm Damage</h3>
-                                    <button class="croll" type="roll" name="roll_nature" value="!damage nature">Nature</button>
-                                    <button class="croll" type="roll" name="roll_psychic" value="!damage psychic">Psychic</button>
-                                    <button class="croll" type="roll" name="roll_vozian" value="!damage vozian">Vozian</button>
-                                    <button class="croll" type="roll" name="roll_healing" value="!damage healing">Healing</button>
-                                </div>
-                            </details>
-                        </div>
-
-                        <!-- Right Column -->
-                        <div class="right-column">
-                            <div class="power-section">
-
-                                <!-- Row 1: PL + Check Split -->
-                                <div class="power-row power-row-top">
-                                    <div class="power-stat power-stat-pl">
-                                        <label class="power-label">Power Level</label>
-                                        <input type="number" name="attr_PL" value="1" min="0" class="power-input-large">
-                                    </div>
-                                    <div class="power-divider"></div>
-                                    <div class="check-split">
-                                        <div class="check-pill check-pill-phys">
-                                            <label class="check-pill-label">Physical</label>
-                                            <div class="check-pill-row">
-                                                <input type="number" name="attr_check_physical" value="0" min="0" class="check-pill-input">
-                                                <button type="roll" class="check-pill-btn" name="roll_physical-check" value="&{template:shek} {{name=@{character_name}}} {{subtitle=Physical Check}} {{Check=[[@{d20} + @{check_physical}]] | [[@{d20} + @{check_physical}]] @{provoke}}}">
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="check-pill check-pill-ment">
-                                            <label class="check-pill-label">Mental</label>
-                                            <div class="check-pill-row">
-                                                <input type="number" name="attr_check_mental" value="0" min="0" class="check-pill-input">
-                                                <button type="roll" class="check-pill-btn" name="roll_mental-check" value="&{template:shek} {{name=@{character_name}}} {{subtitle=Mental Check}} {{Check=[[@{d20} + @{check_mental}]] | [[@{d20} + @{check_mental}]] @{provoke}}}">
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="power-divider"></div>
-                                    <div class="move-mini">
-                                        <span class="power-label">Move</span>
-                                        <div class="move-mini-row">
-                                            <div class="move-mini-stat"><span class="move-mini-lbl">Walk</span><input type="number" name="attr_move_walk" value="30" min="0" class="power-input-small"></div>
-                                            <div class="move-mini-stat"><span class="move-mini-lbl">Fly</span><input type="number" name="attr_move_fly" value="0" min="0" class="power-input-small"></div>
-                                            <div class="move-mini-stat"><span class="move-mini-lbl">Swim</span><input type="number" name="attr_move_swim" value="0" min="0" class="power-input-small"></div>
-                                            <div class="move-mini-stat"><span class="move-mini-lbl">Climb</span><input type="number" name="attr_move_climb" value="0" min="0" class="power-input-small"></div>
-                                        </div>
-                                    </div>
-                                    <p style="font-size: x-small;">
-                                        Minions: weakest type of combatant. Can only use an Action
-                                    </p>
-                                </div>
-
-                                <!-- Row 2: Secondary Stats -->
-                                <div class="power-row power-row-stats">
-                                    <div class="power-stat">
-                                        <label class="power-label">Actions</label>
-                                        <input type="number" name="attr_num_attacks" readonly class="power-input-small">
-                                    </div>
-                                    <div class="power-stat">
-                                        <label class="power-label">Threat</label>
-                                        <input type="number" name="attr_threat_max" readonly class="power-input-small">
-                                        <span class="power-slash">/</span>
-                                        <input type="number" name="attr_Threat" class="power-input-small">
-                                    </div>
-                                    <div class="power-stat">
-                                        <label class="power-label">Mana</label>
-                                        <input type="number" name="attr_mana_max" readonly class="power-input-small">
-                                        <span class="power-slash">/</span>
-                                        <input type="number" name="attr_mn" class="power-input-small">
-                                    </div>
-                                </div>
-
-                                <!-- Row 3: Rolls -->
-                                <div class="power-row power-row-rolls">
-                                    <div class="power-rolls-group">
-                                        <button type="roll" class="croll" name="roll_npc-flat" value="&{template:shek} {{name=@{character_name}}} {{Check=[[@{d20}]] | [[@{d20}]] @{provoke}}}">Flat 20</button>
-                                        <button type="roll" class="croll" name="roll_npc-d100" value="&{template:shek} {{name=@{character_name}}} {{Check=[[1d100]] @{provoke}}}">d100</button>
-                                    </div>
-                                    <div class="power-rolls-group power-rolls-special">
-                                        <button type="roll" class="croll" name="roll_npc-motivation" value="!motivation gm">Motive</button>
-                                        <input type="hidden" name="attr_xp-gain" value="{{Gain=?{Session feel|Action-Packed, [[4d4]]|Exciting, [[3d4]]|Intriguing, [[2d4]]|Planning-Focused, [[1d4]]|Distracted, [[1]]} XP}}" />
-                                        <button type="roll" class="croll" name="roll_xp" value="&{template:shek} {{name=XP Gains}} @{xp-gain}">XP Gains</button>
-                                    </div>
-                                </div>
-
-                                <!-- Row 4: XP -->
-                                <div class="power-row power-row-xp">
-                                    <label class="power-label">Party XP</label>
-                                    <input type="number" min="0" name="attr_xp" class="power-input-xp">
-                                </div>
-
-                            </div>
-
-                            <!-- NPC Standard Actions -->
-                            <div class="npc-actions-block">
-                                <h3>
-                                    Minion Attacks
-                                </h3>
-
-                                <!-- Melee Weapon -->
-                                <details class="npc-action">
-                                    <summary class="npc-sum">
-                                        <input type="text" name="attr_standard-weapon" value="Melee Attack" class="npc-action-name">
-                                        <label class="npc-equipped">
-                                            <input type="checkbox" name="attr_standard-equipped" value="1" checked>
-                                            Equipped
-                                        </label>
-                                        <input type="text" name="attr_standard-damage" value="1d6" style="width: 100px;">
-                                        <select name="attr_standard-type" style="background-color: var(--theme-1);">
-                                            <option value="">None</option>
-                                            <option disabled>Physical Damage</option>
-                                            <option>Impact</option>
-                                            <option>Piercing</option>
-                                            <option selected>Slashing</option>
-                                            <option disabled>Elemental Damage</option>
-                                            <option>Acid</option>
-                                            <option>Eclipse</option>
-                                            <option>Fire</option>
-                                            <option>Ice</option>
-                                            <option>Lightning</option>
-                                            <option>Solar</option>
-                                            <option>Thunder</option>
-                                            <option>Toxic</option>
-                                            <option>Fluid</option>
-                                            <option disabled>Realm Damage</option>
-                                            <option>Vozian</option>
-                                            <option>Nature</option>
-                                            <option>Psychic</option>
-                                            <option>Healing</option>
-                                        </select>
-                                        <button type="roll" name="roll_standard-attack" class="npc-roll" value="&{template:shek} {{name=@{character_name}}} {{@{standard-weapon}=[[@{d20} + (@{check_physical})]] | [[@{d20} + (@{check_physical})]] @{provoke}}} {{Damage=[[@{standard-damage}+@{check_physical}]] @{standard-type} [+Table!](!damage @{standard-type})}}">
-                                        </button>
-                                    </summary>
-                                </details>
-
-                                <!-- Ranged Weapon -->
-                                <details class="npc-action">
-                                    <summary>
-                                        <input type="text" name="attr_ranged-weapon" value="Ranged Weapon" class="npc-action-name">
-                                        <label class="npc-equipped">
-                                            <input type="checkbox" name="attr_ranged-equipped" value="1" checked>
-                                            Equipped
-                                        </label>
-                                        <input type="text" name="attr_ranged-damage" value="1d6" style="width: 100px;">
-                                        <select name="attr_ranged-type" style="background-color: var(--theme-1);">
-                                            <option value="">None</option>
-                                            <option disabled>Physical Damage</option>
-                                            <option>Impact</option>
-                                            <option>Piercing</option>
-                                            <option selected>Slashing</option>
-                                            <option disabled>Elemental Damage</option>
-                                            <option>Acid</option>
-                                            <option>Eclipse</option>
-                                            <option>Fire</option>
-                                            <option>Ice</option>
-                                            <option>Lightning</option>
-                                            <option>Solar</option>
-                                            <option>Thunder</option>
-                                            <option>Toxic</option>
-                                            <option>Fluid</option>
-                                            <option disabled>Realm Damage</option>
-                                            <option>Vozian</option>
-                                            <option>Nature</option>
-                                            <option>Psychic</option>
-                                            <option>Healing</option>
-                                        </select>
-                                        <button type="roll" name="roll_ranged-attack" class="npc-roll" value="&{template:shek} {{name=@{character_name}}} {{@{ranged-weapon}=[[@{d20} + (@{check_physical})]] | [[@{d20} + (@{check_physical})]] @{provoke}}} {{Damage=[[@{ranged-damage}+@{check_physical}]] @{ranged-type} [+Table!](!damage @{ranged-type})}}">
-                                        </button>
-                                    </summary>
-                                </details>
-
-                                <!-- Spell -->
-                                <details class="npc-action">
-                                    <summary>
-                                        <input type="text" name="attr_npc-spell" value="Spell Attack" class="npc-action-name">
-                                        <label class="npc-equipped">
-                                            <input type="checkbox" name="attr_spell-equipped" value="1" checked>
-                                            Equipped
-                                        </label>
-                                        <input type="text" name="attr_spell-damage" value="1d6" style="width: 85px;">
-                                        <select name="attr_std-damagetype" style="background-color: var(--theme-1);">
-                                            <option value="">None</option>
-                                            <option disabled>Physical Damage</option>
-                                            <option>Impact</option>
-                                            <option>Piercing</option>
-                                            <option>Slashing</option>
-                                            <option disabled>Elemental Damage</option>
-                                            <option>Acid</option>
-                                            <option>Eclipse</option>
-                                            <option selected>Fire</option>
-                                            <option>Ice</option>
-                                            <option>Lightning</option>
-                                            <option>Solar</option>
-                                            <option>Thunder</option>
-                                            <option>Toxic</option>
-                                            <option>Fluid</option>
-                                            <option disabled>Realm Damage</option>
-                                            <option>Vozian</option>
-                                            <option>Nature</option>
-                                            <option>Psychic</option>
-                                            <option>Healing</option>
-                                        </select>
-                                        <button type="roll" name="roll_npc-spell" class="npc-roll" value="&{template:shek} {{name=@{character_name}}} {{@{npc-spell}=[[@{d20} + (@{check_mental})]] | [[@{d20} + (@{check_mental})]] @{provoke}}} {{Damage=[[@{spell-damage}+@{check_mental}]] @{std-damagetype} [+Table!](!damage @{std-damagetype})}}"></button>
-                                        <div class="expand">▼</div>
-                                    </summary>
-                                    <div class="npc-action-details">
-                                        <label>Manner
-                                            <select name="attr_std-manner">
-                                                <option>Decay</option>
-                                                <option>Discern</option>
-                                                <option>Domineer</option>
-                                                <option>Manifest</option>
-                                            </select>
-                                        </label>
-                                        <label>Transmission
-                                            <select name="attr_std-transmission">
-                                                <option>Aether</option>
-                                                <option>Astral</option>
-                                                <option>Corpus</option>
-                                                <option>Elemental</option>
-                                                <option>Material</option>
-                                            </select>
-                                        </label>
-                                    </div>
-                                </details>
-                            </div>
-
-                            <!-- NPC Features -->
-                            <h2>Minion Features</h2>
-                            <div class="feature">
-                                <fieldset class="repeating_AEs">
-                                    <details>
-                                        <summary>
-                                            <div class="flex-group">
-                                                <input type="hidden" class="AE" name="attr_AE" />
-                                                <div class="title" id="title">
-                                                    <input type="text" name="attr_AETitle" style="font-size: 16px; font-weight: bolder;" placeholder="Section Title">
-                                                </div>
-                                                <div class="name">
-                                                    <input type="text" style="margin-bottom: 5px; width: 120px;" placeholder="Name" name="attr_AEName">
-                                                </div>
-                                                <div class="select-action">
-                                                    <select style="width: fit-content;" class="AE" name="attr_AE-action" id="AE-action">
-                                                        <option>Action</option>
-                                                        <option>Half Action</option>
-                                                        <option>Off Action</option>
-                                                        <option>Non-Action</option>
-                                                        <option>Special</option>
-                                                        <option>Press On</option>
-                                                        <option>Long Rest</option>
-                                                        <option>Start of turn</option>
-                                                        <option>End of turn</option>
-                                                        <option>Passive</option>
-                                                    </select>
-                                                </div>
-                                                <div class="select-type">
-                                                    <select style="width: fit-content;" class="AE" name="attr_AE" id="AE">
-                                                        <option>-Select-</option>
-                                                        <option>Feature</option>
-                                                        <option value="Attack">Weapon or Ability</option>
-                                                        <option value="Attack">Spell</option>
-                                                        <option>Title</option>
-                                                    </select>
-                                                </div>
-                                                <div class="attackRoll">
-                                                    <button class="roll" type="roll" name="roll_NPC" value="&{template:shek} {{name=@{character_name}}} {{@{AE}=@{AEName}}} {{Range=@{AERange}}} {{Check=[[@{d20} + @{equipmentCheck}]] | [[@{d20} + @{equipmentCheck}]] @{provoke}}} {{Damage=[[@{AEDamage}+@{PL}]] @{damageType} [+Table!](!damage @{damageType})}} {{desc=@{AEDescription}}}"></button>
-                                                </div>
-                                                <div class="AEChat">
-                                                    <button class="croll" type="roll" name="roll_feat" style="width:fit-content;" value="&{template:shek} {{name=@{character_name}}} {{@{AE}=@{AEName}}} {{Action=@{AE-action}}} {{desc=@{AEDescription}}}"><span style="font-family:Pictos;">w</span></button>
-                                                </div>
-                                                <div class="npcCheck">
-                                                    <button class="roll" type="roll" name="roll_NPCcheck" value="&{template:shek} {{name=@{character_name}}} {{@{AE}=@{AEName}}} {{Check=[[@{d20} + @{equipmentCheck}]] | [[@{d20} + @{equipmentCheck}]] @{provoke}}} "></button>
-                                                </div>
-                                                <div class="AEExpand"><span id="expand">▼</span></div>
-                                            </div>
-                                        </summary>
-
-                                        <input type="hidden" class="AE" name="attr_AE" />
-                                        <div class="feat" id="feat">
-                                            <br>
-                                            <textarea name="attr_AEDescription" class="description" placeholder="Describe the attack here"></textarea>
-                                        </div>
-                                        <div class="AECheck">
-                                        </div>
-                                        <div class="attack" id="attack">
-                                            Damage Type
-                                            <select name="attr_damageType" id="damageType" style="width:fit-content;">
-                                                <option value="">None</option>
-                                                <option disabled>Physical Damage</option>
-                                                <option>Impact</option>
-                                                <option>Piercing</option>
-                                                <option>Slashing</option>
-                                                <option disabled>Elemental Damage</option>
-                                                <option>Acid</option>
-                                                <option>Eclipse</option>
-                                                <option selected>Fire</option>
-                                                <option>Ice</option>
-                                                <option>Lightning</option>
-                                                <option>Solar</option>
-                                                <option>Thunder</option>
-                                                <option>Toxic</option>
-                                                <option>Fluid</option>
-                                                <option disabled>Realm Damage</option>
-                                                <option>Vozian</option>
-                                                <option>Nature</option>
-                                                <option>Psychic</option>
-                                                <option>Healing</option>
-                                            </select>
-                                            <input type="hidden" class="damageType" name="attr_damageType" />
-                                            Range
-                                            <select style="width: auto;" class="AERange" name="attr_AERange" id="AERange">
-                                                <option>Self</option>
-                                                <option>Melee</option>
-                                                <option>Reach</option>
-                                                <option>Short</option>
-                                                <option>Medium</option>
-                                                <option>Long</option>
-                                            </select>
-                                            <br>
-                                            Check
-                                            <select class="equipmentCheck" name="attr_equipmentCheck" id="equipmentCheck" style="width: 115px;">
-                                                <option value="@{PL}">Power Level</option>
-                                                <option value="[[floor(@{PL}/2)]]d4">Random d4</option>
-                                                <option value="[[floor(@{PL}/3)]]d6">Random d6</option>
-                                            </select>
-                                            Damage
-                                            <input type="text" class="AEDamage" name="attr_AEDamage" id="AEDamage" value="1d6" style="width:50px">
-                                            <br>
-                                            <textarea name="attr_AEDescription" class="description" placeholder="Describe the attack here"></textarea>
-                                        </div>
-                                        <div class="line2" id="line2"></div>
-                                        <div class="title2" id="title2"></div>
-                                        <div class="npcCheck" id="npcCheck">
-                                            Check
-                                            <select class="equipmentCheck" name="attr_equipmentCheck" id="equipmentCheck" style="width: 115px;">
-                                                <option value="@{PL}">Power Level</option>
-                                                <option value="[[floor(@{PL}/2)]]d4">Half + d4</option>
-                                                <option value="[[floor(@{PL}/3)]]d6">Third + d6</option>
-                                            </select>
-                                        </div>
-                                    </details>
-                                </fieldset>
-                            </div>
-
-                            <!-- Monster Spells -->
-                            <h2>Spells</h2>
-                            <div class="feature">
-                                <fieldset class="repeating_mspells">
-                                    <details>
-                                        <summary>
-                                            <div class="flex-group">
-                                                <input type="text" name="attr_mspell-name" placeholder="Spell Name" class="npc-action-name">
-                                                <select name="attr_mspell-intent" style="width:fit-content;">
-                                                    <option>Light Whisper</option>
-                                                    <option>Whisper</option>
-                                                    <option>Surge</option>
-                                                    <option>Shout</option>
-                                                    <option>Roar</option>
-                                                    <option>Storm</option>
-                                                    <option>Cataclysm</option>
-                                                </select>
-                                                <input type="number" name="attr_mspell-cost" value="1" style="width:36px;" title="MN Cost">
-                                                <button type="roll" name="roll_mspell" class="npc-roll" value="&{template:shek} {{name=@{character_name}}} {{Spell=@{mspell-name}}} {{Intent=@{mspell-intent}}} {{MN Cost=@{mspell-cost}}} {{Range=@{mspell-range}}} {{Check=[[@{d20} + @{check_mental}]] | [[@{d20} + @{check_mental}]] @{provoke}}} {{Damage=[[@{mspell-damage}+@{check_mental}]] @{mspell-type} [+Table!](!damage @{mspell-type})}} {{desc=@{mspell-effect}}}"></button>
-                                                <span class="expand">▼</span>
-                                            </div>
-                                        </summary>
-                                        <div class="npc-action-details" style="display:flex;flex-wrap:wrap;gap:8px;padding:6px 0">
-                                            <label>Manner
-                                                <select name="attr_mspell-manner">
-                                                    <option>Decay</option>
-                                                    <option>Discern</option>
-                                                    <option>Domineer</option>
-                                                    <option>Manifest</option>
-                                                </select>
-                                            </label>
-                                            <label>Transmission
-                                                <select name="attr_mspell-transmission">
-                                                    <option>Aether</option>
-                                                    <option>Astral</option>
-                                                    <option>Corpus</option>
-                                                    <option>Elemental</option>
-                                                    <option>Material</option>
-                                                </select>
-                                            </label>
-                                            <label>Range
-                                                <select name="attr_mspell-range">
-                                                    <option>Self</option>
-                                                    <option>Melee</option>
-                                                    <option>Short</option>
-                                                    <option>Medium</option>
-                                                    <option>Long</option>
-                                                </select>
-                                            </label>
-                                            <label>Damage
-                                                <input type="text" name="attr_mspell-damage" value="1d6" style="width:60px">
-                                            </label>
-                                            <label>Type
-                                                <select name="attr_mspell-type" style="background-color:var(--theme-1);">
-                                                    <option value="">None</option>
-                                                    <option disabled>Physical</option>
-                                                    <option>Impact</option><option>Piercing</option><option>Slashing</option>
-                                                    <option disabled>Elemental</option>
-                                                    <option>Acid</option><option>Eclipse</option><option>Fire</option>
-                                                    <option>Ice</option><option>Lightning</option><option>Solar</option>
-                                                    <option>Thunder</option><option>Toxic</option><option>Fluid</option>
-                                                    <option disabled>Realm</option>
-                                                    <option>Vozian</option><option>Nature</option><option>Psychic</option><option>Healing</option>
-                                                </select>
-                                            </label>
-                                            <div style="width:100%">
-                                                <textarea name="attr_mspell-effect" class="description" placeholder="Spell effect for this intent level..."></textarea>
-                                            </div>
-                                        </div>
-                                    </details>
-                                </fieldset>
-                            </div>
-
-                            </details>
-                        </div>
-
-                    </div>
-                </div>
-
-            </section>
             <!--NPC-->
             <section class="content" id="npc-content">
+                <input type="checkbox" name="attr_is_minion" id="npc-minion-toggle">
+                <label for="npc-minion-toggle" class="minion-toggle-label">⚔ Minion</label>
                 <div class="npcSheet">
                     <div class="two-column">
 
@@ -592,6 +95,7 @@
                                 </div>
                             </details>
 
+                            <div class="npc-full-only">
                             <!-- Conditions -->
                             <details>
                                 <summary class="section-container"><strong>Conditions</strong></summary>
@@ -1321,6 +825,7 @@
                                     <label>Notes<textarea name="attr_textarea_notes" placeholder="Inventory and Strategy"></textarea></label>
                                 </div>
                             </details>
+                            </div><!-- /npc-full-only -->
                         </div>
 
                         <!-- Right Column -->
@@ -1362,6 +867,7 @@
                                             <div class="move-mini-stat"><span class="move-mini-lbl">Climb</span><input type="number" name="attr_move_climb" value="0" min="0" class="power-input-small"></div>
                                         </div>
                                     </div>
+                                    <p class="minion-only" style="font-size:x-small;margin:2px 0 0 0;">Minions: weakest type of combatant. Can only use an Action.</p>
                                 </div>
 
                                 <!-- Row 2: Secondary Stats -->
@@ -1408,7 +914,7 @@
                             <!-- NPC Standard Actions -->
                             <div class="npc-actions-block">
                                 <h3>
-                                    NPC Standard Actions
+                                    <span class="npc-full-only">NPC Standard Actions</span><span class="minion-only">Minion Attacks</span>
                                 </h3>
 
                                 <!-- Melee Weapon -->
@@ -1539,6 +1045,7 @@
                                 </details>
                             </div>
 
+                            <div class="npc-full-only">
                             <!-- NPC Threat (Card Grid) -->
                             <details class="section-container">
                                 <summary class="npc-sum">
@@ -1617,10 +1124,10 @@
 
                                 </div>
                             </details>
-
+                            </div><!-- /npc-full-only -->
 
                             <!-- NPC Features -->
-                            <h2>Weapons & Features</h2>
+                            <h2><span class="npc-full-only">Weapons & Features</span><span class="minion-only">Minion Features</span></h2>
                             <div class="feature">
                                 <fieldset class="repeating_AEs">
                                     <details>
@@ -1736,6 +1243,80 @@
                                 </fieldset>
                             </div>
                             </details>
+
+                            <!-- NPC Spells -->
+                            <h2>Spells</h2>
+                            <div class="feature">
+                                <fieldset class="repeating_mspells">
+                                    <details>
+                                        <summary>
+                                            <div class="flex-group">
+                                                <input type="text" name="attr_mspell-name" placeholder="Spell Name" class="npc-action-name">
+                                                <select name="attr_mspell-intent" style="width:fit-content;">
+                                                    <option>Light Whisper</option>
+                                                    <option>Whisper</option>
+                                                    <option>Surge</option>
+                                                    <option>Shout</option>
+                                                    <option>Roar</option>
+                                                    <option>Storm</option>
+                                                    <option>Cataclysm</option>
+                                                </select>
+                                                <input type="number" name="attr_mspell-cost" value="1" style="width:36px;" title="MN Cost">
+                                                <button type="roll" name="roll_mspell" class="npc-roll" value="&{template:shek} {{name=@{character_name}}} {{Spell=@{mspell-name}}} {{Intent=@{mspell-intent}}} {{MN Cost=@{mspell-cost}}} {{Range=@{mspell-range}}} {{Check=[[@{d20} + @{check_mental}]] | [[@{d20} + @{check_mental}]] @{provoke}}} {{Damage=[[@{mspell-damage}+@{check_mental}]] @{mspell-type} [+Table!](!damage @{mspell-type})}} {{desc=@{mspell-effect}}}"></button>
+                                                <span class="expand">▼</span>
+                                            </div>
+                                        </summary>
+                                        <div class="npc-action-details" style="display:flex;flex-wrap:wrap;gap:8px;padding:6px 0">
+                                            <label>Manner
+                                                <select name="attr_mspell-manner">
+                                                    <option>Decay</option>
+                                                    <option>Discern</option>
+                                                    <option>Domineer</option>
+                                                    <option>Manifest</option>
+                                                </select>
+                                            </label>
+                                            <label>Transmission
+                                                <select name="attr_mspell-transmission">
+                                                    <option>Aether</option>
+                                                    <option>Astral</option>
+                                                    <option>Corpus</option>
+                                                    <option>Elemental</option>
+                                                    <option>Material</option>
+                                                </select>
+                                            </label>
+                                            <label>Range
+                                                <select name="attr_mspell-range">
+                                                    <option>Self</option>
+                                                    <option>Melee</option>
+                                                    <option>Short</option>
+                                                    <option>Medium</option>
+                                                    <option>Long</option>
+                                                </select>
+                                            </label>
+                                            <label>Damage
+                                                <input type="text" name="attr_mspell-damage" value="1d6" style="width:60px">
+                                            </label>
+                                            <label>Type
+                                                <select name="attr_mspell-type" style="background-color:var(--theme-1);">
+                                                    <option value="">None</option>
+                                                    <option disabled>Physical</option>
+                                                    <option>Impact</option><option>Piercing</option><option>Slashing</option>
+                                                    <option disabled>Elemental</option>
+                                                    <option>Acid</option><option>Eclipse</option><option>Fire</option>
+                                                    <option>Ice</option><option>Lightning</option><option>Solar</option>
+                                                    <option>Thunder</option><option>Toxic</option><option>Fluid</option>
+                                                    <option disabled>Realm</option>
+                                                    <option>Vozian</option><option>Nature</option><option>Psychic</option><option>Healing</option>
+                                                </select>
+                                            </label>
+                                            <div style="width:100%">
+                                                <textarea name="attr_mspell-effect" class="description" placeholder="Spell effect for this intent level..."></textarea>
+                                            </div>
+                                        </div>
+                                    </details>
+                                </fieldset>
+                            </div>
+
                         </div>
 
                     </div>

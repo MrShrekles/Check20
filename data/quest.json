@@ -1,0 +1,314 @@
+[
+  {
+    "type": "giver",
+    "text": "A desperate merchant"
+  },
+  {
+    "type": "giver",
+    "text": "A hooded stranger"
+  },
+  {
+    "type": "giver",
+    "text": "A dying knight"
+  },
+  {
+    "type": "giver",
+    "text": "The local guild"
+  },
+  {
+    "type": "giver",
+    "text": "A haunted noble"
+  },
+  {
+    "type": "giver",
+    "text": "A weeping spirit"
+  },
+  {
+    "type": "giver",
+    "text": "An ancient oracle"
+  },
+  {
+    "type": "giver",
+    "text": "A child with a map"
+  },
+  {
+    "type": "giver",
+    "text": "A rival adventurer"
+  },
+  {
+    "type": "giver",
+    "text": "The city watch"
+  },
+  {
+    "type": "giver",
+    "text": "A caged beast"
+  },
+  {
+    "type": "giver",
+    "text": "A masked figure"
+  },
+  {
+    "type": "giver",
+    "text": "A corrupt official"
+  },
+  {
+    "type": "giver",
+    "text": "A reformed criminal"
+  },
+  {
+    "type": "giver",
+    "text": "An exiled noble"
+  },
+  {
+    "type": "giver",
+    "text": "A bootlegger with leverage"
+  },
+  {
+    "type": "giver",
+    "text": "A jazz club owner who knows too much"
+  },
+  {
+    "type": "giver",
+    "text": "A union organizer on the run"
+  },
+  {
+    "type": "giver",
+    "text": "A crooked inspector looking the other way"
+  },
+  {
+    "type": "giver",
+    "text": "A séance medium with a real problem"
+  },
+  {
+    "type": "giver",
+    "text": "A war veteran turned fence"
+  },
+  {
+    "type": "giver",
+    "text": "A telegraph operator who intercepted the wrong message"
+  },
+  {
+    "type": "target",
+    "text": "a stolen artifact"
+  },
+  {
+    "type": "target",
+    "text": "a missing person"
+  },
+  {
+    "type": "target",
+    "text": "a cursed location"
+  },
+  {
+    "type": "target",
+    "text": "an enemy leader"
+  },
+  {
+    "type": "target",
+    "text": "a sealed vault"
+  },
+  {
+    "type": "target",
+    "text": "a forbidden tome"
+  },
+  {
+    "type": "target",
+    "text": "a powerful creature"
+  },
+  {
+    "type": "target",
+    "text": "a hidden cache"
+  },
+  {
+    "type": "target",
+    "text": "an ancient ruin"
+  },
+  {
+    "type": "target",
+    "text": "a wanted criminal"
+  },
+  {
+    "type": "target",
+    "text": "a lost caravan"
+  },
+  {
+    "type": "target",
+    "text": "a corrupted shrine"
+  },
+  {
+    "type": "target",
+    "text": "a sacred relic"
+  },
+  {
+    "type": "target",
+    "text": "a hostage"
+  },
+  {
+    "type": "target",
+    "text": "a dangerous weapon"
+  },
+  {
+    "type": "target",
+    "text": "a stolen ledger"
+  },
+  {
+    "type": "target",
+    "text": "a runaway heir"
+  },
+  {
+    "type": "target",
+    "text": "a contraband shipment"
+  },
+  {
+    "type": "target",
+    "text": "a blackmail dossier"
+  },
+  {
+    "type": "target",
+    "text": "a cursed radio broadcast"
+  },
+  {
+    "type": "target",
+    "text": "a body that needs to disappear"
+  },
+  {
+    "type": "target",
+    "text": "a forged deed"
+  },
+  {
+    "type": "twist",
+    "text": "The target isn't what it seems"
+  },
+  {
+    "type": "twist",
+    "text": "Someone hired both parties"
+  },
+  {
+    "type": "twist",
+    "text": "The reward is cursed"
+  },
+  {
+    "type": "twist",
+    "text": "A third faction wants the same thing"
+  },
+  {
+    "type": "twist",
+    "text": "Time is running out fast"
+  },
+  {
+    "type": "twist",
+    "text": "The quest giver is lying"
+  },
+  {
+    "type": "twist",
+    "text": "The location is guarded by innocents"
+  },
+  {
+    "type": "twist",
+    "text": "A betrayal is imminent"
+  },
+  {
+    "type": "twist",
+    "text": "The prize is already gone"
+  },
+  {
+    "type": "twist",
+    "text": "The real enemy is closer than expected"
+  },
+  {
+    "type": "twist",
+    "text": "The job was a setup from the start"
+  },
+  {
+    "type": "twist",
+    "text": "Completing it causes a worse problem"
+  },
+  {
+    "type": "twist",
+    "text": "The client is already dead"
+  },
+  {
+    "type": "twist",
+    "text": "The evidence points back to the party"
+  },
+  {
+    "type": "twist",
+    "text": "A newspaper is already running the story"
+  },
+  {
+    "type": "twist",
+    "text": "The target crossed a border last night"
+  },
+  {
+    "type": "twist",
+    "text": "The real job was a distraction"
+  },
+  {
+    "type": "reward",
+    "text": "Gold and a favor owed"
+  },
+  {
+    "type": "reward",
+    "text": "A rare enchanted item"
+  },
+  {
+    "type": "reward",
+    "text": "Information about a greater threat"
+  },
+  {
+    "type": "reward",
+    "text": "Safe passage through dangerous territory"
+  },
+  {
+    "type": "reward",
+    "text": "A deed to property"
+  },
+  {
+    "type": "reward",
+    "text": "An ancient map"
+  },
+  {
+    "type": "reward",
+    "text": "Allegiance of a powerful NPC"
+  },
+  {
+    "type": "reward",
+    "text": "A unique spell or ability"
+  },
+  {
+    "type": "reward",
+    "text": "Freedom from a debt"
+  },
+  {
+    "type": "reward",
+    "text": "A loyal companion"
+  },
+  {
+    "type": "reward",
+    "text": "Absolution from a powerful faction"
+  },
+  {
+    "type": "reward",
+    "text": "A secret that changes everything"
+  },
+  {
+    "type": "reward",
+    "text": "A favor from someone untouchable"
+  },
+  {
+    "type": "reward",
+    "text": "Press silence on an ugly story"
+  },
+  {
+    "type": "reward",
+    "text": "A cut of the operation going forward"
+  },
+  {
+    "type": "reward",
+    "text": "Forged travel documents"
+  },
+  {
+    "type": "reward",
+    "text": "A name that opens locked doors"
+  }
+]

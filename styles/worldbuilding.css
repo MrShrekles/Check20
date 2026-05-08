@@ -1,0 +1,207 @@
+/* ══════════════════════════════════════════════════════════════
+   WORLDBUILDING PAGE
+   Generator grid, panels, carousels, output cards
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Page layout ───────────────────────────────────────────── */
+.gen-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 750px) {
+    .gen-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Generator panel ───────────────────────────────────────── */
+.gen-panel {
+    background: var(--theme-2);
+    border: 1px solid var(--theme-2);
+    border-radius: var(--border-radius);
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.gen-panel-summary {
+    list-style: none;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    color: var(--gold);
+    border-bottom: 1px solid var(--theme-2);
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+    letter-spacing: .03em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+}
+.gen-panel-summary::-webkit-details-marker  { display: none; }
+.gen-panel-summary::after                   { content: '▲'; font-size: .65em; opacity: .5; }
+.gen-panel:not([open]) .gen-panel-summary::after { content: '▼'; }
+.gen-panel-summary:hover                    { color: var(--cream); }
+
+/* Inner reference collapsibles */
+.gen-panel details summary       { cursor: pointer; color: var(--cream); font-size: .82em; opacity: .7; }
+.gen-panel details summary:hover { opacity: 1; }
+.gen-panel details .two-column   { font-size: .8em; margin-top: 8px; }
+.gen-panel details ul            { padding-left: 1.2em; margin: 4px 0; }
+.gen-panel details li            { margin-bottom: 3px; line-height: 1.4; }
+
+/* ── Controls row ──────────────────────────────────────────── */
+.gen-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+}
+.gen-controls select {
+    background: var(--dark-3);
+    color: var(--white);
+    border: 1px solid var(--theme-2);
+    border-radius: var(--border-radius);
+    padding: 4px 8px;
+    font-size: .85em;
+}
+.gen-controls input[type="number"] {
+    width: 54px;
+    background: var(--dark-3);
+    color: var(--gold);
+    border: 1px solid var(--theme-2);
+    border-radius: var(--border-radius);
+    padding: 4px 6px;
+    text-align: center;
+    font-size: .9em;
+}
+
+/* ── Output containers ─────────────────────────────────────── */
+.gen-output {
+    flex: 1;
+    min-height: 60px;
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* All outputs use auto-fill grid — cards always fill the row */
+.flex-container.gen-output,
+#hex-history {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 8px;
+    align-items: start;
+}
+
+/* Override fixed widths so cards fill their grid cell */
+.gen-output .monster-card,
+.gen-output .medicine-card {
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    box-sizing: border-box;
+}
+.gen-output .gen-card { max-width: none; margin: 0; }
+
+/* Quest output recessed background */
+#quest-output { background: var(--dark-2); border-radius: var(--border-radius); padding: 6px; }
+
+/* Hex overrides inside the shared grid */
+#hex-history > .hex-result-card { max-width: none; width: 100%; }
+#hex-history > .journey-wrap    { grid-column: span 2; width: 100%; max-width: none; }
+
+/* ── Carousel ──────────────────────────────────────────────── */
+.carousel-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--theme-2);
+    margin-bottom: 10px;
+    gap: 2px;
+}
+.carousel-tab {
+    flex: 1;
+    padding: 7px 10px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    color: var(--cream);
+    font-size: .82em;
+    font-family: inherit;
+    cursor: pointer;
+    letter-spacing: .02em;
+    transition: color .15s, border-color .15s, background .15s;
+    white-space: nowrap;
+}
+.carousel-tab:hover    { color: var(--white); background: rgba(255,255,255,.04); }
+.carousel-tab.is-active{ color: var(--gold); border-bottom-color: var(--gold); }
+.carousel-pane         { display: none; }
+.carousel-pane.is-active { display: block; }
+
+/* ── Generator card base ───────────────────────────────────── */
+.gen-card {
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 10px 12px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+}
+.gc-header    { font-size: .63rem; text-transform: uppercase; letter-spacing: .09em; margin-bottom: 2px; }
+.gc-badge     { padding: 1px 7px; border-radius: 10px; font-weight: bold; }
+.gc-title     { font-size: .95rem; font-weight: bold; line-height: 1.25; }
+.gc-divider   { height: 1px; margin: 3px 0; }
+.gc-row       { font-size: .78rem; display: flex; align-items: flex-start; gap: 5px; flex-wrap: wrap; }
+.gc-key       { font-size: .6rem; text-transform: uppercase; letter-spacing: .05em; opacity: .6; min-width: 40px; flex-shrink: 0; padding-top: 2px; }
+.gc-val       { font-weight: bold; flex: 1; line-height: 1.35; }
+.gc-val--muted{ font-weight: normal; font-style: italic; opacity: .85; }
+.gc-tags      { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.gc-tag       { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: .68rem; font-weight: bold; }
+.gc-delete    { margin-top: 6px; align-self: flex-end; background: transparent; color: #555; border: none; cursor: pointer; font-size: .75rem; padding: 2px 4px; border-radius: 3px; }
+.gc-delete:hover { color: var(--red-2); }
+
+/* ── Card themes ───────────────────────────────────────────── */
+.gen-card--quest                { background: var(--warm-0); border-top: 3px solid var(--warm-3); }
+.gen-card--quest .gc-badge      { background: var(--warm-1); color: var(--warm-3); }
+.gen-card--quest .gc-title,
+.gen-card--quest .gc-key        { color: var(--warm-3); }
+.gen-card--quest .gc-val        { color: var(--white); }
+.gen-card--quest .gc-divider    { background: var(--warm-1); }
+
+.gen-card--enchanted            { background: #150d20; border-top: 3px solid #9966cc; }
+.gen-card--enchanted .gc-badge  { background: #2a1545; color: #cc99ff; }
+.gen-card--enchanted .gc-title  { color: #cc99ff; }
+.gen-card--enchanted .gc-key    { color: #9966cc; }
+.gen-card--enchanted .gc-val    { color: var(--white); }
+.gen-card--enchanted .gc-divider{ background: #3d1f66; }
+
+.gen-card--trap                { background: #180606; border-top: 3px solid var(--red-2); }
+.gen-card--trap .gc-badge      { background: #350a0a; color: var(--red-2); }
+.gen-card--trap .gc-title,
+.gen-card--trap .gc-key        { color: var(--red-2); }
+.gen-card--trap .gc-val        { color: var(--white); }
+.gen-card--trap .gc-divider    { background: #350a0a; }
+
+/* Rarity tags shared by enchanted cards */
+.gc-tag--element  { background: var(--theme-1); color: var(--green-3); }
+.gc-tag--common   { background: var(--dark-3);  color: #888; }
+.gc-tag--uncommon { background: #122212;         color: #55aa55; }
+.gc-tag--rare     { background: #0e1a30;         color: #5588cc; }
+.gc-tag--epic     { background: #1a0e2e;         color: #aa55cc; }
+.gc-tag--legendary{ background: #2a1500;         color: #cc8822; }
+
+/* ── Misc shared ───────────────────────────────────────────── */
+.npc-label {
+    color: var(--gold);
+    font-weight: bold;
+    font-size: .75em;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-right: 4px;
+}

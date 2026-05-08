@@ -8,7 +8,7 @@ let SPECIES_LIST = [];
 
 Promise.all([
     fetch('data/hexgen.json').then(r => r.json()),
-    fetch('data/species.json').then(r => r.json())
+    fetch('data/species_new.json').then(r => r.json())
 ]).then(([hex, sp]) => {
     HEX = hex;
     SPECIES_LIST = sp.species || [];
@@ -50,7 +50,7 @@ function weightedPickBiased(arr, weightFn, preferKey, preferVal) {
     return pool.length ? pool[rnd(pool.length)] : arr[rnd(arr.length)];
 }
 
-function rarityWeight(s) {
+function hexRarityWeight(s) {
     return RARITY_WEIGHT[(s.rarity || '').toLowerCase()] || 5;
 }
 
@@ -141,7 +141,7 @@ function rollHex(terrain, prevHex) {
     const features = counts.features > 0 ? pickUnique(HEX.features, counts.features) : [];
     const resources = counts.resources > 0 ? pickUnique(HEX.resources, counts.resources) : [];
     const species = counts.species > 0
-        ? Array.from({ length: counts.species }, () => formatSpecies(weightedPick(SPECIES_LIST, rarityWeight)))
+        ? Array.from({ length: counts.species }, () => formatSpecies(weightedPick(SPECIES_LIST, hexRarityWeight)))
         : [];
 
     const pl = weightedPickBiased(HEX.powerLevels, item => item.weight, 'pl', p?.pl).pl;

@@ -5671,50 +5671,5 @@
         ]
       }
     ]
-  },
-  {
-    "name": "Living Crypt",
-    "_group": "Undead",
-    "origin": "Life",
-    "size": "Giant",
-    "rarity": "Legendary",
-    "environment": "Prime, Eclipse",
-    "behavior": "Territorial",
-    "description": "A graveyard crypt made living that summons undead",
-    "lore": "",
-    "motivation": "",
-    "pl": 6,
-    "check_physical": 3,
-    "check_mental": 3,
-    "walk": 0,
-    "fly": 0,
-    "swim": 0,
-    "climb": 0,
-    "feature_name": "",
-    "feature_type": "",
-    "feature_range": "",
-    "feature_effect": "",
-    "feature_duration": "",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "ranged_attack": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "spell": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "features": [],
-    "art": ""
   }
 ]

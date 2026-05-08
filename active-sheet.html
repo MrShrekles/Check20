@@ -23,46 +23,89 @@
     <header id="site-header" class="site-header"></header>
 
     <main class="app" id="app">
-        <!-- Sticky resource strip (no-scroll critical loop) -->
-        <section class="resource-strip" aria-label="Resources">
-            <div class="resource-pill" data-resource="hp">
-                <div class="pill-label">Wounds</div>
-                <div class="pill-value">
-                    <button class="pill-btn" data-action="dec" aria-label="Decrease Wounds">−</button>
-                    <output class="pill-num" id="hp-current">0</output>
-                    <span class="pill-sep">/</span>
-                    <output class="pill-num pill-max" id="hp-max">0</output>
-                    <button class="pill-btn" data-action="inc" aria-label="Increase Wounds">+</button>
-                </div>
-            </div>
-
-            <div class="resource-pill" data-resource="armor">
-                <div class="pill-label">Armor</div>
-                <div class="pill-value">
-                    <button class="pill-btn" data-action="dec" aria-label="Decrease Armor">−</button>
-                    <output class="pill-num" id="armor-current">0</output>
-                    <span class="pill-sep">/</span>
-                    <output class="pill-num pill-max" id="armor-max">0</output>
-                    <button class="pill-btn" data-action="inc" aria-label="Increase Armor">+</button>
-                </div>
-            </div>
-
-            <div class="resource-pill" data-resource="MN">
-                <div class="pill-label">MN</div>
-                <div class="pill-value">
-                    <button class="pill-btn" data-action="dec" aria-label="Decrease MN">−</button>
-                    <output class="pill-num" id="MN-current">0</output>
-                    <span class="pill-sep">/</span>
-                    <output class="pill-num pill-max" id="MN-max">0</output>
-                    <button class="pill-btn" data-action="inc" aria-label="Increase MN">+</button>
-                </div>
-            </div>
-        </section>
 
         <!-- Page panels (switch via bottom nav) -->
         <section class="panel-stack" id="panel-stack">
             <!-- PLAY -->
             <section class="panel is-active" id="panel-play" role="region" aria-label="Play">
+
+                <!-- Quick Checks -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Quick Checks</h2>
+                        <button class="gear-btn" data-editor="checks-editor" type="button" aria-label="Edit check modifiers">⚙</button>
+                    </div>
+                    <div class="section-editor" id="checks-editor">
+                        <div class="checks-group-label">Physical</div>
+                        <div class="check-mods-grid">
+                            <label class="field"><span class="field-label">Agility</span><input id="edit-mod-agi" type="number" inputmode="numeric" step="1" value="0" /></label>
+                            <label class="field"><span class="field-label">Crafting</span><input id="edit-mod-cra" type="number" inputmode="numeric" step="1" value="0" /></label>
+                            <label class="field"><span class="field-label">Stealth</span><input id="edit-mod-ste" type="number" inputmode="numeric" step="1" value="0" /></label>
+                            <label class="field"><span class="field-label">Strength</span><input id="edit-mod-str" type="number" inputmode="numeric" step="1" value="0" /></label>
+                            <label class="field"><span class="field-label">Survival</span><input id="edit-mod-sur" type="number" inputmode="numeric" step="1" value="0" /></label>
+                        </div>
+                        <div class="checks-group-label">Mental</div>
+                        <div class="check-mods-grid">
+                            <label class="field"><span class="field-label">Influence</span><input id="edit-mod-inf" type="number" inputmode="numeric" step="1" value="0" /></label>
+                            <label class="field"><span class="field-label">Intellect</span><input id="edit-mod-int" type="number" inputmode="numeric" step="1" value="0" /></label>
+                            <label class="field"><span class="field-label">Luck</span><input id="edit-mod-lck" type="number" inputmode="numeric" step="1" value="0" /></label>
+                            <label class="field"><span class="field-label">Observation</span><input id="edit-mod-obs" type="number" inputmode="numeric" step="1" value="0" /></label>
+                            <label class="field"><span class="field-label">Spirit</span><input id="edit-mod-spi" type="number" inputmode="numeric" step="1" value="0" /></label>
+                        </div>
+                        <button class="done-btn" data-save="checks" type="button">✓ Done</button>
+                    </div>
+                    <div id="quick-checks"><!-- injected by JS --></div>
+                </div>
+
+                <!-- Health -->
+                <div class="section" aria-label="Resources">
+                    <div class="section-head">
+                        <h2 class="section-title">Health</h2>
+                        <button class="gear-btn" data-editor="health-editor" type="button" aria-label="Edit health maximums">⚙</button>
+                    </div>
+                    <div class="section-editor" id="health-editor">
+                        <div class="editor-grid">
+                            <label class="field"><span class="field-label">Wounds Max</span><input id="hp-max-input" type="number" inputmode="numeric" min="0" /></label>
+                            <label class="field"><span class="field-label">Armor Max</span><input id="armor-max-input" type="number" inputmode="numeric" min="0" /></label>
+                            <label class="field"><span class="field-label">MN Max</span><input id="MN-max-input" type="number" inputmode="numeric" min="0" /></label>
+                        </div>
+                        <button class="done-btn" data-save="health" type="button">✓ Done</button>
+                    </div>
+                    <div class="resource-grid">
+                        <div class="resource-pill" data-resource="hp">
+                            <span class="pill-label">Wounds</span>
+                            <div class="pill-value">
+                                <button class="pill-btn" data-action="dec" aria-label="Decrease Wounds">−</button>
+                                <output class="pill-num" id="hp-current">0</output>
+                                <span class="pill-sep">/</span>
+                                <output class="pill-num pill-max" id="hp-max">0</output>
+                                <button class="pill-btn" data-action="inc" aria-label="Increase Wounds">+</button>
+                            </div>
+                        </div>
+                        <div class="resource-pill" data-resource="armor">
+                            <span class="pill-label">Armor</span>
+                            <div class="pill-value">
+                                <button class="pill-btn" data-action="dec" aria-label="Decrease Armor">−</button>
+                                <output class="pill-num" id="armor-current">0</output>
+                                <span class="pill-sep">/</span>
+                                <output class="pill-num pill-max" id="armor-max">0</output>
+                                <button class="pill-btn" data-action="inc" aria-label="Increase Armor">+</button>
+                            </div>
+                        </div>
+                        <div class="resource-pill" data-resource="MN">
+                            <span class="pill-label">MN</span>
+                            <div class="pill-value">
+                                <button class="pill-btn" data-action="dec" aria-label="Decrease MN">−</button>
+                                <output class="pill-num" id="MN-current">0</output>
+                                <span class="pill-sep">/</span>
+                                <output class="pill-num pill-max" id="MN-max">0</output>
+                                <button class="pill-btn" data-action="inc" aria-label="Increase MN">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conditions -->
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Conditions</h2>
@@ -73,17 +116,7 @@
                     </div>
                 </div>
 
-                <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title">Quick Checks</h2>
-                        <button class="ghost-btn" id="btn-customize-quick" type="button">Edit</button>
-                    </div>
-
-                    <div class="quick-grid" id="quick-checks">
-                        <!-- Big tappable buttons injected by JS -->
-                    </div>
-                </div>
-
+                <!-- Recent -->
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Recent</h2>
@@ -95,97 +128,160 @@
                 </div>
             </section>
 
-            <!-- ACTIONS -->
-            <section class="panel" id="panel-actions" role="region" aria-label="Actions">
+            <!-- FEATURES -->
+            <section class="panel" id="panel-actions" role="region" aria-label="Features">
+                <!-- Class / Path / Talent -->
                 <div class="section">
                     <div class="section-head">
-                        <h2 class="section-title">Actions</h2>
-                        <button class="ghost-btn" id="btn-add-action" type="button">Add</button>
+                        <h2 class="section-title">Class & Path</h2>
+                        <button class="gear-btn" data-editor="class-editor" type="button" aria-label="Edit class">⚙</button>
                     </div>
-
-                    <div class="search-row">
-                        <input class="search" id="actions-search" type="search" placeholder="Search actions…" autocomplete="off" />
+                    <div class="section-editor" id="class-editor">
+                        <label class="field">
+                            <span class="field-label">Class</span>
+                            <select id="class-select" class="sheet-select"><option value="">— Select Class —</option></select>
+                        </label>
+                        <label class="field">
+                            <span class="field-label">Path</span>
+                            <select id="path-select" class="sheet-select"><option value="">— Select Path —</option></select>
+                        </label>
+                        <label class="field">
+                            <span class="field-label">Talent</span>
+                            <select id="talent-select" class="sheet-select"><option value="">— Select Talent —</option></select>
+                        </label>
+                        <button class="done-btn" data-save="class" type="button">✓ Done</button>
                     </div>
+                    <div id="class-view"><p class="empty-hint">Tap ⚙ to select your class, path & talent</p></div>
+                </div>
 
-                    <div class="card-list" id="actions-list">
-                        <!-- action cards injected by JS -->
+                <!-- Equipment -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Equipment</h2>
+                        <button class="gear-btn" data-editor="equip-editor" type="button" aria-label="Add equipment">⚙</button>
+                    </div>
+                    <div class="section-editor" id="equip-editor">
+                        <div class="bio-row">
+                            <label class="field">
+                                <span class="field-label">Item</span>
+                                <input id="equip-name-input" type="text" placeholder="Name…" autocomplete="off" />
+                            </label>
+                            <label class="field">
+                                <span class="field-label">Notes</span>
+                                <input id="equip-notes-input" type="text" placeholder="Notes…" autocomplete="off" />
+                            </label>
+                        </div>
+                        <button class="done-btn" data-save="equipment" type="button">+ Add Item</button>
+                    </div>
+                    <div class="list" id="equip-list"><p class="empty-hint">No equipment added</p></div>
+                </div>
+
+                <!-- Resources -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Resources</h2>
+                        <button class="gear-btn" data-editor="res-editor" type="button" aria-label="Edit resources">⚙</button>
+                    </div>
+                    <div class="section-editor" id="res-editor">
+                        <div class="editor-grid">
+                            <label class="field">
+                                <span class="field-label">Label</span>
+                                <input id="class-res-label-input" type="text" placeholder="Resource" autocomplete="off" />
+                            </label>
+                            <label class="field">
+                                <span class="field-label">Max</span>
+                                <input id="class-res-max-input" type="number" inputmode="numeric" min="0" />
+                            </label>
+                        </div>
+                        <button class="done-btn" data-save="classres" type="button">✓ Done</button>
+                    </div>
+                    <div class="resource-grid">
+                        <div class="resource-pill" data-resource="classRes">
+                            <span class="pill-label" id="class-res-label-display">Resource</span>
+                            <div class="pill-value">
+                                <button class="pill-btn" data-action="dec" aria-label="Decrease">−</button>
+                                <output class="pill-num" id="classRes-current">0</output>
+                                <span class="pill-sep">/</span>
+                                <output class="pill-num pill-max" id="classRes-max">0</output>
+                                <button class="pill-btn" data-action="inc" aria-label="Increase">+</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- CHECKS -->
-            <section class="panel" id="panel-checks" role="region" aria-label="Checks">
+            <!-- BIO -->
+            <section class="panel" id="panel-bio" role="region" aria-label="Bio">
                 <div class="section">
                     <div class="section-head">
-                        <h2 class="section-title">Checks</h2>
-                        <button class="ghost-btn" id="btn-check-filters" type="button">Filters</button>
-                    </div>
-
-                    <div class="search-row">
-                        <input class="search" id="checks-search" type="search" placeholder="Search checks…" autocomplete="off" />
-                    </div>
-
-                    <div class="list" id="checks-list">
-                        <!-- check rows injected by JS -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- GEAR -->
-            <section class="panel" id="panel-gear" role="region" aria-label="Gear">
-                <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title">Gear</h2>
-                        <button class="ghost-btn" id="btn-add-gear" type="button">Add</button>
-                    </div>
-
-                    <div class="search-row">
-                        <input class="search" id="gear-search" type="search" placeholder="Search gear…" autocomplete="off" />
-                    </div>
-
-                    <div class="card-list" id="gear-list">
-                        <!-- gear cards injected by JS -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- EDIT -->
-            <section class="panel" id="panel-edit" role="region" aria-label="Edit">
-                <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title">Edit</h2>
+                        <h2 class="section-title">Character</h2>
                         <button class="ghost-btn" id="btn-export" type="button">Export</button>
                     </div>
-
-                    <!-- Keep Edit minimal on mobile; link out to your full builder if needed -->
                     <div class="form">
                         <label class="field">
                             <span class="field-label">Name</span>
-                            <input id="char-name" name="charName" type="text" inputmode="text" autocomplete="off" />
+                            <input id="char-name" type="text" inputmode="text" autocomplete="off" />
                         </label>
-
-                        <label class="field">
-                            <span class="field-label">Level</span>
-                            <input id="char-level" name="charLevel" type="number" inputmode="numeric" min="1" step="1" />
-                        </label>
-
-                        <div class="field-row">
+                        <div class="bio-row">
                             <label class="field">
-                                <span class="field-label">HP Max</span>
-                                <input id="hp-max-input" name="hpMax" type="number" inputmode="numeric" min="0" step="1" />
+                                <span class="field-label">Species</span>
+                                <input id="char-species" type="text" autocomplete="off" />
                             </label>
-                            <label class="field">
-                                <span class="field-label">Armor Max</span>
-                                <input id="armor-max-input" name="armorMax" type="number" inputmode="numeric" min="0" step="1" />
-                            </label>
-                            <label class="field">
-                                <span class="field-label">MN Max</span>
-                                <input id="MN-max-input" name="spMax" type="number" inputmode="numeric" min="0" step="1" />
+                            <label class="field field-sm">
+                                <span class="field-label">Level</span>
+                                <input id="char-level" type="number" inputmode="numeric" min="1" />
                             </label>
                         </div>
-
-                        <button class="primary-btn" id="btn-save-edit" type="button">Save</button>
+                        <div class="bio-row">
+                            <label class="field">
+                                <span class="field-label">Size</span>
+                                <input id="char-size" type="text" autocomplete="off" />
+                            </label>
+                            <label class="field">
+                                <span class="field-label">Age</span>
+                                <input id="char-age" type="text" autocomplete="off" />
+                            </label>
+                            <label class="field">
+                                <span class="field-label">Diet</span>
+                                <input id="char-diet" type="text" autocomplete="off" />
+                            </label>
+                        </div>
+                        <label class="field">
+                            <span class="field-label">Language</span>
+                            <input id="char-language" type="text" autocomplete="off" />
+                        </label>
+                        <label class="field">
+                            <span class="field-label">Motivation</span>
+                            <textarea id="char-motivation" rows="3"></textarea>
+                        </label>
+                        <button class="primary-btn" id="btn-save-bio" type="button">Save</button>
                     </div>
+                </div>
+            </section>
+
+            <!-- PROGRESSION -->
+            <section class="panel" id="panel-progression" role="region" aria-label="Progression">
+                <div class="section">
+                    <div class="section-head"><h2 class="section-title">Path</h2></div>
+                    <div id="path-progression-list"><p class="empty-hint">Select a path in Features</p></div>
+                </div>
+                <div class="section">
+                    <div class="section-head"><h2 class="section-title">Talent</h2></div>
+                    <div id="talent-progression-list"><p class="empty-hint">Select a talent in Features</p></div>
+                </div>
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Other Gains</h2>
+                        <button class="gear-btn" data-editor="gains-editor" type="button">⚙</button>
+                    </div>
+                    <div class="section-editor" id="gains-editor">
+                        <label class="field">
+                            <span class="field-label">Item gained</span>
+                            <input id="gain-input" type="text" placeholder="Ability, item, or note…" autocomplete="off" />
+                        </label>
+                        <button class="done-btn" data-save="gain" type="button">+ Add</button>
+                    </div>
+                    <div class="list" id="other-gains-list"><p class="empty-hint">Items gained during play</p></div>
                 </div>
             </section>
         </section>
@@ -196,21 +292,17 @@
                 <span class="nav-icon" aria-hidden="true">🎲</span>
                 <span class="nav-label">Play</span>
             </button>
+            <button class="nav-btn" data-nav="bio" type="button" aria-controls="panel-bio">
+                <span class="nav-icon" aria-hidden="true">📜</span>
+                <span class="nav-label">Bio</span>
+            </button>
             <button class="nav-btn" data-nav="actions" type="button" aria-controls="panel-actions">
-                <span class="nav-icon" aria-hidden="true">⚔️</span>
-                <span class="nav-label">Actions</span>
+                <span class="nav-icon" aria-hidden="true">⚡</span>
+                <span class="nav-label">Features</span>
             </button>
-            <button class="nav-btn" data-nav="checks" type="button" aria-controls="panel-checks">
-                <span class="nav-icon" aria-hidden="true">✅</span>
-                <span class="nav-label">Checks</span>
-            </button>
-            <button class="nav-btn" data-nav="gear" type="button" aria-controls="panel-gear">
-                <span class="nav-icon" aria-hidden="true">🎒</span>
-                <span class="nav-label">Gear</span>
-            </button>
-            <button class="nav-btn" data-nav="edit" type="button" aria-controls="panel-edit">
-                <span class="nav-icon" aria-hidden="true">⚙️</span>
-                <span class="nav-label">Edit</span>
+            <button class="nav-btn" data-nav="progression" type="button" aria-controls="panel-progression">
+                <span class="nav-icon" aria-hidden="true">⬆</span>
+                <span class="nav-label">Progress</span>
             </button>
         </nav>
 

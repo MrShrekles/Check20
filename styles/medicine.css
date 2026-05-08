@@ -1,90 +1,96 @@
-#medicine-output {
-    max-height: 490px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: var(--padding);
-}
-
+/* ── Medicine card ─────────────────────────────────────────── */
 .medicine-card {
-    background: rgba(35, 45, 45, .9);
-    border: 1px solid var(--gold);
+    background: #061a10;
     border-radius: var(--border-radius);
+    border-top: 3px solid #44bb88;
     box-shadow: var(--box-shadow);
-    padding: var(--padding);
-    margin: 5px;
+    padding: 10px 12px;
     color: var(--white);
-    width: 300px;
     display: flex;
     flex-direction: column;
-    gap: .4rem;
-    transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
-    transform-origin: center;
-    will-change: transform;
+    gap: 5px;
+    box-sizing: border-box;
 }
 
-.medicine-card:hover {
-    background-color: var(--dark);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
-    transform: translateZ(0) scale(1.03);
+.medicine-card h2 {
+    margin: 0 0 2px;
+    font-size: .95rem;
+    font-weight: bold;
+    color: #88ddbb;
+    line-height: 1.25;
 }
 
-.medicine-card h2,
-.medicine-card h4 {
-    /* support either heading */
-    margin: 0 0 .5rem;
-    color: var(--gold);
-}
-
-.medicine-card p {
-    margin: .4rem 0;
+.medicine-card > p:first-of-type {
+    font-size: .78rem;
+    color: var(--cream);
+    opacity: .8;
+    margin: 0;
+    line-height: 1.4;
+    font-style: italic;
 }
 
 .medicine-meta {
-    background: var(--theme-2);
-    border: 1px solid var(--theme-3);
+    background: #0d2e1c;
+    border: 1px solid #1e5c38;
     border-radius: var(--border-radius);
-    padding: 4px 6px;
-    font-size: .85rem;
-    color: var(--text-plain);
-    display: inline-block;
+    padding: 4px 8px;
+    font-size: .78rem;
+    color: #88ddbb;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
 }
+.medicine-meta strong { color: #44bb88; }
 
 /* Effects list */
 .medicine-card ul {
     list-style: none;
-    margin: 8px 0 0 0;
+    margin: 2px 0 0;
     padding: 0;
+    border-top: 1px solid #0d2e1c;
+    padding-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .medicine-card li {
-    line-height: 1.5;
-    padding-left: 1.25em;
-    text-indent: -0.75em;
+    font-size: .78rem;
+    line-height: 1.45;
+    padding-left: 1.2em;
+    text-indent: -1.1em;
     word-break: break-word;
+    color: var(--white);
 }
 
 .medicine-card li::before {
-    content: "⚗️";
-    margin-right: .25em;
-    color: var(--gold);
-    font-size: 1em;
+    content: "⚗";
+    margin-right: .3em;
+    color: #44bb88;
+    font-size: .85em;
 }
 
-/* Buttons — reuse existing shared styles */
+.medicine-card li strong { color: #88ddbb; }
+
+/* Buttons */
 .button-row {
     display: flex;
-    gap: var(--padding);
-    justify-content: space-between;
+    gap: 6px;
+    justify-content: flex-end;
+    margin-top: 4px;
 }
 
-/* Responsive */
-@media (max-width: 690px) {
-    .medicine-card {
-        width: 100%;
-        margin: 3px;
-    }
-
-    .medicine-card:hover {
-        transform: none;
-    }
+.btn-copy,
+.btn-remove {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: .72rem;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: inherit;
 }
+.btn-copy   { color: #44bb88; }
+.btn-copy:hover { color: #88ddbb; }
+.btn-remove { color: #555; }
+.btn-remove:hover { color: var(--red-2); }

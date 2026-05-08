@@ -4,7 +4,7 @@ let speciesData = { species: [], dragonTypes: [] };
 // Load both JSONs
 Promise.all([
     fetch("data/worldbuilding.json").then(res => res.json()),
-    fetch("data/species.json").then(res => res.json())
+    fetch("data/species_new.json").then(res => res.json())
 ]).then(([worldbuilding, species]) => {
     npcData = worldbuilding;
     speciesData = species;
@@ -50,22 +50,42 @@ function formatSpecies(s) {
 }
 
 function extractFeature(species) {
-    if (!species.features) return [];
+    const features = [];
 
-    // If it's an array of features
-    if (Array.isArray(species.features)) {
-        return species.features.flatMap(f => {
-            const baseDesc = `${f.name}: ${f.description}`;
-            const optionLines = Array.isArray(f.options)
-                ? f.options.map(opt => `<b> ${opt.name}:</b> ${opt.effect}`)
-                : [];
-
-            return [baseDesc, ...optionLines];
-        });
+    // species_new.json flat format: feature_name / feature_effect / fetAction / fetCheck etc.
+    if (species.feature_name) {
+        let line = species.feature_name;
+        if (species.feature_effect) line += `: ${species.feature_effect}`;
+        const tags = [];
+        if (species.fetAction)   tags.push(species.fetAction);
+        if (species.fetCheck)    tags.push(`Check: ${species.fetCheck}`);
+        if (species.fetRange)    tags.push(`Range: ${species.fetRange}`);
+        if (species.fetDuration) tags.push(`Duration: ${species.fetDuration}`);
+        if (tags.length) line += ` [${tags.join(' · ')}]`;
+        features.push(line);
     }
 
-    // Fallback for simple string-style feature blocks
-    return [species.features];
+    if (species['sub-fet-name']) {
+        let sub = species['sub-fet-name'];
+        if (species['sub-fet-effect']) sub += `: ${species['sub-fet-effect']}`;
+        features.push(sub);
+    }
+
+    // Legacy format (species.json array)
+    if (!features.length && species.features) {
+        if (Array.isArray(species.features)) {
+            return species.features.flatMap(f => {
+                const baseDesc = `${f.name}: ${f.description}`;
+                const optionLines = Array.isArray(f.options)
+                    ? f.options.map(opt => `<b> ${opt.name}:</b> ${opt.effect}`)
+                    : [];
+                return [baseDesc, ...optionLines];
+            });
+        }
+        return [species.features];
+    }
+
+    return features;
 }
 
 class NPC {
@@ -77,14 +97,10 @@ class NPC {
         const dragonLineages = ["kobari", "drakonari"];
         const lowerName = species.name?.toLowerCase();
 
-        if (dragonLineages.includes(lowerName)) {
+        if (dragonLineages.includes(lowerName) && speciesData.dragonTypes?.length) {
             const dragon = getRandomItem(speciesData.dragonTypes);
             this.speciesName += ` (${dragon.name})`;
-
-            // Add the dragon feature too
-            if (dragon.features) {
-                this.features.push(`🐉 ${dragon.features}`);
-            }
+            if (dragon.features) this.features.push(`🐉 ${dragon.features}`);
         }
 
         this.name = generateName();

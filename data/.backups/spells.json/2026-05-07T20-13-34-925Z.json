@@ -1063,30 +1063,24 @@
     "effects": [
       {
         "intent": "Shout",
-        "range": "Melee",
-        "target": "Creature",
-        "duration": "",
-        "effect": "Remove the Death condition from a creature that died within 1 hour and heal them for +10. This heals wounds but does not restore dismembered limbs. The body must be functionally complete and not undead or a construct. On a failure, the creature becomes Undead.",
-        "damageType": "Healing",
-        "damage": "10"
+        "range": "Touch",
+        "target": "Dead Creature",
+        "duration": "Instant ",
+        "effect": "Remove the Death condition from a creature that died within 1 hour and heal them for +1. This heals wounds but does not restore dismembered limbs. The body must be functionally complete and not undead or a construct. On a failed check, the creature gains the Strigoi curse."
       },
       {
         "intent": "Roar",
-        "range": "Reach",
-        "target": "Creature",
-        "duration": "Instant",
-        "effect": "Remove the Death condition from a creature that died within 24 hours and heal them for +20. This heals wounds and restores dismembered limbs. The body only needs a head and heart and cannot be undead or a construct. On a failure, the creature becomes Undead.",
-        "cost": 9,
-        "damageType": "Healing",
-        "damage": "20"
+        "range": "Touch",
+        "target": "Dead Creature",
+        "duration": "Instant ",
+        "effect": "Remove the Death condition from a creature that died within 24 hours and heal them for +5. This heals wounds and restores dismembered limbs. The body only needs a head and heart and cannot be undead or a construct. On a failed check, the creature gains the Strigoi curse with 3 steps complete."
       },
       {
-        "intent": "Storm",
-        "range": "Reach",
-        "target": "Creature",
+        "intent": "Roar",
+        "range": "Touch",
+        "target": "Dead Creature",
         "duration": "Instant ",
-        "effect": "Remove the Death condition from a creature of whom you possess part of the corpse such as bone, ash, blood, or an organ. If the creature died more than 24 hours ago, you suffer a -10 penalty to the Spellcasting check. The spell cannot restore a creature if another living body of that creature still exists. On a failure, the creature becomes Undead.",
-        "cost": 12
+        "effect": "Remove the Death condition from a creature if you possess any part of the corpse. They recover their entire body and are fully healed. On a failed check, the creature gains the Strigoi curse with 6 steps complete."
       }
     ]
   },

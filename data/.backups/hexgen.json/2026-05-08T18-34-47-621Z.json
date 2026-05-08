@@ -300,10 +300,6 @@
       {
         "name": "Oasis City",
         "weight": 1
-      },
-      {
-        "name": "",
-        "weight": 1
       }
     ]
   },
@@ -367,18 +363,6 @@
     {
       "name": "Sand Serpents",
       "weight": 1
-    },
-    {
-      "name": "Dragipede",
-      "weight": 1
-    },
-    {
-      "name": "Sandstorm",
-      "weight": 1
-    },
-    {
-      "name": "Glasswraiths",
-      "weight": 1
     }
   ],
   "populations": [
@@ -441,15 +425,15 @@
   "temperaments": [
     {
       "name": "Peaceful",
-      "weight": 2
+      "weight": 1
     },
     {
       "name": "Quiet Tension",
-      "weight": 2
+      "weight": 1
     },
     {
       "name": "Bickering",
-      "weight": 2
+      "weight": 1
     },
     {
       "name": "Skirmishes",
@@ -464,35 +448,11 @@
       "weight": 1
     },
     {
+      "name": "Occupied",
+      "weight": 1
+    },
+    {
       "name": "Boring",
-      "weight": 1
-    },
-    {
-      "name": "Somber",
-      "weight": 2
-    },
-    {
-      "name": "Unhinged",
-      "weight": 2
-    },
-    {
-      "name": "Insane",
-      "weight": 1
-    },
-    {
-      "name": "Accommodating ",
-      "weight": 2
-    },
-    {
-      "name": "Happy",
-      "weight": 1
-    },
-    {
-      "name": "Slutty",
-      "weight": 1
-    },
-    {
-      "name": "Busy",
       "weight": 1
     }
   ],
@@ -636,10 +596,6 @@
     {
       "name": "Abandoned Hive",
       "weight": 1
-    },
-    {
-      "name": "Ruined Waystation",
-      "weight": 1
     }
   ],
   "foods": [
@@ -686,42 +642,6 @@
     {
       "name": "Carrion",
       "weight": 2
-    },
-    {
-      "name": "Vegetation",
-      "weight": 1
-    },
-    {
-      "name": "Dragon",
-      "weight": 1
-    },
-    {
-      "name": "Mold",
-      "weight": 1
-    },
-    {
-      "name": "Fungus",
-      "weight": 1
-    },
-    {
-      "name": "Cattle",
-      "weight": 1
-    },
-    {
-      "name": "Melons",
-      "weight": 1
-    },
-    {
-      "name": "Squash",
-      "weight": 1
-    },
-    {
-      "name": "Peppers",
-      "weight": 1
-    },
-    {
-      "name": "Broccoli",
-      "weight": 1
     }
   ],
   "resources": [
@@ -861,31 +781,31 @@
     },
     {
       "pl": 8,
-      "weight": 8
-    },
-    {
-      "pl": 9,
       "weight": 7
     },
     {
-      "pl": 10,
+      "pl": 9,
       "weight": 6
     },
     {
-      "pl": 11,
+      "pl": 10,
       "weight": 5
     },
     {
-      "pl": 12,
+      "pl": 11,
       "weight": 4
     },
     {
-      "pl": 13,
+      "pl": 12,
       "weight": 3
     },
     {
-      "pl": 14,
+      "pl": 13,
       "weight": 2
+    },
+    {
+      "pl": 14,
+      "weight": 1
     },
     {
       "pl": 15,

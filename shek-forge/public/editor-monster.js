@@ -96,6 +96,8 @@ function syncPLDisplay(idx) {
     const plEl = document.getElementById(`pl-input-${idx}`);
     const sumEl = plEl?.closest('.field-wrap')?.querySelector('.pl-sum');
     if (sumEl) { sumEl.textContent = `${phys} + ${ment} = ${phys + ment} / ${pl}`; sumEl.classList.toggle('pl-sum-warn', phys + ment !== pl); }
+    const derivedEl = document.getElementById(`pl-derived-${idx}`);
+    if (derivedEl) derivedEl.textContent = `Actions: ${Math.max(1, Math.floor(pl / 4))} · Threat: ${Math.floor(pl / 2)} · Mana: ${ment * 2}`;
 }
 
 // ── WEAPON AUTOCOMPLETE ───────────────────────────────────────────────────────
@@ -414,6 +416,11 @@ function copyForChat(idx, btn) {
 
 // ── ROLL20 EXPORT ─────────────────────────────────────────────────────────────
 function stripEmojiPrefix(str) { return (str || '').replace(/^[^\w]+/, '').trim(); }
+function sanitizeEffect(str) {
+    return (str || '')
+        .replace(/\[\[(.*?)\]\]/g, '($1)')   // [[expr]] → (expr) so Roll20 won't evaluate it
+        .replace(/@\{([^|}]+)[^}]*\}/g, '$1'); // @{attr|fallback} → attr name only
+}
 function normalizeAction(val) {
     if (!val) return 'Action';
     const valid = ['Action','Half Action','Off Action','Non-Action','Special','Press On','Long Rest','Start of turn','End of turn','Passive'];
@@ -440,10 +447,20 @@ function copyForRoll20(idx, btn) {
         ranged: { name: ranged.name || '', damage: ranged.damage || '1d6', type: stripEmojiPrefix(ranged.damage_type || ''), equipped: !!ranged.equipped },
         feature: {
             name: entry[sch.featureNameKey] || '', action: normalizeAction(entry[sch.featureTypeKey] || ''),
-            range: normalizeRange(entry[sch.featureRangeKey] || ''), effect: entry[sch.featureEffectKey] || '',
+            range: normalizeRange(entry[sch.featureRangeKey] || ''), effect: sanitizeEffect(entry[sch.featureEffectKey]),
             damage: stripEmojiPrefix(entry[sch.featureDamageKey] || ''),
         },
-        spells:           Array.isArray(entry.spells) ? entry.spells : [],
+        features: (entry.features || []).map(f => ({
+            name:   f.name   || '',
+            action: normalizeAction(f.type   || ''),
+            range:  normalizeRange(f.range   || ''),
+            effect: sanitizeEffect(f.effect),
+            damage: stripEmojiPrefix(f.damage || ''),
+        })),
+        spells: (Array.isArray(entry.spells) ? entry.spells : []).map(s => ({
+            ...s,
+            effects: (s.effects || []).map(e => ({ ...e, effect: sanitizeEffect(e.effect) })),
+        })),
         mana_max: (entry.check_mental ?? 0) * 2,
     };
     const cmd = `!importmonster ${JSON.stringify(packet)}`;
@@ -817,6 +834,7 @@ registerEditor('monster', {
                     </div>
                 </div>
                 <div class="pl-sum ${phys + ment === pl ? '' : 'pl-sum-warn'}">${phys} + ${ment} = ${phys + ment} / ${pl}</div>
+                <div id="pl-derived-${idx}" class="pl-derived">Actions: ${Math.max(1, Math.floor(pl / 4))} · Threat: ${Math.floor(pl / 2)} · Mana: ${ment * 2}</div>
             </div>`;
         })() : '';
 

@@ -1085,7 +1085,7 @@
         "range": "Reach",
         "target": "Creature",
         "duration": "Instant ",
-        "effect": "Remove the Death condition from a creature of whom you possess part of the corpse such as bone, ash, blood, or an organ. If the creature died more than 24 hours ago, you suffer a -10 penalty to the Spellcasting check. The spell cannot restore a creature if another living body of that creature still exists. On a failure, the creature becomes Undead.",
+        "effect": "Remove the Death condition from a creature of whom you possess a part of the corpse and heal them fully. If the creature died more than 24 hours ago, you suffer a -10 penalty to the Spellcasting check. On a failure, the creature becomes Undead.",
         "cost": 12
       }
     ]

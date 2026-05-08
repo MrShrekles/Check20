@@ -7,14 +7,19 @@
     <title>Check20: Worldbuilding</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/monster.css">
+    <link rel="stylesheet" href="styles/hexgen.css">
     <link rel="stylesheet" href="styles/medicine.css">
+    <link rel="stylesheet" href="styles/worldbuilding.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/almanac.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
+    <!-- generators — load order matters: npcGenerator defines rarityWeight, hexgen uses hexRarityWeight -->
     <script src="scripts/npcGenerator.js"></script>
     <script src="scripts/businessGenerator.js"></script>
+    <script src="scripts/hexgen.js"></script>
+    <script src="scripts/worldgen.js" defer></script>
     <script src="scripts/medicine.js"></script>
 </head>
 
@@ -23,276 +28,197 @@
     <div id="sidebar-placeholder"></div>
 
     <main>
-        <!-- Intro Question -->
-        <section id="question" class="generator-row">
-            <div class="flex-gen" style="width: 100%;">
-                <div class="flex-pop">
-                    <h2 style="padding: 10px;">Character Roleplay Question</h2>
-                    <button id="generate-question-btn">Generate Question</button>
-                    <div id="generated-question" class="display-box">[Your Character's Question]</div>
-                </div>
-            </div>
-        </section>
 
-        <!-- NPC Gen -->
-        <details open>
-            <summary>
-                NPC
-            </summary>
-            <section id="npc">
-                <div class="box-button">
+        <!-- ── ROW 1: NPC + HEX ──────────────────────────────────── -->
+        <div class="gen-grid">
+
+            <details class="gen-panel" open>
+                <summary class="gen-panel-summary">NPC Generator</summary>
+                <div class="gen-controls">
                     <button class="button" id="generate-npc">Generate NPC</button>
+                    <button id="clear-npcs">Clear</button>
                 </div>
-                <button id="clear-npcs">Clear NPCs</button>
-                <div class="flex-container" id="npc-output"></div>
+                <div class="flex-container gen-output" id="npc-output"></div>
+            </details>
 
-            </section>
-        </details>
-
-        <!-- Business -->
-        <details>
-            <summary>
-                Business
-            </summary>
-            <section id="business">
-                <div class="box-button">
-                    <button class="button" id="generate-business">Generate Business</button>
+            <details class="gen-panel" open>
+                <summary class="gen-panel-summary">Hex Generator</summary>
+                <div class="hexgen-controls gen-controls">
+                    <select id="terrain-pick">
+                        <option value="all">All Terrains</option>
+                        <option value="desert">Desert</option>
+                        <option value="mountain">Mountain</option>
+                        <option value="city">City</option>
+                    </select>
+                    <button class="button" id="roll-hex-btn">Roll Hex</button>
+                    <span class="ctrl-label">Travel:</span>
+                    <input type="number" id="travel-hexes" value="4" min="1" max="12">
+                    <button class="button" id="roll-travel-btn">Journey</button>
+                    <button id="clear-hexes">Clear</button>
                 </div>
-                <button id="clear-businesses">Clear Businesses</button>
+                <div id="hex-history" class="gen-output"></div>
+            </details>
 
-                <div class="flex-container" id="business-output"></div>
-            </section>
-        </details>
+        </div>
 
-        <!-- Medicine -->
-        <details>
-            <summary>Medicine</summary>
-            <section>
-                <button id="go" class="button">Generate Medicine</button>
-                <button id="clear-medicine">Clear</button>
-                <div id="medicine-output" class="flex-container"></div>
-            </section>
-        </details>
+        <!-- ── ROW 2: CAROUSELS ─────────────────────────────────── -->
+        <div class="gen-grid">
 
-        <!-- Traps -->
-        <details>
-            <summary>
-                Locks & Traps
-            </summary>
-            <section>
-                <div class="two-column">
-                    <div class="column">
-                        <ul>
-                            <li>
-                                <strong>Mundane Lock & Physical Key:</strong>
-                                A standard lock that requires a traditional <em>Physical Key</em>. It can range from
-                                basic padlocks to more complex tumbler mechanisms. These locks are susceptible to
-                                lockpicking or brute force.
-                            </li>
-                            <li>
-                                <strong>Blood Lock & Blood Key:</strong>
-                                A <em>Blood Lock</em> requires the touch of blood to open. Depending on the
-                                difficulty,
-                                it might require the blood of a specific creature, a creature type, or just any
-                                generic
-                                blood. A <em>Blood Key</em> often takes the form of a dagger-like object that
-                                requires a
-                                cut to activate, channeling the essence of the wielder into the lock.
-                            </li>
-                            <li>
-                                <strong>Soul Lock & Soul Key:</strong>
-                                A <em>Soul Lock</em> remains closed until touched by a specific soul linked to it. In
-                                more challenging versions, a soul must be sacrificed for the lock to open. The
-                                corresponding <em>Soul Key</em> may manifest as an enchanted crystal or token
-                                infused
-                                with the required soul or spiritual essence.
-                            </li>
-                            <li>
-                                <strong>Trap Rune Lock & Rune Key:</strong>
-                                A <em>Trap Rune Lock</em> detonates when tampered with, layering protective runes
-                                that
-                                require an <em>Arcane Rune Key</em> to disarm. The key itself is often a magical
-                                glyph
-                                or talisman that matches the runes’ inscription.
-                            </li>
-                            <li>
-                                <strong>Construct Mimic Lock & Password:</strong>
-                                The <em>Construct Mimic Lock</em> is a sentient mechanism resembling a lock but
-                                requiring
-                                a specific password to deactivate. The lock may interact with those attempting to
-                                open
-                                it, even bargaining or testing them for entry.
-                            </li>
-                            <li>
-                                <strong>Illusionary Lock & Perception:</strong>
-                                An <em>Illusionary Lock</em> appears real but is not truly locked. Often, it hides a
-                                secondary trap, tricking the unwary into ignoring other dangers. Observant
-                                individuals
-                                or those skilled in perception can identify it for what it is.
-                            </li>
-                            <li>
-                                <strong>Tech Lock & Code Key:</strong>
-                                A <em>Tech Lock</em> incorporates advanced mechanisms such as keypads, fingerprint
-                                readers, or voice-activated commands. These locks require a <em>Code Key</em>, which
-                                might be a passphrase, biometric data, or a specific tool like a data chip.
-                            </li>
-                            <li>
-                                <strong>Basic Magic Lock & Spell Key:</strong>
-                                This lock relies on simple magical energy and requires a basic incantation or a
-                                low-power
-                                spell to unlock. The <em>Spell Key</em> might be a single word of power or a
-                                specific
-                                hand motion.
-                            </li>
-                            <li>
-                                <strong>Celestial Lock & Star Key:</strong>
-                                A <em>Celestial Lock</em> glimmers with divine light or cosmic energy. It can only be
-                                opened with a <em>Star Key</em>, which might take the form of a constellation map, a
-                                blessed object, or a mote of starlight.
-                            </li>
-                            <li>
-                                <strong>Chaos Lock & Entropy Key:</strong>
-                                A swirling, unpredictable <em>Chaos Lock</em> shifts and changes form, preventing
-                                easy
-                                access. The <em>Entropy Key</em> is equally erratic, requiring a random or illogical
-                                approach to use properly.
-                            </li>
-                            <li>
-                                <strong>Chronomancy Lock & Temporal Key:</strong>
-                                A <em>Chronomancy Lock</em> is bound by time itself, only accessible at specific
-                                moments
-                                or when manipulated with a <em>Temporal Key</em>, such as a clockwork device or a
-                                relic
-                                attuned to time magic.
-                            </li>
-                            <li>
-                                <strong>Crystal Lock & Resonance Key:</strong>
-                                Crafted from shimmering crystal, the <em>Crystal Lock</em> resonates with specific
-                                frequencies. A <em>Resonance Key</em>, often a crystal shard or tuning fork, must
-                                match
-                                the lock's frequency to open it.
-                            </li>
-                            <li>
-                                <strong>Dragon Lock & Wyrm Key:</strong>
-                                Guarded by ancient draconic magic, the <em>Dragon Lock</em> often requires the breath
-                                or
-                                blood of a dragon to unlock. A <em>Wyrm Key</em> might be a scale, a claw, or a
-                                sigil
-                                carved in the language of dragons.
-                            </li>
-                            <li>
-                                <strong>Elemental Lock & Element Key:</strong>
-                                The <em>Elemental Lock</em> binds its magic to one of the primal forces (fire, water,
-                                air, or earth). The <em>Element Key</em> could be a manifestation of the element,
-                                such
-                                as a flame, a vial of water, or a stone from a sacred place.
-                            </li>
-                            <li>
-                                <strong>Nature Lock & Grove Key:</strong>
-                                A <em>Nature Lock</em> thrives with vines, wood, or blooming flowers. It requires a
-                                <em>Grove Key</em>, such as a sacred leaf, a druid's token, or a whispered prayer to
-                                the
-                                forest spirits.
-                            </li>
-                            <li>
-                                <strong>Vozian Lock & Infernal Key:</strong>
-                                A dark and malevolent <em>Vozian Lock</em> pulses with infernal energy. It requires
-                                an
-                                <em>Infernal Key</em>, often a cursed artifact or a pact with an evil entity, to
-                                open.
-                            </li>
+            <!-- Quests & Encounters carousel -->
+            <details class="gen-panel" open>
+                <summary class="gen-panel-summary">Quests &amp; Encounters</summary>
+                <div class="carousel-tabs">
+                    <button class="carousel-tab is-active" onclick="switchCarouselTab(this,'cpane-quest')">Quest</button>
+                    <button class="carousel-tab" onclick="switchCarouselTab(this,'cpane-trap')">Door &amp; Trap</button>
+                </div>
 
-                        </ul>
+                <!-- Quest pane -->
+                <div class="carousel-pane is-active" id="cpane-quest">
+                    <div class="gen-controls">
+                        <select id="quest-type-pick">
+                            <option value="any">Any Type</option>
+                            <option value="fetch">Fetch</option>
+                            <option value="escort">Escort</option>
+                            <option value="kill">Eliminate</option>
+                            <option value="explore">Explore</option>
+                            <option value="rescue">Rescue</option>
+                            <option value="investigate">Investigate</option>
+                            <option value="defend">Defend</option>
+                            <option value="deliver">Deliver</option>
+                        </select>
+                        <button class="button" id="generate-quest">Generate Quest</button>
+                        <button id="clear-quests">Clear</button>
                     </div>
-                    <div class="column">
-                        <h3>Trap Power Levels (PL)</h3>
-                        <p>Trap PL is a modular system that allows narrators to scale traps for their desired level of
-                            danger or challenge. Each PL adds to the damage, range, or complexity of a trap. Use the
-                            following guidelines to adapt traps:</p>
-                        <ul>
-                            <li><strong>Damage:</strong> Traps deal <code>1d6</code> damage per PL (e.g., a PL 2 trap
-                                deals
-                                <code>2d6</code> damage).
-                            </li>
-                            <li><strong>Range:</strong> Trap effects scale by area or target range. A PL 1 trap has a
-                                range
-                                of 5 ft, increasing by +5 ft per PL. For example, a PL 10 trap would affect a 50 ft
-                                radius.
-                            </li>
-                            <li><strong>+Table:</strong> Every 3 PL adds a roll on the +Table for the damage type of the
-                                trap. For example, a PL 3 trap would act similarly to a Success+ on a weapon attack,
-                                adding
-                                effects like conditions or bonus damage.</li>
-                            <li><strong>Disarm:</strong> Traps can typically be disarmed with either a Physical check
-                                (e.g.,
-                                Agility or Strength) or a Mental check (e.g., Intellect or Spirit), depending on the
-                                trap
-                                type.</li>
-                        </ul>
-
-                        <h4>Generic Trap Types</h4>
-                        <p>Below are common trap concepts for narrators to customize. Apply damage types, conditions, or
-                            thematic elements as needed.</p>
-                        <ul>
-                            <li>
-                                <strong>Dart Trap: </strong>A hidden mechanism fires a projectile when triggered. Damage
-                                type can be chosen by the narrator (e.g., Toxic, Piercing, Fire).
-                            </li>
-                            <li>
-                                <strong>Rune Trap:</strong>
-                                Magical symbols activate when disturbed, unleashing effects like explosions, curses, or
-                                elemental damage. Narrators can define the damage type (e.g., Fire, Lightning, or
-                                Psychic).
-                            </li>
-                            <li>
-                                <strong>Trap Door:</strong>
-                                A concealed mechanism drops the target into a pit or hazard. Damage type depends on the
-                                environment (e.g., Impact, Spikes, or Lava).
-                            </li>
-                            <li>
-                                <strong>Gas Trap:</strong>
-                                Releases a harmful cloud when triggered. Narrators can specify conditions (e.g.,
-                                Coughing,
-                                Poisoned) and damage type (e.g., Toxic or Eclipse).
-                            </li>
-                            <li>
-                                <strong>Net Trap:</strong>
-                                Launches a net to immobilize targets, applying the <em>Pinned</em> condition. Narrators
-                                can
-                                add enhancements like barbs (Piercing damage) or elemental effects.
-                            </li>
-                            <li>
-                                <strong>Illusion Trap:</strong>
-                                Creates a deceptive or disorienting visual or auditory effect. Can impose conditions
-                                like
-                                <em>Blind</em>, <em>Confused</em>, or <em>Fear</em>.
-                            </li>
-                            <li>
-                                <strong>Explosive Trap:</strong>
-                                Triggers an area-of-effect blast. Damage type can range from Fire to Thunder or even
-                                Vozian
-                                for infernal-themed traps.
-                            </li>
-                        </ul>
-
-                        <h4>Trap Customization Ideas</h4>
-                        <ul>
-                            <li><strong>Conditions:</strong> Add conditions like <em>Coughing</em>, <em>Prone</em>, or
-                                <em>Blinded</em> to enhance the trap’s complexity.
-                            </li>
-                            <li><strong>Triggers:</strong> Traps can be triggered by pressure plates, tripwires, magical
-                                detection, or proximity.</li>
-                            <li><strong>Themes:</strong> Adjust the theme of traps to fit your setting (e.g.,
-                                jungle-themed
-                                vine traps, steampunk clockwork mechanisms, or infernal traps with cursed effects).</li>
-                        </ul>
-                    </div>
+                    <div class="flex-container gen-output" id="quest-output"></div>
                 </div>
+
+                <!-- Door & Trap pane -->
+                <div class="carousel-pane" id="cpane-trap">
+                    <div class="gen-controls">
+                        <button class="button" id="generate-trap">Generate</button>
+                        <button id="clear-traps">Clear</button>
+                    </div>
+                    <div class="flex-container gen-output" id="trap-output"></div>
+                    <details style="margin-top:8px">
+                        <summary style="cursor:pointer;color:var(--cream);font-size:.82em;opacity:.7">Lock &amp; Trap Reference ▾</summary>
+                        <div class="two-column" style="margin-top:6px;font-size:.8em">
+                            <div class="column">
+                                <strong style="color:var(--gold)">Lock Types</strong>
+                                <ul><li><strong>Mundane</strong> — Physical key; pick or force</li><li><strong>Blood</strong> — Requires specific blood</li><li><strong>Soul</strong> — Bound to a soul</li><li><strong>Rune</strong> — Detonates when tampered</li><li><strong>Mimic</strong> — Sentient; requires password</li><li><strong>Illusory</strong> — Hides secondary trap</li><li><strong>Tech</strong> — Keypad / biometric</li><li><strong>Magic</strong> — Basic incantation</li><li><strong>Celestial</strong> — Star key</li><li><strong>Chaos</strong> — Illogical entropy key</li><li><strong>Chronomancy</strong> — Specific moment only</li><li><strong>Crystal</strong> — Resonance match</li><li><strong>Dragon</strong> — Scale, blood, or sigil</li><li><strong>Elemental</strong> — Primal element</li><li><strong>Nature</strong> — Sacred leaf or token</li><li><strong>Vozian</strong> — Infernal pact</li></ul>
+                            </div>
+                            <div class="column">
+                                <strong style="color:var(--gold)">Trap Types</strong>
+                                <ul><li><strong>Dart</strong> — Toxic / Piercing</li><li><strong>Rune</strong> — Any damage type</li><li><strong>Trap Door</strong> — Impact</li><li><strong>Gas</strong> — Toxic / Eclipse</li><li><strong>Net</strong> — Pinned condition</li><li><strong>Illusion</strong> — Confused / Fear</li><li><strong>Explosive</strong> — Fire / Thunder</li></ul>
+                                <strong style="color:var(--gold)">PL Scaling</strong>
+                                <ul><li>Damage: 1d6 per PL</li><li>Range: 5ft + 5ft per PL</li><li>+Table every 3 PL</li><li>Disarm: Physical or Mental check</li></ul>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <!-- Commerce & Crafts carousel -->
+            <details class="gen-panel" open>
+                <summary class="gen-panel-summary">Commerce &amp; Crafts</summary>
+                <div class="carousel-tabs">
+                    <button class="carousel-tab is-active" onclick="switchCarouselTab(this,'cpane-enchanted')">Enchanted</button>
+                    <button class="carousel-tab" onclick="switchCarouselTab(this,'cpane-business')">Business</button>
+                    <button class="carousel-tab" onclick="switchCarouselTab(this,'cpane-medicine')">Medicine</button>
+                </div>
+
+                <!-- Enchanted pane -->
+                <div class="carousel-pane is-active" id="cpane-enchanted">
+                    <div class="gen-controls">
+                        <select id="item-type-pick">
+                            <option value="any">Any Item</option>
+                            <option value="weapon">Weapon</option>
+                            <option value="armor">Armor</option>
+                            <option value="ring">Ring</option>
+                            <option value="amulet">Amulet</option>
+                            <option value="cloak">Cloak</option>
+                            <option value="staff">Staff</option>
+                            <option value="wand">Wand</option>
+                            <option value="boots">Boots</option>
+                            <option value="gloves">Gloves</option>
+                            <option value="tome">Tome</option>
+                        </select>
+                        <select id="item-rarity-pick">
+                            <option value="any">Any Rarity</option>
+                            <option value="common">Common</option>
+                            <option value="uncommon">Uncommon</option>
+                            <option value="rare">Rare</option>
+                            <option value="epic">Epic</option>
+                            <option value="legendary">Legendary</option>
+                        </select>
+                        <button class="button" id="generate-item">Generate</button>
+                        <button id="clear-items">Clear</button>
+                    </div>
+                    <div class="flex-container gen-output" id="item-output"></div>
+                </div>
+
+                <!-- Business pane -->
+                <div class="carousel-pane" id="cpane-business">
+                    <div class="gen-controls">
+                        <button class="button" id="generate-business">Generate Business</button>
+                        <button id="clear-businesses">Clear</button>
+                    </div>
+                    <div class="flex-container gen-output" id="business-output"></div>
+                </div>
+
+                <!-- Medicine pane -->
+                <div class="carousel-pane" id="cpane-medicine">
+                    <div class="gen-controls">
+                        <button class="button" id="go">Generate Medicine</button>
+                        <button id="clear-medicine">Clear</button>
+                    </div>
+                    <div class="flex-container gen-output" id="medicine-output"></div>
+                </div>
+            </details>
+
+        </div>
+
+        <!-- ── HEX REFERENCE TABLES ──────────────────────────────── -->
+        <details>
+            <summary>Hex Reference Tables</summary>
+            <section>
+                <div class="raw-tabs">
+                    <button class="raw-tab active" onclick="showTab('lords',this)">Lords</button>
+                    <button class="raw-tab" onclick="showTab('enemies',this)">Enemies</button>
+                    <button class="raw-tab" onclick="showTab('pops',this)">Population</button>
+                    <button class="raw-tab" onclick="showTab('temps',this)">Temperament</button>
+                    <button class="raw-tab" onclick="showTab('features',this)">Features</button>
+                    <button class="raw-tab" onclick="showTab('foods',this)">Food</button>
+                    <button class="raw-tab" onclick="showTab('resources',this)">Resources</button>
+                    <button class="raw-tab" onclick="showTab('species',this)">Species</button>
+                    <button class="raw-tab" onclick="showTab('pl',this)">Power Level</button>
+                </div>
+                <div id="tab-lords"     class="raw-panel active"><table class="hex-table"><thead><tr><th>Lord</th><th>Weight</th></tr></thead><tbody id="t-lords"></tbody></table></div>
+                <div id="tab-enemies"   class="raw-panel"><table class="hex-table"><thead><tr><th>Enemy</th><th>Weight</th></tr></thead><tbody id="t-enemies"></tbody></table></div>
+                <div id="tab-pops"      class="raw-panel"><p style="color:var(--cream);font-size:.85rem;margin-bottom:.5vw">Tier 0 = barren. Tier 10 = metropolis.</p><table class="hex-table"><thead><tr><th>Population</th><th>Tier</th><th>Weight</th></tr></thead><tbody id="t-pops"></tbody></table></div>
+                <div id="tab-temps"     class="raw-panel"><table class="hex-table"><thead><tr><th>Temperament</th><th>Weight</th></tr></thead><tbody id="t-temps"></tbody></table></div>
+                <div id="tab-features"  class="raw-panel"><table class="hex-table"><thead><tr><th>Feature</th><th>Weight</th></tr></thead><tbody id="t-features"></tbody></table></div>
+                <div id="tab-foods"     class="raw-panel"><table class="hex-table"><thead><tr><th>Food Source</th><th>Weight</th></tr></thead><tbody id="t-foods"></tbody></table></div>
+                <div id="tab-resources" class="raw-panel"><table class="hex-table"><thead><tr><th>Resource</th><th>Weight</th></tr></thead><tbody id="t-resources"></tbody></table></div>
+                <div id="tab-species"   class="raw-panel"><p style="color:var(--cream);font-size:.85rem;margin-bottom:.5vw">Common rolls ~4× more often than Very Rare.</p><table class="hex-table"><thead><tr><th>Species</th><th>Rarity</th><th>Origin</th></tr></thead><tbody id="t-species"></tbody></table></div>
+                <div id="tab-pl"        class="raw-panel"><p style="color:var(--cream);font-size:.85rem;margin-bottom:.5vw">Lower PLs roll more frequently.</p><table class="hex-table"><thead><tr><th>PL</th><th>Weight</th></tr></thead><tbody id="t-pl"></tbody></table></div>
             </section>
         </details>
 
     </main>
 
-</body>
+    <script>
+        function switchCarouselTab(btn, paneId) {
+            const panel = btn.closest('.gen-panel');
+            panel.querySelectorAll('.carousel-tab').forEach(b => b.classList.remove('is-active'));
+            panel.querySelectorAll('.carousel-pane').forEach(p => p.classList.remove('is-active'));
+            btn.classList.add('is-active');
+            document.getElementById(paneId).classList.add('is-active');
+        }
 
+        // Collapse all gen-panels on mobile (≤750px)
+        if (window.innerWidth <= 750) {
+            document.querySelectorAll('details.gen-panel').forEach(d => d.removeAttribute('open'));
+        }
+    </script>
+</body>
 </html>

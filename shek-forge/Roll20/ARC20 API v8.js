@@ -784,17 +784,20 @@ on('chat:message', function (msg) {
         : createObj('character', { name: data.name, inplayerjournals: '', controlledby: '' });
     const cid = char.id;
 
-    function setAttr(attrName, value) {
+    function setAttr(attrName, value, maxVal) {
         const found = findObjs({ type: 'attribute', characterid: cid, name: attrName });
+        const update = { current: String(value) };
+        if (maxVal !== undefined) update.max = String(maxVal);
         if (found.length > 0) {
-            found[0].set('current', String(value));
+            found[0].set(update);
         } else {
-            createObj('attribute', { characterid: cid, name: attrName, current: String(value) });
+            createObj('attribute', Object.assign({ characterid: cid, name: attrName }, update));
         }
     }
 
-    // Set to Minion tab
-    setAttr('tab', 'minion');
+    // Set to NPC tab with Minion checkbox
+    setAttr('tab', 'npc');
+    setAttr('is_minion', 'on');
 
     // Identity
     if (data.size)        setAttr('size',        data.size);
@@ -807,19 +810,18 @@ on('chat:message', function (msg) {
     // Combat stats — derive Threat, actions, Mana from PL (sheet workers don't fire via API)
     const pl = data.pl ?? 1;
     const ThreatMax    = Math.floor(pl / 2);
-    const numAttacks     = Math.max(1, Math.floor(pl / 3));
+    const numAttacks     = Math.max(1, Math.floor(pl / 4));
     const checkPh        = data.check_physical > 0 ? data.check_physical : Math.ceil(pl / 2);
     const checkMt        = data.check_mental   > 0 ? data.check_mental   : Math.floor(pl / 2);
     const spellPointsMax = data.mana_max ?? (checkMt * 2);
 
-    setAttr('PL',               pl);
-    setAttr('threat_max',     ThreatMax);
-    setAttr('Threat',         ThreatMax);
-    setAttr('num_attacks',      numAttacks);
-    setAttr('check_physical',   checkPh);
-    setAttr('check_mental',     checkMt);
-    setAttr('mana_max', spellPointsMax);
-    setAttr('MN',               spellPointsMax);
+    setAttr('PL',             pl);
+    setAttr('Threat',         ThreatMax, ThreatMax);
+    setAttr('num_attacks',    numAttacks);
+    setAttr('check_physical', checkPh);
+    setAttr('check_mental',   checkMt);
+    setAttr('mana_max',       spellPointsMax);
+    setAttr('MN',             spellPointsMax, spellPointsMax);
 
     // Movement
     setAttr('move_walk',  data.move_walk  ?? 0);
@@ -832,7 +834,7 @@ on('chat:message', function (msg) {
         setAttr('standard-weapon',   data.melee.name    || 'Melee Attack');
         setAttr('standard-damage',   data.melee.damage  || '1d6');
         setAttr('standard-type',     data.melee.type    || '');
-        setAttr('standard-equipped', data.melee.equipped ? '1' : '0');
+        setAttr('standard-equipped', data.melee.equipped ? 'on' : '0');
     }
 
     // Ranged attack
@@ -840,32 +842,36 @@ on('chat:message', function (msg) {
         setAttr('ranged-weapon',   data.ranged.name    || 'Ranged Attack');
         setAttr('ranged-damage',   data.ranged.damage  || '1d6');
         setAttr('ranged-type',     data.ranged.type    || '');
-        setAttr('ranged-equipped', data.ranged.equipped ? '1' : '0');
+        setAttr('ranged-equipped', data.ranged.equipped ? 'on' : '0');
     }
 
-    // Feature as a repeating AE entry
-    if (data.feature && data.feature.name) {
-        const rowId = generateRowID();
-        const prefix = `repeating_AEs_${rowId}`;
+    // All features (main + extra) as repeating AE entries
+    const allFeatures = [];
+    if (data.feature && data.feature.name) allFeatures.push(data.feature);
+    (data.features || []).forEach(f => { if (f.name) allFeatures.push(f); });
 
-        createObj('attribute', { characterid: cid, name: `${prefix}_AE`,            current: 'Feature' });
-        createObj('attribute', { characterid: cid, name: `${prefix}_AETitle`,        current: 'Feature' });
-        createObj('attribute', { characterid: cid, name: `${prefix}_AEName`,         current: data.feature.name });
-        createObj('attribute', { characterid: cid, name: `${prefix}_AE-action`,      current: data.feature.action || 'Action' });
-        createObj('attribute', { characterid: cid, name: `${prefix}_AERange`,        current: data.feature.range  || 'Melee' });
-        createObj('attribute', { characterid: cid, name: `${prefix}_AEDescription`,  current: data.feature.effect || '' });
-        createObj('attribute', { characterid: cid, name: `${prefix}_AEDamage`,       current: '' });
-        createObj('attribute', { characterid: cid, name: `${prefix}_damageType`,     current: data.feature.damage || '' });
-
-        // Register row in reporder so Roll20 renders it
-        const reporderKey = '_reporder_repeating_AEs';
-        const reporder = findObjs({ type: 'attribute', characterid: cid, name: reporderKey })[0];
-        if (reporder) {
-            const list = (reporder.get('current') || '').split(',').filter(Boolean);
-            list.push(rowId);
-            reporder.set('current', list.join(','));
+    if (allFeatures.length) {
+        const aeRowIds = [];
+        allFeatures.forEach(feat => {
+            const rowId = generateRowID();
+            const prefix = `repeating_AEs_${rowId}`;
+            createObj('attribute', { characterid: cid, name: `${prefix}_AE`,            current: 'Feature' });
+            createObj('attribute', { characterid: cid, name: `${prefix}_AETitle`,        current: 'Feature' });
+            createObj('attribute', { characterid: cid, name: `${prefix}_AEName`,         current: feat.name });
+            createObj('attribute', { characterid: cid, name: `${prefix}_AE-action`,      current: feat.action || 'Action' });
+            createObj('attribute', { characterid: cid, name: `${prefix}_AERange`,        current: feat.range  || 'Melee' });
+            createObj('attribute', { characterid: cid, name: `${prefix}_AEDescription`,  current: feat.effect || '' });
+            createObj('attribute', { characterid: cid, name: `${prefix}_AEDamage`,       current: '' });
+            createObj('attribute', { characterid: cid, name: `${prefix}_damageType`,     current: feat.damage || '' });
+            aeRowIds.push(rowId);
+        });
+        const aeReporder = findObjs({ type: 'attribute', characterid: cid, name: '_reporder_repeating_AEs' })[0];
+        if (aeReporder) {
+            const list = (aeReporder.get('current') || '').split(',').filter(Boolean);
+            aeRowIds.forEach(id => list.push(id));
+            aeReporder.set('current', list.join(','));
         } else {
-            createObj('attribute', { characterid: cid, name: reporderKey, current: rowId });
+            createObj('attribute', { characterid: cid, name: '_reporder_repeating_AEs', current: aeRowIds.join(',') });
         }
     }
 

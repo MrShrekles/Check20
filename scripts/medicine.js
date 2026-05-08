@@ -102,14 +102,14 @@ function generateMedicine() {
 }
 
 // ===== Persistence =====
-const STORAGE_KEY = "check20_medicines";
+const MED_STORAGE_KEY = "check20_medicines";
 
 function loadSaved() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    try { return JSON.parse(localStorage.getItem(MED_STORAGE_KEY)) || []; }
     catch { return []; }
 }
 function saveAll(list) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    localStorage.setItem(MED_STORAGE_KEY, JSON.stringify(list));
 }
 function addSaved(med) {
     const list = loadSaved();
@@ -163,7 +163,7 @@ function createMedicineCard(m) {
 }
 
 // ===== Render all saved on load =====
-function renderAll(container) {
+function renderAllMedicine(container) {
     container.innerHTML = "";
     const list = loadSaved();
     for (const m of list) container.append(createMedicineCard(m));
@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("medicine-output");
 
     // show saved cards on refresh
-    renderAll(container);
+    renderAllMedicine(container);
 
     // generate + save + render
     genBtn.onclick = () => {
