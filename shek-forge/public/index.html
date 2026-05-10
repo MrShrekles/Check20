@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Forge</title>
+  <link rel="icon" href="/forge-icon.svg" type="image/svg+xml">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Share+Tech+Mono&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -17,6 +18,7 @@
       <div class="file-type-badge" id="fileTypeBadge"></div>
       <div class="status-dot" id="statusDot"></div>
       <div class="status-text" id="statusText">LOADING</div>
+      <button class="titlebar-settings-btn" onclick="openSettings()" title="Settings">⚙</button>
     </div>
   </div>
 
@@ -91,6 +93,50 @@
   <!-- Populated dynamically by editor-monster.js onLoad -->
   <datalist id="env-options"></datalist>
 
+  <!-- Settings panel -->
+  <div class="settings-overlay hidden" id="settingsOverlay" onclick="closeSettingsOutside(event)">
+    <div class="settings-panel" id="settingsPanel">
+      <div class="settings-header">
+        <div class="settings-title">⚙ Settings</div>
+        <button class="settings-close" onclick="closeSettings()">✕</button>
+      </div>
+      <div class="settings-body">
+
+        <div class="settings-section-label">Accessibility</div>
+
+        <div class="settings-row">
+          <div class="settings-label">Font Size</div>
+          <div class="settings-font-btns" id="fontSizeBtns">
+            <button class="font-size-btn" data-scale="0.85" onclick="setFontScale(0.85)">S</button>
+            <button class="font-size-btn" data-scale="1"    onclick="setFontScale(1)">M</button>
+            <button class="font-size-btn" data-scale="1.15" onclick="setFontScale(1.15)">L</button>
+            <button class="font-size-btn" data-scale="1.3"  onclick="setFontScale(1.3)">XL</button>
+            <button class="font-size-btn" data-scale="1.5"  onclick="setFontScale(1.5)">2X</button>
+            <button class="font-size-btn" data-scale="1.75" onclick="setFontScale(1.75)">3X</button>
+          </div>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-label">Compact Mode</div>
+          <button class="settings-toggle" id="compactToggle" onclick="toggleCompact()">OFF</button>
+        </div>
+
+        <div class="settings-section-label" style="margin-top:4px">Display</div>
+
+        <div class="settings-row">
+          <div class="settings-label">Print / B&amp;W</div>
+          <button class="settings-toggle" id="printToggle" onclick="togglePrintMode()">OFF</button>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-label">Invert</div>
+          <button class="settings-toggle" id="invertToggle" onclick="toggleInvert()">OFF</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <div class="dialog-overlay hidden" id="dialogOverlay">
     <div class="dialog-box">
       <div class="dialog-title" id="dialogTitle">Confirm</div>
@@ -118,5 +164,6 @@
   <script src="editor-species.js"></script>
   <script src="editor-generic.js"></script>
   <script src="editor-toolbar.js"></script>
+  <script src="settings.js"></script>
 </body>
 </html>

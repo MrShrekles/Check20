@@ -531,6 +531,24 @@ main {
   display: block;
 }
 
+/* ── Codex art (shared with gear.css) ── */
+.codex-art-wrap {
+    width: 100%;
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+
+.codex-art {
+    display: inline-block;
+    max-width: 100%;
+    max-height: 200px;
+    width: auto;
+    object-fit: contain;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--green-2);
+    image-rendering: pixelated;
+}
+
 /* ── Spellbook Sticky Toolbar ────────────────────────────────────── */
 #spellbook-toolbar {
   position: sticky;

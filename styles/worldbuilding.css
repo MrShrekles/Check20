@@ -13,6 +13,18 @@
 
 @media (max-width: 750px) {
     .gen-grid { grid-template-columns: 1fr; }
+
+    /* Single-column outputs on mobile — no overflow */
+    .flex-container.gen-output,
+    #hex-history {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Journey can't span 2 when there's only 1 column */
+    #hex-history > .journey-wrap { grid-column: span 1 !important; }
+
+    /* Allow hex output to scroll vertically on mobile */
+    .gen-output { max-height: 500px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 }
 
 /* ── Generator panel ───────────────────────────────────────── */

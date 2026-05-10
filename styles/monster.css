@@ -61,12 +61,250 @@ body[data-page-title="Monsters"] .monster-card:hover {
     color: #fff;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   MONSTER CODEX — Codex View rows inside bookOutput
+   ═══════════════════════════════════════════════════════════ */
+
+#bookOutput {
+    display: block !important;
+    width: 100%;
+}
+
+#bookOutput .spell-grid {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem var(--padding);
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+/* PL / Ph / Mt chips in collapsed head */
+.mb-pl-row {
+    display: inline-flex;
+    gap: 2px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.mb-seg {
+    font-size: 0.68rem;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-family: monospace;
+    letter-spacing: 0.04em;
+}
+
+.mb-seg-pl { background: var(--warm-2);  color: #fff; }
+.mb-seg-ph { background: var(--theme-2); color: #fff; }
+.mb-seg-mt { background: var(--dark-3);  color: #fff; border: 1px solid var(--theme-3); }
+
+/* ── Two-line row head ── */
+.mb-row-head {
+    align-items: flex-start;
+    flex-wrap: nowrap;
+}
+
+.mb-head-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.mb-head-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.mb-head-top .spell-row-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+}
+
+.mb-head-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+}
+
+/* Tags in head */
+.mb-tag {
+    font-size: 0.6rem;
+    padding: 2px 5px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #fff;
+}
+
+.mb-tag-group  { background: var(--warm-2); }
+.mb-tag-origin { background: var(--theme-2); }
+.mb-tag-rarity { background: var(--dark-3); border: 1px solid var(--theme-3); }
+.mb-tag-size   { background: transparent; border: 1px solid var(--theme-3); color: var(--text-cream); }
+
+.mb-custom-badge {
+    font-size: 0.55rem;
+    opacity: .45;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+/* Expanded detail layout */
+.mb-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.mb-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 1rem;
+    font-size: 0.78rem;
+    color: var(--text-cream);
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.mb-description {
+    font-size: 0.83rem;
+    color: var(--white);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.mb-attacks {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.mb-attack {
+    font-size: 0.82rem;
+    color: var(--text-cream);
+}
+
+.mb-attack em { color: var(--warm-3); font-style: normal; }
+
+.mb-features { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.mb-feature {
+    padding: 0.4rem 0.65rem;
+    background: var(--dark-2);
+    border-left: 3px solid var(--warm-2);
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+.mb-feature-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.2rem;
+}
+
+.mb-feature-head strong { color: var(--gold); font-size: 0.83rem; }
+
+.mb-feature-meta {
+    font-size: 0.7rem;
+    color: var(--text-cream);
+    opacity: .65;
+    font-style: italic;
+}
+
+.mb-feature-body {
+    font-size: 0.82rem;
+    color: var(--white);
+    margin: 0;
+    line-height: 1.45;
+}
+
+.mb-section-label {
+    font-size: 0.68rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    opacity: .75;
+    margin-bottom: 3px;
+}
+
+.mb-spells { display: flex; flex-direction: column; gap: 3px; }
+
+.mb-spell-entry summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 0;
+    font-size: 0.82rem;
+    background: none;
+    border-radius: 0;
+    text-align: left;
+    border: none;
+}
+
+.mb-spell-meta { opacity: .45; font-size: 0.78rem; }
+
+.mb-spell-effects {
+    list-style: none;
+    padding-left: 1em;
+    margin: 4px 0 6px;
+    font-size: 0.82rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.mb-intent { color: var(--gold); opacity: .85; }
+
+.mb-lore {
+    font-style: italic;
+    opacity: .65;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.mb-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding-top: 0.3rem;
+    border-top: 1px solid rgba(255,255,255,.06);
+}
+
+.btn-edit-row {
+    background: transparent;
+    border: 1px solid var(--theme-3);
+    color: var(--text-cream);
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 0.78rem;
+    cursor: pointer;
+}
+
+.btn-edit-row:hover { background: var(--theme-2); }
+
 /* ===== Generate buttons ===== */
 #generate-npc,
 #generate-business,
 #generate-monster,
 #generate-medicine,
-#btnGenerate {
+#btnGenerate,
+#roll-hex-btn,
+#roll-travel-btn,
+#generate-quest,
+#generate-trap,
+#generate-item,
+#go {
     background-color: var(--hate);
     width: 100%;
     font-size: 2rem;
@@ -76,7 +314,13 @@ body[data-page-title="Monsters"] .monster-card:hover {
 #generate-business:hover,
 #generate-monster:hover,
 #generate-medicine:hover,
-#btnGenerate:hover {
+#btnGenerate:hover,
+#roll-hex-btn:hover,
+#roll-travel-btn:hover,
+#generate-quest:hover,
+#generate-trap:hover,
+#generate-item:hover,
+#go:hover {
     filter: brightness(110%);
 }
 
@@ -321,14 +565,12 @@ body[data-page-title="Monsters"] .monster-card:hover {
 .info-mon {
     display: flex;
     flex-wrap: wrap;
-    gap: 1vw;
+    gap: 10px;
     padding: var(--padding);
-    margin: 8px 0;
     background: var(--theme-1);
     border: 1px solid var(--theme-3);
     border-radius: var(--border-radius);
     font-size: 0.85rem;
-    color: var(--text-plain);
     box-shadow: var(--box-shadow);
 }
 

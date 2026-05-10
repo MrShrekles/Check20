@@ -12,7 +12,7 @@
         },
         {
           "name": "Bolster",
-          "description": "At combat initiative gain 1 Bolster, then gain +1 additional at the start of each turn or when you kill or submit an enemy losing all Bolster at the end of combat. You can Bolster to either: When you Attack gain [[1d4]] to the check and damage, or remove one condition and heal for +2"
+          "description":  "At combat initiative gain 1 Bolster, then gain +1 additional at the start of each turn or when you kill or submit an enemy losing all Bolster at the end of combat. You can Bolster to either: When you Attack gain [[1d4]] to the check and damage, or remove one condition and heal for +2"
         }
       ],
       "equipment": [
@@ -131,8 +131,8 @@
       "description": "As a mage, you are a weaver of magic and a master of mysterious forces. Your power is formidable, but it's also unpredictable, and you'll need a creative mind to control it. Unlike other classes, your spellcasting doesn't rely on a pre-set list of spells. Instead, you combine magic words to create your own unique spells. This path is not without its risks and challenges. Your magic can have both positive and negative outcomes, and it's crucial to learn how to manage these ups and downs. One of the crucial aspects of being a mage is the practice of recording and sharing your knowledge. Whether you pass on your wisdom through spellbooks or spiritual knowledge transfer, your experiences and discoveries become a legacy for future characters you play because they all share your soul.",
       "features": [
         {
-          "name": "Mana Recovery",
-          "description": "Recover +4 spell points on a Press On"
+          "name": "Efficient Casting",
+          "description": "When you cast a spell whose origin matches your Path or Talent origin, reduce its cost by 1."
         },
         {
           "name": "Spellburn",

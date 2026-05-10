@@ -149,134 +149,126 @@ function renderBook() {
     });
 
     out.innerHTML = "";
+
+    const grid = document.createElement("div");
+    grid.className = "spell-grid";
+
     sortedKeys.forEach(key => {
-        const collapsed = bookCollapsed.has(key);
+        const header = document.createElement("h3");
+        header.className = "spell-group-header";
+        const count = groups.get(key).length;
+        header.textContent = `${key}  (${count})`;
+        grid.appendChild(header);
 
-        const section = document.createElement("div");
-        section.className = "book-group";
-
-        const heading = document.createElement("h3");
-        heading.className = "book-group-heading" + (collapsed ? " collapsed" : "");
-        heading.innerHTML = `<span class="book-group-arrow">${collapsed ? "▶" : "▼"}</span>${key} <span class="book-group-count">${groups.get(key).length}</span>`;
-        heading.style.cursor = "pointer";
-
-        const grid = document.createElement("div");
-        grid.className = "monster-grid";
-        if (collapsed) grid.style.display = "none";
-        groups.get(key).forEach(m => grid.append(createBookCard(m)));
-
-        heading.addEventListener("click", () => {
-            const isNowCollapsed = !bookCollapsed.has(key);
-            if (isNowCollapsed) bookCollapsed.add(key); else bookCollapsed.delete(key);
-            grid.style.display = isNowCollapsed ? "none" : "";
-            heading.querySelector(".book-group-arrow").textContent = isNowCollapsed ? "▶" : "▼";
-            heading.classList.toggle("collapsed", isNowCollapsed);
-        });
-
-        section.appendChild(heading);
-        section.appendChild(grid);
-        out.append(section);
+        groups.get(key).forEach(m => grid.appendChild(createBookRow(m)));
     });
+
+    out.appendChild(grid);
 }
 
-function createBookCard(m) {
-    const card = document.createElement("div");
-    card.className = "monster-card";
+function createBookRow(m) {
+    const row = document.createElement("div");
+    row.className = "spell-row";
 
+    // ── Collapsed head ──
     const moveParts = [];
-    if (m.walk)  moveParts.push(`Walk ${m.walk} ft`);
-    if (m.fly)   moveParts.push(`Fly ${m.fly} ft`);
-    if (m.swim)  moveParts.push(`Swim ${m.swim} ft`);
-    if (m.climb) moveParts.push(`Climb ${m.climb} ft`);
-    const moveText = moveParts.join(" • ") || "—";
+    if (m.walk)  moveParts.push(`Walk ${m.walk}ft`);
+    if (m.fly)   moveParts.push(`Fly ${m.fly}ft`);
+    if (m.swim)  moveParts.push(`Swim ${m.swim}ft`);
+    if (m.climb) moveParts.push(`Climb ${m.climb}ft`);
+    const moveText = moveParts.join(" · ") || "—";
 
-    // Build feature list — supports both legacy single-feature fields and the
-    // newer `features` array written by addToBookFromGenerator.
-    let featuresHTML = "";
-    const featList = Array.isArray(m.features) && m.features.length
-        ? m.features
-        : (m.feature_name ? [{
-            name:   m.feature_name,
-            type:   m.feature_type,
-            range:  m.feature_range,
-            effect: m.feature_effect,
-          }] : []);
+    const plHTML = m.pl != null ? `
+        <span class="mb-pl-row">
+            <span class="mb-seg mb-seg-pl">PL ${m.pl}</span>
+            ${m.check_physical != null ? `<span class="mb-seg mb-seg-ph">Ph ${m.check_physical}</span>` : ""}
+            ${m.check_mental   != null ? `<span class="mb-seg mb-seg-mt">Mt ${m.check_mental}</span>`   : ""}
+        </span>` : "";
 
-    if (featList.length) {
-        const items = featList.map(f => {
-            const meta = [f.type, f.range].filter(Boolean).join(" · ");
-            return `<li><strong>${f.name}</strong>${meta ? ` (${meta})` : ""}: ${parseLinks(f.effect || "")}</li>`;
-        }).join("");
-        featuresHTML = `<div class="feature-block"><ul class="features">${items}</ul></div>`;
-    }
+    const head = document.createElement("div");
+    head.className = "spell-row-head mb-row-head";
+    head.innerHTML = `
+        <span class="spell-row-arrow">▶</span>
+        <div class="mb-head-content">
+            <div class="mb-head-top">
+                <span class="spell-row-name">${m.name}${m._custom ? ' <span class="mb-custom-badge">custom</span>' : ""}</span>
+                ${plHTML}
+            </div>
+            <div class="mb-head-bottom">
+                ${m._group  ? `<span class="mb-tag mb-tag-group">${m._group}</span>`   : ""}
+                ${m.origin  ? `<span class="mb-tag mb-tag-origin">${m.origin}</span>`  : ""}
+                ${m.rarity  ? `<span class="mb-tag mb-tag-rarity">${m.rarity}</span>`  : ""}
+                ${m.size    ? `<span class="mb-tag mb-tag-size">${m.size}</span>`       : ""}
+            </div>
+        </div>`;
 
-    const deleteBtnHtml = m._custom
-        ? `<button class="btn-remove btn-delete-card">Delete</button>`
-        : "";
+    head.addEventListener("click", () => {
+        const open = row.classList.toggle("open");
+        head.querySelector(".spell-row-arrow").textContent = open ? "▼" : "▶";
+    });
 
+    // ── Expanded detail ──
     const meleeAtk  = m.melee  || m.melee_attack  || null;
     const rangedAtk = m.ranged || m.ranged_attack || null;
     const attackLine = (atk, label) => atk?.name
-        ? `<span><strong>${label}:</strong> ${atk.name}${atk.damage ? ` ${atk.damage}` : ""}${(atk.type || atk.damage_type) ? ` (${atk.type || atk.damage_type})` : ""}</span>`
+        ? `<div class="mb-attack"><strong>${label}:</strong> ${atk.name}${atk.damage ? ` — ${atk.damage}` : ""}${(atk.type || atk.damage_type) ? ` <em>${atk.type || atk.damage_type}</em>` : ""}</div>`
         : "";
 
-    card.innerHTML = `
-        <button class="card-edit-cog" title="Edit">⚙</button>
-        <h3 class="title">${m.name}${m._custom ? ` <span style="font-size:0.65em;opacity:0.45;font-weight:normal">[custom]</span>` : ""}</h3>
-        ${m._group ? `<div class="pillline">${m._group}${m.origin ? ` · ${m.origin}` : ""}</div>` : ""}
-        ${m.description ? `<p class="mon-meta">${parseLinks(m.description)}</p>` : ""}
-        <div class="info-mon">
-            <span><strong>Move:</strong> ${moveText}</span>
-            ${m.environment ? `<span><strong>Env:</strong> ${m.environment}</span>`  : ""}
-            ${m.behavior    ? `<span><strong>Behav:</strong> ${m.behavior}</span>`   : ""}
-            ${m.rarity      ? `<span><strong>Rarity:</strong> ${m.rarity}</span>`    : ""}
-            ${m.size        ? `<span><strong>Size:</strong> ${m.size}</span>`        : ""}
-            ${m.motivation  ? `<span><strong>Motiv:</strong> ${m.motivation}</span>` : ""}
-        </div>
-        ${m.pl != null ? `<div class="pl-chips"><div class="pl-bubble">
-            <span class="pl-seg pl-seg-pl"><strong>PL</strong> ${m.pl}</span>
-            ${m.check_physical != null ? `<span class="pl-seg pl-seg-ph"><strong>Ph</strong> ${m.check_physical}</span>` : ""}
-            ${m.check_mental   != null ? `<span class="pl-seg pl-seg-mt"><strong>Mt</strong> ${m.check_mental}</span>`   : ""}
-        </div></div>` : ""}
-        ${(meleeAtk?.name || rangedAtk?.name) ? `<div class="info-mon">${attackLine(meleeAtk, "Melee")}${attackLine(rangedAtk, "Ranged")}</div>` : ""}
-        ${featuresHTML}
-        ${Array.isArray(m.spells) && m.spells.length ? `
-        <div class="feature-block" style="margin-top:6px">
-            <div style="font-size:0.7em;font-weight:bold;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:4px;">
-                Spells · MN: ${m.check_mental != null ? m.check_mental * 2 : "—"}
-            </div>
-            ${m.spells.map(s => `
-            <details class="spell-entry">
-                <summary style="cursor:pointer;list-style:none;display:flex;align-items:center;gap:5px;padding:3px 0">
-                    <span class="spell-arrow">▶</span>
-                    <strong>${s.name}</strong>
-                    <span style="opacity:0.4;font-size:0.82em">${[s.manner, s.transmission].filter(Boolean).join(" · ")}</span>
-                </summary>
-                <ul style="list-style:none;padding-left:1em;margin:4px 0 6px;font-size:0.88em">
-                    ${(s.effects || []).map(e => `<li style="margin-bottom:3px"><span style="color:var(--gold);opacity:0.85">${e.intent}${e.cost ? ` (${e.cost} MN)` : ""}</span> — ${[e.range, e.damage ? e.damage + (e.type ? " " + e.type : "") : ""].filter(Boolean).join(" · ")}${e.effect ? ": " + parseLinks(e.effect) : ""}</li>`).join("")}
+    const featList = Array.isArray(m.features) && m.features.length
+        ? m.features
+        : (m.feature_name ? [{ name: m.feature_name, type: m.feature_type, range: m.feature_range, effect: m.feature_effect }] : []);
+
+    const featuresHTML = featList.length ? featList.map(f => {
+        const meta = [f.type, f.range].filter(Boolean).join(" · ");
+        return `<div class="mb-feature">
+            <div class="mb-feature-head"><strong>${f.name}</strong>${meta ? `<span class="mb-feature-meta">${meta}</span>` : ""}</div>
+            <p class="mb-feature-body">${parseLinks(f.effect || "")}</p>
+        </div>`;
+    }).join("") : "";
+
+    const spellsHTML = Array.isArray(m.spells) && m.spells.length ? `
+        <div class="mb-section-label">Spells · MN: ${m.check_mental != null ? m.check_mental * 2 : "—"}</div>
+        ${m.spells.map(s => `
+            <details class="mb-spell-entry">
+                <summary><span class="spell-arrow">▶</span> <strong>${s.name}</strong> <span class="mb-spell-meta">${[s.manner, s.transmission].filter(Boolean).join(" · ")}</span></summary>
+                <ul class="mb-spell-effects">
+                    ${(s.effects || []).map(e => `<li><span class="mb-intent">${e.intent}${e.cost ? ` (${e.cost} MN)` : ""}</span> — ${[e.range, e.damage ? e.damage + (e.type ? " " + e.type : "") : ""].filter(Boolean).join(" · ")}${e.effect ? ": " + parseLinks(e.effect) : ""}</li>`).join("")}
                 </ul>
-            </details>`).join("")}
-        </div>` : ""}
-        ${m.lore ? `<p style="font-style:italic;opacity:0.7;margin-top:8px;font-size:0.9em">${parseLinks(m.lore)}</p>` : ""}
-        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
-            ${deleteBtnHtml}
-            <button class="btn-chat-card">✦ Chat</button>
-            <button class="btn-roll20-card">⬡ Roll20</button>
-        </div>
-    `;
+            </details>`).join("")}` : "";
 
-    card.querySelector(".card-edit-cog").addEventListener("click", () => openCardEdit(card, m));
+    const detail = document.createElement("div");
+    detail.className = "spell-row-detail";
+    detail.innerHTML = `
+        <div class="mb-detail">
+            <div class="mb-meta-row">
+                <span><strong>Move:</strong> ${moveText}</span>
+                ${m.environment ? `<span><strong>Env:</strong> ${m.environment}</span>`   : ""}
+                ${m.behavior    ? `<span><strong>Behavior:</strong> ${m.behavior}</span>` : ""}
+                ${m.motivation  ? `<span><strong>Motif:</strong> ${m.motivation}</span>`  : ""}
+            </div>
+            ${m.description ? `<p class="mb-description">${parseLinks(m.description)}</p>` : ""}
+            ${(meleeAtk?.name || rangedAtk?.name) ? `<div class="mb-attacks">${attackLine(meleeAtk, "Melee")}${attackLine(rangedAtk, "Ranged")}</div>` : ""}
+            ${featuresHTML ? `<div class="mb-features">${featuresHTML}</div>` : ""}
+            ${spellsHTML   ? `<div class="mb-spells">${spellsHTML}</div>`     : ""}
+            ${m.lore ? `<p class="mb-lore">${parseLinks(m.lore)}</p>` : ""}
+            <div class="mb-actions">
+                <button class="btn-edit-row">⚙</button>
+                ${m._custom ? `<button class="btn-remove btn-delete-row">Delete</button>` : ""}
+                <button class="btn-chat-card">✦ Chat</button>
+                <button class="btn-roll20-card">⬡ Roll20</button>
+            </div>
+        </div>`;
+
+    detail.querySelector(".btn-edit-row").addEventListener("click", () => openCardEdit(row, m));
     if (m._custom) {
-        card.querySelector(".btn-delete-card").addEventListener("click", () => deleteCustomMonster(m.name));
+        detail.querySelector(".btn-delete-row").addEventListener("click", () => deleteCustomMonster(m.name));
     }
-    card.querySelector(".btn-chat-card").addEventListener("click", function() {
-        copyMonsterForChat(m, this);
-    });
-    card.querySelector(".btn-roll20-card").addEventListener("click", function() {
-        copyMonsterForRoll20(m, this);
-    });
+    detail.querySelector(".btn-chat-card").addEventListener("click", function () { copyMonsterForChat(m, this); });
+    detail.querySelector(".btn-roll20-card").addEventListener("click", function () { copyMonsterForRoll20(m, this); });
 
-    return card;
+    row.appendChild(head);
+    row.appendChild(detail);
+    return row;
 }
 
 // ===== Monster Link Utilities =====
@@ -318,6 +310,13 @@ function buildMonsterPacket(m) {
             effect: m.feature_effect || f0.effect || "",
             damage: m.feature_damage || f0.damage || "",
         },
+        features: Array.isArray(m.features) ? m.features.slice(1).map(f => ({
+            name:   f.name   || "",
+            action: f.type   || "Action",
+            range:  f.range  || "Melee",
+            effect: f.effect || "",
+            damage: f.damage || "",
+        })) : [],
         spells:          Array.isArray(m.spells) ? m.spells : [],
         mana_max: m.check_mental != null ? m.check_mental * 2 : 0,
     };

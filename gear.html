@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gear | Armored Noir - Check20</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/spells.css">
+    <link rel="stylesheet" href="styles/gear.css">
+    <link rel="stylesheet" href="styles/toolbar-mobile.css">
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+    <script src="scripts/main.js" defer></script>
+    <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/gear.js"></script>
+</head>
+<body data-page-title="Gear">
+    <div id="header-placeholder"></div>
+    <main>
+
+        <div id="gear-tabs">
+            <button class="tab-btn active" data-tab="weapons">⚔ Weapons</button>
+            <button class="tab-btn" data-tab="armor">🛡 Armor</button>
+            <button class="tab-btn" data-tab="items">🎒 Items</button>
+            <button class="tab-btn" data-tab="enchanted">✨ Enchanted</button>
+        </div>
+
+        <!-- ═══════════ WEAPONS TAB ═══════════ -->
+        <div id="tab-weapons" class="tab-content active">
+
+            <!-- Properties reference panel -->
+            <details class="gear-reference-panel" id="weapon-properties-ref">
+                <summary>📋 Weapon Properties Reference</summary>
+                <div class="gear-ref-grid">
+                    <div class="gear-ref-item"><strong>1 Hand</strong> — Wield in one hand; can hold something in the other.</div>
+                    <div class="gear-ref-item"><strong>2 Hand</strong> — Requires both hands. Cannot use a shield or off-hand item.</div>
+                    <div class="gear-ref-item"><strong>1 or 2 Hand</strong> — Can be used either way. 2-Hand grants no extra bonus unless stated.</div>
+                    <div class="gear-ref-item"><strong>Light</strong> — Can dual-wield. Drawing or stowing is a free action.</div>
+                    <div class="gear-ref-item"><strong>Hefty</strong> — Requires notable Strength to wield effectively; may impose penalties.</div>
+                    <div class="gear-ref-item"><strong>Reach</strong> — Attack targets up to 10 ft away; cannot attack adjacent targets.</div>
+                    <div class="gear-ref-item"><strong>Thrown</strong> — Can be thrown as a ranged attack (Short range unless noted).</div>
+                    <div class="gear-ref-item"><strong>Return</strong> — Returns to your hand after being thrown.</div>
+                    <div class="gear-ref-item"><strong>Hidden</strong> — Easily concealed. Surprise attacks from hiding have advantage.</div>
+                    <div class="gear-ref-item"><strong>1 Shot / Reload</strong> — Must spend an action to reload after firing.</div>
+                    <div class="gear-ref-item"><strong>Close Range Disadvantage</strong> — Disadvantage on attack rolls against targets at Melee range.</div>
+                    <div class="gear-ref-item"><strong>Attached</strong> — Worn or strapped to the body; does not occupy a hand slot.</div>
+                    <div class="gear-ref-item"><strong>Free Hands</strong> — Operates without occupying either hand (mounted weapon, etc.).</div>
+                    <div class="gear-ref-item"><strong>Firearm</strong> — Produces loud noise; may trigger reactions in the environment.</div>
+                    <div class="gear-ref-item"><strong>Loud</strong> — Makes significant noise when used. Stealth is broken.</div>
+                    <div class="gear-ref-item"><strong>Tech</strong> — Requires technology to operate; may need power or maintenance.</div>
+                    <div class="gear-ref-item"><strong>Surprise</strong> — Your first attack on an unaware target has advantage.</div>
+                </div>
+            </details>
+
+            <div class="gear-toolbar" id="weapons-toolbar">
+                <button class="toolbar-toggle-btn" aria-label="Toggle filters">
+                    <span class="toolbar-toggle-left">
+                        <span class="toolbar-toggle-pip"></span>
+                        Filters
+                    </span>
+                    <span class="toolbar-toggle-chevron">▼</span>
+                </button>
+                <div class="toolbar-collapsible">
+                    <div class="gear-filter-row" id="weapon-category-toggles">
+                        <button class="gear-tab active" data-filter="all">All</button>
+                        <button class="gear-tab" data-filter="melee"><img src="/assets/icons/sword.svg" class="gear-btn-icon"> Melee</button>
+                        <button class="gear-tab" data-filter="ranged"><img src="/assets/icons/bow-arrow.svg" class="gear-btn-icon"> Ranged</button>
+                        <button class="gear-tab" data-filter="firearm"><img src="/assets/icons/handgun.svg" class="gear-btn-icon"> Firearm</button>
+                        <button class="gear-tab" data-filter="magic"><img src="/assets/icons/wand.svg" class="gear-btn-icon"> Magic</button>
+                    </div>
+                    <div class="gear-controls-row">
+                        <div class="gear-filter-chips" id="weapon-rarity-toggles">
+                            <span class="control-label">Rarity</span>
+                            <button data-rarity="common">Common</button>
+                            <button data-rarity="uncommon">Uncommon</button>
+                            <button data-rarity="rare">Rare</button>
+                            <button data-rarity="very rare">Very Rare</button>
+                            <button data-rarity="legendary">Legendary</button>
+                        </div>
+                        <div class="gear-sort-toggles" id="weapon-sort-toggles">
+                            <span class="control-label">Sort</span>
+                            <button data-sort="name" class="active">Name</button>
+                            <button data-sort="category">Category</button>
+                            <button data-sort="damage">Damage</button>
+                            <button data-sort="cost">Cost</button>
+                        </div>
+                        <div class="gear-actions">
+                            <button class="gear-expand-all">Expand All</button>
+                            <button class="gear-collapse-all">Collapse All</button>
+                            <span class="gear-count" id="weapon-count"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section>
+                <div class="spell-grid" id="weapon-grid"></div>
+            </section>
+        </div>
+
+        <!-- ═══════════ ARMOR TAB ═══════════ -->
+        <div id="tab-armor" class="tab-content">
+
+            <details class="gear-reference-panel">
+                <summary>📋 Armor Properties Reference</summary>
+                <div class="gear-ref-grid">
+                    <div class="gear-ref-item"><strong>Armor Value</strong> — Reduces incoming damage by this amount before wounds are applied.</div>
+                    <div class="gear-ref-item"><strong>Hefty</strong> — Heavy or cumbersome. May impose disadvantage on Agility or Stealth checks unless you meet the Strength requirement.</div>
+                    <div class="gear-ref-item"><strong>Move Penalty</strong> — Reduces your movement speed by the listed amount (in feet).</div>
+                    <div class="gear-ref-item"><strong>Check Penalty</strong> — The listed checks are made at the stated penalty while wearing this armor.</div>
+                    <div class="gear-ref-item"><strong>Check Bonus</strong> — The listed checks gain the stated bonus while wearing this armor.</div>
+                    <div class="gear-ref-item"><strong>Shield</strong> — Held in one hand. You can use the <strong>Block</strong> action to halve incoming melee damage. Cannot dual-wield while using a shield.</div>
+                </div>
+            </details>
+
+            <div class="gear-toolbar" id="armor-toolbar">
+                <button class="toolbar-toggle-btn" aria-label="Toggle filters">
+                    <span class="toolbar-toggle-left">
+                        <span class="toolbar-toggle-pip"></span>
+                        Filters
+                    </span>
+                    <span class="toolbar-toggle-chevron">▼</span>
+                </button>
+                <div class="toolbar-collapsible">
+                    <div class="gear-filter-row" id="armor-category-toggles">
+                        <button class="gear-tab active" data-filter="all">All</button>
+                        <button class="gear-tab" data-filter="armor"><img src="/assets/icons/kevlar-vest.svg" class="gear-btn-icon"> Armor</button>
+                        <button class="gear-tab" data-filter="shield">🛡 Shield</button>
+                    </div>
+                    <div class="gear-controls-row">
+                        <div class="gear-filter-chips" id="armor-hefty-toggles">
+                            <span class="control-label">Weight</span>
+                            <button data-hefty="no">Light</button>
+                            <button data-hefty="yes">Hefty</button>
+                        </div>
+                        <div class="gear-sort-toggles" id="armor-sort-toggles">
+                            <span class="control-label">Sort</span>
+                            <button data-sort="name" class="active">Name</button>
+                            <button data-sort="armor">Armor Value ↓</button>
+                            <button data-sort="cost">Cost</button>
+                        </div>
+                        <div class="gear-actions">
+                            <button class="gear-expand-all">Expand All</button>
+                            <button class="gear-collapse-all">Collapse All</button>
+                            <span class="gear-count" id="armor-count"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section>
+                <div class="spell-grid" id="armor-grid"></div>
+            </section>
+        </div>
+
+        <!-- ═══════════ ITEMS TAB ═══════════ -->
+        <div id="tab-items" class="tab-content">
+            <div class="gear-toolbar" id="items-toolbar">
+                <button class="toolbar-toggle-btn" aria-label="Toggle filters">
+                    <span class="toolbar-toggle-left">
+                        <span class="toolbar-toggle-pip"></span>
+                        Filters
+                    </span>
+                    <span class="toolbar-toggle-chevron">▼</span>
+                </button>
+                <div class="toolbar-collapsible">
+                    <div class="gear-filter-row" id="item-category-toggles">
+                        <button class="gear-tab active" data-filter="all">All</button>
+                        <button class="gear-tab" data-filter="Food & Drink">🍖 Food & Drink</button>
+                        <button class="gear-tab" data-filter="Tools & Equipment">🔧 Tools</button>
+                        <button class="gear-tab" data-filter="Musical Instruments">🎵 Music</button>
+                        <button class="gear-tab" data-filter="Fashion">👒 Fashion</button>
+                        <button class="gear-tab" data-filter="Miscellaneous">⭐ Misc</button>
+                    </div>
+                    <div class="gear-controls-row">
+                        <div class="gear-sort-toggles" id="item-sort-toggles">
+                            <span class="control-label">Sort</span>
+                            <button data-sort="name" class="active">Name</button>
+                            <button data-sort="category">Category</button>
+                            <button data-sort="cost">Cost</button>
+                        </div>
+                        <div class="gear-actions">
+                            <button class="gear-expand-all">Expand All</button>
+                            <button class="gear-collapse-all">Collapse All</button>
+                            <span class="gear-count" id="item-count"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section>
+                <div class="spell-grid" id="item-grid"></div>
+            </section>
+        </div>
+
+        <!-- ═══════════ ENCHANTED TAB ═══════════ -->
+        <div id="tab-enchanted" class="tab-content">
+            <div class="gear-toolbar" id="enchanted-toolbar">
+                <button class="toolbar-toggle-btn" aria-label="Toggle filters">
+                    <span class="toolbar-toggle-left">
+                        <span class="toolbar-toggle-pip"></span>
+                        Filters
+                    </span>
+                    <span class="toolbar-toggle-chevron">▼</span>
+                </button>
+                <div class="toolbar-collapsible">
+                    <div class="gear-filter-row" id="enchanted-type-toggles">
+                        <button class="gear-tab active" data-filter="all">All</button>
+                        <button class="gear-tab" data-filter="Amulet">🔮 Amulet</button>
+                        <button class="gear-tab" data-filter="Armor">🛡 Armor</button>
+                        <button class="gear-tab" data-filter="Gear">⚙ Gear</button>
+                        <button class="gear-tab" data-filter="Item">📦 Item</button>
+                        <button class="gear-tab" data-filter="Lantern">🕯 Lantern</button>
+                        <button class="gear-tab" data-filter="Weapon">⚔ Weapon</button>
+                    </div>
+                    <div class="gear-controls-row">
+                        <div class="gear-sort-toggles" id="enchanted-sort-toggles">
+                            <span class="control-label">Sort</span>
+                            <button data-sort="name" class="active">Name</button>
+                            <button data-sort="type">Type</button>
+                        </div>
+                        <div class="gear-actions">
+                            <button class="gear-expand-all">Expand All</button>
+                            <button class="gear-collapse-all">Collapse All</button>
+                            <span class="gear-count" id="enchanted-count"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section>
+                <div class="spell-grid" id="enchanted-grid"></div>
+            </section>
+        </div>
+
+    </main>
+    <div id="sidebar-placeholder"></div>
+</body>
+</html>

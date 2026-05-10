@@ -221,6 +221,7 @@
     },
     {
         "name": "Void Lantern",
+        "image": "/assets/images/enchanted/void_lantern.png",
         "type": "Lantern",
         "Damage, Armor": "–",
         "check": "Spirit",
@@ -238,6 +239,7 @@
     },
     {
         "name": "Hearth‑Beacon",
+        "image": "/assets/images/enchanted/hearth_beacon.png",
         "type": "Lantern",
         "Damage, Armor": "",
         "check": "",
@@ -285,6 +287,7 @@
     },
     {
         "name": "Somnolent Sconce",
+        "image": "/assets/images/enchanted/Somnolent_Sconce.png",
         "type": "Lantern",
         "Damage, Armor": "",
         "check": "Spirit",
@@ -303,6 +306,7 @@
     },
     {
         "name": "Axiom Beacon",
+        "image": "/assets/images/enchanted/Axiom_Beacon.png",
         "type": "Lantern",
         "Damage, Armor": "",
         "check": "",
@@ -318,6 +322,7 @@
     },
     {
         "name": "Willowglow Lamp",
+        "image": "/assets/images/enchanted/willowglow_lamp.png",
         "type": "Lantern",
         "Damage, Armor": "",
         "check": "",

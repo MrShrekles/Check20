@@ -328,7 +328,10 @@ function renderSpells() {
       // ── Expanded detail ──
       const detail = document.createElement('div');
       detail.className = 'spell-row-detail';
-      detail.innerHTML = visibleEffects.map(e => {
+      const artHTML = spell.image
+          ? `<div class="codex-art-wrap"><img src="${spell.image}" class="codex-art" alt="${spell.name}" onerror="this.parentElement.remove()"></div>`
+          : '';
+      detail.innerHTML = artHTML + visibleEffects.map(e => {
         const meta = [
           e.range    ? `Range: ${e.range}`       : '',
           e.duration ? `Duration: ${e.duration}` : '',

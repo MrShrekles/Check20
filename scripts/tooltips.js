@@ -9,7 +9,7 @@ function parseDice(text) {
             .replace(/\s*\+\s*/g, '+')    // 1 + PL  →  1+PL
             .replace(/\s*-\s*/g, '-')
             .trim();
-        return `<span class="dice-expr">${expr}</span>`;
+        return ` <span class="dice-expr">${expr}</span> `;
     });
 }
 

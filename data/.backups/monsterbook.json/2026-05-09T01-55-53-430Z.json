@@ -16,7 +16,7 @@
     "feature_name": "Ironhide Charge",
     "feature_type": "Action",
     "feature_range": "Melee",
-    "feature_effect": "Charge up to your full movement speed in a straight line. Each creature in its path must succeed on a Physical check or be knocked Prone and take [[1+PL]] Physical damage.",
+    "feature_effect": "Charge up to your full movement speed in a straight line. Each creature in its path must succeed on a Physical check or be knocked Prone and take [[1+@{PL}]] Physical damage.",
     "feature_duration": "Instant",
     "feature_damage": "Impact",
     "motivation": "Hunting prey",
@@ -40,7 +40,7 @@
         "name": "Ironhide",
         "type": "Passive",
         "range": "",
-        "effect": "Has additional [[5 * PL]] armor",
+        "effect": "Has additional [[5 * @{PL}]] armor",
         "duration": "",
         "damage": ""
       }
@@ -63,7 +63,7 @@
     "feature_name": "Charge",
     "feature_type": "Action",
     "feature_range": "Melee",
-    "feature_effect": "Charge up to your full movement speed in a straight line. Each creature in its path must succeed on a Physical check or be knocked Prone and take [[1+PL]] Physical damage.",
+    "feature_effect": "Charge up to your full movement speed in a straight line. Each creature in its path must succeed on a Physical check or be knocked Prone and take [[1+@{PL}]] Physical damage.",
     "feature_duration": "Instant",
     "feature_damage": "Impact",
     "motivation": "Amassing an army",
@@ -87,7 +87,7 @@
         "name": "Ironhide",
         "type": "Passive",
         "range": "",
-        "effect": "Has additional [[5 * PL]] armor",
+        "effect": "Has additional [[5 * @{PL}]] armor",
         "duration": "",
         "damage": ""
       },
@@ -585,7 +585,7 @@
         "name": "Recall Heliron",
         "type": "Half Action",
         "range": "Short",
-        "effect": "Recall a thrown Heliron weapon within short range as a Threat point. Doing so causes the creature to be pulled 10ft to you, and take [[PL]] slashing damage as it is torn from the flesh of the target",
+        "effect": "Recall a thrown Heliron weapon within short range as a Threat point. Doing so causes the creature to be pulled 10ft to you, and take [PL] slashing damage as it is torn from the flesh of the target",
         "duration": "",
         "damage": ""
       }
@@ -807,7 +807,7 @@
     "feature_name": "Metallic Hide",
     "feature_type": "Passive",
     "feature_range": "",
-    "feature_effect": "Has additional [[5 * PL]] armor",
+    "feature_effect": "Has additional [[5 * @{PL}]] armor",
     "feature_duration": "",
     "feature_damage": "",
     "melee_attack": {
@@ -1145,7 +1145,7 @@
     "feature_name": "Impenetrable Armor",
     "feature_type": "Passive",
     "feature_range": "",
-    "feature_effect": "Has additional [[5 * PL]] armor",
+    "feature_effect": "Has additional [[5 * @{PL}]] armor",
     "feature_duration": "",
     "feature_damage": "",
     "melee_attack": {
@@ -1978,7 +1978,7 @@
     "feature_name": "Parry",
     "feature_type": "Off Action",
     "feature_range": "Melee",
-    "feature_effect": "As an Off Action, When hit by a melee attack, make a contested Physical check. On success, reduce the damage by [[PL]].",
+    "feature_effect": "As an Off Action, When hit by a melee attack, make a contested Physical check. On success, reduce the damage by [[@{PL}]].",
     "feature_duration": "",
     "feature_damage": "",
     "melee_attack": {
@@ -2406,7 +2406,7 @@
     "feature_name": "Undying Disease",
     "feature_type": "Passive",
     "feature_range": "Self",
-    "feature_effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[PL]] if you have no major conditions",
+    "feature_effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[@{pl}]] if you have no major conditions",
     "feature_duration": "",
     "feature_damage": "",
     "melee_attack": {
@@ -2448,7 +2448,7 @@
         "name": "Vampire Kiss (Avuţie)",
         "type": "Action",
         "range": "",
-        "effect": "Make an attack check against a creature. On a hit deal  [[PL]] piercing damage. The target must make a Survival check or contract the Vampire Disease. While infected they have the Charmed condition. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Coughing and Slowed conditions. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Avuție.",
+        "effect": "Make an attack check against a creature. On a hit deal  [[@{pl}]] piercing damage. The target must make a Survival check or contract the Vampire Disease. While infected they have the Charmed condition. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Coughing and Slowed conditions. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Avuție.",
         "duration": "",
         "damage": ""
       }
@@ -2555,7 +2555,7 @@
     "feature_name": "Undying Disease",
     "feature_type": "Passive",
     "feature_range": "Self",
-    "feature_effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[PL]] if you have no major conditions",
+    "feature_effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[@{pl}]] if you have no major conditions",
     "feature_duration": "",
     "feature_damage": "",
     "melee_attack": {
@@ -2597,7 +2597,7 @@
         "name": "Plagued Breath",
         "type": "Action",
         "range": "Reach",
-        "effect": "Make an attack check against a creature. On a hit deal [[PL]] toxic damage. The target must make a Survival check or contract the Vampire Disease. While infected they have the Coughing and Confused conditions. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Exhausted condition. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Tristețe.",
+        "effect": "Make an attack check against a creature. On a hit deal [[@{pl}]] toxic damage. The target must make a Survival check or contract the Vampire Disease. While infected they have the Coughing and Confused conditions. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Exhausted condition. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Tristețe.",
         "duration": "",
         "damage": ""
       }
@@ -2650,7 +2650,7 @@
     "feature_name": "Undying Disease",
     "feature_type": "Passive",
     "feature_range": "Self",
-    "feature_effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[PL]] if you have no major conditions",
+    "feature_effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[@{pl}]] if you have no major conditions",
     "feature_duration": "",
     "feature_damage": "",
     "melee_attack": {
@@ -2692,7 +2692,7 @@
         "name": "Vampire Claw (Tărie)",
         "type": "Action",
         "range": "Melee",
-        "effect": "Make an attack check against a creature. On a hit deal [[PL]] slashing damage. The target must make a Survival check or contract the Vampire Disease. While infected they have the Bleeding condition. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Exhausted and Weakened conditions. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Tărie.",
+        "effect": "Make an attack check against a creature. On a hit deal [[@{pl}]] slashing damage. The target must make a Survival check or contract the Vampire Disease. While infected they have the Bleeding condition. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Exhausted and Weakened conditions. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Tărie.",
         "duration": "",
         "damage": ""
       }
@@ -3573,7 +3573,7 @@
     "pl": 6,
     "check_physical": 6,
     "check_mental": 0,
-    "walk": 40,
+    "walk": 50,
     "fly": 0,
     "swim": 0,
     "climb": 0,
@@ -4109,7 +4109,7 @@
     "feature_name": "Siphon",
     "feature_type": "Passive",
     "feature_range": "",
-    "feature_effect": "When you bite a creature with Mana, they burn 1 Mana and your bite deals +[[PL]] damage",
+    "feature_effect": "When you bite a creature with Mana, they burn 1 Mana and your bite deals +[[@{PL}]] damage",
     "feature_duration": "",
     "feature_damage": "",
     "melee_attack": {
@@ -4948,7 +4948,7 @@
     "feature_name": "Reassemble",
     "feature_type": "Special",
     "feature_range": "Self",
-    "feature_effect": "If brought to 0 wounds, make a Physical check if you haven't taken lightning or acid damage. Per success gain [PL] healing, on a failure the undead is destroyed.",
+    "feature_effect": "If brought to 0 wounds, make a Physical check if you haven't taken lightning or acid damage. Per success gain [@{PL}] healing, on a failure the undead is destroyed.",
     "feature_duration": "Instant",
     "feature_damage": "",
     "melee_attack": {
@@ -4974,7 +4974,7 @@
         "name": "Impenetrable Armor",
         "type": "Passive",
         "range": "",
-        "effect": "Has additional [[5 * PL]] armor",
+        "effect": "Has additional [[5 * @{PL}]] armor",
         "duration": "",
         "damage": ""
       }
@@ -5002,7 +5002,7 @@
     "feature_name": "Frozen Gust",
     "feature_type": "Action",
     "feature_range": "Short",
-    "feature_effect": "As an action, create a frozen gust of wind in a short range cone. Creatures in the area take [[PL]] Frost damage and gain the Slowed condition. Creatures may prevent both the damage and condition with a successful Survival check.",
+    "feature_effect": "As an action, create a frozen gust of wind in a short range cone. Creatures in the area take [[@{PL}]] Frost damage and gain the Slowed condition. Creatures may prevent both the damage and condition with a successful Survival check.",
     "feature_duration": "Until end of their next turn",
     "feature_damage": "Ice",
     "melee_attack": {
@@ -5098,7 +5098,7 @@
         "name": "Frost Armor",
         "type": "Passive",
         "range": "",
-        "effect": "Has additional [[5 * PL]] armor",
+        "effect": "Has additional [[5 * @{PL}]] armor",
         "duration": "",
         "damage": ""
       },
@@ -5741,7 +5741,7 @@
         "name": "Wingflare",
         "type": "Passive",
         "range": "Melee",
-        "effect": "When damaged by a melee attack, release a burst of stored light. The attacker takes [[PL]] Solar damage.",
+        "effect": "When damaged by a melee attack, release a burst of stored light. The attacker takes [[@{pl}]] Solar damage.",
         "duration": "",
         "damage": "Solar"
       }
@@ -6306,7 +6306,7 @@
         "name": "Impenetrable Armor",
         "type": "Passive",
         "range": "",
-        "effect": "Has additional [[5 * PL]] armor",
+        "effect": "Has additional [[5 * @{PL}]] armor",
         "duration": "",
         "damage": ""
       }
@@ -6434,145 +6434,6 @@
     ]
   },
   {
-    "name": "Dragipede",
-    "_group": "Insect",
-    "origin": "Dragon",
-    "size": "Giant",
-    "rarity": "Epic",
-    "environment": "Prime, Ordealis",
-    "behavior": "Social",
-    "description": "",
-    "lore": "",
-    "motivation": "Hording Corpses",
-    "pl": 12,
-    "check_physical": 10,
-    "check_mental": 2,
-    "walk": 45,
-    "fly": 120,
-    "swim": 0,
-    "climb": 0,
-    "feature_name": "Top Speed",
-    "feature_type": "Special",
-    "feature_range": "Long",
-    "feature_effect": "After 1 minute of continuous flight you can reach your top speed of 60 mph (880 ft per round)",
-    "feature_duration": "1 minute",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "Bite (NPC)",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Piercing"
-    },
-    "ranged_attack": {
-      "name": "Vile Spit (NPC)",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Acid"
-    },
-    "spell": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "features": [
-      {
-        "name": "Tail Sweep",
-        "type": "Action",
-        "range": "Reach",
-        "effect": "As an action creatures within reach make an Agility check and take [[3d6]] slashing damage, or half as much per success.",
-        "duration": "",
-        "damage": "Impact"
-      },
-      {
-        "name": "Dragon Bite",
-        "type": "Action",
-        "range": "Reach",
-        "effect": "As an Action, target a creature within Reach with a mighty bite. The target must make a Physical check or be swallowed. While swallowed, the creature is Pinned and Constrained and takes 1d6 Acid damage at the start of each turn. If the target becomes Injured, instantly gain the Death condition.",
-        "duration": "1 minute",
-        "damage": ""
-      },
-      {
-        "name": "Grave Collection",
-        "type": "Passive",
-        "range": "",
-        "effect": "You always sense every piece of your collection. Corpses, bones, preserved husks, molted shells, and cocooned victims remain within your awareness. You know when a body is disturbed, stolen, consumed, or begins to rot beyond usefulness. Even beneath dirt, webs, fungus, or swarming insects, your collection calls to you. Distance does not weaken this connection. ",
-        "duration": "",
-        "damage": ""
-      },
-      {
-        "name": "Summon Swarm",
-        "type": "Action",
-        "range": "Self",
-        "effect": "As an Action once per day, summon [[1d4]] PL3 [Centipede] on you. ",
-        "duration": "",
-        "damage": ""
-      }
-    ],
-    "art": "",
-    "spells": [
-      {
-        "name": "Fear",
-        "manner": "Domineer",
-        "transmission": "Corpus",
-        "effects": [
-          {
-            "intent": "Whisper",
-            "cost": 1,
-            "range": "Short",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "One creature within short range must make a Spirit check or gain the Fear condition. On a success they are immune to the Fear condition from spells for 24 hours"
-          },
-          {
-            "intent": "Surge",
-            "cost": 3,
-            "range": "Short",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Flood a creature's mind with overwhelming dread. They must make a Spirit check or take [[1d6]] psychic damage and gain the Fear condition. On a success they are immune to the Fear condition from spells for 24 hours."
-          }
-        ]
-      },
-      {
-        "name": "Domineer",
-        "manner": "Domineer",
-        "transmission": "Corpus",
-        "effects": [
-          {
-            "intent": "Whisper",
-            "cost": 1,
-            "range": "Medium",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Read the surface thoughts of a creature within medium range until the end of your next turn."
-          },
-          {
-            "intent": "Surge",
-            "cost": 3,
-            "range": "Medium",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Charm a creature, hear its thoughts, and speak with it telepathically until the end of your next turn."
-          },
-          {
-            "intent": "Shout",
-            "cost": 6,
-            "range": "Short",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Dominate the mind of a creature until the end of your next turn. They follow your commands on their turn. At the end of each of their turns, they make an Intellect check. On a success, they break your hold and become immune to your Domineer spell."
-          }
-        ]
-      }
-    ]
-  },
-  {
     "name": "Centipede",
     "_group": "Insect",
     "origin": "Nature",
@@ -6625,473 +6486,5 @@
       }
     ],
     "art": ""
-  },
-  {
-    "name": "Sandworm",
-    "_group": "Insect",
-    "origin": "Nature",
-    "size": "Giant",
-    "rarity": "Epic",
-    "environment": "Prime, Fey",
-    "behavior": "Territorial",
-    "description": "",
-    "lore": "",
-    "motivation": "",
-    "pl": 6,
-    "check_physical": 6,
-    "check_mental": 0,
-    "walk": 40,
-    "fly": 0,
-    "swim": 30,
-    "climb": 0,
-    "feature_name": "Stonesense",
-    "feature_type": "Passive",
-    "feature_range": "Long",
-    "feature_effect": "You can sense creatures moving across stone and sand within Long range. Repeated rhythmic footsteps agitate you, making marching, drilling, and synchronized movement impossible to ignore.",
-    "feature_duration": "",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "Bite (NPC)",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Piercing"
-    },
-    "ranged_attack": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "spell": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "features": [
-      {
-        "name": "Burrower",
-        "type": "Passive",
-        "range": "",
-        "effect": "You can burrow through loose material, though you prefer sand. You may move through solid stone at half speed. Worked structures such as walls, foundations, and buildings block your movement.",
-        "duration": "",
-        "damage": ""
-      },
-      {
-        "name": "Bladed Tail",
-        "type": "Action",
-        "range": "Reach",
-        "effect": "As an action creatures within reach make an Agility check and take [[2d6]] slashing damage, or half as much per success.",
-        "duration": "",
-        "damage": "Slashing"
-      },
-      {
-        "name": "Stone Bite",
-        "type": "Action",
-        "range": "Reach",
-        "effect": "As an Action, target a creature within Reach with a mighty bite. The target must make a Physical check or be swallowed. While swallowed, the creature is Pinned and Constrained and takes 1d6 Impact damage at the start of each turn. If the target becomes Injured, instantly gain the Death condition.",
-        "duration": "1 minute",
-        "damage": ""
-      }
-    ],
-    "art": ""
-  },
-  {
-    "name": "Dune Dog",
-    "_group": "Predator",
-    "origin": "Nature",
-    "size": "Medium",
-    "rarity": "Uncommon",
-    "environment": "Prime, Fey",
-    "behavior": "Pack Hunter",
-    "description": "",
-    "lore": "",
-    "motivation": "",
-    "pl": 6,
-    "check_physical": 6,
-    "check_mental": 0,
-    "walk": 50,
-    "fly": 0,
-    "swim": 0,
-    "climb": 30,
-    "feature_name": "Hidden (Sand)",
-    "feature_type": "Special",
-    "feature_range": "",
-    "feature_effect": "If you remain motionless in or on sand, creatures cannot distinguish you from the environment without succeeding on an Observation check.",
-    "feature_duration": "",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "Bite (NPC)",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Piercing"
-    },
-    "ranged_attack": {
-      "name": "Sand Kick",
-      "equipped": true,
-      "damage": "1d4",
-      "damage_type": "Fire"
-    },
-    "spell": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "features": [
-      {
-        "name": "Pack Hunter",
-        "type": "Passive",
-        "range": "Reach",
-        "effect": "Gain +1 to checks and damage per ally within reach range",
-        "duration": "",
-        "damage": ""
-      },
-      {
-        "name": "Hunter's Howl",
-        "type": "Action",
-        "range": "Reach",
-        "effect": "As an Action, unleash a hunter’s howl. Allies within Reach gain Advantage on their next attack. Enemies within Reach must make a Spirit check if there are 3 or more Dune Dogs present or gain the Fear condition.",
-        "duration": "Until end of their next turn",
-        "damage": ""
-      },
-      {
-        "name": "Hunter's Senses",
-        "type": "Passive",
-        "range": "Medium",
-        "effect": "As an Action, make a Mental check with Advantage to sense creatures within Medium range.",
-        "duration": "",
-        "damage": ""
-      }
-    ],
-    "art": ""
-  },
-  {
-    "name": "Suffocating Serpent",
-    "_group": "Predator",
-    "origin": "Nature",
-    "size": "Medium",
-    "rarity": "Common",
-    "environment": "Prime, Fey",
-    "behavior": "Solitary",
-    "description": "",
-    "lore": "",
-    "motivation": "",
-    "pl": 3,
-    "check_physical": 3,
-    "check_mental": 0,
-    "walk": 30,
-    "fly": 0,
-    "swim": 30,
-    "climb": 0,
-    "feature_name": "Constrict",
-    "feature_type": "Action",
-    "feature_range": "Reach",
-    "feature_effect": "As an Action, target a creature within Reach and make contested Physical checks. On a success, the target becomes constricted. Constricted creatures are Pinned and Constrained. While constricting a creature, you are Pinned, and cannot target another target. ",
-    "feature_duration": "",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "Bite (NPC)",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Piercing"
-    },
-    "ranged_attack": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "spell": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "features": [
-      {
-        "name": "Binding Death",
-        "type": "Passive",
-        "range": "Self",
-        "effect": "While you have a creature Constricted you deal double damage to them",
-        "duration": "",
-        "damage": ""
-      },
-      {
-        "name": "Breaking Bind",
-        "type": "Action",
-        "range": "Self",
-        "effect": "As an Action, violently tighten your constriction. A creature you are constricting gains the Broken or Dislocated condition.",
-        "duration": "",
-        "damage": ""
-      },
-      {
-        "name": "Blinding Coil",
-        "type": "Action",
-        "range": "Self",
-        "effect": "As an Action, constrict around a creature’s head. The target gains Blind until the end of its next turn.",
-        "duration": "Until end of their next turn",
-        "damage": ""
-      },
-      {
-        "name": "Panic Pain",
-        "type": "Action",
-        "range": "Self",
-        "effect": "As an Action, tighten your coils until bones creak and split. A creature you have constricted gains Fear.",
-        "duration": "",
-        "damage": ""
-      },
-      {
-        "name": "Hidden (Coiled)",
-        "type": "Special",
-        "range": "",
-        "effect": "If you remain motionless on vines or cables, creatures cannot distinguish you from the environment without succeeding on an Observation check.",
-        "duration": "",
-        "damage": ""
-      }
-    ],
-    "art": ""
-  },
-  {
-    "name": "Sandstorm",
-    "_group": "Elemental",
-    "origin": "Elemental",
-    "size": "Giant",
-    "rarity": "Rare",
-    "environment": "",
-    "behavior": "",
-    "description": "",
-    "lore": "",
-    "motivation": "",
-    "pl": 10,
-    "check_physical": 5,
-    "check_mental": 5,
-    "walk": 0,
-    "fly": 50,
-    "swim": 0,
-    "climb": 0,
-    "feature_name": "",
-    "feature_type": "",
-    "feature_range": "",
-    "feature_effect": "",
-    "feature_duration": "",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "ranged_attack": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "spell": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "features": [],
-    "art": ""
-  },
-  {
-    "name": "Wtch",
-    "_group": "Caster",
-    "origin": "Vozian",
-    "size": "Medium",
-    "rarity": "Uncommon",
-    "environment": "Prime, Fey, Dreamsea, Void, Ordealis, Eclipse",
-    "behavior": "Social",
-    "description": "",
-    "lore": "",
-    "motivation": "",
-    "pl": 6,
-    "check_physical": 1,
-    "check_mental": 5,
-    "walk": 30,
-    "fly": 0,
-    "swim": 0,
-    "climb": 0,
-    "feature_name": "Coven",
-    "feature_type": "Passive",
-    "feature_range": "Long",
-    "feature_effect": "Your power grows with your coven. Gain +1 to checks and damage for each coven member within Long range.",
-    "feature_duration": "",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "Broom",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Impact"
-    },
-    "ranged_attack": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "spell": {
-      "name": "Witchbolt",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Vozian"
-    },
-    "features": [],
-    "art": "",
-    "spells": [
-      {
-        "name": "Aquata",
-        "manner": "Domineer",
-        "transmission": "Elemental",
-        "effects": [
-          {
-            "intent": "Light Whisper",
-            "cost": 0,
-            "range": "Self",
-            "area": "melee",
-            "damage": "",
-            "type": "",
-            "effect": "Conjure a small splash of water in your hand or at a point within short range. Enough to wet a surface, clean a wound, fill a cup, or put out a candle. Cannot hydrate a creature."
-          },
-          {
-            "intent": "Whisper",
-            "cost": 1,
-            "range": "Reach",
-            "area": "melee",
-            "damage": "",
-            "type": "",
-            "effect": "Conjure up to 1 gallon of clean drinkable water at a point within short range. Can fill containers, extinguish small flames, or hydrate creatures normally. Lasts until consumed or 10 minutes pass."
-          },
-          {
-            "intent": "Surge",
-            "cost": 3,
-            "range": "Short",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Conjure a wave of water that crashes forward in a short range line. Each creature in the line takes [[2d6]] fluid damage and must succeed on a Physical check or be knocked back 20ft, half per success. The area becomes difficult terrain and extinguishes flames and exposed light sources until the end of your next turn.\n"
-          },
-          {
-            "intent": "Shout",
-            "cost": 6,
-            "range": "Short",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Conjure a massive wave that crashes outward in a short range around you. Each creature in the area takes [[4d6 ]] fluid damage and must succeed on a Physical check or be knocked back 60ft and gain the Prone condition, half damage and knockback per success. The area becomes difficult terrain for 1 minute and extinguishes all flames and light sources until the end of your next turn."
-          }
-        ]
-      },
-      {
-        "name": "Bloodrift",
-        "manner": "Manifest",
-        "transmission": "Astral",
-        "effects": [
-          {
-            "intent": "Whisper",
-            "cost": 1,
-            "range": "Reach",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Take 1 damage and deal an additional 3 damage on your next melee attack. After you hit with your next melee attack summon a PL[[1d4]] imp within reach that attacks any creatures it can see until the end of your next turn."
-          }
-        ]
-      },
-      {
-        "name": "Conjure Familiar",
-        "manner": "Manifest",
-        "transmission": "Astral",
-        "effects": [
-          {
-            "intent": "Whisper",
-            "cost": 1,
-            "range": "melee",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Summon a small creature of your design at PL equal to Mana used. It can follow command but acts more independent the longer it remains. Your familiar can speak any languages you can speak. As an action you can choose to do the following until the end of your next turn: See through its eyes, communicate telepathically, cast spells through your familiar, shift the shape of the familiar."
-          }
-        ]
-      },
-      {
-        "name": "Domineer",
-        "manner": "Domineer",
-        "transmission": "Corpus",
-        "effects": [
-          {
-            "intent": "Whisper",
-            "cost": 1,
-            "range": "Medium",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Read the surface thoughts of a creature within medium range until the end of your next turn."
-          },
-          {
-            "intent": "Surge",
-            "cost": 3,
-            "range": "Medium",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Charm a creature, hear its thoughts, and speak with it telepathically until the end of your next turn."
-          },
-          {
-            "intent": "Shout",
-            "cost": 6,
-            "range": "Short",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Dominate the mind of a creature until the end of your next turn. They follow your commands on their turn. At the end of each of their turns, they make an Intellect check. On a success, they break your hold and become immune to your Domineer spell."
-          }
-        ]
-      },
-      {
-        "name": "Empower Plants",
-        "manner": "Domineer",
-        "transmission": "Verdance",
-        "effects": [
-          {
-            "intent": "Whisper",
-            "cost": 1,
-            "range": "short",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Empower an area of plants into a PL 2 small swarm of plants, they come to life and follow your commands for 1 minute."
-          }
-        ]
-      },
-      {
-        "name": "Exsanguinate",
-        "manner": "Domineer",
-        "transmission": "Corpus",
-        "effects": [
-          {
-            "intent": "Whisper",
-            "cost": 1,
-            "range": "Short",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Draw a thin line of blood from you to a creature within reach range. They must make a Physical check or take 2 damage that ignores armor and you heal for 1 healing"
-          },
-          {
-            "intent": "Shout",
-            "cost": 6,
-            "range": "Short",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "You seize control of the blood of one creature within short range, wrenching their body like a puppet. The target must make a Survival check or become Pinned and Constrained until the end of their next turn. You can use your Off-Action to force them to take a movement or non-magical action of your choice. Creatures with no blood are immune."
-          }
-        ]
-      }
-    ]
   }
 ]

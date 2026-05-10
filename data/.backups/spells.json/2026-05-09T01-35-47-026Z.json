@@ -2022,13 +2022,12 @@
     "transmission": "Elemental",
     "effects": [
       {
-        "intent": "Surge",
-        "range": "Self",
-        "target": "Self",
+        "intent": "Whisper",
+        "range": "Short",
+        "target": "Creature",
         "area": "",
-        "duration": "1 hour",
-        "effect": "Your form reshapes into a street-ready vehicle for 1 hour. Choose the form, such as a car, truck, wagon, or similar vehicle. While transformed, you cannot control your own movement or actions.",
-        "cost": 3
+        "duration": "Instant",
+        "effect": "You create a subdermal implant that activates manabots that turn you into a car. You do not have control of the car"
       }
     ]
   },

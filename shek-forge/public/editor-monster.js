@@ -966,6 +966,7 @@ registerEditor('monster', {
                 </div>
             </div>
 
+            <div class="section-pair">
             ${attacksBlock}
 
             <div class="forge-section">
@@ -1014,6 +1015,7 @@ registerEditor('monster', {
                     </div>
                 </div>
             </div>
+            </div><!-- /.section-pair attacks + main feature -->
 
             <div class="forge-section">
                 <div class="section-header section-header-split">

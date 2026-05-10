@@ -96,735 +96,735 @@
                             </details>
 
                             <div class="npc-full-only">
-                            <!-- Conditions -->
-                            <details>
-                                <summary class="section-container"><strong>Conditions</strong></summary>
-                                <div class="two-column">
-                                    <div class="column">
-                                        <details>
-                                            <summary class="section-container">
-                                                Physical
-                                            </summary>
-                                            <ul class="disadvantage-container">
-                                                <li>Agility</li>
-                                                <li>Crafting</li>
-                                                <li>Stealth</li>
-                                                <li>Strength</li>
-                                                <li>Survival</li>
-                                            </ul>
-                                        </details>
-                                    </div>
-                                    <div class="column">
-                                        <details>
-                                            <summary class="section-container">
-                                                Mental
-                                            </summary>
-                                            <ul class="disadvantage-container">
-                                                <li>Influence</li>
-                                                <li>Intellect</li>
-                                                <li>Luck</li>
-                                                <li>Observation</li>
-                                                <li>Spirit</li>
-                                            </ul>
-                                        </details>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <!-- Corpus Conditions -->
-                                    <div class="health-item">
-                                        <details>
-                                            <summary class="section-container" style="background-color: rgb(60, 30, 70);">Corpus</summary>
-
-                                            <!-- Bleeding -->
+                                <!-- Conditions -->
+                                <details>
+                                    <summary class="section-container"><strong>Conditions</strong></summary>
+                                    <div class="two-column">
+                                        <div class="column">
                                             <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_bleeding" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_bleeding" value="&{template:shek} {{name=Bleeding}} {{Disadvantage=Cannot recover wounds or receive healing}} {{Duration=Lasts for 1 minute or until removed.}} {{desc=Healing and wound recovery are blocked until this condition is resolved.}}">
-                                                            Bleeding
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
+                                                <summary class="section-container">
+                                                    Physical
                                                 </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Cannot recover wounds or receive healing. Lasts for 1 minute or
-                                                        until removed. Once the condition is removed from a support or
-                                                        doctor then you can heal wounds.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Broken -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_broken" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_broken" value="&{template:shek} {{name=Broken}} {{Disadvantage=Physical Disadvantage}} {{Duration=Lasts 6 weeks if untreated.}} {{desc=Caused by broken bones or major physical trauma. Recovery requires rest or intervention.}}">
-                                                            Broken
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Physical disadvantage. Lasts 6 weeks if untreated. Caused by
-                                                        broken bones or major physical trauma. Recovery requires rest or
-                                                        intervention.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Concussion -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_concussion" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_concussion" value="&{template:shek} {{name=Concussion}} {{Disadvantage=Mental and Spellcasting Disadvantage}} {{Duration=Until a Long Rest.}} {{desc=Significant brain trauma affects mental clarity and magic use.}}">
-                                                            Concussion
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Mental and spellcasting disadvantage. Lasts until a long rest.
-                                                        Significant brain trauma affects mental clarity and magic use.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Coughing -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_coughing" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_coughing" value="&{template:shek} {{name=Coughing}} {{Disadvantage=Mental Disadvantage}} {{Duration=Ends after 1 minute or when irritant is removed.}} {{desc=Caused by inhaling irritants or environmental hazards.}}">
-                                                            Coughing
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Mental disadvantage. Ends after 1 minute or when irritant is
-                                                        removed. Caused by inhaling irritants or environmental hazards.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Dislocation -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_dislocation" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_dislocation" value="&{template:shek} {{name=Dislocation}} {{Disadvantage=Physical Disadvantage}} {{Duration=Until a Long Rest, or Survival Check}} {{desc=A dislocated joint limits your ability to exert force. A successful Survival check as an action or medical or magical intervention can fix this condition. Otherwise, recovery requires a long rest.}}">
-                                                            Dislocation
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Physical disadvantage. Lasts until a long rest or survival
-                                                        check. A dislocated joint limits your ability to exert force. A
-                                                        successful Survival check as an action or medical/magical
-                                                        intervention can fix this condition. Otherwise, recovery
-                                                        requires a long rest.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Slowed -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_slowed" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_slowed" value="&{template:shek} {{name=Slowed}} {{Disadvantage=Movement halved}} {{Duration=Remove Source}} {{desc=This can occur from being stuck in substances like mud, taffy, or webs, or due to effects like stasis magic. Typically resolved by freeing the character from the source of the hindrance.}}">
-                                                            Slowed
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Movement halved. Typically resolved by freeing the character
-                                                        from the source of the hindrance, such as mud, webs, or stasis
-                                                        magic.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Pinned -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_pinned" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_pinned" value="&{template:shek} {{name=Pinned}} {{Disadvantage=Disadvantage for ranged attacks; advantage for melee attacks against you.}} {{Duration=Requires 15 ft of movement to stand.}} {{desc=While it has its tactical advantage to avoid long range fire, puts you at advantage for attackers standing above you. Can be imposed with a shove action and some other features and spells}}">
-                                                            Pinned
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Disadvantage for ranged attacks; advantage for melee attacks
-                                                        against you. Requires 15 ft of movement to stand. Can be imposed
-                                                        by a shove action or specific features and spells.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Prone -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_prone" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_prone" value="&{template:shek} {{name=Prone}} {{Disadvantage=Cannot move; restrained by an object or creature.}} {{Duration=Until source removed, or Off-Action removal}} {{desc=Pinned creatures can attempt a check determined by the source, e.g., grappled creature or environmental obstacle as an off-action to escape. Ends when the source of the pin is removed.}}">
-                                                            Prone
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Cannot move; restrained by an object or creature. Ends when the
-                                                        source of the pin is removed or through an off-action removal.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                        </details>
-                                    </div>
-
-
-                                    <!-- Cognition Conditions -->
-                                    <div class="health-item">
-                                        <details>
-                                            <summary class="section-container" style="background-color: rgb(60, 30, 70);">Cognition</summary>
-
-                                            <!-- Blind -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_blind" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_blind" value="&{template:shek} {{name=Blind}} {{Disadvantage=Disadvantage on attack rolls; attacks against you have advantage}} {{Duration=Ends with appropriate action or magic.}} {{desc=Temporary or permanent blindness affecting perception and defense.}}">
-                                                            Blind
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Disadvantage on attack rolls; attacks against you have
-                                                        advantage. Ends with appropriate action or magic. Temporary or
-                                                        permanent blindness affecting perception and defense.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Charmed -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_charmed" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_charmed" value="&{template:shek} {{name=Charmed}} {{Disadvantage=Mental Disadvantage; cannot attack charm source}} {{Duration=Depends on charm source.}} {{desc=The character is mentally influenced to favor another creature.}}">
-                                                            Charmed
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Mental disadvantage; cannot attack charm source. Duration
-                                                        depends on the charm source. The character is mentally
-                                                        influenced to favor another creature.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Confused -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_confused" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_confused" value="&{template:shek} {{name=Confused}} {{Disadvantage=Mental and Spellcasting Disadvantage}} {{Duration=Until Press On or end of next turn.}} {{desc=Confusion inhibits focused tasks and spellcasting.}}">
-                                                            Confused
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Mental and spellcasting disadvantage. Lasts until "Press On" or
-                                                        the end of the next turn. Confusion inhibits focused tasks and
-                                                        spellcasting.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Deaf -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_deaf" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_deaf" value="&{template:shek} {{name=Deaf}} {{Disadvantage=Stealth disadvantage; Spellcasting disadvantage}} {{Duration=Ends after 1 minute or source removal.}} {{desc=The character cannot hear, affecting awareness and verbal magic.}}">
-                                                            Deaf
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Stealth disadvantage; spellcasting disadvantage. Ends after 1
-                                                        minute or removal of the source. The character cannot hear,
-                                                        affecting awareness and verbal magic.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Fear -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_fear" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_fear" value="&{template:shek} {{name=Fear}} {{Disadvantage=Must dash away or hide until the end of their next turn}} {{Duration=The condition ends if they can't see the source for a full round}} {{desc=Typically, a character can't be Feared by the same creature more than once.}}">
-                                                            Fear
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Must dash away or hide until the end of their next turn. The
-                                                        condition ends if they can't see the source for a full round.
-                                                        Typically, a character can't be feared by the same creature more
-                                                        than once.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                        </details>
-                                    </div>
-
-                                    <!-- Special Conditions -->
-                                    <div class="health-item">
-                                        <details>
-                                            <summary class="section-container" style="background-color: rgb(60, 30, 70);">Special</summary>
-
-                                            <!-- Intangible -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_intangible" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_intangible" value="&{template:shek} {{name=Intangible}} {{Advantage=Immune to physical damage}} {{Disadvantage=Cannot attack; half movement}} {{Duration=Ends after the effect or magical disruption.}} {{desc=The character is non-physical, able to pass through objects but unable to attack.}}">
-                                                            Intangible
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Immune to physical damage. Cannot attack; half movement. Ends
-                                                        after the effect’s duration or through magical disruption. The
-                                                        character is non-physical, able to pass through objects but
-                                                        unable to attack.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Invisible -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_invisible" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_invisible" value="&{template:shek} {{name=Invisible}} {{Advantage=Attacks against you have disadvantage}} {{Disadvantage=Cannot take opportunity attacks}} {{Duration=Ends after aggressive actions or being revealed.}} {{desc=Invisible creatures are harder to detect and attack.}}">
-                                                            Invisible
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Attacks against you have disadvantage. Cannot take opportunity
-                                                        attacks. Ends after aggressive actions or being revealed.
-                                                        Invisible creatures are harder to detect and attack.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-
-                                        </details>
-                                    </div>
-
-                                    <!-- Major Conditions -->
-                                    <div class="health-item">
-                                        <details>
-                                            <summary class="section-container" style="background-color: rgb(60, 30, 70);">Major</summary>
-
-                                            <!-- Exhaustion -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_exhaustion" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_exhaustion" value="&{template:shek} {{name=Exhaustion}} {{Disadvantage=Disadvantage on all checks; half movement}} {{Duration=Until long rest or specific recovery.}} {{desc=Caused by overexertion or severe effects. Requires rest or intervention to resolve.}}">
-                                                            Exhaustion
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Disadvantage on all checks; half movement. Lasts until a long
-                                                        rest or specific recovery. Caused by overexertion or severe
-                                                        effects. Requires rest or intervention to resolve.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Stunned -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_stunned" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_stunned" value="&{template:shek} {{name=Stunned}} {{Disadvantage=Disadvantage on all checks; half movement}} {{Duration=Ends at the end of your next turn.}} {{desc=The creature is dazed and struggles to act.}}">
-                                                            Stunned
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Disadvantage on all checks; half movement. Ends at the end of
-                                                        your next turn. The creature is dazed and struggles to act.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Constrained -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_constrained" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_constrained" value="&{template:shek} {{name=Constrained}} {{Disadvantage=Cannot make attack actions; Attacks against have advantage}} {{Duration=Off-Action removal if possible, escape check from restraints}} {{desc=A creature that has been bound or prevented from taking action is constrained, whether it be manacles or living roots holding you back you are unable to attack.}}">
-                                                            Constrained
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Cannot make attack actions; attacks against have advantage. Ends
-                                                        with Off-Action removal if possible or an escape check from
-                                                        restraints. A creature that has been bound or prevented from
-                                                        taking action is constrained, whether by manacles or living
-                                                        roots holding them back.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Unconscious -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_unconscious" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_unconscious" value="&{template:shek} {{name=Unconscious}} {{Disadvantage=Unable to act; vulnerable to critical hits and Finishers.}} {{Duration=Ends after a set duration, damage taken, or Off-Action ally assistance.}} {{desc=The creature falls helpless, making it vulnerable to critical hits or Finishers. Unconsciousness caused by spells or abilities can be resisted (e.g., saving throws). Ends after a set duration, damage taken, or an ally’s assistance.}}">
-                                                            Unconscious
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Unable to act; vulnerable to critical hits and Finishers. Ends
-                                                        after a set duration, damage taken, or Off-Action ally
-                                                        assistance. The creature falls helpless, making it vulnerable to
-                                                        critical hits or Finishers. Unconsciousness caused by spells or
-                                                        abilities can be resisted (e.g., saving throws).
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Exposed -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_exposed" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_exposed" value="&{template:shek} {{name=Exposed}} {{Disadvantage=Take double damage}} {{Duration=Until end of next turn or Press On}} {{desc=When a creature receives a significant burn or is completely caught unaware they take double the normal amount of damage.}}">
-                                                            Exposed
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Take double damage. Lasts until the end of the next turn or when
-                                                        "Press On" is used. When a creature receives a significant burn
-                                                        or is completely caught unaware, they take double the normal
-                                                        amount of damage.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Injured -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_injured" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_injured" value="&{template:shek} {{name=Injured}} {{Disadvantage=Any damage results in the Death condition}} {{Duration=Until healed.}} {{desc=When reduced to 0 wounds, the character is critically injured.}}">
-                                                            Injured
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Any damage results in the Death condition. Lasts until healed.
-                                                        When reduced to 0 wounds, the character is critically injured.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                            <!-- Death -->
-                                            <details>
-                                                <summary class="section-feature">
-                                                    <div class="flex-container">
-                                                        <input type="checkbox" name="attr_death" class="condition-checkbox">
-                                                        <button class="croll condition-button" type="roll" name="roll_death" value="&{template:shek} {{name=Death}} {{Disadvantage=Cannot interact with the living world}} {{Duration=Only resurrection magic can remove this.}} {{desc=The character has died and can only return through resurrection.}}">
-                                                            Death
-                                                        </button>
-                                                        <span class="expand">▼</span>
-                                                    </div>
-                                                </summary>
-                                                <div class="section">
-                                                    <p>
-                                                        Cannot interact with the living world. Only resurrection magic
-                                                        can remove this condition. The character has died and can only
-                                                        return through resurrection.
-                                                    </p>
-                                                </div>
-                                            </details>
-
-                                        </details>
-                                    </div>
-
-                                </div>
-                            </details>
-
-                            <!-- Reference Section-->
-                            <details>
-                                <summary class="section-container">Reference</summary>
-                                <div class="references">
-                                    <details>
-                                        <summary>
-                                            <strong>What to do on your turn</strong>
-                                        </summary>
-                                        <ul>
-                                            <li><strong>Move:</strong> Move any distance up to your speed during
-                                                your turn.</li>
-                                            <li><strong>Action:</strong> Perform main abilities like attack or cast a spell.
-                                            </li>
-                                            <li><strong>Half-Action:</strong> Perform two minor actions instead of 1
-                                                action, like switching stances.</li>
-                                            <li><strong>Off- Action:</strong> Can be an additional attack
-                                                with a light weapon or a provoke to a missed attack.</li>
-                                            <li><strong>Non-Action:</strong> Quick tasks like talking that require
-                                                minimal effort.</li>
-                                            <li><strong>Finisher:</strong> Eliminate defenseless opponents that are
-                                                locked from combat.
-                                            </li>
-                                            <h3>Positioning in Combat</h3>
-                                            <li><strong> Cover</strong>
-                                                disadvantage to hit, full cover cannot be targeted.</li>
-                                            <li><strong>Range:</strong> Melee, reach(10ft), short(under 50ft),
-                                                medium(50-200), and
-                                                long(200+) distances.</li>
-                                        </ul>
-                                    </details>
-                                    <details>
-                                        <summary class="refrences">
-                                            <strong>Types of Movement</strong>
-                                        </summary>
-                                        <ul>
-                                            <li><strong>Regular:</strong> Move up to your speed.</li>
-                                            <li><strong>Dash</strong> Move double distance as an action.</li>
-                                            <li><strong>Jumping:</strong> Leap distances based on toughness (5ft per
-                                                check, 2x with running start).</li>
-                                            <li><strong>Climbing:</strong> Requires agility checks and can lead to
-                                                falling.</li>
-                                            <li><strong>Difficult Terrain/Swimming:</strong> Halves movement speed.
-                                            </li>
-                                            <li><strong>Prone</strong> Standing up uses 15ft movement.</li>
-                                            <li><strong>Moving Past Creatures:</strong> Only allies or small
-                                                enemies.
-                                            </li>
-                                            <li><strong>Falling:</strong> 5 impact damage per 10 ft </li>
-                                            <li><strong>Extreme Conditions:</strong> Hazardous environments cause
-                                                extreme damage (10 per second). </li>
-                                            <li><strong>Burrowing:</strong> full cover while burrowed, cannot
-                                                breath.
-                                            </li>
-                                        </ul>
-                                    </details>
-                                    <details>
-                                        <summary class="refrences">
-                                            <strong>Actions</strong>
-                                        </summary>
-                                        <ul>
-                                            <li><strong>Attack:</strong> Make a combat attack.</li>
-                                            <li><strong>Unarmed Strike:</strong> Deal minor damage without weapons.
-                                            </li>
-                                            <li><strong>Grab or Hold:</strong> Grapple opponents, contested Strength
-                                                or
-                                                Agility checks. </li>
-                                            <li><strong>Stealth:</strong> Conceal presence for strategic advantage.
-                                            </li>
-                                            <li><strong>Cast a Spell:</strong> Perform magical actions with specific
-                                                requirements.</li>
-                                            <li><strong>Dash</strong>
-                                                Move double distance as an action.</li>
-                                            <li><strong>Administer a Potion</strong> Heal or aid allies.</li>
-                                        </ul>
-                                    </details>
-                                    <details>
-                                        <summary class="refrences">
-                                            <strong>Half-Actions & Stances</strong>
-                                        </summary>
-                                        <ul>
-                                            <h3>Stances:</h3> As a half-action, adopt battle stances for various
-                                            combat
-                                            benefits. They
-                                            start at the end of your turn and last until the start of your next
-                                            turn.
-                                            </li>
-                                            <div class="stance">
-                                                <ul>
-                                                    <li><strong><button class="croll" type="roll" name="roll_ref" value="&{template:shek} {{name=@{character_name}}} {{Half-Action=Advantage Stance}} {{desc= Give your next attack advantage}}">Advantage Stance</button></strong> Give your next attack advantage </li>
-                                                    <li><strong><button class="croll" type="roll" name="roll_ref" value="&{template:shek} {{name=@{character_name}}} {{Half-Action=Disadvantage Stance}} {{desc=Give disadvantage on attack rolls against you and allies within your melee range.}}">Disadvantage Stance</button></strong>
-                                                        Give disadvantage on attack rolls against you and allies within your melee range.</li>
-                                                    <li>
-                                                        <strong><button class="croll" type="roll" name="roll_ref" value="&{template:shek} {{name=@{character_name}}} {{Half-Action=Open Guard Stance}} {{desc=When a creature attacks you, Provoke without using an Off-Action once. On all failed attacks, you may also Provoke at disadvantage.}}">Guard Stance</button></strong>
-                                                        When a creature attacks you, Provoke without using an Off-Action once. On all failed attacks, you may also Provoke at disadvantage.
-                                                    </li>
-
+                                                <ul class="disadvantage-container">
+                                                    <li>Agility</li>
+                                                    <li>Crafting</li>
+                                                    <li>Stealth</li>
+                                                    <li>Strength</li>
+                                                    <li>Survival</li>
                                                 </ul>
-                                            </div>
-                                            <hr>
-                                            <h3>Half Actions:</h3>
-                                            <li><strong>Pick up an Item:</strong> Retrieve items during combat.</li>
-                                            <li><strong>Use an Object:</strong> Interact with objects in the
-                                                environment.</li>
-                                            <li><strong>Escape:</strong> Break free from restraints or remove pinned
-                                                conditon.
-                                            </li>
-                                            <li><strong>Disarm:</strong> Attempt to remove an opponent's weapon.</li>
-                                            <li><strong>Help:</strong> Assist one creature within reach range for
-                                                advantage on a check, only one creature can help at a time.</li>
-                                            <li><strong>Disengage:</strong> Retreat without provoking opportunity
-                                                attacks.</li>
-                                            <li><strong>Shove:</strong> Make an opposed Strength or Agility check to
-                                                knock a creature prone.</li>
-                                            <li><strong>Taunt:</strong> force enemies that can hear you to make a check,
-                                                on failures they have to target you on their next turn.</li>
-                                        </ul>
-                                    </details>
-                                    <details>
-                                        <summary class="refrences">
-                                            <strong>Off Actions</strong>
-                                        </summary>
-                                        <ul>
-                                            <li><strong>Provoke:</strong> Strike at enemies who drop
-                                                their
-                                                guard.
-                                            </li>
-                                            <li><strong>Drink Something:</strong> Quickly consume something for
-                                                benefits.</li>
-                                            <li><strong><button class="croll" type="roll" name="roll_ref" value="&{template:shek} {{name=@{character_name}}} {{Off-Action=Disrupt}} {{desc= Give an attacking creature within melee range disadvantage on their attack on a successful check (Agility, Influence, Luck, Stealth, Strength or observation to try and disrupt)}}">Disrupt</button></strong>
-                                                Give an attacking creature within melee range disadvantage on their
-                                                attack on a successful check (Agility, Influence, Luck, Stealth, Strength or observation to try and disrupt)
-                                            </li>
-                                            <li><strong><button class="croll" type="roll" name="roll_ref" value="&{template:shek} {{name=@{character_name}}} {{Off-Action=Block}} {{desc=As an Off-Action, reduce incoming damage by half if you have Armor from a shield.}}">Block</button></strong>
-                                                As an Off-Action, reduce incoming damage by half if you have Armor from a shield. </li>
-                                            <li><strong><button class="croll" type="roll" name="roll_ref" value="&{template:shek} {{name=@{character_name}}} {{Off-Action=Demoralize}} {{desc= As an off action once per creature, make a Influence (Intimidate) and on a success the enemy must make a morale check, fleeing on a failure.}}">Demoralize</button></strong>
-                                                As an off action once per creature, make a Influence (Intimidate)
-                                                and on a success the enemy must make a morale check, fleeing on a failure.</li>
-                                        </ul>
-                                    </details>
-                                    <details>
-                                        <summary class="refrences">
-                                            <strong>Non-Actions</strong>
+                                            </details>
+                                        </div>
+                                        <div class="column">
+                                            <details>
+                                                <summary class="section-container">
+                                                    Mental
+                                                </summary>
+                                                <ul class="disadvantage-container">
+                                                    <li>Influence</li>
+                                                    <li>Intellect</li>
+                                                    <li>Luck</li>
+                                                    <li>Observation</li>
+                                                    <li>Spirit</li>
+                                                </ul>
+                                            </details>
+                                        </div>
+                                    </div>
 
-                                        </summary>
-                                        <ul>
-                                            <li>This is an action that doesnt require effort. However you are
-                                                usually limited to 1 non-action, therefore cannot switch weapons multiple times and try to limit roleplay to one instance
-                                            </li>
-                                            <li><strong><button class="croll" type="roll" name="roll_ref" value="&{template:shek} {{name=@{character_name}}} {{Non-Action=Stress Push}} {{desc= Take [[4]] points of stress damage in exchange for a boost of up to 3 points on any check scoring under 15 to [[15]].}}">Stress
-                                                        Push</button></strong> Take 4 points of stress damage in
-                                                exchange for a boost of up to 3 points on any check scoring under 15 to 15.</li>
-                                            <li><strong>Switch Weapons:</strong> Change armaments during combat.
-                                            </li>
-                                            <li><strong>Roleplay:</strong> Engage in brief in-character exchanges.
-                                            </li>
-                                            <li><strong>Shouting Orders:</strong> Command allies or intimidate
-                                                enemies.
-                                            </li>
-                                        </ul>
-                                    </details>
-                                    <details>
-                                        <summary class="refrences">
-                                            <strong>Special Actions</h>
-                                        </summary>
-                                        <ul>
-                                            <li><strong>Called Shots:</strong> take -10 to a check or an attack
-                                                check to cause a condition. </li>
-                                            <li><strong>Surprise Turns:</strong> Gain an extra action under certain
-                                                conditions. </li>
-                                            <li><strong>Targeting:</strong> Engage enemies using various senses,
-                                                this is part of an action. </li>
-                                            <li><strong> Cover</strong>
-                                                disadvantage to hit, full cover cannot be targeted.
-                                                Use environmental cover for protection. This would be part of
-                                                movement. </li>
-                                        </ul>
-                                    </details>
-                                    <details>
-                                        <summary class="refrences">
-                                            <strong>Size</strong>
-                                        </summary>
-                                        <ul>
-                                            <li><strong>Tiny:</strong>Below 1 ft – Examples: Insects, small birds,
-                                                coins, potion bottles.</li>
-                                            <li><strong>Small:</strong>1-4 ft – Examples: Cats, small dogs, scroll
-                                                cases, books.</li>
-                                            <li><strong>Medium:</strong>5-7 ft – Examples: Humans, elves, armor
-                                                sets,
-                                                single weapons.</li>
-                                            <li><strong>Large:</strong>8-15 ft – Examples: Ogres, bears, large
-                                                shields,
-                                                small boats.</li>
-                                            <li><strong>Giant:</strong>15-25 ft – Examples: Elephants, siege towers,
-                                                large trees.</li>
-                                            <li><strong>Monolithic:</strong>25-100 ft – Examples: Large statues,
-                                                grand
-                                                castles, airships.</li>
-                                            <li><strong>Enviromental:</strong>100-300 ft – Examples: Mountains,
-                                                massive
-                                                ancient trees, celestial landmarks.</li>
-                                        </ul>
-                                    </details>
+                                    <div>
+                                        <!-- Corpus Conditions -->
+                                        <div class="health-item">
+                                            <details>
+                                                <summary class="section-container" style="background-color: rgb(60, 30, 70);">Corpus</summary>
 
-                                </div>
-                            </details>
+                                                <!-- Bleeding -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_bleeding" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_bleeding" value="&{template:shek} {{name=Bleeding}} {{Disadvantage=Cannot recover wounds or receive healing}} {{Duration=Lasts for 1 minute or until removed.}} {{desc=Healing and wound recovery are blocked until this condition is resolved.}}">
+                                                                Bleeding
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Cannot recover wounds or receive healing. Lasts for 1 minute or
+                                                            until removed. Once the condition is removed from a support or
+                                                            doctor then you can heal wounds.
+                                                        </p>
+                                                    </div>
+                                                </details>
 
-                            <!-- NPC Notes -->
-                            <details>
-                                <summary class="section-container">NPC Notes</summary>
-                                <div class="section">
-                                    <label>Notes<textarea name="attr_textarea_notes" placeholder="Inventory and Strategy"></textarea></label>
-                                </div>
-                            </details>
+                                                <!-- Broken -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_broken" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_broken" value="&{template:shek} {{name=Broken}} {{Disadvantage=Physical Disadvantage}} {{Duration=Lasts 6 weeks if untreated.}} {{desc=Caused by broken bones or major physical trauma. Recovery requires rest or intervention.}}">
+                                                                Broken
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Physical disadvantage. Lasts 6 weeks if untreated. Caused by
+                                                            broken bones or major physical trauma. Recovery requires rest or
+                                                            intervention.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Concussion -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_concussion" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_concussion" value="&{template:shek} {{name=Concussion}} {{Disadvantage=Mental and Spellcasting Disadvantage}} {{Duration=Until a Long Rest.}} {{desc=Significant brain trauma affects mental clarity and magic use.}}">
+                                                                Concussion
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Mental and spellcasting disadvantage. Lasts until a long rest.
+                                                            Significant brain trauma affects mental clarity and magic use.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Coughing -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_coughing" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_coughing" value="&{template:shek} {{name=Coughing}} {{Disadvantage=Mental Disadvantage}} {{Duration=Ends after 1 minute or when irritant is removed.}} {{desc=Caused by inhaling irritants or environmental hazards.}}">
+                                                                Coughing
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Mental disadvantage. Ends after 1 minute or when irritant is
+                                                            removed. Caused by inhaling irritants or environmental hazards.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Dislocation -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_dislocation" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_dislocation" value="&{template:shek} {{name=Dislocation}} {{Disadvantage=Physical Disadvantage}} {{Duration=Until a Long Rest, or Survival Check}} {{desc=A dislocated joint limits your ability to exert force. A successful Survival check as an action or medical or magical intervention can fix this condition. Otherwise, recovery requires a long rest.}}">
+                                                                Dislocation
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Physical disadvantage. Lasts until a long rest or survival
+                                                            check. A dislocated joint limits your ability to exert force. A
+                                                            successful Survival check as an action or medical/magical
+                                                            intervention can fix this condition. Otherwise, recovery
+                                                            requires a long rest.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Slowed -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_slowed" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_slowed" value="&{template:shek} {{name=Slowed}} {{Disadvantage=Movement halved}} {{Duration=Remove Source}} {{desc=This can occur from being stuck in substances like mud, taffy, or webs, or due to effects like stasis magic. Typically resolved by freeing the character from the source of the hindrance.}}">
+                                                                Slowed
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Movement halved. Typically resolved by freeing the character
+                                                            from the source of the hindrance, such as mud, webs, or stasis
+                                                            magic.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Pinned -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_pinned" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_pinned" value="&{template:shek} {{name=Pinned}} {{Disadvantage=Disadvantage for ranged attacks; advantage for melee attacks against you.}} {{Duration=Requires 15 ft of movement to stand.}} {{desc=While it has its tactical advantage to avoid long range fire, puts you at advantage for attackers standing above you. Can be imposed with a shove action and some other features and spells}}">
+                                                                Pinned
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Disadvantage for ranged attacks; advantage for melee attacks
+                                                            against you. Requires 15 ft of movement to stand. Can be imposed
+                                                            by a shove action or specific features and spells.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Prone -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_prone" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_prone" value="&{template:shek} {{name=Prone}} {{Disadvantage=Cannot move; restrained by an object or creature.}} {{Duration=Until source removed, or Off-Action removal}} {{desc=Pinned creatures can attempt a check determined by the source, e.g., grappled creature or environmental obstacle as an off-action to escape. Ends when the source of the pin is removed.}}">
+                                                                Prone
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Cannot move; restrained by an object or creature. Ends when the
+                                                            source of the pin is removed or through an off-action removal.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                            </details>
+                                        </div>
+
+
+                                        <!-- Cognition Conditions -->
+                                        <div class="health-item">
+                                            <details>
+                                                <summary class="section-container" style="background-color: rgb(60, 30, 70);">Cognition</summary>
+
+                                                <!-- Blind -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_blind" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_blind" value="&{template:shek} {{name=Blind}} {{Disadvantage=Disadvantage on attack rolls; attacks against you have advantage}} {{Duration=Ends with appropriate action or magic.}} {{desc=Temporary or permanent blindness affecting perception and defense.}}">
+                                                                Blind
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Disadvantage on attack rolls; attacks against you have
+                                                            advantage. Ends with appropriate action or magic. Temporary or
+                                                            permanent blindness affecting perception and defense.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Charmed -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_charmed" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_charmed" value="&{template:shek} {{name=Charmed}} {{Disadvantage=Mental Disadvantage; cannot attack charm source}} {{Duration=Depends on charm source.}} {{desc=The character is mentally influenced to favor another creature.}}">
+                                                                Charmed
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Mental disadvantage; cannot attack charm source. Duration
+                                                            depends on the charm source. The character is mentally
+                                                            influenced to favor another creature.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Confused -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_confused" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_confused" value="&{template:shek} {{name=Confused}} {{Disadvantage=Mental and Spellcasting Disadvantage}} {{Duration=Until Press On or end of next turn.}} {{desc=Confusion inhibits focused tasks and spellcasting.}}">
+                                                                Confused
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Mental and spellcasting disadvantage. Lasts until "Press On" or
+                                                            the end of the next turn. Confusion inhibits focused tasks and
+                                                            spellcasting.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Deaf -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_deaf" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_deaf" value="&{template:shek} {{name=Deaf}} {{Disadvantage=Stealth disadvantage; Spellcasting disadvantage}} {{Duration=Ends after 1 minute or source removal.}} {{desc=The character cannot hear, affecting awareness and verbal magic.}}">
+                                                                Deaf
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Stealth disadvantage; spellcasting disadvantage. Ends after 1
+                                                            minute or removal of the source. The character cannot hear,
+                                                            affecting awareness and verbal magic.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Fear -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_fear" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_fear" value="&{template:shek} {{name=Fear}} {{Disadvantage=Must dash away or hide until the end of their next turn}} {{Duration=The condition ends if they can't see the source for a full round}} {{desc=Typically, a character can't be Feared by the same creature more than once.}}">
+                                                                Fear
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Must dash away or hide until the end of their next turn. The
+                                                            condition ends if they can't see the source for a full round.
+                                                            Typically, a character can't be feared by the same creature more
+                                                            than once.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                            </details>
+                                        </div>
+
+                                        <!-- Special Conditions -->
+                                        <div class="health-item">
+                                            <details>
+                                                <summary class="section-container" style="background-color: rgb(60, 30, 70);">Special</summary>
+
+                                                <!-- Intangible -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_intangible" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_intangible" value="&{template:shek} {{name=Intangible}} {{Advantage=Immune to physical damage}} {{Disadvantage=Cannot attack; half movement}} {{Duration=Ends after the effect or magical disruption.}} {{desc=The character is non-physical, able to pass through objects but unable to attack.}}">
+                                                                Intangible
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Immune to physical damage. Cannot attack; half movement. Ends
+                                                            after the effect’s duration or through magical disruption. The
+                                                            character is non-physical, able to pass through objects but
+                                                            unable to attack.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Invisible -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_invisible" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_invisible" value="&{template:shek} {{name=Invisible}} {{Advantage=Attacks against you have disadvantage}} {{Disadvantage=Cannot take opportunity attacks}} {{Duration=Ends after aggressive actions or being revealed.}} {{desc=Invisible creatures are harder to detect and attack.}}">
+                                                                Invisible
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Attacks against you have disadvantage. Cannot take opportunity
+                                                            attacks. Ends after aggressive actions or being revealed.
+                                                            Invisible creatures are harder to detect and attack.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+
+                                            </details>
+                                        </div>
+
+                                        <!-- Major Conditions -->
+                                        <div class="health-item">
+                                            <details>
+                                                <summary class="section-container" style="background-color: rgb(60, 30, 70);">Major</summary>
+
+                                                <!-- Exhaustion -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_exhaustion" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_exhaustion" value="&{template:shek} {{name=Exhaustion}} {{Disadvantage=Disadvantage on all checks; half movement}} {{Duration=Until long rest or specific recovery.}} {{desc=Caused by overexertion or severe effects. Requires rest or intervention to resolve.}}">
+                                                                Exhaustion
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Disadvantage on all checks; half movement. Lasts until a long
+                                                            rest or specific recovery. Caused by overexertion or severe
+                                                            effects. Requires rest or intervention to resolve.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Stunned -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_stunned" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_stunned" value="&{template:shek} {{name=Stunned}} {{Disadvantage=Disadvantage on all checks; half movement}} {{Duration=Ends at the end of your next turn.}} {{desc=The creature is dazed and struggles to act.}}">
+                                                                Stunned
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Disadvantage on all checks; half movement. Ends at the end of
+                                                            your next turn. The creature is dazed and struggles to act.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Constrained -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_constrained" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_constrained" value="&{template:shek} {{name=Constrained}} {{Disadvantage=Cannot make attack actions; Attacks against have advantage}} {{Duration=Off-Action removal if possible, escape check from restraints}} {{desc=A creature that has been bound or prevented from taking action is constrained, whether it be manacles or living roots holding you back you are unable to attack.}}">
+                                                                Constrained
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Cannot make attack actions; attacks against have advantage. Ends
+                                                            with Off-Action removal if possible or an escape check from
+                                                            restraints. A creature that has been bound or prevented from
+                                                            taking action is constrained, whether by manacles or living
+                                                            roots holding them back.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Unconscious -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_unconscious" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_unconscious" value="&{template:shek} {{name=Unconscious}} {{Disadvantage=Unable to act; vulnerable to critical hits and Finishers.}} {{Duration=Ends after a set duration, damage taken, or Off-Action ally assistance.}} {{desc=The creature falls helpless, making it vulnerable to critical hits or Finishers. Unconsciousness caused by spells or abilities can be resisted (e.g., saving throws). Ends after a set duration, damage taken, or an ally’s assistance.}}">
+                                                                Unconscious
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Unable to act; vulnerable to critical hits and Finishers. Ends
+                                                            after a set duration, damage taken, or Off-Action ally
+                                                            assistance. The creature falls helpless, making it vulnerable to
+                                                            critical hits or Finishers. Unconsciousness caused by spells or
+                                                            abilities can be resisted (e.g., saving throws).
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Exposed -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_exposed" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_exposed" value="&{template:shek} {{name=Exposed}} {{Disadvantage=Take double damage}} {{Duration=Until end of next turn or Press On}} {{desc=When a creature receives a significant burn or is completely caught unaware they take double the normal amount of damage.}}">
+                                                                Exposed
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Take double damage. Lasts until the end of the next turn or when
+                                                            "Press On" is used. When a creature receives a significant burn
+                                                            or is completely caught unaware, they take double the normal
+                                                            amount of damage.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Injured -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_injured" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_injured" value="&{template:shek} {{name=Injured}} {{Disadvantage=Any damage results in the Death condition}} {{Duration=Until healed.}} {{desc=When reduced to 0 wounds, the character is critically injured.}}">
+                                                                Injured
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Any damage results in the Death condition. Lasts until healed.
+                                                            When reduced to 0 wounds, the character is critically injured.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                                <!-- Death -->
+                                                <details>
+                                                    <summary class="section-feature">
+                                                        <div class="flex-container">
+                                                            <input type="checkbox" name="attr_death" class="condition-checkbox">
+                                                            <button class="croll condition-button" type="roll" name="roll_death" value="&{template:shek} {{name=Death}} {{Disadvantage=Cannot interact with the living world}} {{Duration=Only resurrection magic can remove this.}} {{desc=The character has died and can only return through resurrection.}}">
+                                                                Death
+                                                            </button>
+                                                            <span class="expand">▼</span>
+                                                        </div>
+                                                    </summary>
+                                                    <div class="section">
+                                                        <p>
+                                                            Cannot interact with the living world. Only resurrection magic
+                                                            can remove this condition. The character has died and can only
+                                                            return through resurrection.
+                                                        </p>
+                                                    </div>
+                                                </details>
+
+                                            </details>
+                                        </div>
+
+                                    </div>
+                                </details>
+
+                                <!-- Reference Section-->
+                                <details>
+                                    <summary class="section-container">Reference</summary>
+                                    <div class="references">
+                                        <details>
+                                            <summary>
+                                                <strong>What to do on your turn</strong>
+                                            </summary>
+                                            <ul>
+                                                <li><strong>Move:</strong> Move any distance up to your speed during
+                                                    your turn.</li>
+                                                <li><strong>Action:</strong> Perform main abilities like attack or cast a spell.
+                                                </li>
+                                                <li><strong>Half-Action:</strong> Perform two minor actions instead of 1
+                                                    action, like switching stances.</li>
+                                                <li><strong>Off- Action:</strong> Can be an additional attack
+                                                    with a light weapon or a provoke to a missed attack.</li>
+                                                <li><strong>Non-Action:</strong> Quick tasks like talking that require
+                                                    minimal effort.</li>
+                                                <li><strong>Finisher:</strong> Eliminate defenseless opponents that are
+                                                    locked from combat.
+                                                </li>
+                                                <h3>Positioning in Combat</h3>
+                                                <li><strong> Cover</strong>
+                                                    disadvantage to hit, full cover cannot be targeted.</li>
+                                                <li><strong>Range:</strong> Melee, reach(10ft), short(under 50ft),
+                                                    medium(50-200), and
+                                                    long(200+) distances.</li>
+                                            </ul>
+                                        </details>
+                                        <details>
+                                            <summary class="refrences">
+                                                <strong>Types of Movement</strong>
+                                            </summary>
+                                            <ul>
+                                                <li><strong>Regular:</strong> Move up to your speed.</li>
+                                                <li><strong>Dash</strong> Move double distance as an action.</li>
+                                                <li><strong>Jumping:</strong> Leap distances based on toughness (5ft per
+                                                    check, 2x with running start).</li>
+                                                <li><strong>Climbing:</strong> Requires agility checks and can lead to
+                                                    falling.</li>
+                                                <li><strong>Difficult Terrain/Swimming:</strong> Halves movement speed.
+                                                </li>
+                                                <li><strong>Prone</strong> Standing up uses 15ft movement.</li>
+                                                <li><strong>Moving Past Creatures:</strong> Only allies or small
+                                                    enemies.
+                                                </li>
+                                                <li><strong>Falling:</strong> 5 impact damage per 10 ft </li>
+                                                <li><strong>Extreme Conditions:</strong> Hazardous environments cause
+                                                    extreme damage (10 per second). </li>
+                                                <li><strong>Burrowing:</strong> full cover while burrowed, cannot
+                                                    breath.
+                                                </li>
+                                            </ul>
+                                        </details>
+                                        <details>
+                                            <summary class="refrences">
+                                                <strong>Actions</strong>
+                                            </summary>
+                                            <ul>
+                                                <li><strong>Attack:</strong> Make a combat attack.</li>
+                                                <li><strong>Unarmed Strike:</strong> Deal minor damage without weapons.
+                                                </li>
+                                                <li><strong>Grab or Hold:</strong> Grapple opponents, contested Strength
+                                                    or
+                                                    Agility checks. </li>
+                                                <li><strong>Stealth:</strong> Conceal presence for strategic advantage.
+                                                </li>
+                                                <li><strong>Cast a Spell:</strong> Perform magical actions with specific
+                                                    requirements.</li>
+                                                <li><strong>Dash</strong>
+                                                    Move double distance as an action.</li>
+                                                <li><strong>Administer a Potion</strong> Heal or aid allies.</li>
+                                            </ul>
+                                        </details>
+                                        <details>
+                                            <summary class="refrences">
+                                                <strong>Half-Actions & Stances</strong>
+                                            </summary>
+                                            <ul>
+                                                <h3>Stances:</h3> As a half-action, adopt battle stances for various
+                                                combat
+                                                benefits. They
+                                                start at the end of your turn and last until the start of your next
+                                                turn.
+                                                </li>
+                                                <div class="stance">
+                                                    <ul>
+                                                        <li><strong><button class="croll" type="roll" name="roll_ref" value="&{template:shek} {{name=@{character_name}}} {{Half-Action=Advantage Stance}} {{desc= Give your next attack advantage}}">Advantage Stance</button></strong> Give your next attack advantage </li>
+                                                        <li><strong><button class="croll" type="roll" name="roll_ref" value="&{template:shek} {{name=@{character_name}}} {{Half-Action=Disadvantage Stance}} {{desc=Give disadvantage on attack rolls against you and allies within your melee range.}}">Disadvantage Stance</button></strong>
+                                                            Give disadvantage on attack rolls against you and allies within your melee range.</li>
+                                                        <li>
+                                                            <strong><button class="croll" type="roll" name="roll_ref" value="&{template:shek} {{name=@{character_name}}} {{Half-Action=Open Guard Stance}} {{desc=When a creature attacks you, Provoke without using an Off-Action once. On all failed attacks, you may also Provoke at disadvantage.}}">Guard Stance</button></strong>
+                                                            When a creature attacks you, Provoke without using an Off-Action once. On all failed attacks, you may also Provoke at disadvantage.
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                                <hr>
+                                                <h3>Half Actions:</h3>
+                                                <li><strong>Pick up an Item:</strong> Retrieve items during combat.</li>
+                                                <li><strong>Use an Object:</strong> Interact with objects in the
+                                                    environment.</li>
+                                                <li><strong>Escape:</strong> Break free from restraints or remove pinned
+                                                    conditon.
+                                                </li>
+                                                <li><strong>Disarm:</strong> Attempt to remove an opponent's weapon.</li>
+                                                <li><strong>Help:</strong> Assist one creature within reach range for
+                                                    advantage on a check, only one creature can help at a time.</li>
+                                                <li><strong>Disengage:</strong> Retreat without provoking opportunity
+                                                    attacks.</li>
+                                                <li><strong>Shove:</strong> Make an opposed Strength or Agility check to
+                                                    knock a creature prone.</li>
+                                                <li><strong>Taunt:</strong> force enemies that can hear you to make a check,
+                                                    on failures they have to target you on their next turn.</li>
+                                            </ul>
+                                        </details>
+                                        <details>
+                                            <summary class="refrences">
+                                                <strong>Off Actions</strong>
+                                            </summary>
+                                            <ul>
+                                                <li><strong>Provoke:</strong> Strike at enemies who drop
+                                                    their
+                                                    guard.
+                                                </li>
+                                                <li><strong>Drink Something:</strong> Quickly consume something for
+                                                    benefits.</li>
+                                                <li><strong><button class="croll" type="roll" name="roll_ref" value="&{template:shek} {{name=@{character_name}}} {{Off-Action=Disrupt}} {{desc= Give an attacking creature within melee range disadvantage on their attack on a successful check (Agility, Influence, Luck, Stealth, Strength or observation to try and disrupt)}}">Disrupt</button></strong>
+                                                    Give an attacking creature within melee range disadvantage on their
+                                                    attack on a successful check (Agility, Influence, Luck, Stealth, Strength or observation to try and disrupt)
+                                                </li>
+                                                <li><strong><button class="croll" type="roll" name="roll_ref" value="&{template:shek} {{name=@{character_name}}} {{Off-Action=Block}} {{desc=As an Off-Action, reduce incoming damage by half if you have Armor from a shield.}}">Block</button></strong>
+                                                    As an Off-Action, reduce incoming damage by half if you have Armor from a shield. </li>
+                                                <li><strong><button class="croll" type="roll" name="roll_ref" value="&{template:shek} {{name=@{character_name}}} {{Off-Action=Demoralize}} {{desc= As an off action once per creature, make a Influence (Intimidate) and on a success the enemy must make a morale check, fleeing on a failure.}}">Demoralize</button></strong>
+                                                    As an off action once per creature, make a Influence (Intimidate)
+                                                    and on a success the enemy must make a morale check, fleeing on a failure.</li>
+                                            </ul>
+                                        </details>
+                                        <details>
+                                            <summary class="refrences">
+                                                <strong>Non-Actions</strong>
+
+                                            </summary>
+                                            <ul>
+                                                <li>This is an action that doesnt require effort. However you are
+                                                    usually limited to 1 non-action, therefore cannot switch weapons multiple times and try to limit roleplay to one instance
+                                                </li>
+                                                <li><strong><button class="croll" type="roll" name="roll_ref" value="&{template:shek} {{name=@{character_name}}} {{Non-Action=Stress Push}} {{desc= Take [[4]] points of stress damage in exchange for a boost of up to 3 points on any check scoring under 15 to [[15]].}}">Stress
+                                                            Push</button></strong> Take 4 points of stress damage in
+                                                    exchange for a boost of up to 3 points on any check scoring under 15 to 15.</li>
+                                                <li><strong>Switch Weapons:</strong> Change armaments during combat.
+                                                </li>
+                                                <li><strong>Roleplay:</strong> Engage in brief in-character exchanges.
+                                                </li>
+                                                <li><strong>Shouting Orders:</strong> Command allies or intimidate
+                                                    enemies.
+                                                </li>
+                                            </ul>
+                                        </details>
+                                        <details>
+                                            <summary class="refrences">
+                                                <strong>Special Actions</h>
+                                            </summary>
+                                            <ul>
+                                                <li><strong>Called Shots:</strong> take -10 to a check or an attack
+                                                    check to cause a condition. </li>
+                                                <li><strong>Surprise Turns:</strong> Gain an extra action under certain
+                                                    conditions. </li>
+                                                <li><strong>Targeting:</strong> Engage enemies using various senses,
+                                                    this is part of an action. </li>
+                                                <li><strong> Cover</strong>
+                                                    disadvantage to hit, full cover cannot be targeted.
+                                                    Use environmental cover for protection. This would be part of
+                                                    movement. </li>
+                                            </ul>
+                                        </details>
+                                        <details>
+                                            <summary class="refrences">
+                                                <strong>Size</strong>
+                                            </summary>
+                                            <ul>
+                                                <li><strong>Tiny:</strong>Below 1 ft – Examples: Insects, small birds,
+                                                    coins, potion bottles.</li>
+                                                <li><strong>Small:</strong>1-4 ft – Examples: Cats, small dogs, scroll
+                                                    cases, books.</li>
+                                                <li><strong>Medium:</strong>5-7 ft – Examples: Humans, elves, armor
+                                                    sets,
+                                                    single weapons.</li>
+                                                <li><strong>Large:</strong>8-15 ft – Examples: Ogres, bears, large
+                                                    shields,
+                                                    small boats.</li>
+                                                <li><strong>Giant:</strong>15-25 ft – Examples: Elephants, siege towers,
+                                                    large trees.</li>
+                                                <li><strong>Monolithic:</strong>25-100 ft – Examples: Large statues,
+                                                    grand
+                                                    castles, airships.</li>
+                                                <li><strong>Enviromental:</strong>100-300 ft – Examples: Mountains,
+                                                    massive
+                                                    ancient trees, celestial landmarks.</li>
+                                            </ul>
+                                        </details>
+
+                                    </div>
+                                </details>
+
+                                <!-- NPC Notes -->
+                                <details>
+                                    <summary class="section-container">NPC Notes</summary>
+                                    <div class="section">
+                                        <label>Notes<textarea name="attr_textarea_notes" placeholder="Inventory and Strategy"></textarea></label>
+                                    </div>
+                                </details>
                             </div><!-- /npc-full-only -->
                         </div>
 
@@ -914,7 +914,7 @@
                             <!-- NPC Standard Actions -->
                             <div class="npc-actions-block">
                                 <h3>
-                                    <span class="npc-full-only">NPC Standard Actions</span><span class="minion-only">Minion Attacks</span>
+                                    <span class="npc-full-only">NPC Standard Actions</span><span class="minion-only">Attacks</span>
                                 </h3>
 
                                 <!-- Melee Weapon -->
@@ -1046,88 +1046,88 @@
                             </div>
 
                             <div class="npc-full-only">
-                            <!-- NPC Threat (Card Grid) -->
-                            <details class="section-container">
-                                <summary class="npc-sum">
-                                    <h3 style="color: wheat;">Threat Actions</h3>
-                                </summary>
-                                <p>
-                                    Threat represents a creature’s reserve of extra effort, provokes, or dramatic maneuvers. It does not replace their normal Action on their turn. Instead, Threat can be spent to react to events outside their turn or to take an additional Action on their turn
-                                </p>
-                                <div class="spell-grid">
+                                <!-- NPC Threat (Card Grid) -->
+                                <details class="section-container">
+                                    <summary class="npc-sum">
+                                        <h3 style="color: wheat;">Threat Actions</h3>
+                                    </summary>
+                                    <p>
+                                        Threat represents a creature’s reserve of extra effort, provokes, or dramatic maneuvers. It does not replace their normal Action on their turn. Instead, Threat can be spent to react to events outside their turn or to take an additional Action on their turn
+                                    </p>
+                                    <div class="spell-grid">
 
-                                    <!-- Attack -->
-                                    <div class="spell-card">
-                                        <button class="sroll" type="roll" name="roll_Threat-attack" value="&{template:shek} {{name=@{character_name}}} {{Threat=Attack}} {{Cost=1 Threat}} {{desc=Make an additional attack immediately.}}">
-                                            Attack
-                                        </button>
-                                        <p>Make an additional attack immediately.</p>
-                                        <div class="spell-cost">
-                                            <p>1 Threat</p>
+                                        <!-- Attack -->
+                                        <div class="spell-card">
+                                            <button class="sroll" type="roll" name="roll_Threat-attack" value="&{template:shek} {{name=@{character_name}}} {{Threat=Attack}} {{Cost=1 Threat}} {{desc=Make an additional attack immediately.}}">
+                                                Attack
+                                            </button>
+                                            <p>Make an additional attack immediately.</p>
+                                            <div class="spell-cost">
+                                                <p>1 Threat</p>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Remove Condition -->
-                                    <div class="spell-card">
-                                        <button class="sroll" type="roll" name="roll_Threat-remove" value="&{template:shek} {{name=@{character_name}}} {{Threat=Remove Condition}} {{Cost=1 Threat}} {{desc=End one condition currently affecting this creature.}}">
-                                            Remove Condition
-                                        </button>
-                                        <p>End one condition currently affecting this creature.</p>
-                                        <div class="spell-cost">
-                                            <p>1 Threat</p>
+                                        <!-- Remove Condition -->
+                                        <div class="spell-card">
+                                            <button class="sroll" type="roll" name="roll_Threat-remove" value="&{template:shek} {{name=@{character_name}}} {{Threat=Remove Condition}} {{Cost=1 Threat}} {{desc=End one condition currently affecting this creature.}}">
+                                                Remove Condition
+                                            </button>
+                                            <p>End one condition currently affecting this creature.</p>
+                                            <div class="spell-cost">
+                                                <p>1 Threat</p>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Disengage -->
-                                    <div class="spell-card">
-                                        <button class="sroll" type="roll" name="roll_Threat-disengage" value="&{template:shek} {{name=@{character_name}}} {{Threat=Disengage}} {{Cost=1 Threat}} {{desc=Move without provoking opportunity attacks.}}">
-                                            Disengage
-                                        </button>
-                                        <p>Move without provoking opportunity attacks.</p>
-                                        <div class="spell-cost">
-                                            <p>1 Threat</p>
+                                        <!-- Disengage -->
+                                        <div class="spell-card">
+                                            <button class="sroll" type="roll" name="roll_Threat-disengage" value="&{template:shek} {{name=@{character_name}}} {{Threat=Disengage}} {{Cost=1 Threat}} {{desc=Move without provoking opportunity attacks.}}">
+                                                Disengage
+                                            </button>
+                                            <p>Move without provoking opportunity attacks.</p>
+                                            <div class="spell-cost">
+                                                <p>1 Threat</p>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Reduce Damage (Half) -->
-                                    <div class="spell-card">
-                                        <button class="sroll" type="roll" name="roll_Threat-reduce" value="&{template:shek} {{name=@{character_name}}} {{Threat=Reduce Damage}} {{Cost=1 Threat}} {{desc=Reduce incoming damage by half.}}">
-                                            Reduce Damage
-                                        </button>
-                                        <p>Reduce incoming damage by half.</p>
-                                        <div class="spell-cost">
-                                            <p>1 Threat</p>
+                                        <!-- Reduce Damage (Half) -->
+                                        <div class="spell-card">
+                                            <button class="sroll" type="roll" name="roll_Threat-reduce" value="&{template:shek} {{name=@{character_name}}} {{Threat=Reduce Damage}} {{Cost=1 Threat}} {{desc=Reduce incoming damage by half.}}">
+                                                Reduce Damage
+                                            </button>
+                                            <p>Reduce incoming damage by half.</p>
+                                            <div class="spell-cost">
+                                                <p>1 Threat</p>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Environment Shift -->
-                                    <div class="spell-card">
-                                        <button class="sroll" type="roll" name="roll_Threat-environment" value="&{template:shek} {{name=@{character_name}}} {{Threat=Environment Shift}} {{Cost=2 Threat}} {{desc=Add or remove an environmental element such as cover, difficult terrain, hazards, or line-of-sight blockers within Short range. Narrator adjudicates impact.}}">
-                                            Environment Shift
-                                        </button>
-                                        <p>Add or remove an environmental element like cover, difficult terrain, hazards, or LoS blockers within Short range.</p>
-                                        <div class="spell-cost">
-                                            <p>2 Threat</p>
+                                        <!-- Environment Shift -->
+                                        <div class="spell-card">
+                                            <button class="sroll" type="roll" name="roll_Threat-environment" value="&{template:shek} {{name=@{character_name}}} {{Threat=Environment Shift}} {{Cost=2 Threat}} {{desc=Add or remove an environmental element such as cover, difficult terrain, hazards, or line-of-sight blockers within Short range. Narrator adjudicates impact.}}">
+                                                Environment Shift
+                                            </button>
+                                            <p>Add or remove an environmental element like cover, difficult terrain, hazards, or LoS blockers within Short range.</p>
+                                            <div class="spell-cost">
+                                                <p>2 Threat</p>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Flee (variable spend) -->
-                                    <div class="spell-card">
-                                        <button class="sroll" type="roll" name="roll_Threat-flee" value="&{template:shek} {{name=@{character_name}}} {{Threat=Flee}} {{Cost=Variable}} {{desc=Attempt to escape the scene. Initiate a chase or skill contest: the party must achieve a number of successes equal to the Threat spent to prevent escape. On failure, this creature escapes; on success, the chase continues or the creature is cornered.}}">
-                                            Flee
-                                        </button>
-                                        <p>Attempt to escape and kick off a chase. Party needs successes equal to Threat spent to stop the escape.</p>
-                                        <div class="spell-cost">
-                                            <p>Variable</p>
+                                        <!-- Flee (variable spend) -->
+                                        <div class="spell-card">
+                                            <button class="sroll" type="roll" name="roll_Threat-flee" value="&{template:shek} {{name=@{character_name}}} {{Threat=Flee}} {{Cost=Variable}} {{desc=Attempt to escape the scene. Initiate a chase or skill contest: the party must achieve a number of successes equal to the Threat spent to prevent escape. On failure, this creature escapes; on success, the chase continues or the creature is cornered.}}">
+                                                Flee
+                                            </button>
+                                            <p>Attempt to escape and kick off a chase. Party needs successes equal to Threat spent to stop the escape.</p>
+                                            <div class="spell-cost">
+                                                <p>Variable</p>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                </div>
-                            </details>
+                                    </div>
+                                </details>
                             </div><!-- /npc-full-only -->
 
                             <!-- NPC Features -->
-                            <h2><span class="npc-full-only">Weapons & Features</span><span class="minion-only">Minion Features</span></h2>
+                            <h2><span class="npc-full-only">Weapons & Features</span><span class="minion-only">Features</span></h2>
                             <div class="feature">
                                 <fieldset class="repeating_AEs">
                                     <details>
@@ -1300,13 +1300,24 @@
                                                 <select name="attr_mspell-type" style="background-color:var(--theme-1);">
                                                     <option value="">None</option>
                                                     <option disabled>Physical</option>
-                                                    <option>Impact</option><option>Piercing</option><option>Slashing</option>
+                                                    <option>Impact</option>
+                                                    <option>Piercing</option>
+                                                    <option>Slashing</option>
                                                     <option disabled>Elemental</option>
-                                                    <option>Acid</option><option>Eclipse</option><option>Fire</option>
-                                                    <option>Ice</option><option>Lightning</option><option>Solar</option>
-                                                    <option>Thunder</option><option>Toxic</option><option>Fluid</option>
+                                                    <option>Acid</option>
+                                                    <option>Eclipse</option>
+                                                    <option>Fire</option>
+                                                    <option>Ice</option>
+                                                    <option>Lightning</option>
+                                                    <option>Solar</option>
+                                                    <option>Thunder</option>
+                                                    <option>Toxic</option>
+                                                    <option>Fluid</option>
                                                     <option disabled>Realm</option>
-                                                    <option>Vozian</option><option>Nature</option><option>Psychic</option><option>Healing</option>
+                                                    <option>Vozian</option>
+                                                    <option>Nature</option>
+                                                    <option>Psychic</option>
+                                                    <option>Healing</option>
                                                 </select>
                                             </label>
                                             <div style="width:100%">
@@ -1410,13 +1421,24 @@
                                                 <select name="attr_mspell-type" style="background-color:var(--theme-1);">
                                                     <option value="">None</option>
                                                     <option disabled>Physical</option>
-                                                    <option>Impact</option><option>Piercing</option><option>Slashing</option>
+                                                    <option>Impact</option>
+                                                    <option>Piercing</option>
+                                                    <option>Slashing</option>
                                                     <option disabled>Elemental</option>
-                                                    <option>Acid</option><option>Eclipse</option><option>Fire</option>
-                                                    <option>Ice</option><option>Lightning</option><option>Solar</option>
-                                                    <option>Thunder</option><option>Toxic</option><option>Fluid</option>
+                                                    <option>Acid</option>
+                                                    <option>Eclipse</option>
+                                                    <option>Fire</option>
+                                                    <option>Ice</option>
+                                                    <option>Lightning</option>
+                                                    <option>Solar</option>
+                                                    <option>Thunder</option>
+                                                    <option>Toxic</option>
+                                                    <option>Fluid</option>
                                                     <option disabled>Realm</option>
-                                                    <option>Vozian</option><option>Nature</option><option>Psychic</option><option>Healing</option>
+                                                    <option>Vozian</option>
+                                                    <option>Nature</option>
+                                                    <option>Psychic</option>
+                                                    <option>Healing</option>
                                                 </select>
                                             </label>
                                             <div style="width:100%">
