@@ -774,7 +774,7 @@
                                         </details>
                                         <details>
                                             <summary class="refrences">
-                                                <strong>Special Actions</h>
+                                                <strong>Special Actions</strong>
                                             </summary>
                                             <ul>
                                                 <li><strong>Called Shots:</strong> take -10 to a check or an attack
@@ -1338,7 +1338,7 @@
             <section class="content" id="player-content">
                 <div class="npcSheet">
                     <div class="flex-container">
-                        <input type="hidden" name="attr_disadvanatges">
+                        <input type="hidden" name="attr_disadvantages">
 
                         <!-- Left Column -->
                         <div class="left-column">
@@ -1347,22 +1347,6 @@
                                 <button id="initbutt" class="croll" type="roll" name="roll_init" value="&{template:shek} {{name=@{character_name}}} {{Initiative= [[d20+@{initiative_bonus} &{tracker}]]}}">Roll
                                     for Initiative</button>
                                 <input type="hidden" name="attr_initiative_bonus" value="0">
-                                <script>
-                                    on("change:agility change:agility-mod", function () {
-                                        getAttrs(["agility", "agility-mod"], function (values) {
-                                            const agility = parseInt(values.agility, 10) || 0;
-                                            const agilityMod = parseInt(values["agility-mod"], 10) || 0;
-
-                                            // Calculate the initiative bonus
-                                            const initiativeBonus = agility + agilityMod;
-
-                                            // Set the initiative bonus attribute
-                                            setAttrs({
-                                                "initiative_bonus": initiativeBonus
-                                            });
-                                        });
-                                    });
-                                </script>
                             </div>
 
                             <!-- NPC Spells -->
@@ -2474,7 +2458,7 @@
                                     </details>
                                     <details>
                                         <summary class="refrences">
-                                            <strong>Special Actions</h>
+                                            <strong>Special Actions</strong>
                                         </summary>
                                         <ul>
                                             <li><strong>Called Shots:</strong> take -10 to a check or an attack
@@ -3914,15 +3898,13 @@
             <br>
             <span>Magic Penalty</span> <input type="number" name="attr_magicpen" value="0">
             <br>
-            <span>Movement Penalty</span> <input type="number" name="attr_move-mod" step="5">
+            <span>Movement Penalty</span> <input type="number" name="attr_move_mod" step="5">
             <!-- D20 Handles -->
             <div class="flex-group">
                 <input type="hidden" name="attr_d20" value="1d20">
 
             </div>
             <input type="hidden" name="attr_provoke" value="[provoke!](`/me Off-Action Provoke!)">
-            <br>
-            <input type="text" name="attr_pl-math" value="@{PL}">
         </div>
     </details>
 </div>
@@ -3995,16 +3977,18 @@ function sumRepeatingMovementPenalties() {
 // ============================================================
 // SPEED & INITIATIVE
 // ============================================================
-on("change:agility change:moveMod", function() {
-    getAttrs(["agility", "moveMod"], function(values) {
+on("change:agility change:agility-mod change:moveMod change:move_mod", function() {
+    getAttrs(["agility", "agility-mod", "moveMod", "move_mod"], function(values) {
         let agility = parseInt(values.agility, 10) || 0;
+        let agilityMod = parseInt(values["agility-mod"], 10) || 0;
         let movePenalty = parseInt(values.moveMod, 10) || 0;
+        let moveGlobal = parseInt(values.move_mod, 10) || 0;
         let additionalSpeed = Math.floor(agility / 2) * 5;
 
         setAttrs({
-            speed:            30 + additionalSpeed + movePenalty,
-            speed_max:        30 + additionalSpeed,
-            initiative_bonus: agility
+            speed:            30 + additionalSpeed + movePenalty + moveGlobal,
+            speed_max:        30 + additionalSpeed + moveGlobal,
+            initiative_bonus: agility + agilityMod
         });
     });
 });
@@ -4035,7 +4019,7 @@ function calculateLowLightVision() {
 // ============================================================
 // TANK CLASS BONUS
 // ============================================================
-on("change:character_class", function() {
+on("change:character_class sheet:opened", function() {
     getAttrs(["character_class"], function(values) {
         setAttrs({ class_bonus: values.character_class === "Tank" ? 10 : 0 });
     });
@@ -4044,7 +4028,7 @@ on("change:character_class", function() {
 // ============================================================
 // WOUNDS
 // ============================================================
-on("change:agility change:strength change:class_bonus change:global_wounds", function() {
+on("change:agility change:strength change:class_bonus change:global_wounds sheet:opened", function() {
     getAttrs(["agility", "strength", "class_bonus", "global_wounds"], function(values) {
         let wounds = (parseInt(values.agility, 10) || 0)
                    + (parseInt(values.strength, 10) || 0)
@@ -4057,7 +4041,7 @@ on("change:agility change:strength change:class_bonus change:global_wounds", fun
 // ============================================================
 // TOTAL POINTS
 // ============================================================
-on("change:agility change:crafting change:influence change:observation change:intellect change:luck change:spirit change:stealth change:strength change:survival", function() {
+on("change:agility change:crafting change:influence change:observation change:intellect change:luck change:spirit change:stealth change:strength change:survival sheet:opened", function() {
     updateCharacterTotalPoints();
 });
 
@@ -4345,6 +4329,28 @@ conditionCheckboxes.forEach(condition => {
             setAttrs({ disadvantages: active.join(", ") });
         });
     });
+});
+
+// ============================================================
+// SHEET:OPENED — recalculate all repeating-section aggregates
+// ============================================================
+on("sheet:opened", function() {
+    sumInventoryBulk();
+    sumArmorBulk();
+    sumRepeatingMovementPenalties();
+    calculateLowLightVision();
+    sumRepeatingArmor();
+    sumRepeatingMagicPenMod();
+    penalties.forEach(p => {
+        sumArmorPenalties(p.name, p.totalAttr);
+        sumItemPenalties(p.name, p.totalAttr);
+    });
+    sumRepeatingGlobals('damage');
+    sumRepeatingGlobals('attack');
+    sumRepeatingGlobals('check');
+    sumRepeatingWounds();
+    updateShipAttributes();
+    updateShipTotalPoints();
 });
 
 </script>

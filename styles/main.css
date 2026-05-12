@@ -524,6 +524,18 @@ b {
     color: var(--green-3);
 }
 
+.header-cta--active {
+    border-color: #4a7ea0;
+    color: #7fc4d4;
+}
+
+.header-cta--active:hover {
+    background-color: #0d2030;
+    border-color: #7fc4d4;
+    box-shadow: 0 0 8px #4a7ea0;
+    color: #7fc4d4;
+}
+
 /* ────────────── Flex Container ────────────── */
 .flex-container {
     display: flex;

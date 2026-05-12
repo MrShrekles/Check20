@@ -15739,7 +15739,7 @@
               "action": "Upgrade",
               "check": "",
               "range": "",
-              "description": "After casting a spell, if the result is even, you may apply a non-major condition to the target. If the result is odd, you gain a random condition.",
+              "description": "After casting a spell, if the result is even, you may apply a non-major condition to the target. If the result is odd, you gain a the Slowed condition.",
               "duration": "",
               "damage": "",
               "damageType": "",
