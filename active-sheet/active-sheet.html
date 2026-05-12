@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Active Sheet</title>
+
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="../styles/active-sheet.css" />
+
+    <script src="../scripts/tooltips.js" defer></script>
+
+    <!-- page logic -->
+    <script src="../scripts/active-sheet.js" defer></script>
+</head>
+
+<body data-page-title="Active-Sheet">
+    <main class="app" id="app">
+        <div class="app-topbar">
+            <a href="home.html" class="topbar-home" aria-label="Home">⌂</a>
+            <span class="topbar-name" id="topbar-name"></span>
+            <button class="topbar-settings-btn" id="btn-settings" type="button" aria-label="Settings">⚙</button>
+        </div>
+
+        <!-- Page panels (switch via bottom nav) -->
+        <section class="panel-stack" id="panel-stack">
+            <!-- PLAY -->
+            <section class="panel is-active" id="panel-play" role="region" aria-label="Play">
+
+                <!-- Play / Bio tab row -->
+                <div class="play-tab-row">
+                    <button class="play-tab is-active" data-play-tab="play" type="button">Play</button>
+                    <button class="play-tab" data-play-tab="bio" type="button">Bio</button>
+                </div>
+
+                <!-- Play tab content -->
+                <div class="play-tab-content is-active" id="play-tab-play">
+
+                <!-- Quick Checks -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Checks</h2>
+                        <button class="gear-btn" data-editor="checks-editor" type="button" aria-label="Edit check modifiers">⚙</button>
+                    </div>
+                    <div class="section-editor" id="checks-editor">
+                        <div class="cet">
+                            <div class="cet-header">
+                                <span></span>
+                                <span>Stat</span>
+                                <span class="cet-bon-hdr">Bonus</span>
+                            </div>
+                            <div class="cet-group">Physical</div>
+                            <div class="cet-row"><span class="cet-name">Agility</span>    <input id="edit-mod-agi" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-agi" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Crafting</span>   <input id="edit-mod-cra" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-cra" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Stealth</span>    <input id="edit-mod-ste" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-ste" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Strength</span>   <input id="edit-mod-str" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-str" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Survival</span>   <input id="edit-mod-sur" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-sur" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-group">Mental</div>
+                            <div class="cet-row"><span class="cet-name">Influence</span>  <input id="edit-mod-inf" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-inf" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Intellect</span>  <input id="edit-mod-int" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-int" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Luck</span>       <input id="edit-mod-lck" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-lck" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Observation</span><input id="edit-mod-obs" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-obs" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Spirit</span>     <input id="edit-mod-spi" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-spi" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                        </div>
+                        <button class="done-btn" data-save="checks" type="button">✓ Done</button>
+                    </div>
+                    <div id="quick-checks"><!-- injected by JS --></div>
+                </div>
+
+                <!-- Health -->
+                <div class="section" aria-label="Resources">
+                    <div class="section-head">
+                        <h2 class="section-title">Health</h2>
+                        <button class="gear-btn" data-editor="health-editor" type="button" aria-label="Edit health maximums">⚙</button>
+                    </div>
+                    <div class="section-editor" id="health-editor">
+                        <div class="editor-grid" style="grid-template-columns: 1fr;">
+                            <label class="field"><span class="field-label">Wounds Max</span><input id="hp-max-input" type="number" inputmode="numeric" min="0" /></label>
+                        </div>
+                        <p class="field-hint">Armor max is calculated automatically from equipped armor.</p>
+                        <button class="done-btn" data-save="health" type="button">✓ Done</button>
+                    </div>
+                    <div class="resource-grid">
+                        <div class="resource-pill" data-resource="hp">
+                            <span class="pill-label">Wounds</span>
+                            <div class="pill-value">
+                                <button class="pill-btn" data-action="dec" aria-label="Decrease Wounds">−</button>
+                                <output class="pill-num" id="hp-current">0</output>
+                                <span class="pill-sep">/</span>
+                                <output class="pill-num pill-max" id="hp-max">0</output>
+                                <button class="pill-btn" data-action="inc" aria-label="Increase Wounds">+</button>
+                            </div>
+                        </div>
+                        <div class="resource-pill" data-resource="armor">
+                            <span class="pill-label">Armor</span>
+                            <div class="pill-value">
+                                <button class="pill-btn" data-action="dec" aria-label="Decrease Armor">−</button>
+                                <output class="pill-num" id="armor-current">0</output>
+                                <span class="pill-sep">/</span>
+                                <output class="pill-num pill-max" id="armor-max">0</output>
+                                <button class="pill-btn" data-action="inc" aria-label="Increase Armor">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Derived stats — auto-calculated from checks -->
+                    <div class="derived-stats" id="derived-stats">
+                        <div class="derived-item">
+                            <span class="derived-label">Movement</span>
+                            <span class="derived-val" id="derived-speed">30 ft</span>
+                        </div>
+                        <div class="derived-item">
+                            <span class="derived-label">Low Light</span>
+                            <span class="derived-val" id="derived-lowlight">30 ft</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conditions -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Conditions</h2>
+                        <button class="ghost-btn" id="btn-clear-conditions" type="button">Clear</button>
+                    </div>
+                    <div class="chip-row" id="conditions-row" aria-label="Condition chips">
+                        <!-- chips injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Recent -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Recent</h2>
+                        <button class="ghost-btn" id="btn-clear-log" type="button">Clear</button>
+                    </div>
+                    <ol class="roll-log" id="roll-log" aria-label="Recent rolls">
+                        <!-- log items injected by JS -->
+                    </ol>
+                </div>
+            </section>
+
+            <!-- FEATURES -->
+            <section class="panel" id="panel-actions" role="region" aria-label="Features">
+
+                <!-- Resources — always at top -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Resources</h2>
+                        <button class="gear-btn" data-editor="res-editor" type="button" aria-label="Edit resources">⚙</button>
+                    </div>
+                    <div class="section-editor" id="res-editor">
+                        <div class="editor-grid">
+                            <label class="field"><span class="field-label">Mana Max</span><input id="MN-max-input" type="number" inputmode="numeric" min="0" /></label>
+                            <label class="field"><span class="field-label">Label</span><input id="class-res-label-input" type="text" placeholder="Resource" autocomplete="off" /></label>
+                            <label class="field"><span class="field-label">Max</span><input id="class-res-max-input" type="number" inputmode="numeric" min="0" /></label>
+                        </div>
+                        <button class="done-btn" data-save="classres" type="button">✓ Done</button>
+                    </div>
+                    <div class="resource-grid">
+                        <div class="resource-pill" data-resource="MN">
+                            <span class="pill-label">Mana</span>
+                            <div class="pill-value">
+                                <button class="pill-btn" data-action="dec" aria-label="Decrease MN">−</button>
+                                <output class="pill-num" id="MN-current">0</output>
+                                <span class="pill-sep">/</span>
+                                <output class="pill-num pill-max" id="MN-max">0</output>
+                                <button class="pill-btn" data-action="inc" aria-label="Increase MN">+</button>
+                            </div>
+                        </div>
+                        <div class="resource-pill" data-resource="classRes">
+                            <span class="pill-label" id="class-res-label-display">Resource</span>
+                            <div class="pill-value">
+                                <button class="pill-btn" data-action="dec" aria-label="Decrease">−</button>
+                                <output class="pill-num" id="classRes-current">0</output>
+                                <span class="pill-sep">/</span>
+                                <output class="pill-num pill-max" id="classRes-max">0</output>
+                                <button class="pill-btn" data-action="inc" aria-label="Increase">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab row: Class | Equipment | Other -->
+                <div class="feat-tab-row">
+                    <button class="feat-tab is-active" data-feat-tab="class"  type="button">Class</button>
+                    <button class="feat-tab"           data-feat-tab="equip"  type="button">Equipment</button>
+                    <button class="feat-tab"           data-feat-tab="other"  type="button">Other</button>
+                </div>
+
+                <!-- Class tab -->
+                <div class="feat-tab-content is-active" id="feat-tab-class">
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Class & Path</h2>
+                            <button class="gear-btn" data-editor="class-editor" type="button" aria-label="Edit class">⚙</button>
+                        </div>
+                        <div class="section-editor" id="class-editor">
+                            <label class="field"><span class="field-label">Class</span><select id="class-select" class="sheet-select"><option value="">— Select Class —</option></select></label>
+                            <label class="field"><span class="field-label">Path</span><select id="path-select" class="sheet-select"><option value="">— Select Path —</option></select></label>
+                            <label class="field"><span class="field-label">Talent</span><select id="talent-select" class="sheet-select"><option value="">— Select Talent —</option></select></label>
+                            <button class="done-btn" data-save="class" type="button">✓ Done</button>
+                        </div>
+                        <div id="class-view"><p class="empty-hint">Tap ⚙ to select your class, path & talent</p></div>
+                    </div>
+                </div>
+
+                <!-- Equipment tab -->
+                <div class="feat-tab-content" id="feat-tab-equip">
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Equipment</h2>
+                            <button class="gear-btn" data-editor="equip-editor" type="button" aria-label="Add equipment">⚙</button>
+                        </div>
+                        <div class="equip-tab-row">
+                            <button class="equip-tab is-active" data-equip-tab="all"    type="button">All</button>
+                            <button class="equip-tab"           data-equip-tab="weapon" type="button">Weapons</button>
+                            <button class="equip-tab"           data-equip-tab="gear"   type="button">Gear</button>
+                            <button class="equip-tab"           data-equip-tab="armor"  type="button">Armor</button>
+                        </div>
+                        <div class="section-editor" id="equip-editor">
+                            <label class="field"><span class="field-label">Name</span><input id="equip-name-input" type="text" placeholder="Item name…" autocomplete="off" /></label>
+                            <label class="field"><span class="field-label">Notes</span><input id="equip-notes-input" type="text" placeholder="Stats, description…" autocomplete="off" /></label>
+                            <div class="equip-type-row">
+                                <span class="field-label">Type</span>
+                                <div class="equip-type-toggle">
+                                    <button class="equip-type-btn is-sel" data-cat="gear"   type="button">Gear</button>
+                                    <button class="equip-type-btn"        data-cat="weapon" type="button">Weapon</button>
+                                    <button class="equip-type-btn"        data-cat="armor"  type="button">Armor</button>
+                                </div>
+                            </div>
+                            <button class="done-btn" data-save="equipment" type="button">+ Add Item</button>
+                        </div>
+                        <div class="list" id="equip-list"><p class="empty-hint">No equipment added</p></div>
+                    </div>
+                </div>
+
+                <!-- Other tab: Species + Other Gains -->
+                <div class="feat-tab-content" id="feat-tab-other">
+                    <div class="section">
+                        <div id="species-view"><p class="empty-hint">Species features appear here after character creation.</p></div>
+                    </div>
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Other Gains</h2>
+                            <button class="gear-btn" data-editor="gains-editor" type="button">⚙</button>
+                        </div>
+                        <div class="section-editor" id="gains-editor">
+                            <label class="field"><span class="field-label">Item gained</span><input id="gain-input" type="text" placeholder="Ability, item, or note…" autocomplete="off" /></label>
+                            <button class="done-btn" data-save="gain" type="button">+ Add</button>
+                        </div>
+                        <div class="list" id="other-gains-list"><p class="empty-hint">Items gained during play</p></div>
+                    </div>
+                </div>
+
+            </section>
+
+                </div><!-- /play-tab-play -->
+
+                <!-- Bio tab content (inside Play panel) -->
+                <div class="play-tab-content" id="play-tab-bio">
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Character</h2>
+                            <button class="ghost-btn" id="btn-export" type="button">Export</button>
+                        </div>
+                        <div class="form">
+                            <label class="field">
+                                <span class="field-label">Name</span>
+                                <input id="char-name" type="text" inputmode="text" autocomplete="off" />
+                            </label>
+                            <div class="field">
+                                <span class="field-label">Species</span>
+                                <div class="species-locked">
+                                    <div class="species-locked-info">
+                                        <span class="species-locked-name" id="bio-species-name">—</span>
+                                        <span class="species-locked-sub"  id="bio-species-sub"></span>
+                                    </div>
+                                    <button class="species-change-btn" id="btn-species-edit" type="button">✏ Change</button>
+                                </div>
+                            </div>
+                            <label class="field">
+                                <span class="field-label">Level</span>
+                                <input id="char-level" type="number" inputmode="numeric" min="1" />
+                            </label>
+                            <div class="bio-row">
+                                <label class="field"><span class="field-label">Size</span><input id="char-size" type="text" autocomplete="off" /></label>
+                                <label class="field"><span class="field-label">Age</span><input id="char-age" type="text" autocomplete="off" /></label>
+                                <label class="field"><span class="field-label">Diet</span><input id="char-diet" type="text" autocomplete="off" /></label>
+                            </div>
+                            <label class="field"><span class="field-label">Language</span><input id="char-language" type="text" autocomplete="off" /></label>
+                            <label class="field">
+                                <span class="field-label">Motivation</span>
+                                <textarea id="char-motivation" rows="3"></textarea>
+                            </label>
+                            <label class="field"><span class="field-label">Trinket</span><input id="char-trinket" type="text" autocomplete="off" /></label>
+                            <button class="primary-btn" id="btn-save-bio" type="button">Save</button>
+                        </div>
+                    </div>
+                </div><!-- /play-tab-bio -->
+
+            </section><!-- /panel-play -->
+
+            <!-- PROGRESSION -->
+            <section class="panel" id="panel-progression" role="region" aria-label="Progression">
+
+                <!-- XP Tracker -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Experience</h2>
+                    </div>
+
+                    <!-- Direct input flanked by ± buttons -->
+                    <div class="xp-controls">
+                        <div class="xp-stepper">
+                            <div class="xp-side xp-side--neg">
+                                <button class="xp-quick-btn" type="button" data-xp-add="-5">−5</button>
+                                <button class="xp-quick-btn" type="button" data-xp-add="-1">−1</button>
+                            </div>
+                            <input id="xp-total-input" type="number" inputmode="numeric"
+                                min="0" value="0" class="xp-total-field" />
+                            <div class="xp-side xp-side--pos">
+                                <button class="xp-quick-btn xp-quick-btn--add" type="button" data-xp-add="1">+1</button>
+                                <button class="xp-quick-btn xp-quick-btn--add" type="button" data-xp-add="5">+5</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary bar -->
+                    <div class="xp-display">
+                        <div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div>
+                        <div class="xp-row">
+                            <span class="xp-stat"><span class="xp-num" id="xp-total-el">0</span><span class="xp-lbl"> total</span></span>
+                            <span class="xp-stat"><span class="xp-num xp-num--spent" id="xp-spent-el">0</span><span class="xp-lbl"> spent</span></span>
+                            <span class="xp-stat"><span class="xp-num xp-num--avail" id="xp-avail-el">0</span><span class="xp-lbl"> available</span></span>
+                        </div>
+                        <p class="xp-cost-hint">Each step costs <strong>20 XP</strong></p>
+                        <p class="xp-error" id="xp-error" hidden>Not enough XP to unlock this step.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-head"><h2 class="section-title">Path</h2></div>
+                    <div id="path-progression-list"><p class="empty-hint">Select a path in Features</p></div>
+                </div>
+                <div class="section">
+                    <div class="section-head"><h2 class="section-title">Talent</h2></div>
+                    <div id="talent-progression-list"><p class="empty-hint">Select a talent in Features</p></div>
+                </div>
+            </section>
+            <!-- CHAT -->
+            <section class="panel" id="panel-chat" role="region" aria-label="Chat">
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Session Chat</h2>
+                        <button class="ghost-btn" id="btn-clear-chat" type="button">Clear</button>
+                    </div>
+                    <ol class="chat-log" id="chat-log" aria-label="Session chat">
+                        <!-- entries injected by JS -->
+                    </ol>
+                    <div class="chat-input-row">
+                        <input id="chat-msg-input" type="text" placeholder="Say something…" autocomplete="off" />
+                        <button class="chat-send-btn" id="btn-send-msg" type="button">Send</button>
+                    </div>
+                </div>
+            </section>
+
+        </section>
+
+        <!-- Roll Drawer (bottom sheet) -->
+        <section class="drawer" id="roll-drawer" aria-hidden="true" inert>
+            <div class="drawer-scrim" data-drawer-close></div>
+
+            <div class="drawer-sheet" role="dialog" aria-modal="true" aria-label="Roll">
+                <div class="drawer-handle" aria-hidden="true"></div>
+
+                <div class="drawer-head">
+                    <div class="drawer-title" id="drawer-title">Roll</div>
+                    <button class="icon-btn" type="button" data-drawer-close aria-label="Close roll drawer">✕</button>
+                </div>
+
+                <div class="drawer-body">
+
+                    <!-- Label + Mod compact row -->
+                    <div class="roll-compact-row">
+                        <label class="field roll-label-field">
+                            <span class="field-label">Check</span>
+                            <input id="roll-label" type="text" placeholder="Agility Check" autocomplete="off" />
+                        </label>
+                        <label class="field roll-mod-field">
+                            <span class="field-label">Mod</span>
+                            <input id="roll-mod" type="number" inputmode="numeric" value="0" step="1" />
+                        </label>
+                    </div>
+
+                    <!-- Check chips — shown when feature has associated checks -->
+                    <div class="drawer-check-select" id="drawer-check-select" hidden>
+                        <div class="drawer-check-chips" id="drawer-check-chips"></div>
+                    </div>
+
+                    <!-- Segmented roll type — mutually exclusive -->
+                    <div class="roll-seg" role="group" aria-label="Roll type">
+                        <button class="roll-seg-btn is-sel" type="button" data-seg="flat">Flat</button>
+                        <button class="roll-seg-btn" type="button" data-seg="adv">Advantage</button>
+                        <button class="roll-seg-btn" type="button" data-seg="dis">Disadvantage</button>
+                    </div>
+
+                    <!-- Active conditions with effects -->
+                    <div class="drawer-conditions" id="drawer-conditions" hidden>
+                        <div class="drawer-cond-label">⚠ Active Conditions</div>
+                        <div class="drawer-cond-list" id="drawer-cond-chips"></div>
+                    </div>
+
+                    <button class="primary-btn roll-primary-btn" id="btn-roll" type="button">Roll d20</button>
+
+                    <!-- Hidden inputs kept for JS compat -->
+                    <ol id="mini-roll-log" hidden></ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Floating Roll button (thumb friendly) -->
+        <button class="fab" id="fab-roll" type="button" aria-label="Open roll drawer">Roll</button>
+    </main>
+
+    <!-- Weapon Attack Modal -->
+    <div class="weapon-modal" id="weapon-modal" hidden>
+        <div class="weapon-modal-scrim" id="wm-scrim"></div>
+        <div class="weapon-modal-sheet">
+            <div class="drawer-handle" aria-hidden="true"></div>
+            <div class="wm-head">
+                <div class="wm-name-block">
+                    <div class="wm-name" id="wm-name">Weapon</div>
+                    <div class="wm-sub"  id="wm-sub"></div>
+                </div>
+                <button class="icon-btn" id="wm-close" type="button" aria-label="Close">✕</button>
+            </div>
+
+            <!-- Check chips -->
+            <div class="wm-section">
+                <div class="wm-label">Check</div>
+                <div class="wm-check-chips" id="wm-check-chips"></div>
+            </div>
+
+            <!-- Stat row -->
+            <div class="wm-stats">
+                <div class="wm-stat"><div class="wm-stat-label">Damage</div><div class="wm-stat-val" id="wm-damage">—</div></div>
+                <div class="wm-stat"><div class="wm-stat-label">Type</div><div class="wm-stat-val" id="wm-dmg-type">—</div></div>
+                <div class="wm-stat"><div class="wm-stat-label">Range</div><div class="wm-stat-val" id="wm-range">—</div></div>
+                <div class="wm-stat"><div class="wm-stat-label">Weight</div><div class="wm-stat-val" id="wm-weight">—</div></div>
+            </div>
+
+            <!-- Advanced (collapsible) -->
+            <details class="wm-advanced">
+                <summary>Crit &amp; Bonus</summary>
+                <div class="wm-advanced-grid">
+                    <label class="field"><span class="field-label">Crit Range</span><input id="wm-crit" type="number" value="20" min="1" max="20" /></label>
+                    <label class="field"><span class="field-label">Attack Bonus</span><input id="wm-bonus" type="number" value="0" /></label>
+                </div>
+            </details>
+
+            <!-- Flavor / notes (editable, saved on close) -->
+            <textarea class="wm-desc-edit" id="wm-desc" placeholder="Appearance, flavor, notes…" rows="3"></textarea>
+
+            <!-- Roll type -->
+            <div class="roll-seg" id="wm-roll-seg" role="group" aria-label="Roll type">
+                <button class="roll-seg-btn is-sel" type="button" data-seg="flat">Flat</button>
+                <button class="roll-seg-btn" type="button" data-seg="adv">Advantage</button>
+                <button class="roll-seg-btn" type="button" data-seg="dis">Disadvantage</button>
+            </div>
+
+            <button class="primary-btn" id="wm-roll" type="button">Roll Check</button>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="settings-modal" id="settings-modal" hidden>
+        <div class="settings-scrim" id="settings-scrim"></div>
+        <div class="settings-sheet">
+            <div class="drawer-handle" aria-hidden="true"></div>
+            <div class="wm-head">
+                <div class="wm-name">Settings</div>
+                <button class="icon-btn" id="settings-close" type="button" aria-label="Close">✕</button>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title">Theme</div>
+                <p class="settings-hint">Two-color theme — saved per character. Primary drives the UI chrome, secondary drives data and labels.</p>
+                <div class="theme-swatches" id="theme-swatches"></div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title">Character</div>
+                <button class="settings-action-btn" id="btn-export-settings" type="button">Export Save File</button>
+                <button class="settings-action-btn settings-action-btn--danger" id="btn-reset-char" type="button">Reset Character</button>
+                <div class="settings-reset-confirm" id="reset-confirm" hidden>
+                    <p class="settings-hint" style="color:#ff6b6b;margin:0">All progress will be lost. Are you sure?</p>
+                    <div class="step-edit-btns" style="margin-top:8px">
+                        <button class="step-edit-btn" style="color:#ff6b6b;border-color:rgba(255,107,107,.35)"
+                            id="btn-reset-confirm" type="button">Yes, Reset</button>
+                        <button class="step-edit-btn step-edit-btn--cancel" id="btn-reset-cancel" type="button">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Roll Modal -->
+    <div class="feat-roll-modal" id="feat-roll-modal" hidden>
+        <div class="feat-rm-scrim" id="frm-scrim"></div>
+        <div class="feat-rm-sheet">
+            <div class="drawer-handle" aria-hidden="true"></div>
+            <div class="wm-head">
+                <div class="wm-name-block">
+                    <div class="wm-name" id="frm-name">Feature</div>
+                    <div class="wm-sub"  id="frm-tags-display"></div>
+                </div>
+                <button class="icon-btn" id="frm-close" type="button" aria-label="Close">✕</button>
+            </div>
+
+            <!-- Check chips -->
+            <div class="wm-section">
+                <div class="wm-label">Check</div>
+                <div class="wm-check-chips" id="frm-check-chips"></div>
+            </div>
+
+            <!-- Damage (editable) -->
+            <div class="wm-section" id="frm-damage-section">
+                <div class="wm-label">Damage</div>
+                <div class="frm-damage-inputs">
+                    <input class="frm-dmg-field" id="frm-dmg-notation" type="text" placeholder="e.g. 2d6" autocomplete="off" />
+                    <input class="frm-dmg-field frm-dmg-type" id="frm-dmg-type" type="text" placeholder="Type" autocomplete="off" />
+                </div>
+            </div>
+
+            <!-- Description (editable) -->
+            <div class="wm-section">
+                <div class="wm-label">Description</div>
+                <textarea class="frm-desc-input" id="frm-desc-input" rows="3"></textarea>
+            </div>
+
+            <!-- Roll type -->
+            <div class="roll-seg" id="frm-roll-seg" role="group" aria-label="Roll type">
+                <button class="roll-seg-btn is-sel" type="button" data-seg="flat">Flat</button>
+                <button class="roll-seg-btn" type="button" data-seg="adv">Advantage</button>
+                <button class="roll-seg-btn" type="button" data-seg="dis">Disadvantage</button>
+            </div>
+
+            <!-- Bonus -->
+            <details class="wm-advanced">
+                <summary>Bonus</summary>
+                <div class="wm-advanced-grid" style="grid-template-columns:1fr">
+                    <label class="field"><span class="field-label">Modifier Bonus</span><input id="frm-bonus" type="number" value="0" /></label>
+                </div>
+            </details>
+
+            <!-- Roll buttons — each sends directly to chat and closes -->
+            <div class="frm-results" id="frm-results" hidden></div>
+            <div id="frm-send" hidden></div>
+            <div class="frm-btn-row">
+                <button class="primary-btn" id="frm-roll-check" type="button">Roll &amp; Send to Chat</button>
+                <button class="frm-roll-btn frm-roll-btn--dmg" id="frm-roll-dmg" type="button" hidden>Roll Dmg Only</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Species Picker Modal -->
+    <div class="sp-overlay" id="species-picker" hidden>
+        <div class="sp-scrim" id="sp-scrim"></div>
+        <div class="sp-sheet">
+            <div class="sp-head">
+                <button class="sp-back" id="sp-back" type="button" hidden>← Back</button>
+                <span class="sp-title" id="sp-title">Choose Lineage</span>
+                <button class="icon-btn" id="sp-close" type="button" aria-label="Close">✕</button>
+            </div>
+            <div class="sp-body">
+                <!-- Level 1: Lineage -->
+                <div id="sp-lv-lineage">
+                    <div class="sp-grid" id="sp-lineage-grid"></div>
+                </div>
+                <!-- Level 2: Option -->
+                <div id="sp-lv-option" hidden>
+                    <div class="sp-grid" id="sp-option-grid"></div>
+                </div>
+                <!-- Level 3: Species cards + detail -->
+                <div id="sp-lv-species" hidden>
+                    <div class="sp-species-grid" id="sp-species-grid"></div>
+                    <div class="sp-species-detail" id="sp-species-detail" hidden></div>
+                </div>
+            </div>
+            <div class="sp-footer">
+                <button class="primary-btn" id="sp-confirm" type="button" disabled>Select Species</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Persistent conditions bar — always visible above nav when conditions active -->
+    <div class="conditions-bar" id="conditions-bar"></div>
+
+    <!-- Bottom navigation — outside <main> so no container can trap fixed positioning -->
+    <nav class="bottom-nav" aria-label="Bottom navigation">
+        <button class="nav-btn" data-nav="chat" type="button" aria-controls="panel-chat">
+            <span class="nav-icon" aria-hidden="true">💬</span>
+            <span class="nav-label">Chat</span>
+        </button>
+        <button class="nav-btn is-active" data-nav="play" type="button" aria-controls="panel-play">
+            <span class="nav-icon" aria-hidden="true">🎲</span>
+            <span class="nav-label">Play</span>
+        </button>
+        <button class="nav-btn" data-nav="actions" type="button" aria-controls="panel-actions">
+            <span class="nav-icon" aria-hidden="true">⚡</span>
+            <span class="nav-label">Features</span>
+        </button>
+        <button class="nav-btn" data-nav="progression" type="button" aria-controls="panel-progression">
+            <span class="nav-icon" aria-hidden="true">⬆</span>
+            <span class="nav-label">Progress</span>
+        </button>
+    </nav>
+</body>
+
+</html>

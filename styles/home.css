@@ -1,0 +1,274 @@
+:root {
+    --bg:      #0c0c0f;
+    --panel:   #14141a;
+    --panel-2: #1a1a22;
+    --text:    #f2f2f6;
+    --muted:   rgba(242, 242, 246, 0.72);
+    --line:    rgba(255, 255, 255, 0.10);
+    --safe-b:  env(safe-area-inset-bottom, 0px);
+    --safe-t:  env(safe-area-inset-top, 0px);
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+    padding: calc(24px + var(--safe-t)) 20px calc(32px + var(--safe-b));
+    max-width: 420px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.home-hero { text-align: center; }
+
+.home-logo {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.home-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.home-char { text-align: center; }
+
+.home-char-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+.home-char-name {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.home-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.home-btn {
+    width: 100%;
+    min-height: 56px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 700;
+    font-family: inherit;
+    touch-action: manipulation;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.12s;
+}
+
+.home-btn:active:not(:disabled) { transform: scale(0.98); }
+
+.home-btn--primary {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.22);
+    font-size: 17px;
+}
+
+.home-btn--ghost {
+    color: var(--muted);
+}
+
+.home-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+.home-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--line);
+}
+
+/* ── SECTIONS ──────────────────────────────────────────────────── */
+
+.home-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.home-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+}
+
+/* ── ACTIVE CHARACTER CARD ─────────────────────────────────────── */
+
+.home-current-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--panel-2);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 14px 16px;
+}
+
+.home-current-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.home-current-name {
+    font-size: 18px;
+    font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.home-current-meta {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.home-current-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.home-btn-sm {
+    min-height: 36px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.home-btn--sm {
+    min-height: 36px;
+    font-size: 14px;
+    padding: 0 16px;
+    border-radius: 10px;
+}
+
+/* ── SAVES LIST ────────────────────────────────────────────────── */
+
+.saves-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.save-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px;
+}
+
+.save-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.save-name {
+    font-size: 15px;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.save-meta {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.save-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.save-btn {
+    min-height: 32px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: transparent;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.save-btn--load {
+    color: var(--text);
+    background: rgba(255,255,255,0.07);
+}
+
+.save-btn--del  { color: #ff7070; }
+.save-btn:active { transform: scale(0.95); }
+
+.home-soon {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 2px 6px;
+    margin-left: 6px;
+    vertical-align: middle;
+    opacity: 0.7;
+}

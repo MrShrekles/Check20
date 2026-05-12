@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>ARC20 — Active Sheet</title>
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="../styles/home.css" />
+    <script src="../scripts/home.js" defer></script>
+</head>
+
+<body>
+    <main class="home-screen">
+
+        <div class="home-hero">
+            <div class="home-logo">Armored Noir</div>
+            <div class="home-subtitle">Companion Playsheet</div>
+        </div>
+
+        <!-- Active character -->
+        <div class="home-section" id="home-current" hidden>
+            <div class="home-section-label">Active Character</div>
+            <div class="home-current-card">
+                <div class="home-current-info">
+                    <span class="home-current-name" id="home-char-name">—</span>
+                    <span class="home-current-meta" id="home-char-meta"></span>
+                </div>
+                <div class="home-current-actions">
+                    <button id="btn-save-current" class="home-btn-sm" type="button">Save</button>
+                    <button id="btn-continue" class="home-btn home-btn--primary home-btn--sm" type="button">Continue ▶</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Saved characters -->
+        <div class="home-section" id="home-saves-section" hidden>
+            <div class="home-section-label">Saved Characters</div>
+            <div class="saves-list" id="saves-list"></div>
+        </div>
+
+        <!-- Main actions -->
+        <div class="home-actions">
+            <button id="btn-new" class="home-btn" type="button">+ New Character</button>
+            <button id="btn-import" class="home-btn" type="button">↑ Import File</button>
+            <input id="file-load" type="file" accept=".json" hidden />
+        </div>
+
+        <div class="home-divider"></div>
+
+        <div class="home-actions">
+            <button class="home-btn home-btn--ghost" type="button" disabled>
+                💬 Join Chat <span class="home-soon">Soon</span>
+            </button>
+        </div>
+
+    </main>
+</body>
+
+</html>

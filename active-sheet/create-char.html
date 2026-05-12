@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>ARC20 — New Character</title>
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="../styles/home.css" />
+    <link rel="stylesheet" href="../styles/create-char.css" />
+    <script src="../scripts/create-char.js" defer></script>
+</head>
+
+<body>
+    <main class="wiz-main">
+
+        <!-- Progress bar -->
+        <div class="wiz-progress-track">
+            <div class="wiz-progress-fill" id="wiz-progress-fill"></div>
+        </div>
+
+        <!-- Header -->
+        <div class="wiz-header">
+            <button class="wiz-back" id="wiz-back" type="button" hidden>← Back</button>
+            <span class="wiz-step-label" id="wiz-step-label">Choose Class</span>
+            <a href="home.html" class="wiz-cancel">✕</a>
+        </div>
+
+        <!-- Steps -->
+        <div class="wiz-body">
+
+            <!-- Step 1: Class -->
+            <div class="step is-active" id="step-class">
+                <p class="step-hint">Your class defines your role, abilities, and starting gear.</p>
+                <div class="class-grid" id="class-grid">
+                    <p class="loading-hint">Loading classes…</p>
+                </div>
+            </div>
+
+            <!-- Step 2: Path & Talent -->
+            <div class="step" id="step-path">
+                <p class="step-hint">Path shapes how you grow. Talent gives you a unique edge.</p>
+                <label class="wiz-field">
+                    <span class="wiz-label">Path</span>
+                    <select id="wiz-path-select" class="wiz-select">
+                        <option value="">— Select Path —</option>
+                    </select>
+                </label>
+                <label class="wiz-field">
+                    <span class="wiz-label">Talent</span>
+                    <select id="wiz-talent-select" class="wiz-select">
+                        <option value="">— Select Talent —</option>
+                    </select>
+                </label>
+                <div class="path-preview" id="path-preview"></div>
+            </div>
+
+            <!-- Step 3: Species — three drill-down levels -->
+            <div class="step" id="step-species">
+
+                <!-- Level 1: Lineage -->
+                <div id="spec-lv-lineage">
+                    <p class="step-hint">Choose your lineage.</p>
+                    <div class="lineage-grid" id="lineage-grid"></div>
+                </div>
+
+                <!-- Level 2: Option (shown only when lineage has multiple options) -->
+                <div id="spec-lv-option" hidden>
+                    <button class="spec-back" id="spec-back-to-lineage" type="button">← Lineages</button>
+                    <p class="step-hint">Choose your type within <strong id="spec-lineage-label"></strong>.</p>
+                    <div class="option-grid" id="option-grid"></div>
+                </div>
+
+                <!-- Level 3: Species list + detail -->
+                <div id="spec-lv-species" hidden>
+                    <button class="spec-back" id="spec-back-to-option" type="button">←</button>
+                    <div class="species-grid" id="species-grid"></div>
+                    <div class="species-detail" id="species-detail" hidden></div>
+                </div>
+
+            </div>
+
+            <!-- Step 4: Stats -->
+            <div class="step" id="step-stats">
+                <div class="points-bar">
+                    <span class="points-label">Points remaining</span>
+                    <span class="points-count" id="points-count">20</span>
+                    <button class="suggest-btn" id="btn-suggest" type="button">Suggested</button>
+                </div>
+                <p class="step-hint" style="margin-bottom:10px;">Max 10 per stat. Suggested spread: 10 / 5 / 3 / 2.</p>
+                <div class="stats-two-col">
+                    <div class="stats-col">
+                        <div class="stats-group-lbl">Physical</div>
+                        <div class="stat-row" data-key="agi">
+                            <span class="stat-name">Agility</span>
+                            <div class="stat-stepper">
+                                <button class="stat-adj" data-adj="-1" type="button">−</button>
+                                <span class="stat-val" id="sv-agi">0</span>
+                                <button class="stat-adj" data-adj="1" type="button">+</button>
+                            </div>
+                        </div>
+                        <div class="stat-row" data-key="cra">
+                            <span class="stat-name">Crafting</span>
+                            <div class="stat-stepper">
+                                <button class="stat-adj" data-adj="-1" type="button">−</button>
+                                <span class="stat-val" id="sv-cra">0</span>
+                                <button class="stat-adj" data-adj="1" type="button">+</button>
+                            </div>
+                        </div>
+                        <div class="stat-row" data-key="ste">
+                            <span class="stat-name">Stealth</span>
+                            <div class="stat-stepper">
+                                <button class="stat-adj" data-adj="-1" type="button">−</button>
+                                <span class="stat-val" id="sv-ste">0</span>
+                                <button class="stat-adj" data-adj="1" type="button">+</button>
+                            </div>
+                        </div>
+                        <div class="stat-row" data-key="str">
+                            <span class="stat-name">Strength</span>
+                            <div class="stat-stepper">
+                                <button class="stat-adj" data-adj="-1" type="button">−</button>
+                                <span class="stat-val" id="sv-str">0</span>
+                                <button class="stat-adj" data-adj="1" type="button">+</button>
+                            </div>
+                        </div>
+                        <div class="stat-row" data-key="sur">
+                            <span class="stat-name">Survival</span>
+                            <div class="stat-stepper">
+                                <button class="stat-adj" data-adj="-1" type="button">−</button>
+                                <span class="stat-val" id="sv-sur">0</span>
+                                <button class="stat-adj" data-adj="1" type="button">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-col">
+                        <div class="stats-group-lbl">Mental</div>
+                        <div class="stat-row" data-key="inf">
+                            <span class="stat-name">Influence</span>
+                            <div class="stat-stepper">
+                                <button class="stat-adj" data-adj="-1" type="button">−</button>
+                                <span class="stat-val" id="sv-inf">0</span>
+                                <button class="stat-adj" data-adj="1" type="button">+</button>
+                            </div>
+                        </div>
+                        <div class="stat-row" data-key="int">
+                            <span class="stat-name">Intellect</span>
+                            <div class="stat-stepper">
+                                <button class="stat-adj" data-adj="-1" type="button">−</button>
+                                <span class="stat-val" id="sv-int">0</span>
+                                <button class="stat-adj" data-adj="1" type="button">+</button>
+                            </div>
+                        </div>
+                        <div class="stat-row" data-key="lck">
+                            <span class="stat-name">Luck</span>
+                            <div class="stat-stepper">
+                                <button class="stat-adj" data-adj="-1" type="button">−</button>
+                                <span class="stat-val" id="sv-lck">0</span>
+                                <button class="stat-adj" data-adj="1" type="button">+</button>
+                            </div>
+                        </div>
+                        <div class="stat-row" data-key="obs">
+                            <span class="stat-name">Observation</span>
+                            <div class="stat-stepper">
+                                <button class="stat-adj" data-adj="-1" type="button">−</button>
+                                <span class="stat-val" id="sv-obs">0</span>
+                                <button class="stat-adj" data-adj="1" type="button">+</button>
+                            </div>
+                        </div>
+                        <div class="stat-row" data-key="spi">
+                            <span class="stat-name">Spirit</span>
+                            <div class="stat-stepper">
+                                <button class="stat-adj" data-adj="-1" type="button">−</button>
+                                <span class="stat-val" id="sv-spi">0</span>
+                                <button class="stat-adj" data-adj="1" type="button">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Starting Details -->
+            <div class="step" id="step-details">
+                <p class="step-hint">Roll or write your character's starting details. You can re-roll as many times as you like.</p>
+
+                <div class="detail-block">
+                    <div class="detail-head">
+                        <span class="detail-label">Starting Wealth</span>
+                        <button class="detail-roll-btn" id="roll-wealth" type="button">🎲 Roll 1d100+50</button>
+                    </div>
+                    <input id="detail-wealth" type="number" inputmode="numeric" min="0"
+                        placeholder="Gold pieces…" class="wiz-input" style="font-size:20px;font-weight:800;text-align:center;" />
+                </div>
+
+                <div class="detail-block">
+                    <div class="detail-head">
+                        <span class="detail-label">Motivation</span>
+                        <button class="detail-roll-btn" id="roll-motivation" type="button">🎲 Roll</button>
+                    </div>
+                    <textarea id="detail-motivation" placeholder="What drives your character?"
+                        class="detail-textarea" rows="3"></textarea>
+                </div>
+
+                <div class="detail-block">
+                    <div class="detail-head">
+                        <span class="detail-label">Trinket</span>
+                        <button class="detail-roll-btn" id="roll-trinket" type="button">🎲 Roll</button>
+                    </div>
+                    <input id="detail-trinket" type="text" placeholder="A curious object…"
+                        autocomplete="off" class="wiz-input" />
+                </div>
+            </div>
+
+            <!-- Step 6: Name & Review -->
+            <div class="step" id="step-review">
+                <p class="step-hint">Name your character and confirm your choices.</p>
+                <label class="wiz-field">
+                    <span class="wiz-label">Character Name</span>
+                    <input id="wiz-name" type="text" placeholder="Enter a name…"
+                        autocomplete="off" class="wiz-input" />
+                </label>
+                <div class="review-card" id="review-card"></div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="wiz-footer">
+            <div class="wiz-error" id="wiz-error" hidden></div>
+            <button class="wiz-next" id="wiz-next" type="button">Next →</button>
+        </div>
+
+    </main>
+</body>
+
+</html>
