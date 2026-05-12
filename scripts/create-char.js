@@ -66,6 +66,8 @@ async function loadData() {
         allSpecies       = sj?.species      || [];
         worldMotivations = wj?.motivations  || [];
         worldObjects     = wj?.objects      || [];
+        // Pre-load armor data so buildAndSave() can store armorRating on equipment
+        fetch(DATA_BASE + 'armor.json').then(r => r.json()).then(d => { window._armorData = d; }).catch(() => {});
         renderClassGrid();
     } catch (e) { console.error('create-char: data load failed', e); }
 }
@@ -91,6 +93,7 @@ function goTo(idx) {
     clearError();
     if (id === 'path')    renderPathStep();
     if (id === 'species') renderSpeciesStep();
+    if (id === 'stats')   renderBuildGuide();
     if (id === 'details') renderDetailsStep();
     if (id === 'review')  renderReview();
 }
@@ -315,6 +318,69 @@ function pick(arr) { return arr[Math.floor(Math.random() * arr.length)] || ''; }
 
 const STAT_KEYS = ['agi','cra','ste','str','sur','inf','int','lck','obs','spi'];
 
+const CHECK_KEY = {
+    agility:'agi', crafting:'cra', stealth:'ste', strength:'str', survival:'sur',
+    influence:'inf', intellect:'int', luck:'lck', observation:'obs', spirit:'spi',
+};
+
+function buildGuide() {
+    const counts = {};
+    function tally(checkStr) {
+        if (!checkStr) return;
+        checkStr.split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
+            .forEach(c => { counts[c] = (counts[c] || 0) + 1; });
+    }
+
+    const base    = classBaseData.find(c => c.name === wiz.classKey) || {};
+    const entries = classOptData[(wiz.classKey || '').toLowerCase()] || [];
+    const pathEntry   = wiz.pathName   ? entries.find(e => e.name === wiz.pathName)   : null;
+    const talentEntry = wiz.talentName ? entries.find(e => e.name === wiz.talentName) : null;
+
+    (base.features || []).forEach(f => tally(f.check));
+    (pathEntry?.path?.steps   || []).forEach(s => tally(s.check));
+    (talentEntry?.talent?.steps || []).forEach(s => tally(s.check));
+
+    return Object.entries(counts)
+        .filter(([label, n]) => n > 0 && CHECK_KEY[label])
+        .sort((a, b) => b[1] - a[1])
+        .map(([label, count]) => ({ label, key: CHECK_KEY[label], count }));
+}
+
+function renderBuildGuide() {
+    const el = document.getElementById('build-guide');
+    if (!el) return;
+
+    const guide = buildGuide();
+
+    // Clear row highlights
+    document.querySelectorAll('#step-stats .stat-row').forEach(r => {
+        r.classList.remove('stat-row--primary', 'stat-row--secondary');
+    });
+
+    if (!guide.length) { el.hidden = true; return; }
+
+    const maxCount  = guide[0].count;
+    const primaries = guide.filter(g => g.count === maxCount);
+
+    const chips = guide.map(g => {
+        const cls = g.count === maxCount ? 'guide-chip guide-chip--primary' : 'guide-chip';
+        return `<span class="${cls}">${g.label[0].toUpperCase() + g.label.slice(1)} ×${g.count}</span>`;
+    }).join('');
+
+    el.hidden = false;
+    el.innerHTML = `
+        <div class="guide-label">Your abilities use</div>
+        <div class="guide-chips">${chips}</div>
+        <div class="guide-sub">Put your highest points into the highlighted stats.</div>`;
+
+    // Highlight stat rows
+    guide.forEach(g => {
+        const row = document.querySelector(`#step-stats .stat-row[data-key="${g.key}"]`);
+        if (!row) return;
+        row.classList.add(g.count === maxCount ? 'stat-row--primary' : 'stat-row--secondary');
+    });
+}
+
 function pointsSpent()  { return STAT_KEYS.reduce((n, k) => n + wiz.stats[k], 0); }
 function pointsLeft()   { return classLimits().total - pointsSpent(); }
 
@@ -329,12 +395,10 @@ function refreshStats() {
         countEl.textContent = left;
         countEl.style.color = left < 0 ? '#ff6060' : left === 0 ? '#60e090' : 'var(--text)';
     }
-    // Reflect class-specific pool in hint
-    const hintEl = document.querySelector('#step-stats .step-hint');
-    if (hintEl) {
-        const lim = classLimits();
-        hintEl.textContent = `Max ${lim.max} per stat · ${lim.total} points total. Suggested: 10 / 5 / 3 / 2.`;
-    }
+    // Update class-specific pool display
+    const lim = classLimits();
+    const totalEl = document.getElementById('points-total');
+    if (totalEl) totalEl.textContent = lim.total;
 }
 
 function adjustStat(key, delta) {
@@ -347,9 +411,20 @@ function adjustStat(key, delta) {
 
 function applySuggested() {
     STAT_KEYS.forEach(k => wiz.stats[k] = 0);
-    // Default physical-heavy spread; user adjusts from here
-    const spread = { agi: 10, str: 5, sur: 3, cra: 2 };
-    Object.entries(spread).forEach(([k, v]) => wiz.stats[k] = v);
+    const lim   = classLimits();
+    const guide = buildGuide();
+    const pools = [10, 5, 3, 2]; // priority spread
+
+    if (guide.length) {
+        // Assign points to the top checks by usage, capped at class max
+        guide.slice(0, pools.length).forEach((g, i) => {
+            wiz.stats[g.key] = Math.min(pools[i], lim.max);
+        });
+    } else {
+        // Fallback generic spread
+        const spread = { agi: 10, str: 5, sur: 3, cra: 2 };
+        Object.entries(spread).forEach(([k, v]) => { wiz.stats[k] = Math.min(v, lim.max); });
+    }
     refreshStats();
 }
 
@@ -395,11 +470,19 @@ function inferEquipCategory(name, notes) {
 function buildAndSave() {
     const s = wiz.speciesObj;
     const classData = classBaseData.find(c => c.name === wiz.classKey);
-    const equipment = (classData?.equipment || []).map(e => ({
-        name:     e.name,
-        notes:    e.description || '',
-        category: inferEquipCategory(e.name, e.description || ''),
-    }));
+    const equipment = (classData?.equipment || []).map(e => {
+        const cat = inferEquipCategory(e.name, e.description || '');
+        // Look up armor rating from loaded data so active-sheet can sum it immediately
+        const armorMatch = cat === 'armor'
+            ? (window._armorData || []).find(a => a.name.toLowerCase() === e.name.toLowerCase())
+            : null;
+        return {
+            name:        e.name,
+            notes:       e.description || '',
+            category:    cat,
+            armorRating: armorMatch?.armor || 0,
+        };
+    });
 
     // Species features are stored in char.speciesFeature — no longer duplicated in otherGains
     const otherGains = [];

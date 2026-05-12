@@ -1,0 +1,90 @@
+{
+  "rule": "Roll 1d6 per extra success beyond the first (2 successes = 1 roll, 3 = 2 rolls, etc.) on the table matching the damage type.",
+  "types": {
+    "Impact": {
+      "icon": "✊", "category": "Physical",
+      "desc": "Bone-crushing force from blunt weapons. Shatters defenses and leaves foes dazed.",
+      "entries": ["Broken", "Concussion", "Coughing", "Dislocation", "Prone", "Knockback 10ft"]
+    },
+    "Piercing": {
+      "icon": "🎯", "category": "Physical",
+      "desc": "Sharp and precise — penetrates armor and targets vital points.",
+      "entries": ["+1 Damage", "+2 Damage", "+3 Damage", "+4 Damage", "+5 Damage", "Pinned"]
+    },
+    "Slashing": {
+      "icon": "⚔️", "category": "Physical",
+      "desc": "Sweeping cuts leave open wounds and bleeding gashes.",
+      "entries": ["+2 Damage", "+3 Damage", "Bleeding", "Cleave", "Disarm", "Feint (Take Stance)"]
+    },
+    "Acid": {
+      "icon": "🧪", "category": "Elemental",
+      "desc": "Corrosive substances eat through armor and flesh alike.",
+      "entries": ["+1 Damage", "+2 Damage", "+3 Damage", "Exposed", "Slowed", "Coughing"]
+    },
+    "Eclipse": {
+      "icon": "🌑", "category": "Elemental",
+      "desc": "Shadow and dark magic drain life and light.",
+      "entries": ["+1 Damage", "+2 Damage", "Blind", "Deaf", "Raise upon Death", "Fear"]
+    },
+    "Fire": {
+      "icon": "🔥", "category": "Elemental",
+      "desc": "Intense heat burns everything — fireballs, lava, infernos.",
+      "entries": ["+1 Damage", "+2 Damage", "+3 Damage", "Exposed", "Blind", "Coughing"]
+    },
+    "Fluid": {
+      "icon": "💧", "category": "Elemental",
+      "desc": "Water, blood, oil — can overwhelm and suffocate.",
+      "entries": ["Blind", "Coughing", "Deaf", "Broken", "Concussion", "Prone"]
+    },
+    "Ice": {
+      "icon": "❄️", "category": "Elemental",
+      "desc": "Biting cold freezes and numbs — can encase enemies in frost.",
+      "entries": ["+1 Damage", "+2 Damage", "Constrained", "Dislocation", "Slowed (End Next)", "Pinned"]
+    },
+    "Lightning": {
+      "icon": "⚡", "category": "Elemental",
+      "desc": "Electricity arcs with shocking speed and precision.",
+      "entries": ["+1 Damage", "+2 Damage", "+3 Damage", "Blind", "Confused", "Pinned"]
+    },
+    "Solar": {
+      "icon": "☀️", "category": "Elemental",
+      "desc": "Brilliant radiance smites the unholy and cleanses corruption.",
+      "entries": ["+1 Damage", "+2 Damage", "+3 Damage", "Blind", "Pinned", "Evil Banishment"]
+    },
+    "Thunder": {
+      "icon": "🌩️", "category": "Elemental",
+      "desc": "Concussive booms shake earth and shatter eardrums.",
+      "entries": ["+1 Damage", "Cleave", "Confused", "Deaf", "Disarm", "Knockback 20ft"]
+    },
+    "Toxic": {
+      "icon": "☣️", "category": "Elemental",
+      "desc": "Poison and radiation corrupt from within — slow and insidious.",
+      "entries": ["+1 Damage", "+2 Damage", "Blind", "Confused", "Coughing", "Fear"]
+    },
+    "Nature": {
+      "icon": "🌿", "category": "Realm",
+      "desc": "Primal forces — vines, insects, relentless wind and rain.",
+      "entries": ["+1 Damage", "Constrained", "Confused", "Coughing", "Disease (Verdant Fever)", "Pinned"]
+    },
+    "Psychic": {
+      "icon": "✨", "category": "Realm",
+      "desc": "Bypasses physical defenses to inflict mental torment.",
+      "entries": ["+1 Damage", "Blind", "Charmed", "Concussion", "Confused", "Fear"]
+    },
+    "Vozian": {
+      "icon": "☠️", "category": "Realm",
+      "desc": "Born from decay and chaos — spreads rot and corrupting disorder.",
+      "entries": ["Siphon (Half Damage)", "Blind", "Coughing", "Disease (Infernal Skritches)", "Intangible (1 round)", "Double Damage"]
+    },
+    "Elemental": {
+      "icon": "🔮", "category": "Elemental",
+      "desc": "Mixed elemental energy — roll twice on a random elemental table.",
+      "entries": ["+1 Damage", "+2 Damage", "Blind", "Exposed", "Confused", "Stunned"]
+    },
+    "Healing": {
+      "icon": "❤️", "category": "Realm",
+      "desc": "Restores wounds and revitalizes. Cannot cure conditions without special intervention.",
+      "entries": ["+1 Heal", "+2 Heal", "+3 Heal", "+4 Heal", "+5 Heal", "Restore Condition"]
+    }
+  }
+}

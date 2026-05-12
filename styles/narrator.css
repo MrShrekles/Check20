@@ -1,0 +1,249 @@
+/* Narrator companion styles */
+
+/* 4-tab nav override */
+.nar-nav {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* ── PARTY CARDS ──────────────────────────────────────────────────── */
+
+.party-card {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+}
+
+.party-card-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.party-card-name {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.party-card-meta {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.party-card-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.party-bar-row {
+    display: grid;
+    grid-template-columns: 52px 1fr 48px;
+    align-items: center;
+    gap: 8px;
+}
+
+.party-bar-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    text-align: right;
+}
+
+.party-bar-track {
+    height: 6px;
+    background: var(--line);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.party-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.3s;
+}
+
+.party-bar-fill--hp  { background: #e05555; }
+.party-bar-fill--arm { background: #5588cc; }
+.party-bar-fill--mn  { background: #8866cc; }
+
+.party-bar-val {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    text-align: left;
+}
+
+/* ── ENCOUNTER & NPC CARDS ───────────────────────────────────────── */
+
+.enc-turn-bar {
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-mid);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.enc-card {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px 8px;
+    margin-bottom: 8px;
+    transition: border-color 0.15s;
+}
+
+.enc-card--active {
+    border-color: var(--accent-mid);
+    background: var(--accent-dim);
+}
+
+.enc-card-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.enc-init-badge {
+    min-width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    font-size: 12px;
+    font-weight: 800;
+    display: grid;
+    place-items: center;
+    color: var(--accent2);
+    flex-shrink: 0;
+}
+
+.enc-name-col {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.enc-name {
+    font-size: 14px;
+    font-weight: 700;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.enc-notes {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.enc-hp-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.enc-hp {
+    font-size: 14px;
+    font-weight: 800;
+    min-width: 42px;
+    text-align: center;
+}
+
+.enc-hp-max {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+}
+
+.enc-hp-bar-track {
+    height: 4px;
+    background: var(--line);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.enc-hp-bar-fill {
+    height: 100%;
+    background: #e05555;
+    border-radius: 99px;
+    transition: width 0.25s;
+}
+
+.enc-hp-bar-fill--npc { background: #cc8833; }
+
+/* ── ADD FORM ─────────────────────────────────────────────────────── */
+
+.nar-add-form {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px;
+    background: var(--panel);
+}
+
+.nar-add-summary {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+}
+
+.nar-add-summary::-webkit-details-marker { display: none; }
+
+/* ── ROLL RESULT ──────────────────────────────────────────────────── */
+
+.nar-roll-result {
+    margin-top: 16px;
+    border-radius: 14px;
+    padding: 14px 16px;
+    text-align: center;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+}
+
+.nar-roll-result--success {
+    border-color: var(--accent-mid);
+    background: var(--accent-dim);
+}
+
+.nar-roll-result--fail {
+    border-color: rgba(200, 80, 80, 0.35);
+    background: rgba(200, 80, 80, 0.10);
+}
+
+.nar-roll-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+.nar-roll-num {
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.nar-roll-sub {
+    font-size: 12px;
+    color: var(--muted);
+}

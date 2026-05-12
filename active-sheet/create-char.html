@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>ARC20 — New Character</title>
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0c0c0f" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="ARC20" />
+    <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
     <link rel="stylesheet" href="../styles/home.css" />
     <link rel="stylesheet" href="../styles/create-char.css" />
     <script src="../scripts/create-char.js" defer></script>
@@ -87,7 +93,8 @@
                     <span class="points-count" id="points-count">20</span>
                     <button class="suggest-btn" id="btn-suggest" type="button">Suggested</button>
                 </div>
-                <p class="step-hint" style="margin-bottom:10px;">Max 10 per stat. Suggested spread: 10 / 5 / 3 / 2.</p>
+                <div id="build-guide" hidden></div>
+                <p class="step-hint" style="margin-bottom:10px;">Max 10 per stat · <span id="points-total">20</span> points total.</p>
                 <div class="stats-two-col">
                     <div class="stats-col">
                         <div class="stats-group-lbl">Physical</div>

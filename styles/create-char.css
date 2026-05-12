@@ -475,12 +475,76 @@ button, input, select, textarea, a {
     padding: 0 0 8px;
 }
 
+/* ── BUILD GUIDE ────────────────────────────────────────────────── */
+
+#build-guide {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+}
+
+.guide-label {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+.guide-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.guide-chip {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--muted);
+}
+
+.guide-chip--primary {
+    border-color: var(--accent-mid);
+    background: var(--accent-dim);
+    color: var(--accent);
+}
+
+.guide-sub {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+/* Stat row highlighting */
 .stat-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 0;
+    padding: 8px 6px;
     border-bottom: 1px solid var(--line);
+    border-radius: 8px;
+    transition: background 0.12s;
+}
+
+.stat-row--primary {
+    background: var(--accent-dim);
+}
+
+.stat-row--primary .stat-name {
+    color: var(--accent);
+    font-weight: 800;
+}
+
+.stat-row--secondary {
+    background: rgba(255,255,255,0.03);
 }
 
 .stat-row:last-child { border-bottom: 0; }

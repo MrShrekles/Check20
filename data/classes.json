@@ -26,7 +26,7 @@
         },
         {
           "name": "Great Sword",
-          "description": "2d6 Slashing; Agility, Strength; Reach; 2 hand, Hefty; Bulk: 3"
+          "description": "3d6 Slashing; Agility, Strength; Reach; 2 Hand, Hefty; Bulk: 3"
         },
         {
           "name": "Siege Crossbow",
@@ -58,11 +58,11 @@
         },
         {
           "name": "Semi-Automatic Pistol",
-          "description": "3d4!-3 Piercing; Agility, Luck, Observation; Medium; 1 hand; Bulk: 1"
+          "description": "3d4! Piercing; Agility, Intellect, Luck, Observation; Medium; 1 Hand, Light; Bulk: 1"
         },
         {
           "name": "Hookblade",
-          "description": "1d6 Slashing Agility, Observation, Stealth, Strength; Melee 1 hand, Light; Bulk: 1 [Hookblade: When you hit with a success+ you can choose to grapple the target instead of rolling on the success table]"
+          "description": "1d6 Slashing; Agility, Observation, Stealth, Strength; Melee; 1 Hand, Light; Bulk: 1"
         }
       ]
     },
@@ -90,7 +90,7 @@
         },
         {
           "name": "Pistol",
-          "description": "2d4! Piercing; Agility, Luck, Observation; Medium; 1 hand, Light; Bulk: 1"
+          "description": "2d4! Piercing; Agility, Intellect, Luck, Observation; Medium; 1 Hand, Light; Bulk: 2"
         }
       ]
     },
@@ -122,7 +122,7 @@
         },
         {
           "name": "Revolver",
-          "description": "2d4! Piercing; Agility, Luck, Observation; Short; 1 Hand, Light; Bulk: 1"
+          "description": "3d4! Piercing; Agility, Intellect, Luck, Observation; Medium; 1 Hand; Bulk: 1"
         }
       ]
     },
@@ -132,7 +132,7 @@
       "features": [
         {
           "name": "Mana Recovery",
-          "description": "Recover +4 spell points on a Press On"
+          "description": "Recover +4 Mana on a Press On"
         },
         {
           "name": "Spellburn",

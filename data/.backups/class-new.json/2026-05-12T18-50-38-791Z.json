@@ -10200,7 +10200,7 @@
               "action": "Action",
               "check": "",
               "range": "Self",
-              "description": "As an Action, gain the Intangible condition until the end of your next turn. If you pass through a creature while in this state, the creature takes [[1d4]] Thunder damage.",
+              "description": "gain the Intangible condition. If you pass through a creature while in this condition, the creature takes [[1d4]] Thunder damage.",
               "duration": "Until the end of your next turn",
               "damage": "",
               "damageType": "",

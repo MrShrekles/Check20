@@ -104,6 +104,178 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 .pill-btn:active { transform: scale(0.97); }
 
+.pill-recover-btn {
+    background: var(--accent-dim);
+    border-color: var(--accent-mid);
+    color: var(--accent);
+    font-size: 16px;
+}
+
+.pill-btn--5 {
+    font-size: 10px;
+    font-weight: 800;
+    width: 28px;
+    color: var(--muted);
+    border-color: transparent;
+    background: transparent;
+}
+
+/* ── RECOVERY SECTION ─────────────────────────────────────── */
+
+.recovery-block {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px 8px;
+}
+
+.recovery-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.recovery-name {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--accent);
+    flex: 1;
+}
+
+.lr-name { color: var(--accent2); }
+
+.recovery-checks {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.rec-use-cb {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent);
+    cursor: default;
+}
+
+.rec-toggle {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    font-size: 14px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    touch-action: manipulation;
+    flex-shrink: 0;
+}
+
+/* Config body (hidden by default) */
+.recovery-body {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rec-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+}
+
+.rec-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.rec-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rec-input {
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    text-align: center;
+    width: 100%;
+    padding: 0 4px;
+}
+
+.rec-desc {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--muted);
+    font-size: 12px;
+    font-family: inherit;
+    line-height: 1.5;
+    padding: 8px 10px;
+    resize: vertical;
+}
+
+/* ── RECOVERY CHAT CARD ──────────────────────────────────── */
+
+.chat-recovery-card {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.chat-rec-rows {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-rec-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 12px;
+    border-top: 1px solid var(--line);
+    gap: 12px;
+}
+
+.chat-rec-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.chat-rec-val {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.chat-rec-val--rolled {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--accent2);
+    line-height: 1;
+}
+
 /* Panels */
 .panel-stack {
     background: transparent;
@@ -644,7 +816,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     padding-bottom: var(--safe-b);
 
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
 
     background: rgba(12, 12, 15, 0.96);
     backdrop-filter: blur(14px);
@@ -658,20 +830,24 @@ body[data-page-title="Active-Sheet"] #site-header {
     color: var(--muted);
     display: grid;
     place-items: center;
-    gap: 3px;
     padding-top: 8px;
-    font-size: 10px;
     touch-action: manipulation;
 }
 
-.nav-btn.is-active {
-    color: var(--accent);
-}
+.nav-btn.is-active { color: var(--accent); }
 
 .nav-icon {
-    font-size: 18px;
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    font-size: 22px;
     line-height: 1;
+    filter: brightness(0.55);
 }
+
+.nav-btn.is-active .nav-icon { filter: brightness(1) saturate(1.1); }
+
+.nav-label { display: none; }
 
 /* FAB */
 .fab {
@@ -1508,6 +1684,73 @@ body[data-page-title="Active-Sheet"] #site-header {
     margin-top: 4px;
 }
 
+/* ── BIO NOTES ─────────────────────────────────────────────── */
+
+.bio-notes-input {
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: inherit;
+    line-height: 1.6;
+    padding: 10px 12px;
+    resize: vertical;
+}
+
+/* ── NPC / LOYALTY LIST ─────────────────────────────────────── */
+
+.npc-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+}
+.npc-entry:last-child { border-bottom: 0; }
+
+.npc-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.npc-name {
+    font-size: 14px;
+    font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.npc-loyalty {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.npc-notes {
+    font-size: 12px;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.npc-add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+}
+
 /* ── FEATURE ROLL MODAL ──────────────────────────────────────────── */
 
 .feat-roll-modal {
@@ -2029,6 +2272,192 @@ body[data-page-title="Active-Sheet"] #site-header {
     flex-shrink: 0;
 }
 
+/* ── REFERENCE PANEL ─────────────────────────────────────────── */
+
+.ref-tab-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.ref-tab {
+    flex: 1;
+    min-height: 34px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.ref-tab.is-active {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.ref-tab-content { display: none; }
+.ref-tab-content.is-active { display: block; }
+
+/* Quick roll */
+.ref-quick-roll {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 14px;
+}
+
+.ref-quick-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.ref-type-select {
+    flex: 1;
+    height: 36px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: inherit;
+    padding: 0 8px;
+}
+
+.ref-quick-result {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+}
+
+.ref-quick-res-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ref-quick-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+}
+
+.ref-quick-entry {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.4;
+}
+
+/* Damage table cards */
+.ref-tables-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ref-table-card {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.ref-table-card[open] { border-color: var(--accent-mid); }
+
+.ref-table-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    list-style: none;
+    gap: 8px;
+}
+.ref-table-head::-webkit-details-marker { display: none; }
+
+.ref-table-entries {
+    padding: 8px 12px 12px;
+    border-top: 1px solid var(--line);
+}
+
+.ref-table-row {
+    display: flex;
+    gap: 10px;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 12px;
+}
+.ref-table-row:last-of-type { border-bottom: 0; }
+
+.ref-table-num {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--accent2);
+    width: 14px;
+    flex-shrink: 0;
+    padding-top: 1px;
+}
+
+.ref-table-entry { color: var(--text); line-height: 1.4; }
+
+/* Conditions list */
+.ref-condition-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+}
+.ref-condition-row:last-child { border-bottom: 0; }
+
+.ref-condition-name {
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.ref-condition-effect {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+/* Actions list */
+.ref-action-card {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+}
+.ref-action-card:last-child { border-bottom: 0; }
+
+.ref-action-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.ref-action-name {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--accent);
+}
+
+.ref-action-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.55;
+}
+
 /* ── SETTINGS MODAL ──────────────────────────────────────────── */
 
 .settings-modal {
@@ -2127,6 +2556,314 @@ body[data-page-title="Active-Sheet"] #site-header {
     background: rgba(255,107,107,0.06);
 }
 
+/* ── SPELLS PANEL ───────────────────────────────────────────── */
+
+.spell-mn-display {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-mid);
+    border-radius: 999px;
+    padding: 3px 10px;
+    flex-shrink: 0;
+}
+
+.spell-mn-label {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-right: 3px;
+}
+
+.spell-mn-current {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--accent);
+}
+
+.spell-mn-sep { font-size: 12px; color: var(--muted); }
+
+.spell-mn-max {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+}
+
+.spell-search-bar {
+    margin-bottom: 10px;
+}
+
+.spell-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    height: 40px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    padding: 0 12px;
+}
+
+.spell-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.spell-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.spell-filter-btn--fav.is-active {
+    background: rgba(255, 210, 60, 0.15);
+    border-color: rgba(255, 210, 60, 0.5);
+    color: #ffd23c;
+}
+
+.spell-sort-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.spell-sort-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-right: 2px;
+}
+
+.spell-sort-btn {
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.spell-sort-btn.is-active {
+    background: var(--accent-dim);
+    border-color: var(--accent-mid);
+    color: var(--accent);
+}
+
+/* Spell card row with favourite star */
+.spell-card-row {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+}
+
+.spell-card-row .spell-card { flex: 1; min-width: 0; }
+
+.spell-fav-btn {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    line-height: 1;
+    padding: 8px 2px;
+    cursor: pointer;
+    touch-action: manipulation;
+    color: var(--muted);
+    flex-shrink: 0;
+}
+
+.spell-fav-btn.is-fav { color: #ffd23c; }
+
+/* Origin group header when sorting by Origin */
+.spell-origin-header {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent2);
+    padding: 8px 4px 4px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 6px;
+    margin-top: 10px;
+}
+.spell-origin-header:first-child { margin-top: 0; }
+
+.spell-filter-btn {
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.spell-filter-btn.is-active {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.spell-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.spell-card {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.spell-card[open] { border-color: var(--accent-mid); }
+
+.spell-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 12px;
+    cursor: pointer;
+    list-style: none;
+}
+.spell-card-head::-webkit-details-marker { display: none; }
+
+.spell-name {
+    font-size: 14px;
+    font-weight: 800;
+    flex: 1;
+}
+
+.spell-meta-tags {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.spell-intents {
+    border-top: 1px solid var(--line);
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.spell-intent {
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+}
+.spell-intent:last-child { border-bottom: 0; padding-bottom: 0; }
+
+.spell-intent-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 5px;
+    flex-wrap: wrap;
+}
+
+.spell-intent-btns {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.spell-cast-btn {
+    height: 28px;
+    padding: 0 9px;
+    border-radius: 8px;
+    border: 1px solid var(--accent-mid);
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+    white-space: nowrap;
+}
+
+.spell-cast-btn--low {
+    border-color: rgba(255,150,60,0.4);
+    background: rgba(255,150,60,0.1);
+    color: #ff9060;
+}
+
+.spell-free-btn {
+    height: 28px;
+    width: 28px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+    display: grid;
+    place-items: center;
+}
+
+.spell-intent-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--accent);
+    min-width: 80px;
+}
+
+.spell-intent-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.spell-cost {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: var(--accent2-dim);
+    border: 1px solid var(--accent2-mid);
+    color: var(--accent2);
+}
+
+.spell-cost--free {
+    background: rgba(255,255,255,0.05);
+    border-color: var(--line);
+    color: var(--muted);
+}
+
+.spell-cost--low {
+    background: rgba(255,150,60,0.12);
+    border-color: rgba(255,150,60,0.4);
+    color: #ff9060;
+}
+
+.spell-intent-effect {
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--muted);
+}
+
 /* ── CHAT PANEL ─────────────────────────────────────────────── */
 
 .chat-log {
@@ -2201,6 +2938,18 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 .chat-res--nat20 { color: #ffd700; }
 .chat-res--nat1  { color: #ff6060; }
+
+.roll-outcome {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: center;
+    margin: 4px 0 2px;
+}
+
+.roll-outcome--success { color: var(--accent); }
+.roll-outcome--fail    { color: var(--muted); }
 
 .chat-roll-breakdown {
     text-align: center;
@@ -2316,6 +3065,23 @@ body[data-page-title="Active-Sheet"] #site-header {
 }
 .chat-expand-btn:hover { color: var(--text); }
 
+.dmg-table-btn {
+    display: block;
+    width: 100%;
+    margin: 6px 0 2px;
+    min-height: 36px;
+    border-radius: 10px;
+    border: 1px solid var(--accent2-mid);
+    background: var(--accent2-dim);
+    color: var(--accent2);
+    font-size: 12px;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+    letter-spacing: 0.03em;
+}
+
 /* Message bubble */
 .chat-entry--msg {
     display: flex;
@@ -2332,6 +3098,133 @@ body[data-page-title="Active-Sheet"] #site-header {
 .chat-entry--msg:hover { background: rgba(255,255,255,0.07); }
 
 .chat-text { line-height: 1.4; }
+
+/* ── DICE ROLLER ──────────────────────────────────────────────────── */
+
+.dice-roller {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 10px 12px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dice-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.dice-count-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dice-mult-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-right: 2px;
+}
+
+.dice-count-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s, border-color 0.1s;
+    touch-action: manipulation;
+}
+
+.dice-count-btn.is-sel {
+    background: var(--accent-dim);
+    border-color: var(--accent-mid);
+    color: var(--text);
+}
+
+.dice-bonus-field {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dice-bonus-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+}
+
+.dice-bonus-input {
+    width: 52px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    text-align: center;
+    padding: 0 4px;
+}
+
+.dice-btn-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.dice-btn {
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background 0.1s, transform 0.08s;
+}
+
+.dice-btn:active { background: var(--accent-dim); transform: scale(0.93); }
+
+/* ── DICE CHAT CARD ───────────────────────────────────────────────── */
+
+.chat-dice-card {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px;
+}
+
+.dice-card-total {
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin: 4px 0 2px;
+}
+
+.dice-card-breakdown {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
 
 .chat-input-row {
     display: grid;
@@ -2492,6 +3385,8 @@ body[data-page-title="Active-Sheet"] #site-header {
 }
 
 .step-action-btn:active { background: var(--panel-2); transform: scale(0.95); }
+
+.btn-icon { width: 22px; height: 22px; object-fit: contain; display: block; }
 
 /* ── EQUIPMENT EDITOR ────────────────────────────────────────────── */
 

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Narrator — ARC20</title>
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0c0c0f" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="ARC20 Narrator" />
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
+    <link rel="stylesheet" href="../styles/active-sheet.css" />
+    <link rel="stylesheet" href="../styles/narrator.css" />
+    <script src="../scripts/narrator.js" defer></script>
+</head>
+
+<body data-page-title="Narrator">
+    <main class="app" id="app">
+        <div class="app-topbar">
+            <a href="home.html" class="topbar-home" aria-label="Home">⌂</a>
+            <span class="topbar-name">Narrator</span>
+            <a href="../../index.html" class="topbar-settings-btn"
+                style="display:grid;place-items:center;text-decoration:none;font-size:13px" aria-label="Main Site">Site↗</a>
+        </div>
+
+        <section class="panel-stack" id="panel-stack">
+
+            <!-- PARTY -->
+            <section class="panel is-active" id="panel-party" role="region" aria-label="Party">
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Party</h2>
+                        <button class="ghost-btn" id="btn-refresh-party" type="button">Refresh</button>
+                    </div>
+                    <div id="party-list">
+                        <p class="empty-hint">No saved characters found in this browser.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ENCOUNTER -->
+            <section class="panel" id="panel-encounter" role="region" aria-label="Encounter">
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Encounter</h2>
+                        <div style="display:flex;gap:8px">
+                            <button class="ghost-btn" id="btn-next-turn" type="button">Next →</button>
+                            <button class="ghost-btn" id="btn-clear-encounter" type="button">Clear</button>
+                        </div>
+                    </div>
+
+                    <div class="enc-turn-bar" id="enc-turn-bar" hidden>
+                        Round <strong id="enc-round">1</strong> — <strong id="enc-active-name">—</strong>'s turn
+                    </div>
+
+                    <div id="encounter-list">
+                        <p class="empty-hint">No creatures in encounter.</p>
+                    </div>
+
+                    <details class="nar-add-form" style="margin-top:12px">
+                        <summary class="nar-add-summary">+ Add Creature</summary>
+                        <div class="editor-grid" style="margin-top:10px;margin-bottom:8px">
+                            <label class="field"><span class="field-label">Name</span>
+                                <input id="enc-name-input" type="text" placeholder="Creature name…" autocomplete="off" /></label>
+                            <label class="field"><span class="field-label">Max HP</span>
+                                <input id="enc-hp-input" type="number" inputmode="numeric" min="1" value="10" /></label>
+                            <label class="field"><span class="field-label">Initiative</span>
+                                <input id="enc-init-input" type="number" inputmode="numeric" value="0" /></label>
+                        </div>
+                        <button class="done-btn" id="btn-add-creature" type="button">+ Add to Encounter</button>
+                    </details>
+                </div>
+            </section>
+
+            <!-- NPCS -->
+            <section class="panel" id="panel-npcs" role="region" aria-label="NPCs">
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">NPCs</h2>
+                        <button class="ghost-btn" id="btn-clear-npcs" type="button">Clear All</button>
+                    </div>
+                    <div id="npc-tracker-list">
+                        <p class="empty-hint">No NPCs tracked.</p>
+                    </div>
+
+                    <details class="nar-add-form" style="margin-top:12px">
+                        <summary class="nar-add-summary">+ Add NPC</summary>
+                        <div class="editor-grid" style="margin-top:10px;margin-bottom:8px">
+                            <label class="field"><span class="field-label">Name</span>
+                                <input id="npc-t-name-input" type="text" placeholder="NPC name…" autocomplete="off" /></label>
+                            <label class="field"><span class="field-label">Max HP</span>
+                                <input id="npc-t-hp-input" type="number" inputmode="numeric" min="0" value="10" /></label>
+                            <label class="field"><span class="field-label">Role / Notes</span>
+                                <input id="npc-t-notes-input" type="text" placeholder="Faction, location…" autocomplete="off" /></label>
+                        </div>
+                        <button class="done-btn" id="btn-add-npc-tracker" type="button">+ Add NPC</button>
+                    </details>
+                </div>
+            </section>
+
+            <!-- NOTES -->
+            <section class="panel" id="panel-nar-notes" role="region" aria-label="Notes">
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Session Notes</h2>
+                        <button class="ghost-btn" id="btn-save-nar-notes" type="button">Save</button>
+                    </div>
+                    <textarea class="bio-notes-input" id="nar-notes" rows="12"
+                        placeholder="Plot threads, secrets, session recap…"></textarea>
+                    <p class="field-hint" style="margin-top:6px">Auto-saves when you switch tabs.</p>
+                </div>
+            </section>
+
+        </section>
+
+        <!-- Floating roll button -->
+        <button class="fab" id="fab-roll" type="button" aria-label="Open roll drawer">Roll</button>
+    </main>
+
+    <!-- Roll Drawer -->
+    <section class="drawer" id="roll-drawer" aria-hidden="true" inert>
+        <div class="drawer-scrim" data-drawer-close></div>
+        <div class="drawer-sheet" role="dialog" aria-modal="true" aria-label="Roll">
+            <div class="drawer-handle" aria-hidden="true"></div>
+            <div class="drawer-head">
+                <div class="drawer-title" id="drawer-title">Roll</div>
+                <button class="icon-btn" type="button" data-drawer-close aria-label="Close">✕</button>
+            </div>
+            <div class="drawer-body">
+                <div class="roll-compact-row">
+                    <label class="field roll-label-field">
+                        <span class="field-label">Label</span>
+                        <input id="roll-label" type="text" placeholder="Check name" autocomplete="off" />
+                    </label>
+                    <label class="field roll-mod-field">
+                        <span class="field-label">Mod</span>
+                        <input id="roll-mod" type="number" inputmode="numeric" value="0" step="1" />
+                    </label>
+                </div>
+                <div class="roll-seg" role="group" aria-label="Roll type">
+                    <button class="roll-seg-btn is-sel" type="button" data-seg="flat">Flat</button>
+                    <button class="roll-seg-btn" type="button" data-seg="adv">Advantage</button>
+                    <button class="roll-seg-btn" type="button" data-seg="dis">Disadvantage</button>
+                </div>
+                <button class="primary-btn roll-primary-btn" id="btn-roll" type="button">Roll d20</button>
+                <div class="nar-roll-result" id="nar-roll-result" hidden></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom navigation (4 tabs) -->
+    <nav class="bottom-nav nar-nav" aria-label="Bottom navigation">
+        <button class="nav-btn is-active" data-nav="party" type="button" aria-controls="panel-party">
+            <img class="nav-icon" src="../assets/icons/features.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Party</span>
+        </button>
+        <button class="nav-btn" data-nav="encounter" type="button" aria-controls="panel-encounter">
+            <img class="nav-icon" src="../assets/icons/roll.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Encounter</span>
+        </button>
+        <button class="nav-btn" data-nav="npcs" type="button" aria-controls="panel-npcs">
+            <img class="nav-icon" src="../assets/icons/spells.png" alt="" aria-hidden="true" />
+            <span class="nav-label">NPCs</span>
+        </button>
+        <button class="nav-btn" data-nav="nar-notes" type="button" aria-controls="panel-nar-notes">
+            <img class="nav-icon" src="../assets/icons/reference.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Notes</span>
+        </button>
+    </nav>
+</body>
+
+</html>

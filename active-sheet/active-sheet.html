@@ -7,6 +7,13 @@
     <title>Active Sheet</title>
 
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0c0c0f" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="ARC20" />
+    <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
     <link rel="stylesheet" href="../styles/active-sheet.css" />
 
     <script src="../scripts/tooltips.js" defer></script>
@@ -18,8 +25,9 @@
 <body data-page-title="Active-Sheet">
     <main class="app" id="app">
         <div class="app-topbar">
-            <a href="home.html" class="topbar-home" aria-label="Home">⌂</a>
+            <a href="home.html" class="topbar-home" aria-label="Character Home">⌂</a>
             <span class="topbar-name" id="topbar-name"></span>
+            <a href="../../index.html" class="topbar-settings-btn" aria-label="Main Site" style="display:grid;place-items:center;text-decoration:none;font-size:13px">Site↗</a>
             <button class="topbar-settings-btn" id="btn-settings" type="button" aria-label="Settings">⚙</button>
         </div>
 
@@ -85,21 +93,25 @@
                         <div class="resource-pill" data-resource="hp">
                             <span class="pill-label">Wounds</span>
                             <div class="pill-value">
-                                <button class="pill-btn" data-action="dec" aria-label="Decrease Wounds">−</button>
+                                <button class="pill-btn pill-btn--5" data-action="dec5" aria-label="−5 Wounds">−5</button>
+                                <button class="pill-btn" data-action="dec" aria-label="−1 Wounds">−</button>
                                 <output class="pill-num" id="hp-current">0</output>
                                 <span class="pill-sep">/</span>
                                 <output class="pill-num pill-max" id="hp-max">0</output>
-                                <button class="pill-btn" data-action="inc" aria-label="Increase Wounds">+</button>
+                                <button class="pill-btn" data-action="inc" aria-label="+2 Wounds">+</button>
+                                <button class="pill-btn pill-btn--5" data-action="inc5" aria-label="+5 Wounds">+5</button>
                             </div>
                         </div>
                         <div class="resource-pill" data-resource="armor">
                             <span class="pill-label">Armor</span>
                             <div class="pill-value">
-                                <button class="pill-btn" data-action="dec" aria-label="Decrease Armor">−</button>
+                                <button class="pill-btn pill-btn--5" data-action="dec5" aria-label="−5 Armor">−5</button>
+                                <button class="pill-btn" data-action="dec" aria-label="−1 Armor">−</button>
                                 <output class="pill-num" id="armor-current">0</output>
                                 <span class="pill-sep">/</span>
                                 <output class="pill-num pill-max" id="armor-max">0</output>
-                                <button class="pill-btn" data-action="inc" aria-label="Increase Armor">+</button>
+                                <button class="pill-btn" data-action="inc" aria-label="+2 Armor">+</button>
+                                <button class="pill-btn pill-btn--5" data-action="inc5" aria-label="+5 Armor">+5</button>
                             </div>
                         </div>
                     </div>
@@ -112,6 +124,66 @@
                         <div class="derived-item">
                             <span class="derived-label">Low Light</span>
                             <span class="derived-val" id="derived-lowlight">30 ft</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Press On / Long Rest -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Recovery</h2>
+                        <button class="ghost-btn" id="btn-reset-recovery" type="button">Reset Day</button>
+                    </div>
+
+                    <!-- Press On -->
+                    <div class="recovery-block" id="press-on-block">
+                        <div class="recovery-head">
+                            <span class="recovery-name">Press On</span>
+                            <div class="recovery-checks" id="press-on-checks"><!-- filled by JS --></div>
+                            <button class="spell-cast-btn" id="btn-press-on" type="button">Use</button>
+                            <button class="rec-toggle" id="po-toggle" type="button" aria-label="Settings">▾</button>
+                        </div>
+                        <div class="recovery-body" id="press-on-body" hidden>
+                            <div class="rec-grid">
+                                <label class="rec-field">
+                                    <span class="rec-label">Uses/day</span>
+                                    <input class="rec-input" id="po-uses-max" type="number" inputmode="numeric" min="1" max="9" value="2" />
+                                </label>
+                                <label class="rec-field">
+                                    <span class="rec-label">Resource</span>
+                                    <input class="rec-input" id="po-resource" type="number" inputmode="numeric" min="0" value="1" />
+                                </label>
+                                <label class="rec-field">
+                                    <span class="rec-label">MN Recover</span>
+                                    <input class="rec-input" id="po-mana" type="number" inputmode="numeric" min="0" value="1" />
+                                </label>
+                                <label class="rec-field">
+                                    <span class="rec-label">Repair</span>
+                                    <input class="rec-input" id="po-armor" type="text" autocomplete="off" value="d6" />
+                                </label>
+                                <label class="rec-field">
+                                    <span class="rec-label">Healing</span>
+                                    <input class="rec-input" id="po-healing" type="text" autocomplete="off" value="d6" />
+                                </label>
+                            </div>
+                            <textarea class="rec-desc" id="po-desc" rows="3"
+                                placeholder="Press On description…">Remove all conditions and effects lasting for 1 minute or less. This option can be used twice per day, but not consecutively without engaging in another combat</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Long Rest -->
+                    <div class="recovery-block" style="margin-top:8px" id="long-rest-block">
+                        <div class="recovery-head">
+                            <span class="recovery-name lr-name">Long Rest</span>
+                            <div class="recovery-checks" id="long-rest-checks">
+                                <input type="checkbox" class="rec-use-cb" id="long-rest-1" disabled />
+                            </div>
+                            <button class="spell-cast-btn" id="btn-long-rest" type="button">Rest</button>
+                            <button class="rec-toggle" id="lr-toggle" type="button" aria-label="Settings">▾</button>
+                        </div>
+                        <div class="recovery-body" id="long-rest-body" hidden>
+                            <textarea class="rec-desc" id="lr-desc" rows="3"
+                                placeholder="Long Rest description…">A long rest requires 10 hours of uninterrupted downtime, fully restoring all wounds, recharging class resources, repairing all armor to at least half, and removing any conditions that last one day or less. Characters can only take a long rest once per day and must be in a safe environment.</textarea>
                         </div>
                     </div>
                 </div>
@@ -149,8 +221,8 @@
                         <button class="gear-btn" data-editor="res-editor" type="button" aria-label="Edit resources">⚙</button>
                     </div>
                     <div class="section-editor" id="res-editor">
+                        <p class="field-hint" style="margin-bottom:8px">Mana max is calculated automatically from your class features.</p>
                         <div class="editor-grid">
-                            <label class="field"><span class="field-label">Mana Max</span><input id="MN-max-input" type="number" inputmode="numeric" min="0" /></label>
                             <label class="field"><span class="field-label">Label</span><input id="class-res-label-input" type="text" placeholder="Resource" autocomplete="off" /></label>
                             <label class="field"><span class="field-label">Max</span><input id="class-res-max-input" type="number" inputmode="numeric" min="0" /></label>
                         </div>
@@ -165,6 +237,8 @@
                                 <span class="pill-sep">/</span>
                                 <output class="pill-num pill-max" id="MN-max">0</output>
                                 <button class="pill-btn" data-action="inc" aria-label="Increase MN">+</button>
+                                <button class="pill-btn pill-recover-btn" id="btn-recover-mn"
+                                    type="button" aria-label="Recover Mana" title="Recover MN (roll spellcasting check)" hidden>⟳</button>
                             </div>
                         </div>
                         <div class="resource-pill" data-resource="classRes">
@@ -296,9 +370,96 @@
                             <button class="primary-btn" id="btn-save-bio" type="button">Save</button>
                         </div>
                     </div>
+
+                    <!-- Notes -->
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Notes</h2>
+                            <button class="ghost-btn" id="btn-save-notes" type="button">Save</button>
+                        </div>
+                        <textarea class="bio-notes-input" id="char-notes" rows="6"
+                            placeholder="Session notes, reminders, secrets…"></textarea>
+                    </div>
+
+                    <!-- Loyalty / NPCs -->
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Loyalty &amp; NPCs</h2>
+                            <button class="ghost-btn" id="btn-add-npc" type="button">+ Add</button>
+                        </div>
+                        <div id="npc-list"><p class="empty-hint">No contacts added yet.</p></div>
+                        <!-- Add NPC form (hidden until + Add is tapped) -->
+                        <div class="npc-add-form" id="npc-add-form" hidden>
+                            <label class="field"><span class="field-label">Name</span>
+                                <input id="npc-name-input" type="text" autocomplete="off" placeholder="Contact name" /></label>
+                            <label class="field"><span class="field-label">Loyalty</span>
+                                <select id="npc-loyalty-input">
+                                    <option value="Ally">Ally</option>
+                                    <option value="Friendly">Friendly</option>
+                                    <option value="Neutral" selected>Neutral</option>
+                                    <option value="Suspicious">Suspicious</option>
+                                    <option value="Hostile">Hostile</option>
+                                </select></label>
+                            <label class="field"><span class="field-label">Notes</span>
+                                <input id="npc-notes-input" type="text" autocomplete="off" placeholder="Role, location, info…" /></label>
+                            <div class="step-edit-btns">
+                                <button class="step-edit-btn step-edit-btn--save" id="btn-npc-save" type="button">Add</button>
+                                <button class="step-edit-btn step-edit-btn--cancel" id="btn-npc-cancel" type="button">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
                 </div><!-- /play-tab-bio -->
 
             </section><!-- /panel-play -->
+
+            <!-- SPELLS -->
+            <section class="panel" id="panel-spells" role="region" aria-label="Spells">
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Spells</h2>
+                        <div class="spell-mn-display">
+                            <span class="spell-mn-label">MN</span>
+                            <span class="spell-mn-current" id="spell-mn-current">0</span>
+                            <span class="spell-mn-sep">/</span>
+                            <span class="spell-mn-max" id="spell-mn-max">0</span>
+                        </div>
+                    </div>
+                    <div class="spell-search-bar">
+                        <input class="spell-search-input" id="spell-search" type="search"
+                            placeholder="Search spells…" autocomplete="off" />
+                    </div>
+                    <div class="spell-filters" id="spell-filters"></div>
+                    <div class="spell-list" id="spell-list">
+                        <p class="empty-hint">Loading spells…</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- REFERENCE -->
+            <section class="panel" id="panel-ref" role="region" aria-label="Reference">
+                <div class="section">
+                    <div class="ref-tab-row">
+                        <button class="ref-tab is-active" data-ref-tab="tables" type="button">Damage Tables</button>
+                        <button class="ref-tab" data-ref-tab="conditions" type="button">Conditions</button>
+                        <button class="ref-tab" data-ref-tab="actions" type="button">Actions</button>
+                    </div>
+
+                    <!-- Damage Tables -->
+                    <div class="ref-tab-content is-active" id="ref-tab-tables">
+                        <div class="ref-tables-grid" id="ref-tables-grid"></div>
+                    </div>
+
+                    <!-- Conditions -->
+                    <div class="ref-tab-content" id="ref-tab-conditions">
+                        <div class="ref-conditions-list" id="ref-conditions-list"></div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="ref-tab-content" id="ref-tab-actions">
+                        <div class="ref-actions-list" id="ref-actions-list"></div>
+                    </div>
+                </div>
+            </section>
 
             <!-- PROGRESSION -->
             <section class="panel" id="panel-progression" role="region" aria-label="Progression">
@@ -357,6 +518,32 @@
                     <ol class="chat-log" id="chat-log" aria-label="Session chat">
                         <!-- entries injected by JS -->
                     </ol>
+                    <!-- Dice Roller -->
+                    <div class="dice-roller" id="dice-roller">
+                        <div class="dice-top-row">
+                            <div class="dice-count-group">
+                                <span class="dice-mult-label">×</span>
+                                <button class="dice-count-btn is-sel" data-count="1" type="button">1</button>
+                                <button class="dice-count-btn" data-count="2" type="button">2</button>
+                                <button class="dice-count-btn" data-count="3" type="button">3</button>
+                                <button class="dice-count-btn" data-count="4" type="button">4</button>
+                            </div>
+                            <label class="dice-bonus-field">
+                                <span class="dice-bonus-label">Bonus</span>
+                                <input class="dice-bonus-input" id="dice-bonus" type="number" inputmode="numeric" value="0" />
+                            </label>
+                        </div>
+                        <div class="dice-btn-row">
+                            <button class="dice-btn" data-sides="4"   type="button">d4</button>
+                            <button class="dice-btn" data-sides="6"   type="button">d6</button>
+                            <button class="dice-btn" data-sides="8"   type="button">d8</button>
+                            <button class="dice-btn" data-sides="10"  type="button">d10</button>
+                            <button class="dice-btn" data-sides="12"  type="button">d12</button>
+                            <button class="dice-btn" data-sides="20"  type="button">d20</button>
+                            <button class="dice-btn" data-sides="100" type="button">d%</button>
+                        </div>
+                    </div>
+
                     <div class="chat-input-row">
                         <input id="chat-msg-input" type="text" placeholder="Say something…" autocomplete="off" />
                         <button class="chat-send-btn" id="btn-send-msg" type="button">Send</button>
@@ -504,6 +691,59 @@
         </div>
     </div>
 
+    <!-- Spell Roll Modal -->
+    <div class="feat-roll-modal" id="spell-roll-modal" hidden>
+        <div class="feat-rm-scrim" id="srm-scrim"></div>
+        <div class="feat-rm-sheet">
+            <div class="drawer-handle" aria-hidden="true"></div>
+            <div class="wm-head">
+                <div class="wm-name-block">
+                    <div class="wm-name" id="srm-name">Spell</div>
+                    <div class="wm-sub"  id="srm-sub"></div>
+                </div>
+                <button class="icon-btn" id="srm-close" type="button" aria-label="Close">✕</button>
+            </div>
+
+            <!-- Check chips — primary spellcasting stat + Spirit fallback -->
+            <div class="wm-section">
+                <div class="wm-label">Check</div>
+                <div class="wm-check-chips" id="srm-check-chips"></div>
+            </div>
+
+            <!-- Stat row: Damage / Type / Range / Duration -->
+            <div class="wm-stats" id="srm-stats">
+                <div class="wm-stat"><div class="wm-stat-label">Damage</div><div class="wm-stat-val" id="srm-damage">—</div></div>
+                <div class="wm-stat"><div class="wm-stat-label">Type</div><div class="wm-stat-val" id="srm-dmg-type">—</div></div>
+                <div class="wm-stat"><div class="wm-stat-label">Range</div><div class="wm-stat-val" id="srm-range">—</div></div>
+                <div class="wm-stat"><div class="wm-stat-label">Duration</div><div class="wm-stat-val" id="srm-duration">—</div></div>
+            </div>
+
+            <!-- Description -->
+            <div class="wm-desc-edit" id="srm-desc" style="margin-bottom:10px"></div>
+
+            <!-- Roll type -->
+            <div class="roll-seg" id="srm-roll-seg" role="group" aria-label="Roll type">
+                <button class="roll-seg-btn is-sel" type="button" data-seg="flat">Flat</button>
+                <button class="roll-seg-btn" type="button" data-seg="adv">Advantage</button>
+                <button class="roll-seg-btn" type="button" data-seg="dis">Disadvantage</button>
+            </div>
+
+            <details class="wm-advanced">
+                <summary>Bonus</summary>
+                <div class="wm-advanced-grid" style="grid-template-columns:1fr">
+                    <label class="field"><span class="field-label">Modifier Bonus</span>
+                        <input id="srm-bonus" type="number" value="0" /></label>
+                </div>
+            </details>
+
+            <!-- Actions -->
+            <div class="frm-btn-row">
+                <button class="primary-btn" id="srm-roll-mana" type="button">Roll + Spend MN</button>
+                <button class="frm-roll-btn frm-roll-btn--dmg" id="srm-roll-free" type="button">No Mana</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Feature Roll Modal -->
     <div class="feat-roll-modal" id="feat-roll-modal" hidden>
         <div class="feat-rm-scrim" id="frm-scrim"></div>
@@ -599,19 +839,27 @@
     <!-- Bottom navigation — outside <main> so no container can trap fixed positioning -->
     <nav class="bottom-nav" aria-label="Bottom navigation">
         <button class="nav-btn" data-nav="chat" type="button" aria-controls="panel-chat">
-            <span class="nav-icon" aria-hidden="true">💬</span>
+            <img class="nav-icon" src="../assets/icons/chat.png" alt="" aria-hidden="true" />
             <span class="nav-label">Chat</span>
         </button>
         <button class="nav-btn is-active" data-nav="play" type="button" aria-controls="panel-play">
-            <span class="nav-icon" aria-hidden="true">🎲</span>
+            <img class="nav-icon" src="../assets/icons/play.png" alt="" aria-hidden="true" />
             <span class="nav-label">Play</span>
         </button>
         <button class="nav-btn" data-nav="actions" type="button" aria-controls="panel-actions">
-            <span class="nav-icon" aria-hidden="true">⚡</span>
+            <img class="nav-icon" src="../assets/icons/features.png" alt="" aria-hidden="true" />
             <span class="nav-label">Features</span>
         </button>
+        <button class="nav-btn" data-nav="spells" type="button" aria-controls="panel-spells">
+            <img class="nav-icon" src="../assets/icons/spells.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Spells</span>
+        </button>
+        <button class="nav-btn" data-nav="ref" type="button" aria-controls="panel-ref">
+            <img class="nav-icon" src="../assets/icons/reference.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Ref</span>
+        </button>
         <button class="nav-btn" data-nav="progression" type="button" aria-controls="panel-progression">
-            <span class="nav-icon" aria-hidden="true">⬆</span>
+            <img class="nav-icon" src="../assets/icons/progression.png" alt="" aria-hidden="true" />
             <span class="nav-label">Progress</span>
         </button>
     </nav>

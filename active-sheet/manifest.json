@@ -1,0 +1,25 @@
+{
+    "name": "Active Sheet — ARC20",
+    "short_name": "ARC20",
+    "description": "Mobile play companion for Armored Noir TTRPG",
+    "start_url": "./home.html",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "background_color": "#0c0c0f",
+    "theme_color": "#0c0c0f",
+    "icons": [
+        {
+            "src": "../assets/icons/play.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "../assets/icons/features.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

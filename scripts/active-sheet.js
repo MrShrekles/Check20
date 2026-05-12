@@ -52,6 +52,45 @@ const CONDITION_EFFECTS = {
     'Unconscious': 'Cannot act — Vulnerable to crits & Finishers',
 };
 
+// Which check keys each condition forces to Disadvantage ('all' = every check)
+const CONDITION_DISADVANTAGE = {
+    'Broken':      ['agi','cra','ste','str','sur'],
+    'Dislocation': ['agi','cra','ste','str','sur'],
+    'Concussion':  ['inf','int','lck','obs','spi'],
+    'Coughing':    ['inf','int','lck','obs','spi'],
+    'Charmed':     ['inf','int','lck','obs','spi'],
+    'Confused':    ['inf','int','lck','obs','spi'],
+    'Deaf':        ['ste','spi'],
+    'Blind':       'all',
+    'Exhaustion':  'all',
+    'Stunned':     'all',
+    'Pinned':      'all',   // ranged attacks use all checks
+};
+
+// Returns the condition name causing disadvantage for a check key, or null
+function conditionDisadvantage(checkKey) {
+    for (const cond of state.activeConditions) {
+        const rule = CONDITION_DISADVANTAGE[cond];
+        if (!rule) continue;
+        if (rule === 'all' || rule.includes(checkKey)) return cond;
+    }
+    return null;
+}
+
+// Pre-selects Dis on a roll-seg group if any active condition penalizes the given check key
+function applyConditionRollType(segSelector, chipSelector) {
+    const selChip  = document.querySelector(`${chipSelector} .drawer-check-chip.is-sel`);
+    const checkLbl = selChip?.dataset.checkLabel?.toLowerCase() || '';
+    const LABEL_KEY = { agility:'agi', crafting:'cra', stealth:'ste', strength:'str', survival:'sur',
+                        influence:'inf', intellect:'int', luck:'lck', observation:'obs', spirit:'spi' };
+    const checkKey = LABEL_KEY[checkLbl] || '';
+    const penalty  = checkKey ? conditionDisadvantage(checkKey) : null;
+    if (penalty) {
+        document.querySelectorAll(`${segSelector} .roll-seg-btn`).forEach(b => b.classList.remove('is-sel'));
+        document.querySelector(`${segSelector} [data-seg="dis"]`)?.classList.add('is-sel');
+    }
+}
+
 // ── STATE ─────────────────────────────────────────────────────────────────────
 
 const state = {
@@ -66,6 +105,18 @@ const state = {
         wealth:            0,
         featureOverrides:  {},   // { [featureName]: { desc?: string, hideRoll?: bool } }
         theme: { a1: '', a2: '' }, // per-character dual accent colors
+        notes:          '',   // free-form session/character notes
+        npcs:           [],   // [{ name, loyalty, notes }]
+        favoriteSpells: [],   // spell names marked as favorites
+        pressOnUsed:    0,
+        longRestUsed:   false,
+        poUsesMax:  2,
+        poResource: 1,
+        poMana:     1,
+        poArmor:    'd6',
+        poHealing:  'd6',
+        poDesc:     '',
+        lrDesc:     '',
     },
     resources: {
         hp:       { current: 0, max: 0 },
@@ -155,11 +206,17 @@ function armorRatingFor(item) {
 }
 
 function recalcArmorMax() {
-    const total = state.equipment
+    const oldMax = state.resources.armor.max;
+    const total  = state.equipment
         .filter(e => e.category === 'armor')
         .reduce((sum, item) => sum + armorRatingFor(item), 0);
-    state.resources.armor.max     = total;
-    state.resources.armor.current = Math.min(state.resources.armor.current, total || state.resources.armor.current);
+    state.resources.armor.max = total;
+    // If armor was full (or unset), keep it full at the new max
+    if (state.resources.armor.current >= oldMax) {
+        state.resources.armor.current = total;
+    } else {
+        state.resources.armor.current = Math.min(state.resources.armor.current, total);
+    }
     const curEl = document.getElementById('armor-current');
     const maxEl = document.getElementById('armor-max');
     if (curEl) curEl.textContent = state.resources.armor.current;
@@ -181,6 +238,130 @@ function recalcArmorBonuses() {
     saveState();
 }
 
+const SPELL_STAT_MAP = {
+    spirit:'spi', intellect:'int', influence:'inf', agility:'agi',
+    crafting:'cra', stealth:'ste', strength:'str', survival:'sur',
+    observation:'obs', luck:'lck',
+};
+
+function getSpellcastingStat() {
+    if (!state.char.classKey) return null;
+    const entries   = getClassEntries(state.char.classKey);
+    const pathEntry = state.char.pathName ? entries.find(e => e.name === state.char.pathName) : null;
+    const toSearch  = [
+        ...(pathEntry?.path?.steps?.filter(s => Number(s.step) === 0) || []),
+        ...((classBaseData.find(c => c.name === state.char.classKey)?.features) || []),
+    ];
+    for (const s of toSearch) {
+        const m = (s.description || '').match(/(\w+) is your Spellcasting check/i);
+        if (m) return SPELL_STAT_MAP[m[1].toLowerCase()] || null;
+    }
+    return null;
+}
+
+// Matches both "Mana" and "spellpoints / spell points" terminology
+const MN_WORD = '(?:mana|spell\\s*points?)';
+
+function calcManaMax() {
+    const allChecksArr = [...state.checks.physical, ...state.checks.mental];
+
+    // Universal rule: every 2 Spirit = 1 Mana
+    const spirit = allChecksArr.find(c => c.key === 'spi');
+    let total    = spirit ? Math.floor((spirit.mod + (spirit.bonus || 0)) / 2) : 0;
+    let statBased = false;
+
+    if (state.char.classKey) {
+        const base        = classBaseData.find(c => c.name === state.char.classKey) || {};
+        const entries     = getClassEntries(state.char.classKey);
+        const pathEntry   = state.char.pathName   ? entries.find(e => e.name === state.char.pathName)   : null;
+        const talentEntry = state.char.talentName ? entries.find(e => e.name === state.char.talentName) : null;
+
+        function scan(desc) {
+            if (!desc) return;
+            const fixedMatch = desc.match(new RegExp(`you have (\\d+) ${MN_WORD}`, 'i'));
+            if (fixedMatch) total += parseInt(fixedMatch[1], 10);
+            const bonusMatch = desc.match(new RegExp(`additional \\+(\\d+) ${MN_WORD}`, 'i'));
+            if (bonusMatch) total += parseInt(bonusMatch[1], 10);
+            const plusMatch = desc.match(new RegExp(`\\+(\\d+) (?:maximum )?${MN_WORD}`, 'i'));
+            if (plusMatch && !bonusMatch) total += parseInt(plusMatch[1], 10);
+            if (new RegExp(`${MN_WORD} equal to your`, 'i').test(desc)) statBased = true;
+        }
+
+        (base.features || []).forEach(f => scan(f.description));
+
+        const pathSteps   = pathEntry?.path?.steps   || [];
+        const talentSteps = talentEntry?.talent?.steps || [];
+        pathSteps.filter(s => Number(s.step) === 0).forEach(s => scan(s.description));
+        talentSteps.filter(s => Number(s.step) === 0).forEach(s => scan(s.description));
+        pathSteps.filter(s => Number(s.step) !== 0).forEach((s, i) => {
+            if (state.progression.pathChecked[i]) scan(s.description);
+        });
+        talentSteps.filter(s => Number(s.step) !== 0).forEach((s, i) => {
+            if (state.progression.talentChecked[i]) scan(s.description);
+        });
+
+        // Mage-style: base pool = spellcasting stat value
+        if (statBased) {
+            const statKey = getSpellcastingStat();
+            if (statKey) {
+                const stat = allChecksArr.find(c => c.key === statKey);
+                if (stat) total += stat.mod + (stat.bonus || 0) + (stat.armorBonus || 0);
+            }
+        }
+    }
+
+    if (total > 0) {
+        const oldMax = state.resources.MN.max;
+        state.resources.MN.max = total;
+        state.resources.MN.current = state.resources.MN.current >= oldMax
+            ? total
+            : Math.min(state.resources.MN.current, total);
+        syncUI();
+        saveState();
+    }
+
+    // Show Recover button only when a spellcasting stat is detected
+    const recoverBtn = document.getElementById('btn-recover-mn');
+    if (recoverBtn) recoverBtn.hidden = !getSpellcastingStat();
+}
+
+function recoverMN() {
+    const statKey = getSpellcastingStat();
+    if (!statKey) return;
+
+    const stat = [...state.checks.physical, ...state.checks.mental].find(c => c.key === statKey);
+    if (!stat) return;
+
+    const mod   = stat.mod + (stat.bonus || 0) + (stat.armorBonus || 0);
+    const d20   = Math.floor(Math.random() * 20) + 1;
+    const roll  = d20 + mod;
+    const space = state.resources.MN.max - state.resources.MN.current;
+    const gained = Math.min(roll, space);
+
+    state.resources.MN.current = Math.min(state.resources.MN.max, state.resources.MN.current + roll);
+    syncUI();
+    saveState();
+
+    state.chat.unshift({
+        type: 'roll', time: chatTimestamp(),
+        charName: state.char.name || '',
+        label: `${stat.label} — Mana Recovery`,
+        total: roll, rollNote: `d20(${d20})`, mod, rollType: 'flat',
+        conditions: [...state.activeConditions],
+        featureContext: {
+            name: 'Mana Recovery',
+            tags: [`${stat.label} Check`, gained > 0 ? `+${gained} MN` : 'Already full'],
+            desc: gained > 0
+                ? `Recovered ${gained} Mana — now ${state.resources.MN.current}/${state.resources.MN.max}`
+                : 'Mana already at maximum.',
+            diceRolls: [],
+        },
+    });
+    if (state.chat.length > 100) state.chat.length = 100;
+    saveState();
+    setActivePanel('chat');
+}
+
 function showProgError(msg) {
     const el = document.getElementById('xp-error');
     if (!el) return;
@@ -196,6 +377,11 @@ let classBaseData = [];
 let classOptData  = {};
 let weaponsData   = [];
 let armorData     = [];
+let damageData    = {};   // loaded from damage.json — keyed by damage type name
+let spellsData    = [];   // loaded from spells.json
+let spellFilter   = 'All';
+let spellSearch   = '';
+let spellSort     = 'origin'; // 'name' | 'cost' | 'origin'
 
 async function loadClassData() {
     try {
@@ -212,18 +398,23 @@ async function loadClassData() {
             populatePathTalentSelects(state.char.classKey);
             renderClassView();
             renderProgression();
+            calcManaMax();
         }
     } catch (e) { console.warn('Could not load class data', e); }
 }
 
 async function loadWeapons() {
     try {
-        const [wRes, aRes] = await Promise.all([
+        const [wRes, aRes, dRes] = await Promise.all([
             fetch(DATA_BASE + 'weapons.json'),
             fetch(DATA_BASE + 'armor.json'),
+            fetch(DATA_BASE + 'damage.json'),
         ]);
         weaponsData = await wRes.json();
         armorData   = await aRes.json();
+        const dj    = await dRes.json();
+        damageData  = dj?.types || {};
+        recalcArmorBonuses(); // re-run now that armorData is available for rating lookups
 
         const datalist = document.createElement('datalist');
         datalist.id = 'items-datalist';
@@ -458,9 +649,210 @@ function renderWeaponAttackEntry(entry) {
                 ${dmgHtml}
             </div>
         </div>
+        ${successHtml(entry.d20Total)}
+        ${damageTableBtnHtml(entry.d20Total, entry.damageType)}
         ${entry.desc ? `${expandableDesc(entry.desc)}` : ''}
         ${condHtml}
     </div>`;
+}
+
+// ── SPELLS PANEL ──────────────────────────────────────────────────────────────
+
+async function loadSpells() {
+    try {
+        const res = await fetch(DATA_BASE + 'spells.json');
+        spellsData = await res.json();
+        renderSpellsPanel();
+        renderSpellFilters();
+    } catch (e) { console.warn('Could not load spells', e); }
+}
+
+function isFavorite(name) { return (state.char.favoriteSpells || []).includes(name); }
+function toggleFavorite(name) {
+    if (!state.char.favoriteSpells) state.char.favoriteSpells = [];
+    const idx = state.char.favoriteSpells.indexOf(name);
+    if (idx === -1) state.char.favoriteSpells.push(name);
+    else            state.char.favoriteSpells.splice(idx, 1);
+    saveState();
+}
+
+function renderSpellFilters() {
+    const el = document.getElementById('spell-filters');
+    if (!el) return;
+    const origins = ['All', ...new Set(spellsData.map(s => s.origin).filter(Boolean))].sort();
+    el.innerHTML = `
+        <div class="spell-filter-row">
+            <button class="spell-filter-btn spell-filter-btn--fav${spellFilter === '⭐' ? ' is-active' : ''}"
+                type="button" data-origin="⭐">⭐ Favs</button>
+            ${origins.map(o =>
+                `<button class="spell-filter-btn${o === spellFilter ? ' is-active' : ''}"
+                    type="button" data-origin="${o}">${o}</button>`
+            ).join('')}
+        </div>
+        <div class="spell-sort-row">
+            <span class="spell-sort-label">Sort</span>
+            <button class="spell-sort-btn${spellSort === 'name'   ? ' is-active' : ''}" type="button" data-sort="name">A–Z</button>
+            <button class="spell-sort-btn${spellSort === 'cost'   ? ' is-active' : ''}" type="button" data-sort="cost">Cost</button>
+            <button class="spell-sort-btn${spellSort === 'origin' ? ' is-active' : ''}" type="button" data-sort="origin">Origin</button>
+        </div>`;
+}
+
+function castSpell(spell, intent, spendMana) {
+    const cost    = intent.cost || 0;
+    const mnNow   = state.resources.MN.current;
+    const canAfford = mnNow >= cost;
+
+    if (spendMana && cost > 0) {
+        state.resources.MN.current = Math.max(0, mnNow - cost);
+        syncUI();
+        saveState();
+    }
+
+    const mnTag = cost === 0  ? 'Free'
+        : !spendMana          ? 'Without Mana'
+        : canAfford           ? `${cost} MN spent`
+                              : `⚠ ${cost} MN needed (${mnNow} available)`;
+
+    const tags = [
+        spell.transmission,
+        intent.range    ? `Range: ${intent.range}`       : null,
+        intent.duration ? `Duration: ${intent.duration}` : null,
+        mnTag,
+    ].filter(Boolean);
+
+    pushChatFeature({
+        name: `✨ ${spell.name} — ${intent.intent}`,
+        tags,
+        desc: intent.effect || '',
+    });
+}
+
+function renderSpellCard(spell) {
+    const fav     = isFavorite(spell.name);
+    const mnNow   = state.resources.MN.current;
+    const intents = (spell.effects || []).map(ef => {
+        const hasDice   = /\[\[/.test(ef.effect || '');
+        const cost      = ef.cost || 0;
+        const canAfford = mnNow >= cost;
+        const costTag = cost > 0
+            ? `<span class="spell-cost${canAfford ? '' : ' spell-cost--low'}">${cost} MN</span>`
+            : `<span class="spell-cost spell-cost--free">Free</span>`;
+
+        return `<div class="spell-intent">
+            <div class="spell-intent-head">
+                <span class="spell-intent-name">${ef.intent}</span>
+                <div class="spell-intent-tags">
+                    ${costTag}
+                    ${ef.range    ? `<span class="step-tag">${ef.range}</span>`    : ''}
+                    ${ef.duration ? `<span class="step-tag">${ef.duration.trim()}</span>` : ''}
+                </div>
+                <button class="spell-cast-btn${canAfford || cost === 0 ? '' : ' spell-cast-btn--low'}"
+                    type="button"
+                    data-srm-spell="${esc(spell.name)}"
+                    data-srm-intent="${esc(ef.intent)}">✨ Cast</button>
+            </div>
+            <p class="spell-intent-effect">${ef.effect || ''}</p>
+        </div>`;
+    }).join('');
+
+    return `<div class="spell-card-row">
+        <button class="spell-fav-btn${fav ? ' is-fav' : ''}" type="button"
+            data-fav-spell="${esc(spell.name)}" title="${fav ? 'Unfavourite' : 'Favourite'}">${fav ? '★' : '☆'}</button>
+        <details class="spell-card">
+            <summary class="spell-card-head">
+                <span class="spell-name">${spell.name}</span>
+                <div class="spell-meta-tags">
+                    ${spell.origin       ? `<span class="equip-cat-badge">${spell.origin}</span>`       : ''}
+                    ${spell.transmission ? `<span class="equip-cat-badge">${spell.transmission}</span>` : ''}
+                </div>
+            </summary>
+            <div class="spell-intents">${intents}</div>
+        </details>
+    </div>`;
+}
+
+function renderSpellsPanel() {
+    const el = document.getElementById('spell-list');
+    if (!el) return;
+    const q    = spellSearch.toLowerCase();
+    const favs = state.char.favoriteSpells || [];
+
+    let visible = spellsData.filter(s => {
+        if (spellFilter === '⭐' && !favs.includes(s.name)) return false;
+        if (spellFilter !== '⭐' && spellFilter !== 'All' && s.origin !== spellFilter) return false;
+        if (q && !s.name.toLowerCase().includes(q) &&
+            !(s.origin || '').toLowerCase().includes(q) &&
+            !(s.effects || []).some(e => e.effect?.toLowerCase().includes(q))) return false;
+        return true;
+    });
+
+    // Sort
+    const minCost = s => Math.min(...(s.effects || [{ cost: 0 }]).map(e => e.cost || 0));
+    if (spellSort === 'name')   visible = [...visible].sort((a, b) => a.name.localeCompare(b.name));
+    if (spellSort === 'cost')   visible = [...visible].sort((a, b) => minCost(a) - minCost(b) || a.name.localeCompare(b.name));
+    if (spellSort === 'origin') visible = [...visible].sort((a, b) => (a.origin || '').localeCompare(b.origin || '') || a.name.localeCompare(b.name));
+
+    if (!visible.length) { el.innerHTML = '<p class="empty-hint">No spells found.</p>'; return; }
+
+    if (spellSort === 'origin') {
+        // Group by origin with headers
+        const groups = {};
+        visible.forEach(s => { const k = s.origin || 'Other'; (groups[k] = groups[k] || []).push(s); });
+        el.innerHTML = Object.entries(groups).map(([origin, spells]) =>
+            `<div class="spell-origin-header">${origin}</div>${spells.map(renderSpellCard).join('')}`
+        ).join('');
+    } else {
+        el.innerHTML = visible.map(renderSpellCard).join('');
+    }
+}
+
+function bindSpellsPanel() {
+    document.getElementById('spell-search')?.addEventListener('input', e => {
+        spellSearch = e.target.value.trim();
+        renderSpellsPanel();
+    });
+
+    document.getElementById('spell-filters')?.addEventListener('click', e => {
+        // Filter buttons
+        const filterBtn = e.target.closest('.spell-filter-btn');
+        if (filterBtn) {
+            spellFilter = filterBtn.dataset.origin;
+            renderSpellFilters();
+            renderSpellsPanel();
+            return;
+        }
+        // Sort buttons
+        const sortBtn = e.target.closest('.spell-sort-btn');
+        if (sortBtn) {
+            spellSort = sortBtn.dataset.sort;
+            renderSpellFilters();
+            renderSpellsPanel();
+        }
+    });
+
+    // Favourite toggle + spell cast modal delegation
+    document.getElementById('panel-spells')?.addEventListener('click', e => {
+        // Favourite star
+        const favBtn = e.target.closest('[data-fav-spell]');
+        if (favBtn) {
+            const name = favBtn.dataset.favSpell;
+            toggleFavorite(name);
+            const fav = isFavorite(name);
+            favBtn.textContent = fav ? '★' : '☆';
+            favBtn.classList.toggle('is-fav', fav);
+            favBtn.title = fav ? 'Unfavourite' : 'Favourite';
+            if (spellFilter === '⭐') renderSpellsPanel();
+            return;
+        }
+
+        // ✨ Cast button → open spell roll modal
+        const castBtn = e.target.closest('[data-srm-spell][data-srm-intent]');
+        if (castBtn) {
+            const spell  = spellsData.find(s => s.name === castBtn.dataset.srmSpell);
+            const intent = spell?.effects?.find(ef => ef.intent === castBtn.dataset.srmIntent);
+            if (spell && intent) openSpellRollModal(spell, intent);
+        }
+    });
 }
 
 // ── FEATURE ROLL MODAL ────────────────────────────────────────────────────────
@@ -509,6 +901,8 @@ function openFeatureRollModal({ name, tags, desc }) {
 
     document.querySelectorAll('#frm-roll-seg .roll-seg-btn').forEach(b => b.classList.remove('is-sel'));
     document.querySelector('#frm-roll-seg [data-seg="flat"]')?.classList.add('is-sel');
+    // Pre-select Disadvantage if an active condition penalizes this check
+    applyConditionRollType('#frm-roll-seg', '#frm-check-chips');
 
     // Hide the unused results area and send button — rolling goes straight to chat
     document.getElementById('frm-results').hidden = true;
@@ -532,6 +926,7 @@ function bindFeatureRollModal() {
         if (!chip) return;
         document.querySelectorAll('#frm-check-chips .drawer-check-chip').forEach(c => c.classList.remove('is-sel'));
         chip.classList.add('is-sel');
+        applyConditionRollType('#frm-roll-seg', '#frm-check-chips');
     });
 
     document.getElementById('frm-roll-seg')?.addEventListener('click', e => {
@@ -613,6 +1008,306 @@ function bindFeatureRollModal() {
         setActivePanel('chat');
         closeFeatureRollModal();
     });
+}
+
+// ── REFERENCE PANEL ───────────────────────────────────────────────────────────
+
+const REF_ACTIONS = [
+    { group: 'Actions' },
+    { name: 'Attack',            desc: 'Make a melee or ranged attack against a creature or object within range.' },
+    { name: 'Stealth',           desc: 'Make a Stealth check. On success, you are unseen and your next attack has Advantage. Attacking, casting, or revealing yourself ends Stealth unless a feature says otherwise.' },
+    { name: 'Dash',              desc: 'Use your action to move again after moving, doubling your distance this turn.' },
+    { name: 'Cast a Spell',      desc: 'Requires sound, movement, and a Spellcasting check (usually Spirit). Spend the listed Mana cost.' },
+    { name: 'Grab or Hold',      desc: 'Make an opposed Strength check to impose the Pinned condition.' },
+    { name: 'Administer Potion', desc: 'Give a potion to a downed ally. Drinking one yourself is a Half-Action.' },
+    { group: 'Half-Actions' },
+    { name: 'Disarm',            desc: 'Make an opposed Strength or Agility check to disarm a creature.' },
+    { name: 'Help',              desc: 'Give a creature +1 to their next check this turn.' },
+    { name: 'Pick Up Item',      desc: 'Pick up a dropped or nearby item.' },
+    { name: 'Use an Object',     desc: 'Interact with levers, buttons, or similar objects.' },
+    { name: 'Disengage',         desc: 'Move out of a creature\'s range without provoking opportunity attacks.' },
+    { name: 'Unarmed Strike',    desc: 'Deals 1 BPorS damage. Can also be taken as an Off-Action.' },
+    { group: 'Stances (Half-Action)' },
+    { name: 'Advantage Stance',    desc: 'Gain Advantage on your next attack.' },
+    { name: 'Disadvantage Stance', desc: 'Give Disadvantage to enemies attacking you or allies in range.' },
+    { name: 'Offensive Stance',    desc: 'Use your Off-Action to Provoke.' },
+    { name: 'Reaction Stance',     desc: 'React to failed attacks against you.' },
+    { name: 'Guard Stance',        desc: 'When attacked, Provoke once without using an Off-Action. On all failed attacks, may Provoke at Disadvantage.' },
+    { group: 'Off-Actions' },
+    { name: 'Provoke',    desc: 'Attack creatures leaving your melee range without disengaging, when they fail a check against you, or per a specific ability.' },
+    { name: 'Drink',      desc: 'Drink or hand off a potion.' },
+    { name: 'Disrupt',    desc: 'Impose Disadvantage on an enemy\'s attack with a successful check.' },
+    { name: 'Block',      desc: 'Reduce incoming melee damage by half using a shield.' },
+    { name: 'Demoralize', desc: 'Force enemies to make a morale check with an Influence (Intimidate) roll.' },
+    { group: 'Non-Actions' },
+    { name: 'Switch Weapons', desc: 'Drop a weapon and draw another without spending action economy.' },
+    { name: 'Stress Push',   desc: 'Take 4 stress damage to gain a +3 bonus on a low roll.' },
+    { name: 'Roleplay',      desc: 'Briefly communicate or give orders without consequence.' },
+    { group: 'Special' },
+    { name: 'Called Shot',   desc: 'Declare before attacking. Accept a −10 to hit. On success, inflict a condition (Bleeding, Broken, Blind, etc.) instead of normal damage.' },
+    { name: 'Finisher',      desc: 'Instantly eliminate a helpless, sleeping, or completely unaware target. Cannot be used on an active or aware opponent.' },
+    { name: 'Surprise Turn', desc: 'Attacking from Stealth grants one extra action. Reveals your position unless an ability says otherwise.' },
+];
+
+function renderRefTables() {
+    const grid = document.getElementById('ref-tables-grid');
+    if (!grid || !damageData) return;
+    grid.innerHTML = Object.entries(damageData).map(([type, table]) => {
+        const rows = (table.entries || []).map((e, i) =>
+            `<div class="ref-table-row">
+                <span class="ref-table-num">${i + 1}</span>
+                <span class="ref-table-entry">${e}</span>
+            </div>`).join('');
+        return `<details class="ref-table-card">
+            <summary class="ref-table-head">
+                <span class="ref-table-title">${table.icon || ''} ${type}</span>
+                <button class="spell-cast-btn ref-roll-inline" type="button"
+                    data-roll-table="${type}">⚄ Roll</button>
+                <span class="equip-cat-badge">${table.category}</span>
+            </summary>
+            <div class="ref-table-entries">${rows}</div>
+        </details>`;
+    }).join('');
+}
+
+function renderRefConditions() {
+    const el = document.getElementById('ref-conditions-list');
+    if (!el) return;
+    el.innerHTML = Object.entries(CONDITION_GROUPS).map(([group, names]) => `
+        <div class="spell-origin-header">${group}</div>
+        ${names.map(name => `
+            <div class="ref-condition-row">
+                <span class="ref-condition-name">${name}</span>
+                <span class="ref-condition-effect">${CONDITION_EFFECTS[name] || ''}</span>
+            </div>`).join('')}
+    `).join('');
+}
+
+function renderRefActions() {
+    const el = document.getElementById('ref-actions-list');
+    if (!el) return;
+    el.innerHTML = REF_ACTIONS.map(a => {
+        if (a.group) return `<div class="spell-origin-header">${a.group}</div>`;
+        return `<div class="ref-action-card">
+            <div class="ref-action-head">
+                <span class="ref-action-name">${a.name}</span>
+                <button class="step-action-btn" type="button" data-action="chat"
+                    data-name="${esc(a.name)}" data-desc="${esc(a.desc)}" data-check=""><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
+            </div>
+            <div class="ref-action-desc">${a.desc}</div>
+        </div>`;
+    }).join('');
+}
+
+function renderRefPanel() {
+    renderRefTables();
+    renderRefConditions();
+    renderRefActions();
+}
+
+function bindRefPanel() {
+    // Sub-tab switching
+    document.querySelector('.ref-tab-row')?.addEventListener('click', e => {
+        const tab = e.target.closest('.ref-tab');
+        if (!tab) return;
+        const target = tab.dataset.refTab;
+        document.querySelectorAll('.ref-tab').forEach(t => t.classList.toggle('is-active', t === tab));
+        document.querySelectorAll('.ref-tab-content').forEach(c =>
+            c.classList.toggle('is-active', c.id === `ref-tab-${target}`));
+    });
+
+    // Quick roll
+    document.getElementById('ref-quick-roll-btn')?.addEventListener('click', () => {
+        const type = document.getElementById('ref-dmg-type-sel')?.value;
+        if (!type) return;
+        rollAndShowRefTable(type, 'ref-quick-result');
+    });
+
+    // Per-card roll buttons (prevent details toggle)
+    document.getElementById('ref-tables-grid')?.addEventListener('click', e => {
+        const btn = e.target.closest('[data-roll-table]');
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        rollDamageTable(btn.dataset.rollTable);
+        setActivePanel('chat');
+    });
+}
+
+function rollAndShowRefTable(type, resultElId) {
+    const table = damageData[type];
+    if (!table) return;
+    const roll   = Math.ceil(Math.random() * 6);
+    const result = table.entries[roll - 1] || '—';
+
+    const el = document.getElementById(resultElId);
+    if (el) {
+        el.hidden = false;
+        el.innerHTML = `<div class="ref-quick-res-inner">
+            <span class="ref-quick-num">d6 → ${roll}</span>
+            <span class="ref-quick-entry">${table.icon || ''} ${type}: <strong>${result}</strong></span>
+            <button class="ghost-btn" style="margin-top:6px" data-post-result="${type}|${roll}|${result}" type="button">→ Chat</button>
+        </div>`;
+
+        el.querySelector('[data-post-result]')?.addEventListener('click', () => {
+            rollDamageTable(type);
+        });
+    }
+}
+
+// ── SPELL ROLL MODAL ──────────────────────────────────────────────────────────
+
+// Returns check options for spell casting:
+// [primary spellcasting stat (if any), Spirit (always)]
+// Spirit is deduplicated if it IS the spellcasting stat.
+function getSpellcastingChecks() {
+    const allChecks  = [...state.checks.physical, ...state.checks.mental];
+    const spirit     = allChecks.find(c => c.key === 'spi');
+    const primaryKey = getSpellcastingStat();
+    if (!primaryKey || primaryKey === 'spi') return spirit ? [spirit] : [];
+    const primary = allChecks.find(c => c.key === primaryKey);
+    return [primary, spirit].filter(Boolean);
+}
+
+const sfrm = { spell: null, intent: null };
+
+function openSpellRollModal(spell, intent) {
+    sfrm.spell  = spell;
+    sfrm.intent = intent;
+
+    const cost  = intent.cost || 0;
+    const mnNow = state.resources.MN.current;
+
+    // Header
+    document.getElementById('srm-name').textContent = `✨ ${spell.name} — ${intent.intent}`;
+    document.getElementById('srm-sub').textContent  =
+        [spell.manner, spell.transmission, spell.origin,
+         cost > 0 ? `${cost} MN` : 'Free'].filter(Boolean).join(' · ');
+
+    // Check chips: primary spellcasting stat + Spirit fallback
+    const checks = getSpellcastingChecks();
+    document.getElementById('srm-check-chips').innerHTML = checks.length
+        ? checks.map((c, i) => {
+            const total = c.mod + (c.bonus || 0) + (c.armorBonus || 0);
+            return `<button class="drawer-check-chip${i === 0 ? ' is-sel' : ''}"
+                type="button" data-check-mod="${total}" data-check-label="${c.label}">
+                ${c.label} ${fmtSigned(total)}</button>`;
+          }).join('')
+        : `<span style="font-size:12px;color:var(--muted)">No check available</span>`;
+
+    // Stat row
+    const diceMatch = (intent.effect || '').match(/\[\[(\d+d\d+[!]?(?:[+-]\d+)?)\]\]/i);
+    document.getElementById('srm-damage').textContent   = diceMatch ? diceMatch[1] : '—';
+    document.getElementById('srm-dmg-type').textContent = spell.transmission || '—';
+    document.getElementById('srm-range').textContent    = intent.range    || '—';
+    document.getElementById('srm-duration').textContent = (intent.duration || '—').trim();
+
+    // Description
+    const descEl = document.getElementById('srm-desc');
+    descEl.textContent = intent.effect || '';
+    descEl.style.display = intent.effect ? '' : 'none';
+
+    // Roll type reset + condition pre-selection
+    document.querySelectorAll('#srm-roll-seg .roll-seg-btn').forEach(b => b.classList.remove('is-sel'));
+    document.querySelector('#srm-roll-seg [data-seg="flat"]')?.classList.add('is-sel');
+    document.getElementById('srm-bonus').value = 0;
+    if (checks.length) applyConditionRollType('#srm-roll-seg', '#srm-check-chips');
+
+    // Button labels
+    const canAfford = mnNow >= cost;
+    document.getElementById('srm-roll-mana').textContent =
+        cost > 0 ? `Roll + Spend ${cost} MN${canAfford ? '' : ' ⚠'}` : 'Roll (Free)';
+
+    document.getElementById('spell-roll-modal').hidden = false;
+}
+
+function closeSpellRollModal() {
+    document.getElementById('spell-roll-modal').hidden = true;
+    sfrm.spell = sfrm.intent = null;
+}
+
+function srmDoRoll(spendMana) {
+    if (!sfrm.spell || !sfrm.intent) return;
+
+    const selChip  = document.querySelector('#srm-check-chips .drawer-check-chip.is-sel');
+    const checkMod = selChip ? parseInt(selChip.dataset.checkMod, 10) : 0;
+    const checkLbl = selChip ? selChip.dataset.checkLabel : 'Spirit';
+    const rollType = document.querySelector('#srm-roll-seg .roll-seg-btn.is-sel')?.dataset.seg || 'flat';
+    const bonus    = parseInt(document.getElementById('srm-bonus')?.value || '0', 10) || 0;
+    const cost     = sfrm.intent.cost || 0;
+    const mnNow    = state.resources.MN.current;
+
+    const r = () => Math.floor(Math.random() * 20) + 1;
+    let d20, rollNote;
+    if (rollType === 'adv')      { const a=r(),b=r(); d20=Math.max(a,b); rollNote=`adv(${a},${b})`; }
+    else if (rollType === 'dis') { const a=r(),b=r(); d20=Math.min(a,b); rollNote=`dis(${a},${b})`; }
+    else                         { d20=r(); rollNote=`d20(${d20})`; }
+
+    const total = d20 + checkMod + bonus;
+
+    if (spendMana && cost > 0) {
+        state.resources.MN.current = Math.max(0, mnNow - cost);
+        syncUI();
+    }
+
+    const mnTag = cost === 0    ? 'Free'
+        : !spendMana            ? 'Without Mana'
+        : mnNow >= cost         ? `${cost} MN spent`
+                                : `⚠ ${cost} MN (only ${mnNow} available)`;
+
+    const diceMatch  = (sfrm.intent.effect || '').match(/\[\[(\d+d\d+[!]?(?:[+-]\d+)?)\]\]/i);
+    const diceRolls  = diceMatch ? [rollDiceNotation(diceMatch[1])] : [];
+
+    const allTags = [
+        sfrm.spell.manner,
+        sfrm.spell.transmission,
+        sfrm.spell.origin,
+        `Check: ${checkLbl}`,
+        sfrm.intent.range    ? `Range: ${sfrm.intent.range}`           : null,
+        sfrm.intent.duration ? `Duration: ${sfrm.intent.duration.trim()}` : null,
+        mnTag,
+    ].filter(Boolean);
+
+    state.chat.unshift({
+        type: 'roll', time: chatTimestamp(),
+        charName: state.char.name || '',
+        label: checkLbl, total, rollNote,
+        mod: checkMod + bonus, rollType,
+        conditions: [...state.activeConditions],
+        featureContext: {
+            name: `✨ ${sfrm.spell.name} — ${sfrm.intent.intent}`,
+            tags: allTags,
+            desc: sfrm.intent.effect || '',
+            diceRolls,
+        },
+    });
+    if (state.chat.length > 100) state.chat.length = 100;
+    saveState();
+    setActivePanel('chat');
+    closeSpellRollModal();
+}
+
+function bindSpellRollModal() {
+    document.getElementById('srm-close')?.addEventListener('click', closeSpellRollModal);
+    document.getElementById('srm-scrim')?.addEventListener('click', closeSpellRollModal);
+
+    document.getElementById('srm-check-chips')?.addEventListener('click', e => {
+        const chip = e.target.closest('.drawer-check-chip');
+        if (!chip) return;
+        document.querySelectorAll('#srm-check-chips .drawer-check-chip').forEach(c => c.classList.remove('is-sel'));
+        chip.classList.add('is-sel');
+        applyConditionRollType('#srm-roll-seg', '#srm-check-chips');
+    });
+
+    document.getElementById('srm-roll-seg')?.addEventListener('click', e => {
+        const btn = e.target.closest('.roll-seg-btn');
+        if (!btn) return;
+        document.querySelectorAll('#srm-roll-seg .roll-seg-btn').forEach(b => b.classList.remove('is-sel'));
+        btn.classList.add('is-sel');
+    });
+
+    document.getElementById('srm-roll-mana')?.addEventListener('click', () => srmDoRoll(true));
+    document.getElementById('srm-roll-free')?.addEventListener('click', () => srmDoRoll(false));
 }
 
 // ── SETTINGS & THEME ──────────────────────────────────────────────────────────
@@ -1063,11 +1758,11 @@ function renderStepCard(s) {
                     data-name="${esc(name)}"
                     data-desc="${esc(desc)}"
                     data-extra-tags="${esc(extraTags)}"
-                    data-check="${esc(check)}">🎲</button>` : ''}
+                    data-check="${esc(check)}"><img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>` : ''}
                 <button class="step-action-btn" type="button" title="Send to chat"
                     data-action="chat"
                     data-name="${esc(name)}"
-                    data-desc="${esc(desc)}">💬</button>
+                    data-desc="${esc(desc)}"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
                 <button class="step-action-btn step-edit-trigger" type="button" title="Edit"
                     data-action="edit"
                     data-feat-name="${esc(name)}">✎</button>
@@ -1184,10 +1879,10 @@ function renderEquipment() {
 
         const rollBtn = item.hideRoll ? '' : isWeapon
             ? `<button class="step-action-btn" type="button" title="Attack"
-                    data-action="weapon-roll" data-equip-index="${i}">🎲</button>`
+                    data-action="weapon-roll" data-equip-index="${i}"><img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>`
             : `<button class="step-action-btn" type="button" title="Roll"
                     data-action="roll" data-name="${esc(item.name)}"
-                    data-desc="${esc(item.notes||'')}" data-tag="${esc(cat)}" data-check="">🎲</button>`;
+                    data-desc="${esc(item.notes||'')}" data-tag="${esc(cat)}" data-check=""><img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>`;
 
         const editBtn = isArmor
             ? `<button class="step-action-btn step-edit-trigger" type="button" title="Edit"
@@ -1204,7 +1899,7 @@ function renderEquipment() {
                 ${rollBtn}
                 <button class="step-action-btn" type="button" title="Send to chat"
                     data-action="chat" data-name="${esc(item.name)}"
-                    data-desc="${esc(item.flavor || item.notes || '')}">💬</button>
+                    data-desc="${esc(item.flavor || item.notes || '')}"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
                 ${editBtn}
                 <button class="step-action-btn" type="button" style="color:#ff6060"
                     data-action="del-equip" data-equip-index="${i}" aria-label="Remove">✕</button>
@@ -1238,6 +1933,17 @@ function pushChatRoll({ label, total, rollNote, mod, rollType, conditions }) {
     setActivePanel('chat');
 }
 
+function pushChatRecovery({ title, gains }) {
+    state.chat.unshift({
+        type: 'recovery', time: chatTimestamp(),
+        charName: state.char.name || '',
+        title, gains,
+    });
+    if (state.chat.length > 100) state.chat.length = 100;
+    saveState();
+    renderChat();
+}
+
 function pushChatFeature({ name, tags, desc }) {
     state.chat.unshift({
         type: 'feature', time: chatTimestamp(),
@@ -1253,6 +1959,47 @@ function pushChatFeature({ name, tags, desc }) {
 }
 
 // Extract the natural die value from a rollNote string
+function successCount(total) {
+    return total >= 15 ? Math.floor((total - 10) / 5) : 0;
+}
+
+function successHtml(total) {
+    const n = successCount(total);
+    if (n === 0) return `<div class="roll-outcome roll-outcome--fail">✗ No Success</div>`;
+    const label = n === 1 ? '1 Success' : `${n} Successes`;
+    const pips  = '◆'.repeat(Math.min(n, 6));
+    return `<div class="roll-outcome roll-outcome--success">${pips} ${label}</div>`;
+}
+
+function rollDamageTable(damageType) {
+    const table = damageData[damageType];
+    if (!table) return;
+    const roll   = Math.ceil(Math.random() * 6);
+    const result = table.entries[roll - 1] || '—';
+    state.chat.unshift({
+        type: 'feature', time: chatTimestamp(),
+        charName: state.char.name || '',
+        name: `${table.icon} ${damageType} Table`,
+        tags: [`Roll ${roll}`, table.category],
+        desc: result,
+        diceRolls: [],
+    });
+    if (state.chat.length > 100) state.chat.length = 100;
+    saveState();
+    renderChat();
+}
+
+// Returns HTML for the damage table button if conditions are met
+function damageTableBtnHtml(total, damageType) {
+    const n = successCount(total);
+    if (n < 2 || !damageType || !damageData[damageType]) return '';
+    const rolls = n - 1;
+    return `<button class="dmg-table-btn" type="button"
+        data-dmg-type="${damageType}" data-rolls="${rolls}">
+        ⚄ Roll ${damageType} Table${rolls > 1 ? ` ×${rolls}` : ''}
+    </button>`;
+}
+
 function naturalRoll(rollNote) {
     if (!rollNote) return null;
     const nums = rollNote.match(/\d+/g)?.map(Number);
@@ -1308,6 +2055,8 @@ function renderRollEntry(entry) {
                     ${diceChipsHtml(fcDice)}
                 </div>` : ''}
             </div>
+            ${successHtml(entry.total)}
+            ${damageTableBtnHtml(entry.total, fc.tags?.find(t => t.startsWith('Dmg:'))?.match(/\(([^)]+)\)/)?.[1] || '')}
             ${fc.desc ? expandableDesc(fc.desc) : ''}
             ${condHtml}
         </div>`;
@@ -1324,7 +2073,38 @@ function renderRollEntry(entry) {
         </div>
         <div class="chat-roll-result ${resClass}">${entry.total}</div>
         <div class="chat-roll-breakdown">${entry.rollNote}${modStr}${typeLabel ? ` ${typeLabel}` : ''}</div>
+        ${successHtml(entry.total)}
         ${condHtml}
+    </div>`;
+}
+
+function renderRecoveryEntry(entry) {
+    const rows = (entry.gains || []).map(g =>
+        `<div class="chat-rec-row">
+            <span class="chat-rec-label">${g.label}</span>
+            <span class="chat-rec-val${g.rolled ? ' chat-rec-val--rolled' : ''}">${g.value}</span>
+        </div>`
+    ).join('');
+    return `<div class="chat-recovery-card">
+        <div class="chat-card-head">
+            <span class="chat-card-title">⟳ ${entry.charName ? `${entry.charName} · ` : ''}${entry.title}</span>
+            <span class="chat-time">${entry.time}</span>
+        </div>
+        <div class="chat-rec-rows">${rows}</div>
+    </div>`;
+}
+
+function renderDiceEntry(entry) {
+    const breakdown = entry.rolls.length > 1
+        ? `<div class="dice-card-breakdown">[${entry.rolls.join(' + ')}]${entry.bonus !== 0 ? ` ${fmtSigned(entry.bonus)}` : ''}</div>`
+        : '';
+    return `<div class="chat-dice-card">
+        <div class="chat-card-head">
+            <span class="chat-card-title">${entry.charName ? `${entry.charName} · ` : ''}${entry.notation}</span>
+            <span class="chat-time">${entry.time}</span>
+        </div>
+        <div class="dice-card-total">${entry.total}</div>
+        ${breakdown}
     </div>`;
 }
 
@@ -1361,6 +2141,10 @@ function renderChat() {
             li.innerHTML = renderRollEntry(entry);
         } else if (entry.type === 'feature') {
             li.innerHTML = renderFeatureEntry(entry);
+        } else if (entry.type === 'dice') {
+            li.innerHTML = renderDiceEntry(entry);
+        } else if (entry.type === 'recovery') {
+            li.innerHTML = renderRecoveryEntry(entry);
         } else {
             // Plain message or legacy text entry
             li.className = 'chat-entry--msg';
@@ -1427,6 +2211,8 @@ function cacheEls() {
     els.panels = {
         play:        document.getElementById('panel-play'),
         actions:     document.getElementById('panel-actions'),
+        spells:      document.getElementById('panel-spells'),
+        ref:         document.getElementById('panel-ref'),
         progression: document.getElementById('panel-progression'),
         chat:        document.getElementById('panel-chat'),
     };
@@ -1455,7 +2241,7 @@ function cacheEls() {
     els.btnClearLog        = document.getElementById('btn-clear-log');
 
     els.hpMaxInput    = document.getElementById('hp-max-input');
-    els.MNMaxInput    = document.getElementById('MN-max-input');
+    // MN-max-input removed — mana max is now auto-calculated from class features
 
     els.btnSaveBio = document.getElementById('btn-save-bio');
     els.topbarName = document.getElementById('topbar-name');
@@ -1493,22 +2279,167 @@ function syncConditionsBar() {
 function setActivePanel(key) {
     Object.entries(els.panels).forEach(([k, el]) => el?.classList.toggle('is-active', k === key));
     els.navBtns.forEach(b => b.classList.toggle('is-active', b.dataset.nav === key));
-    if (key === 'chat') renderChat();
+    if (key === 'chat')   renderChat();
+    if (key === 'spells') renderSpellsPanel();
+    if (key === 'ref')    renderRefPanel();
 }
 
 // ── RESOURCES ─────────────────────────────────────────────────────────────────
 
+function syncRecoveryUI() {
+    const usesMax = state.char.poUsesMax || 2;
+    const po      = state.char.pressOnUsed || 0;
+    const checksEl = document.getElementById('press-on-checks');
+    if (checksEl) {
+        checksEl.innerHTML = '';
+        for (let i = 1; i <= usesMax; i++) {
+            const cb = document.createElement('input');
+            cb.type = 'checkbox'; cb.className = 'rec-use-cb';
+            cb.disabled = true; cb.checked = i <= po;
+            checksEl.appendChild(cb);
+        }
+    }
+    const pressBtn = document.getElementById('btn-press-on');
+    if (pressBtn) { pressBtn.disabled = po >= usesMax; pressBtn.textContent = po >= usesMax ? 'Used' : 'Use'; }
+
+    const lr = state.char.longRestUsed;
+    const lrCb = document.getElementById('long-rest-1');
+    if (lrCb) lrCb.checked = lr;
+    const restBtn = document.getElementById('btn-long-rest');
+    if (restBtn) { restBtn.disabled = lr; restBtn.textContent = lr ? 'Done' : 'Rest'; }
+}
+
+function bindRecovery() {
+    // Populate config inputs from saved state
+    const setInput = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+    setInput('po-uses-max', state.char.poUsesMax ?? 2);
+    setInput('po-resource', state.char.poResource ?? 1);
+    setInput('po-mana',     state.char.poMana     ?? 1);
+    setInput('po-armor',    state.char.poArmor    ?? 'd6');
+    setInput('po-healing',  state.char.poHealing  ?? 'd6');
+    if (state.char.poDesc) setInput('po-desc', state.char.poDesc);
+    if (state.char.lrDesc) setInput('lr-desc', state.char.lrDesc);
+
+    syncRecoveryUI();
+
+    // Save config on change
+    const savePoConfig = () => {
+        const g = id => document.getElementById(id)?.value ?? '';
+        state.char.poUsesMax  = parseInt(g('po-uses-max') || '2', 10);
+        state.char.poResource = parseInt(g('po-resource') || '0', 10);
+        state.char.poMana     = parseInt(g('po-mana')     || '0', 10);
+        state.char.poArmor    = g('po-armor')   || '';
+        state.char.poHealing  = g('po-healing') || '';
+        state.char.poDesc     = g('po-desc');
+        state.char.lrDesc     = g('lr-desc');
+        saveState();
+    };
+    ['po-uses-max','po-resource','po-mana','po-armor','po-healing','po-desc','lr-desc'].forEach(id => {
+        document.getElementById(id)?.addEventListener('change', () => {
+            savePoConfig();
+            if (id === 'po-uses-max') syncRecoveryUI();
+        });
+    });
+
+    // Toggle collapse
+    document.getElementById('po-toggle')?.addEventListener('click', () => {
+        const b = document.getElementById('press-on-body');
+        if (b) b.hidden = !b.hidden;
+    });
+    document.getElementById('lr-toggle')?.addEventListener('click', () => {
+        const b = document.getElementById('long-rest-body');
+        if (b) b.hidden = !b.hidden;
+    });
+
+    // ── Press On ──────────────────────────────────────────────────────────────
+    document.getElementById('btn-press-on')?.addEventListener('click', () => {
+        const usesMax = state.char.poUsesMax || 2;
+        if ((state.char.pressOnUsed || 0) >= usesMax) return;
+
+        const resource       = state.char.poResource ?? 1;
+        const mana           = state.char.poMana     ?? 1;
+        const armorNotation  = (state.char.poArmor   || 'd6').trim();
+        const healNotation   = (state.char.poHealing || 'd6').trim();
+        const craftingMod    = allChecks().find(c => c.key === 'cra')?.mod || 0;
+        const resLabel       = state.resources.classRes.label || 'Resource';
+
+        const normalize = s => /^\d/.test(s) ? s : '1' + s;
+        const gains = [];
+
+        if (resource > 0) {
+            state.resources.classRes.current = Math.min(state.resources.classRes.current + resource, state.resources.classRes.max);
+            gains.push({ label: 'Regain', value: `${resource} ${resLabel}` });
+        }
+        if (mana > 0) {
+            state.resources.MN.current = Math.min(state.resources.MN.current + mana, state.resources.MN.max);
+            gains.push({ label: 'Recover', value: `${mana} Mana` });
+        }
+        if (armorNotation) {
+            const r     = rollDiceNotation(normalize(armorNotation));
+            const total = Math.max(1, (r?.total || 0) + craftingMod);
+            state.resources.armor.current = Math.min(state.resources.armor.current + total, state.resources.armor.max);
+            gains.push({ label: 'Repair Armor', value: String(total), rolled: true });
+        }
+        if (healNotation) {
+            const r     = rollDiceNotation(normalize(healNotation));
+            const total = r?.total || 0;
+            state.resources.hp.current = Math.min(state.resources.hp.current + total, state.resources.hp.max);
+            gains.push({ label: 'Healing', value: String(total), rolled: true });
+        }
+
+        state.char.pressOnUsed = (state.char.pressOnUsed || 0) + 1;
+        syncUI(); saveState(); syncRecoveryUI();
+        pushChatRecovery({ title: 'Press On', gains });
+    });
+
+    // ── Long Rest ─────────────────────────────────────────────────────────────
+    document.getElementById('btn-long-rest')?.addEventListener('click', () => {
+        if (state.char.longRestUsed) return;
+
+        state.resources.hp.current       = state.resources.hp.max;
+        state.resources.MN.current       = state.resources.MN.max;
+        state.resources.classRes.current = state.resources.classRes.max;
+        state.resources.armor.current    = Math.max(state.resources.armor.current, Math.ceil(state.resources.armor.max / 2));
+        state.activeConditions.clear();
+        syncConditionsBar(); renderConditions();
+
+        state.char.longRestUsed = true;
+        syncUI(); saveState(); syncRecoveryUI();
+
+        const resLabel = state.resources.classRes.label || 'Resource';
+        pushChatRecovery({ title: 'Long Rest', gains: [
+            { label: 'Wounds',     value: 'Full Restore' },
+            { label: 'Mana',       value: 'Full Restore' },
+            { label: resLabel,     value: 'Full Restore' },
+            { label: 'Armor',      value: 'Repaired to ½+' },
+            { label: 'Conditions', value: 'Day Conditions Cleared' },
+        ]});
+    });
+
+    // ── Reset Day ─────────────────────────────────────────────────────────────
+    document.getElementById('btn-reset-recovery')?.addEventListener('click', () => {
+        state.char.pressOnUsed  = 0;
+        state.char.longRestUsed = false;
+        saveState(); syncRecoveryUI();
+    });
+}
+
 function bindResources() {
+    document.getElementById('btn-recover-mn')?.addEventListener('click', recoverMN);
+
     // Play panel: hp + armor
     document.querySelector('.resource-grid')?.addEventListener('click', e => {
+        if (e.target.closest('#btn-recover-mn')) return; // handled separately
         const btn  = e.target.closest('.pill-btn');
         const pill = e.target.closest('.resource-pill');
         if (!btn || !pill) return;
         const res    = state.resources[pill.dataset.resource];
         const action = btn.dataset.action;
         if (!res) return;
-        if (action === 'inc') res.current = Math.min(res.current + 1, res.max);
-        if (action === 'dec') res.current = Math.max(res.current - 1, 0);
+        if (action === 'inc')  res.current = Math.min(res.current + 2, res.max);
+        if (action === 'dec')  res.current = Math.max(res.current - 1, 0);
+        if (action === 'inc5') res.current = Math.min(res.current + 5, res.max);
+        if (action === 'dec5') res.current = Math.max(res.current - 5, 0);
         syncUI();
         saveState();
     });
@@ -1519,8 +2450,10 @@ function bindResources() {
         const pill = e.target.closest('.resource-pill');
         if (!btn || !pill || !state.resources[pill.dataset.resource]) return;
         const res = state.resources[pill.dataset.resource];
-        if (btn.dataset.action === 'inc') res.current = Math.min(res.current + 1, res.max);
-        if (btn.dataset.action === 'dec') res.current = Math.max(res.current - 1, 0);
+        if (btn.dataset.action === 'inc')  res.current = Math.min(res.current + 2, res.max);
+        if (btn.dataset.action === 'dec')  res.current = Math.max(res.current - 1, 0);
+        if (btn.dataset.action === 'inc5') res.current = Math.min(res.current + 5, res.max);
+        if (btn.dataset.action === 'dec5') res.current = Math.max(res.current - 5, 0);
         syncUI();
         saveState();
     });
@@ -1667,12 +2600,21 @@ function bindDrawer() {
     // Chat
     // Expand/collapse long descriptions in chat
     document.getElementById('chat-log')?.addEventListener('click', e => {
-        const btn = e.target.closest('.chat-expand-btn');
-        if (!btn) return;
-        const body = btn.previousElementSibling;
-        if (!body) return;
-        const collapsed = body.classList.toggle('is-clamped');
-        btn.textContent = collapsed ? '▼ Show more' : '▲ Show less';
+        const expand = e.target.closest('.chat-expand-btn');
+        if (expand) {
+            const body = expand.previousElementSibling;
+            if (!body) return;
+            const collapsed = body.classList.toggle('is-clamped');
+            expand.textContent = collapsed ? '▼ Show more' : '▲ Show less';
+            return;
+        }
+        const tableBtn = e.target.closest('.dmg-table-btn');
+        if (tableBtn) {
+            const type  = tableBtn.dataset.dmgType;
+            const rolls = parseInt(tableBtn.dataset.rolls, 10) || 1;
+            for (let i = 0; i < rolls; i++) rollDamageTable(type);
+            setActivePanel('chat');
+        }
     });
 
     document.getElementById('btn-clear-chat')?.addEventListener('click', () => {
@@ -1692,6 +2634,41 @@ function sendChatMsg() {
     if (!text) return;
     pushChat(text, 'msg');
     if (input) input.value = '';
+}
+
+function bindDiceRoller() {
+    const roller = document.getElementById('dice-roller');
+    if (!roller) return;
+
+    // Count chip selection
+    roller.querySelectorAll('.dice-count-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            roller.querySelectorAll('.dice-count-btn').forEach(b => b.classList.remove('is-sel'));
+            btn.classList.add('is-sel');
+        });
+    });
+
+    // Die button — roll and post to chat
+    roller.querySelectorAll('.dice-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const sides  = parseInt(btn.dataset.sides, 10);
+            const count  = parseInt(roller.querySelector('.dice-count-btn.is-sel')?.dataset.count || '1', 10);
+            const bonus  = parseInt(document.getElementById('dice-bonus')?.value || '0', 10);
+            const rolls  = Array.from({ length: count }, () => Math.ceil(Math.random() * sides));
+            const total  = rolls.reduce((s, r) => s + r, 0) + bonus;
+            const sidesLabel = sides === 100 ? '%' : sides;
+            const notation   = `${count}d${sidesLabel}${bonus !== 0 ? fmtSigned(bonus) : ''}`;
+            state.chat.unshift({
+                type:     'dice',
+                time:     chatTimestamp(),
+                charName: state.char.name || '',
+                notation, rolls, bonus, total,
+            });
+            if (state.chat.length > 100) state.chat.length = 100;
+            saveState();
+            renderChat();
+        });
+    });
 }
 
 // Match comma-separated check names from feature data to state checks
@@ -1748,6 +2725,9 @@ function openDrawer(label = null, checkStr = null) {
             condBox.hidden = true;
         }
     }
+
+    // Pre-select Disadvantage if a condition penalizes the selected check
+    applyConditionRollType('.roll-seg', '#drawer-check-chips');
 
     els.rollDrawer.inert = false;
     els.rollDrawer.removeAttribute('aria-hidden');
@@ -1810,7 +2790,7 @@ function populateEditor(editorId) {
         const maxInput   = document.getElementById('class-res-max-input');
         if (labelInput) labelInput.value = state.resources.classRes.label;
         if (maxInput)   maxInput.value   = state.resources.classRes.max;
-        if (els.MNMaxInput) els.MNMaxInput.value = state.resources.MN.max;
+        // MN max is auto-calculated — no manual input
     }
 }
 
@@ -1828,6 +2808,7 @@ function saveEditor(target) {
             if (bonEl) chk.bonus = Number(bonEl.value) || 0;
         });
         calcDerived();
+        calcManaMax(); // stat-based classes (Mage) need recalc when checks change
         saveState();
         renderQuickChecks();
         syncUI();
@@ -1862,7 +2843,7 @@ function saveEditor(target) {
             }
         }
 
-        saveState(); renderClassView(); renderProgression();
+        saveState(); renderClassView(); renderProgression(); calcManaMax();
     }
     if (target === 'equipment') {
         const nameInput  = document.getElementById('equip-name-input');
@@ -1900,12 +2881,10 @@ function saveEditor(target) {
     if (target === 'classres') {
         const label  = document.getElementById('class-res-label-input')?.value.trim() || 'Resource';
         const max    = clampNum(document.getElementById('class-res-max-input')?.value);
-        const mnMax  = clampNum(els.MNMaxInput?.value);
         state.resources.classRes.label   = label;
         state.resources.classRes.max     = max;
         state.resources.classRes.current = Math.min(state.resources.classRes.current, max);
-        state.resources.MN.max           = mnMax;
-        state.resources.MN.current       = Math.min(state.resources.MN.current, mnMax);
+        // MN max is auto-calculated by calcManaMax() — not set manually here
         const display = document.getElementById('class-res-label-display');
         if (display) display.textContent = label;
         saveState(); syncUI();
@@ -1959,8 +2938,98 @@ function bindBio() {
     });
 }
 
+function renderNpcList() {
+    const el = document.getElementById('npc-list');
+    if (!el) return;
+    const npcs = state.char.npcs || [];
+    if (!npcs.length) { el.innerHTML = '<p class="empty-hint">No contacts added yet.</p>'; return; }
+    const LOYALTY_COLOR = { Ally:'#60e090', Friendly:'#90c0ff', Neutral:'var(--muted)', Suspicious:'#ffa060', Hostile:'#ff6060' };
+    el.innerHTML = npcs.map((npc, i) => `
+        <div class="npc-entry">
+            <div class="npc-info">
+                <span class="npc-name">${npc.name}</span>
+                <span class="npc-loyalty" style="color:${LOYALTY_COLOR[npc.loyalty] || 'var(--muted)'}">${npc.loyalty}</span>
+                ${npc.notes ? `<span class="npc-notes">${npc.notes}</span>` : ''}
+            </div>
+            <button class="step-action-btn" style="color:#ff6060" data-del-npc="${i}" type="button">✕</button>
+        </div>`).join('');
+}
+
+function bindBio() {
+    document.getElementById('btn-export')?.addEventListener('click', () => {
+        const payload = JSON.stringify({
+            char:             state.char,
+            resources:        state.resources,
+            checks:           state.checks,
+            activeConditions: [...state.activeConditions],
+            equipment:        state.equipment,
+            progression:      state.progression,
+        }, null, 2);
+        const blob = new Blob([payload], { type: 'application/json' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = `${state.char.name || 'character'}-active-sheet.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+
+    els.btnSaveBio?.addEventListener('click', () => {
+        state.char.name       = document.getElementById('char-name')?.value.trim()       || '';
+        state.char.level      = clampNum(document.getElementById('char-level')?.value)   || 1;
+        state.char.age        = document.getElementById('char-age')?.value.trim()        || '';
+        state.char.size       = document.getElementById('char-size')?.value.trim()       || '';
+        state.char.diet       = document.getElementById('char-diet')?.value.trim()       || '';
+        state.char.language   = document.getElementById('char-language')?.value.trim()   || '';
+        state.char.motivation = document.getElementById('char-motivation')?.value.trim() || '';
+        state.char.trinket    = document.getElementById('char-trinket')?.value.trim()    || '';
+        saveState();
+        syncTopbar();
+        setActivePanel('play');
+    });
+
+    // Notes — auto-save on blur
+    document.getElementById('char-notes')?.addEventListener('blur', () => {
+        state.char.notes = document.getElementById('char-notes')?.value || '';
+        saveState();
+    });
+    document.getElementById('btn-save-notes')?.addEventListener('click', () => {
+        state.char.notes = document.getElementById('char-notes')?.value || '';
+        saveState();
+    });
+
+    // NPCs
+    document.getElementById('btn-add-npc')?.addEventListener('click', () => {
+        document.getElementById('npc-add-form').hidden = false;
+        document.getElementById('npc-name-input')?.focus();
+    });
+    document.getElementById('btn-npc-cancel')?.addEventListener('click', () => {
+        document.getElementById('npc-add-form').hidden = true;
+    });
+    document.getElementById('btn-npc-save')?.addEventListener('click', () => {
+        const name    = document.getElementById('npc-name-input')?.value.trim();
+        const loyalty = document.getElementById('npc-loyalty-input')?.value || 'Neutral';
+        const notes   = document.getElementById('npc-notes-input')?.value.trim() || '';
+        if (!name) return;
+        if (!state.char.npcs) state.char.npcs = [];
+        state.char.npcs.push({ name, loyalty, notes });
+        saveState();
+        renderNpcList();
+        document.getElementById('npc-add-form').hidden = true;
+        document.getElementById('npc-name-input').value  = '';
+        document.getElementById('npc-notes-input').value = '';
+    });
+    document.getElementById('npc-list')?.addEventListener('click', e => {
+        const btn = e.target.closest('[data-del-npc]');
+        if (!btn) return;
+        state.char.npcs.splice(parseInt(btn.dataset.delNpc, 10), 1);
+        saveState();
+        renderNpcList();
+    });
+}
+
 function syncBioInputs() {
-    const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val ?? ''; };
     set('char-name',       state.char.name);
     set('char-level',      state.char.level);
     set('char-age',        state.char.age);
@@ -1969,7 +3038,9 @@ function syncBioInputs() {
     set('char-language',   state.char.language);
     set('char-motivation', state.char.motivation);
     set('char-trinket',    state.char.trinket);
+    set('char-notes',      state.char.notes);
     syncSpeciesDisplay();
+    renderNpcList();
 }
 
 function syncTopbar() {
@@ -2034,6 +3105,7 @@ function bindProgressionPanel() {
         saveState();
         renderProgression();
         renderClassView();
+        calcManaMax();
     });
 
     document.getElementById('other-gains-list')?.addEventListener('click', e => {
@@ -2254,6 +3326,7 @@ function bindProgressionPanel() {
         document.querySelectorAll('.drawer-check-chip').forEach(c => c.classList.remove('is-sel'));
         chip.classList.add('is-sel');
         els.rollMod.value = chip.dataset.checkMod;
+        applyConditionRollType('.roll-seg', '#drawer-check-chips');
     });
 }
 
@@ -2297,6 +3370,10 @@ function syncUI() {
     els.armorMax.textContent = state.resources.armor.max;
     els.MNCur.textContent    = state.resources.MN.current;
     els.MNMax.textContent    = state.resources.MN.max;
+    const spMnCur = document.getElementById('spell-mn-current');
+    const spMnMax = document.getElementById('spell-mn-max');
+    if (spMnCur) spMnCur.textContent = state.resources.MN.current;
+    if (spMnMax) spMnMax.textContent = state.resources.MN.max;
     if (els.classResCur) els.classResCur.textContent = state.resources.classRes.current;
     if (els.classResMax) els.classResMax.textContent = state.resources.classRes.max;
     const labelDisplay = document.getElementById('class-res-label-display');
@@ -2387,6 +3464,10 @@ document.addEventListener('DOMContentLoaded', () => {
     bindWeaponModal();
     bindFeatureRollModal();
     bindSettings();
+    bindSpellsPanel();
+    bindSpellRollModal();
+    bindRefPanel();
+    bindRecovery();
     applyTheme();
     bindPlayTabs();
     syncConditionsBar();
@@ -2402,9 +3483,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderEquipment();
     renderOtherGains();
     renderChat();
+    bindDiceRoller();
     loadClassData();
-    loadWeapons();
-    recalcArmorBonuses();
+    loadSpells();
+    loadWeapons();     // calls recalcArmorBonuses() internally after armorData loads
+    recalcArmorBonuses(); // initial pass with cached armorRating fields (before fetch)
     updateXpDisplay();
     // Close drawer cleanly on boot (ensure inert state matches)
     closeDrawer();
