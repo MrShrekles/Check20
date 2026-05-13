@@ -125,18 +125,19 @@ body[data-page-title="Active-Sheet"] #site-header {
 .recovery-block {
     background: var(--panel-2);
     border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 10px 12px 8px;
+    border-radius: 10px;
+    padding: 6px 10px;
 }
 
 .recovery-head {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    min-height: 32px;
 }
 
 .recovery-name {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 800;
     color: var(--accent);
     flex: 1;
@@ -151,20 +152,21 @@ body[data-page-title="Active-Sheet"] #site-header {
 }
 
 .rec-use-cb {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     accent-color: var(--accent);
     cursor: default;
+    flex-shrink: 0;
 }
 
 .rec-toggle {
-    width: 28px;
-    height: 28px;
-    border-radius: 7px;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
     border: 1px solid var(--line);
     background: transparent;
     color: var(--muted);
-    font-size: 14px;
+    font-size: 12px;
     display: grid;
     place-items: center;
     cursor: pointer;
@@ -172,8 +174,12 @@ body[data-page-title="Active-Sheet"] #site-header {
     flex-shrink: 0;
 }
 
-/* Config body (hidden by default) */
+/* Config body — collapsed by default, opened with .is-open */
 .recovery-body {
+    display: none;
+}
+
+.recovery-body.is-open {
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid var(--line);

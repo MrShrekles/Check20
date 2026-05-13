@@ -510,7 +510,7 @@ function openWeaponModal(itemIndex) {
     document.getElementById('wm-bonus').value = w.attackBonus || 0;
 
     const descEl = document.getElementById('wm-desc');
-    descEl.value = w.flavor || '';
+    descEl.value = w.desc || w.notes || w.flavor || '';
 
     // Check chips from state
     const chipsEl   = document.getElementById('wm-check-chips');
@@ -606,7 +606,7 @@ function pushChatWeaponAttack({ weapon, checkLabel, checkMod, attackBonus, rollN
         damage:      weapon.damage,
         damageType:  weapon.damageType,
         range:       weapon.range,
-        desc:        weapon.desc || '',
+        desc:        weapon.desc || weapon.notes || weapon.flavor || '',
         rollType,
         conditions:  [...(conditions || [])],
     });
@@ -1942,6 +1942,7 @@ function pushChatRecovery({ title, gains }) {
     if (state.chat.length > 100) state.chat.length = 100;
     saveState();
     renderChat();
+    setActivePanel('chat');
 }
 
 function pushChatFeature({ name, tags, desc }) {
@@ -1974,14 +1975,16 @@ function successHtml(total) {
 function rollDamageTable(damageType) {
     const table = damageData[damageType];
     if (!table) return;
-    const roll   = Math.ceil(Math.random() * 6);
-    const result = table.entries[roll - 1] || '—';
+    const roll       = Math.ceil(Math.random() * 6);
+    const result     = table.entries[roll - 1] || '—';
+    const condEffect = CONDITION_EFFECTS[result];
+    const desc       = condEffect ? `${result} — ${condEffect}` : result;
     state.chat.unshift({
         type: 'feature', time: chatTimestamp(),
         charName: state.char.name || '',
         name: `${table.icon} ${damageType} Table`,
         tags: [`Roll ${roll}`, table.category],
-        desc: result,
+        desc,
         diceRolls: [],
     });
     if (state.chat.length > 100) state.chat.length = 100;
@@ -2343,16 +2346,18 @@ function bindRecovery() {
 
     // Toggle collapse
     document.getElementById('po-toggle')?.addEventListener('click', () => {
-        const b = document.getElementById('press-on-body');
-        if (b) b.hidden = !b.hidden;
+        document.getElementById('press-on-body')?.classList.toggle('is-open');
     });
     document.getElementById('lr-toggle')?.addEventListener('click', () => {
-        const b = document.getElementById('long-rest-body');
-        if (b) b.hidden = !b.hidden;
+        document.getElementById('long-rest-body')?.classList.toggle('is-open');
     });
 
     // ── Press On ──────────────────────────────────────────────────────────────
+    let _pressOnBusy = false;
     document.getElementById('btn-press-on')?.addEventListener('click', () => {
+        if (_pressOnBusy) return;
+        _pressOnBusy = true;
+        setTimeout(() => { _pressOnBusy = false; }, 600);
         const usesMax = state.char.poUsesMax || 2;
         if ((state.char.pressOnUsed || 0) >= usesMax) return;
 
