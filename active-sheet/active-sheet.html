@@ -83,10 +83,11 @@
                         <button class="gear-btn" data-editor="health-editor" type="button" aria-label="Edit health maximums">⚙</button>
                     </div>
                     <div class="section-editor" id="health-editor">
-                        <div class="editor-grid" style="grid-template-columns: 1fr;">
-                            <label class="field"><span class="field-label">Wounds Max</span><input id="hp-max-input" type="number" inputmode="numeric" min="0" /></label>
+                        <div class="editor-grid">
+                            <label class="field"><span class="field-label">Wound Bonus</span><input id="hp-bonus-input" type="number" inputmode="numeric" min="0" value="0" /></label>
+                            <label class="field"><span class="field-label">Armor Max</span><input id="armor-max-input" type="number" inputmode="numeric" min="0" value="0" /></label>
                         </div>
-                        <p class="field-hint">Armor max is calculated automatically from equipped armor.</p>
+                        <p class="field-hint">Wound Bonus adds to Agi + Str. Armor Max is set manually.</p>
                         <button class="done-btn" data-save="health" type="button">✓ Done</button>
                     </div>
                     <div class="resource-grid">
@@ -644,9 +645,6 @@
                     <label class="field"><span class="field-label">Attack Bonus</span><input id="wm-bonus" type="number" value="0" /></label>
                 </div>
             </details>
-
-            <!-- Flavor / notes (editable, saved on close) -->
-            <textarea class="wm-desc-edit" id="wm-desc" placeholder="Appearance, flavor, notes…" rows="3"></textarea>
 
             <!-- Roll type -->
             <div class="roll-seg" id="wm-roll-seg" role="group" aria-label="Roll type">

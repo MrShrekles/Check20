@@ -586,6 +586,13 @@ button, input, select, textarea, a {
 
 /* ── STEP 5: STARTING DETAILS ───────────────────────────────────── */
 
+.detail-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
 .detail-block {
     background: var(--panel);
     border: 1px solid var(--line);
@@ -593,6 +600,8 @@ button, input, select, textarea, a {
     padding: 14px;
     margin-bottom: 10px;
 }
+
+.detail-block--half { margin-bottom: 0; }
 
 .detail-head {
     display: flex;

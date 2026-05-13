@@ -187,7 +187,7 @@
 
             <!-- Step 5: Starting Details -->
             <div class="step" id="step-details">
-                <p class="step-hint">Roll or write your character's starting details. You can re-roll as many times as you like.</p>
+                <p class="step-hint">Roll or fill in your character's starting details.</p>
 
                 <div class="detail-block">
                     <div class="detail-head">
@@ -196,6 +196,23 @@
                     </div>
                     <input id="detail-wealth" type="number" inputmode="numeric" min="0"
                         placeholder="Gold pieces…" class="wiz-input" style="font-size:20px;font-weight:800;text-align:center;" />
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-block detail-block--half">
+                        <div class="detail-head">
+                            <span class="detail-label">Age</span>
+                            <button class="detail-roll-btn" id="roll-age" type="button">🎲 Roll</button>
+                        </div>
+                        <input id="detail-age" type="number" inputmode="numeric" min="1"
+                            placeholder="Years…" class="wiz-input" style="text-align:center;" />
+                    </div>
+                    <div class="detail-block detail-block--half">
+                        <div class="detail-head">
+                            <span class="detail-label">Size</span>
+                        </div>
+                        <select id="detail-size" class="wiz-input"></select>
+                    </div>
                 </div>
 
                 <div class="detail-block">
@@ -214,6 +231,15 @@
                     </div>
                     <input id="detail-trinket" type="text" placeholder="A curious object…"
                         autocomplete="off" class="wiz-input" />
+                </div>
+
+                <div class="detail-block">
+                    <div class="detail-head">
+                        <span class="detail-label">Additional Equipment</span>
+                        <span class="detail-hint" style="font-size:11px;color:var(--muted)">One item per line</span>
+                    </div>
+                    <textarea id="detail-extra-equip" class="detail-textarea" rows="4"
+                        placeholder="Rope (50ft)&#10;Torch x3&#10;Rations (3 days)&#10;Crowbar"></textarea>
                 </div>
             </div>
 

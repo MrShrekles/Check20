@@ -3224,6 +3224,24 @@ body[data-page-title="Active-Sheet"] #site-header {
     margin: 4px 0 2px;
 }
 
+.provoke-btn {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 7px 0;
+    border-radius: 8px;
+    border: 1px solid rgba(220, 100, 60, 0.45);
+    background: rgba(220, 100, 60, 0.12);
+    color: #e06040;
+    font-size: 13px;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+    letter-spacing: 0.04em;
+}
+.provoke-btn:active { transform: scale(0.97); background: rgba(220, 100, 60, 0.22); }
+
 .dice-card-breakdown {
     font-size: 12px;
     color: var(--muted);

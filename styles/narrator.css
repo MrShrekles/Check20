@@ -1,4 +1,7 @@
 /* Narrator companion styles */
+.app {
+    background: var(--bg);
+}
 
 /* 4-tab nav override */
 .nar-nav {

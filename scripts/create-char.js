@@ -34,11 +34,118 @@ const wiz = {
     activeLineage: '',
     activeOption:  '',
     stats:      { agi:0, cra:0, ste:0, str:0, sur:0, inf:0, int:0, lck:0, obs:0, spi:0 },
-    wealth:     0,
-    motivation: '',
-    trinket:    '',
-    name:       '',
+    wealth:       0,
+    wealthRolled: false,
+    age:          '',
+    size:         '',
+    motivation:   '',
+    trinket:      '',
+    extraEquip:   '',
+    name:         '',
 };
+
+const TRINKET_LIST = [
+    "Shotgun shell that was once shot at you, kept as a lucky charm",
+    "A broken practice weapon, a reminder of past failures and determination to improve",
+    "A tarnished silver badge that once belonged to a criminal you captured",
+    "A pocket watch with a cryptic inscription on the back",
+    "A coin from the organization you once worked for, stamped with a mysterious emblem",
+    "A broken amulet, once a symbol of divine authority",
+    "A taco charm, said to bring good luck",
+    "A small enchanted vial containing your former essence",
+    "A small intricately carved figurine of your original form",
+    "A small token of protection, given to you by a friend before your exile",
+    "A silver medallion bearing the symbol of your order",
+    "A small enchanted crystal that changes color and emits faint elemental energy",
+    "A small ornate box containing a mysterious abyssal artifact",
+    "A dried flower from a rare and dangerous plant you once grew",
+    "A spent bullet casing from the first spirit you ever bound to a weapon",
+    "A favorite soda spoon, slightly bent but still useful",
+    "A small intricately carved bone used to mix inks",
+    "A miniature shoe charm, said to bring good luck to its owner",
+    "A small perfectly aged cheese that seems to have a personality of its own",
+    "An old miner's whistle, said to ward off evil spirits",
+    "An old railroad spike, a reminder of your first day on the job",
+    "A tiny perfectly articulated golem hand, a memento from a successful repair job",
+    "A small doll, a reminder of your desire to change",
+    "A leech preserved in a small glass vial",
+    "A mysterious key with an emblem of an unknown organization",
+    "A small unmarked box that contains an unknown substance",
+    "A playing card with an ever-shifting face",
+    "A small intricately carved figurine of a mythical creature you once cared for",
+    "A lucky coin, said to bring fortune to those who carry it",
+    "A small charm in the shape of your favorite animal from the menagerie",
+    "A poster from one of your most memorable performances",
+    "A small worn carving of a caravan, a gift from a grateful merchant",
+    "A broken chain, a symbol of your newfound freedom from the arena",
+    "A golden pocket watch, engraved with your family's crest",
+    "A small intricate clockwork contraption you built as a testament to your skill",
+    "A small vial of 'holy water' that's actually infused with dark energy",
+    "A small carved wooden ship you found among the cargo",
+    "A cowbell, a memento from your favorite dairy cow",
+    "A badge from your old fire department, bearing the symbol of a phoenix",
+    "A small worn key that once opened the door to your old guardhouse",
+    "A recipe for a particularly potent brew, passed down through generations",
+    "A small stone from the foundation of the city's oldest building",
+    "A set of vampire fangs you've replaced",
+    "A screw from a piece of celestial machinery",
+    "An old makeup case containing a mysterious magical substance",
+    "A small enchanted stone that emits a faint eerie glow",
+    "A glass orb that glows slightly when held, no known origin",
+    "A small mechanical bird that occasionally chirps despite lacking visible power sources",
+    "A book with blank pages that sometimes display faint writing",
+    "A stone that is always warm to the touch",
+    "A wooden puzzle box that has never been opened",
+    "A mirror shard that shows a mysterious shadow in the reflection",
+    "An old compass that points to something other than magnetic north",
+    "A handkerchief embroidered with an unfamiliar coat of arms",
+    "A piece of driftwood shaped like a sea creature",
+    "A candle that cannot be lit — emits a faint sweet smell when warm",
+    "A deck of cards where all the kings are missing",
+    "A bell that makes no sound when rung",
+    "A diary written in an unknown language",
+    "A set of old locksmith tools with one pick inexplicably bent",
+    "A whistle that only animals can hear",
+    "A locket that refuses to open — sounds like something is moving inside",
+    "A piece of chalk that writes on air",
+    "A feather that falls like a stone when dropped",
+    "A glove that absorbs light, making the hand invisible when worn",
+    "A bottle of ink that changes color daily",
+    "A monocle that shows an arcane symbol when looking at the moon",
+    "A scarf that cannot get wet",
+    "A comb that makes hair stand on end when used",
+    "A matchbox with matches that light when snapped",
+    "A pebble that skips on dry land",
+    "A coin that always lands on its edge",
+    "A key that gets colder as it approaches locks",
+    "A nail that never rusts",
+    "A tooth from an unknown beast — vibrates slightly in thunderstorms",
+    "A map with a place that no one can find",
+    "A hat that always returns to its owner when lost",
+    "A small box that hums a melody at night",
+    "A painting of a door that seems to change in detail",
+    "A soap that never lathers",
+    "A button that detaches and reattaches itself from clothes",
+    "A quill that only writes in rhymes",
+    "A pair of glasses that show constellations at night",
+    "A bookmark that prevents the book from ever finishing",
+    "A flask that doubles the taste of any liquid inside",
+    "A lantern with a flame that flickers in the presence of spirits",
+    "A spoon that makes any meal taste delicious",
+    "A pair of boots that leave footprints of a different creature",
+    "A whistle that only works at sunrise and sunset",
+    "A ring that feels heavier with lies",
+    "A bottle that refills with sea water",
+    "A glove that softly glows in the presence of magic",
+    "A brush that paints only in shades of blue",
+    "A belt that always fits the wearer perfectly",
+    "A scarf that smells like the forest after rain",
+    "A yarn ball that never tangles",
+    "A small statue that slowly turns towards the nearest gold",
+    "A pen that writes on its own when left alone",
+    "A coin that jumps slightly when near treasure",
+    "A feather that acts as a magnet for paper",
+];
 
 // Loaded data
 let classBaseData   = [];
@@ -307,9 +414,42 @@ function renderDetailsStep() {
     const wEl = document.getElementById('detail-wealth');
     const mEl = document.getElementById('detail-motivation');
     const tEl = document.getElementById('detail-trinket');
+    const aEl = document.getElementById('detail-age');
+    const xEl = document.getElementById('detail-extra-equip');
     if (wEl) wEl.value = wiz.wealth     || '';
     if (mEl) mEl.value = wiz.motivation || '';
     if (tEl) tEl.value = wiz.trinket    || '';
+    if (aEl) aEl.value = wiz.age        || '';
+    if (xEl) xEl.value = wiz.extraEquip || '';
+
+    // Wealth button — lock after first roll
+    const rollWealthBtn = document.getElementById('roll-wealth');
+    if (rollWealthBtn) {
+        rollWealthBtn.disabled    = wiz.wealthRolled;
+        rollWealthBtn.textContent = wiz.wealthRolled ? 'Rolled' : '🎲 Roll 1d100+50';
+    }
+
+    // Size dropdown — populate from species
+    const sEl = document.getElementById('detail-size');
+    if (sEl) {
+        const sizeStr = wiz.speciesObj?.size || '';
+        const parts   = sizeStr.split('-').map(Number).filter(Boolean);
+        sEl.innerHTML = '';
+        if (parts.length >= 2) {
+            const lo = Math.min(...parts), hi = Math.max(...parts);
+            for (let i = lo; i <= hi; i++) {
+                const opt = document.createElement('option');
+                opt.value = i; opt.textContent = i;
+                if (String(i) === String(wiz.size)) opt.selected = true;
+                sEl.appendChild(opt);
+            }
+        } else if (sizeStr) {
+            const opt = document.createElement('option');
+            opt.value = sizeStr; opt.textContent = sizeStr; opt.selected = true;
+            sEl.appendChild(opt);
+        }
+        if (!wiz.size && sEl.options.length) wiz.size = sEl.options[0].value;
+    }
 }
 
 function pick(arr) { return arr[Math.floor(Math.random() * arr.length)] || ''; }
@@ -484,6 +624,11 @@ function buildAndSave() {
         };
     });
 
+    // Additional equipment from Step 5 freeform textarea
+    (wiz.extraEquip || '').split('\n').map(s => s.trim()).filter(Boolean).forEach(name => {
+        equipment.push({ name, notes: '', category: inferEquipCategory(name, ''), armorRating: 0 });
+    });
+
     // Species features are stored in char.speciesFeature — no longer duplicated in otherGains
     const otherGains = [];
 
@@ -492,8 +637,8 @@ function buildAndSave() {
             name:       wiz.name.trim(),
             level:      1,
             species:    s?.name      || '',
-            age:        '',
-            size:       s?.size      || '',
+            age:        String(wiz.age  || ''),
+            size:       wiz.size     || s?.size || '',
             diet:       s?.diet      || '',
             language:   s?.language  || '',
             motivation: wiz.motivation || '',
@@ -626,12 +771,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('btn-suggest').addEventListener('click', applySuggested);
 
-    // Name input live sync
     // Starting Details — roll buttons
     document.getElementById('roll-wealth')?.addEventListener('click', () => {
+        if (wiz.wealthRolled) return;
         const roll = Math.floor(Math.random() * 100) + 1 + 50;
-        wiz.wealth = roll;
-        const el = document.getElementById('detail-wealth');
+        wiz.wealth = roll; wiz.wealthRolled = true;
+        const el  = document.getElementById('detail-wealth');
+        const btn = document.getElementById('roll-wealth');
+        if (el)  el.value         = roll;
+        if (btn) { btn.disabled = true; btn.textContent = 'Rolled'; }
+    });
+    document.getElementById('roll-age')?.addEventListener('click', () => {
+        const lifespan = wiz.speciesObj?.lifespan || '60-90';
+        const parts    = lifespan.split('-').map(Number).filter(Boolean);
+        const max      = Math.max(...parts);
+        const min      = Math.min(...parts);
+        const low      = Math.max(1, Math.floor(min * 0.20));
+        const roll     = Math.floor(Math.random() * (max - low + 1)) + low;
+        wiz.age        = roll;
+        const el = document.getElementById('detail-age');
         if (el) el.value = roll;
     });
     document.getElementById('roll-motivation')?.addEventListener('click', () => {
@@ -641,7 +799,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el) el.value = result;
     });
     document.getElementById('roll-trinket')?.addEventListener('click', () => {
-        const result = pick(worldObjects);
+        const result = pick(TRINKET_LIST);
         wiz.trinket = result;
         const el = document.getElementById('detail-trinket');
         if (el) el.value = result;
@@ -651,11 +809,20 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('detail-wealth')?.addEventListener('change', e => {
         wiz.wealth = parseInt(e.target.value, 10) || 0;
     });
+    document.getElementById('detail-age')?.addEventListener('change', e => {
+        wiz.age = parseInt(e.target.value, 10) || '';
+    });
+    document.getElementById('detail-size')?.addEventListener('change', e => {
+        wiz.size = e.target.value;
+    });
     document.getElementById('detail-motivation')?.addEventListener('input', e => {
         wiz.motivation = e.target.value;
     });
     document.getElementById('detail-trinket')?.addEventListener('input', e => {
         wiz.trinket = e.target.value.trim();
+    });
+    document.getElementById('detail-extra-equip')?.addEventListener('input', e => {
+        wiz.extraEquip = e.target.value;
     });
 
     document.getElementById('wiz-name').addEventListener('input', e => {
