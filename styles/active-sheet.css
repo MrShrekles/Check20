@@ -855,6 +855,43 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 .nav-label { display: none; }
 
+/* Narrator chat card distinction — text=theme1, rolls=theme2 */
+.nar-msg--text > div {
+    background: var(--accent-dim) !important;
+    border-left: 3px solid var(--accent-mid) !important;
+    padding-left: 10px;
+}
+
+.nar-msg--roll > div {
+    background: var(--accent2-dim) !important;
+    border-left: 3px solid var(--accent2-mid) !important;
+    padding-left: 10px;
+}
+
+/* ── CHAT NOTIFICATION ─────────────────────────────────────────────── */
+/* Chat notification badge */
+.nav-icon-wrap {
+    position: relative;
+    display: inline-flex;
+}
+
+.nav-notif {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent2);
+    border: 2px solid var(--bg);
+    animation: notif-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes notif-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.6; transform: scale(0.85); }
+}
+
 /* FAB */
 .fab {
     position: fixed;
@@ -1587,6 +1624,55 @@ body[data-page-title="Active-Sheet"] #site-header {
     font-weight: 900;
     line-height: 1.1;
 }
+
+/* Editable weapon name in modal header */
+.wm-name-input {
+    flex: 1;
+    font-size: 18px;
+    font-weight: 900;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+    padding: 2px 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.wm-name-input:focus { outline: none; border-color: var(--accent); }
+
+/* Editable stat grid */
+.wm-edit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.wm-edit-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.wm-edit-field--wide {
+    grid-column: span 2;
+}
+
+.wm-edit-input {
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--text);
+    padding: 0 8px;
+    font-size: 13px;
+    font-weight: 700;
+    box-sizing: border-box;
+    width: 100%;
+    appearance: none;
+}
+
+.wm-edit-input:focus { outline: none; border-color: var(--accent-mid); }
 
 .wm-sub {
     font-size: 12px;
@@ -2562,6 +2648,161 @@ body[data-page-title="Active-Sheet"] #site-header {
     background: rgba(255,107,107,0.06);
 }
 
+/* ── SHARED CHAT AUTHOR BADGE ───────────────────────────────── */
+
+.shared-author {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 4px;
+}
+
+.shared-author--nar {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--accent2-dim);
+    border: 1px solid var(--accent2-mid);
+    border-radius: 6px;
+    padding: 2px 8px;
+    color: var(--accent2);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+}
+
+/* ── PLAYER PARTY SESSION ───────────────────────────────────── */
+
+.party-room-code {
+    font-family: monospace;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-mid);
+    border-radius: 6px;
+    padding: 3px 8px;
+}
+
+.party-gold-badge {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--accent2);
+}
+
+.pparty-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 2px;
+    border-bottom: 1px solid var(--line);
+}
+
+.pparty-row--me { opacity: 0.6; }
+
+.pparty-name {
+    font-size: 13px;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pparty-bars {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.pparty-bar-track {
+    width: 64px;
+    height: 5px;
+    background: var(--line);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.pparty-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.3s;
+}
+
+.pparty-bar--hp { background: #e05555; }
+
+.pparty-val {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    min-width: 36px;
+    text-align: right;
+}
+
+/* ── THEME HUE SLIDERS ──────────────────────────────────────── */
+
+.theme-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.hue-slider {
+    flex: 1;
+    height: 20px;
+    border-radius: 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(to right,
+        hsl(0,65%,60%),   hsl(30,65%,60%),  hsl(60,65%,60%),
+        hsl(90,65%,60%),  hsl(120,65%,60%), hsl(150,65%,60%),
+        hsl(180,65%,60%), hsl(210,65%,60%), hsl(240,65%,60%),
+        hsl(270,65%,60%), hsl(300,65%,60%), hsl(330,65%,60%),
+        hsl(359,65%,60%));
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.hue-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid rgba(0,0,0,0.25);
+    box-shadow: 0 1px 5px rgba(0,0,0,0.5);
+    cursor: pointer;
+}
+
+.hue-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid rgba(0,0,0,0.25);
+    box-shadow: 0 1px 5px rgba(0,0,0,0.5);
+    cursor: pointer;
+    border: none;
+}
+
+.hue-preview {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.15);
+    flex-shrink: 0;
+    display: block;
+    transition: background 0.1s;
+}
+
 /* ── SPELLS PANEL ───────────────────────────────────────────── */
 
 .spell-mn-display {
@@ -3107,12 +3348,20 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 /* ── DICE ROLLER ──────────────────────────────────────────────────── */
 
+.chat-sticky-bottom {
+    position: sticky;
+    bottom: calc(var(--nav-h) + var(--safe-b));
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    padding: 8px 12px calc(8px + var(--safe-b));
+    z-index: 10;
+}
+
 .dice-roller {
     background: var(--panel);
     border: 1px solid var(--line);
     border-radius: 14px;
     padding: 10px 12px;
-    margin-top: 8px;
     margin-bottom: 8px;
     display: flex;
     flex-direction: column;
@@ -3126,7 +3375,40 @@ body[data-page-title="Active-Sheet"] #site-header {
     gap: 10px;
 }
 
-.dice-count-group {
+.dice-type-select {
+    flex: 1;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    text-align: center;
+    padding: 0 4px;
+    appearance: none;
+    cursor: pointer;
+}
+
+.dice-roll-btn {
+    height: 34px;
+    padding: 0 16px;
+    border-radius: 8px;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-mid);
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.dice-roll-btn:active { background: var(--accent-mid); }
+
+.dice-count-field {
     display: flex;
     align-items: center;
     gap: 5px;
@@ -3136,28 +3418,20 @@ body[data-page-title="Active-Sheet"] #site-header {
     font-size: 13px;
     font-weight: 700;
     color: var(--muted);
-    margin-right: 2px;
 }
 
-.dice-count-btn {
-    width: 32px;
-    height: 32px;
+.dice-count-input {
+    width: 52px;
+    height: 34px;
     border-radius: 8px;
     border: 1px solid var(--line);
     background: var(--panel-2);
-    color: var(--muted);
-    font-size: 14px;
-    font-weight: 700;
-    font-family: inherit;
-    cursor: pointer;
-    transition: background 0.1s, color 0.1s, border-color 0.1s;
-    touch-action: manipulation;
-}
-
-.dice-count-btn.is-sel {
-    background: var(--accent-dim);
-    border-color: var(--accent-mid);
     color: var(--text);
+    font-size: 16px;
+    font-weight: 800;
+    font-family: inherit;
+    text-align: center;
+    padding: 0 4px;
 }
 
 .dice-bonus-field {

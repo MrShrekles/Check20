@@ -399,6 +399,7 @@ async function loadWeapons() {
         armorData = await aRes.json();
         const dj = await dRes.json();
         damageData = dj?.types || {};
+        window.damageData = damageData; // expose for chat-cards.js damageTableBtnHtml
         recalcArmorBonuses(); // re-run now that armorData is available for rating lookups
 
         const datalist = document.createElement('datalist');
@@ -478,40 +479,86 @@ function parseWeaponData(item) {
 let weaponModalItem = null;
 let weaponModalIndex = -1;
 
+function populateWmSelects() {
+    const typeEl  = document.getElementById('wm-dmg-type-input');
+    const rangeEl = document.getElementById('wm-range-input');
+    if (typeEl && !typeEl.options.length) {
+        typeEl.innerHTML = `<option value="">—</option>` +
+            DAMAGE_TYPES.map(t => `<option value="${t}">${t}</option>`).join('');
+    }
+    if (rangeEl && !rangeEl.options.length) {
+        rangeEl.innerHTML = RANGES.map(r => `<option value="${r}">${r}</option>`).join('');
+    }
+}
+
+function populateWmCheckSelect(selectedCheck) {
+    const el = document.getElementById('wm-check-stat-input');
+    if (!el) return;
+    const allChecks = [...state.checks.physical, ...state.checks.mental];
+    el.innerHTML = `<option value="">— any —</option>` +
+        allChecks.map(c => `<option value="${c.label}"${c.label === selectedCheck ? ' selected' : ''}>${c.label}</option>`).join('');
+}
+
+function rebuildWmCheckChips(checkLabel) {
+    const chipsEl = document.getElementById('wm-check-chips');
+    if (!chipsEl) return;
+    const allChecks = [...state.checks.physical, ...state.checks.mental];
+    const matched = checkLabel
+        ? allChecks.filter(c => c.label.toLowerCase() === checkLabel.toLowerCase())
+        : allChecks;
+    const list = matched.length ? matched : allChecks;
+    chipsEl.innerHTML = list.map((c, i) => {
+        const total = c.mod + (c.bonus || 0) + (c.armorBonus || 0);
+        return `<button class="drawer-check-chip${i === 0 ? ' is-sel' : ''}"
+            type="button" data-check-mod="${total}" data-check-label="${c.label}">
+            ${c.label} ${fmtSigned(total)}</button>`;
+    }).join('');
+    chipsEl.querySelectorAll('.drawer-check-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            chipsEl.querySelectorAll('.drawer-check-chip').forEach(c => c.classList.remove('is-sel'));
+            chip.classList.add('is-sel');
+        });
+    });
+}
+
+function saveWeaponToState() {
+    if (weaponModalIndex < 0) return;
+    const item = state.equipment[weaponModalIndex];
+    if (!item) return;
+    item.name        = document.getElementById('wm-name-input')?.value.trim()     || item.name;
+    item.damage      = document.getElementById('wm-damage-input')?.value.trim()   || '';
+    item.damageType  = document.getElementById('wm-dmg-type-input')?.value        || '';
+    item.range       = document.getElementById('wm-range-input')?.value           || '';
+    item.properties  = document.getElementById('wm-weight-input')?.value          || '—';
+    item.check       = document.getElementById('wm-check-stat-input')?.value      || '';
+    item.critRange   = parseInt(document.getElementById('wm-crit')?.value  || '20', 10);
+    item.attackBonus = parseInt(document.getElementById('wm-bonus')?.value || '0',  10);
+    weaponModalItem  = item;
+    saveState();
+    syncUI();
+}
+
 function openWeaponModal(itemIndex) {
     const raw = state.equipment[itemIndex];
     if (!raw) return;
     const w = parseWeaponData(raw);
-    weaponModalItem = w;
+    weaponModalItem  = w;
     weaponModalIndex = itemIndex;
 
-    document.getElementById('wm-name').textContent = w.name;
-    document.getElementById('wm-sub').textContent = [w.properties, w.range].filter(x => x && x !== '—').join(' · ');
-    document.getElementById('wm-damage').textContent = w.damage || '—';
-    document.getElementById('wm-dmg-type').textContent = w.damageType || '—';
-    document.getElementById('wm-range').textContent = w.range || '—';
-    document.getElementById('wm-weight').textContent = w.properties || '—';
-    document.getElementById('wm-crit').value = w.critRange || 20;
-    document.getElementById('wm-bonus').value = w.attackBonus || 0;
+    populateWmSelects();
 
-    // Check chips from state
-    const chipsEl = document.getElementById('wm-check-chips');
-    const checkList = w.check ? w.check.split(',').map(s => s.trim()).filter(Boolean) : [];
-    const matched = [...state.checks.physical, ...state.checks.mental]
-        .filter(c => checkList.some(n => n.toLowerCase() === c.label.toLowerCase()));
+    document.getElementById('wm-name-input').value            = w.name || '';
+    document.getElementById('wm-damage-input').value          = w.damage || '';
+    document.getElementById('wm-dmg-type-input').value        = w.damageType || '';
+    document.getElementById('wm-range-input').value           = w.range || '';
+    document.getElementById('wm-weight-input').value          = w.properties || '—';
+    document.getElementById('wm-crit').value                  = w.critRange || 20;
+    document.getElementById('wm-bonus').value                 = w.attackBonus || 0;
 
-    if (matched.length) {
-        chipsEl.innerHTML = matched.map((c, i) => {
-            const total = c.mod + (c.bonus || 0) + (c.armorBonus || 0);
-            return `<button class="drawer-check-chip${i === 0 ? ' is-sel' : ''}"
-                type="button" data-check-mod="${total}" data-check-label="${c.label}">
-                ${c.label} ${fmtSigned(total)}</button>`;
-        }).join('');
-    } else {
-        chipsEl.innerHTML = `<span style="font-size:12px;color:var(--muted)">No check specified</span>`;
-    }
+    const checkLabel = w.check ? w.check.split(',')[0].trim() : '';
+    populateWmCheckSelect(checkLabel);
+    rebuildWmCheckChips(checkLabel);
 
-    // Reset roll seg to flat
     document.querySelectorAll('#wm-roll-seg .roll-seg-btn').forEach(b => b.classList.remove('is-sel'));
     document.querySelector('#wm-roll-seg [data-seg="flat"]')?.classList.add('is-sel');
 
@@ -528,11 +575,16 @@ function bindWeaponModal() {
     document.getElementById('wm-close')?.addEventListener('click', closeWeaponModal);
     document.getElementById('wm-scrim')?.addEventListener('click', closeWeaponModal);
 
-    document.getElementById('wm-check-chips')?.addEventListener('click', e => {
-        const chip = e.target.closest('.drawer-check-chip');
-        if (!chip) return;
-        document.querySelectorAll('#wm-check-chips .drawer-check-chip').forEach(c => c.classList.remove('is-sel'));
-        chip.classList.add('is-sel');
+    // Auto-save all edit inputs on change
+    ['wm-name-input','wm-damage-input','wm-dmg-type-input','wm-range-input',
+     'wm-weight-input','wm-crit','wm-bonus'].forEach(id => {
+        document.getElementById(id)?.addEventListener('change', saveWeaponToState);
+    });
+
+    // Check stat change → rebuild chips + save
+    document.getElementById('wm-check-stat-input')?.addEventListener('change', function() {
+        rebuildWmCheckChips(this.value);
+        saveWeaponToState();
     });
 
     document.getElementById('wm-roll-seg')?.addEventListener('click', e => {
@@ -583,7 +635,8 @@ function pushChatWeaponAttack({ weapon, checkLabel, checkMod, attackBonus, rollN
         damage: weapon.damage,
         damageType: weapon.damageType,
         range: weapon.range,
-        desc: weapon.desc || weapon.notes || weapon.flavor || '',
+        properties: weapon.properties && weapon.properties !== '—' ? weapon.properties : '',
+        desc: weapon.flavor || '',
         rollType,
         conditions: [...(conditions || [])],
     });
@@ -1290,19 +1343,8 @@ function bindSpellRollModal() {
 
 // ── SETTINGS & THEME ──────────────────────────────────────────────────────────
 
-const COLOR_PRESETS = [
-    { name: 'Steel', color: '#6b9cc8' },
-    { name: 'Void', color: '#9b72cf' },
-    { name: 'Ember', color: '#c4622d' },
-    { name: 'Neon', color: '#4dba94' },
-    { name: 'Crimson', color: '#c43250' },
-    { name: 'Gold', color: '#c9a227' },
-    { name: 'Acid', color: '#89bf50' },
-    { name: 'Frost', color: '#7fc4d4' },
-];
-
-// Keep THEMES for applyTheme default fallback
-const THEMES = [{ a1: COLOR_PRESETS[0].color, a2: COLOR_PRESETS[2].color }];
+const DEFAULT_A1 = '#6b9cc8';
+const DEFAULT_A2 = '#c4622d';
 
 function hexToRgb(hex) {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -1311,50 +1353,79 @@ function hexToRgb(hex) {
     return { r, g, b };
 }
 
-function applyTheme() {
-    const t = state.char.theme || {};
-    const def = THEMES[0];
-    const a1 = t.a1 || t.accent || def.a1;
-    const a2 = t.a2 || def.a2;
-    const c1 = hexToRgb(a1), c2 = hexToRgb(a2);
-    const root = document.documentElement;
-    root.style.setProperty('--accent', a1);
-    root.style.setProperty('--accent-dim', `rgba(${c1.r},${c1.g},${c1.b},0.18)`);
-    root.style.setProperty('--accent-mid', `rgba(${c1.r},${c1.g},${c1.b},0.38)`);
-    root.style.setProperty('--accent2', a2);
-    root.style.setProperty('--accent2-dim', `rgba(${c2.r},${c2.g},${c2.b},0.18)`);
-    root.style.setProperty('--accent2-mid', `rgba(${c2.r},${c2.g},${c2.b},0.38)`);
-
-    // Sync swatch selection
-    const current = JSON.stringify({ a1, a2 });
-    document.querySelectorAll('.theme-pair-btn').forEach(btn =>
-        btn.classList.toggle('is-sel',
-            JSON.stringify({ a1: btn.dataset.a1, a2: btn.dataset.a2 }) === current));
+function hexToHue(hex) {
+    if (!hex || hex.length < 7) return 0;
+    const { r, g, b } = hexToRgb(hex);
+    const r1 = r/255, g1 = g/255, b1 = b/255;
+    const max = Math.max(r1,g1,b1), min = Math.min(r1,g1,b1), d = max - min;
+    if (d === 0) return 0;
+    let h;
+    if (max === r1)      h = ((g1 - b1) / d + 6) % 6;
+    else if (max === g1) h = (b1 - r1)  / d + 2;
+    else                 h = (r1 - g1)  / d + 4;
+    return Math.round(h * 60);
 }
 
-function swatchRow(key, selected) {
-    return `<div class="color-row" data-theme-key="${key}">
-        ${COLOR_PRESETS.map(p =>
-        `<button class="color-swatch${p.color === selected ? ' is-sel' : ''}"
-                type="button" data-color="${p.color}" title="${p.name}"
-                style="background:${p.color}"></button>`
-    ).join('')}
-    </div>`;
+function hslToHex(h, s = 65, l = 60) {
+    s /= 100; l /= 100;
+    const k = n => (n + h / 30) % 12;
+    const a = s * Math.min(l, 1 - l);
+    const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+    return '#' + [f(0), f(8), f(4)].map(x => Math.round(x * 255).toString(16).padStart(2, '0')).join('');
+}
+
+function applyTheme() {
+    const t  = state.char.theme || {};
+    const a1 = t.a1 || t.accent || DEFAULT_A1;
+    const a2 = t.a2 || DEFAULT_A2;
+    const c1 = hexToRgb(a1), c2 = hexToRgb(a2);
+    const root = document.documentElement;
+    root.style.setProperty('--accent',      a1);
+    root.style.setProperty('--accent-dim',  `rgba(${c1.r},${c1.g},${c1.b},0.18)`);
+    root.style.setProperty('--accent-mid',  `rgba(${c1.r},${c1.g},${c1.b},0.38)`);
+    root.style.setProperty('--accent2',     a2);
+    root.style.setProperty('--accent2-dim', `rgba(${c2.r},${c2.g},${c2.b},0.18)`);
+    root.style.setProperty('--accent2-mid', `rgba(${c2.r},${c2.g},${c2.b},0.38)`);
+}
+
+function buildThemeSliders(a1, a2) {
+    return `
+        <div class="wm-label" style="margin-bottom:6px">Primary</div>
+        <div class="theme-slider-row">
+            <input type="range" class="hue-slider" id="hue-a1" min="0" max="359" value="${hexToHue(a1)}" />
+            <span class="hue-preview" id="prev-a1" style="background:${a1}"></span>
+        </div>
+        <div class="wm-label" style="margin:12px 0 6px">Secondary</div>
+        <div class="theme-slider-row">
+            <input type="range" class="hue-slider" id="hue-a2" min="0" max="359" value="${hexToHue(a2)}" />
+            <span class="hue-preview" id="prev-a2" style="background:${a2}"></span>
+        </div>`;
+}
+
+function wireThemeSliders(getA1, getA2, onSave) {
+    ['a1', 'a2'].forEach(key => {
+        document.getElementById(`hue-${key}`)?.addEventListener('input', function() {
+            const hex  = hslToHex(parseInt(this.value));
+            const prev = document.getElementById(`prev-${key}`);
+            if (prev) prev.style.background = hex;
+            onSave(key === 'a1' ? hex : getA1(), key === 'a2' ? hex : getA2());
+        });
+    });
 }
 
 function openSettings() {
     const container = document.getElementById('theme-swatches');
     if (container) {
-        const t = state.char.theme || {};
-        const ca1 = t.a1 || t.accent || THEMES[0].a1;
-        const ca2 = t.a2 || THEMES[0].a2;
-        container.innerHTML = `
-            <div class="wm-label" style="margin-bottom:6px">Primary</div>
-            ${swatchRow('a1', ca1)}
-            <div class="wm-label" style="margin:12px 0 6px">Secondary</div>
-            ${swatchRow('a2', ca2)}`;
+        const t  = state.char.theme || {};
+        const a1 = t.a1 || t.accent || DEFAULT_A1;
+        const a2 = t.a2 || DEFAULT_A2;
+        container.innerHTML = buildThemeSliders(a1, a2);
+        wireThemeSliders(
+            () => state.char.theme?.a1 || DEFAULT_A1,
+            () => state.char.theme?.a2 || DEFAULT_A2,
+            (na1, na2) => setTheme(na1, na2)
+        );
     }
-    // Reset the reset-confirmation state each time panel opens
     document.getElementById('reset-confirm').hidden = true;
     document.getElementById('btn-reset-char').hidden = false;
     document.getElementById('settings-modal').hidden = false;
@@ -1376,20 +1447,6 @@ function bindSettings() {
     document.getElementById('btn-settings')?.addEventListener('click', openSettings);
     document.getElementById('settings-close')?.addEventListener('click', closeSettings);
     document.getElementById('settings-scrim')?.addEventListener('click', closeSettings);
-
-    document.getElementById('theme-swatches')?.addEventListener('click', e => {
-        const btn = e.target.closest('.color-swatch');
-        if (!btn) return;
-        const row = btn.closest('.color-row');
-        const key = row?.dataset.themeKey;
-        const color = btn.dataset.color;
-        const t = state.char.theme || {};
-        const a1 = t.a1 || t.accent || THEMES[0].a1;
-        const a2 = t.a2 || THEMES[0].a2;
-        setTheme(key === 'a1' ? color : a1, key === 'a2' ? color : a2);
-        row.querySelectorAll('.color-swatch').forEach(s =>
-            s.classList.toggle('is-sel', s === btn));
-    });
 
     document.getElementById('btn-export-settings')?.addEventListener('click', () => {
         closeSettings();
@@ -1885,9 +1942,7 @@ function renderEquipment() {
 
 // ── CHAT ──────────────────────────────────────────────────────────────────────
 
-function chatTimestamp() {
-    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
+// chatTimestamp is in chat-cards.js
 
 function pushChat(text, _unused = 'msg') {
     state.chat.unshift({ type: 'msg', text, time: chatTimestamp() });
@@ -1934,17 +1989,12 @@ function pushChatFeature({ name, tags, desc }) {
     setActivePanel('chat');
 }
 
-// Extract the natural die value from a rollNote string
+// successCount / successHtml / naturalRoll / fmtSigned / diceChipsHtml /
+// expandableDesc / damageTableBtnHtml / chatTimestamp / render*Entry
+// are all defined in chat-cards.js (loaded before this script).
+
 function successCount(total) {
     return total >= 15 ? Math.floor((total - 10) / 5) : 0;
-}
-
-function successHtml(total) {
-    const n = successCount(total);
-    if (n === 0) return `<div class="roll-outcome roll-outcome--fail">✗ No Success</div>`;
-    const label = n === 1 ? '1 Success' : `${n} Successes`;
-    const pips = '◆'.repeat(Math.min(n, 6));
-    return `<div class="roll-outcome roll-outcome--success">${pips} ${label}</div>`;
 }
 
 function rollDamageTable(damageType) {
@@ -1967,142 +2017,14 @@ function rollDamageTable(damageType) {
     renderChat();
 }
 
-// Returns HTML for the damage table button if conditions are met
-function damageTableBtnHtml(total, damageType) {
-    const n = successCount(total);
-    if (n < 2 || !damageType || !damageData[damageType]) return '';
-    const rolls = n - 1;
-    return `<button class="dmg-table-btn" type="button"
-        data-dmg-type="${damageType}" data-rolls="${rolls}">
-        ⚄ Roll ${damageType} Table${rolls > 1 ? ` ×${rolls}` : ''}
-    </button>`;
-}
-
-function naturalRoll(rollNote) {
-    if (!rollNote) return null;
-    const nums = rollNote.match(/\d+/g)?.map(Number);
-    if (!nums?.length) return null;
-    if (rollNote.startsWith('adv')) return Math.max(...nums);
-    if (rollNote.startsWith('dis')) return Math.min(...nums);
-    return nums[0];
-}
-
-function expandableDesc(desc) {
-    if (!desc) return '';
-    const isLong = desc.length > 160;
-    return `<div class="chat-desc-body${isLong ? ' is-clamped' : ''}">
-        <p class="chat-feat-desc">${desc}</p>
-    </div>${isLong ? `<button class="chat-expand-btn" type="button">▼ Show more</button>` : ''}`;
-}
-
-
-function renderRollEntry(entry) {
-    const fc = entry.featureContext;
-    const nat = naturalRoll(entry.rollNote);
-    const resClass = nat === 20 ? 'chat-res--nat20' : nat === 1 ? 'chat-res--nat1' : '';
-    const typeLabel = entry.rollType === 'adv' ? '· Adv' : entry.rollType === 'dis' ? '· Dis' : '';
-    const condHtml = entry.conditions?.length
-        ? `<div class="chat-roll-cond">${entry.conditions.join(' · ')}</div>` : '';
-    const charLabel = entry.charName ? `${entry.charName} · ` : '';
-
-    // Feature roll — structured card with check + optional damage column
-    if (fc) {
-        const fcDice = fc.diceRolls?.length ? fc.diceRolls : parseDiceFromText(fc.desc);
-        const checkTag = fc.tags?.find(t => t.startsWith('Check:'));
-        const checkLabel = checkTag ? checkTag.replace('Check: ', '') : (entry.label || 'Check');
-        const displayTags = fc.tags?.filter(t => !t.startsWith('Check:')) || [];
-        const tagsHtml = displayTags.length
-            ? `<div class="chat-feat-tags">${displayTags.map(t => `<span class="chat-feat-tag">${t}</span>`).join('')}</div>` : '';
-        const borderClass = entry.rollType === 'adv' ? 'chat-roll--adv'
-            : entry.rollType === 'dis' ? 'chat-roll--dis' : '';
-        const modStr = entry.mod !== 0 ? ` ${fmtSigned(entry.mod)}` : '';
-        return `<div class="chat-roll-card ${borderClass}">
-            <div class="chat-card-head">
-                <span class="chat-card-title">⚡ ${charLabel}${fc.name}</span>
-                <span class="chat-time">${entry.time}</span>
-            </div>
-            ${tagsHtml}
-            <div class="chat-attack-row">
-                <div class="chat-attack-block">
-                    <div class="chat-attack-label">${checkLabel.toUpperCase()}</div>
-                    <div class="chat-roll-result ${resClass}">${entry.total}</div>
-                    <div class="chat-roll-breakdown">${entry.rollNote}${modStr}${typeLabel ? ` ${typeLabel}` : ''}</div>
-                </div>
-                ${fcDice.length ? `<div class="chat-attack-block">
-                    <div class="chat-attack-label">DAMAGE</div>
-                    ${diceChipsHtml(fcDice)}
-                </div>` : ''}
-            </div>
-            ${successHtml(entry.total)}
-            ${damageTableBtnHtml(entry.total, fc.tags?.find(t => t.startsWith('Dmg:'))?.match(/\(([^)]+)\)/)?.[1] || '')}
-            ${entry.total < 15 ? `<button class="provoke-btn" type="button">⚡ Provoke!</button>` : ''}
-            ${fc.desc ? expandableDesc(fc.desc) : ''}
-            ${condHtml}
-        </div>`;
-    }
-
-    // Plain stat roll (no feature context)
-    const borderClass = entry.rollType === 'adv' ? 'chat-roll--adv'
-        : entry.rollType === 'dis' ? 'chat-roll--dis' : '';
-    const modStr = entry.mod !== 0 ? ` ${fmtSigned(entry.mod)}` : '';
-    return `<div class="chat-roll-card ${borderClass}">
-        <div class="chat-card-head">
-            <span class="chat-card-title">${charLabel}${entry.label || 'Roll'}</span>
-            <span class="chat-time">${entry.time}</span>
-        </div>
-        <div class="chat-roll-result ${resClass}">${entry.total}</div>
-        <div class="chat-roll-breakdown">${entry.rollNote}${modStr}${typeLabel ? ` ${typeLabel}` : ''}</div>
-        ${successHtml(entry.total)}
-        ${entry.total < 15 ? `<button class="provoke-btn" type="button">⚡ Provoke!</button>` : ''}
-        ${condHtml}
-    </div>`;
-}
-
-function renderRecoveryEntry(entry) {
-    const rows = (entry.gains || []).map(g =>
-        `<div class="chat-rec-row">
-            <span class="chat-rec-label">${g.label}</span>
-            <span class="chat-rec-val${g.rolled ? ' chat-rec-val--rolled' : ''}">${g.value}</span>
-        </div>`
-    ).join('');
-    return `<div class="chat-recovery-card">
-        <div class="chat-card-head">
-            <span class="chat-card-title">⟳ ${entry.charName ? `${entry.charName} · ` : ''}${entry.title}</span>
-            <span class="chat-time">${entry.time}</span>
-        </div>
-        <div class="chat-rec-rows">${rows}</div>
-    </div>`;
-}
-
-function renderDiceEntry(entry) {
-    const breakdown = entry.rolls.length > 1
-        ? `<div class="dice-card-breakdown">[${entry.rolls.join(' + ')}]${entry.bonus !== 0 ? ` ${fmtSigned(entry.bonus)}` : ''}</div>`
-        : '';
-    return `<div class="chat-dice-card">
-        <div class="chat-card-head">
-            <span class="chat-card-title">${entry.charName ? `${entry.charName} · ` : ''}${entry.notation}</span>
-            <span class="chat-time">${entry.time}</span>
-        </div>
-        <div class="dice-card-total">${entry.total}</div>
-        ${breakdown}
-    </div>`;
-}
-
-function renderFeatureEntry(entry) {
-    const tagsHtml = entry.tags?.length
-        ? `<div class="chat-feat-tags">${entry.tags.map(t => `<span class="chat-feat-tag">${t}</span>`).join('')}</div>` : '';
-    return `<div class="chat-feat-card">
-        <div class="chat-card-head">
-            <span class="chat-card-title">⚡ ${entry.name || ''}</span>
-            <span class="chat-time">${entry.time}</span>
-        </div>
-        ${tagsHtml}
-        ${diceChipsHtml(entry.diceRolls)}
-        ${expandableDesc(entry.desc)}
-    </div>`;
-}
+// renderRollEntry / renderRecoveryEntry / renderDiceEntry / renderFeatureEntry
+// are defined in chat-cards.js
 
 function renderChat() {
+    if (localStorage.getItem('arc-room') && sharedChatMsgs.length) {
+        renderSharedChat();
+        return;
+    }
     const el = document.getElementById('chat-log');
     if (!el) return;
     el.innerHTML = '';
@@ -2150,6 +2072,241 @@ function saveState() {
             chat: state.chat.slice(0, 50),
         }));
     } catch (_) { }
+    debouncedRoomSync();
+}
+
+// ── FIREBASE: PARTY SESSION ───────────────────────────────────────────────────
+
+let _partyUnsub = null;
+let _lootUnsub  = null;
+let _roomUnsub  = null;
+
+let sharedChatMsgs = [];
+let _chatUnsub     = null;
+
+function listenToSharedChat(code) {
+    if (_chatUnsub) _chatUnsub();
+    const arc = window.__arc;
+    const q   = arc.query(
+        arc.collection(arc.db, 'rooms', code, 'chat'),
+        arc.orderBy('postedAt', 'desc'),
+        arc.limit(60)
+    );
+    let prevCount = 0;
+    _chatUnsub = arc.onSnapshot(q, snap => {
+        sharedChatMsgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderSharedChat();
+        // Badge if chat tab not active and messages increased
+        if (snap.docs.length > prevCount) {
+            const chatPanel = document.getElementById('panel-chat');
+            const notif     = document.getElementById('chat-notif');
+            if (notif && !chatPanel?.classList.contains('is-active')) {
+                notif.hidden = false;
+            }
+        }
+        prevCount = snap.docs.length;
+    }, err => console.error('[ARC] shared chat:', err));
+}
+
+async function broadcastChatEntry(entry) {
+    const arc  = window.__arc;
+    const room = localStorage.getItem('arc-room');
+    if (!arc?.db || !arc?.uid || !room) return;
+    try {
+        await arc.setDoc(arc.doc(arc.db, 'rooms', room, 'chat', crypto.randomUUID()), {
+            ...entry,
+            author:   state.char?.name || 'Player',
+            uid:      arc.uid,
+            postedAt: arc.serverTimestamp(),
+        });
+    } catch(e) { console.error('[ARC] broadcastChat:', e); }
+}
+
+function renderSharedChat() {
+    const el = document.getElementById('chat-log');
+    if (!el || !localStorage.getItem('arc-room')) return;
+
+    el.innerHTML = '';
+
+    if (!sharedChatMsgs.length) {
+        const li = document.createElement('li');
+        li.className = 'chat-empty';
+        li.textContent = 'No messages yet. Rolls will appear here.';
+        el.appendChild(li);
+        return;
+    }
+
+    sharedChatMsgs.forEach(m => {
+        const li    = document.createElement('li');
+        const isMe  = m.uid === window.__arc?.uid;
+        const isNar = m.isNarrator;
+
+        // Author badge — shown for other players and narrator
+        const badge = isNar
+            ? `<div class="shared-author shared-author--nar">◆ Narrator</div>`
+            : (!isMe ? `<div class="shared-author">${m.author || 'Player'}</div>` : '');
+        if (isNar) {
+            const isRoll = ['roll','dice','weapon-attack'].includes(m.type);
+            li.classList.add('nar-msg', isRoll ? 'nar-msg--roll' : 'nar-msg--text');
+        }
+
+        if (m.type === 'weapon-attack') {
+            li.innerHTML = badge + renderWeaponAttackEntry(m);
+        } else if (m.type === 'roll' && m.total !== undefined) {
+            li.innerHTML = badge + renderRollEntry(m);
+        } else if (m.type === 'feature') {
+            li.innerHTML = badge + renderFeatureEntry(m);
+        } else if (m.type === 'dice') {
+            li.innerHTML = badge + renderDiceEntry(m);
+        } else if (m.type === 'recovery') {
+            li.innerHTML = badge + renderRecoveryEntry(m);
+        } else {
+            li.className = 'chat-entry--msg';
+            li.innerHTML = `${badge}<span class="chat-time">${m.time || ''}</span><span class="chat-text">${m.text || ''}</span>`;
+        }
+
+        el.appendChild(li);
+    });
+}
+
+document.addEventListener('arc:firebase-ready', () => {
+    const room = localStorage.getItem('arc-room');
+    if (!room) return;
+
+    const arc = window.__arc;
+    const badgeEl = document.getElementById('player-room-badge');
+    if (badgeEl) badgeEl.textContent = room;
+    document.getElementById('party-session-panel').hidden = false;
+
+    // Intercept every chat push to broadcast to Firestore
+    const _origUnshift = state.chat.unshift.bind(state.chat);
+    state.chat.unshift = function(entry) {
+        _origUnshift(entry);
+        broadcastChatEntry(entry);
+    };
+
+    // Start shared chat listener
+    listenToSharedChat(room);
+
+    // Show session section in settings
+    const sessSection = document.getElementById('settings-session-section');
+    const sessLabel   = document.getElementById('settings-session-label');
+    if (sessSection) sessSection.hidden = false;
+    if (sessLabel)   sessLabel.textContent = `Room: ${room}`;
+
+    // Leave session from settings
+    document.getElementById('btn-leave-session-sheet')?.addEventListener('click', async () => {
+        const arc = window.__arc;
+        if (arc?.db && arc?.uid) {
+            try { await arc.deleteDoc(arc.doc(arc.db, 'rooms', room, 'players', arc.uid)); } catch {}
+        }
+        localStorage.removeItem('arc-room');
+        closeSettings();
+        window.location.href = 'home.html';
+    });
+
+    // Listen to party members
+    _partyUnsub = arc.onSnapshot(
+        arc.collection(arc.db, 'rooms', room, 'players'),
+        snap => renderPlayerParty(snap.docs.map(d => ({ id: d.id, ...d.data() }))),
+    );
+
+    // Listen to loot
+    _lootUnsub = arc.onSnapshot(
+        arc.collection(arc.db, 'rooms', room, 'loot'),
+        snap => renderPlayerLoot(snap.docs.map(d => ({ id: d.id, ...d.data() }))),
+    );
+
+    // Listen to room doc for gold
+    _roomUnsub = arc.onSnapshot(
+        arc.doc(arc.db, 'rooms', room),
+        snap => {
+            const gold = snap.data()?.gold ?? 0;
+            const el = document.getElementById('player-gold-val');
+            if (el) el.textContent = gold;
+        },
+    );
+});
+
+function renderPlayerParty(players) {
+    const el = document.getElementById('player-party-list');
+    if (!el) return;
+    if (!players.length) { el.innerHTML = '<p class="empty-hint">No other players yet.</p>'; return; }
+    const myUid = window.__arc?.uid;
+    el.innerHTML = players.map(p => {
+        const pct = p.woundsMax > 0 ? Math.round((p.woundsCur / p.woundsMax) * 100) : 0;
+        const isMe = p.id === myUid;
+        return `<div class="pparty-row${isMe ? ' pparty-row--me' : ''}">
+            <span class="pparty-name">${p.name}${isMe ? ' (you)' : ''}</span>
+            <div class="pparty-bars">
+                <div class="pparty-bar-track"><div class="pparty-bar-fill pparty-bar--hp" style="width:${pct}%"></div></div>
+                <span class="pparty-val">${p.woundsCur}/${p.woundsMax}</span>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function renderPlayerLoot(items) {
+    const el = document.getElementById('player-loot-list');
+    if (!el) return;
+    if (!items.length) { el.innerHTML = '<p class="empty-hint">No items in party inventory.</p>'; return; }
+    el.innerHTML = items.map(item => `
+        <div class="inv-row">
+            <div class="inv-name-col">
+                <span class="inv-name">${item.name}</span>
+                ${item.desc ? `<span class="inv-desc">${item.desc}</span>` : ''}
+            </div>
+            <span class="inv-amount">×${item.amount}</span>
+            <span class="inv-bulk">${((item.bulk||0)*(item.amount||1)).toFixed(1).replace(/\.0$/,'')} bulk</span>
+            <button class="inv-claim-btn" data-loot-id="${item.id}">Claim</button>
+        </div>`).join('');
+
+    el.querySelectorAll('[data-loot-id]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const arc  = window.__arc;
+            const room = localStorage.getItem('arc-room');
+            if (!arc?.db || !room) return;
+            const id   = btn.dataset.lootId;
+            const item = items.find(x => x.id === id);
+            if (!item) return;
+            try {
+                if (item.amount <= 1) {
+                    await arc.deleteDoc(arc.doc(arc.db, 'rooms', room, 'loot', id));
+                } else {
+                    await arc.updateDoc(arc.doc(arc.db, 'rooms', room, 'loot', id), { amount: item.amount - 1 });
+                }
+            } catch(e) { console.error('[ARC] claim loot failed:', e); }
+        });
+    });
+}
+
+// ── FIREBASE: CHARACTER SYNC ──────────────────────────────────────────────────
+
+let _syncTimer = null;
+function debouncedRoomSync() {
+    clearTimeout(_syncTimer);
+    _syncTimer = setTimeout(syncToRoom, 2000);
+}
+
+async function syncToRoom() {
+    const arc  = window.__arc;
+    const room = localStorage.getItem('arc-room');
+    if (!arc?.db || !arc?.uid || !room) return;
+
+    const c = state.char      || {};
+    const r = state.resources || {};
+    try {
+        await arc.setDoc(arc.doc(arc.db, 'rooms', room, 'players', arc.uid), {
+            name:      c.name            || 'Player',
+            armor:     r.armor?.current  ?? 0,
+            woundsCur: r.hp?.current     ?? 0,
+            woundsMax: r.hp?.max         ?? 0,
+            mnCur:     r.MN?.current     ?? 0,
+            mnMax:     r.MN?.max         ?? 0,
+            gold:      c.wealth          ?? c.gold ?? 0,
+            updatedAt: arc.serverTimestamp(),
+        }, { merge: true });
+    } catch(e) { console.error('[ARC] room sync failed:', e); }
 }
 
 function loadState() {
@@ -2197,7 +2354,6 @@ function cacheEls() {
         chat: document.getElementById('panel-chat'),
     };
     els.navBtns = Array.from(document.querySelectorAll('.nav-btn'));
-    els.fabRoll = document.getElementById('fab-roll');
 
     els.hpCur = document.getElementById('hp-current');
     els.hpMax = document.getElementById('hp-max');
@@ -2261,7 +2417,11 @@ function setActivePanel(key) {
     // play-tab-bio sits outside panel-play in the DOM; manually sync its visibility
     const bioCont = document.getElementById('play-tab-bio');
     if (bioCont) bioCont.style.display = (key === 'play') ? '' : 'none';
-    if (key === 'chat') renderChat();
+    if (key === 'chat') {
+        renderChat();
+        const notif = document.getElementById('chat-notif');
+        if (notif) notif.hidden = true;
+    }
     if (key === 'spells') renderSpellsPanel();
     if (key === 'ref') renderRefPanel();
 }
@@ -2525,11 +2685,7 @@ function syncEditCheckInputs() {
 // ── ROLL DRAWER ───────────────────────────────────────────────────────────────
 
 function bindDrawer() {
-    els.fabRoll.addEventListener('click', () => {
-        els.rollLabel.value = 'Roll';
-        els.rollMod.value = 0;
-        openDrawer();
-    });
+    // FAB removed — roll drawer only opens via feature/weapon roll chips
 
     els.rollDrawer.addEventListener('click', e => {
         if (e.target.matches('[data-drawer-close]')) closeDrawer();
@@ -2635,34 +2791,24 @@ function bindDiceRoller() {
     const roller = document.getElementById('dice-roller');
     if (!roller) return;
 
-    // Count chip selection
-    roller.querySelectorAll('.dice-count-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            roller.querySelectorAll('.dice-count-btn').forEach(b => b.classList.remove('is-sel'));
-            btn.classList.add('is-sel');
+    // Dice roll button
+    document.getElementById('btn-dice-roll')?.addEventListener('click', () => {
+        const sides = parseInt(document.getElementById('dice-type')?.value || '20', 10);
+        const count = Math.max(1, parseInt(document.getElementById('dice-count')?.value || '1', 10));
+        const bonus = parseInt(document.getElementById('dice-bonus')?.value || '0', 10);
+        const rolls  = Array.from({ length: count }, () => Math.ceil(Math.random() * sides));
+        const total  = rolls.reduce((s, r) => s + r, 0) + bonus;
+        const sidesLabel = sides === 100 ? '%' : sides;
+        const notation   = `${count}d${sidesLabel}${bonus !== 0 ? fmtSigned(bonus) : ''}`;
+        state.chat.unshift({
+            type: 'dice',
+            time: chatTimestamp(),
+            charName: state.char.name || '',
+            notation, rolls, bonus, total,
         });
-    });
-
-    // Die button — roll and post to chat
-    roller.querySelectorAll('.dice-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const sides = parseInt(btn.dataset.sides, 10);
-            const count = parseInt(roller.querySelector('.dice-count-btn.is-sel')?.dataset.count || '1', 10);
-            const bonus = parseInt(document.getElementById('dice-bonus')?.value || '0', 10);
-            const rolls = Array.from({ length: count }, () => Math.ceil(Math.random() * sides));
-            const total = rolls.reduce((s, r) => s + r, 0) + bonus;
-            const sidesLabel = sides === 100 ? '%' : sides;
-            const notation = `${count}d${sidesLabel}${bonus !== 0 ? fmtSigned(bonus) : ''}`;
-            state.chat.unshift({
-                type: 'dice',
-                time: chatTimestamp(),
-                charName: state.char.name || '',
-                notation, rolls, bonus, total,
-            });
-            if (state.chat.length > 100) state.chat.length = 100;
-            saveState();
-            renderChat();
-        });
+        if (state.chat.length > 100) state.chat.length = 100;
+        saveState();
+        renderChat();
     });
 }
 
@@ -2732,7 +2878,6 @@ function openDrawer(label = null, checkStr = null) {
 
 function closeDrawer() {
     if (els.rollDrawer.contains(document.activeElement)) {
-        els.fabRoll?.focus();
     }
     els.rollDrawer.classList.remove('is-open');
     els.rollDrawer.setAttribute('aria-hidden', 'true');
@@ -3444,24 +3589,8 @@ function parseDiceFromText(text) {
     return results;
 }
 
-function diceChipsHtml(diceRolls) {
-    if (!diceRolls?.length) return '';
-    return `<div class="chat-feat-dice">${diceRolls.map(r => {
-        const detail = r.rolls.length > 1 ? ` [${r.rolls.join('+')}]` : '';
-        const bonusTxt = r.bonus !== 0 ? (r.bonus > 0 ? `+${r.bonus}` : `${r.bonus}`) : '';
-        return `<div class="chat-dice-chip">
-                <span class="chat-dice-notation">${r.notation}</span>
-                <span class="chat-dice-arrow">→</span>
-                <span class="chat-dice-total">${r.total}</span>
-                <span class="chat-dice-detail">${detail}${bonusTxt}</span>
-            </div>`;
-    }).join('')
-        }</div>`;
-}
-
 // ── UTILS ─────────────────────────────────────────────────────────────────────
-
-function fmtSigned(n) { const v = Number(n) || 0; return v >= 0 ? `+${v}` : `${v}`; }
+// diceChipsHtml / fmtSigned are in chat-cards.js
 function clampNum(v) { const n = Number(v); return Number.isFinite(n) ? Math.max(0, Math.floor(n)) : 0; }
 
 // ── BOOT ─────────────────────────────────────────────────────────────────────

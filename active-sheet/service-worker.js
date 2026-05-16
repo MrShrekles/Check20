@@ -1,4 +1,4 @@
-const CACHE = 'arc20-v24';
+const CACHE = 'arc20-v25';
 
 // Everything network-first during active development.
 // When data is stable, data/*.json can be moved back to cache-first for offline use.

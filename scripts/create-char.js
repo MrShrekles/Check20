@@ -771,38 +771,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('btn-suggest').addEventListener('click', applySuggested);
 
-    // Starting Details — roll buttons
-    document.getElementById('roll-wealth')?.addEventListener('click', () => {
-        if (wiz.wealthRolled) return;
-        const roll = Math.floor(Math.random() * 100) + 1 + 50;
-        wiz.wealth = roll; wiz.wealthRolled = true;
-        const el  = document.getElementById('detail-wealth');
-        const btn = document.getElementById('roll-wealth');
-        if (el)  el.value         = roll;
-        if (btn) { btn.disabled = true; btn.textContent = 'Rolled'; }
-    });
-    document.getElementById('roll-age')?.addEventListener('click', () => {
-        const lifespan = wiz.speciesObj?.lifespan || '60-90';
-        const parts    = lifespan.split('-').map(Number).filter(Boolean);
-        const max      = Math.max(...parts);
-        const min      = Math.min(...parts);
-        const low      = Math.max(1, Math.floor(min * 0.20));
-        const roll     = Math.floor(Math.random() * (max - low + 1)) + low;
-        wiz.age        = roll;
-        const el = document.getElementById('detail-age');
-        if (el) el.value = roll;
-    });
-    document.getElementById('roll-motivation')?.addEventListener('click', () => {
-        const result = pick(worldMotivations);
-        wiz.motivation = result;
-        const el = document.getElementById('detail-motivation');
-        if (el) el.value = result;
-    });
-    document.getElementById('roll-trinket')?.addEventListener('click', () => {
-        const result = pick(TRINKET_LIST);
-        wiz.trinket = result;
-        const el = document.getElementById('detail-trinket');
-        if (el) el.value = result;
+    // Starting Details — delegated roll buttons (robust against DOM timing)
+    document.querySelector('.wiz-body')?.addEventListener('click', e => {
+        const btn = e.target.closest('[id^="roll-"]');
+        if (!btn) return;
+
+        if (btn.id === 'roll-wealth') {
+            if (wiz.wealthRolled) return;
+            const roll = Math.floor(Math.random() * 100) + 51; // 51–150
+            wiz.wealth = roll;
+            wiz.wealthRolled = true;
+            const el = document.getElementById('detail-wealth');
+            if (el) { el.value = roll; el.dispatchEvent(new Event('input')); }
+            btn.disabled = true;
+            btn.textContent = `Rolled (${roll}g)`;
+        }
+
+        if (btn.id === 'roll-age') {
+            const lifespan = wiz.speciesObj?.lifespan || '60-90';
+            const parts    = lifespan.split('-').map(Number).filter(Boolean);
+            const maxAge   = parts.length ? Math.max(...parts) : 90;
+            const minAge   = parts.length ? Math.min(...parts) : 60;
+            const low      = Math.max(1, Math.floor(minAge * 0.20));
+            const roll     = Math.floor(Math.random() * (maxAge - low + 1)) + low;
+            wiz.age        = roll;
+            const el = document.getElementById('detail-age');
+            if (el) { el.value = roll; el.dispatchEvent(new Event('input')); }
+        }
+
+        if (btn.id === 'roll-motivation') {
+            const result = pick(worldMotivations);
+            wiz.motivation = result;
+            const el = document.getElementById('detail-motivation');
+            if (el) { el.value = result; }
+        }
+
+        if (btn.id === 'roll-trinket') {
+            const result = pick(TRINKET_LIST);
+            wiz.trinket = result;
+            const el = document.getElementById('detail-trinket');
+            if (el) { el.value = result; }
+        }
     });
 
     // Sync typed values back to wiz

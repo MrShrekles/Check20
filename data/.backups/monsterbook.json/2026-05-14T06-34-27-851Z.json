@@ -6943,15 +6943,15 @@
     "_group": "Elemental",
     "origin": "Elemental",
     "size": "Giant",
-    "rarity": "Legendary",
-    "environment": "Prime, void",
-    "behavior": "Mindless",
-    "description": "The horizon doesn't just vanish; it becomes a memory as the sand washes the world away. The storm informs you of your doom, a wall of grinding rust that ensures this is the last thing you will ever see. Within this swirling void, there is no escape and no flight; the sky is closed. You can only pray your shelter is mana-reinforced, or the wind will tear the structure to shreds in a heartbeat. A creature caught in this gale is no threat to the storm. You are a mere ant beneath the wheels of a truck, waiting to be ground into the silica.",
+    "rarity": "Rare",
+    "environment": "",
+    "behavior": "",
+    "description": "",
     "lore": "",
-    "motivation": "Move with the winds of the desert",
-    "pl": 20,
-    "check_physical": 14,
-    "check_mental": 6,
+    "motivation": "",
+    "pl": 10,
+    "check_physical": 5,
+    "check_mental": 5,
     "walk": 0,
     "fly": 50,
     "swim": 0,
@@ -6959,7 +6959,7 @@
     "feature_name": "",
     "feature_type": "",
     "feature_range": "",
-    "feature_effect": "The sky is closed. Any creature that starts its turn flying must make a Physical check or be Knocked Prone or fall from the air",
+    "feature_effect": "",
     "feature_duration": "",
     "feature_damage": "",
     "melee_attack": {
@@ -6980,32 +6980,7 @@
       "damage": "",
       "damage_type": ""
     },
-    "features": [
-      {
-        "name": "Sand Veil",
-        "type": "Passive",
-        "range": "",
-        "effect": "Any creature that starts its turn within long range must make an Observation check or become Blind",
-        "duration": "",
-        "damage": ""
-      },
-      {
-        "name": "Rending Wind",
-        "type": "Passive",
-        "range": "",
-        "effect": "Any non-magical structure or object left in your path takes [[PL]] Slashing damage at the start of every round.",
-        "duration": "",
-        "damage": ""
-      },
-      {
-        "name": "Sandblasted",
-        "type": "",
-        "range": "",
-        "effect": "Direct a concentrated jet of abrasive sand at a target within short range. The target must make a Physical check or take [[3d6 + PL]] Slashing damage and have their Armor permanently reduced by 2 permanently",
-        "duration": "",
-        "damage": "Slashing"
-      }
-    ],
+    "features": [],
     "art": ""
   },
   {

@@ -801,8 +801,7 @@
       "feature_effect": "You have advantage on Grappling checks. When you maintain a grapple, you may deal [[1d4]] Impact damage as an off-action.",
       "fetAction": "Off-Action",
       "fetDamage": "1d4",
-      "fetDamagetype": "Impact",
-      "images": "assets/species/she-ren-con"
+      "fetDamagetype": "Impact"
     },
     {
       "lineage": "Beastmen",
@@ -2646,7 +2645,8 @@
       "feature_effect": "You do not need to eat, drink, sleep, or breathe, and you are immune to disease and magic can't put you to sleep. Once per month when you take the Death condition, remove it but it leaves a wound, scar, or disfigurement.\n---\nYou have the smell of Death, your body is rotten and cold. You have disadvantage on Influence checks on creatures that can smell you.",
       "fetAction": "Passive",
       "sub-fet-name": "Undying Disease",
-      "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions"
+      "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions",
+      "images": "assets/species/inviere"
     },
     {
       "lineage": "strigoi",
@@ -2667,7 +2667,8 @@
       "fetRange": "Reach",
       "fetDuration": "1 hour",
       "sub-fet-name": "Undying Disease",
-      "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions."
+      "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions.",
+      "images": "assets/species/Avutie"
     },
     {
       "lineage": "strigoi",
@@ -2703,7 +2704,8 @@
       "feature_effect": "You have a massive arm that gives +3 Strength and a second heart. As an off-action when you take a Corpus condition, make a Survival check to remove it on a success. Your rotting body gives -3 Influence and emits a short range smell of death.",
       "fetAction": "Special",
       "sub-fet-name": "Undying Disease",
-      "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions"
+      "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions",
+      "images": "assets/species/tristete"
     },
     {
       "lineage": "symbiotes",

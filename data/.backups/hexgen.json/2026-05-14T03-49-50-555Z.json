@@ -349,8 +349,8 @@
       "weight": 4
     },
     {
-      "name": "Deadwood",
-      "weight": 2
+      "name": "Blight",
+      "weight": 3
     },
     {
       "name": "Carrion Feeders",
@@ -449,11 +449,11 @@
       "weight": 2
     },
     {
-      "name": "Clowns",
+      "name": "Feral Treants",
       "weight": 1
     },
     {
-      "name": "Plagued One",
+      "name": "Clowns",
       "weight": 1
     }
   ],

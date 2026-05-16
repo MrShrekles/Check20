@@ -2779,92 +2779,6 @@
     "art": ""
   },
   {
-    "name": "Deadwood",
-    "_group": "Undead",
-    "origin": "Nature",
-    "size": "Large",
-    "rarity": "Rare",
-    "environment": "Prime, Eclipse",
-    "behavior": "Pack Hunter",
-    "description": "",
-    "lore": "",
-    "motivation": "",
-    "pl": 6,
-    "check_physical": 5,
-    "check_mental": 1,
-    "walk": 25,
-    "fly": 0,
-    "swim": 0,
-    "climb": 0,
-    "feature_name": "Pack Tactics",
-    "feature_type": "Passive",
-    "feature_range": "",
-    "feature_effect": "Gain +1 to checks and damage per ally within reach of a target",
-    "feature_duration": "",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "Slam (NPC)",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Impact"
-    },
-    "ranged_attack": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "spell": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "features": [
-      {
-        "name": "Eclipse Breath",
-        "type": "Action",
-        "range": "Reach",
-        "effect": "As an Action, belch deathly bile at a creature within reach. The target takes [[1d6]] toxic damage and must make a Survival check or gain the Slowed condition.",
-        "duration": "Instant",
-        "damage": "Toxic"
-      },
-      {
-        "name": "Deadwood",
-        "type": "Start of turn",
-        "range": "Self",
-        "effect": "At the start of each round you have a shield of deadwood that prevents the next instance of damage.",
-        "duration": "Until end of their next turn",
-        "damage": ""
-      },
-      {
-        "name": "Shluff",
-        "type": "Action",
-        "range": "Reach",
-        "effect": "Slough off excess deadwood. Each creature within reach must make a Physical check or take [[1d6 + PL]] Impact damage.",
-        "duration": "",
-        "damage": "Impact"
-      },
-      {
-        "name": "Root Snare",
-        "type": "Action",
-        "range": "Short",
-        "effect": "Dead, grey roots erupt from the sand. One target within short range must succeed on a Physical check or become Constrained. If the target is already Constrained, the roots begin to sap moisture, dealing [[PL]] Nature damage.",
-        "duration": "",
-        "damage": "Nature"
-      },
-      {
-        "name": "Chaos Collapse",
-        "type": "Special",
-        "range": "Reach",
-        "effect": "When you are reduced to 0 HP, you do not leave a corpse. You explode into a pile of white sand and splinters; all creatures within reach must make  a Physical check or be Knocked Prone.",
-        "duration": "",
-        "damage": ""
-      }
-    ],
-    "art": ""
-  },
-  {
     "name": "Tar Ghoul",
     "_group": "oOze",
     "origin": "Life",
@@ -6943,15 +6857,15 @@
     "_group": "Elemental",
     "origin": "Elemental",
     "size": "Giant",
-    "rarity": "Legendary",
-    "environment": "Prime, void",
-    "behavior": "Mindless",
-    "description": "The horizon doesn't just vanish; it becomes a memory as the sand washes the world away. The storm informs you of your doom, a wall of grinding rust that ensures this is the last thing you will ever see. Within this swirling void, there is no escape and no flight; the sky is closed. You can only pray your shelter is mana-reinforced, or the wind will tear the structure to shreds in a heartbeat. A creature caught in this gale is no threat to the storm. You are a mere ant beneath the wheels of a truck, waiting to be ground into the silica.",
+    "rarity": "Rare",
+    "environment": "",
+    "behavior": "",
+    "description": "",
     "lore": "",
-    "motivation": "Move with the winds of the desert",
-    "pl": 20,
-    "check_physical": 14,
-    "check_mental": 6,
+    "motivation": "",
+    "pl": 10,
+    "check_physical": 5,
+    "check_mental": 5,
     "walk": 0,
     "fly": 50,
     "swim": 0,
@@ -6959,7 +6873,7 @@
     "feature_name": "",
     "feature_type": "",
     "feature_range": "",
-    "feature_effect": "The sky is closed. Any creature that starts its turn flying must make a Physical check or be Knocked Prone or fall from the air",
+    "feature_effect": "",
     "feature_duration": "",
     "feature_damage": "",
     "melee_attack": {
@@ -6980,32 +6894,7 @@
       "damage": "",
       "damage_type": ""
     },
-    "features": [
-      {
-        "name": "Sand Veil",
-        "type": "Passive",
-        "range": "",
-        "effect": "Any creature that starts its turn within long range must make an Observation check or become Blind",
-        "duration": "",
-        "damage": ""
-      },
-      {
-        "name": "Rending Wind",
-        "type": "Passive",
-        "range": "",
-        "effect": "Any non-magical structure or object left in your path takes [[PL]] Slashing damage at the start of every round.",
-        "duration": "",
-        "damage": ""
-      },
-      {
-        "name": "Sandblasted",
-        "type": "",
-        "range": "",
-        "effect": "Direct a concentrated jet of abrasive sand at a target within short range. The target must make a Physical check or take [[3d6 + PL]] Slashing damage and have their Armor permanently reduced by 2 permanently",
-        "duration": "",
-        "damage": "Slashing"
-      }
-    ],
+    "features": [],
     "art": ""
   },
   {
@@ -7204,199 +7093,5 @@
         ]
       }
     ]
-  },
-  {
-    "name": "Glasswraith",
-    "_group": "Spirit",
-    "origin": "Crystal",
-    "size": "Small",
-    "rarity": "Rare",
-    "environment": "Prime, Void",
-    "behavior": "Solitary",
-    "description": "The Glasswraith is a jagged, floating constellation of amber and violet fulgurite. It has no solid torso; instead, four to six primary shards of sand-fused glass orbit a central, humming core of raw mana. Arcs of violet lightning constantly leap between these fragments, acting as \"limbs\" that stretch and snap with a sound like a cracking whip. In the center of its largest shard, a flickering, eye-like light pulses in rhythm with the desert’s ambient static. It doesn't walk, but glides inches above the dunes, leaving a glass-melted trail in the sand. When it moves quickly, the shards tilt and catch the light, making the creature appear to vanish into the heat haze before reappearing feet away.",
-    "lore": "Known to nomads as the \"Vengeance of the Storm,\" Glasswraiths are the physical scars of failed magic. They are born when a high-tier lightning spell is catastrophically miscast or countered during a desert manastorm, grounding the spell's \"intent\" into the silica. Lacking a soul but possessing a directive, they hunt for conductors to complete the circuit they were originally meant to close. They are drawn to the bio-electric hum of living hearts and the concentrated mana of spellcasters.\n\nWhile they are aggressive and relentless hunters, they are fundamentally preservationists of their own fragile forms. Because they are held together by a precise magnetic frequency, structural instability is a death sentence. When you are significantly injured, the electrical tethers between your shards begin to fray and sputter; rather than risk total shattering, you will immediately collapse your form into a single, inert shard and flee through the sand or air to find a manastorm to recharge.",
-    "motivation": "Seeking sources of mana",
-    "pl": 6,
-    "check_physical": 0,
-    "check_mental": 6,
-    "walk": 0,
-    "fly": 40,
-    "swim": 0,
-    "climb": 0,
-    "feature_name": "Mana Seeker",
-    "feature_type": "Action",
-    "feature_range": "Long",
-    "feature_effect": "As an action, teleport to a creature within long range with a high mana capacity",
-    "feature_duration": "",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "ranged_attack": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "spell": {
-      "name": "Mindspike",
-      "equipped": true,
-      "damage": "1d4",
-      "damage_type": "Psychic"
-    },
-    "features": [
-      {
-        "name": "Mana Siphon",
-        "type": "Action",
-        "range": "Reach",
-        "effect": "As an action, siphon 1 mana from a creature within reach. When you do cause [[1d4]] lightning damage",
-        "duration": "",
-        "damage": "Lightning"
-      },
-      {
-        "name": "Manaborn",
-        "type": "Passive",
-        "range": "",
-        "effect": "Immune to direct damage from spells",
-        "duration": "",
-        "damage": ""
-      },
-      {
-        "name": "Summon Sparkling",
-        "type": "Action",
-        "range": "Reach",
-        "effect": "As an action, summon a PL2 [Sparkling]\nfor 1 minute that acts on your turn on your commands",
-        "duration": "",
-        "damage": ""
-      }
-    ],
-    "art": "",
-    "spells": [
-      {
-        "name": "Voltus",
-        "manner": "Manifest",
-        "transmission": "Elemental",
-        "effects": [
-          {
-            "intent": "Whisper",
-            "cost": 1,
-            "range": "short",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Release a bolt of lightning that hits a target within short range dealing 4 lightning damage, and dealing half that damage to another target within reach range"
-          },
-          {
-            "intent": "Surge",
-            "cost": 3,
-            "range": "short",
-            "area": "melee",
-            "damage": "",
-            "type": "",
-            "effect": "Choose a metal object within short range to imbue with lightning. When any creature enters the melee range or touches the trap, it discharges, dealing 4d6 lightning damage and they must make a Survival check or take the Stunned condition until the end of their next turn. The trap remains active for 1 hour or until triggered."
-          },
-          {
-            "intent": "Storm",
-            "cost": 12,
-            "range": "medium",
-            "area": "medium",
-            "damage": "",
-            "type": "",
-            "effect": "Summon a localized lightning storm in a medium range area that pulses of static and roaring thunder. All creatures take 9d6 lightning damage and must make a Survival check to halve the damage per success unless the target is wet or in water"
-          }
-        ]
-      },
-      {
-        "name": "Light",
-        "manner": "Manifest",
-        "transmission": "Elemental",
-        "effects": [
-          {
-            "intent": "Whisper",
-            "cost": 1,
-            "range": "Short",
-            "area": "Short",
-            "damage": "",
-            "type": "",
-            "effect": "Create a source of light within short range that illuminates a short range and lasts for 1 hour."
-          },
-          {
-            "intent": "Surge",
-            "cost": 3,
-            "range": "Short",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "You conjure a javelin of light and hurl it at a target within medium range. On a hit, it deals solar damage equal to your spellcasting check (Default Spirit). If the attack misses, the javelin detonates in a flare, forcing all creatures in reach range of the target to make a Survival check or take the blind condition until the end of their next turn."
-          },
-          {
-            "intent": "Shout",
-            "cost": 6,
-            "range": "Short",
-            "area": "",
-            "damage": "",
-            "type": "",
-            "effect": "Deal [[1d6]] solar damage to a creature within short range and cause the Blind condition until the end of their next turn."
-          },
-          {
-            "intent": "Cataclysm",
-            "cost": 24,
-            "range": "Global",
-            "area": "Global",
-            "damage": "",
-            "type": "",
-            "effect": "Shift day into night, or night into day."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Sparkling",
-    "_group": "Elemental",
-    "origin": "Elemental",
-    "size": "Tiny",
-    "rarity": "Uncommon",
-    "environment": "",
-    "behavior": "",
-    "description": "",
-    "lore": "",
-    "motivation": "",
-    "pl": 2,
-    "check_physical": 2,
-    "check_mental": 0,
-    "walk": 0,
-    "fly": 30,
-    "swim": 0,
-    "climb": 0,
-    "feature_name": "Formless",
-    "feature_type": "Passive",
-    "feature_range": "",
-    "feature_effect": "Cannot take physical damage.",
-    "feature_duration": "",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "ranged_attack": {
-      "name": "Spark",
-      "equipped": true,
-      "damage": "1d4",
-      "damage_type": "Lightning"
-    },
-    "spell": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "features": [],
-    "art": ""
   }
 ]

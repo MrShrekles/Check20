@@ -260,6 +260,45 @@ body {
 .save-btn--del  { color: #ff7070; }
 .save-btn:active { transform: scale(0.95); }
 
+/* ── JOIN SESSION ──────────────────────────────────────────────── */
+
+.home-join-row {
+    display: flex;
+    gap: 8px;
+}
+
+.home-join-input {
+    flex: 1;
+    height: 44px;
+    border-radius: 12px;
+    border: 1px solid var(--line, rgba(255,255,255,0.1));
+    background: var(--panel, #14141a);
+    color: var(--text, #f2f2f6);
+    padding: 0 14px;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.home-join-input:focus {
+    outline: none;
+    border-color: var(--accent, #6b9cc8);
+}
+
+.home-join-status {
+    margin: 6px 0 0;
+    font-size: 13px;
+    text-align: center;
+}
+
+.home-join-status--info    { color: var(--muted, rgba(242,242,246,0.72)); }
+.home-join-status--success { color: #4dba94; }
+.home-join-status--error   { color: #e05555; }
+
+/* ── LEGACY ─────────────────────────────────────────────────────── */
+
 .home-soon {
     font-size: 10px;
     font-weight: 700;

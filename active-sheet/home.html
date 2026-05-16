@@ -14,6 +14,7 @@
     <meta name="apple-mobile-web-app-title" content="ARC20" />
     <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
     <link rel="stylesheet" href="../styles/home.css" />
+    <script type="module" src="../scripts/firebase.js"></script>
     <script src="../scripts/home.js" defer></script>
 </head>
 
@@ -64,10 +65,33 @@
 
         <div class="home-divider"></div>
 
+        <!-- Join / Active Session -->
+        <div class="home-section" id="home-join-section">
+            <div class="home-section-label">Session</div>
+
+            <!-- Active session banner (shown when already in a room) -->
+            <div id="home-active-session" hidden>
+                <div class="home-session-banner">
+                    <span>Active: <strong id="home-session-code"></strong></span>
+                    <button id="btn-leave-session" class="home-btn home-btn--ghost" type="button" style="color:#e05555">Leave</button>
+                </div>
+                <button id="btn-rejoin-session" class="home-btn home-btn--primary" type="button">▶ Rejoin Session</button>
+            </div>
+
+            <!-- Join form (shown when not in a room) -->
+            <div id="home-join-form-wrap">
+                <div class="home-join-row">
+                    <input id="join-code-input" class="home-join-input" type="text"
+                        placeholder="Room code…" maxlength="6" autocomplete="off"
+                        style="text-transform:uppercase" />
+                    <button id="btn-join-session" class="home-btn home-btn--primary" type="button" disabled>Join</button>
+                </div>
+            </div>
+
+            <p id="join-status" class="home-join-status" hidden></p>
+        </div>
+
         <div class="home-actions">
-            <button class="home-btn home-btn--ghost" type="button" disabled>
-                💬 Join Chat <span class="home-soon">Soon</span>
-            </button>
             <a href="../../index.html" class="home-btn home-btn--ghost" style="display:flex;align-items:center;justify-content:center;text-decoration:none">
                 ← Main Website
             </a>

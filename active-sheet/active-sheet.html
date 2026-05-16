@@ -19,6 +19,8 @@
     <script src="../scripts/tooltips.js" defer></script>
 
     <!-- page logic -->
+    <script src="../scripts/chat-cards.js" defer></script>
+    <script type="module" src="../scripts/firebase.js"></script>
     <script src="../scripts/active-sheet.js" defer></script>
 </head>
 
@@ -353,10 +355,6 @@
                                     <button class="species-change-btn" id="btn-species-edit" type="button">✏ Change</button>
                                 </div>
                             </div>
-                            <label class="field">
-                                <span class="field-label">Level</span>
-                                <input id="char-level" type="number" inputmode="numeric" min="1" />
-                            </label>
                             <div class="bio-row">
                                 <label class="field"><span class="field-label">Size</span><input id="char-size" type="text" autocomplete="off" /></label>
                                 <label class="field"><span class="field-label">Age</span><input id="char-age" type="text" autocomplete="off" /></label>
@@ -511,44 +509,57 @@
             </section>
             <!-- CHAT -->
             <section class="panel" id="panel-chat" role="region" aria-label="Chat">
+
+                <!-- Party sub-tab — shown only when in a room -->
+                <div id="party-session-panel" hidden>
+                    <div class="section" style="margin-bottom:8px">
+                        <div class="section-head">
+                            <h2 class="section-title">Party</h2>
+                            <span class="party-room-code" id="player-room-badge"></span>
+                        </div>
+                        <div id="player-party-list"><p class="empty-hint">Connecting to session…</p></div>
+                    </div>
+                </div>
+
                 <div class="section">
                     <div class="section-head">
-                        <h2 class="section-title">Session Chat</h2>
+                        <h2 class="section-title" id="chat-panel-title">Session Chat</h2>
                         <button class="ghost-btn" id="btn-clear-chat" type="button">Clear</button>
                     </div>
                     <ol class="chat-log" id="chat-log" aria-label="Session chat">
                         <!-- entries injected by JS -->
                     </ol>
-                    <!-- Dice Roller -->
+                </div>
+
+                <!-- Sticky dice roller + send, always visible above nav -->
+                <div class="chat-sticky-bottom">
                     <div class="dice-roller" id="dice-roller">
                         <div class="dice-top-row">
-                            <div class="dice-count-group">
+                            <label class="dice-count-field">
                                 <span class="dice-mult-label">×</span>
-                                <button class="dice-count-btn is-sel" data-count="1" type="button">1</button>
-                                <button class="dice-count-btn" data-count="2" type="button">2</button>
-                                <button class="dice-count-btn" data-count="3" type="button">3</button>
-                                <button class="dice-count-btn" data-count="4" type="button">4</button>
-                            </div>
+                                <input class="dice-count-input" id="dice-count" type="number" inputmode="numeric" min="1" max="20" value="1" />
+                            </label>
+                            <select class="dice-type-select" id="dice-type">
+                                <option value="4">d4</option>
+                                <option value="6">d6</option>
+                                <option value="8">d8</option>
+                                <option value="10">d10</option>
+                                <option value="12">d12</option>
+                                <option value="20" selected>d20</option>
+                                <option value="100">d%</option>
+                            </select>
                             <label class="dice-bonus-field">
-                                <span class="dice-bonus-label">Bonus</span>
+                                <span class="dice-bonus-label">+</span>
                                 <input class="dice-bonus-input" id="dice-bonus" type="number" inputmode="numeric" value="0" />
                             </label>
-                        </div>
-                        <div class="dice-btn-row">
-                            <button class="dice-btn" data-sides="4"   type="button">d4</button>
-                            <button class="dice-btn" data-sides="6"   type="button">d6</button>
-                            <button class="dice-btn" data-sides="8"   type="button">d8</button>
-                            <button class="dice-btn" data-sides="10"  type="button">d10</button>
-                            <button class="dice-btn" data-sides="12"  type="button">d12</button>
-                            <button class="dice-btn" data-sides="20"  type="button">d20</button>
-                            <button class="dice-btn" data-sides="100" type="button">d%</button>
+                            <button class="dice-roll-btn" id="btn-dice-roll" type="button">Roll</button>
                         </div>
                     </div>
-
                     <div class="chat-input-row">
                         <input id="chat-msg-input" type="text" placeholder="Say something…" autocomplete="off" />
                         <button class="chat-send-btn" id="btn-send-msg" type="button">Send</button>
                     </div>
+                </div>
                 </div>
             </section>
 
@@ -607,7 +618,6 @@
         </section>
 
         <!-- Floating Roll button (thumb friendly) -->
-        <button class="fab" id="fab-roll" type="button" aria-label="Open roll drawer">Roll</button>
     </main>
 
     <!-- Weapon Attack Modal -->
@@ -616,35 +626,51 @@
         <div class="weapon-modal-sheet">
             <div class="drawer-handle" aria-hidden="true"></div>
             <div class="wm-head">
-                <div class="wm-name-block">
-                    <div class="wm-name" id="wm-name">Weapon</div>
-                    <div class="wm-sub"  id="wm-sub"></div>
-                </div>
+                <input class="wm-name-input" id="wm-name-input" type="text" placeholder="Weapon name…" autocomplete="off" />
                 <button class="icon-btn" id="wm-close" type="button" aria-label="Close">✕</button>
             </div>
 
-            <!-- Check chips -->
+            <!-- Editable stat grid -->
+            <div class="wm-edit-grid">
+                <label class="wm-edit-field">
+                    <span class="wm-stat-label">Damage</span>
+                    <input id="wm-damage-input" class="wm-edit-input" type="text" placeholder="1d6" autocomplete="off" />
+                </label>
+                <label class="wm-edit-field">
+                    <span class="wm-stat-label">Type</span>
+                    <select id="wm-dmg-type-input" class="wm-edit-input"></select>
+                </label>
+                <label class="wm-edit-field">
+                    <span class="wm-stat-label">Range</span>
+                    <select id="wm-range-input" class="wm-edit-input"></select>
+                </label>
+                <label class="wm-edit-field">
+                    <span class="wm-stat-label">Properties</span>
+                    <select id="wm-weight-input" class="wm-edit-input">
+                        <option value="—">—</option>
+                        <option value="Light">Light</option>
+                        <option value="Hefty">Hefty</option>
+                    </select>
+                </label>
+                <label class="wm-edit-field wm-edit-field--wide">
+                    <span class="wm-stat-label">Check Stat</span>
+                    <select id="wm-check-stat-input" class="wm-edit-input"></select>
+                </label>
+                <label class="wm-edit-field wm-edit-field--wide">
+                    <span class="wm-stat-label">Crit Range</span>
+                    <input id="wm-crit" class="wm-edit-input" type="number" value="20" min="1" max="20" />
+                </label>
+                <label class="wm-edit-field wm-edit-field--wide">
+                    <span class="wm-stat-label">Attack Bonus</span>
+                    <input id="wm-bonus" class="wm-edit-input" type="number" value="0" />
+                </label>
+            </div>
+
+            <!-- Check chips (for rolling — updated by check stat select) -->
             <div class="wm-section">
-                <div class="wm-label">Check</div>
+                <div class="wm-label">Roll with</div>
                 <div class="wm-check-chips" id="wm-check-chips"></div>
             </div>
-
-            <!-- Stat row -->
-            <div class="wm-stats">
-                <div class="wm-stat"><div class="wm-stat-label">Damage</div><div class="wm-stat-val" id="wm-damage">—</div></div>
-                <div class="wm-stat"><div class="wm-stat-label">Type</div><div class="wm-stat-val" id="wm-dmg-type">—</div></div>
-                <div class="wm-stat"><div class="wm-stat-label">Range</div><div class="wm-stat-val" id="wm-range">—</div></div>
-                <div class="wm-stat"><div class="wm-stat-label">Weight</div><div class="wm-stat-val" id="wm-weight">—</div></div>
-            </div>
-
-            <!-- Advanced (collapsible) -->
-            <details class="wm-advanced">
-                <summary>Crit &amp; Bonus</summary>
-                <div class="wm-advanced-grid">
-                    <label class="field"><span class="field-label">Crit Range</span><input id="wm-crit" type="number" value="20" min="1" max="20" /></label>
-                    <label class="field"><span class="field-label">Attack Bonus</span><input id="wm-bonus" type="number" value="0" /></label>
-                </div>
-            </details>
 
             <!-- Roll type -->
             <div class="roll-seg" id="wm-roll-seg" role="group" aria-label="Roll type">
@@ -671,6 +697,12 @@
                 <div class="settings-section-title">Theme</div>
                 <p class="settings-hint">Two-color theme — saved per character. Primary drives the UI chrome, secondary drives data and labels.</p>
                 <div class="theme-swatches" id="theme-swatches"></div>
+            </div>
+
+            <div class="settings-section" id="settings-session-section" hidden>
+                <div class="settings-section-title">Session</div>
+                <p class="settings-hint" id="settings-session-label"></p>
+                <button class="settings-action-btn settings-action-btn--danger" id="btn-leave-session-sheet" type="button">Leave Session</button>
             </div>
 
             <div class="settings-section">
@@ -837,7 +869,10 @@
     <!-- Bottom navigation — outside <main> so no container can trap fixed positioning -->
     <nav class="bottom-nav" aria-label="Bottom navigation">
         <button class="nav-btn" data-nav="chat" type="button" aria-controls="panel-chat">
-            <img class="nav-icon" src="../assets/icons/chat.png" alt="" aria-hidden="true" />
+            <span class="nav-icon-wrap">
+                <img class="nav-icon" src="../assets/icons/chat.png" alt="" aria-hidden="true" />
+                <span class="nav-notif" id="chat-notif" hidden></span>
+            </span>
             <span class="nav-label">Chat</span>
         </button>
         <button class="nav-btn is-active" data-nav="play" type="button" aria-controls="panel-play">
