@@ -230,6 +230,14 @@
                             <label class="field"><span class="field-label">Max</span><input id="class-res-max-input" type="number" inputmode="numeric" min="0" /></label>
                         </div>
                         <button class="done-btn" data-save="classres" type="button">✓ Done</button>
+                        <hr class="res-divider" />
+                        <p class="field-hint" style="margin:0 0 6px">Add custom resource:</p>
+                        <div class="editor-grid">
+                            <label class="field"><span class="field-label">Label</span><input id="custom-res-label-input" type="text" placeholder="Rage, Ki…" autocomplete="off" /></label>
+                            <label class="field"><span class="field-label">Max</span><input id="custom-res-max-input" type="number" inputmode="numeric" min="0" /></label>
+                        </div>
+                        <button type="button" id="btn-add-custom-res" class="done-btn">+ Add Resource</button>
+                        <div id="custom-res-editor-list"></div>
                     </div>
                     <div class="resource-grid">
                         <div class="resource-pill" data-resource="MN">
@@ -254,14 +262,14 @@
                                 <button class="pill-btn" data-action="inc" aria-label="Increase">+</button>
                             </div>
                         </div>
+                        <div id="custom-res-pills"></div>
                     </div>
                 </div>
 
-                <!-- Tab row: Class | Equipment | Other -->
+                <!-- Tab row: Class | Equipment -->
                 <div class="feat-tab-row">
                     <button class="feat-tab is-active" data-feat-tab="class"  type="button">Class</button>
                     <button class="feat-tab"           data-feat-tab="equip"  type="button">Equipment</button>
-                    <button class="feat-tab"           data-feat-tab="other"  type="button">Other</button>
                 </div>
 
                 <!-- Class tab -->
@@ -278,6 +286,20 @@
                             <button class="done-btn" data-save="class" type="button">✓ Done</button>
                         </div>
                         <div id="class-view"><p class="empty-hint">Tap ⚙ to select your class, path & talent</p></div>
+                    </div>
+                    <div class="section">
+                        <div id="species-view"><p class="empty-hint">Species features appear here after character creation.</p></div>
+                    </div>
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Other Gains</h2>
+                            <button class="gear-btn" data-editor="gains-editor" type="button">⚙</button>
+                        </div>
+                        <div class="section-editor" id="gains-editor">
+                            <label class="field"><span class="field-label">Item gained</span><input id="gain-input" type="text" placeholder="Ability, item, or note…" autocomplete="off" /></label>
+                            <button class="done-btn" data-save="gain" type="button">+ Add</button>
+                        </div>
+                        <div class="list" id="other-gains-list"><p class="empty-hint">Items gained during play</p></div>
                     </div>
                 </div>
 
@@ -311,23 +333,6 @@
                     </div>
                 </div>
 
-                <!-- Other tab: Species + Other Gains -->
-                <div class="feat-tab-content" id="feat-tab-other">
-                    <div class="section">
-                        <div id="species-view"><p class="empty-hint">Species features appear here after character creation.</p></div>
-                    </div>
-                    <div class="section">
-                        <div class="section-head">
-                            <h2 class="section-title">Other Gains</h2>
-                            <button class="gear-btn" data-editor="gains-editor" type="button">⚙</button>
-                        </div>
-                        <div class="section-editor" id="gains-editor">
-                            <label class="field"><span class="field-label">Item gained</span><input id="gain-input" type="text" placeholder="Ability, item, or note…" autocomplete="off" /></label>
-                            <button class="done-btn" data-save="gain" type="button">+ Add</button>
-                        </div>
-                        <div class="list" id="other-gains-list"><p class="empty-hint">Items gained during play</p></div>
-                    </div>
-                </div>
 
             </section>
 
@@ -391,14 +396,17 @@
                         <div class="npc-add-form" id="npc-add-form" hidden>
                             <label class="field"><span class="field-label">Name</span>
                                 <input id="npc-name-input" type="text" autocomplete="off" placeholder="Contact name" /></label>
-                            <label class="field"><span class="field-label">Loyalty</span>
-                                <select id="npc-loyalty-input">
-                                    <option value="Ally">Ally</option>
-                                    <option value="Friendly">Friendly</option>
-                                    <option value="Neutral" selected>Neutral</option>
-                                    <option value="Suspicious">Suspicious</option>
-                                    <option value="Hostile">Hostile</option>
-                                </select></label>
+                            <div class="field">
+                                <span class="field-label">Loyalty</span>
+                                <div class="loyalty-stepper">
+                                    <button class="loyalty-adj" id="npc-loyalty-dec" type="button">−</button>
+                                    <span class="loyalty-stepper-label">
+                                        <span id="npc-loyalty-display">Neutral</span>
+                                        <span class="loyalty-stepper-num" id="npc-loyalty-num">(0)</span>
+                                    </span>
+                                    <button class="loyalty-adj" id="npc-loyalty-inc" type="button">+</button>
+                                </div>
+                            </div>
                             <label class="field"><span class="field-label">Notes</span>
                                 <input id="npc-notes-input" type="text" autocomplete="off" placeholder="Role, location, info…" /></label>
                             <div class="step-edit-btns">
@@ -506,6 +514,17 @@
                     <div class="section-head"><h2 class="section-title">Talent</h2></div>
                     <div id="talent-progression-list"><p class="empty-hint">Select a talent in Features</p></div>
                 </div>
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Custom Gains</h2>
+                        <button class="gear-btn" data-editor="prog-gains-editor" type="button" aria-label="Add custom gain">⚙</button>
+                    </div>
+                    <div class="section-editor" id="prog-gains-editor">
+                        <label class="field"><span class="field-label">Item gained</span><input id="prog-gain-input" type="text" placeholder="Ability, item, or note…" autocomplete="off" /></label>
+                        <button class="done-btn" data-save="prog-gain" type="button">+ Add</button>
+                    </div>
+                    <div class="list" id="prog-other-gains-list"><p class="empty-hint">Items gained during play</p></div>
+                </div>
             </section>
             <!-- CHAT -->
             <section class="panel" id="panel-chat" role="region" aria-label="Chat">
@@ -555,7 +574,10 @@
                             <button class="dice-roll-btn" id="btn-dice-roll" type="button">Roll</button>
                         </div>
                     </div>
+                    <!-- Emoji panel -->
+                    <div class="emoji-panel" id="emoji-panel" hidden></div>
                     <div class="chat-input-row">
+                        <button class="emoji-toggle-btn" id="emoji-btn" type="button" aria-label="Emoji">😊</button>
                         <input id="chat-msg-input" type="text" placeholder="Say something…" autocomplete="off" />
                         <button class="chat-send-btn" id="btn-send-msg" type="button">Send</button>
                     </div>
@@ -765,6 +787,9 @@
                         <input id="srm-bonus" type="number" value="0" /></label>
                 </div>
             </details>
+
+            <!-- Low mana warning -->
+            <div class="srm-mana-warn" id="srm-mana-warn" hidden>⚠ Not enough mana</div>
 
             <!-- Actions -->
             <div class="frm-btn-row">

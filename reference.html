@@ -625,46 +625,57 @@
                                 based on their actions, affecting interactions and opportunities within those groups.</li>
                         </ul>
                         <p>
-                            Loyalty points are earned or lost through these actions, dictating the character's relationship
-                            and standing within the community. Tiers range from Hostile to Unwavering to represent the depth
-                            of trust or disdain. Loyalty Checks, influenced by these points or the character's tier within
-                            the faction or guild, are pivotal in social encounters, leading to outcomes such as gaining access
-                            to unique resources, facing hostility, or unlocking special quests.
+                            Loyalty is tracked on a scale from <strong>−5 to +5</strong>, starting at 0 (Neutral).
+                            Points shift through meaningful actions — gifts, betrayals, quest outcomes, and reputation
+                            within factions. Loyalty Checks, influenced by a contact's current score, are pivotal
+                            in social encounters, unlocking favors, information, or outright hostility.
                         </p>
                     </div>
                     <div class="column">
-                        <h3>Loyalty Tiers</h3>
+                        <h3>Loyalty Scale</h3>
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Tier</th>
+                                    <th>Score</th>
+                                    <th>Standing</th>
                                     <th>Description</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><strong>Tier 0 (Negative): Hostile</strong></td>
-                                    <td>Most likely to attack on sight but might be willing to listen to reason.</td>
+                                    <td><strong>−5 / −4</strong></td>
+                                    <td>Hostile</td>
+                                    <td>Attack on sight or active opposition. Reason may barely apply.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Tier 1 (0-3 points): Neutral</strong></td>
-                                    <td>No particular benefits or penalties.</td>
+                                    <td><strong>−3 / −2</strong></td>
+                                    <td>Suspicious</td>
+                                    <td>Guarded and unhelpful. Likely to report or obstruct.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Tier 2 (4-6 points): Friendly</strong></td>
-                                    <td>Minor favors, access to some restricted areas or information.</td>
+                                    <td><strong>−1</strong></td>
+                                    <td>Wary</td>
+                                    <td>Cool and cautious. Will not extend trust without proof.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Tier 3 (7-9 points): Trusted</strong></td>
-                                    <td>Moderate favors, access to more resources or assistance.</td>
+                                    <td><strong>0</strong></td>
+                                    <td>Neutral</td>
+                                    <td>No particular benefits or penalties. A blank slate.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Tier 4 (10-20 points): Devoted</strong></td>
-                                    <td>Significant favors, access to high-value resources or powerful allies.</td>
+                                    <td><strong>+1 / +2</strong></td>
+                                    <td>Friendly</td>
+                                    <td>Minor favors, access to some information or restricted areas.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Tier 5 (21-30 points): Unwavering</strong></td>
-                                    <td>Complete trust, unwavering support, and access to top-tier resources or allies.</td>
+                                    <td><strong>+3 / +4</strong></td>
+                                    <td>Loyal</td>
+                                    <td>Moderate favors, reliable assistance, and shared resources.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>+5</strong></td>
+                                    <td>Devoted</td>
+                                    <td>Complete trust. Will take personal risk on the character's behalf.</td>
                                 </tr>
                             </tbody>
                         </table>

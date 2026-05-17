@@ -1,5 +1,6 @@
 /* Mobile-first gameplay sheet layout */
 
+[hidden] { display: none !important; }
 
 :root {
     --safe-b: env(safe-area-inset-bottom, 0px);
@@ -54,6 +55,32 @@ body[data-page-title="Active-Sheet"] #site-header {
     flex-direction: column;
     gap: 6px;
 }
+
+#custom-res-pills { display: contents; }
+
+.res-divider { border: none; border-top: 1px solid var(--line); margin: 10px 0 8px; }
+
+.custom-res-list { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+.custom-res-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    background: var(--panel-2);
+    border-radius: 6px;
+}
+.custom-res-name { flex: 1; font-size: 13px; font-weight: 600; }
+.custom-res-range { font-size: 11px; color: var(--muted); }
+.pill-del-btn {
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 2px 6px;
+    cursor: pointer;
+}
+.pill-del-btn:hover { color: #e06060; border-color: #e06060; }
 
 .resource-pill {
     display: flex;
@@ -1146,7 +1173,9 @@ body[data-page-title="Active-Sheet"] #site-header {
 .form .field { margin-bottom: 6px; }
 
 .form .field input,
-.form .field select {
+.form .field select,
+.npc-add-form .field input,
+.npc-add-form .field select {
     min-height: 36px;
     border-radius: 10px;
     border: 1px solid var(--line);
@@ -1819,12 +1848,62 @@ body[data-page-title="Active-Sheet"] #site-header {
     white-space: nowrap;
 }
 
+.npc-loyalty-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 .npc-loyalty {
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
 }
+
+.loyalty-num {
+    font-size: 10px;
+    color: var(--muted);
+}
+
+/* Loyalty stepper — add form + in-card */
+.loyalty-stepper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+}
+
+.loyalty-stepper-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+    gap: 1px;
+}
+
+.loyalty-stepper-num {
+    font-size: 10px;
+    color: var(--muted);
+}
+
+.loyalty-adj {
+    height: 28px;
+    width: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--text);
+    font-size: 16px;
+    cursor: pointer;
+    touch-action: manipulation;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.loyalty-adj:active { opacity: 0.7; }
+.loyalty-adj--sm { height: 22px; width: 22px; font-size: 13px; border-radius: 4px; }
 
 .npc-notes {
     font-size: 12px;
@@ -1931,6 +2010,18 @@ body[data-page-title="Active-Sheet"] #site-header {
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
+
+.srm-mana-warn {
+    background: rgba(220, 80, 60, 0.15);
+    border: 1px solid rgba(220, 80, 60, 0.35);
+    border-radius: 8px;
+    color: #e06050;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 12px;
+    text-align: center;
+    margin-bottom: 6px;
 }
 
 .frm-roll-btn--dmg {
@@ -2450,9 +2541,10 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 /* Damage table cards */
 .ref-tables-grid {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 6px;
+    align-items: start;
 }
 
 .ref-table-card {
@@ -2802,6 +2894,90 @@ body[data-page-title="Active-Sheet"] #site-header {
     display: block;
     transition: background 0.1s;
 }
+
+.theme-slider-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    width: 12px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Sat/lightness sliders use a grey gradient (hue slider keeps rainbow) */
+#sat-a1, #sat-a2 {
+    background: linear-gradient(to right, hsl(0,0%,60%), hsl(0,100%,60%));
+}
+#lit-a1, #lit-a2 {
+    background: linear-gradient(to right, #000, #888, #fff);
+}
+
+/* ── EMOJI ───────────────────────────────────────────────────── */
+
+.emoji-toggle-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    padding: 4px 6px;
+    cursor: pointer;
+    flex-shrink: 0;
+    opacity: 0.7;
+}
+.emoji-toggle-btn:active { opacity: 1; }
+
+.emoji-panel[hidden] { display: none; }
+
+.emoji-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 8px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    margin-bottom: 6px;
+}
+
+.emoji-pick {
+    background: none;
+    border: none;
+    font-size: 22px;
+    line-height: 1;
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.1s;
+}
+.emoji-pick:active { background: var(--accent-dim); }
+
+/* ── CHAT DELETE BTN ─────────────────────────────────────────── */
+
+.chat-msg-wrap {
+    position: relative;
+}
+
+.chat-delete-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1;
+    padding: 2px 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 2;
+}
+.chat-msg-wrap:hover .chat-delete-btn,
+.chat-msg-wrap:focus-within .chat-delete-btn {
+    opacity: 1;
+}
+.chat-delete-btn:active { color: #e55; }
 
 /* ── SPELLS PANEL ───────────────────────────────────────────── */
 
@@ -3277,6 +3453,16 @@ body[data-page-title="Active-Sheet"] #site-header {
     text-align: center;
 }
 
+.chat-dice-chip--crit { background: rgba(255,200,80,0.12); border: 1px solid rgba(255,200,80,0.3); }
+.chat-dice-chip--crit .chat-dice-total { color: #ffc840; }
+.chat-crit-label {
+    font-size: 10px;
+    font-weight: 800;
+    color: #ffc840;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
 .chat-dice-detail {
     font-size: 10px;
     color: var(--muted);
@@ -3290,6 +3476,11 @@ body[data-page-title="Active-Sheet"] #site-header {
     line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+.inline-dice {
+    color: var(--accent);
+    font-weight: 700;
 }
 
 .chat-feat-desc {
@@ -3311,6 +3502,63 @@ body[data-page-title="Active-Sheet"] #site-header {
     display: block;
 }
 .chat-expand-btn:hover { color: var(--text); }
+
+/* Compact inline table result row (auto-rolled under weapon attacks) */
+.chat-inline-table-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 0;
+    font-size: 12px;
+    border-top: 1px solid var(--line);
+    margin-top: 4px;
+}
+.chat-table-type   { font-weight: 700; color: var(--accent2); text-transform: uppercase; font-size: 10px; letter-spacing: 0.04em; }
+.chat-table-sep    { color: var(--line); }
+.chat-table-die    { color: var(--muted); font-size: 11px; }
+.chat-table-result { color: var(--text); flex: 1; }
+
+/* Compact standalone table card (narrator manual rolls) */
+.chat-dmg-table-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    font-size: 12px;
+}
+.chat-dmg-table-row .chat-time { margin-left: auto; }
+
+/* Initiative call card */
+.chat-init-call {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px;
+    background: rgba(80,160,220,0.1);
+    border: 1px solid rgba(80,160,220,0.35);
+    border-radius: 10px;
+}
+.chat-init-call-icon  { font-size: 18px; }
+.chat-init-call-label { font-size: 12px; font-weight: 800; color: #50a0dc; letter-spacing: 0.06em; flex: 1; }
+.chat-init-roll-btn {
+    font-size: 11px; font-weight: 700; padding: 5px 12px;
+    background: rgba(80,160,220,0.2); border: 1px solid rgba(80,160,220,0.5);
+    border-radius: 8px; color: #50a0dc; cursor: pointer;
+}
+.chat-init-roll-btn:active { opacity: 0.7; }
+
+/* Turn announcement card */
+.chat-turn-card {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 10px;
+    background: var(--panel);
+    border-left: 3px solid var(--accent2);
+    border-radius: 6px;
+    font-size: 12px;
+    opacity: 0.85;
+}
+.chat-turn-round { font-size: 10px; font-weight: 700; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.06em; }
+.chat-turn-sep   { color: var(--line); }
+.chat-turn-name  { font-weight: 700; color: var(--text); flex: 1; }
+.chat-turn-card .chat-time { margin-left: auto; }
 
 .dmg-table-btn {
     display: block;
@@ -3526,9 +3774,10 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 .chat-input-row {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: auto 1fr auto;
     gap: 8px;
     margin-top: 4px;
+    align-items: center;
 }
 
 .chat-input-row input {

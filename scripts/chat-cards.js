@@ -1,6 +1,17 @@
 // chat-cards.js — shared chat card renderers
 // Loaded by active-sheet.html and narrator.html before their respective scripts.
 
+const EMOJI_SET = [
+    '👍','👎','❤️','🔥','🎉','😂','😮','😢',
+    '⚔️','🛡️','🎲','💀','✨','💥','🩸','🏹',
+    '😈','😇','🤔','😤','😱','🤣','😏','👀',
+    '🐉','👁️','💰','🗡️','🧪','📜','🏰','🌑',
+];
+
+function buildEmojiPanel() {
+    return EMOJI_SET.map(e => `<button class="emoji-pick" type="button">${e}</button>`).join('');
+}
+
 function chatTimestamp() {
     return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
@@ -9,10 +20,13 @@ function fmtSigned(n) { const v = Number(n) || 0; return v >= 0 ? `+${v}` : `${v
 
 function naturalRoll(rollNote) {
     if (!rollNote) return null;
-    const nums = rollNote.match(/\d+/g)?.map(Number);
-    if (!nums?.length) return null;
+    const nums = rollNote.match(/\d+/g)?.map(Number) || [];
+    if (!nums.length) return null;
     if (rollNote.startsWith('adv')) return Math.max(...nums);
     if (rollNote.startsWith('dis')) return Math.min(...nums);
+    // "d20(14)" — the actual die result is inside the parens, not the "20" from "d20"
+    const paren = rollNote.match(/\((\d+)\)/);
+    if (paren) return parseInt(paren[1], 10);
     return nums[0];
 }
 
@@ -41,8 +55,9 @@ function damageTableBtnHtml(total, damageType) {
 function expandableDesc(desc) {
     if (!desc) return '';
     const isLong = desc.length > 160;
+    const html = desc.replace(/\[\[([^\]]+)\]\]/g, '<span class="inline-dice">$1</span>');
     return `<div class="chat-desc-body${isLong ? ' is-clamped' : ''}">
-        <p class="chat-feat-desc">${desc}</p>
+        <p class="chat-feat-desc">${html}</p>
     </div>${isLong ? `<button class="chat-expand-btn" type="button">▼ Show more</button>` : ''}`;
 }
 
@@ -64,20 +79,29 @@ function diceChipsHtml(diceRolls) {
 
 function renderWeaponAttackEntry(entry) {
     const nat      = naturalRoll(entry.rollNote);
-    const resClass = nat === 20 ? 'chat-res--nat20' : nat === 1 ? 'chat-res--nat1' : '';
+    const isCrit   = nat === 20;
+    const resClass = isCrit ? 'chat-res--nat20' : nat === 1 ? 'chat-res--nat1' : '';
     const typeLbl  = entry.rollType === 'adv' ? '· Adv' : entry.rollType === 'dis' ? '· Dis' : '';
     const bonusTxt = entry.attackBonus ? ` ${fmtSigned(entry.attackBonus)}` : '';
     const condHtml = entry.conditions?.length
         ? `<div class="chat-roll-cond">${entry.conditions.join(' · ')}</div>` : '';
 
-    const dmgHtml = entry.damageRoll ? `
-        <div class="chat-dice-chip">
+    const dmgHtml = entry.damageRoll ? (() => {
+        const base   = entry.damageRoll.total;
+        const total  = isCrit ? base * 2 : base;
+        const rolls  = entry.damageRoll.rolls || [];
+        const breakdown = rolls.length ? `[${rolls.join('+')}]` : '';
+        const detail = isCrit
+            ? `<span class="chat-dice-detail">${breakdown}×2</span><span class="chat-crit-label">CRIT</span>`
+            : breakdown ? `<span class="chat-dice-detail">${breakdown}</span>` : '';
+        return `<div class="chat-dice-chip${isCrit ? ' chat-dice-chip--crit' : ''}">
             <span class="chat-dice-notation">${entry.damageRoll.notation}</span>
             <span class="chat-dice-arrow">→</span>
-            <span class="chat-dice-total">${entry.damageRoll.total}</span>
-            ${entry.damageRoll.rolls?.length > 1 ? `<span class="chat-dice-detail">[${entry.damageRoll.rolls.join('+')}]</span>` : ''}
+            <span class="chat-dice-total">${total}</span>
+            ${detail}
         </div>
-        <div class="chat-wep-meta">${[entry.damageType, entry.range, entry.properties].filter(Boolean).join(' · ')}</div>`
+        <div class="chat-wep-meta">${[entry.damageType, entry.range, entry.properties].filter(Boolean).join(' · ')}</div>`;
+    })()
         : `<div class="chat-wep-meta">${[entry.damage, entry.damageType, entry.range, entry.properties].filter(Boolean).join(' · ')}</div>`;
 
     return `<div class="chat-roll-card chat-roll--weapon">
@@ -97,7 +121,13 @@ function renderWeaponAttackEntry(entry) {
             </div>
         </div>
         ${successHtml(entry.d20Total)}
-        ${damageTableBtnHtml(entry.d20Total, entry.damageType)}
+        ${entry.tableRolls?.length
+            ? entry.tableRolls.map(r => `<div class="chat-inline-table-row">
+                <span class="chat-table-type">${entry.damageType} Table</span>
+                <span class="chat-table-die">d6→${r.roll}</span>
+                <span class="chat-table-result">${r.result}</span>
+              </div>`).join('')
+            : damageTableBtnHtml(entry.d20Total, entry.damageType)}
         ${entry.d20Total < 15 ? `<button class="provoke-btn" type="button"> Provoke!</button>` : ''}
         ${entry.desc ? expandableDesc(entry.desc) : ''}
         ${condHtml}
@@ -191,6 +221,35 @@ function renderDiceEntry(entry) {
         </div>
         <div class="dice-card-total">${entry.total}</div>
         ${breakdown}
+    </div>`;
+}
+
+function renderDmgTableEntry(entry) {
+    return `<div class="chat-dmg-table-row">
+        <span class="chat-table-type">${entry.damageType} Table</span>
+        <span class="chat-table-sep">·</span>
+        <span class="chat-table-die">d6→${entry.roll}</span>
+        <span class="chat-table-sep">·</span>
+        <span class="chat-table-result">${entry.result}</span>
+        <span class="chat-time">${entry.time || ''}</span>
+    </div>`;
+}
+
+function renderInitiativeCallEntry(entry) {
+    return `<div class="chat-init-call">
+        <span class="chat-init-call-icon">🎲</span>
+        <span class="chat-init-call-label">ROLL INITIATIVE</span>
+        <button class="chat-init-roll-btn" type="button">Roll d20</button>
+        <span class="chat-time">${entry.time || ''}</span>
+    </div>`;
+}
+
+function renderTurnEntry(entry) {
+    return `<div class="chat-turn-card">
+        <span class="chat-turn-round">Round ${entry.round}</span>
+        <span class="chat-turn-sep">·</span>
+        <span class="chat-turn-name">${entry.name}</span>
+        <span class="chat-time">${entry.time || ''}</span>
     </div>`;
 }
 

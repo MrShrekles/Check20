@@ -13,11 +13,15 @@ function setActivePanel(key) {
         btn.classList.toggle('is-active', btn.dataset.nav === key);
     });
     if (key === 'generators') { ensureMonsters(); ensureWorld(); ensureQuest(); ensureCommerce(); ensureHex(); }
+    if (key === 'initiative') { ensureMonsters(); }
+    if (key === 'party')      { ensureMonsters(); }
 }
 
 document.querySelectorAll('.nav-btn[data-nav]').forEach(btn => {
     btn.addEventListener('click', () => setActivePanel(btn.dataset.nav));
 });
+
+fetch('../data/damage.json').then(r => r.json()).then(dj => { window.damageData = dj?.types || {}; }).catch(() => {});
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 
@@ -41,7 +45,7 @@ const nar = {
     genMedicine:  [],  // generated medicine items
     genHexes:        [],  // generated hex tiles
     journalNpcs:     [],  // { id, name, pl, phys, ment, hp, notes, equipment, narratorNotes }
-    journalMonsters: [],  // { id, name, pl, phys, ment, hp, note, equipment }
+    monFavorites:    [],  // monster names pinned in generator
     questLog:        [],  // { id, text, done }
     sessions:        [],  // { id, title, date, notes }
     theme:        {},  // { a1, a2 }
@@ -199,54 +203,176 @@ document.getElementById('btn-ped-cancel')?.addEventListener('click', closePlayer
 function renderMinions() {
     const el = document.getElementById('minion-list');
     if (!el) return;
-
-    if (!nar.minions.length) {
-        el.innerHTML = '<p class="empty-hint">No minions or companions.</p>';
-        return;
-    }
+    if (!nar.minions.length) { el.innerHTML = '<p class="empty-hint">No minions or companions.</p>'; return; }
 
     el.innerHTML = nar.minions.map(m => {
-        const pct = m.maxHp > 0 ? Math.round((m.hp / m.maxHp) * 100) : 0;
-        return `<div class="minion-row">
-            <span class="minion-name">${m.name}</span>
-            <span class="minion-pl">${m.plPhys} / ${m.plMent}</span>
+        const pct    = m.maxHp > 0 ? Math.round((m.hp / m.maxHp) * 100) : 0;
+        const barClr = pct > 60 ? '#4ca859' : pct > 25 ? '#d4922a' : '#e05555';
+        const mon    = getMonster(m.name);
+        const meleeA  = mon?.melee_attack  || mon?.melee  || null;
+        const rangedA = mon?.ranged_attack || mon?.ranged || null;
+
+        const fmtAtk = (atk, label) => {
+            if (!atk?.name) return '';
+            const dmg = [atk.damage, atk.damage_type || atk.type].filter(Boolean).join(' ');
+            return `<div class="gen-mon-atk">
+                <span class="gen-mon-atk-label">${label}</span>
+                <span>${atk.name}${dmg ? ' — ' + dmg : ''}</span>
+                <button class="step-action-btn mn-roll-btn" type="button"
+                    data-mn-mon="${mon.name}" data-atk-type="${label.toLowerCase()}">
+                    <img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>
+            </div>`;
+        };
+
+        const monFeats = [];
+        if (mon?.feature_name) monFeats.push({ name: mon.feature_name, type: mon.feature_type || '', range: mon.feature_range || '', effect: mon.feature_effect || '' });
+        if (Array.isArray(mon?.features)) mon.features.forEach(f => {
+            if (f.name && f.name !== mon.feature_name) monFeats.push({ name: f.name, type: f.type || '', range: f.range || '', effect: f.effect || '' });
+        });
+        const featsHtml = monFeats.map((f, fi) => `
+            <div class="gen-mon-feature">
+                <div class="gen-mon-feature-head">
+                    <span class="gen-mon-feature-name">${f.name}</span>
+                    <span class="gen-mon-feature-type">${[f.type, f.range].filter(Boolean).join(' · ')}</span>
+                    <button class="step-action-btn mn-roll-btn" data-mn-mon="${mon.name}" data-feat-idx="${fi}">
+                        <img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
+                </div>
+                <p class="gen-mon-feature-effect">${subPL(f.effect, mon.pl)}</p>
+            </div>`).join('');
+
+        const spellMn = (mon?.check_mental || 0) * 2;
+        const spellsHtml = Array.isArray(mon?.spells) && mon.spells.length ? `
+            <div class="gen-mon-spells">
+                <div class="gen-mon-spells-header">SPELLS <span class="gen-mon-spells-mn">· MN: ${spellMn}</span></div>
+                ${mon.spells.map((sp, si) => `
+                    <details class="gen-mon-spell">
+                        <summary class="gen-mon-spell-row">
+                            <span class="gen-mon-spell-name">${sp.name}</span>
+                            <span class="gen-mon-spell-tags">${[sp.manner, sp.transmission].filter(Boolean).join(' · ')}</span>
+                        </summary>
+                        <div class="gen-mon-spell-effects">
+                            ${sp.effects.map((ef, ei) => `
+                                <div class="gen-mon-spell-effect">
+                                    <span class="gen-mon-spell-intent">${ef.intent}</span>
+                                    <span class="gen-mon-spell-cost">${ef.cost} MN</span>
+                                    ${ef.range ? `<span class="gen-mon-spell-range">${ef.range}</span>` : ''}
+                                    <button class="step-action-btn mn-roll-btn"
+                                        data-mn-mon="${mon.name}" data-spell-idx="${si}" data-effect-idx="${ei}">
+                                        <img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>
+                                </div>`).join('')}
+                        </div>
+                    </details>`).join('')}
+            </div>` : '';
+
+        const checksHtml = mon
+            ? `<span class="enc-mon-checks">PL<strong>${mon.pl ?? '—'}</strong> Ph<strong>${mon.check_physical ?? 0}</strong> Mt<strong>${mon.check_mental ?? 0}</strong></span>`
+            : `<span class="minion-pl">PL ${m.pl ?? '?'}</span>`;
+
+        const row = (hasAbilities) => `<div class="minion-row">
+            <div class="minion-info">
+                <span class="minion-name">${m.name}</span>
+                ${m.origin ? `<span class="minion-origin">${m.origin}</span>` : ''}
+                ${checksHtml}
+            </div>
+            ${hasAbilities ? `<span class="minion-chevron">›</span>` : `<span></span>`}
             <div class="minion-hp-ctrl">
                 <button class="step-action-btn" data-mn-action="dec" data-mn-id="${m.id}">−</button>
                 <span class="minion-hp">${m.hp}<span class="minion-hp-max">/${m.maxHp}</span></span>
                 <button class="step-action-btn" data-mn-action="inc" data-mn-id="${m.id}">+</button>
             </div>
-            <button class="step-action-btn" style="color:#ff6060" data-mn-action="remove" data-mn-id="${m.id}" title="Remove">✕</button>
+            <div class="minion-ctrl-btns">
+                <button class="step-action-btn" data-mn-action="init" data-mn-id="${m.id}" title="Add to initiative"><img src="../assets/icons/weapon.png" class="btn-icon" alt="initiative"></button>
+                <button class="step-action-btn" style="color:#ff6060" data-mn-action="remove" data-mn-id="${m.id}">✕</button>
+            </div>
         </div>
-        <div class="minion-hp-bar-track"><div class="minion-hp-bar-fill" style="width:${pct}%"></div></div>`;
+        <div class="minion-hp-bar-track"><div class="minion-hp-bar-fill" style="width:${pct}%;background:${barClr}"></div></div>`;
+
+        const hasAbilities = !!(mon && (meleeA?.name || rangedA?.name || monFeats.length || mon.spells?.length));
+        const rowHtml = row(hasAbilities);
+        if (hasAbilities) {
+            return `<details class="minion-card">
+                <summary class="minion-summary">${rowHtml}</summary>
+                <div class="minion-expanded">
+                    ${(meleeA?.name || rangedA?.name) ? `<div class="gen-mon-attacks">${fmtAtk(meleeA,'Melee')}${fmtAtk(rangedA,'Ranged')}</div>` : ''}
+                    ${featsHtml}
+                    ${spellsHtml}
+                </div>
+            </details>`;
+        }
+        return `<div class="minion-card">${rowHtml}</div>`;
     }).join('');
 
     el.querySelectorAll('[data-mn-action]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const id     = btn.dataset.mnId;
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const id = btn.dataset.mnId;
             const action = btn.dataset.mnAction;
             const m = nar.minions.find(x => x.id === id);
             if (!m && action !== 'remove') return;
+            if (action === 'init') {
+                const ini = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
+                nar.encounter.push({ id: crypto.randomUUID(), name: m.name, type: 'enemy', hp: m.hp, maxHp: m.maxHp, initiative: ini });
+                saveNar(); renderEncounter(); setActivePanel('initiative'); return;
+            }
             if (action === 'dec')    m.hp = Math.max(0, m.hp - 1);
             if (action === 'inc')    m.hp = Math.min(m.maxHp, m.hp + 1);
             if (action === 'remove') nar.minions = nar.minions.filter(x => x.id !== id);
             saveNar(); renderMinions();
         });
     });
+
+    el.querySelectorAll('.mn-roll-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const mon = getMonster(btn.dataset.mnMon);
+            if (!mon) return;
+            let entry;
+            if (btn.dataset.atkType) {
+                const isM = btn.dataset.atkType === 'melee';
+                const atk = isM ? (mon.melee_attack || mon.melee) : (mon.ranged_attack || mon.ranged);
+                if (!atk?.name) return;
+                entry = monsterAttackEntry(mon, atk, btn.dataset.atkType);
+            } else if (btn.dataset.featIdx !== undefined) {
+                const feats = [];
+                if (mon.feature_name) feats.push({ name: mon.feature_name, type: mon.feature_type || '', range: mon.feature_range || '', effect: mon.feature_effect || '' });
+                if (Array.isArray(mon.features)) mon.features.forEach(f => {
+                    if (f.name && f.name !== mon.feature_name) feats.push({ name: f.name, type: f.type || '', range: f.range || '', effect: f.effect || '' });
+                });
+                const f = feats[parseInt(btn.dataset.featIdx, 10)];
+                if (!f) return;
+                entry = { type: 'feature', name: f.name, tags: [f.type, f.range].filter(Boolean), desc: subPL(f.effect, mon.pl), time: chatTimestamp(), diceRolls: [] };
+            } else if (btn.dataset.spellIdx !== undefined) {
+                const sp = mon.spells?.[parseInt(btn.dataset.spellIdx, 10)];
+                const ef = sp?.effects?.[parseInt(btn.dataset.effectIdx, 10)];
+                if (!sp || !ef) return;
+                entry = monsterSpellEntry(mon, sp, ef);
+            }
+            if (entry) { postToSharedChat(entry); setActivePanel('chat'); }
+        });
+    });
 }
+
+document.getElementById('mn-pl')?.addEventListener('input', e => {
+    const pl = Math.max(1, parseInt(e.target.value, 10) || 1);
+    const hp = pl * pl;
+    const prev = document.getElementById('mn-hp-preview');
+    if (prev) prev.textContent = `HP: ${hp} (PL² = ${pl}×${pl})`;
+});
 
 document.getElementById('btn-add-minion')?.addEventListener('click', function() {
     const name   = document.getElementById('mn-name')?.value.trim();
     if (!name) return;
-    const plPhys = parseInt(document.getElementById('mn-pl-phys')?.value || '1', 10);
-    const plMent = parseInt(document.getElementById('mn-pl-ment')?.value || '1', 10);
-    const maxHp  = parseInt(document.getElementById('mn-hp')?.value      || '10', 10);
+    const pl     = Math.max(1, parseInt(document.getElementById('mn-pl')?.value || '3', 10));
+    const origin = document.getElementById('mn-origin')?.value.trim() || '';
+    const maxHp  = pl * pl;
 
-    nar.minions.push({ id: crypto.randomUUID(), name, plPhys, plMent, hp: maxHp, maxHp });
+    nar.minions.push({ id: crypto.randomUUID(), name, pl, plPhys: pl, plMent: pl, origin, hp: maxHp, maxHp });
 
-    document.getElementById('mn-name').value    = '';
-    document.getElementById('mn-pl-phys').value = '1';
-    document.getElementById('mn-pl-ment').value = '1';
-    document.getElementById('mn-hp').value      = '10';
+    document.getElementById('mn-name').value   = '';
+    document.getElementById('mn-pl').value     = '3';
+    document.getElementById('mn-origin').value = '';
+    const prev = document.getElementById('mn-hp-preview');
+    if (prev) prev.textContent = 'HP: 9 (PL² = 3×3)';
 
     saveNar(); renderMinions(); closeForm(this);
 });
@@ -353,8 +479,83 @@ function sortedEncounter() {
     return [...nar.encounter].sort((a, b) => b.initiative - a.initiative);
 }
 
+function groupedTurnOrder() {
+    const enemies = nar.encounter.filter(c => !c.type || c.type === 'enemy');
+    const others  = nar.encounter.filter(c =>  c.type && c.type !== 'enemy');
+    const sortedOthers = [...others].sort((a, b) => b.initiative - a.initiative);
+    if (!enemies.length) return sortedOthers;
+    const groupInit = Math.max(0, ...enemies.map(e => e.initiative || 0));
+    const group = { _isEnemyGroup: true, initiative: groupInit, id: '_enemy_group_', name: 'Enemy Turn', enemies };
+    const insertAt = sortedOthers.findIndex(c => c.initiative <= groupInit);
+    const result = [...sortedOthers];
+    if (insertAt === -1) result.push(group);
+    else result.splice(insertAt, 0, group);
+    return result;
+}
+
 function encTime(round) {
     return ((round - 1) * 10 / 60).toFixed(2);
+}
+
+const QUICK_CONDITIONS = ['Bleeding','Broken','Stunned','Prone','Exposed','Injured','Concussion','Exhaustion'];
+
+function renderEnemyMonster(e, label) {
+    label = label || e.name;
+    const pct    = (e.maxHp || 0) > 0 ? Math.round(((e.hp ?? e.maxHp) / e.maxHp) * 100) : 0;
+    const hp     = e.hp ?? e.maxHp ?? 0;
+    const barClr = pct > 60 ? '#4ca859' : pct > 25 ? '#d4922a' : '#e05555';
+    const mon    = getMonster(e.name);
+    const meleeA  = mon?.melee_attack  || mon?.melee  || null;
+    const rangedA = mon?.ranged_attack || mon?.ranged || null;
+    const monFeats = [];
+    if (mon?.feature_name) monFeats.push({ name: mon.feature_name, type: mon.feature_type || '' });
+    if (Array.isArray(mon?.features)) mon.features.forEach(f => {
+        if (f.name && f.name !== mon.feature_name) monFeats.push({ name: f.name, type: f.type || '' });
+    });
+    const peekContent = mon ? `
+        ${meleeA?.name  ? `<div class="enc-peek-atk">⚔ ${meleeA.name} — ${meleeA.damage} ${meleeA.damage_type || ''}</div>`   : ''}
+        ${rangedA?.name ? `<div class="enc-peek-atk">⊙ ${rangedA.name} — ${rangedA.damage} ${rangedA.damage_type || ''}</div>` : ''}
+        ${monFeats.map(f => `<div class="enc-peek-feat"><span class="enc-peek-feat-name">${f.name}</span><span class="enc-peek-feat-type">${f.type}</span></div>`).join('')}
+    ` : '';
+    const conds     = e.conditions || [];
+    const condTags  = conds.map(cd =>
+        `<span class="enc-cond-tag" data-enc-action="rm-cond" data-enc-id="${e.id}" data-cond="${cd}">${cd} ×</span>`
+    ).join('');
+    const picker    = QUICK_CONDITIONS.map(cd =>
+        `<button class="enc-cond-pick${conds.includes(cd) ? ' is-on' : ''}" data-enc-action="toggle-cond" data-enc-id="${e.id}" data-cond="${cd}">${cd}</button>`
+    ).join('');
+
+    return `<details class="enc-enemy-row">
+        <summary class="enc-enemy-summary">
+            <div class="enc-card-row">
+                <span class="enc-init-mini">${e.initiative}</span>
+                <div class="enc-mon-info">
+                    <span class="enc-name">${label}</span>
+                    ${mon ? `<span class="enc-mon-checks">PL<strong>${mon.pl ?? '—'}</strong> Ph<strong>${mon.check_physical ?? 0}</strong> Mt<strong>${mon.check_mental ?? 0}</strong>${(mon.check_mental||0)>0?` MN<strong>${(mon.check_mental||0)*2}</strong>`:''}</span>` : ''}
+                </div>
+                <div class="enc-card-ctrl">
+                    ${mon ? `<button class="step-action-btn enc-link-btn" data-enc-action="link-mon" data-enc-name="${e.name}">↗</button>` : ''}
+                    <button class="step-action-btn enc-reroll-btn" data-enc-action="reroll" data-enc-id="${e.id}">↺</button>
+                    <button class="step-action-btn" style="color:#ff6060" data-enc-action="remove" data-enc-id="${e.id}">✕</button>
+                </div>
+            </div>
+            <div class="enc-hp-controls">
+                <button class="step-action-btn" data-enc-action="dec5" data-enc-id="${e.id}">−5</button>
+                <button class="step-action-btn" data-enc-action="dec"  data-enc-id="${e.id}">−</button>
+                <span class="enc-hp">${hp}<span class="enc-hp-max">/${e.maxHp ?? 0}</span></span>
+                <button class="step-action-btn" data-enc-action="inc"  data-enc-id="${e.id}">+</button>
+                <div class="enc-hp-bar-track enc-hp-bar-inline"><div class="enc-hp-bar-fill" style="width:${pct}%;background:${barClr}"></div></div>
+            </div>
+        </summary>
+        <div class="enc-enemy-detail">
+            ${mon ? `<div class="enc-stat-peek">${peekContent}</div>` : ''}
+            <details class="enc-cond-details">
+                <summary class="enc-cond-summary">+C${conds.length ? ` <span class="enc-cond-count">${conds.length}</span>` : ''}</summary>
+                ${conds.length ? `<div class="enc-cond-tags">${condTags}</div>` : ''}
+                <div class="enc-cond-picker">${picker}</div>
+            </details>
+        </div>
+    </details>`;
 }
 
 function renderEncounter() {
@@ -365,7 +566,7 @@ function renderEncounter() {
     const activeEl = document.getElementById('enc-active-name');
     if (!listEl) return;
 
-    const sorted = sortedEncounter();
+    const sorted = groupedTurnOrder();
 
     if (!sorted.length) {
         listEl.innerHTML = '<p class="empty-hint">No one in initiative. Add combatants below.</p>';
@@ -376,27 +577,84 @@ function renderEncounter() {
     }
 
     const activeTurn = nar.turnIndex % sorted.length;
-    const activeName = sorted[activeTurn]?.hidden ? '???' : (sorted[activeTurn]?.name || '—');
-    if (turnBar)  turnBar.hidden = false;
+    const active     = sorted[activeTurn];
+    const activeName = active?.hidden ? '???' : (active?._isEnemyGroup ? 'Enemy Turn' : (active?.name || '—'));
+    const activeType = active?._isEnemyGroup ? 'enemy' : (active?.type || 'enemy');
+    if (turnBar) {
+        turnBar.hidden = false;
+        turnBar.className = `enc-turn-bar enc-turn-bar--${activeType}`;
+    }
     if (roundEl)  roundEl.textContent = nar.round;
     if (timeEl)   timeEl.textContent  = encTime(nar.round);
     if (activeEl) activeEl.textContent = activeName;
 
     listEl.innerHTML = sorted.map((c, i) => {
         const isActive = i === activeTurn;
-        const type = c.type || 'enemy';
 
-        if (type === 'player') {
-            return `<div class="enc-card enc-card--player${isActive ? ' enc-card--active' : ''}">
-                <div class="enc-card-row">
-                    <span class="enc-init-badge">${c.initiative}</span>
-                    <span class="enc-type-badge enc-type--player">Player</span>
-                    <span class="enc-name">${c.name}</span>
-                    <button class="step-action-btn" style="color:#ff6060;margin-left:auto" data-enc-action="remove" data-enc-id="${c.id}">✕</button>
+        // ── Enemy Group ─────────────────────────────────────────────
+        if (c._isEnemyGroup) {
+            const nameCounts = {};
+            const nameIndex  = {};
+            c.enemies.forEach(e => { nameCounts[e.name] = (nameCounts[e.name] || 0) + 1; });
+            const rows = c.enemies.map(e => {
+                let label = e.name;
+                if (nameCounts[e.name] > 1) {
+                    nameIndex[e.name] = (nameIndex[e.name] || 0) + 1;
+                    label = `${e.name} ${nameIndex[e.name]}`;
+                }
+                return renderEnemyMonster(e, label);
+            }).join('');
+            return `<div class="enc-card enc-enemy-group${isActive ? ' enc-card--active' : ''}">
+                <div class="enc-group-header">
+                    <span class="enc-init-badge enc-init-badge--enemy">${c.initiative}</span>
+                    <span class="enc-group-label">ENEMY TURN</span>
+                    <span class="enc-group-count">${c.enemies.length} ${c.enemies.length === 1 ? 'monster' : 'monsters'}</span>
                 </div>
+                ${rows}
             </div>`;
         }
 
+        const type = c.type || 'enemy';
+
+        // ── Player ──────────────────────────────────────────────────
+        if (type === 'player') {
+            const fbP    = fbPlayers.find(p => p.name === c.name);
+            const hpCur  = fbP?.woundsCur ?? null;
+            const hpMax  = fbP?.woundsMax ?? null;
+            const mnCur  = fbP?.mnCur     ?? null;
+            const hpPct  = (hpCur !== null && hpMax) ? Math.round((hpCur / hpMax) * 100) : null;
+            const barClr = hpPct > 60 ? '#4ca859' : hpPct > 25 ? '#d4922a' : '#e05555';
+            const conds  = c.conditions || [];
+            const condTags = conds.map(cd =>
+                `<span class="enc-cond-tag" data-enc-action="rm-cond" data-enc-id="${c.id}" data-cond="${cd}">${cd} ×</span>`
+            ).join('');
+            const picker = QUICK_CONDITIONS.map(cd =>
+                `<button class="enc-cond-pick${conds.includes(cd) ? ' is-on' : ''}" data-enc-action="toggle-cond" data-enc-id="${c.id}" data-cond="${cd}">${cd}</button>`
+            ).join('');
+            return `<div class="enc-card enc-card--player${isActive ? ' enc-card--active' : ''}">
+                <div class="enc-card-row">
+                    <span class="enc-init-badge enc-init-badge--player">${c.initiative}</span>
+                    <div class="enc-mon-info">
+                        <span class="enc-name">${c.name}</span>
+                        ${fbP ? `<span class="enc-mon-checks" style="color:#888">HP<strong style="color:#50a0dc">${hpCur ?? '?'}</strong>/${hpMax ?? '?'} MN<strong style="color:#50a0dc">${mnCur ?? '?'}</strong></span>` : ''}
+                    </div>
+                    <div class="enc-card-ctrl">
+                        <button class="step-action-btn" style="color:#ff6060" data-enc-action="remove" data-enc-id="${c.id}">✕</button>
+                    </div>
+                </div>
+                ${hpPct !== null ? `<div class="enc-hp-controls">
+                    <span class="enc-hp" style="color:#50a0dc">${hpCur}<span class="enc-hp-max">/${hpMax}</span></span>
+                    <div class="enc-hp-bar-track enc-hp-bar-inline"><div class="enc-hp-bar-fill" style="width:${hpPct}%;background:${barClr}"></div></div>
+                </div>` : ''}
+                <details class="enc-cond-details">
+                    <summary class="enc-cond-summary">+C${conds.length ? ` <span class="enc-cond-count">${conds.length}</span>` : ''}</summary>
+                    ${conds.length ? `<div class="enc-cond-tags">${condTags}</div>` : ''}
+                    <div class="enc-cond-picker">${picker}</div>
+                </details>
+            </div>`;
+        }
+
+        // ── Event ────────────────────────────────────────────────────
         if (type === 'event') {
             const sub = EVENT_SUBTYPES[c.subType] || EVENT_SUBTYPES.custom;
             const display = c.hidden
@@ -413,32 +671,43 @@ function renderEncounter() {
             </div>`;
         }
 
-        // Enemy / Monster
-        const pct = (c.maxHp || 0) > 0 ? Math.round(((c.hp ?? c.maxHp) / c.maxHp) * 100) : 0;
-        const hp  = c.hp ?? c.maxHp ?? 0;
-        return `<div class="enc-card${isActive ? ' enc-card--active' : ''}">
-            <div class="enc-card-row">
-                <span class="enc-init-badge">${c.initiative}</span>
-                <span class="enc-type-badge enc-type--enemy">Enemy</span>
-                <span class="enc-name">${c.name}</span>
-                <div class="enc-hp-row">
-                    <button class="step-action-btn" data-enc-action="dec5" data-enc-id="${c.id}">−5</button>
-                    <button class="step-action-btn" data-enc-action="dec"  data-enc-id="${c.id}">−</button>
-                    <span class="enc-hp">${hp}<span class="enc-hp-max">/${c.maxHp ?? 0}</span></span>
-                    <button class="step-action-btn" data-enc-action="inc"  data-enc-id="${c.id}">+</button>
-                    <button class="step-action-btn" style="color:#ff6060" data-enc-action="remove" data-enc-id="${c.id}">✕</button>
-                </div>
-            </div>
-            <div class="enc-hp-bar-track"><div class="enc-hp-bar-fill" style="width:${pct}%"></div></div>
-        </div>`;
+        return '';
     }).join('');
+
+    listEl.querySelectorAll('.enc-enemy-summary button, .enc-enemy-summary .enc-hp-controls').forEach(el => {
+        el.addEventListener('click', e => e.stopPropagation());
+    });
+
 
     listEl.querySelectorAll('[data-enc-action]').forEach(btn => {
         btn.addEventListener('click', () => {
             const id     = btn.dataset.encId;
             const action = btn.dataset.encAction;
             const c = nar.encounter.find(x => x.id === id);
-            if (!c && action !== 'remove') return;
+            if (!c && action !== 'remove' && action !== 'link-mon') return;
+            if (action === 'toggle-cond') {
+                if (!c.conditions) c.conditions = [];
+                const cond = btn.dataset.cond;
+                const idx  = c.conditions.indexOf(cond);
+                if (idx === -1) c.conditions.push(cond); else c.conditions.splice(idx, 1);
+                saveNar(); renderEncounter(); return;
+            }
+            if (action === 'rm-cond') {
+                if (c.conditions) { c.conditions = c.conditions.filter(cd => cd !== btn.dataset.cond); saveNar(); renderEncounter(); }
+                return;
+            }
+            if (action === 'link-mon') {
+                const name = btn.dataset.encName;
+                if (!nar.genMonsters.includes(name)) { nar.genMonsters.push(name); saveNar(); }
+                pendingMonsterFocus = name;
+                setActivePanel('generators');
+                if (monstersLoaded) renderGenMonsterList();
+                return;
+            }
+            if (action === 'reroll') {
+                if (c) { c.initiative = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6); saveNar(); renderEncounter(); }
+                return;
+            }
             if (action === 'dec')    c.hp = Math.max(0, (c.hp ?? c.maxHp) - 1);
             if (action === 'dec5')   c.hp = Math.max(0, (c.hp ?? c.maxHp) - 5);
             if (action === 'inc')    c.hp = Math.min(c.maxHp, (c.hp ?? c.maxHp) + 1);
@@ -484,11 +753,20 @@ document.getElementById('btn-add-creature')?.addEventListener('click', function(
 });
 
 document.getElementById('btn-next-turn')?.addEventListener('click', () => {
-    const sorted = sortedEncounter();
+    const sorted = groupedTurnOrder();
     if (!sorted.length) return;
     nar.turnIndex++;
     if (nar.turnIndex >= sorted.length) { nar.turnIndex = 0; nar.round++; }
     saveNar(); renderEncounter();
+    const active = sorted[nar.turnIndex % sorted.length];
+    if (active && !active.hidden) {
+        const name = active._isEnemyGroup ? 'Enemy Turn' : active.name;
+        postToSharedChat({ type: 'turn', name, round: nar.round, time: chatTimestamp() });
+    }
+});
+
+document.getElementById('btn-call-init')?.addEventListener('click', () => {
+    postToSharedChat({ type: 'initiative-call', time: chatTimestamp() });
 });
 
 document.getElementById('btn-clear-encounter')?.addEventListener('click', () => {
@@ -550,39 +828,66 @@ function migrateOldNotes() {
 
 function stat(val) { return val != null && val !== '' ? val : '—'; }
 
-// ── Journal: NPCs ──
+// ── NPCs (Party page) ──
 
 function renderJournalNpcs() {
     const el = document.getElementById('journal-npc-list');
     if (!el) return;
-    if (!nar.journalNpcs.length) { el.innerHTML = '<p class="empty-hint">No saved NPCs.</p>'; return; }
-    el.innerHTML = nar.journalNpcs.map((n, i) => `
-        <div class="jrow" id="jnpc-${n.id}">
-            <span class="jrow-num">N${i + 1}</span>
-            <span class="jrow-name">${n.name}</span>
-            <span class="jrow-stat">${stat(n.pl)}</span>
-            <span class="jrow-stat">${stat(n.phys)}</span>
-            <span class="jrow-stat">${stat(n.ment)}</span>
-            <span class="jrow-stat">${stat(n.hp)}</span>
-            <button class="jrow-view-btn" data-jnpc-toggle="${n.id}">V</button>
-        </div>
-        <div class="jrow-detail" id="jnpc-det-${n.id}" hidden>
-            ${n.notes      ? `<div class="jrow-det-row"><span class="gen-npc-label">Notes</span><span>${n.notes}</span></div>` : ''}
-            ${n.equipment  ? `<div class="jrow-det-row"><span class="gen-npc-label">Equipment</span><span>${n.equipment}</span></div>` : ''}
-            ${n.narratorNotes ? `<div class="jrow-det-row"><span class="gen-npc-label">Narrator</span><span>${n.narratorNotes}</span></div>` : ''}
-            <button class="gen-mon-remove" style="margin-top:4px" data-jnpc-remove="${n.id}">Remove</button>
-        </div>`).join('');
+    if (!nar.journalNpcs.length) { el.innerHTML = '<p class="empty-hint">No NPCs saved.</p>'; return; }
 
-    el.querySelectorAll('[data-jnpc-toggle]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const det = document.getElementById(`jnpc-det-${btn.dataset.jnpcToggle}`);
-            if (det) det.hidden = !det.hidden;
-        });
-    });
+    el.innerHTML = nar.journalNpcs.map(n => {
+        const stats = [
+            n.pl   ? `PL<strong>${n.pl}</strong>`   : '',
+            n.phys ? `Ph<strong>${n.phys}</strong>` : '',
+            n.ment ? `Mt<strong>${n.ment}</strong>` : '',
+            n.hp   ? `HP<strong>${n.hp}</strong>`   : '',
+        ].filter(Boolean).join(' ');
+        return `<details class="npc-card">
+            <summary class="npc-card-head">
+                <div class="enc-mon-info">
+                    <span class="enc-name">${n.name}</span>
+                    ${stats ? `<span class="enc-mon-checks">${stats}</span>` : ''}
+                </div>
+                <div class="enc-card-ctrl">
+                    <button class="step-action-btn mon-chat-btn" data-npc-chat="${n.id}" title="Send to chat"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
+                    <button class="step-action-btn mon-chat-btn" data-npc-init="${n.id}" title="Add to initiative"><img src="../assets/icons/weapon.png" class="btn-icon" alt="initiative"></button>
+                    <button class="step-action-btn" style="color:#ff6060" data-jnpc-remove="${n.id}">✕</button>
+                </div>
+            </summary>
+            <div class="npc-card-body">
+                ${n.notes         ? `<div class="npc-det-row"><span class="npc-det-label">Notes</span><span>${n.notes}</span></div>` : ''}
+                ${n.equipment     ? `<div class="npc-det-row"><span class="npc-det-label">Equipment</span><span>${n.equipment}</span></div>` : ''}
+                ${n.narratorNotes ? `<div class="npc-det-row"><span class="npc-det-label">Narrator</span><span class="npc-det-nar">${n.narratorNotes}</span></div>` : ''}
+            </div>
+        </details>`;
+    }).join('');
+
     el.querySelectorAll('[data-jnpc-remove]').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
             nar.journalNpcs = nar.journalNpcs.filter(x => x.id !== btn.dataset.jnpcRemove);
             saveNar(); renderJournalNpcs();
+        });
+    });
+    el.querySelectorAll('[data-npc-chat]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const n = nar.journalNpcs.find(x => x.id === btn.dataset.npcChat);
+            if (!n) return;
+            const tags = [n.phys && `Ph +${n.phys}`, n.ment && `Mt +${n.ment}`, n.pl && `PL ${n.pl}`].filter(Boolean);
+            postToSharedChat({ type: 'feature', name: n.name, tags, desc: [n.notes, n.equipment].filter(Boolean).join(' · '), time: chatTimestamp(), diceRolls: [] });
+            setActivePanel('chat');
+        });
+    });
+    el.querySelectorAll('[data-npc-init]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const n = nar.journalNpcs.find(x => x.id === btn.dataset.npcInit);
+            if (!n) return;
+            const hp  = parseInt(n.hp, 10) || 10;
+            const ini = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
+            nar.encounter.push({ id: crypto.randomUUID(), name: n.name, type: 'enemy', hp, maxHp: hp, initiative: ini });
+            saveNar(); renderEncounter(); setActivePanel('initiative');
         });
     });
 }
@@ -604,60 +909,6 @@ document.getElementById('btn-add-jnpc')?.addEventListener('click', function() {
         const el = document.getElementById(id); if (el) el.value = '';
     });
     saveNar(); renderJournalNpcs(); closeForm(this);
-});
-
-// ── Journal: Monsters ──
-
-function renderJournalMonsters() {
-    const el = document.getElementById('journal-monster-list');
-    if (!el) return;
-    if (!nar.journalMonsters.length) { el.innerHTML = '<p class="empty-hint">No saved monsters.</p>'; return; }
-    el.innerHTML = nar.journalMonsters.map((m, i) => `
-        <div class="jrow" id="jmon-${m.id}">
-            <span class="jrow-num">M${i + 1}</span>
-            <span class="jrow-name">${m.name}</span>
-            <span class="jrow-stat">${stat(m.pl)}</span>
-            <span class="jrow-stat">${stat(m.phys)}</span>
-            <span class="jrow-stat">${stat(m.ment)}</span>
-            <span class="jrow-stat">${stat(m.hp)}</span>
-            <button class="jrow-view-btn" data-jmon-toggle="${m.id}">V</button>
-        </div>
-        <div class="jrow-detail" id="jmon-det-${m.id}" hidden>
-            ${m.note      ? `<div class="jrow-det-row"><span class="gen-npc-label">Note</span><span>${m.note}</span></div>` : ''}
-            ${m.equipment ? `<div class="jrow-det-row"><span class="gen-npc-label">Equipment</span><span>${m.equipment}</span></div>` : ''}
-            <button class="gen-mon-remove" style="margin-top:4px" data-jmon-remove="${m.id}">Remove</button>
-        </div>`).join('');
-
-    el.querySelectorAll('[data-jmon-toggle]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const det = document.getElementById(`jmon-det-${btn.dataset.jmonToggle}`);
-            if (det) det.hidden = !det.hidden;
-        });
-    });
-    el.querySelectorAll('[data-jmon-remove]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            nar.journalMonsters = nar.journalMonsters.filter(x => x.id !== btn.dataset.jmonRemove);
-            saveNar(); renderJournalMonsters();
-        });
-    });
-}
-
-document.getElementById('btn-add-jmon')?.addEventListener('click', function() {
-    const name = document.getElementById('jmon-name')?.value.trim();
-    if (!name) return;
-    nar.journalMonsters.push({
-        id: crypto.randomUUID(), name,
-        pl:   document.getElementById('jmon-pl')?.value   || '',
-        phys: document.getElementById('jmon-phys')?.value || '',
-        ment: document.getElementById('jmon-ment')?.value || '',
-        hp:   document.getElementById('jmon-hp')?.value   || '',
-        note:      document.getElementById('jmon-note')?.value.trim()  || '',
-        equipment: document.getElementById('jmon-equip')?.value.trim() || '',
-    });
-    ['jmon-name','jmon-pl','jmon-phys','jmon-ment','jmon-hp','jmon-note','jmon-equip'].forEach(id => {
-        const el = document.getElementById(id); if (el) el.value = '';
-    });
-    saveNar(); renderJournalMonsters(); closeForm(this);
 });
 
 // ── Journal: Quest Log ──
@@ -773,8 +1024,74 @@ document.getElementById('btn-nar-dice-roll')?.addEventListener('click', () => {
 
 // ── GENERATORS: MONSTER ───────────────────────────────────────────────────────
 
+function rollNarDice(notation) {
+    if (!notation) return null;
+    const m = /^(\d+)d(\d+)([+-]\d+)?$/i.exec(String(notation).trim());
+    if (!m) return null;
+    const count = parseInt(m[1], 10), sides = parseInt(m[2], 10), bonus = parseInt(m[3] || '0', 10);
+    const rolls = Array.from({ length: count }, () => Math.ceil(Math.random() * sides));
+    return { notation, rolls, total: rolls.reduce((s, r) => s + r, 0) + bonus };
+}
+
+function extractAndRollDice(text) {
+    const matches = [...(text || '').matchAll(/\[\[(\d+d\d+(?:[+-]\d+)?)\]\]/gi)];
+    return matches.map(m => rollNarDice(m[1])).filter(Boolean);
+}
+
+function subPL(text, pl) {
+    return (text || '').replace(/\bPL\b/g, pl ?? '?');
+}
+
+function autoTableRolls(d20Total, damageType) {
+    const n = successCount(d20Total);
+    if (n < 2 || !damageType || !window.damageData?.[damageType]) return null;
+    return Array.from({ length: n - 1 }, () => {
+        const roll = Math.ceil(Math.random() * 6);
+        return { roll, result: window.damageData[damageType].entries[roll - 1] || '—' };
+    });
+}
+
+function monsterAttackEntry(m, atk, atkType) {
+    const checkMod = m.check_physical || 0;
+    const d20 = Math.ceil(Math.random() * 20);
+    const d20Total = d20 + checkMod;
+    const damageType = atk.damage_type || atk.type || '';
+    return {
+        type: 'weapon-attack', monsterName: m.name, charName: m.name,
+        weaponName: atk.name,
+        checkLabel: 'PHYSICAL', checkMod, attackBonus: 0,
+        rollNote: `d20(${d20})`, d20Total, rollType: 'flat',
+        damageRoll: rollNarDice(atk.damage),
+        damageType, range: atkType === 'melee' ? 'Melee' : 'Ranged',
+        tableRolls: autoTableRolls(d20Total, damageType),
+        conditions: [], time: chatTimestamp(),
+    };
+}
+
+function monsterSpellEntry(m, sp, ef) {
+    const checkMod = m.check_mental || 0;
+    const pl = m.pl || 0;
+    const d20 = Math.ceil(Math.random() * 20);
+    const d20Total = d20 + checkMod;
+    const desc = subPL(ef.effect, pl);
+    const diceRolls = extractAndRollDice(desc);
+    const damageType = ef.type || '';
+    return {
+        type: 'weapon-attack', monsterName: m.name, charName: m.name,
+        weaponName: `✨ ${sp.name} — ${ef.intent}`,
+        checkLabel: 'MENTAL', checkMod, attackBonus: 0,
+        rollNote: `d20(${d20})`, d20Total, rollType: 'flat',
+        damageRoll: diceRolls[0] || null,
+        damageType, range: ef.range || '', properties: ef.area || '',
+        desc, tableRolls: autoTableRolls(d20Total, damageType),
+        conditions: [], time: chatTimestamp(),
+    };
+}
+
 let GEN_MONSTERS    = [];
 let monstersLoaded  = false;
+
+let pendingMonsterFocus = null;
 
 async function ensureMonsters() {
     if (monstersLoaded) return;
@@ -783,6 +1100,8 @@ async function ensureMonsters() {
         GEN_MONSTERS = await res.json();
         monstersLoaded = true;
         renderGenMonsterList();
+        renderEncounter();
+        renderMinions();
     } catch(e) { console.error('Failed to load monsterbook.json', e); }
 }
 
@@ -797,7 +1116,8 @@ function addGenMonster(name) {
 }
 
 function removeGenMonster(name) {
-    nar.genMonsters = nar.genMonsters.filter(n => n !== name);
+    nar.genMonsters  = nar.genMonsters.filter(n => n !== name);
+    nar.monFavorites = nar.monFavorites.filter(n => n !== name);
     saveNar(); renderGenMonsterList();
 }
 
@@ -805,14 +1125,25 @@ function renderGenMonsterList() {
     const el = document.getElementById('gen-mon-list');
     if (!el) return;
 
-    if (!nar.genMonsters.length) {
+    const favHeader = nar.monFavorites.length
+        ? `<div class="gen-mon-section-label">★ Favorites</div>`
+        : '';
+    const workingNames = nar.genMonsters.filter(n => !nar.monFavorites.includes(n));
+    const workingHeader = (nar.monFavorites.length && workingNames.length)
+        ? `<div class="gen-mon-section-label" style="margin-top:8px">Working List</div>`
+        : '';
+
+    const allNames = [...nar.monFavorites, ...workingNames];
+    if (!allNames.length) {
         el.innerHTML = '<p class="empty-hint">No monsters added. Search or tap Random.</p>';
         return;
     }
 
-    el.innerHTML = nar.genMonsters.map((name, i) => {
+    el.innerHTML = favHeader + allNames.map((name, i) => {
+        const isWorkingStart = nar.monFavorites.length && name === workingNames[0];
+        const prefix = isWorkingStart ? workingHeader : '';
         const m = getMonster(name);
-        if (!m) return `<div class="gen-mon-card">
+        if (!m) return prefix + `<div class="gen-mon-card">
             <div class="gen-mon-head">
                 <div class="gen-mon-info"><span class="gen-mon-name">${name}</span></div>
                 <button class="gen-mon-remove" data-remove="${name}">✕</button>
@@ -833,8 +1164,38 @@ function renderGenMonsterList() {
         const fmtAtk = (atk, label) => {
             if (!atk?.name) return '';
             const dmg = [atk.damage, atk.damage_type || atk.type].filter(Boolean).join(' ');
-            return `<div class="gen-mon-atk"><span class="gen-mon-atk-label">${label}</span> ${atk.name}${dmg ? ' — ' + dmg : ''}</div>`;
+            return `<div class="gen-mon-atk">
+                <span class="gen-mon-atk-label">${label}</span>
+                <span>${atk.name}${dmg ? ' — ' + dmg : ''}</span>
+                <button class="step-action-btn mon-chat-btn" type="button" title="Roll &amp; send"
+                    data-mon-name="${m.name}" data-atk-type="${label.toLowerCase()}">
+                    <img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>
+            </div>`;
         };
+
+        const spellMn = (m.check_mental || 0) * 2;
+        const spellsHtml = Array.isArray(m.spells) && m.spells.length
+            ? `<div class="gen-mon-spells">
+                <div class="gen-mon-spells-header">SPELLS <span class="gen-mon-spells-mn">· MN: ${spellMn}</span></div>
+                ${m.spells.map((sp, si) => `
+                    <details class="gen-mon-spell">
+                        <summary class="gen-mon-spell-row">
+                            <span class="gen-mon-spell-name">${sp.name}</span>
+                            <span class="gen-mon-spell-tags">${[sp.manner, sp.transmission].filter(Boolean).join(' · ')}</span>
+                        </summary>
+                        <div class="gen-mon-spell-effects">
+                            ${sp.effects.map((ef, ei) => `
+                                <div class="gen-mon-spell-effect">
+                                    <span class="gen-mon-spell-intent">${ef.intent}</span>
+                                    <span class="gen-mon-spell-cost">${ef.cost} MN</span>
+                                    ${ef.range ? `<span class="gen-mon-spell-range">${ef.range}</span>` : ''}
+                                    <button class="step-action-btn mon-chat-btn" type="button" title="Roll &amp; send"
+                                        data-mon-name="${m.name}" data-spell-idx="${si}" data-effect-idx="${ei}">
+                                        <img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>
+                                </div>`).join('')}
+                        </div>
+                    </details>`).join('')}
+            </div>` : '';
 
         // Main feature + additional features[]
         const allFeats = [];
@@ -843,16 +1204,19 @@ function renderGenMonsterList() {
             if (f.name && f.name !== m.feature_name) allFeats.push({ name: f.name, type: f.type || '', range: f.range || '', effect: f.effect || '' });
         });
 
-        const featsHtml = allFeats.map(f => `
+        const featsHtml = allFeats.map((f, fi) => `
             <div class="gen-mon-feature">
                 <div class="gen-mon-feature-head">
                     <span class="gen-mon-feature-name">${f.name}</span>
                     <span class="gen-mon-feature-type">${[f.type, f.range].filter(Boolean).join(' · ')}</span>
+                    <button class="step-action-btn mon-chat-btn" type="button" title="Send to chat"
+                        data-mon-name="${m.name}" data-feat-idx="${fi}">
+                        <img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
                 </div>
                 <p class="gen-mon-feature-effect">${f.effect}</p>
             </div>`).join('');
 
-        return `<div class="gen-mon-card" id="${cid}">
+        const card = `<div class="gen-mon-card" id="${cid}">
             <div class="gen-mon-head">
                 <div class="gen-mon-info">
                     <span class="gen-mon-name">${m.name}</span>
@@ -865,21 +1229,43 @@ function renderGenMonsterList() {
                     <span>Mt <strong>${m.check_mental ?? 0}</strong></span>
                 </div>
                 <div class="gen-mon-card-btns">
+                    <button class="gen-mon-fav${nar.monFavorites.includes(m.name) ? ' is-fav' : ''}" data-fav="${m.name}" title="Favorite">★</button>
                     <button class="gen-mon-toggle" data-cid="${cid}">▾</button>
                     <button class="gen-mon-remove" data-remove="${m.name}">✕</button>
                 </div>
             </div>
             <div class="gen-mon-expanded" id="${cid}-exp" hidden>
                 <div class="gen-mon-meta">${[m.size, m.origin, m.rarity, m.environment, m.behavior].filter(Boolean).join(' · ')}</div>
-                ${m.motivation ? `<div class="gen-mon-motivation">Motivation: ${m.motivation}</div>` : ''}
+                ${m.motivation ? `<div class="gen-mon-motivation">Motif: ${m.motivation}</div>` : ''}
                 ${moveParts.length ? `<div class="gen-mon-move">${moveParts.join(' / ')}</div>` : ''}
                 ${m.description ? `<div class="gen-mon-desc">${m.description}</div>` : ''}
-                ${featsHtml}
                 <div class="gen-mon-attacks">${fmtAtk(meleeAtk, 'Melee')}${fmtAtk(rangedAtk, 'Ranged')}</div>
-                <button class="done-btn" data-add-init="${m.name}" data-hp="${hp}">+ Add to Initiative</button>
+                ${featsHtml}
+                ${spellsHtml}
+                <div class="gen-mon-card-actions">
+                    <button class="done-btn gen-mon-init-btn" data-add-init="${m.name}" data-hp="${hp}">+ Init</button>
+                    <button class="gen-mon-action-btn" data-mon-minion="${m.name}">+ Minion</button>
+                    <button class="gen-mon-action-btn" data-mon-chat="${m.name}">+ Chat</button>
+                    <button class="gen-mon-action-btn gen-mon-action-btn--roll" data-mon-roll="${m.name}">◎ Roll20</button>
+                </div>
             </div>
         </div>`;
+        return prefix + card;
     }).join('');
+
+    el.querySelectorAll('.gen-mon-fav').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const name = btn.dataset.fav;
+            const idx  = nar.monFavorites.indexOf(name);
+            if (idx === -1) {
+                nar.monFavorites.push(name);
+                if (!nar.genMonsters.includes(name)) nar.genMonsters.push(name);
+            } else {
+                nar.monFavorites.splice(idx, 1);
+            }
+            saveNar(); renderGenMonsterList();
+        });
+    });
 
     el.querySelectorAll('.gen-mon-toggle').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -897,11 +1283,110 @@ function renderGenMonsterList() {
     el.querySelectorAll('[data-add-init]').forEach(btn => {
         btn.addEventListener('click', () => {
             const hp = parseInt(btn.dataset.hp, 10);
-            nar.encounter.push({ id: crypto.randomUUID(), name: btn.dataset.addInit, hp, maxHp: hp, initiative: 0 });
+            const initiative = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
+            nar.encounter.push({ id: crypto.randomUUID(), name: btn.dataset.addInit, hp, maxHp: hp, initiative, type: 'enemy' });
             saveNar(); renderEncounter();
             setActivePanel('initiative');
         });
     });
+
+    el.querySelectorAll('.mon-chat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const monName = btn.dataset.monName;
+            const m = getMonster(monName);
+            if (!m) return;
+
+            let entry;
+            if (btn.dataset.featIdx !== undefined) {
+                const allFeats = [];
+                if (m.feature_name) allFeats.push({ name: m.feature_name, type: m.feature_type || '', range: m.feature_range || '', effect: m.feature_effect || '' });
+                if (Array.isArray(m.features)) m.features.forEach(f => {
+                    if (f.name && f.name !== m.feature_name) allFeats.push({ name: f.name, type: f.type || '', range: f.range || '', effect: f.effect || '' });
+                });
+                const f = allFeats[parseInt(btn.dataset.featIdx, 10)];
+                if (!f) return;
+                entry = { type: 'feature', monsterName: monName, name: f.name, tags: [f.type, f.range].filter(Boolean), desc: subPL(f.effect, m.pl), time: chatTimestamp(), diceRolls: [] };
+            } else if (btn.dataset.atkType) {
+                const isM = btn.dataset.atkType === 'melee';
+                const atk = isM ? (m.melee_attack || m.melee) : (m.ranged_attack || m.ranged);
+                if (!atk?.name) return;
+                entry = monsterAttackEntry(m, atk, btn.dataset.atkType);
+            } else if (btn.dataset.spellIdx !== undefined) {
+                const sp = m.spells?.[parseInt(btn.dataset.spellIdx, 10)];
+                const ef = sp?.effects?.[parseInt(btn.dataset.effectIdx, 10)];
+                if (!sp || !ef) return;
+                entry = monsterSpellEntry(m, sp, ef);
+            }
+            if (entry) { postToSharedChat(entry); setActivePanel('chat'); }
+        });
+    });
+
+    el.querySelectorAll('[data-mon-chat]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const m = getMonster(btn.dataset.monChat);
+            if (!m) return;
+            postToSharedChat({
+                type: 'feature',
+                name: m.name,
+                tags: [m.size, m.origin, m.rarity, `PL ${m.pl}`, `Ph +${m.check_physical}`, `Mt +${m.check_mental}`].filter(Boolean),
+                desc: m.description || m.motivation || '',
+                time: chatTimestamp(),
+                diceRolls: [],
+            });
+            setActivePanel('chat');
+        });
+    });
+
+    el.querySelectorAll('[data-mon-roll]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const m = getMonster(btn.dataset.monRoll);
+            if (!m) return;
+            const checkMod = m.check_physical || 0;
+            const d20 = Math.ceil(Math.random() * 20);
+            const d20Total = d20 + checkMod;
+            postToSharedChat({
+                type: 'roll',
+                charName: m.name,
+                label: 'Physical',
+                mod: checkMod,
+                rollNote: `d20(${d20})`,
+                d20Total,
+                rollType: 'flat',
+                conditions: [],
+                time: chatTimestamp(),
+            });
+            setActivePanel('chat');
+        });
+    });
+
+    el.querySelectorAll('[data-mon-minion]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const m = getMonster(btn.dataset.monMinion);
+            if (!m) return;
+            const hp = monsterHp(m);
+            nar.minions.push({
+                id: crypto.randomUUID(),
+                name: m.name, pl: m.pl ?? 1,
+                plPhys: m.check_physical ?? 0, plMent: m.check_mental ?? 0,
+                origin: m.origin || m._group || '',
+                hp, maxHp: hp,
+            });
+            saveNar(); renderMinions(); setActivePanel('party');
+        });
+    });
+
+    if (pendingMonsterFocus) {
+        const focusName = pendingMonsterFocus;
+        pendingMonsterFocus = null;
+        const idx = nar.genMonsters.indexOf(focusName);
+        if (idx >= 0) {
+            const cid    = `gmc-${idx}`;
+            const expEl  = document.getElementById(cid + '-exp');
+            const togBtn = document.querySelector(`.gen-mon-toggle[data-cid="${cid}"]`);
+            if (expEl?.hidden) { expEl.hidden = false; if (togBtn) togBtn.textContent = '▴'; }
+            document.getElementById(cid)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
 }
 
 // Search
@@ -987,11 +1472,12 @@ function genNpcName() {
 }
 
 function formatSpeciesName(s) {
-    const name   = s.name    || 'Unknown';
+    const tc = str => str ? str.charAt(0).toUpperCase() + str.slice(1).replace(/ \w/g, c => c.toUpperCase()) : '';
+    const name   = tc(s.name    || 'Unknown');
     const lineage = s.lineage || '';
     const option  = s.option  || '';
-    if (option && lineage) return `${option.charAt(0).toUpperCase() + option.slice(1)} ${name}`;
-    if (lineage && lineage.toLowerCase() !== name.toLowerCase()) return `${lineage.charAt(0).toUpperCase() + lineage.slice(1)} ${name}`;
+    if (option && lineage) return `${tc(option)} ${name}`;
+    if (lineage && lineage.toLowerCase() !== name.toLowerCase()) return `${tc(lineage)} ${name}`;
     return name;
 }
 
@@ -1047,7 +1533,7 @@ function saveNpcToJournal(n) {
         narratorNotes: `${n.motivation} · ${n.loyalty}`,
     });
     saveNar(); renderJournalNpcs();
-    setActivePanel('journal');
+    setActivePanel('party');
 }
 
 function appendToJournal(text) {
@@ -1062,47 +1548,58 @@ function renderGenNpcList() {
         el.innerHTML = '<p class="empty-hint">Tap Generate to create an NPC.</p>';
         return;
     }
+
+    const editable = (npcId, field, value) =>
+        `<span class="gen-npc-edit" contenteditable="true" data-npc-id="${npcId}" data-field="${field}">${value ?? ''}</span>`;
+
     el.innerHTML = nar.genNpcs.map(n => `
-        <div class="gen-npc-card" id="gnpc-${n.id}">
-            <div class="gen-npc-head">
+        <details class="gen-npc-card" id="gnpc-${n.id}">
+            <summary class="gen-npc-head">
                 <div class="gen-npc-info">
                     <span class="gen-npc-name">${n.name}</span>
                     <span class="gen-npc-species">${n.species}</span>
                 </div>
                 <div class="gen-npc-tags">
                     <span class="gen-npc-faction">${n.faction}</span>
-                    <span class="gen-npc-loyalty">${n.loyalty}</span>
+                    <span class="gen-npc-loyalty" data-loyalty="${(n.loyalty||'').toLowerCase()}">${n.loyalty}</span>
                 </div>
                 <div class="gen-npc-btns">
-                    <button class="gen-mon-toggle" data-npc-toggle="${n.id}">▾</button>
-                    <button class="gen-npc-journal" data-npc-id="${n.id}" title="Save to Journal">＋J</button>
+                    <button class="gen-npc-save" data-npc-id="${n.id}">+ Party</button>
                     <button class="gen-mon-remove" data-npc-remove="${n.id}">✕</button>
                 </div>
+            </summary>
+            <div class="gen-npc-expanded">
+                <div class="gen-npc-row"><span class="gen-npc-label">Name</span>${editable(n.id,'name',n.name)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Species</span>${editable(n.id,'species',n.species)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Faction</span>${editable(n.id,'faction',n.faction)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Loyalty</span>${editable(n.id,'loyalty',n.loyalty)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Religion</span>${editable(n.id,'religion',n.religion)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">From</span>${editable(n.id,'habitat',n.habitat)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Item</span>${editable(n.id,'item',n.item)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Motivation</span>${editable(n.id,'motivation',n.motivation)}</div>
             </div>
-            <div class="gen-npc-expanded" id="gnpc-exp-${n.id}" hidden>
-                <div class="gen-npc-row"><span class="gen-npc-label">Religion</span><span>${n.religion}</span></div>
-                <div class="gen-npc-row"><span class="gen-npc-label">From</span><span>${n.habitat}</span></div>
-                <div class="gen-npc-row"><span class="gen-npc-label">Item</span><span>${n.item}</span></div>
-                <div class="gen-npc-row"><span class="gen-npc-label">Motivation</span><span>${n.motivation}</span></div>
-            </div>
-        </div>`).join('');
+        </details>`).join('');
 
-    el.querySelectorAll('[data-npc-toggle]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const exp = document.getElementById(`gnpc-exp-${btn.dataset.npcToggle}`);
-            if (!exp) return;
-            exp.hidden = !exp.hidden;
-            btn.textContent = exp.hidden ? '▾' : '▴';
+    el.querySelectorAll('.gen-npc-head button').forEach(btn =>
+        btn.addEventListener('click', e => e.stopPropagation())
+    );
+    el.querySelectorAll('.gen-npc-edit').forEach(span => {
+        span.addEventListener('click', e => e.stopPropagation());
+        span.addEventListener('blur', () => {
+            const n = nar.genNpcs.find(x => x.id === span.dataset.npcId);
+            if (n) { n[span.dataset.field] = span.textContent.trim(); saveNar(); }
         });
     });
-    el.querySelectorAll('[data-npc-journal]').forEach(btn => {
-        btn.addEventListener('click', () => {
+    el.querySelectorAll('.gen-npc-save').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
             const n = nar.genNpcs.find(x => x.id === btn.dataset.npcId);
             if (n) saveNpcToJournal(n);
         });
     });
     el.querySelectorAll('[data-npc-remove]').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
             nar.genNpcs = nar.genNpcs.filter(x => x.id !== btn.dataset.npcRemove);
             saveNar(); renderGenNpcList();
         });
@@ -1116,42 +1613,43 @@ function renderGenLocList() {
         el.innerHTML = '<p class="empty-hint">Tap Generate to create a location.</p>';
         return;
     }
+
+    const editable = (locId, field, value) =>
+        `<span class="gen-npc-edit" contenteditable="true" data-loc-id="${locId}" data-field="${field}">${value ?? ''}</span>`;
+
     el.innerHTML = nar.genLocations.map(l => `
-        <div class="gen-npc-card">
-            <div class="gen-npc-head">
+        <details class="gen-npc-card">
+            <summary class="gen-npc-head">
                 <div class="gen-npc-info">
                     <span class="gen-npc-name">${l.location}</span>
                     <span class="gen-npc-species">${l.area}</span>
                 </div>
                 <div class="gen-npc-btns">
-                    <button class="gen-mon-toggle" data-loc-toggle="${l.id}">▾</button>
-                    <button class="gen-npc-journal" data-loc-id="${l.id}" title="Save to Journal">＋J</button>
                     <button class="gen-mon-remove" data-loc-remove="${l.id}">✕</button>
                 </div>
+            </summary>
+            <div class="gen-npc-expanded">
+                <div class="gen-npc-row"><span class="gen-npc-label">Location</span>${editable(l.id,'location',l.location)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Area</span>${editable(l.id,'area',l.area)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Person</span>${editable(l.id,'person',l.person)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Conflict</span>${editable(l.id,'conflict',l.conflict)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Object</span>${editable(l.id,'object',l.object)}</div>
             </div>
-            <div class="gen-npc-expanded" id="gloc-exp-${l.id}" hidden>
-                <div class="gen-npc-row"><span class="gen-npc-label">Person</span><span>${l.person}</span></div>
-                <div class="gen-npc-row"><span class="gen-npc-label">Conflict</span><span>${l.conflict}</span></div>
-                <div class="gen-npc-row"><span class="gen-npc-label">Object</span><span>${l.object}</span></div>
-            </div>
-        </div>`).join('');
+        </details>`).join('');
 
-    el.querySelectorAll('[data-loc-toggle]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const exp = document.getElementById(`gloc-exp-${btn.dataset.locToggle}`);
-            if (!exp) return;
-            exp.hidden = !exp.hidden;
-            btn.textContent = exp.hidden ? '▾' : '▴';
-        });
-    });
-    el.querySelectorAll('[data-loc-journal]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const l = nar.genLocations.find(x => x.id === btn.dataset.locId);
-            if (l) appendToJournal(locationToJournalText(l));
+    el.querySelectorAll('.gen-npc-head button').forEach(btn =>
+        btn.addEventListener('click', e => e.stopPropagation())
+    );
+    el.querySelectorAll('[data-loc-id][contenteditable]').forEach(span => {
+        span.addEventListener('click', e => e.stopPropagation());
+        span.addEventListener('blur', () => {
+            const l = nar.genLocations.find(x => x.id === span.dataset.locId);
+            if (l) { l[span.dataset.field] = span.textContent.trim(); saveNar(); }
         });
     });
     el.querySelectorAll('[data-loc-remove]').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
             nar.genLocations = nar.genLocations.filter(x => x.id !== btn.dataset.locRemove);
             saveNar(); renderGenLocList();
         });
@@ -1665,11 +2163,53 @@ function renderNarChat() {
     el.innerHTML = fbSharedChat.map(m => buildSharedChatCard(m)).join('');
 }
 
+function rollNarDamageTable(damageType, count) {
+    const table = window.damageData?.[damageType];
+    if (!table) return;
+    for (let i = 0; i < count; i++) {
+        const roll   = Math.ceil(Math.random() * 6);
+        const result = table.entries[roll - 1] || '—';
+        postToSharedChat({ type: 'dmg-table', damageType, roll, result, time: chatTimestamp() });
+    }
+}
+
+document.getElementById('nar-chat-log')?.addEventListener('click', async e => {
+    // Delete message
+    const deleteBtn = e.target.closest('.chat-delete-btn');
+    if (deleteBtn && window.__arc && nar.roomCode) {
+        const id = deleteBtn.dataset.chatId;
+        if (id) {
+            const arc = window.__arc;
+            await arc.deleteDoc(arc.doc(arc.db, 'rooms', nar.roomCode, 'chat', id));
+            fbSharedChat = fbSharedChat.filter(m => m.id !== id);
+            renderNarChat();
+        }
+        return;
+    }
+    // Expand/collapse description
+    const expandBtn = e.target.closest('.chat-expand-btn');
+    if (expandBtn) {
+        const body = expandBtn.previousElementSibling;
+        if (body) {
+            const collapsed = body.classList.toggle('is-clamped');
+            expandBtn.textContent = collapsed ? '▼ Show more' : '▲ Show less';
+        }
+        return;
+    }
+    // Damage table roll
+    const tableBtn = e.target.closest('.dmg-table-btn');
+    if (tableBtn) {
+        const rolls = parseInt(tableBtn.dataset.rolls, 10) || 1;
+        rollNarDamageTable(tableBtn.dataset.dmgType, rolls);
+        setActivePanel('chat');
+    }
+});
+
 function buildSharedChatCard(m) {
     const isNar  = m.isNarrator;
     const isRoll = ['roll','dice','weapon-attack'].includes(m.type);
     const badge  = isNar
-        ? `<div class="shared-author shared-author--nar">◆ Narrator</div>`
+        ? `<div class="shared-author shared-author--nar">◆ ${m.monsterName || 'Narrator'}</div>`
         : `<div class="shared-author">${m.author || 'Player'}</div>`;
 
     // Narrator cards get tinted class based on type
@@ -1682,15 +2222,24 @@ function buildSharedChatCard(m) {
         cardHtml = renderRollEntry(m);
     } else if (m.type === 'feature') {
         cardHtml = renderFeatureEntry(m);
+    } else if (m.type === 'dmg-table') {
+        cardHtml = renderDmgTableEntry(m);
     } else if (m.type === 'dice') {
         cardHtml = renderDiceEntry(m);
     } else if (m.type === 'recovery') {
         cardHtml = renderRecoveryEntry(m);
+    } else if (m.type === 'initiative-call') {
+        cardHtml = renderInitiativeCallEntry(m);
+    } else if (m.type === 'turn') {
+        cardHtml = renderTurnEntry(m);
     } else {
         cardHtml = `<div class="chat-entry--msg"><span class="chat-time">${m.time || ''}</span><span class="chat-text">${m.text || ''}</span></div>`;
     }
 
-    return `<li class="${narClass.trim()}">${badge}${cardHtml}</li>`;
+    const deleteBtn = m.id
+        ? `<button class="chat-delete-btn" data-chat-id="${m.id}" title="Delete message" type="button">✕</button>`
+        : '';
+    return `<li class="chat-msg-wrap ${narClass.trim()}" data-chat-id="${m.id || ''}">${deleteBtn}${badge}${cardHtml}</li>`;
 }
 
 // Narrator chat input
@@ -1703,6 +2252,47 @@ document.getElementById('btn-nar-send')?.addEventListener('click', () => {
 });
 document.getElementById('nar-chat-input')?.addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('btn-nar-send')?.click();
+});
+
+// Narrator emoji picker
+const narEmojiBtn   = document.getElementById('nar-emoji-btn');
+const narEmojiPanel = document.getElementById('nar-emoji-panel');
+if (narEmojiBtn && narEmojiPanel) {
+    narEmojiPanel.innerHTML = buildEmojiPanel();
+    narEmojiBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        narEmojiPanel.hidden = !narEmojiPanel.hidden;
+    });
+    narEmojiPanel.addEventListener('click', e => {
+        const em = e.target.closest('.emoji-pick');
+        if (!em) return;
+        const input = document.getElementById('nar-chat-input');
+        if (input) {
+            const pos = input.selectionStart || input.value.length;
+            input.value = input.value.slice(0, pos) + em.textContent + input.value.slice(pos);
+            input.focus();
+            input.setSelectionRange(pos + em.textContent.length, pos + em.textContent.length);
+        }
+        narEmojiPanel.hidden = true;
+    });
+    document.addEventListener('click', e => {
+        if (!narEmojiPanel.hidden && !narEmojiPanel.contains(e.target) && e.target !== narEmojiBtn) {
+            narEmojiPanel.hidden = true;
+        }
+    });
+}
+
+// Clear all shared chat (narrator only)
+document.getElementById('btn-nar-clear-chat')?.addEventListener('click', async () => {
+    if (!window.__arc || !nar.roomCode) return;
+    const arc = window.__arc;
+    const chatRef = arc.collection(arc.db, 'rooms', nar.roomCode, 'chat');
+    const snap = await arc.getDocs(chatRef);
+    const batch = arc.writeBatch(arc.db);
+    snap.docs.forEach(d => batch.delete(d.ref));
+    await batch.commit();
+    fbSharedChat = [];
+    renderNarChat();
 });
 
 // ── SETTINGS & THEME ─────────────────────────────────────────────────────────
@@ -1728,6 +2318,17 @@ function hexToHue(hex) {
     else if (max === g1) h = (b1 - r1)  / d + 2;
     else                 h = (r1 - g1)  / d + 4;
     return Math.round(h * 60);
+}
+
+function hexToSL(hex) {
+    if (!hex || hex.length < 7) return { s: 65, l: 60 };
+    const { r, g, b } = hexToRgb(hex);
+    const r1 = r/255, g1 = g/255, b1 = b/255;
+    const max = Math.max(r1,g1,b1), min = Math.min(r1,g1,b1);
+    const l = (max + min) / 2;
+    const d = max - min;
+    const s = d === 0 ? 0 : d / (1 - Math.abs(2*l - 1));
+    return { s: Math.round(s * 100), l: Math.round(l * 100) };
 }
 
 function hslToHex(h, s = 65, l = 60) {
@@ -1763,26 +2364,41 @@ function openSettings() {
     if (container) {
         const a1 = nar.theme?.a1 || NAR_DEFAULT_A1;
         const a2 = nar.theme?.a2 || NAR_DEFAULT_A2;
+        const sl1 = hexToSL(a1), sl2 = hexToSL(a2);
+        const sliderRow = (key, hex, sl) => `
+            <div class="theme-slider-row">
+                <span class="theme-slider-label">H</span>
+                <input type="range" class="hue-slider" id="hue-${key}" min="0" max="359" value="${hexToHue(hex)}" />
+            </div>
+            <div class="theme-slider-row">
+                <span class="theme-slider-label">S</span>
+                <input type="range" class="hue-slider" id="sat-${key}" min="0" max="100" value="${sl.s}" />
+            </div>
+            <div class="theme-slider-row">
+                <span class="theme-slider-label">L</span>
+                <input type="range" class="hue-slider" id="lit-${key}" min="0" max="100" value="${sl.l}" />
+                <span class="hue-preview" id="prev-${key}" style="background:${hex}"></span>
+            </div>`;
         container.innerHTML = `
             <div class="wm-label" style="margin-bottom:6px">Primary</div>
-            <div class="theme-slider-row">
-                <input type="range" class="hue-slider" id="hue-a1" min="0" max="359" value="${hexToHue(a1)}" />
-                <span class="hue-preview" id="prev-a1" style="background:${a1}"></span>
-            </div>
+            ${sliderRow('a1', a1, sl1)}
             <div class="wm-label" style="margin:12px 0 6px">Secondary</div>
-            <div class="theme-slider-row">
-                <input type="range" class="hue-slider" id="hue-a2" min="0" max="359" value="${hexToHue(a2)}" />
-                <span class="hue-preview" id="prev-a2" style="background:${a2}"></span>
-            </div>`;
+            ${sliderRow('a2', a2, sl2)}`;
 
+        function updateNarColor(key) {
+            const h = parseInt(document.getElementById(`hue-${key}`)?.value || '210', 10);
+            const s = parseInt(document.getElementById(`sat-${key}`)?.value || '65', 10);
+            const l = parseInt(document.getElementById(`lit-${key}`)?.value || '60', 10);
+            const hex = hslToHex(h, s, l);
+            const prev = document.getElementById(`prev-${key}`);
+            if (prev) prev.style.background = hex;
+            const cur1 = nar.theme?.a1 || NAR_DEFAULT_A1;
+            const cur2 = nar.theme?.a2 || NAR_DEFAULT_A2;
+            setTheme(key === 'a1' ? hex : cur1, key === 'a2' ? hex : cur2);
+        }
         ['a1', 'a2'].forEach(key => {
-            document.getElementById(`hue-${key}`)?.addEventListener('input', function() {
-                const hex  = hslToHex(parseInt(this.value));
-                const prev = document.getElementById(`prev-${key}`);
-                if (prev) prev.style.background = hex;
-                const cur1 = nar.theme?.a1 || NAR_DEFAULT_A1;
-                const cur2 = nar.theme?.a2 || NAR_DEFAULT_A2;
-                setTheme(key === 'a1' ? hex : cur1, key === 'a2' ? hex : cur2);
+            ['hue','sat','lit'].forEach(prefix => {
+                document.getElementById(`${prefix}-${key}`)?.addEventListener('input', () => updateNarColor(key));
             });
         });
     }
@@ -1829,7 +2445,6 @@ document.getElementById('btn-nar-reset-confirm')?.addEventListener('click', () =
     nar.genMedicine   = [];
     nar.genHexes         = [];
     nar.journalNpcs      = [];
-    nar.journalMonsters  = [];
     nar.questLog         = [];
     nar.sessions         = [];
     saveNar();
@@ -1838,7 +2453,7 @@ document.getElementById('btn-nar-reset-confirm')?.addEventListener('click', () =
     renderGenQuestList(); renderGenDungeonList(); renderGenRoomsList();
     renderGenMundaneList(); renderGenEnchantedList(); renderGenMedicineList();
     renderGenHexList();
-    renderJournalNpcs(); renderJournalMonsters(); renderQuestLog(); renderSessions();
+    renderJournalNpcs(); renderQuestLog(); renderSessions();
     closeSettings();
 });
 
@@ -1907,7 +2522,7 @@ function listenToPlayers(code) {
     const arc = window.__arc;
     partyUnsubscribe = arc.onSnapshot(
         arc.collection(arc.db, 'rooms', code, 'players'),
-        snap => { fbPlayers = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderParty(); },
+        snap => { fbPlayers = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderParty(); renderEncounter(); },
         err => console.error('[ARC] players listener error:', err)
     );
 }
@@ -1975,6 +2590,7 @@ document.getElementById('room-code-badge')?.addEventListener('click', () => {
 loadNar();
 migrateOldNotes();
 applyTheme();
+ensureMonsters();
 renderParty();
 renderMinions();
 renderInventory();
@@ -1989,6 +2605,5 @@ renderGenEnchantedList();
 renderGenMedicineList();
 renderGenHexList();
 renderJournalNpcs();
-renderJournalMonsters();
 renderQuestLog();
 renderSessions();

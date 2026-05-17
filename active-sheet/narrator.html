@@ -37,10 +37,43 @@
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Chat</h2>
+                        <button class="ghost-btn" id="btn-nar-clear-chat" type="button">Clear</button>
                     </div>
                     <ol class="nar-chat-log" id="nar-chat-log">
                         <li class="empty-hint" style="list-style:none">Create a session to see the shared feed.</li>
                     </ol>
+                </div>
+                <!-- Sticky dice roller — inside panel so only shows on Chat tab -->
+                <div class="chat-sticky-bottom">
+                    <div class="dice-roller">
+                        <div class="dice-top-row">
+                            <label class="dice-count-field">
+                                <span class="dice-mult-label">×</span>
+                                <input class="dice-count-input" id="nar-dice-count" type="number" inputmode="numeric" min="1" max="20" value="1" />
+                            </label>
+                            <select class="dice-type-select" id="nar-dice-type">
+                                <option value="4">d4</option>
+                                <option value="6">d6</option>
+                                <option value="8">d8</option>
+                                <option value="10">d10</option>
+                                <option value="12">d12</option>
+                                <option value="20" selected>d20</option>
+                                <option value="100">d%</option>
+                            </select>
+                            <label class="dice-bonus-field">
+                                <span class="dice-bonus-label">+</span>
+                                <input class="dice-bonus-input" id="nar-dice-bonus" type="number" inputmode="numeric" value="0" />
+                            </label>
+                            <button class="dice-roll-btn" id="btn-nar-dice-roll" type="button">Roll</button>
+                        </div>
+                    </div>
+                    <!-- Emoji panel -->
+                    <div class="emoji-panel" id="nar-emoji-panel" hidden></div>
+                    <div class="chat-input-row">
+                        <button class="emoji-toggle-btn" id="nar-emoji-btn" type="button" aria-label="Emoji">😊</button>
+                        <input type="text" id="nar-chat-input" placeholder="Message the party…" autocomplete="off" />
+                        <button class="chat-send-btn" id="btn-nar-send" type="button">Send</button>
+                    </div>
                 </div>
             </section>
 
@@ -54,18 +87,6 @@
                         <div style="display:flex;gap:6px;align-items:center">
                             <button class="room-code-badge" id="room-code-badge" hidden title="Tap to copy code"></button>
                             <button class="ghost-btn" id="btn-invite" type="button">Invite</button>
-                        </div>
-                    </div>
-
-                    <!-- Gold tracker — shown when room is active -->
-                    <div class="party-gold-row" id="party-gold-row" hidden>
-                        <span class="party-gold-label">⬡ Gold</span>
-                        <div class="party-gold-ctrl">
-                            <button class="step-action-btn" data-gold="-10">−10</button>
-                            <button class="step-action-btn" data-gold="-1">−1</button>
-                            <span class="party-gold-val" id="party-gold-val">0</span>
-                            <button class="step-action-btn" data-gold="1">+1</button>
-                            <button class="step-action-btn" data-gold="10">+10</button>
                         </div>
                     </div>
 
@@ -107,6 +128,40 @@
                     </details>
                 </div>
 
+                <!-- NPCs -->
+                <div class="section party-subsection">
+                    <div class="section-head">
+                        <h2 class="section-title">NPCs</h2>
+                    </div>
+                    <div id="journal-npc-list">
+                        <p class="empty-hint">No NPCs saved.</p>
+                    </div>
+                    <details class="nar-add-form" style="margin-top:8px">
+                        <summary class="nar-add-summary">+ Add NPC</summary>
+                        <div class="nar-form">
+                            <label class="nar-form-field"><span class="nar-form-label">Name</span>
+                                <input id="jnpc-name" type="text" placeholder="NPC name…" autocomplete="off" /></label>
+                            <div class="nar-stat-row">
+                                <label class="nar-form-field"><span class="nar-form-label">PL</span>
+                                    <input id="jnpc-pl" type="number" inputmode="numeric" placeholder="—" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Phys</span>
+                                    <input id="jnpc-phys" type="number" inputmode="numeric" placeholder="—" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Ment</span>
+                                    <input id="jnpc-ment" type="number" inputmode="numeric" placeholder="—" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">HP</span>
+                                    <input id="jnpc-hp" type="number" inputmode="numeric" placeholder="—" /></label>
+                            </div>
+                            <label class="nar-form-field"><span class="nar-form-label">Notes</span>
+                                <input id="jnpc-notes" type="text" placeholder="Species, faction…" autocomplete="off" /></label>
+                            <label class="nar-form-field"><span class="nar-form-label">Equipment</span>
+                                <input id="jnpc-equip" type="text" placeholder="Signature item…" autocomplete="off" /></label>
+                            <label class="nar-form-field"><span class="nar-form-label">Narrator Notes</span>
+                                <input id="jnpc-nar" type="text" placeholder="Secret motivation, loyalty…" autocomplete="off" /></label>
+                        </div>
+                        <button class="done-btn" id="btn-add-jnpc" type="button">+ Add NPC</button>
+                    </details>
+                </div>
+
                 <!-- Minions & Companions -->
                 <div class="section party-subsection">
                     <div class="section-head">
@@ -130,13 +185,12 @@
                             <label class="nar-form-field"><span class="nar-form-label">Name</span>
                                 <input id="mn-name" type="text" placeholder="Name…" autocomplete="off" /></label>
                             <div class="nar-stat-row">
-                                <label class="nar-form-field"><span class="nar-form-label">PL Phys</span>
-                                    <input id="mn-pl-phys" type="number" inputmode="numeric" value="1" /></label>
-                                <label class="nar-form-field"><span class="nar-form-label">PL Ment</span>
-                                    <input id="mn-pl-ment" type="number" inputmode="numeric" value="1" /></label>
-                                <label class="nar-form-field"><span class="nar-form-label">Max HP</span>
-                                    <input id="mn-hp" type="number" inputmode="numeric" value="10" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">PL</span>
+                                    <input id="mn-pl" type="number" inputmode="numeric" min="1" value="3" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Origin</span>
+                                    <input id="mn-origin" type="text" placeholder="Nature, Arcane…" autocomplete="off" /></label>
                             </div>
+                            <p class="field-hint" id="mn-hp-preview" style="margin:4px 0 0">HP: 9 (PL² = 3×3)</p>
                         </div>
                         <button class="done-btn" id="btn-add-minion" type="button">+ Add</button>
                     </details>
@@ -146,6 +200,18 @@
                 <div class="section party-subsection">
                     <div class="section-head">
                         <h2 class="section-title">Party Inventory</h2>
+                    </div>
+
+                    <!-- Gold tracker — shown when room is active -->
+                    <div class="party-gold-row" id="party-gold-row" hidden>
+                        <span class="party-gold-label">⬡ Gold</span>
+                        <div class="party-gold-ctrl">
+                            <button class="step-action-btn" data-gold="-10">−10</button>
+                            <button class="step-action-btn" data-gold="-1">−1</button>
+                            <span class="party-gold-val" id="party-gold-val">0</span>
+                            <button class="step-action-btn" data-gold="1">+1</button>
+                            <button class="step-action-btn" data-gold="10">+10</button>
+                        </div>
                     </div>
 
                     <div id="inventory-list">
@@ -278,76 +344,6 @@
             <!-- JOURNAL -->
             <section class="panel" id="panel-journal" role="region" aria-label="Journal">
 
-                <!-- Saved NPCs -->
-                <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title">Saved NPCs</h2>
-                    </div>
-                    <div class="jrow-header">
-                        <span></span><span>Name</span>
-                        <span>PL</span><span>Ph</span><span>Mt</span><span>HP</span><span></span>
-                    </div>
-                    <div id="journal-npc-list"></div>
-                    <details class="nar-add-form" style="margin-top:8px">
-                        <summary class="nar-add-summary">+ Add NPC</summary>
-                        <div class="nar-form">
-                            <label class="nar-form-field"><span class="nar-form-label">Name</span>
-                                <input id="jnpc-name" type="text" placeholder="NPC name…" autocomplete="off" /></label>
-                            <div class="nar-stat-row">
-                                <label class="nar-form-field"><span class="nar-form-label">PL</span>
-                                    <input id="jnpc-pl" type="number" inputmode="numeric" placeholder="—" /></label>
-                                <label class="nar-form-field"><span class="nar-form-label">Phys</span>
-                                    <input id="jnpc-phys" type="number" inputmode="numeric" placeholder="—" /></label>
-                                <label class="nar-form-field"><span class="nar-form-label">Ment</span>
-                                    <input id="jnpc-ment" type="number" inputmode="numeric" placeholder="—" /></label>
-                                <label class="nar-form-field"><span class="nar-form-label">HP</span>
-                                    <input id="jnpc-hp" type="number" inputmode="numeric" placeholder="—" /></label>
-                            </div>
-                            <label class="nar-form-field"><span class="nar-form-label">Notes</span>
-                                <input id="jnpc-notes" type="text" placeholder="Species, faction…" autocomplete="off" /></label>
-                            <label class="nar-form-field"><span class="nar-form-label">Equipment</span>
-                                <input id="jnpc-equip" type="text" placeholder="Signature item…" autocomplete="off" /></label>
-                            <label class="nar-form-field"><span class="nar-form-label">Narrator Notes</span>
-                                <input id="jnpc-nar" type="text" placeholder="Secret motivation, loyalty…" autocomplete="off" /></label>
-                        </div>
-                        <button class="done-btn" id="btn-add-jnpc" type="button">+ Add NPC</button>
-                    </details>
-                </div>
-
-                <!-- Saved Monsters -->
-                <div class="section party-subsection">
-                    <div class="section-head">
-                        <h2 class="section-title">Saved Monsters</h2>
-                    </div>
-                    <div class="jrow-header">
-                        <span></span><span>Name</span>
-                        <span>PL</span><span>Ph</span><span>Mt</span><span>HP</span><span></span>
-                    </div>
-                    <div id="journal-monster-list"></div>
-                    <details class="nar-add-form" style="margin-top:8px">
-                        <summary class="nar-add-summary">+ Add Monster</summary>
-                        <div class="nar-form">
-                            <label class="nar-form-field"><span class="nar-form-label">Name</span>
-                                <input id="jmon-name" type="text" placeholder="Monster name…" autocomplete="off" /></label>
-                            <div class="nar-stat-row">
-                                <label class="nar-form-field"><span class="nar-form-label">PL</span>
-                                    <input id="jmon-pl" type="number" inputmode="numeric" placeholder="—" /></label>
-                                <label class="nar-form-field"><span class="nar-form-label">Phys</span>
-                                    <input id="jmon-phys" type="number" inputmode="numeric" placeholder="—" /></label>
-                                <label class="nar-form-field"><span class="nar-form-label">Ment</span>
-                                    <input id="jmon-ment" type="number" inputmode="numeric" placeholder="—" /></label>
-                                <label class="nar-form-field"><span class="nar-form-label">HP</span>
-                                    <input id="jmon-hp" type="number" inputmode="numeric" placeholder="—" /></label>
-                            </div>
-                            <label class="nar-form-field"><span class="nar-form-label">Note</span>
-                                <input id="jmon-note" type="text" placeholder="Behavior, origin…" autocomplete="off" /></label>
-                            <label class="nar-form-field"><span class="nar-form-label">Equipment</span>
-                                <input id="jmon-equip" type="text" placeholder="Weapons, items…" autocomplete="off" /></label>
-                        </div>
-                        <button class="done-btn" id="btn-add-jmon" type="button">+ Add Monster</button>
-                    </details>
-                </div>
-
                 <!-- Quest Log -->
                 <div class="section party-subsection">
                     <div class="section-head">
@@ -401,6 +397,7 @@
                             <span class="init-stat-val" id="enc-time">0.00</span>
                         </div>
                         <div style="display:flex;gap:6px;margin-left:auto">
+                            <button class="ghost-btn" id="btn-call-init" type="button" title="Ask players to roll initiative">🎲 Init</button>
                             <button class="ghost-btn" id="btn-next-turn" type="button">Next →</button>
                             <button class="ghost-btn" id="btn-clear-encounter" type="button" style="color:#e05555">End</button>
                         </div>
@@ -455,36 +452,6 @@
 
         </section>
 
-        <!-- Sticky dice roller (replaces FAB + Roll Drawer) -->
-        <!-- Sticky bar — identical layout to player -->
-        <div class="chat-sticky-bottom">
-            <div class="dice-roller">
-                <div class="dice-top-row">
-                    <label class="dice-count-field">
-                        <span class="dice-mult-label">×</span>
-                        <input class="dice-count-input" id="nar-dice-count" type="number" inputmode="numeric" min="1" max="20" value="1" />
-                    </label>
-                    <select class="dice-type-select" id="nar-dice-type">
-                        <option value="4">d4</option>
-                        <option value="6">d6</option>
-                        <option value="8">d8</option>
-                        <option value="10">d10</option>
-                        <option value="12">d12</option>
-                        <option value="20" selected>d20</option>
-                        <option value="100">d%</option>
-                    </select>
-                    <label class="dice-bonus-field">
-                        <span class="dice-bonus-label">+</span>
-                        <input class="dice-bonus-input" id="nar-dice-bonus" type="number" inputmode="numeric" value="0" />
-                    </label>
-                    <button class="dice-roll-btn" id="btn-nar-dice-roll" type="button">Roll</button>
-                </div>
-            </div>
-            <div class="chat-input-row">
-                <input type="text" id="nar-chat-input" placeholder="Message the party…" autocomplete="off" />
-                <button class="chat-send-btn" id="btn-nar-send" type="button">Send</button>
-            </div>
-        </div>
     </main>
 
     <!-- Settings Modal -->

@@ -34,13 +34,14 @@ const weightedRandom = (list, weightFn) => {
 
 const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
+const titleCase = s => s ? s.charAt(0).toUpperCase() + s.slice(1).replace(/ \w/g, c => c.toUpperCase()) : '';
 
 function formatTextWithBreaks(str) {
     return (str || "").replace(/\n/g, "<br>");
 }
 
 function formatSpecies(s) {
-    const name = s.name || "Unknown";
+    const name = titleCase(s.name || "Unknown");
     const lineage = s.lineage || "";
     const option = s.option || "";
 

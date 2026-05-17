@@ -1,6 +1,7 @@
 /* Character Creation Wizard */
 
 const DATA_BASE = window.location.pathname.includes('/active-sheet/') ? '../data/' : 'data/';
+const titleCase = s => s ? s.charAt(0).toUpperCase() + s.slice(1).replace(/ \w/g, c => c.toUpperCase()) : '';
 
 const STORAGE_KEY  = 'arc-active-sheet';
 // Base limits — Professional class gets +5 points and max 15 per stat
@@ -374,7 +375,7 @@ function buildSpeciesGrid() {
         <button class="species-card${s.name === wiz.speciesName ? ' is-sel' : ''}"
                 type="button" data-species="${s.name}">
             <div class="species-card-head">
-                <span class="species-name">${s.name}</span>
+                <span class="species-name">${titleCase(s.name)}</span>
                 <span class="species-rarity">${s.rarity || ''}</span>
             </div>
             ${s.feature_name ? `<div class="species-trait">${s.feature_name}</div>` : ''}
@@ -389,7 +390,7 @@ function renderSpeciesDetail() {
     if (!s) { detail.hidden = true; return; }
     detail.hidden = false;
     detail.innerHTML = `
-        <div class="species-detail-name">${s.name}</div>
+        <div class="species-detail-name">${titleCase(s.name)}</div>
         <p class="species-detail-desc">${s.description.slice(0, 240)}…</p>
         <div class="species-detail-facts">
             ${s.size     ? `<span>Size: ${s.size}</span>` : ''}
@@ -585,7 +586,7 @@ function renderReview() {
         <div class="review-row"><span class="review-lbl">Class</span><strong>${wiz.classKey}</strong></div>
         ${wiz.pathName   ? `<div class="review-row"><span class="review-lbl">Path</span><strong>${wiz.pathName}</strong></div>` : ''}
         ${wiz.talentName ? `<div class="review-row"><span class="review-lbl">Talent</span><strong>${wiz.talentName}</strong></div>` : ''}
-        ${s ? `<div class="review-row"><span class="review-lbl">Species</span><strong>${s.name}</strong> <span class="review-sub">${s.lineage}</span></div>` : ''}
+        ${s ? `<div class="review-row"><span class="review-lbl">Species</span><strong>${titleCase(s.name)}</strong> <span class="review-sub">${s.lineage}</span></div>` : ''}
         <div class="review-row"><span class="review-lbl">Stats</span><span class="review-stats">${statsLine || '—'}</span></div>
         <div class="review-row"><span class="review-lbl">Points</span><span style="color:${pointsLeft() < 0 ? '#ff6060' : 'var(--muted)'}">
             ${pointsSpent()} / ${classLimits().total} used${pointsLeft() > 0 ? ` (${pointsLeft()} unspent)` : ''}

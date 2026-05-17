@@ -1,6 +1,7 @@
 /* Active Sheet — mobile-first gameplay runner */
 
 const DATA_BASE = window.location.pathname.includes('/active-sheet/') ? '../data/' : 'data/';
+const titleCase = s => s ? s.charAt(0).toUpperCase() + s.slice(1).replace(/ \w/g, c => c.toUpperCase()) : '';
 
 // ── CHECKS ────────────────────────────────────────────────────────────────────
 
@@ -125,6 +126,7 @@ const state = {
         armor: { current: 0, max: 0 },
         MN: { current: 0, max: 0 },
         classRes: { current: 0, max: 0, label: 'Resource' },
+        custom: [],  // [{ id, label, current, max }]
     },
     checks: structuredClone(CHECKS),
     activeConditions: new Set(),
@@ -238,7 +240,9 @@ function getSpellcastingStat() {
         ...((classBaseData.find(c => c.name === state.char.classKey)?.features) || []),
     ];
     for (const s of toSearch) {
-        const m = (s.description || '').match(/(\w+) is your Spellcasting check/i);
+        const raw = s.description || '';
+        const text = Array.isArray(raw) ? raw.join(' ') : raw;
+        const m = text.match(/(\w+) is your Spellcasting check/i);
         if (m) return SPELL_STAT_MAP[m[1].toLowerCase()] || null;
     }
     return null;
@@ -263,13 +267,14 @@ function calcManaMax() {
 
         function scan(desc) {
             if (!desc) return;
-            const fixedMatch = desc.match(new RegExp(`you have (\\d+) ${MN_WORD}`, 'i'));
+            const text = Array.isArray(desc) ? desc.join(' ') : String(desc);
+            const fixedMatch = text.match(new RegExp(`you have (\\d+) ${MN_WORD}`, 'i'));
             if (fixedMatch) total += parseInt(fixedMatch[1], 10);
-            const bonusMatch = desc.match(new RegExp(`additional \\+(\\d+) ${MN_WORD}`, 'i'));
+            const bonusMatch = text.match(new RegExp(`additional \\+(\\d+) ${MN_WORD}`, 'i'));
             if (bonusMatch) total += parseInt(bonusMatch[1], 10);
-            const plusMatch = desc.match(new RegExp(`\\+(\\d+) (?:maximum )?${MN_WORD}`, 'i'));
+            const plusMatch = text.match(new RegExp(`\\+(\\d+) (?:maximum )?${MN_WORD}`, 'i'));
             if (plusMatch && !bonusMatch) total += parseInt(plusMatch[1], 10);
-            if (new RegExp(`${MN_WORD} equal to your`, 'i').test(desc)) statBased = true;
+            if (new RegExp(`${MN_WORD} equal to your`, 'i').test(text)) statBased = true;
         }
 
         (base.features || []).forEach(f => scan(f.description));
@@ -566,6 +571,7 @@ function openWeaponModal(itemIndex) {
 }
 
 function closeWeaponModal() {
+    if (weaponModalIndex >= 0) saveWeaponToState();
     document.getElementById('weapon-modal').hidden = true;
     weaponModalItem = null;
     weaponModalIndex = -1;
@@ -1244,10 +1250,19 @@ function openSpellRollModal(spell, intent) {
     document.getElementById('srm-bonus').value = 0;
     if (checks.length) applyConditionRollType('#srm-roll-seg', '#srm-check-chips');
 
-    // Button labels
+    // Button labels + mana warning
     const canAfford = mnNow >= cost;
     document.getElementById('srm-roll-mana').textContent =
         cost > 0 ? `Roll + Spend ${cost} MN${canAfford ? '' : ' ⚠'}` : 'Roll (Free)';
+    const warnEl = document.getElementById('srm-mana-warn');
+    if (warnEl) {
+        warnEl.textContent = cost === 0
+            ? ''
+            : !canAfford
+                ? `⚠ You have ${mnNow} MN — need ${cost}`
+                : '';
+        warnEl.hidden = !(!canAfford && cost > 0);
+    }
 
     document.getElementById('spell-roll-modal').hidden = false;
 }
@@ -1366,6 +1381,17 @@ function hexToHue(hex) {
     return Math.round(h * 60);
 }
 
+function hexToSL(hex) {
+    if (!hex || hex.length < 7) return { s: 65, l: 60 };
+    const { r, g, b } = hexToRgb(hex);
+    const r1 = r/255, g1 = g/255, b1 = b/255;
+    const max = Math.max(r1,g1,b1), min = Math.min(r1,g1,b1);
+    const l = (max + min) / 2;
+    const d = max - min;
+    const s = d === 0 ? 0 : d / (1 - Math.abs(2*l - 1));
+    return { s: Math.round(s * 100), l: Math.round(l * 100) };
+}
+
 function hslToHex(h, s = 65, l = 60) {
     s /= 100; l /= 100;
     const k = n => (n + h / 30) % 12;
@@ -1389,26 +1415,41 @@ function applyTheme() {
 }
 
 function buildThemeSliders(a1, a2) {
+    const sl1 = hexToSL(a1), sl2 = hexToSL(a2);
+    const row = (key, hex, sl) => `
+        <div class="theme-slider-row">
+            <span class="theme-slider-label">H</span>
+            <input type="range" class="hue-slider" id="hue-${key}" min="0" max="359" value="${hexToHue(hex)}" />
+        </div>
+        <div class="theme-slider-row">
+            <span class="theme-slider-label">S</span>
+            <input type="range" class="hue-slider" id="sat-${key}" min="0" max="100" value="${sl.s}" />
+        </div>
+        <div class="theme-slider-row">
+            <span class="theme-slider-label">L</span>
+            <input type="range" class="hue-slider" id="lit-${key}" min="0" max="100" value="${sl.l}" />
+            <span class="hue-preview" id="prev-${key}" style="background:${hex}"></span>
+        </div>`;
     return `
         <div class="wm-label" style="margin-bottom:6px">Primary</div>
-        <div class="theme-slider-row">
-            <input type="range" class="hue-slider" id="hue-a1" min="0" max="359" value="${hexToHue(a1)}" />
-            <span class="hue-preview" id="prev-a1" style="background:${a1}"></span>
-        </div>
+        ${row('a1', a1, sl1)}
         <div class="wm-label" style="margin:12px 0 6px">Secondary</div>
-        <div class="theme-slider-row">
-            <input type="range" class="hue-slider" id="hue-a2" min="0" max="359" value="${hexToHue(a2)}" />
-            <span class="hue-preview" id="prev-a2" style="background:${a2}"></span>
-        </div>`;
+        ${row('a2', a2, sl2)}`;
 }
 
 function wireThemeSliders(getA1, getA2, onSave) {
+    function updateColor(key) {
+        const h = parseInt(document.getElementById(`hue-${key}`)?.value || '210', 10);
+        const s = parseInt(document.getElementById(`sat-${key}`)?.value || '65', 10);
+        const l = parseInt(document.getElementById(`lit-${key}`)?.value || '60', 10);
+        const hex = hslToHex(h, s, l);
+        const prev = document.getElementById(`prev-${key}`);
+        if (prev) prev.style.background = hex;
+        onSave(key === 'a1' ? hex : getA1(), key === 'a2' ? hex : getA2());
+    }
     ['a1', 'a2'].forEach(key => {
-        document.getElementById(`hue-${key}`)?.addEventListener('input', function() {
-            const hex  = hslToHex(parseInt(this.value));
-            const prev = document.getElementById(`prev-${key}`);
-            if (prev) prev.style.background = hex;
-            onSave(key === 'a1' ? hex : getA1(), key === 'a2' ? hex : getA2());
+        ['hue','sat','lit'].forEach(prefix => {
+            document.getElementById(`${prefix}-${key}`)?.addEventListener('input', () => updateColor(key));
         });
     });
 }
@@ -1553,7 +1594,7 @@ function spBuildSpeciesGrid() {
         <button class="sp-species-card${s.name === sp.selName ? ' is-sel' : ''}"
                 type="button" data-sp-species="${s.name}">
             <div class="sp-species-head">
-                <span class="sp-species-name">${s.name}</span>
+                <span class="sp-species-name">${titleCase(s.name)}</span>
                 <span class="sp-species-rarity">${s.rarity || ''}</span>
             </div>
             ${s.feature_name ? `<div class="sp-species-trait">${s.feature_name}</div>` : ''}
@@ -1568,7 +1609,7 @@ function spRenderDetail() {
     if (!s) { el.hidden = true; return; }
     el.hidden = false;
     el.innerHTML = `
-        <div class="sp-detail-name">${s.name}</div>
+        <div class="sp-detail-name">${titleCase(s.name)}</div>
         <p class="sp-detail-desc">${s.description.slice(0, 200)}…</p>
         <div class="sp-detail-facts">
             ${s.size ? `<span>Size: ${s.size}</span>` : ''}
@@ -1629,7 +1670,7 @@ function applySpeciesSelection() {
 function syncSpeciesDisplay() {
     const nameEl = document.getElementById('bio-species-name');
     const subEl = document.getElementById('bio-species-sub');
-    if (nameEl) nameEl.textContent = state.char.species || '—';
+    if (nameEl) nameEl.textContent = titleCase(state.char.species) || '—';
     if (subEl) {
         const parts = [state.char.speciesLineage, state.char.size].filter(Boolean);
         subEl.textContent = parts.join(' · ');
@@ -1678,9 +1719,10 @@ function bindFeatTabs() {
                 t.classList.toggle('is-active', t.dataset.featTab === target));
             document.querySelectorAll('.feat-tab-content').forEach(c =>
                 c.classList.toggle('is-active', c.id === `feat-tab-${target}`));
-            if (target === 'other') renderSpeciesView();
+            if (target === 'class') renderSpeciesView();
         });
     });
+
 }
 
 // ── SPECIES VIEW ──────────────────────────────────────────────────────────────
@@ -1696,7 +1738,7 @@ function renderSpeciesView() {
     const ssf = state.char.speciesSubFeature;
     el.innerHTML = `
         <div class="species-display-head">
-            <span class="species-display-name">${state.char.species}</span>
+            <span class="species-display-name">${titleCase(state.char.species)}</span>
             <span class="species-display-meta">${[state.char.speciesLineage, state.char.size].filter(Boolean).join(' · ')}</span>
         </div>
         ${sf ? renderStepCard({ name: sf.name, description: sf.effect, action: sf.action, check: sf.check }) : ''}
@@ -1869,15 +1911,17 @@ function renderProgStep(s, index, type) {
 }
 
 function renderOtherGains() {
-    const el = document.getElementById('other-gains-list');
-    if (!el) return;
-    el.innerHTML = state.progression.otherGains.length
+    const html = state.progression.otherGains.length
         ? state.progression.otherGains.map((g, i) => `
             <div class="row">
                 <span class="check-row-label">${g}</span>
                 <button class="check-adj" data-remove-gain="${i}" style="color:#ff6060" aria-label="Remove">✕</button>
             </div>`).join('')
         : '<p class="empty-hint">Items gained during play</p>';
+    const el1 = document.getElementById('other-gains-list');
+    const el2 = document.getElementById('prog-other-gains-list');
+    if (el1) el1.innerHTML = html;
+    if (el2) el2.innerHTML = html;
 }
 
 // ── EQUIPMENT ─────────────────────────────────────────────────────────────────
@@ -2160,6 +2204,10 @@ function renderSharedChat() {
             li.innerHTML = badge + renderDiceEntry(m);
         } else if (m.type === 'recovery') {
             li.innerHTML = badge + renderRecoveryEntry(m);
+        } else if (m.type === 'initiative-call') {
+            li.innerHTML = renderInitiativeCallEntry(m);
+        } else if (m.type === 'turn') {
+            li.innerHTML = renderTurnEntry(m);
         } else {
             li.className = 'chat-entry--msg';
             li.innerHTML = `${badge}<span class="chat-time">${m.time || ''}</span><span class="chat-text">${m.text || ''}</span>`;
@@ -2317,7 +2365,11 @@ function loadState() {
         if (d.char) Object.assign(state.char, d.char);
         if (d.resources) {
             Object.keys(d.resources).forEach(k => {
-                if (state.resources[k]) Object.assign(state.resources[k], d.resources[k]);
+                if (k === 'custom') {
+                    if (Array.isArray(d.resources.custom)) state.resources.custom = d.resources.custom;
+                } else if (state.resources[k]) {
+                    Object.assign(state.resources[k], d.resources[k]);
+                }
             });
         }
         if (d.checks) {
@@ -2590,16 +2642,26 @@ function bindResources() {
         saveState();
     });
 
-    // Features panel: MN + classRes
+    // Features panel: MN + classRes + custom
     document.getElementById('panel-actions')?.addEventListener('click', e => {
         const btn = e.target.closest('.pill-btn');
         const pill = e.target.closest('.resource-pill');
-        if (!btn || !pill || !state.resources[pill.dataset.resource]) return;
-        const res = state.resources[pill.dataset.resource];
-        if (btn.dataset.action === 'inc') res.current = Math.min(res.current + 2, res.max);
-        if (btn.dataset.action === 'dec') res.current = Math.max(res.current - 1, 0);
-        if (btn.dataset.action === 'inc5') res.current = Math.min(res.current + 5, res.max);
-        if (btn.dataset.action === 'dec5') res.current = Math.max(res.current - 5, 0);
+        if (!btn || !pill) return;
+        const action = btn.dataset.action;
+        const customId = pill.dataset.resourceCustom;
+        if (customId) {
+            const res = state.resources.custom.find(r => r.id === customId);
+            if (!res) return;
+            if (action === 'inc') res.current = Math.min(res.current + 1, res.max);
+            if (action === 'dec') res.current = Math.max(res.current - 1, 0);
+        } else {
+            const res = state.resources[pill.dataset.resource];
+            if (!res) return;
+            if (action === 'inc') res.current = Math.min(res.current + 2, res.max);
+            if (action === 'dec') res.current = Math.max(res.current - 1, 0);
+            if (action === 'inc5') res.current = Math.min(res.current + 5, res.max);
+            if (action === 'dec5') res.current = Math.max(res.current - 5, 0);
+        }
         syncUI();
         saveState();
     });
@@ -2766,6 +2828,20 @@ function bindDrawer() {
             for (let i = 0; i < rolls; i++) rollDamageTable(type);
             setActivePanel('chat');
         }
+        const initBtn = e.target.closest('.chat-init-roll-btn');
+        if (initBtn) {
+            const agiCheck = CHECKS.physical.find(c => c.key === 'agi');
+            const mod   = (agiCheck?.mod || 0) + (agiCheck?.bonus || 0);
+            const d20   = Math.ceil(Math.random() * 20);
+            const total = d20 + mod;
+            state.chat.unshift({
+                type: 'roll', label: 'Initiative', charName: state.char?.name || 'Player',
+                mod, rollNote: `d20(${d20})`, total, rollType: 'flat',
+                conditions: [], time: chatTimestamp(),
+            });
+            saveState(); renderChat();
+            setActivePanel('chat');
+        }
     });
 
     document.getElementById('btn-clear-chat')?.addEventListener('click', () => {
@@ -2777,6 +2853,34 @@ function bindDrawer() {
     document.getElementById('chat-msg-input')?.addEventListener('keydown', e => {
         if (e.key === 'Enter') sendChatMsg();
     });
+
+    // Emoji picker
+    const emojiBtn = document.getElementById('emoji-btn');
+    const emojiPanel = document.getElementById('emoji-panel');
+    if (emojiBtn && emojiPanel) {
+        emojiPanel.innerHTML = buildEmojiPanel();
+        emojiBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            emojiPanel.hidden = !emojiPanel.hidden;
+        });
+        emojiPanel.addEventListener('click', e => {
+            const em = e.target.closest('.emoji-pick');
+            if (!em) return;
+            const input = document.getElementById('chat-msg-input');
+            if (input) {
+                const pos = input.selectionStart || input.value.length;
+                input.value = input.value.slice(0, pos) + em.textContent + input.value.slice(pos);
+                input.focus();
+                input.setSelectionRange(pos + em.textContent.length, pos + em.textContent.length);
+            }
+            emojiPanel.hidden = true;
+        });
+        document.addEventListener('click', e => {
+            if (!emojiPanel.hidden && !emojiPanel.contains(e.target) && e.target !== emojiBtn) {
+                emojiPanel.hidden = true;
+            }
+        });
+    }
 }
 
 function sendChatMsg() {
@@ -2911,6 +3015,16 @@ function bindSectionEditors() {
             }
         });
     });
+
+    document.getElementById('btn-add-custom-res')?.addEventListener('click', () => {
+        const label = document.getElementById('custom-res-label-input')?.value.trim();
+        const max   = clampNum(document.getElementById('custom-res-max-input')?.value);
+        if (!label) return;
+        state.resources.custom.push({ id: crypto.randomUUID(), label, current: max, max });
+        document.getElementById('custom-res-label-input').value = '';
+        document.getElementById('custom-res-max-input').value = '';
+        saveState(); renderCustomResEditorList(); syncUI();
+    });
 }
 
 function populateEditor(editorId) {
@@ -2921,6 +3035,7 @@ function populateEditor(editorId) {
         if (armorMaxEl) armorMaxEl.value = state.resources.armor.max || 0;
     }
     if (editorId === 'equip-editor') setEquipCat('gear');
+    if (editorId === 'res-editor') renderCustomResEditorList();
     if (editorId === 'checks-editor') syncEditCheckInputs();
     if (editorId === 'class-editor') {
         populateClassSelect();
@@ -3036,8 +3151,9 @@ function saveEditor(target) {
         if (display) display.textContent = label;
         saveState(); syncUI();
     }
-    if (target === 'gain') {
-        const input = document.getElementById('gain-input');
+    if (target === 'gain' || target === 'prog-gain') {
+        const inputId = target === 'prog-gain' ? 'prog-gain-input' : 'gain-input';
+        const input = document.getElementById(inputId);
         const val = input?.value.trim();
         if (val) {
             state.progression.otherGains.push(val);
@@ -3085,21 +3201,63 @@ function bindBio() {
     });
 }
 
+function loyaltyVal(raw) {
+    if (typeof raw === 'number') return Math.max(-5, Math.min(5, raw));
+    const MAP = { Hostile: -5, Suspicious: -3, Wary: -1, Neutral: 0, Friendly: 2, Ally: 3, Loyal: 3, Devoted: 5 };
+    return MAP[raw] ?? 0;
+}
+function loyaltyLabel(n) {
+    if (n <= -4) return 'Hostile';
+    if (n <= -2) return 'Suspicious';
+    if (n === -1) return 'Wary';
+    if (n === 0) return 'Neutral';
+    if (n <= 2) return 'Friendly';
+    if (n <= 4) return 'Loyal';
+    return 'Devoted';
+}
+function loyaltyColor(n) {
+    if (n <= -4) return '#e06060';
+    if (n <= -2) return '#e89040';
+    if (n === -1) return '#d4c44a';
+    if (n === 0) return 'var(--muted)';
+    if (n <= 2) return '#64b4dc';
+    if (n <= 4) return '#6cc87a';
+    return '#b080e0';
+}
+
 function renderNpcList() {
     const el = document.getElementById('npc-list');
     if (!el) return;
     const npcs = state.char.npcs || [];
     if (!npcs.length) { el.innerHTML = '<p class="empty-hint">No contacts added yet.</p>'; return; }
-    const LOYALTY_COLOR = { Ally: '#60e090', Friendly: '#90c0ff', Neutral: 'var(--muted)', Suspicious: '#ffa060', Hostile: '#ff6060' };
-    el.innerHTML = npcs.map((npc, i) => `
-        <div class="npc-entry">
+    el.innerHTML = npcs.map((npc, i) => {
+        const n = loyaltyVal(npc.loyalty);
+        const sign = n > 0 ? '+' : '';
+        return `<div class="npc-entry">
             <div class="npc-info">
                 <span class="npc-name">${npc.name}</span>
-                <span class="npc-loyalty" style="color:${LOYALTY_COLOR[npc.loyalty] || 'var(--muted)'}">${npc.loyalty}</span>
+                <div class="npc-loyalty-row">
+                    <button class="loyalty-adj loyalty-adj--sm" data-npc-loyalty="${i}" data-adj="-1" type="button">−</button>
+                    <span class="npc-loyalty" style="color:${loyaltyColor(n)}">${loyaltyLabel(n)}</span>
+                    <span class="loyalty-num">${sign}${n}</span>
+                    <button class="loyalty-adj loyalty-adj--sm" data-npc-loyalty="${i}" data-adj="1" type="button">+</button>
+                </div>
                 ${npc.notes ? `<span class="npc-notes">${npc.notes}</span>` : ''}
             </div>
             <button class="step-action-btn" style="color:#ff6060" data-del-npc="${i}" type="button">✕</button>
-        </div>`).join('');
+        </div>`;
+    }).join('');
+
+    el.querySelectorAll('[data-npc-loyalty]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const i = parseInt(btn.dataset.npcLoyalty, 10);
+            const adj = parseInt(btn.dataset.adj, 10);
+            const npc = state.char.npcs[i];
+            if (!npc) return;
+            npc.loyalty = Math.max(-5, Math.min(5, loyaltyVal(npc.loyalty) + adj));
+            saveState(); renderNpcList();
+        });
+    });
 }
 
 function bindBio() {
@@ -3145,8 +3303,19 @@ function bindBio() {
         saveState();
     });
 
-    // NPCs
+    // NPCs — loyalty stepper
+    let _npcLoyalty = 0;
+    function _updateNpcLoyaltyDisplay() {
+        const disp = document.getElementById('npc-loyalty-display');
+        const num  = document.getElementById('npc-loyalty-num');
+        if (disp) { disp.textContent = loyaltyLabel(_npcLoyalty); disp.style.color = loyaltyColor(_npcLoyalty); }
+        if (num)  num.textContent = `(${_npcLoyalty > 0 ? '+' : ''}${_npcLoyalty})`;
+    }
+    document.getElementById('npc-loyalty-dec')?.addEventListener('click', () => { _npcLoyalty = Math.max(-5, _npcLoyalty - 1); _updateNpcLoyaltyDisplay(); });
+    document.getElementById('npc-loyalty-inc')?.addEventListener('click', () => { _npcLoyalty = Math.min(5,  _npcLoyalty + 1); _updateNpcLoyaltyDisplay(); });
+
     document.getElementById('btn-add-npc')?.addEventListener('click', () => {
+        _npcLoyalty = 0; _updateNpcLoyaltyDisplay();
         document.getElementById('npc-add-form').hidden = false;
         document.getElementById('npc-name-input')?.focus();
     });
@@ -3154,17 +3323,17 @@ function bindBio() {
         document.getElementById('npc-add-form').hidden = true;
     });
     document.getElementById('btn-npc-save')?.addEventListener('click', () => {
-        const name = document.getElementById('npc-name-input')?.value.trim();
-        const loyalty = document.getElementById('npc-loyalty-input')?.value || 'Neutral';
+        const name  = document.getElementById('npc-name-input')?.value.trim();
         const notes = document.getElementById('npc-notes-input')?.value.trim() || '';
         if (!name) return;
         if (!state.char.npcs) state.char.npcs = [];
-        state.char.npcs.push({ name, loyalty, notes });
+        state.char.npcs.push({ name, loyalty: _npcLoyalty, notes });
         saveState();
         renderNpcList();
         document.getElementById('npc-add-form').hidden = true;
-        document.getElementById('npc-name-input').value = '';
+        document.getElementById('npc-name-input').value  = '';
         document.getElementById('npc-notes-input').value = '';
+        _npcLoyalty = 0;
     });
     document.getElementById('npc-list')?.addEventListener('click', e => {
         const btn = e.target.closest('[data-del-npc]');
@@ -3255,11 +3424,13 @@ function bindProgressionPanel() {
         calcManaMax();
     });
 
-    document.getElementById('other-gains-list')?.addEventListener('click', e => {
-        const btn = e.target.closest('[data-remove-gain]');
-        if (!btn) return;
-        state.progression.otherGains.splice(Number(btn.dataset.removeGain), 1);
-        saveState(); renderOtherGains();
+    ['other-gains-list', 'prog-other-gains-list'].forEach(id => {
+        document.getElementById(id)?.addEventListener('click', e => {
+            const btn = e.target.closest('[data-remove-gain]');
+            if (!btn) return;
+            state.progression.otherGains.splice(Number(btn.dataset.removeGain), 1);
+            saveState(); renderOtherGains();
+        });
     });
 
     document.getElementById('equip-list')?.addEventListener('click', e => {
@@ -3524,6 +3695,41 @@ function calcDerived() {
     if (els.hpCur) els.hpCur.textContent = state.resources.hp.current;
 }
 
+function renderCustomResEditorList() {
+    const el = document.getElementById('custom-res-editor-list');
+    if (!el) return;
+    if (!state.resources.custom.length) { el.innerHTML = ''; return; }
+    el.innerHTML = '<div class="custom-res-list">' + state.resources.custom.map(r =>
+        `<div class="custom-res-row">
+            <span class="custom-res-name">${r.label}</span>
+            <span class="custom-res-range">(max ${r.max})</span>
+            <button class="pill-del-btn" type="button" data-del-custom-res="${r.id}">✕</button>
+        </div>`
+    ).join('') + '</div>';
+    el.querySelectorAll('[data-del-custom-res]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            state.resources.custom = state.resources.custom.filter(r => r.id !== btn.dataset.delCustomRes);
+            saveState(); renderCustomResEditorList(); syncUI();
+        });
+    });
+}
+
+function renderCustomResPills() {
+    const container = document.getElementById('custom-res-pills');
+    if (!container) return;
+    container.innerHTML = state.resources.custom.map(r => `
+        <div class="resource-pill resource-pill--custom" data-resource-custom="${r.id}">
+            <span class="pill-label">${r.label}</span>
+            <div class="pill-value">
+                <button class="pill-btn" data-action="dec" aria-label="Decrease ${r.label}">−</button>
+                <output class="pill-num">${r.current}</output>
+                <span class="pill-sep">/</span>
+                <output class="pill-num pill-max">${r.max}</output>
+                <button class="pill-btn" data-action="inc" aria-label="Increase ${r.label}">+</button>
+            </div>
+        </div>`).join('');
+}
+
 function syncUI() {
     els.hpCur.textContent = state.resources.hp.current;
     els.hpMax.textContent = state.resources.hp.max;
@@ -3539,6 +3745,7 @@ function syncUI() {
     if (els.classResMax) els.classResMax.textContent = state.resources.classRes.max;
     const labelDisplay = document.getElementById('class-res-label-display');
     if (labelDisplay) labelDisplay.textContent = state.resources.classRes.label;
+    renderCustomResPills();
     calcDerived();
     renderLogs();
 }
