@@ -1398,6 +1398,15 @@ details.minion-card[open] .minion-chevron {
 }
 
 /* Player conditions */
+.enc-note-input {
+    width: 100%; font-size: 11px; padding: 3px 6px;
+    background: transparent; border: 1px solid transparent;
+    border-radius: 6px; color: var(--muted); font-family: inherit;
+    margin: 2px 0;
+}
+.enc-note-input:focus { border-color: var(--line); background: var(--panel); color: var(--text); outline: none; }
+.enc-note-input::placeholder { font-style: italic; }
+
 .enc-cond-details { margin-top: 2px; }
 .enc-cond-summary {
     display: inline-flex; align-items: center; gap: 4px; list-style: none;

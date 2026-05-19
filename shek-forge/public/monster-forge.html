@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monster Forge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="forge-codex.css">
+</head>
+<body>
+
+  <!-- ── Top bar ─────────────────────────────────────── -->
+  <div class="mf-topbar">
+    <div class="mf-brand">🗡 Monster Forge</div>
+    <div class="mf-tabs">
+      <button class="mf-tab active" id="tabBtnEditor" onclick="setTab('editor')">Editor</button>
+      <button class="mf-tab"        id="tabBtnBook"   onclick="setTab('book')">Book</button>
+    </div>
+    <div class="mf-topbar-right">
+      <a href="/" class="mf-back">← Forge</a>
+      <span class="mf-save-dot saved" id="saveDot"></span>
+      <span class="mf-save-text" id="saveText">Ready</span>
+    </div>
+  </div>
+
+  <!-- ── EDITOR TAB ─────────────────────────────────── -->
+  <div id="tab-editor" class="mf-tab-content">
+
+    <div class="mf-filterbar">
+      <input type="text" id="filterSearch" placeholder="Search…" oninput="applyFilters()">
+      <select id="filterOrigin" onchange="applyFilters()"><option value="">All Origins</option></select>
+      <select id="filterRarity" onchange="applyFilters()"><option value="">Any Rarity</option></select>
+      <div class="mf-type-pills">
+        <button class="mf-type-pill active" data-show="all"  onclick="setTypeFilter('all')">All</button>
+        <button class="mf-type-pill"        data-show="base" onclick="setTypeFilter('base')">Base</button>
+        <button class="mf-type-pill"        data-show="mod"  onclick="setTypeFilter('mod')">Mod</button>
+      </div>
+      <div class="mf-filterbar-right">
+        <button class="mf-btn" onclick="addNew('base')">+ Base</button>
+        <button class="mf-btn" onclick="addNew('mod')">+ Mod</button>
+      </div>
+    </div>
+
+    <div class="mf-list" id="editorList">
+      <div style="padding:40px;text-align:center;opacity:0.4;font-size:0.9rem">Loading…</div>
+    </div>
+
+  </div>
+
+  <!-- ── BOOK TAB ───────────────────────────────────── -->
+  <div id="tab-book" class="mf-tab-content hidden">
+
+    <!-- Compose bar -->
+    <div class="mf-compose-bar">
+      <span class="mf-compose-label">Compose</span>
+      <select id="composeBase"></select>
+      <span class="mf-compose-sep">+</span>
+      <select id="composeMod"></select>
+      <button class="mf-btn mf-btn-gold" onclick="doCompose()">Preview</button>
+    </div>
+    <div class="mf-compose-preview" id="composePreview"></div>
+
+    <!-- Book filter bar -->
+    <div class="mf-filterbar">
+      <input type="text" id="bookSearch" placeholder="Search book…" oninput="applyBookFilters()">
+      <select id="bookFilterOrigin" onchange="applyBookFilters()"><option value="">All Origins</option></select>
+      <select id="bookFilterRarity" onchange="applyBookFilters()"><option value="">Any Rarity</option></select>
+    </div>
+
+    <div class="mf-list" id="bookList">
+      <div style="padding:40px;text-align:center;opacity:0.4;font-size:0.9rem">Loading…</div>
+    </div>
+
+  </div>
+
+  <!-- ── Confirm dialog ──────────────────────────────── -->
+  <div class="mf-dialog-overlay hidden" id="dialogOverlay">
+    <div class="mf-dialog">
+      <div class="mf-dialog-title" id="dialogTitle">Confirm</div>
+      <div class="mf-dialog-text"  id="dialogText">Are you sure?</div>
+      <div class="mf-dialog-actions">
+        <button class="mf-btn" onclick="dialogCancel()">Cancel</button>
+        <button class="mf-btn mf-btn-danger" id="dialogOk" onclick="dialogConfirm()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mf-toast-container" id="toastContainer"></div>
+
+  <script src="monster-forge.js"></script>
+</body>
+</html>

@@ -24,6 +24,10 @@
     --type-armor: #2a8a6a;
     --type-generic: #7a7a7a;
     --type-spell: #28d478;
+    /* user-adjustable input sizing */
+    --input-padding-v: 4px;
+    --input-padding-h: 8px;
+    --textarea-min-height: 56px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -176,12 +180,12 @@ body.type-armor   { --accent: var(--type-armor);   --accent-dim: #185040; --acce
 .field-wrap.fw-md { flex: 2 1 112px; }   /* check */
 .field-wrap.fw-lg { flex: 3 1 150px; }   /* duration */
 .field-label { font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-label); }
-.field-input { background: #0e0e0a; border: 1px solid var(--border); border-radius: 2px; padding: 4px 8px; color: var(--text-primary); font-family: 'Atkinson Hyperlegible', sans-serif; font-size: 12px; outline: none; transition: border-color 0.15s; width: 100%; }
+.field-input { background: #0e0e0a; border: 1px solid var(--border); border-radius: 2px; padding: var(--input-padding-v) var(--input-padding-h); color: var(--text-primary); font-family: 'Atkinson Hyperlegible', sans-serif; font-size: 12px; outline: none; transition: border-color 0.15s; width: 100%; }
 .field-input:focus { border-color: var(--accent-dim); }
 .field-input::placeholder { color: var(--text-muted); }
 .field-input.mono { font-family: 'Share Tech Mono', monospace; font-size: 11px; }
 select.field-input { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%233c3c28'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; padding-right: 24px; }
-textarea.field-input { resize: vertical; min-height: 56px; font-family: 'Share Tech Mono', monospace; font-size: 11px; line-height: 1.5; }
+textarea.field-input { resize: vertical; min-height: var(--textarea-min-height); font-family: 'Share Tech Mono', monospace; font-size: 11px; line-height: 1.5; }
 
 /* ── MOVEMENT / STEPPER ── */
 .movement-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 16px; }
@@ -563,6 +567,12 @@ body.type-worldbuilding .titlebar-brand  { text-shadow: 0 0 12px rgba(85,221,221
 .status-item span { color: var(--text-secondary); }
 .status-right { margin-left: auto; display: flex; gap: 16px; }
 
+/* ── CODEX NAV (links to codex-style editors) ── */
+.codex-nav { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.codex-nav-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); opacity: 0.5; padding-right: 2px; }
+.codex-nav-btn { font-size: 10px; padding: 3px 8px; border-radius: 2px; color: var(--text-muted); text-decoration: none; letter-spacing: 0.06em; transition: color 0.15s, background 0.15s; white-space: nowrap; }
+.codex-nav-btn:hover { color: var(--accent-bright); background: var(--bg-hover); }
+
 /* ── TITLEBAR SETTINGS BUTTON ── */
 .titlebar-settings-btn { background: transparent; border: none; color: var(--text-muted); font-size: 13px; cursor: pointer; padding: 3px 6px; border-radius: 2px; line-height: 1; transition: color 0.15s, background 0.15s; }
 .titlebar-settings-btn:hover { color: var(--accent-bright); background: var(--bg-hover); }
@@ -590,6 +600,9 @@ body.type-worldbuilding .titlebar-brand  { text-shadow: 0 0 12px rgba(85,221,221
 
 .settings-toggle { background: var(--bg-card); border: 1px solid var(--border-bright); color: var(--text-muted); font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.12em; padding: 4px 10px; border-radius: 2px; cursor: pointer; transition: all 0.15s; }
 .settings-toggle.on { background: var(--accent-dim); border-color: var(--accent); color: var(--accent-bright); }
+.settings-slider-row { flex-direction: column; align-items: stretch; gap: 5px; }
+.settings-slider { width: 100%; accent-color: var(--accent); cursor: pointer; }
+.settings-slider-val { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--accent); margin-left: 4px; }
 
 /* ── COMPACT MODE ── */
 body.forge-compact .field-row { gap: 6px; }

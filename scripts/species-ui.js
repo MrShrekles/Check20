@@ -11,7 +11,7 @@ const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = se
 document.addEventListener('DOMContentLoaded', async () => {
     restoreCollapsed();
     wireUI();
-    await loadSpecies();
+    await Promise.all([loadSpecies(), loadGods()]);
     buildLineageTabs(SPECIES);
     buildOptionFilters(SPECIES);
     hydrateFromURL();
@@ -24,6 +24,16 @@ function wireUI() {
     const q = document.getElementById('species-search');
     const sort = document.getElementById('species-sort');
     const clr = document.getElementById('species-clear');
+
+    const sizeSlider = document.getElementById('card-size-slider');
+    if (sizeSlider) {
+        const saved = localStorage.getItem('species_card_size');
+        if (saved) { sizeSlider.value = saved; document.documentElement.style.setProperty('--card-min', saved + 'px'); }
+        sizeSlider.addEventListener('input', () => {
+            document.documentElement.style.setProperty('--card-min', sizeSlider.value + 'px');
+            localStorage.setItem('species_card_size', sizeSlider.value);
+        });
+    }
 
     q?.addEventListener('input', debounce(() => {
         state.q = q.value.toLowerCase();
@@ -168,7 +178,8 @@ function applyFilters() {
 
         if (state.q) {
             const hay = [
-                s.name, s.lineage, s.option, s.rarity, s.region, s.size, s.description,
+                s.name, s.lineage, s.option, s.rarity, s.region, s.size,
+                s.description?.physical, s.description?.environment, s.description?.culture, s.description?.lore,
                 ...(s.features || []).flatMap(f => [f.name, f.description, f.action, f.damage, f.type, ...(f.options || []).map(o => o.name || o.effect || '')])
             ].join(' ').toLowerCase();
             if (!hay.includes(state.q)) return false;

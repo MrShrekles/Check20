@@ -1,4 +1,4 @@
-/*    STATE    */
+﻿/*    STATE    */
 let SPECIES = [];
 let DRAGON_TYPES = [];
 const state = {
@@ -16,9 +16,9 @@ const cap = s => String(s || '').replace(/\b\w/g, c => c.toUpperCase());
 const esc = s => String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 
 /*    LOADERS    */
-/** Load species_new.json from common paths, then normalize lists. */
+/** Load species.json from common paths, then normalize lists. */
 async function loadSpeciesData() {
-    const paths = ['data/species_new.json', 'species_new.json'];
+    const paths = ['data/species.json', 'species.json'];
     for (const p of paths) {
         try {
             const res = await fetch(p);
@@ -29,7 +29,7 @@ async function loadSpeciesData() {
             return;
         } catch {/* try next */ }
     }
-    console.error('[Check20] Could not load species_new.json');
+    console.error('[Check20] Could not load species.json');
 }
 
 // === Shared helper for table rolls ===

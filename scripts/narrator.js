@@ -1,4 +1,4 @@
-/* Narrator companion — ARC20 */
+﻿/* Narrator companion — ARC20 */
 
 // ── PANELS ────────────────────────────────────────────────────────────────────
 
@@ -527,7 +527,7 @@ function renderEnemyMonster(e, label) {
 
     return `<details class="enc-enemy-row">
         <summary class="enc-enemy-summary">
-            <div class="enc-card-row">
+            <div class="enc-card-row" style="padding-bottom:2px">
                 <span class="enc-init-mini">${e.initiative}</span>
                 <div class="enc-mon-info">
                     <span class="enc-name">${label}</span>
@@ -548,6 +548,7 @@ function renderEnemyMonster(e, label) {
             </div>
         </summary>
         <div class="enc-enemy-detail">
+            <input class="enc-note-input" type="text" placeholder="Note…" value="${(e.note||'').replace(/"/g,'&quot;')}" data-enc-note="${e.id}" />
             ${mon ? `<div class="enc-stat-peek">${peekContent}</div>` : ''}
             <details class="enc-cond-details">
                 <summary class="enc-cond-summary">+C${conds.length ? ` <span class="enc-cond-count">${conds.length}</span>` : ''}</summary>
@@ -646,6 +647,7 @@ function renderEncounter() {
                     <span class="enc-hp" style="color:#50a0dc">${hpCur}<span class="enc-hp-max">/${hpMax}</span></span>
                     <div class="enc-hp-bar-track enc-hp-bar-inline"><div class="enc-hp-bar-fill" style="width:${hpPct}%;background:${barClr}"></div></div>
                 </div>` : ''}
+                <input class="enc-note-input" type="text" placeholder="Note…" value="${(c.note||'').replace(/"/g,'&quot;')}" data-enc-note="${c.id}" />
                 <details class="enc-cond-details">
                     <summary class="enc-cond-summary">+C${conds.length ? ` <span class="enc-cond-count">${conds.length}</span>` : ''}</summary>
                     ${conds.length ? `<div class="enc-cond-tags">${condTags}</div>` : ''}
@@ -676,6 +678,14 @@ function renderEncounter() {
 
     listEl.querySelectorAll('.enc-enemy-summary button, .enc-enemy-summary .enc-hp-controls').forEach(el => {
         el.addEventListener('click', e => e.stopPropagation());
+    });
+
+    listEl.querySelectorAll('[data-enc-note]').forEach(input => {
+        input.addEventListener('click', e => e.stopPropagation());
+        input.addEventListener('blur', () => {
+            const c = nar.encounter.find(x => x.id === input.dataset.encNote);
+            if (c) { c.note = input.value.trim(); saveNar(); }
+        });
     });
 
 
@@ -805,6 +815,7 @@ async function endSession() {
     currentRoomCode = null;
     localStorage.removeItem('arc-narrator-room');
     fbPlayers = []; fbLoot = []; fbGold = 0; fbSharedChat = [];
+    updateChatInputState();
 
     // Reset UI
     const badge   = document.getElementById('room-code-badge');
@@ -842,6 +853,13 @@ function renderJournalNpcs() {
             n.ment ? `Mt<strong>${n.ment}</strong>` : '',
             n.hp   ? `HP<strong>${n.hp}</strong>`   : '',
         ].filter(Boolean).join(' ');
+        const nConds  = n.conditions || [];
+        const condTags = nConds.map(cd =>
+            `<span class="enc-cond-tag" data-npc-rm-cond="${n.id}" data-cond="${cd}">${cd} ×</span>`
+        ).join('');
+        const picker = QUICK_CONDITIONS.map(cd =>
+            `<button class="enc-cond-pick${nConds.includes(cd) ? ' is-on' : ''}" data-npc-cond="${n.id}" data-cond="${cd}">${cd}</button>`
+        ).join('');
         return `<details class="npc-card">
             <summary class="npc-card-head">
                 <div class="enc-mon-info">
@@ -858,6 +876,11 @@ function renderJournalNpcs() {
                 ${n.notes         ? `<div class="npc-det-row"><span class="npc-det-label">Notes</span><span>${n.notes}</span></div>` : ''}
                 ${n.equipment     ? `<div class="npc-det-row"><span class="npc-det-label">Equipment</span><span>${n.equipment}</span></div>` : ''}
                 ${n.narratorNotes ? `<div class="npc-det-row"><span class="npc-det-label">Narrator</span><span class="npc-det-nar">${n.narratorNotes}</span></div>` : ''}
+                <details class="enc-cond-details">
+                    <summary class="enc-cond-summary">+C${nConds.length ? ` <span class="enc-cond-count">${nConds.length}</span>` : ''}</summary>
+                    ${nConds.length ? `<div class="enc-cond-tags">${condTags}</div>` : ''}
+                    <div class="enc-cond-picker">${picker}</div>
+                </details>
             </div>
         </details>`;
     }).join('');
@@ -888,6 +911,27 @@ function renderJournalNpcs() {
             const ini = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
             nar.encounter.push({ id: crypto.randomUUID(), name: n.name, type: 'enemy', hp, maxHp: hp, initiative: ini });
             saveNar(); renderEncounter(); setActivePanel('initiative');
+        });
+    });
+    el.querySelectorAll('[data-npc-cond]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const n = nar.journalNpcs.find(x => x.id === btn.dataset.npcCond);
+            if (!n) return;
+            if (!n.conditions) n.conditions = [];
+            const cond = btn.dataset.cond;
+            const idx  = n.conditions.indexOf(cond);
+            if (idx === -1) n.conditions.push(cond); else n.conditions.splice(idx, 1);
+            saveNar(); renderJournalNpcs();
+        });
+    });
+    el.querySelectorAll('[data-npc-rm-cond]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const n = nar.journalNpcs.find(x => x.id === btn.dataset.npcRmCond);
+            if (!n) return;
+            n.conditions = (n.conditions || []).filter(cd => cd !== btn.dataset.cond);
+            saveNar(); renderJournalNpcs();
         });
     });
 }
@@ -1435,7 +1479,7 @@ async function ensureWorld() {
     try {
         const [world, species] = await Promise.all([
             fetch('../data/worldbuilding.json').then(r => r.json()),
-            fetch('../data/species_new.json').then(r => r.json()),
+            fetch('../data/species.json').then(r => r.json()),
         ]);
         GEN_WORLD   = world;
         GEN_SPECIES = species;
@@ -1999,7 +2043,7 @@ async function ensureHex() {
     try {
         const [hex, sp] = await Promise.all([
             fetch('../data/hexgen.json').then(r => r.json()),
-            fetch('../data/species_new.json').then(r => r.json()),
+            fetch('../data/species.json').then(r => r.json()),
         ]);
         GEN_HEX     = hex;
         HEX_SPECIES = sp.species || [];
@@ -2243,15 +2287,21 @@ function buildSharedChatCard(m) {
 }
 
 // Narrator chat input
-document.getElementById('btn-nar-send')?.addEventListener('click', () => {
+function sendNarChatMsg() {
     const input = document.getElementById('nar-chat-input');
     const text  = input?.value.trim();
     if (!text) return;
-    postToSharedChat({ type: 'msg', text });
-    input.value = '';
-});
+    if (!currentRoomCode) {
+        const el = document.getElementById('nar-chat-log');
+        if (el) el.innerHTML = '<li class="empty-hint" style="list-style:none;color:#e05555">No active session — create one from the Party tab.</li>';
+        return;
+    }
+    postToSharedChat({ type: 'msg', text, time: chatTimestamp() });
+    if (input) input.value = '';
+}
+document.getElementById('btn-nar-send')?.addEventListener('click', sendNarChatMsg);
 document.getElementById('nar-chat-input')?.addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('btn-nar-send')?.click();
+    if (e.key === 'Enter') sendNarChatMsg();
 });
 
 // Narrator emoji picker
@@ -2573,6 +2623,19 @@ function showRoomBadge(code) {
     if (badge)     { badge.textContent = code; badge.hidden = false; }
     if (inviteBtn) inviteBtn.textContent = 'New Room';
     if (goldRow)   goldRow.hidden = false;
+    const chatInput = document.getElementById('nar-chat-input');
+    if (chatInput) chatInput.placeholder = 'Message the party…';
+}
+
+function updateChatInputState() {
+    const chatInput = document.getElementById('nar-chat-input');
+    const sendBtn   = document.getElementById('btn-nar-send');
+    const hasRoom   = !!currentRoomCode;
+    if (chatInput) {
+        chatInput.placeholder = hasRoom ? 'Message the party…' : 'Create a session to chat…';
+        chatInput.disabled = !hasRoom;
+    }
+    if (sendBtn) sendBtn.disabled = !hasRoom;
 }
 
 document.getElementById('room-code-badge')?.addEventListener('click', () => {
@@ -2591,6 +2654,7 @@ loadNar();
 migrateOldNotes();
 applyTheme();
 ensureMonsters();
+updateChatInputState();
 renderParty();
 renderMinions();
 renderInventory();

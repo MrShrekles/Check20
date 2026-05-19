@@ -1,0 +1,4325 @@
+[
+  {
+    "name": "Switchyard Warden",
+    "baseType": "Animaton",
+    "origin": "tech",
+    "description": "Rail-bound constructs stuck in an eternal loop of scheduling enforcement.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Command Repeat",
+        "effect": "Using the same ability on consecutive turns grants +2 to related checks.",
+        "range": "Melee",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Sanctifier Drone",
+    "baseType": "Animaton",
+    "origin": "celestial",
+    "description": "Etched with holy scripts, these drones purge anything flagged as 'unclean'.",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Sanctify Pulse",
+        "effect": "Undead and Ordealis creatures must make Spirit check or become stunned until the end of their next turn.",
+        "range": "Short",
+        "duration": "Until end of their next turn",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Crab",
+    "baseType": "Aquatic",
+    "origin": "nature",
+    "description": "Armored scavenger of shores and reefs.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Shell Defense",
+        "effect": "May reduce incoming damage by half once per round."
+      }
+    ]
+  },
+  {
+    "name": "Lobster",
+    "baseType": "Aquatic",
+    "origin": "nature",
+    "description": "Hard-shelled scavenger with crushing claws.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Clamp",
+        "effect": "On hit, target must succeed a Strength check or be grappled."
+      }
+    ]
+  },
+  {
+    "name": "Octopus",
+    "baseType": "Aquatic",
+    "origin": "nature",
+    "description": "Intelligent cephalopod with camouflaging skin.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Ink Cloud",
+        "effect": "May obscure short range for 1 turn, allowing disengage."
+      }
+    ]
+  },
+  {
+    "name": "Jellyfish",
+    "baseType": "Aquatic",
+    "origin": "nature",
+    "description": "Drifting predator with venomous tentacles.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Sting",
+        "effect": "On hit, target takes 1 Poison damage each turn until cured."
+      }
+    ]
+  },
+  {
+    "name": "Eel",
+    "baseType": "Aquatic",
+    "origin": "nature",
+    "description": "Slippery predator, often electric or venomous.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Electric Shock",
+        "effect": "On hit, deals 1d6 lightning damage; ignores armor."
+      }
+    ]
+  },
+  {
+    "name": "Flying Weapon",
+    "baseType": "Arcaniform",
+    "origin": "arcane",
+    "description": "A hovering weapon animated to strike intruders.",
+    "size": "Small",
+    "rarity": "Uncommon",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 40,
+      "fly": 40
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Melee Attack",
+        "effect": "Makes a melee attack",
+        "range": "Melee",
+        "damage": "1d6",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Swordting Hat",
+    "baseType": "Arcaniform",
+    "origin": "arcane",
+    "description": "A sentient hat that bonds with warriors, granting them weapons aligned with their soul.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Weapon Manifest",
+        "effect": "Once per day, produces a weapon with an ability tied to the wearer’s traits."
+      }
+    ]
+  },
+  {
+    "name": "Rune Hound",
+    "baseType": "Arcaniform",
+    "origin": "arcane",
+    "description": "A constructed canine with runes etched into its hide, its bark disrupting spells.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Disruptive Bark",
+        "effect": "Once per fight, cancels a spell being cast within short range."
+      }
+    ]
+  },
+  {
+    "name": "shackle",
+    "baseType": "celestial",
+    "origin": "celestial",
+    "description": "Shackleborn are not forged in glory, but in judgment. They are the hands of Brakkus, the god who does not speak of freedom but of order",
+    "size": "Medium",
+    "rarity": "Legendary",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 30,
+      "fly": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Chains of Authority",
+        "effect": "Summon ethereal chains to bind an enemy, the target must make a Strength check or take the pinned condition until the end of your next turn.",
+        "range": "Reach",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "chronal",
+    "baseType": "celestial",
+    "origin": "celestial",
+    "description": "Chronal Wardens are temporal sentinels, angels born not of time, but from the precise tension between what was and what could be",
+    "size": "Medium",
+    "rarity": "Legendary",
+    "behavior": "Defensive",
+    "movement": {
+      "walk": 30,
+      "fly": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Temporal Shift",
+        "effect": "give a creature advantage on a check.",
+        "range": "Short",
+        "type": "half-action"
+      }
+    ]
+  },
+  {
+    "name": "resonance",
+    "baseType": "celestial",
+    "origin": "celestial",
+    "description": "Resonance angels are the echoes of Dumda’s will, formed from layered vibration and boundless tone. They do not walk. They hum. Their presence bends the air, their wings shimmer as distortions in reality",
+    "size": "Medium",
+    "rarity": "Legendary",
+    "behavior": "Curious",
+    "movement": {
+      "walk": 30,
+      "fly": 15
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Harmony",
+        "effect": "expel thunderous energy dealing damage to creatures you chose",
+        "range": "Reach",
+        "damage": "double PL",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Empyreans ",
+    "baseType": "celestial",
+    "origin": "celestial",
+    "description": "Empyreans do not appear. They arrive. They do not shine. They are simply felt. Serving Exembar, god of Balance, Order, Matter, Ideals, and Ambition, these angels are the divine balance of warmth and clarity",
+    "size": "Medium",
+    "rarity": "Legendary",
+    "behavior": "Mindless",
+    "movement": {
+      "walk": 30,
+      "fly": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Judgement",
+        "effect": "Touch a creature and they take psychic damage equal to PL",
+        "range": "Melee",
+        "damage": "equal to PL",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "silent",
+    "baseType": "celestial",
+    "origin": "celestial",
+    "description": "The Silent Guardians serve Jesha, the god of Silence, Wisdom, Ignorance, and Prophecy. In the halls of Jesha's realm, there is no voice, no footfall, no sound at all",
+    "size": "Medium",
+    "rarity": "Legendary",
+    "behavior": "Defensive",
+    "movement": {
+      "walk": 30,
+      "fly": 15
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Silence",
+        "effect": "The area surrounding you is silent, no spells can be cast, words spoken, or screams heard until the end of your next turn",
+        "range": "Short",
+        "duration": "Until end of their next turn",
+        "type": "off-action"
+      }
+    ]
+  },
+  {
+    "name": "librarian",
+    "baseType": "celestial",
+    "origin": "celestial",
+    "description": "Librarians are the angels of Signessen, the god of Understanding, Intelligence, Reason, and Skills. Each carries within them a living index of reality’s secrets.",
+    "size": "Medium",
+    "rarity": "Legendary",
+    "behavior": "Defensive",
+    "movement": {
+      "walk": 30,
+      "fly": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Understanding",
+        "effect": "Give a creature +10 and the stunned condition",
+        "range": "Short",
+        "duration": "Until end of their next turn",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "emissary",
+    "baseType": "celestial",
+    "origin": "celestial",
+    "description": "The Emissary of Zuinmuir is not a destroyer. It is a collector. It moves without sound, a shadow in the light, a whisper in a sealed tomb",
+    "size": "Medium",
+    "rarity": "Legendary",
+    "behavior": "Curious",
+    "movement": {
+      "walk": 30,
+      "fly": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Fear of Death",
+        "effect": "Give all creatures the fear condition",
+        "range": "Medium",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Time Warden",
+    "baseType": "Chrono",
+    "origin": "chrono",
+    "description": "A gallant knight, keeper of time and preserver of the proper flow.",
+    "size": "Medium",
+    "rarity": "Legendary",
+    "behavior": "Defensive",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Chrono Lock",
+        "effect": "When a creature casts a time-altering effect, the Warden can freeze them in stasis until their next turn."
+      }
+    ]
+  },
+  {
+    "name": "Repeat",
+    "baseType": "Chrono",
+    "origin": "chrono",
+    "description": "A time-twisted creature that replays fragments of past combat.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Replay Strike",
+        "effect": "Once per turn, repeats its last attack against the same target."
+      }
+    ]
+  },
+  {
+    "name": "Guardian",
+    "baseType": "Construct",
+    "origin": "tech",
+    "description": "A bulky construct bound to a control",
+    "size": "Large",
+    "rarity": "Rare",
+    "behavior": "Defensive",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Guardian",
+        "effect": "The guardian follows all commands given by the controller while in long range. As an off-action once per day, while within short range of the controller redirect the damage towards the controller to the Guardian",
+        "range": "Short",
+        "type": "off-action"
+      }
+    ]
+  },
+  {
+    "name": "Screamer",
+    "baseType": "Crystaline",
+    "origin": "crystal",
+    "description": "A shard beast that emits piercing psychic resonance.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Shard Cry",
+        "effect": "Forces all nearby to make Intellect checks or take Confused."
+      }
+    ]
+  },
+  {
+    "name": "Shatterling",
+    "baseType": "Crystaline",
+    "origin": "crystal",
+    "description": "Small crystal gremlin that fractures explosively when slain.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Death Shards",
+        "effect": "On death, deals 1d6 piercing damage to all adjacent creatures."
+      }
+    ]
+  },
+  {
+    "name": "Demon Part (Hand)",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "A skittering predator with elongated fingers and claw-like digits. It hunts by clinging to ceilings and walls, dropping silently to choke prey.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Latch Grip",
+        "effect": "Grapple a target, You and the target share any damage taken.",
+        "range": "Reach",
+        "duration": "Until end of their next turn",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Demon Part (Foot)",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "Lurches and bounds in erratic stomps. It tracks movement vibrations and crushes targets under sudden leaps.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Crushing Leap",
+        "effect": "Leap a short range and land on a target dealing damage",
+        "range": "Short",
+        "damage": "1d6",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Demon Part (Jaw)",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "A gnashing maw on spindly limbs, constantly whispering curses. It hunts by mimicking prey’s voice before lunging.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Mimic Shriek",
+        "effect": "Can scream and cry in the distance mimicking the sounds of loved ones crying for help. At short range the scream deals damage",
+        "range": "Short",
+        "damage": "equal to PL",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Demon Part (Skull)",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "Floats or rolls silently. Its eye sockets gleam with infernal fire. Hunts by possessing corpses to animate them.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 30,
+      "fly": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Posses Husk",
+        "effect": "Animate a corpse within range for 1 hour with PL equal to half your PL",
+        "range": "Melee",
+        "duration": "1 hour",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Demon Part (Arm)",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "A powerful limb dragging a sinew trail. It smashes and batters with brute force, hunting in open conflict.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Hammerfist",
+        "effect": "When you deal impact damage, creatures your size or smaller are knocked prone",
+        "range": "Reach",
+        "damage": "double PL",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Demon Part (Finger)",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "Tiny and fast, often enters bodies through ears or wounds. It servers nerves, causing tremors or paralysis.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Nerve Pierce",
+        "effect": "Cause the slowed condition",
+        "range": "Melee",
+        "duration": "Until end of their next turn",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Demon Part (Leg)",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "Races across terrain with uncanny speed and leaping ability. Prefers hit-and-run tactics.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 35
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Breakneck Charge",
+        "effect": "Move up to range in a line, dealing damage to each creature in the line. They must make a strength or agility check or be knocked prone",
+        "range": "Short",
+        "damage": "1d6",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Demon Part (Ribcage)",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "A rattling, twisted cage that snaps shut around victims. Hunts by hiding in piles of bones or ruins, ambushing from stillness.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 0
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Bone Prison",
+        "effect": "Capture a creature large or smaller, wrapping the ribcage around them causing the pinned and constrained conditions. On their turn they can make a strength or agility check as a half action to break from the rib cage",
+        "range": "Reach",
+        "duration": "1 minute",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Demon Part (Spine)",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "A serpent of vertebrae, slithering like a whip. It coils and strangles or injects pain through nervous contact.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 25
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Spinal Coil",
+        "effect": "Wrap around a creature and infect their mind dealing psychic damage. The creature must make a Mental check or have disadvantage on their next check",
+        "range": "Reach",
+        "duration": "Until end of their next turn",
+        "damage": "1d6",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Grey Shade",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "Wreathed in ash and silence, the Grey Shade is a manifestation of despair. It wanders battlefields and graveyards, feeding on hopelessness.",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Despair",
+        "effect": "Creatures within range must make an Intellect save or take damage and the slowed condition for the duration",
+        "range": "Short",
+        "duration": "Until end of their next turn",
+        "damage": "equal to PL",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Conflagrations",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "A demon of fire and function, Conflagrations is a walking inferno fueled by broken timepieces and burning gears.",
+    "size": "Medium",
+    "rarity": "Rare",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Overheat",
+        "effect": "The demon emits a wave of temporal heat from its burning gears dealing fire damage to all in range. creatures within range must make a Physical check, reducing the damage by half per success",
+        "range": "Short",
+        "damage": "1d6",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Custodian",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "With an ink-stained robe and chained books, the Custodian consumes forbidden knowledge and rewrites reality through cursed scripture.",
+    "size": "Medium",
+    "rarity": "Rare",
+    "behavior": "Curious",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Erase memory",
+        "effect": "The Custodian speaks a forbidden word that rends the mind. The target must succeed a Mental check or lose all memory of the last 10 minutes, unable to recall names, plans, or even allegiances made during that time.",
+        "range": "Short",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Conductor",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "This demon appears as a faceless maestro draped in skin-like robes, conducting invisible orchestras of screams and metal.",
+    "size": "Medium",
+    "rarity": "Very Rare",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Deafening Note",
+        "effect": "The Conductor unleashes a discordant chord that warps the air and ruptures eardrums. Creatures in the area take thunder damage and must pass a Survival check or become Deafened, disoriented by echoing madness.",
+        "range": "Short",
+        "duration": "Until end of their next turn",
+        "damage": "1d6",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Silent Hunter",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "From the frozen silence comes this predator, tall and gaunt with eyes of still ice. Its movements cannot be heard, even when it kills.",
+    "size": "Large",
+    "rarity": "Very Rare",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 90
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Soundless Kill",
+        "effect": "When attacking from stealth, the Silent Hunter bypasses armor entirely. The cold of the Silent Void floods the target’s body, numbing them before they can even scream.",
+        "range": "Reach",
+        "damage": "triple PL",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Barge Captain",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "A bloated, eyeless mariner who ferries the damned—but always collects a toll. When denied, it drags the living to join its drowned cargo.",
+    "size": "Large",
+    "rarity": "Very Rare",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 30,
+      "swim": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Coin Claim",
+        "effect": "By pressing a cursed coin against flesh, the Barge Captain anchors a soul to the object. Until the coin is returned or destroyed, the victim takes -1 to all checks as their spirit is slowly drawn toward the River of Forgotten Souls.",
+        "range": "Melee",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Greater Demon",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "Forged in endless war, this behemoth embodies suffering through combat. Scars weep molten ichor. It never ceases swinging.",
+    "size": "Giant",
+    "rarity": "Legendary",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 90,
+      "fly": 45
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Feral Rage",
+        "effect": "Each time the Greater Demon takes a wound, its strength grows. Add +1d4 damage to all attacks for each wound it currently suffers, turning pain into relentless fury.",
+        "range": "Melee",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Judgementor",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "An armored arbiter with a gilded scale embedded in its chest. Its gaze weighs the soul. Its blade passes sentence.",
+    "size": "Giant",
+    "rarity": "Unique",
+    "behavior": "Negotiator",
+    "movement": {
+      "walk": 90,
+      "fly": 90
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Final Verdict",
+        "effect": "The Judgementor speaks a ruling aloud. Choose a non-major condition, they take the condition with no save. That condition is imposed on a single creature within range, as divine law takes hold beyond mortal will.",
+        "range": "Short",
+        "duration": "Until end of their next turn",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Haunt of Despair",
+    "baseType": "Demon (Ordealis)",
+    "origin": "vozian",
+    "description": "A demon from the Fields of Desolation that blankets the battlefield in oppressive fog.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Fog of Desolation",
+        "effect": "An action that creates a zone where advantage cannot be gained."
+      }
+    ]
+  },
+  {
+    "name": "enforcer",
+    "baseType": "denizen",
+    "origin": "basic",
+    "description": "Brawlers, enforcers, and shield-bearers who dominate narrow alleys and doorways",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "blockade",
+        "effect": "Creatures that move within your reach range Provoke even if they use disengage",
+        "range": "Reach",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Viridian",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Bile Dragons are the smallest among the elemental dragons, they have streamlined bodies built for slinking through narrow spaces and are often found in caves or marshes. Their scales are smooth, olive-green, transitioning to yellow on their underbelly, and they have forward-curving horns like a ram. Bile Dragons are cunning, territorial, and can be fiercely protective of their habitats.",
+    "size": "Large",
+    "rarity": "Uncommon",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 40,
+      "fly": 40,
+      "swim": 40
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Lingering Bile",
+        "effect": "When you deal Acid damage, deal half as much damage again at the start of the creatures next turn, THey can make a Survival check to take half of that damage, per success",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Pyre",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Pyre Dragons are of average size and have muscular bodies. Those with wings have broad wings to help lift their heavy frames. They are covered in red scales that resemble smoldering coals. Their large, curved horns and spines running along their backs give them an intimidating appearance. They are boisterous, proud, and are quick to challenge intruders, which reflects their fiery temperament.",
+    "size": "Large",
+    "rarity": "Uncommon",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 40,
+      "fly": 40
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Fiery Presence",
+        "effect": "Each creature within range takes Fire damage",
+        "range": "Reach",
+        "damage": "equal to PL",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Shard",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Shard Dragons are slightly larger than Pyre Dragons and have more elongated bodies built for speed. They have crystalline, white scales that shimmer like ice in the sun, and their long, spiraled horns are reminiscent of icicles. These dragons are cool-tempered, elusive, and prefer to avoid unnecessary fights, but their piercing ice breath makes them formidable when cornered.",
+    "size": "Large",
+    "rarity": "Uncommon",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 40,
+      "fly": 40,
+      "climb": 80
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Frost Scar",
+        "effect": "Your bite attack always inflicts the slowed condition if they fail a Survival check",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Cloudburst",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Cloudburst Dragons are among the largest of the elemental dragons. They have strong, lean bodies built for enduring long flights, and those that have wings possess sturdy wings to brave the strongest storms. Their black scales are almost metallic, gleaming with an ethereal white along their underbelly. They have a love for music and are known to join in the chorus of a thunderstorm with their deep, resonant roars.",
+    "size": "Giant",
+    "rarity": "Uncommon",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 30,
+      "fly": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Thunderclap",
+        "effect": "Deal damage to creatures in range and they must make a survival check or take the Deaf condition",
+        "range": "Short",
+        "damage": "1d6",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Aquarion",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Tsunami Dragons are of average size with sleek bodies and fins replacing the usual horns, allowing them to maneuver swiftly in water. Their light blue scales are reminiscent of the ocean, and their pearl bellies shimmer like calm waters. Generally peaceful, they often help sailors navigate, but they can unleash a fearsome torrent of water when provoked.",
+    "size": "Large",
+    "rarity": "Uncommon",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 40,
+      "fly": 40,
+      "swim": 80
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Tidal Screech",
+        "effect": "Creatures in a range line must make an Agility or Strength chek and take damage and are pushed 20ft or half as much per success",
+        "range": "Short",
+        "damage": "1d6",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Venom",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Venom Dragons are larger than most, their bodies built for strength and resilience. Their scales are black, transitioning into a sickly lime-yellow along their underbelly. With sharp horns and spines dripping with venom, these dragons often position themselves in power, using their toxic breath to maintain control.",
+    "size": "Giant",
+    "rarity": "Uncommon",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 30,
+      "fly": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Toxicology",
+        "effect": "After hitting with a bite attack, the creature takes damage at the start of each of its turns, reducing the amount of damage by 2 per turn.",
+        "range": "Short",
+        "duration": "1 minute",
+        "damage": "equal to PL",
+        "type": "special"
+      }
+    ]
+  },
+  {
+    "name": "Zephyr",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Bolt Dragons are the leanest among their kind, built for speed and agility. Their scales are dark blue or black, with a contrasting light blue underbelly. Their horns arc backward like lightning bolts. Quick to react and quicker to anger, they are known for their unpredictable and explosive tempers.",
+    "size": "Large",
+    "rarity": "Uncommon",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 40,
+      "fly": 40
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Blink",
+        "effect": "As an action, teleport in a flash of light to a location you can see within range",
+        "range": "Medium",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Solarflare",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "The Solarflare Dragons, often revered as the luminous gold dragons, are a rare and splendid sight in the prime material realm. Whispers say they are relentlessly pursued by the empire, their lustrous golden scales coveted for their unmatched purity. These dragons display a magnificent contrast between their gleaming gold scales and the vibrant hues of their underbellies, ranging from the deepest twilight to the brightest dawn. Their breath weapon is a devastating beam of concentrated solar energy, embodying the sun's fury and scorching all in its path.",
+    "size": "Large",
+    "rarity": "Uncommon",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 40,
+      "fly": 40
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Polymage",
+        "effect": "Can cast any spell that has been cast in range",
+        "range": "Medium",
+        "type": "special"
+      }
+    ]
+  },
+  {
+    "name": "Ashen",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Wisp Dragons are slightly larger than Bile Dragons, with bodies built for Stealth. Their nearly translucent black scales and dark grey belly scales allow them to blend into the shadows. Despite their solitary nature, they're known to assist travelers in need, guiding them safely away from wildfires with their smoke breath.",
+    "size": "Large",
+    "rarity": "Uncommon",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 40,
+      "fly": 40
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Smokeform",
+        "effect": "Exude smoke from yourself and gain the intangible condition until the end of your next turn.",
+        "range": "Self",
+        "duration": "Until end of their next turn",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Wraith",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Shadow Wraiths drift like sorrow through twilight, their massive wings trailing plumage made of living smoke. They are the largest of the Planar dragons. Their scales reflect nothing. Their voices carry the hush of funerals and the final breath of old kings. Born in the stillness of the Eclipse, they are not agents of Death, but witnesses to its truth. Gentle by nature, they speak softly and act only when the boundary between life and what waits beyond is disrespected. To look into their eyes is to feel the weight of memories not your own.",
+    "size": "Large",
+    "rarity": "Uncommon",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 40,
+      "fly": 40
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Necrometer",
+        "effect": "Animate the corpse of a creature within range for 1 minute with a PL of [[1d6]]",
+        "range": "Short",
+        "duration": "1 minute",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Radiance",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Radiance Dragons are the smallest among the planar dragons. Their scales shimmer with a pearlescent sheen, radiating a soft glow that's comforting to behold. They bear an aloof attitude and often exhibit a sense of superiority over others. Despite their arrogance, their divine heritage cannot be denied, and they often intervene to maintain balance and peace.",
+    "size": "Large",
+    "rarity": "Uncommon",
+    "behavior": "Defensive",
+    "movement": {
+      "walk": 40,
+      "fly": 40
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Divine Shield",
+        "effect": "Give a creature a radiant shield that protects them from the next instance of damage that glows a faint light",
+        "range": "Reach",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Astraleon",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Astraleon Dragons are larger than most dragons. Their scales shift in color, reflecting their mood and the energy around them. They are free-spirited and inquisitive, often encroaching on personal boundaries. However, their charismatic demeanor often results in them being forgiven for their lack of tact.",
+    "size": "Giant",
+    "rarity": "Uncommon",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 30,
+      "fly": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Detector",
+        "effect": "You know when a creature is lying",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Vozurian",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Vozian Dragons are the most robust among the planar dragons. They are adorned with numerous large horns, their scales a kaleidoscope of red, purple, and orange hues. Fiercely loyal to those of Vozian heritage, their fiery wrath is a thing to be feared by those who cross them.",
+    "size": "Giant",
+    "rarity": "Uncommon",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 30,
+      "fly": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Nightmare",
+        "effect": "Scream into the mind of a creature in range, They must make a mental check or take the fear condition.",
+        "range": "Reach",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Thornspike",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Thornspike Dragons are bigger than average dragons and have bulkier bodies. They are covered in muted-hued, thorny scales that not only serve as armor but also as a weapon. These dragons have limited intellect and are driven primarily by instinct and hunger. They are territorial and aggressive towards intruders, who often find themselves faced with a cloud of sharp spikes when encroaching on a Barb Dragon's domain. These dragons have a mouth full of barbs, the large dragon's breath weapon is a spray of these barbs.",
+    "size": "Giant",
+    "rarity": "Uncommon",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 30,
+      "fly": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Spiked",
+        "effect": "When a creature hits you with a melee Attack, they take piercing damage.",
+        "range": "Melee",
+        "damage": "equal to PL",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Reaver",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Reaver Dragons are the largest of all these dragon types, their massive bodies covered in metallic scales that gleam in the sunlight. They have large, curved horns and a thick, bladed tail that's as deadly as any weapon. Despite their imposing size and strength, they possess a noble spirit and often intervene to maintain harmony in their territory.",
+    "size": "Monolithic",
+    "rarity": "Uncommon",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 25,
+      "fly": 25,
+      "climb": 25
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Reaper’s Tail",
+        "effect": "When you make a tail attack, make another at disadvantage",
+        "range": "Melee",
+        "damage": "1d6",
+        "type": "off-action"
+      }
+    ]
+  },
+  {
+    "name": "Crystal",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "The largest of all dragons, the Crystal Wyrms are magnificent creatures with scales that resemble an array of gemstones, not limited to emeralds but including sapphires, rubies, and diamonds. These scales glint and shimmer with an ethereal light, casting colorful reflections. Their horns are like crystallized sculptures, and their tails are thick and blunted, used as a powerful weapon. Crystal formations adorn their bodies, adding to their mystical appearance. Known for their wisdom and patience, these creatures often align themselves with the forces of balance and nature.",
+    "size": "Monolithic",
+    "rarity": "Very Rare",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 25,
+      "fly": 25,
+      "climb": 50
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Heavily Armored",
+        "effect": "You have double the HP",
+        "range": "Self",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Kobari",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Small humanoid dragon that is highly creative and adaptable",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Curious",
+    "movement": {
+      "walk": 35
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Cower",
+        "effect": "You cower and beg at a creatures feet, they must make a Mental check or take the confused condition. The creature is then immune to this effect",
+        "range": "Melee",
+        "duration": "Until end of their next turn",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Kobari (Winged)",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "Small humanoid dragon that is highly creative and adaptable, now with flight",
+    "size": "Small",
+    "rarity": "Rare",
+    "behavior": "Curious",
+    "movement": {
+      "walk": 35,
+      "fly": 17
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Scout",
+        "effect": "Quickly scout an area, you know the approximate location of all creatures in that area if they are not hidden",
+        "range": "Long",
+        "duration": "Until end of their next turn",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Shard Drake",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "A crystalline dragon, its scales sharper than forged blades.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Fracture Breath",
+        "effect": "Cone attack deals piercing and slashing damage, ignoring armor."
+      }
+    ]
+  },
+  {
+    "name": "Rotmaw",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "A carrion-feeding dragon that spreads plague wherever it flies.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Plague Cloud",
+        "effect": "Emits aura of disease; enemies nearby must make Survival checks or gain Diseased."
+      }
+    ]
+  },
+  {
+    "name": "Aurora",
+    "baseType": "Dragon",
+    "origin": "dragon",
+    "description": "A celestial dragon shimmering with ribbons of radiant light.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Radiant Veil",
+        "effect": "Allies in short range gain +2 to checks while it lives"
+      }
+    ]
+  },
+  {
+    "name": "Books",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A spirit of living tomes that strikes with pages and forgotten words.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Knowledge Burst",
+        "effect": "On hit, target makes an Intellect check or becomes Confused for 1 turn."
+      }
+    ]
+  },
+  {
+    "name": "Breath",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A vaporous being that exhales overwhelming gusts or toxins.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Exhale Force",
+        "effect": "As an action, pushes all creatures in reach back 10 ft."
+      }
+    ]
+  },
+  {
+    "name": "Dirt",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A crude form of earth elemental, shedding grit and pebbles.",
+    "size": "Large",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Dust Cloud",
+        "effect": "Creates a choking cloud that inflicts the Coughing condition."
+      }
+    ]
+  },
+  {
+    "name": "Empathy",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "An entity that channels raw feelings into psychic waves.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Heart Pulse",
+        "effect": "Forces nearby creatures to make a Spirit check or take the Charmed condition."
+      }
+    ]
+  },
+  {
+    "name": "Fart",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A grotesque, gaseous entity fueled by decay and stench.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Noxious Blast",
+        "effect": "On melee hit, releases a burst of toxic gas that deals 1 damage to all adjacent."
+      }
+    ]
+  },
+  {
+    "name": "Food",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A strange being born of abundance and gluttony, throwing spoiled meals.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Spoil Touch",
+        "effect": "On hit, target gains the Sickened condition until end of next turn."
+      }
+    ]
+  },
+  {
+    "name": "Magma",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A molten being of rock and fire, dripping searing stone.",
+    "size": "Large",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Molten Core",
+        "effect": "On death, explodes dealing fire + impact damage in reach range."
+      }
+    ]
+  },
+  {
+    "name": "Metal",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A shard-born elemental of iron and steel.",
+    "size": "Large",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Magnetic Pull",
+        "effect": "Once per fight, can pull weapons/armor off one creature within short range."
+      }
+    ]
+  },
+  {
+    "name": "Oil",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A slick being of black liquid that coats everything it touches.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Slippery Film",
+        "effect": "Melee attackers must succeed on Agility or drop their weapon."
+      }
+    ]
+  },
+  {
+    "name": "Paper",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A fragile but quick-folding elemental of parchment.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Razor Sheets",
+        "effect": "Ranged attack that deals slashing damage equal to 1d6."
+      }
+    ]
+  },
+  {
+    "name": "Plasma",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A blazing storm of half-lightning, half-flame.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Plasma Arc",
+        "effect": "Deals both fire and lightning damage, ignoring armor."
+      }
+    ]
+  },
+  {
+    "name": "Sand",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A grinding mass of abrasive grains.",
+    "size": "Large",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Sandstorm",
+        "effect": "As an action, blinds all creatures in short range until end of next turn."
+      }
+    ]
+  },
+  {
+    "name": "Sound",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A resonant echo made flesh, humming violently.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Sonic Boom",
+        "effect": "Targets in reach must make Survival check or be Deafened."
+      }
+    ]
+  },
+  {
+    "name": "Thunder",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A booming presence that cracks the air itself.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Thunderclap",
+        "effect": "On hit, pushes target prone if they fail a Strength check."
+      }
+    ]
+  },
+  {
+    "name": "Water",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A flowing elemental embodying rivers and tides.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Drown Grip",
+        "effect": "Grappled creatures take ongoing 1 water damage each turn."
+      }
+    ]
+  },
+  {
+    "name": "Wind",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A whirling mass of air currents.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Gale Rush",
+        "effect": "Can move through enemy spaces without provoking reactions."
+      }
+    ]
+  },
+  {
+    "name": "Wire",
+    "baseType": "Elemental",
+    "origin": "elemental",
+    "description": "A tangled mess of living cables, sparking with energy.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Constricting Shock",
+        "effect": "On grapple, deals 1 lightning damage per turn."
+      }
+    ]
+  },
+  {
+    "name": "Calcium",
+    "baseType": "Fairy",
+    "origin": "life",
+    "description": "A bone-collecting fey who steals teeth and nails to build its skeletal wings.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Bonecraft",
+        "effect": "Can shape stolen bone into weapons or armor, granting +2 armor or +1 damage."
+      }
+    ]
+  },
+  {
+    "name": "Centipede",
+    "baseType": "Insect",
+    "origin": "nature",
+    "description": "Venomous crawler with dozens of snapping legs.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Venom Bite",
+        "effect": "On hit, target must make Survival check or take 1 ongoing Poison damage."
+      }
+    ]
+  },
+  {
+    "name": "Locust",
+    "baseType": "Insect",
+    "origin": "nature",
+    "description": "Swarming insect that devours everything in its path.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Famine Wave",
+        "effect": "Destroys crops, rations, and plants wherever it passes."
+      }
+    ]
+  },
+  {
+    "name": "Beetle",
+    "baseType": "Insect",
+    "origin": "nature",
+    "description": "Thick-shelled insect, often swarming.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Carapace",
+        "effect": "Reduces physical damage taken by 1 per hit."
+      }
+    ]
+  },
+  {
+    "name": "Wasp",
+    "baseType": "Insect",
+    "origin": "nature",
+    "description": "Aggressive stinger insect, territorial.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Swarm Sting",
+        "effect": "Multiple wasps add +1 damage per attacker."
+      }
+    ]
+  },
+  {
+    "name": "Ant",
+    "baseType": "Insect",
+    "origin": "nature",
+    "description": "Industrious swarmer with powerful mandibles.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Colony Assault",
+        "effect": "In swarms, doubles damage output."
+      }
+    ]
+  },
+  {
+    "name": "Locust",
+    "baseType": "Insect",
+    "origin": "nature",
+    "description": "Grasshopper variant that devours crops.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Famine Wave",
+        "effect": "Destroys plant-based resources in area after combat."
+      }
+    ]
+  },
+  {
+    "name": "Hellknight",
+    "baseType": "Knight",
+    "origin": "vozian",
+    "description": "Clad in rusted armor fused to flesh, the Hellknight serves infernal order through domination and war. It carries a chain-blade that binds both soul and body.",
+    "size": "Large",
+    "rarity": "Uncommon",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Rust",
+        "effect": "Touch a non magical weapon and reduce its damage by 1d4. This effect can be removed with a 1 minute crafting check",
+        "range": "Melee",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Hollow Knight",
+    "baseType": "Knight",
+    "origin": "vozian",
+    "description": "A cursed warrior with an empty shell of armor, echoing the fallen.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Hollow Echo",
+        "effect": "On death, releases a phantom copy that fights 1 more round but deals half damag"
+      }
+    ]
+  },
+  {
+    "name": "Blood Leech",
+    "baseType": "Leech",
+    "origin": "nature",
+    "description": "A parasitic worm that attaches to flesh, drinking its fill.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Blood Drain",
+        "effect": "On grapple, drains 1 wound each round and heals itself."
+      }
+    ]
+  },
+  {
+    "name": "Soul Harvester",
+    "baseType": "Leech",
+    "origin": "life",
+    "description": "A spectral leech feeding not on flesh but on souls.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Spirit Drain",
+        "effect": "On hit, forces Spirit check or target loses 1 Mana or class resource"
+      }
+    ]
+  },
+  {
+    "name": "Warlock",
+    "baseType": "Lich",
+    "origin": "vozian",
+    "description": "A lich bound to Vozian influence, warping souls with infernal power.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Hexfire",
+        "effect": "On spell hit, target must save or be Cursed."
+      }
+    ]
+  },
+  {
+    "name": "Deathmancer",
+    "baseType": "Lich",
+    "origin": "life",
+    "description": "A lich focused on death magic and reanimation of the fallen.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Grave Surge",
+        "effect": "Raises slain enemies as skeletal thralls for 1d4 turns."
+      }
+    ]
+  },
+  {
+    "name": "Lichdom",
+    "baseType": "Lich",
+    "origin": "chaos",
+    "description": "A lich forged of chaos, its form constantly unraveling and reforming.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Entropy Aura",
+        "effect": "At the start of each round, random condition affects all nearby creatures."
+      }
+    ]
+  },
+  {
+    "name": "Ash Priest",
+    "baseType": "Lich",
+    "origin": "vozian",
+    "description": "A Vozian lich that carries sacred embers, leaving trails of cinders.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Ember Curse",
+        "effect": "On hit, ignites target for ongoing 1 fire damage each turn."
+      }
+    ]
+  },
+  {
+    "name": "Civic Enforcer Unit",
+    "baseType": "Machinal",
+    "origin": "tech",
+    "description": "Bipedal constructs once used for riot suppression, still enforcing long-abandoned laws.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Defensive",
+    "movement": {
+      "walk": 25
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Crowd Control Gauntlet",
+        "effect": "Slam the ground, forcing nearby creatures to move 10 ft or become Pinned on a failed Strength check.",
+        "range": "Short",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Furnace Walker",
+    "baseType": "Machinal",
+    "origin": "tech",
+    "description": "Boiler-based constructs used in foundries, now dangerously unstable and overheating.",
+    "size": "Large",
+    "rarity": "Uncommon",
+    "behavior": "Mindless",
+    "movement": {
+      "walk": 25
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Scalding Vent",
+        "effect": "Deals fire damage to all creatures within 10 ft at the start of each of its turns.",
+        "range": "Melee",
+        "damage": "1d6",
+        "type": "special"
+      }
+    ]
+  },
+  {
+    "name": "Mirrorshard",
+    "baseType": "Mimic",
+    "origin": "vozian",
+    "description": "A creature made from a reflection of another creature. If the creature was right handed, they are left and so on.",
+    "size": "Medium",
+    "rarity": "Rare",
+    "behavior": "Curious",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Reflect",
+        "effect": "When taking damage, as an off-action reflect half the damage back at the attacker",
+        "range": "Self",
+        "type": "off-action"
+      }
+    ]
+  },
+  {
+    "name": "Hauntshape",
+    "baseType": "Mimic",
+    "origin": "vozian",
+    "description": "Born from abandoned homes and empty camps, Hauntshapes mimic the posture and voices of those long dead.",
+    "size": "Medium",
+    "rarity": "Very Rare",
+    "behavior": "Trickster",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Familiar Form",
+        "effect": "Transform into a figure from a target's past. Until struck, you appear harmless and may speak as that person.",
+        "range": "Self",
+        "duration": "1 minute",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Limbclutch",
+    "baseType": "Mimic",
+    "origin": "vozian",
+    "description": "A mass of limbs and mimic flesh that rapidly molds into anything it touches.",
+    "size": "Medium",
+    "rarity": "Very Rare",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Consume",
+        "effect": "Creatures within melee range who inspect the Lureshell must pass a Mental check or be pulled inside and pinned and constrained",
+        "range": "Melee",
+        "duration": "Until end of their next turn",
+        "type": "special"
+      }
+    ]
+  },
+  {
+    "name": "Swordting Hat",
+    "baseType": "Mimic",
+    "origin": "arcane",
+    "description": "A smug, enchanted hat that lands on a warrior’s head and loudly declares their “true” weapon. It bonds psychically and resists removal.",
+    "size": "Tiny",
+    "rarity": "Legendary",
+    "behavior": "Curious",
+    "movement": {
+      "walk": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Weapon Match",
+        "effect": "Roll a d6:\n1: No bonuses\n2: Gain a +1 bonus with impact weapons\n3–4: Gain a +1 bonus with slashing weapons\n5: Gain a +1 bonus with piercing weapons\n6: Gain a +1 With all melee weapons"
+      }
+    ]
+  },
+  {
+    "name": "Door",
+    "baseType": "Mimic",
+    "origin": "chaos",
+    "description": "A warped door that lures intruders before snapping shut to trap them.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Snap Shut",
+        "effect": "When a creature enters its space, the mimic may grapple as a free action."
+      }
+    ]
+  },
+  {
+    "name": "Chest",
+    "baseType": "Mimic",
+    "origin": "chaos",
+    "description": "A classic mimic posing as a treasure chest, dripping saliva instead of gold.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "False Prize",
+        "effect": "First attack against it is made with disadvantage."
+      }
+    ]
+  },
+  {
+    "name": "Treasure",
+    "baseType": "Mimic",
+    "origin": "chaos",
+    "description": "Mimics that scatter into coins and jewels, reforming around prey.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Reform",
+        "effect": "Can disperse into scattered coins, immune to melee until reformed."
+      }
+    ]
+  },
+  {
+    "name": "Map",
+    "baseType": "Mimic",
+    "origin": "chaos",
+    "description": "A mimic disguised as parchment, leading adventurers astray.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "False Guidance",
+        "effect": "Creatures reading the map must make a Spirit check or become Confused for 1 turn."
+      }
+    ]
+  },
+  {
+    "name": "Rug",
+    "baseType": "Mimic",
+    "origin": "chaos",
+    "description": "A mimic stretched into a rug, coiling to entangle prey.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Smothering Wrap",
+        "effect": "On grapple, target is Pinned until escape."
+      }
+    ]
+  },
+  {
+    "name": "Radio",
+    "baseType": "Mimic",
+    "origin": "chaos",
+    "description": "A mimic shaped like an old radio, whispering false broadcasts to lure prey.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Broadcast Lure",
+        "effect": "Transmits false orders; targets must save or waste an action following them."
+      }
+    ]
+  },
+  {
+    "name": "Car",
+    "baseType": "Mimic",
+    "origin": "chaos",
+    "description": "A mimic disguised as an automobile, devouring those who enter.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Hood Maw",
+        "effect": "On grapple, automatically deals double bite damage first round."
+      }
+    ]
+  },
+  {
+    "name": "Truck",
+    "baseType": "Mimic",
+    "origin": "chaos",
+    "description": "The largest mimic forms, posing as trucks that swallow whole groups.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Cargo Hold",
+        "effect": "Can swallow up to 3 Medium creatures, keeping them trapped."
+      }
+    ]
+  },
+  {
+    "name": "Voltcleaver Interceptor",
+    "baseType": "Motron",
+    "origin": "tech",
+    "description": "Arc-disrupting constructs designed to sever magical conduits and suppress rogue casters.",
+    "size": "Medium",
+    "rarity": "Rare",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Mana Severance",
+        "effect": "Disrupt nearby spellcasting. Caster makes a Luck check or the spell fizzles.",
+        "range": "Short",
+        "type": "off-action"
+      }
+    ]
+  },
+  {
+    "name": "Narrowlight Mirror",
+    "baseType": "Motron",
+    "origin": "tech",
+    "description": "Two-way surveillance constructs storing memory in mirrored crystal discs.",
+    "size": "Medium",
+    "rarity": "Rare",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Memory Pulse",
+        "effect": "Force targets to witness stored memory. Cognition check or become Dazed.",
+        "range": "Short",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Phoenix",
+    "baseType": "Mythic",
+    "origin": "life",
+    "description": "An immortal bird of flame, reborn from its ashes.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Rebirth",
+        "effect": "On death, revives at half wounds, creating a firestorm in reach."
+      }
+    ]
+  },
+  {
+    "name": "Kirin",
+    "baseType": "Mythic",
+    "origin": "dragon",
+    "description": "A radiant dragon-like beast, omen of prosperity and storms.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Storm Blessing",
+        "effect": "Grants allies in reach +2 to checks when it roars."
+      }
+    ]
+  },
+  {
+    "name": "Ammit",
+    "baseType": "Mythic",
+    "origin": "nature",
+    "description": "A devourer of souls, crocodile-lion hybrid of judgment.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Soul Weigh",
+        "effect": "On hit, forces Spirit check; on failure, victim takes massive Vozian damage."
+      }
+    ]
+  },
+  {
+    "name": "Jackalope",
+    "baseType": "Mythic",
+    "origin": "nature",
+    "description": "A horned hare trickster blending prey and predator.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Bounding Charge",
+        "effect": "Gains +1 damage when moving before attacking."
+      }
+    ]
+  },
+  {
+    "name": "Griffon",
+    "baseType": "Mythic",
+    "origin": "nature",
+    "description": "A lion-eagle hybrid, proud hunter of the skies.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Aerial Pounce",
+        "effect": "Deals double damage if attacking from flight."
+      }
+    ]
+  },
+  {
+    "name": "Behemoth",
+    "baseType": "Mythic",
+    "origin": "dragon",
+    "description": "A titanic dragon-beast embodying unstoppable force.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Worldbreaker Step",
+        "effect": "Movement creates shockwaves, dealing damage in area."
+      }
+    ]
+  },
+  {
+    "name": "Gravitas",
+    "baseType": "Mythic",
+    "origin": "arcane",
+    "description": "An entity embodying the force of gravity, from inversions to black holes.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Gravity Pulse",
+        "effect": "Forces all creatures in range to make checks or be hurled in random directions."
+      }
+    ]
+  },
+  {
+    "name": "Gloomspawn (un-hosted)",
+    "baseType": "Ooze",
+    "origin": "life",
+    "description": "Parasitic Symbiotes are a mysterious and ancient species that have evolved to form powerful and aggressive symbiotic relationships with various hosts. Found deep within the darkest corners of the world, they are drawn to strong and capable creatures, forming bonds to enhance their host's abilities while feeding on their energy",
+    "size": "Small",
+    "rarity": "Very Rare",
+    "behavior": "Trickster",
+    "movement": {
+      "walk": 25
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Control",
+        "effect": "Grapple a creature with a contested Physical check, on a success they are pinned or constrained",
+        "range": "Melee",
+        "duration": "Until end of their next turn",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Gloomspawn (symbiosis)",
+    "baseType": "Ooze",
+    "origin": "life",
+    "description": "Parasitic Symbiotes are a mysterious and ancient species that have evolved to form powerful and aggressive symbiotic relationships with various hosts. Found deep within the darkest corners of the world, they are drawn to strong and capable creatures, forming bonds to enhance their host's abilities while feeding on their energy",
+    "size": "Medium",
+    "rarity": "Very Rare",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 25
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Dual Mind",
+        "effect": "Gain [[1d4]] on a check, but take 1 stress damage",
+        "range": "Self",
+        "type": "off-action"
+      }
+    ]
+  },
+  {
+    "name": "Gloomspawn (devour)",
+    "baseType": "Ooze",
+    "origin": "life",
+    "description": "Parasitic Symbiotes are a mysterious and ancient species that have evolved to form powerful and aggressive symbiotic relationships with various hosts. Found deep within the darkest corners of the world, they are drawn to strong and capable creatures, forming bonds to enhance their host's abilities while feeding on their energy",
+    "size": "Large",
+    "rarity": "Very Rare",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 25
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Devour",
+        "effect": "When you attack or grapple a creature gain healing equal to PL. If you kill a creature in this way you take their form",
+        "range": "Self",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Gloomspawn (passenger)",
+    "baseType": "Ooze",
+    "origin": "life",
+    "description": "Parasitic Symbiotes are a mysterious and ancient species that have evolved to form powerful and aggressive symbiotic relationships with various hosts. Found deep within the darkest corners of the world, they are drawn to strong and capable creatures, forming bonds to enhance their host's abilities while feeding on their energy",
+    "size": "Medium",
+    "rarity": "Very Rare",
+    "behavior": "Negotiator",
+    "movement": {
+      "walk": 25
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Blend",
+        "effect": "grant your host Invisibility until the end of their next turn",
+        "range": "Self",
+        "duration": "Until end of their next turn",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Bilez",
+    "baseType": "Ooze",
+    "origin": "nature",
+    "description": "A squirming smear of olive-green slime, the Bile Slick seeps through cracks and clings to walls like moss with malice. Its acidic body bubbles with digestive enzymes, leaving trails of sizzling corrosion. Though small, it lurks with patient cunning, waiting for prey to step too close.",
+    "size": "Small",
+    "rarity": "Rare",
+    "behavior": "Curious",
+    "movement": {
+      "walk": 25
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Lingering Bile",
+        "effect": "Make an attack and on a success deal damage and then the creature makes a Survival check or takes the same amount of damage at the start of each of its turns, reducing the amount of damage by 2 per turn.",
+        "range": "Melee",
+        "duration": "1 minute",
+        "damage": "double PL",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Pyre Sludge",
+    "baseType": "Ooze",
+    "origin": "nature",
+    "description": "Thick and ember-flecked, this ooze radiates heat like coals on the verge of combustion. The Pyre Sludge undulates in angry pulses, releasing fire bursts when threatened. It’s drawn to metal, ash, and the scent of blood, sloshing toward anything that disturbs its scorched lair.",
+    "size": "Small",
+    "rarity": "Rare",
+    "behavior": "Curious",
+    "movement": {
+      "walk": 25
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Boiling",
+        "effect": "Release a sudden burst of flame in range. All creatures in range take fire damage",
+        "range": "Melee",
+        "damage": "equal to PL",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Spell Eater",
+    "baseType": "Ooze",
+    "origin": "arcane",
+    "description": "A gelatinous mass that digests lingering magic and feeds on spell energy.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Arcane Absorb",
+        "effect": "On contact with a spell, regains wounds equal to Mana spent."
+      }
+    ]
+  },
+  {
+    "name": "Tiger",
+    "baseType": "Predator",
+    "origin": "nature",
+    "description": "Apex jungle predator, silent stalker with powerful leaps.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Pounce",
+        "effect": "On a success+, leap up to short range and Pin the target."
+      }
+    ]
+  },
+  {
+    "name": "Bear",
+    "baseType": "Predator",
+    "origin": "nature",
+    "description": "Towering brute of the forest, mixing raw strength and endurance.",
+    "size": "Large",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Maul",
+        "effect": "On grapple, deals ongoing 1d6 physical damage each turn."
+      }
+    ]
+  },
+  {
+    "name": "Wolf",
+    "baseType": "Predator",
+    "origin": "nature",
+    "description": "Pack-hunting predator that coordinates attacks with allies.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Pack Tactics",
+        "effect": "Gains +1 to attacks when adjacent to another wolf."
+      }
+    ]
+  },
+  {
+    "name": "Boar",
+    "baseType": "Predator",
+    "origin": "nature",
+    "description": "Aggressive tusked beast that charges recklessly.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Gore",
+        "effect": "Charge attack deals double damage if it moves at least 20 ft. first."
+      }
+    ]
+  },
+  {
+    "name": "Bird",
+    "baseType": "Predator",
+    "origin": "nature",
+    "description": "Aggressive hunting bird, fast and sharp-beaked.",
+    "size": "Tiny",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Dive Strike",
+        "effect": "Gains advantage when attacking from above."
+      }
+    ]
+  },
+  {
+    "name": "Hawk",
+    "baseType": "Predator",
+    "origin": "nature",
+    "description": "Keen-eyed raptor that strikes with speed and precision.",
+    "size": "Tiny",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Sky Talons",
+        "effect": "On a success+, target must make a Strength check or be grappled and lifted."
+      }
+    ]
+  },
+  {
+    "name": "Panther",
+    "baseType": "Predator",
+    "origin": "nature",
+    "description": "A sleek jungle predator, ambushing prey with silent strikes.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Shadow Stalk",
+        "effect": "Gains advantage on first attack made from stealth or darkness."
+      }
+    ]
+  },
+  {
+    "name": "Crocodile",
+    "baseType": "Predator",
+    "origin": "nature",
+    "description": "Semi-aquatic ambusher with crushing jaws.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Death Roll",
+        "effect": "On grapple, deals 2d6 physical damage each round until broken."
+      }
+    ]
+  },
+  {
+    "name": "Shark",
+    "baseType": "Predator",
+    "origin": "nature",
+    "description": "Apex sea predator, drawn to blood in the water.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Blood Frenzy",
+        "effect": "Gains +2 damage against wounded targets."
+      }
+    ]
+  },
+  {
+    "name": "Eagle",
+    "baseType": "Predator",
+    "origin": "nature",
+    "description": "Majestic sky hunter with keen vision.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Piercing Dive",
+        "effect": "Attack ignores armor if descending from above."
+      }
+    ]
+  },
+  {
+    "name": "Spider",
+    "baseType": "Predator",
+    "origin": "nature",
+    "description": "Venomous web-weaver, patient and cunning.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Web Snare",
+        "effect": "May restrain a creature in reach with a web attack."
+      }
+    ]
+  },
+  {
+    "name": "Nesting Snail",
+    "baseType": "prey",
+    "origin": "nature",
+    "description": "Looks harmless, but reveals elemental mutations when attacked. Shell layers correspond to elemental defenses.",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "behavior": "Defensive",
+    "movement": {
+      "walk": 20,
+      "climb": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Shellhound",
+        "effect": "Elemental breath weapon deals damaage to creatures in a cone. When hit with a new elemental they gain additional damage dice and that element",
+        "range": "Short",
+        "damage": "1d4",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Puffer",
+    "baseType": "prey",
+    "origin": "nature",
+    "description": "Spiny and bloated, it defends itself with violent escalation.",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "behavior": "Defensive",
+    "movement": {
+      "walk": 35,
+      "swim": 35
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Spineburst",
+        "effect": "When the Puffer Beast takes a wound, all creatures within reach must make an Agility check or take piercing damage.",
+        "range": "Reach",
+        "damage": "1d6",
+        "type": "special"
+      }
+    ]
+  },
+  {
+    "name": "Swine",
+    "baseType": "Prey",
+    "origin": "nature",
+    "description": "Hardy foragers, easily spooked but dangerous in herds.",
+    "size": "Small",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Stampede",
+        "effect": "If 3+ swine act together, all creatures in their path must make Agility checks or be knocked Prone."
+      }
+    ]
+  },
+  {
+    "name": "Fowl",
+    "baseType": "Prey",
+    "origin": "nature",
+    "description": "Domestic or wild birds, more nuisance than threat.",
+    "size": "Tiny",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Flurry",
+        "effect": "On death, releases a burst of feathers that obscure sight until end of turn."
+      }
+    ]
+  },
+  {
+    "name": "Pigeon",
+    "baseType": "Prey",
+    "origin": "nature",
+    "description": "Common city-dwelling bird, thrives in swarms.",
+    "size": "Tiny",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Swarm Peck",
+        "effect": "If 5+ pigeons act together, deal 1d4 damage to all in swarm area."
+      }
+    ]
+  },
+  {
+    "name": "Deer",
+    "baseType": "Prey",
+    "origin": "nature",
+    "description": "Agile herd animal, quick to flee danger.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Flight Instinct",
+        "effect": "Gains advantage on Agility checks when fleeing combat."
+      }
+    ]
+  },
+  {
+    "name": "Rabbit",
+    "baseType": "Prey",
+    "origin": "nature",
+    "description": "Small forager, prized prey for predators.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Burrow Escape",
+        "effect": "May disengage by burrowing if terrain allows."
+      }
+    ]
+  },
+  {
+    "name": "Fish",
+    "baseType": "Prey",
+    "origin": "nature",
+    "description": "Common aquatic prey, usually defenseless.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Schooling",
+        "effect": "In swarms, gain +1 to defense per 5 fish."
+      }
+    ]
+  },
+  {
+    "name": "Goat",
+    "baseType": "Prey",
+    "origin": "nature",
+    "description": "Hardy climber, often kept as livestock.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Kick Back",
+        "effect": "On hit, may knock target prone."
+      }
+    ]
+  },
+  {
+    "name": "Duck",
+    "baseType": "Prey",
+    "origin": "nature",
+    "description": "Aquatic bird, easily startled.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Splash Scatter",
+        "effect": "On death or fright, flock scatters causing confusion (disadvantage to Perception checks nearby)."
+      }
+    ]
+  },
+  {
+    "name": "Red Mold",
+    "baseType": "Rot",
+    "origin": "nature",
+    "description": "Pathogenic mold that seeks to infect living bodies.",
+    "size": "Tiny",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Spore Infection",
+        "effect": "On contact, forces Survival check or target becomes Diseased."
+      }
+    ]
+  },
+  {
+    "name": "Black Mold",
+    "baseType": "Rot",
+    "origin": "nature",
+    "description": "Deadliest mold, kills slowly with airborne toxins.",
+    "size": "Tiny",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Death Spores",
+        "effect": "All creatures within reach range must make Survival checks each round or take ongoing Toxic damage."
+      }
+    ]
+  },
+  {
+    "name": "White Mold",
+    "baseType": "Rot",
+    "origin": "nature",
+    "description": "Common plant mold, harmless to most creatures.",
+    "size": "Tiny",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Plant Rot",
+        "effect": "Deals 1d4 damage per round to wooden or plant creatures/structures."
+      }
+    ]
+  },
+  {
+    "name": "Yellow Mold",
+    "baseType": "Rot",
+    "origin": "nature",
+    "description": "Irritating mold that causes respiratory distress.",
+    "size": "Tiny",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Choking Spores",
+        "effect": "Creatures in short range must make Survival checks or gain the Coughing condition."
+      }
+    ]
+  },
+  {
+    "name": "Green Mold",
+    "baseType": "Rot",
+    "origin": "nature",
+    "description": "Common rot, spreads over damp surfaces.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Spread",
+        "effect": "Doubles area of effect each day unless treated."
+      }
+    ]
+  },
+  {
+    "name": "Violet Mold",
+    "baseType": "Rot",
+    "origin": "nature",
+    "description": "Rare mold glowing faintly, disorienting nearby.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Dazzle Spores",
+        "effect": "Forces Intellect check or inflicts Confused condition."
+      }
+    ]
+  },
+  {
+    "name": "Bone Mold",
+    "baseType": "Rot",
+    "origin": "nature",
+    "description": "Mold that feeds on remains, creating brittle husks.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Husk Rot",
+        "effect": "Targets killed nearby crumble, cannot be raised or revived."
+      }
+    ]
+  },
+  {
+    "name": "Spore Carpet",
+    "baseType": "Rot",
+    "origin": "nature",
+    "description": "A vast creeping layer of spores that covers terrain.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Suffocating Blanket",
+        "effect": "Anyone standing on it must succeed a Survival check or gain the Coughing condition."
+      }
+    ]
+  },
+  {
+    "name": "Iron Saber-Tooth",
+    "baseType": "Rust",
+    "origin": "vozian",
+    "description": "Flesh fused with cursed steel. Its saber teeth glint with infernal heat and carry the weight of ages.",
+    "size": "Large",
+    "rarity": "Rare",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 60,
+      "climb": 60
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Shatter Fang",
+        "effect": "Deal double damage to non-magical armor",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Rust Crow",
+    "baseType": "Rust",
+    "origin": "tech",
+    "description": "Rusted mimicry of carrion birds, scavengers that feast on gear and greed.",
+    "size": "Small",
+    "rarity": "Rare",
+    "behavior": "Trickster",
+    "movement": {
+      "walk": 35,
+      "fly": 35
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Oxidize",
+        "effect": "Peck a metallic item. Craft or Survival check or the item is disarmed and -1 to checks with that item",
+        "range": "Melee",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Iron Gnasher",
+    "baseType": "Rust",
+    "origin": "tech",
+    "description": "A centipede-like rust beast with snapping jaws and iron vertebrae it rattles like drums before a hunt.",
+    "size": "Large",
+    "rarity": "Rare",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 25,
+      "climb": 50
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Spinal Surge",
+        "effect": "Rushes in a line. Each creature hit must pass a Strength check or fall prone and take damage.",
+        "range": "Short",
+        "damage": "1d6",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Slag Hound",
+    "baseType": "Rust",
+    "origin": "elemental",
+    "description": "Molten slag fused with iron bones. These creatures trail scorched rust behind them.",
+    "size": "Medium",
+    "rarity": "Very Rare",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 40
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Scorch Trail",
+        "effect": "Leaves behind burning terrain. Entering the space causes fire damage",
+        "range": "Short",
+        "damage": "1d4",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Avatar of Visage",
+    "baseType": "Shifter",
+    "origin": "chaos",
+    "description": "A creature with many faces that move and change across their form.",
+    "size": "Large",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Face Shift",
+        "effect": "At the start of each round, it shifts visages, gaining a new ability or condition effect."
+      }
+    ]
+  },
+  {
+    "name": "Death Song",
+    "baseType": "Siren",
+    "origin": "life",
+    "description": "A siren-like predator that lures prey with its deadly song and crustacean armor.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Harvest Song",
+        "effect": "Creatures lured must save or be stunned."
+      }
+    ]
+  },
+  {
+    "name": "Seductress",
+    "baseType": "Siren",
+    "origin": "basic",
+    "description": "A classic alluring siren that bends wills with beauty and song.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Beguiling Song",
+        "effect": "Forces Spirit check or target is Charmed for 1 turn."
+      }
+    ]
+  },
+  {
+    "name": "Succubus",
+    "baseType": "Siren",
+    "origin": "vozian",
+    "description": "A Vozian siren twisted into a demon of lust and control.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Draining Kiss",
+        "effect": "On grapple, drains both wounds and Spirit, healing itself."
+      }
+    ]
+  },
+  {
+    "name": "Soul Shepherd",
+    "baseType": "Siren",
+    "origin": "life",
+    "description": "A gentle siren guiding souls but consuming strays in secret.",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Mercy’s Bite",
+        "effect": "On grapple, heals itself for half damage dealt to target."
+      }
+    ]
+  },
+  {
+    "name": "Ghost",
+    "baseType": "Undead",
+    "origin": "life",
+    "description": "A hollow echo of a soul that never moved on. It phases in and out of reality, clinging to regrets.",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "behavior": "Mindless",
+    "movement": {
+      "walk": 30,
+      "fly": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Scream",
+        "effect": "Creatures near the Phantom hear whispers of their worst memories. The phantom screams and all creatures in range must pass a Mental check or take psychic damage and lose one off-action.",
+        "range": "Short",
+        "duration": "Until end of their next turn",
+        "damage": "1d6",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Skeleton",
+    "baseType": "Undead",
+    "origin": "life",
+    "description": "Common Undead Soldier, animated bones bound by dark memory",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 25
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Just Bones",
+        "effect": "Immune to Piercing, Eclipse, Toxic, and Fluid damage.",
+        "range": "Melee",
+        "type": "special"
+      }
+    ]
+  },
+  {
+    "name": "Ghoul",
+    "baseType": "Undead",
+    "origin": "life",
+    "description": "Rot-hungry corpse that moves in twitching bursts, always biting",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 35
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Rot Slash",
+        "effect": "When the ghoul deals melee damage, they deal an additional [[1d4]] toxic damage",
+        "range": "Melee",
+        "type": "special"
+      }
+    ]
+  },
+  {
+    "name": "Zombie",
+    "baseType": "Undead",
+    "origin": "life",
+    "description": "Slow, heavy corpse animated by stubborn refusal to rest",
+    "size": "Medium",
+    "rarity": "Common",
+    "behavior": "Mindless",
+    "movement": {
+      "walk": 25
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Undying",
+        "effect": "When you take the death condition, make a Physical check to prevent the condition. This can be repeated but at disadvantage",
+        "range": "Self",
+        "type": "special"
+      }
+    ]
+  },
+  {
+    "name": "Undead Part (Hand)",
+    "baseType": "Undead",
+    "origin": "life",
+    "description": "A twitching, skeletal hand that skitters along walls and ceilings, strangling victims in their sleep.",
+    "size": "Tiny",
+    "rarity": "Uncommon",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Grasping Hand",
+        "effect": "Grapples a target with skeletal grip. While grappled, both you and the target take shared damage from any source."
+      }
+    ]
+  },
+  {
+    "name": "Undead Part (Foot)",
+    "baseType": "Undead",
+    "origin": "life",
+    "description": "A cracked, rotting foot that lurches and stomps erratically, drawn to tremors and vibrations.",
+    "size": "Tiny",
+    "rarity": "Uncommon",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Stomp",
+        "effect": "Leap forward and land on a target with undead weight. On hit, the target must pass a Body check or fall Prone."
+      }
+    ]
+  },
+  {
+    "name": "Undead Part (Jaw)",
+    "baseType": "Undead",
+    "origin": "life",
+    "description": "A chattering jawbone on spindly tendons that whispers your name in a loved one's voice before screaming in your face.",
+    "size": "Tiny",
+    "rarity": "Uncommon",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Wail",
+        "effect": "Mimics cries of help or familiar voices. If within short range, it unleashes a psychic scream that deals damage."
+      }
+    ]
+  },
+  {
+    "name": "Undead Part (Skull)",
+    "baseType": "Undead",
+    "origin": "life",
+    "description": "A cracked skull with glowing eyes that floats or rolls until it finds a corpse to animate.",
+    "size": "Tiny",
+    "rarity": "Uncommon",
+    "behavior": "Curious",
+    "movement": {
+      "walk": 30,
+      "fly": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Posses",
+        "effect": "Animates a corpse within reach. The animated husk has a PL equal to half yours and crumbles when time expires."
+      }
+    ]
+  },
+  {
+    "name": "Undead Part (Arm)",
+    "baseType": "Undead",
+    "origin": "life",
+    "description": "A severed arm still clutching its weapon, dragged by rage and undeath.",
+    "size": "Small",
+    "rarity": "Uncommon",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Swing",
+        "effect": "On hit, creatures your size or smaller must pass a Body check or be knocked Prone by the brutal blow."
+      }
+    ]
+  },
+  {
+    "name": "Undead Part (Finger)",
+    "baseType": "Undead",
+    "origin": "life",
+    "description": "A blackened finger that snakes toward warm bodies and slips inside wounds to disrupt nerves.",
+    "size": "Tiny",
+    "rarity": "Uncommon",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Crawl",
+        "effect": "Target gains the Slowed condition as their nerves are disrupted with ghostly cold."
+      }
+    ]
+  },
+  {
+    "name": "Undead Part (Leg)",
+    "baseType": "Undead",
+    "origin": "life",
+    "description": "A leg that sprints and bounds with disturbing speed, leaving clawed tracks through dust and blood.",
+    "size": "Small",
+    "rarity": "Uncommon",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 35
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Bound",
+        "effect": "Charge in a straight line, hitting all creatures in path. Each must pass Strength or Agility or be knocked Prone."
+      }
+    ]
+  },
+  {
+    "name": "Undead Part (Ribcage)",
+    "baseType": "Undead",
+    "origin": "life",
+    "description": "A loose rib cage that rattles from shadows, snapping shut around prey to trap them in a prison of bone.",
+    "size": "Small",
+    "rarity": "Uncommon",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Trap",
+        "effect": "Traps a creature Large or smaller, inflicting Pinned and Constrained. Escape requires Strength or Agility check (half-action)."
+      }
+    ]
+  },
+  {
+    "name": "Undead Part (Spine)",
+    "baseType": "Undead",
+    "origin": "life",
+    "description": "A serpent of vertebrae that slithers along walls, whispering through bone.",
+    "size": "Small",
+    "rarity": "Uncommon",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Constrict",
+        "effect": "Wraps around the target, infecting their mind. They must pass a Mental check or have Disadvantage on their next action."
+      }
+    ]
+  },
+  {
+    "name": "Tristeţe (Arm)",
+    "baseType": "Vampire",
+    "origin": "life",
+    "description": "In the spectral hierarchy of strigoi, the Tristeţe are the outcasts, the forsaken. Their name, translating to 'sadness', poignantly mirrors their existence. These unfortunate vampires, transformed into lesser beings by disease, foul magic, or tragic incidents, bear grotesque deformities. Their skin, weak and light-sensitive, compels them to lurk in the shadows, away from the sun's harsh judgment and society's scorn. Immortal, their existence is an endless nocturnal cycle.",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "behavior": "Defensive",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Massive Arm",
+        "effect": "Can instantly grapple a medium or smaller creature as an action without a check. They can make a check on their turn to escape. On subsequent turns you can deal damage as an action",
+        "range": "Melee",
+        "damage": "1d6",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Tristeţe (Stench)",
+    "baseType": "Vampire",
+    "origin": "life",
+    "description": "In the spectral hierarchy of strigoi, the Tristeţe are the outcasts, the forsaken. Their name, translating to 'sadness', poignantly mirrors their existence. These unfortunate vampires, transformed into lesser beings by disease, foul magic, or tragic incidents, bear grotesque deformities. Their skin, weak and light-sensitive, compels them to lurk in the shadows, away from the sun's harsh judgment and society's scorn. Immortal, their existence is an endless nocturnal cycle.",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "behavior": "Defensive",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Stench",
+        "effect": "Make your stench exude from you, dealing damage to creatures in range",
+        "range": "Reach",
+        "damage": "1d6",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Tristeţe (Brain Sacs)",
+    "baseType": "Vampire",
+    "origin": "life",
+    "description": "In the spectral hierarchy of strigoi, the Tristeţe are the outcasts, the forsaken. Their name, translating to 'sadness', poignantly mirrors their existence. These unfortunate vampires, transformed into lesser beings by disease, foul magic, or tragic incidents, bear grotesque deformities. Their skin, weak and light-sensitive, compels them to lurk in the shadows, away from the sun's harsh judgment and society's scorn. Immortal, their existence is an endless nocturnal cycle.",
+    "size": "Medium",
+    "rarity": "Rare",
+    "behavior": "Negotiator",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Brain Sacs",
+        "effect": "Reach into the mind of a creature and collect thoughts and memories of the creature in range",
+        "range": "Reach",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Tristeţe (Second Heart)",
+    "baseType": "Vampire",
+    "origin": "life",
+    "description": "In the spectral hierarchy of strigoi, the Tristeţe are the outcasts, the forsaken. Their name, translating to 'sadness', poignantly mirrors their existence. These unfortunate vampires, transformed into lesser beings by disease, foul magic, or tragic incidents, bear grotesque deformities. Their skin, weak and light-sensitive, compels them to lurk in the shadows, away from the sun's harsh judgment and society's scorn. Immortal, their existence is an endless nocturnal cycle.",
+    "size": "Medium",
+    "rarity": "Uncommon",
+    "behavior": "Defensive",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Second Heart",
+        "effect": "When you take a Corpus condition, make a check to remove it.",
+        "range": "Self",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Tărie",
+    "baseType": "Vampire",
+    "origin": "life",
+    "description": "The Tărie, the embodiment of raw, unyielding strength, are a formidable sight to behold. These Dravin-kin are the epitome of physical prowess among the strigoi, their bodies honed to perfection through centuries of relentless training and battle. Their skin, ashen and cold, is a stark contrast to the vibrant crimson of the blood that sustains them. Their eyes, a piercing silver, radiate an intimidating presence, a clear warning to any who dare to cross their path.",
+    "size": "Medium",
+    "rarity": "Rare",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 40,
+      "fly": 40
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Three Handed Weapon",
+        "effect": "You can wield a massive 3 handed weapon using your wings. It deals massive damage but cannot be used as an Off-Action",
+        "range": "Self",
+        "damage": "triple PL",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Avuţie ",
+    "baseType": "Vampire",
+    "origin": "life",
+    "description": "the Avuţie stand as the epitome of vampire nobility. They are the embodiment of the timeless allure and chilling dread that has become synonymous with the vampire legend. The Avuţie are not mere predators of the night, but sophisticated rulers who have held the reins of power for centuries. They have been kings and queens, lords and ladies, their rule extending over vast lands shrouded in Fear and mystery",
+    "size": "Medium",
+    "rarity": "Rare",
+    "behavior": "Negotiator",
+    "movement": {
+      "walk": 35,
+      "fly": 35
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Charm",
+        "effect": "Make a contested influence check on a creature in range, on a failure they take the charmed condition and will give secrets or give you blood or healing",
+        "range": "Reach",
+        "duration": "Until end of their next turn",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Zeiţă",
+    "baseType": "Vampire",
+    "origin": "life",
+    "description": "A radiant, terrifying vampire deity who feeds not on blood, but the essence of existence itself.",
+    "size": "Large",
+    "rarity": "Legendary",
+    "behavior": "Territorial",
+    "movement": {
+      "walk": 90,
+      "fly": 45
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Drain",
+        "effect": "Target makes a Spirit check or lose a portion of their soul, If this kills them they resurrect and become Undead",
+        "range": "Short",
+        "damage": "double PL",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Soul Siphon",
+    "baseType": "Vampire",
+    "origin": "life",
+    "description": "An ultimate vampire form that drinks souls rather than blood.",
+    "size": "Medium",
+    "rarity": "Very Rare",
+    "behavior": "Aggressive",
+    "movement": {
+      "walk": 35
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Soul Drain",
+        "effect": "Every kill restores health and grants a temporary PL bonus until dawn.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "War Engine",
+    "baseType": "Vehicle",
+    "origin": "tech",
+    "description": "Once a noble construct, now a broken titan leaking rust and smoke. Still fights with fragmented purpose.",
+    "size": "Giant",
+    "rarity": "Common",
+    "behavior": "Defensive",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Corrode",
+        "effect": "Fires a line of acidic energy. Affects all creatures and objects within range",
+        "range": "Medium",
+        "damage": "double PL",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Tribal Mech",
+    "baseType": "Vehicle",
+    "origin": "tech",
+    "description": "A mech that has become the carrier and guardian of a tribe of people.",
+    "size": "Giant",
+    "rarity": "Common",
+    "behavior": "Neutral",
+    "movement": {
+      "walk": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Totem Enhancements",
+        "effect": "Gains unique upgrades depending on the tribe (extra armor, weapons, or healing)."
+      }
+    ]
+  }
+]

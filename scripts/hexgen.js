@@ -1,4 +1,4 @@
-// ══════════════════════════════════════════════
+﻿// ══════════════════════════════════════════════
 //  HEXGEN.JS  v2
 //  data/hexgen.json  +  data/species.json
 // ══════════════════════════════════════════════
@@ -8,7 +8,7 @@ let SPECIES_LIST = [];
 
 Promise.all([
     fetch('data/hexgen.json').then(r => r.json()),
-    fetch('data/species_new.json').then(r => r.json())
+    fetch('data/species.json').then(r => r.json())
 ]).then(([hex, sp]) => {
     HEX = hex;
     SPECIES_LIST = sp.species || [];

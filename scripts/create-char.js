@@ -1,4 +1,4 @@
-/* Character Creation Wizard */
+﻿/* Character Creation Wizard */
 
 const DATA_BASE = window.location.pathname.includes('/active-sheet/') ? '../data/' : 'data/';
 const titleCase = s => s ? s.charAt(0).toUpperCase() + s.slice(1).replace(/ \w/g, c => c.toUpperCase()) : '';
@@ -41,7 +41,7 @@ const wiz = {
     size:         '',
     motivation:   '',
     trinket:      '',
-    extraEquip:   '',
+    extraEquip: '',
     name:         '',
 };
 
@@ -162,7 +162,7 @@ async function loadData() {
         const [cBase, cOpt, spec, world] = await Promise.all([
             fetch(DATA_BASE + 'classes.json'),
             fetch(DATA_BASE + 'class-new.json'),
-            fetch(DATA_BASE + 'species_new.json'),
+            fetch(DATA_BASE + 'species.json'),
             fetch(DATA_BASE + 'worldbuilding.json'),
         ]);
         const bj = await cBase.json();
@@ -430,7 +430,7 @@ function renderDetailsStep() {
         rollWealthBtn.textContent = wiz.wealthRolled ? 'Rolled' : '🎲 Roll 1d100+50';
     }
 
-    // Size dropdown — populate from species
+    // Size dropdown — populate from species height range or fallback to standard sizes
     const sEl = document.getElementById('detail-size');
     if (sEl) {
         const sizeStr = wiz.speciesObj?.size || '';
@@ -440,14 +440,21 @@ function renderDetailsStep() {
             const lo = Math.min(...parts), hi = Math.max(...parts);
             for (let i = lo; i <= hi; i++) {
                 const opt = document.createElement('option');
-                opt.value = i; opt.textContent = i;
-                if (String(i) === String(wiz.size)) opt.selected = true;
+                opt.value = `${i} ft`; opt.textContent = `${i} ft`;
+                if (wiz.size === `${i} ft` || String(wiz.size) === String(i)) opt.selected = true;
                 sEl.appendChild(opt);
             }
         } else if (sizeStr) {
             const opt = document.createElement('option');
             opt.value = sizeStr; opt.textContent = sizeStr; opt.selected = true;
             sEl.appendChild(opt);
+        } else {
+            ['Small', 'Medium', 'Large', 'Huge'].forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s; opt.textContent = s;
+                if (wiz.size === s) opt.selected = true;
+                sEl.appendChild(opt);
+            });
         }
         if (!wiz.size && sEl.options.length) wiz.size = sEl.options[0].value;
     }
@@ -508,11 +515,36 @@ function renderBuildGuide() {
         return `<span class="${cls}">${g.label[0].toUpperCase() + g.label.slice(1)} ×${g.count}</span>`;
     }).join('');
 
+    // Build progression preview
+    const classObj = allClasses?.find(c => c.class === wiz.classKey);
+    const pathSteps  = classObj?.path?.steps  || [];
+    const talentSteps = classObj?.talent?.steps || [];
+    const allSteps = [...pathSteps, ...talentSteps]
+        .filter(s => s.name)
+        .sort((a, b) => (a.step || 0) - (b.step || 0));
+    const progressionHtml = allSteps.length ? `
+        <details class="guide-progression">
+            <summary class="guide-prog-head">▶ What you'll unlock (${allSteps.length} abilities)</summary>
+            <div class="guide-prog-list">
+                ${allSteps.map(s => {
+                    const check = s.check ? `<span class="guide-prog-check">${s.check}</span>` : '';
+                    const isUpgrade = s.action === 'Upgrade';
+                    return `<div class="guide-prog-row${isUpgrade ? ' guide-prog-upgrade' : ''}">
+                        <span class="guide-prog-lvl">Lv${s.step || 0}</span>
+                        <span class="guide-prog-name">${s.name}${isUpgrade ? ' ↑' : ''}</span>
+                        <span class="guide-prog-type">${s.action || ''}</span>
+                        ${check}
+                    </div>`;
+                }).join('')}
+            </div>
+        </details>` : '';
+
     el.hidden = false;
     el.innerHTML = `
         <div class="guide-label">Your abilities use</div>
         <div class="guide-chips">${chips}</div>
-        <div class="guide-sub">Put your highest points into the highlighted stats.</div>`;
+        <div class="guide-sub">Put your highest points into highlighted stats. Dimmed checks are ones <em>opponents</em> roll — you don't need those.</div>
+        ${progressionHtml}`;
 
     // Highlight stat rows
     guide.forEach(g => {
@@ -625,7 +657,7 @@ function buildAndSave() {
         };
     });
 
-    // Additional equipment from Step 5 freeform textarea
+    // Additional equipment from Step 5 textarea
     (wiz.extraEquip || '').split('\n').map(s => s.trim()).filter(Boolean).forEach(name => {
         equipment.push({ name, notes: '', category: inferEquipCategory(name, ''), armorRating: 0 });
     });
@@ -789,10 +821,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (btn.id === 'roll-age') {
-            const lifespan = wiz.speciesObj?.lifespan || '60-90';
-            const parts    = lifespan.split('-').map(Number).filter(Boolean);
+            const raw      = wiz.speciesObj?.lifespan ?? '60-90';
+            const parts    = String(raw).split('-').map(Number).filter(Boolean);
             const maxAge   = parts.length ? Math.max(...parts) : 90;
-            const minAge   = parts.length ? Math.min(...parts) : 60;
+            const minAge   = parts.length > 1 ? Math.min(...parts) : Math.floor(maxAge * 0.25);
             const low      = Math.max(1, Math.floor(minAge * 0.20));
             const roll     = Math.floor(Math.random() * (maxAge - low + 1)) + low;
             wiz.age        = roll;

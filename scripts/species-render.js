@@ -7,6 +7,53 @@ function escapeHTML(s) {
     return String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 }
 
+function linkifyDesc(text) {
+    if (!text) return '';
+    return escapeHTML(text).replace(/\[([^\]]+)\]/g, (match, name) => {
+        const god = (typeof GOD_MAP !== 'undefined') && GOD_MAP.get(name.toLowerCase());
+        if (god) return `<span class="god-ref" data-god="${escapeHTML(name.toLowerCase())}">${escapeHTML(name)}</span>`;
+        return match;
+    });
+}
+
+// ── GOD TOOLTIP ──────────────────────────────────────────────────────────────
+(function initGodTooltip() {
+    const tip = document.createElement('div');
+    tip.id = 'god-tooltip';
+    tip.style.cssText = `
+        position:fixed;z-index:999;pointer-events:none;display:none;
+        max-width:260px;background:#111820;border:1px solid #2a3a52;
+        border-radius:6px;padding:10px 12px;box-shadow:0 6px 20px rgba(0,0,0,.6);
+        font-family:'Share Tech Mono',monospace;font-size:11px;line-height:1.6;color:#b0c4d8;
+    `;
+    document.body.appendChild(tip);
+
+    document.addEventListener('mouseover', e => {
+        const span = e.target.closest('.god-ref');
+        if (!span) return;
+        const god = (typeof GOD_MAP !== 'undefined') && GOD_MAP.get(span.dataset.god);
+        if (!god) return;
+        const excerpt = god.desc.length > 180 ? god.desc.slice(0, 180).trimEnd() + '…' : god.desc;
+        tip.innerHTML = `
+            <div style="font-family:'Cinzel',serif;font-size:13px;color:#e0c87a;margin-bottom:4px;">${escapeHTML(god.name)}</div>
+            ${god.words ? `<div style="font-size:9px;letter-spacing:.08em;color:#6b9fc4;margin-bottom:6px;">${escapeHTML(god.words)}</div>` : ''}
+            <div>${escapeHTML(excerpt)}</div>`;
+        tip.style.display = 'block';
+    });
+
+    document.addEventListener('mousemove', e => {
+        if (tip.style.display === 'none') return;
+        const x = e.clientX + 14;
+        const y = e.clientY + 14;
+        tip.style.left = (x + 260 > window.innerWidth ? e.clientX - 274 : x) + 'px';
+        tip.style.top  = (y + tip.offsetHeight > window.innerHeight ? e.clientY - tip.offsetHeight - 8 : y) + 'px';
+    });
+
+    document.addEventListener('mouseout', e => {
+        if (e.target.closest('.god-ref')) tip.style.display = 'none';
+    });
+})();
+
 /* ====== Card ====== */
 function renderCard(s) {
     const el = document.createElement('article');
@@ -21,12 +68,25 @@ function renderCard(s) {
 
     const featureLines = (s.features || []).map(f => renderFeatureLine(f)).join('');
 
+    const desc = s.description || {};
+    const physical     = typeof desc === 'string' ? desc : (desc.physical || '');
+    const environment  = typeof desc === 'string' ? '' : (desc.environment !== '[TBD]' ? desc.environment || '' : '');
+    const culture      = typeof desc === 'string' ? '' : (desc.culture    !== '[TBD]' ? desc.culture    || '' : '');
+    const lore         = typeof desc === 'string' ? '' : (desc.lore       !== '[TBD]' ? desc.lore       || '' : '');
+
+    const descHtml = [
+        physical     && `<p>${linkifyDesc(physical)}</p>`,
+        environment  && `<h4 class="desc-section-label">Environment</h4><p>${linkifyDesc(environment)}</p>`,
+        culture      && `<h4 class="desc-section-label">Culture</h4><p>${linkifyDesc(culture)}</p>`,
+        lore         && `<h4 class="desc-section-label">Lore</h4><p>${linkifyDesc(lore)}</p>`,
+    ].filter(Boolean).join('');
+
     el.innerHTML = `
     <img class="cover" loading="lazy" src="${cover}" alt="${escapeHTML(s.name)}" data-slug="${escapeHTML(s.slug)}">
     <header><h3>${escapeHTML(s.name)}</h3></header>
     <div class="species-meta">${chips}</div>
     <div class="species-body collapsed">
-      ${escapeHTML(s.description || '')}
+      <div class="species-desc">${descHtml}</div>
       ${renderDataTags(s)}
     </div>
     <a class="read-more" role="button">Read full</a>
@@ -40,7 +100,7 @@ function renderCard(s) {
         btn.textContent = isCollapsed ? 'Read full' : 'Show less';
     };
     btn.addEventListener('click', toggle);
-    if ((s.description || '').length < 220) {
+    if (physical.length < 220 && !environment && !culture && !lore) {
         body.classList.remove('collapsed');
         btn.style.display = 'none';
     }

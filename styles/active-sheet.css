@@ -1325,6 +1325,13 @@ body[data-page-title="Active-Sheet"] #site-header {
 .step-group-body { margin-top: 6px; }
 .step-group-body.is-collapsed { display: none; }
 
+.feat-upgrade-group { display: flex; flex-direction: column; }
+.feat-upgrades {
+    padding-left: 12px;
+    border-left: 2px solid var(--accent-mid);
+    margin-left: 8px;
+}
+
 /* Edit button */
 .step-edit-trigger { font-size: 14px; }
 
@@ -2554,20 +2561,24 @@ body[data-page-title="Active-Sheet"] #site-header {
     overflow: hidden;
 }
 
-.ref-table-card[open] { border-color: var(--accent-mid); }
-
 .ref-table-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 12px;
     cursor: pointer;
+    user-select: none;
+    cursor: pointer;
     font-size: 13px;
     font-weight: 700;
     list-style: none;
     gap: 8px;
 }
-.ref-table-head::-webkit-details-marker { display: none; }
+.ref-table-head:active { background: var(--accent-dim); }
+.ref-expand-btn {
+    background: none; border: none; color: var(--muted);
+    font-size: 12px; padding: 2px 4px; cursor: pointer; flex-shrink: 0;
+}
 
 .ref-table-entries {
     padding: 8px 12px 12px;
@@ -4083,3 +4094,4 @@ body[data-page-title="Active-Sheet"] #site-header {
     gap: 8px;
     width: 100%;
 }
+

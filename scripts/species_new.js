@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 /* ====== Data ====== */
 async function loadSpecies() {
-    const tryPaths = ['data/species_new.json', 'species_new.json'];
+    const tryPaths = ['data/species.json', 'species.json'];
     for (const p of tryPaths) {
         try {
             const res = await fetch(p);
@@ -44,7 +44,7 @@ async function loadSpecies() {
             return;
         } catch { }
     }
-    console.error('Could not load species_new.json');
+    console.error('Could not load species.json');
 }
 
 function normalizeSpecies(arr) {
@@ -155,12 +155,25 @@ function renderCard(s) {
 
     const pf = (s.features && s.features[0]) ? s.features[0] : null;
 
+    const desc = s.description || {};
+    const physical = desc.physical || '';
+    const environment = desc.environment && desc.environment !== '[TBD]' ? desc.environment : '';
+    const culture = desc.culture && desc.culture !== '[TBD]' ? desc.culture : '';
+    const lore = desc.lore && desc.lore !== '[TBD]' ? desc.lore : '';
+
+    const descSections = [
+        physical && `<p>${escapeHTML(physical)}</p>`,
+        environment && `<h4 class="desc-section-label">Environment</h4><p>${escapeHTML(environment)}</p>`,
+        culture && `<h4 class="desc-section-label">Culture</h4><p>${escapeHTML(culture)}</p>`,
+        lore && `<h4 class="desc-section-label">Lore</h4><p>${escapeHTML(lore)}</p>`,
+    ].filter(Boolean).join('');
+
     el.innerHTML = `
   <img class="cover" loading="lazy" src="${cover}" alt="${escapeHTML(s.name)}">
   <header><h3>${escapeHTML(s.name)}</h3></header>
   <div class="species-meta">${chips}</div>
   <div class="species-body collapsed">
-    ${escapeHTML(s.description || '')}
+    <div class="species-desc">${descSections || escapeHTML(physical)}</div>
     ${renderDataTags(s)}
   </div>
   <a class="read-more" role="button">Read full</a>
@@ -174,7 +187,7 @@ function renderCard(s) {
         btn.textContent = isCollapsed ? 'Read full' : 'Show less';
     };
     btn.addEventListener('click', toggle);
-    if ((s.description || '').length < 220) {
+    if (physical.length < 220 && !environment && !culture && !lore) {
         body.classList.remove('collapsed');
         btn.style.display = 'none';
     }
@@ -296,8 +309,10 @@ function isolateToggle(key, val) {
 function applyFilters() {
     let out = SPECIES.filter(s => {
         if (state.q) {
+            const desc = s.description || {};
             const hay = [
-                s.name, s.lineage, s.option, s.rarity, s.region, s.size, s.description,
+                s.name, s.lineage, s.option, s.rarity, s.region, s.size,
+                desc.physical, desc.environment, desc.culture, desc.lore,
                 ...(s.features || []).flatMap(f => [f.name, f.description, f.action, f.damage, f.type, ...(f.options || []).map(o => o.name || o.effect || '')])
             ].join(' ').toLowerCase();
             if (!hay.includes(state.q)) return false;
@@ -464,7 +479,7 @@ function openLightbox(src, alt = '') {
 
 /* ====== Data ====== */
 async function loadSpecies() {
-    const tryPaths = ['data/species_new.json', 'species_new.json'];
+    const tryPaths = ['data/species.json', 'species.json'];
     for (const p of tryPaths) {
         try {
             const res = await fetch(p);
@@ -474,5 +489,5 @@ async function loadSpecies() {
             return;
         } catch { }
     }
-    console.error('Could not load species_new.json');
+    console.error('Could not load species.json');
 }

@@ -1,10 +1,10 @@
-let npcData = {};
+﻿let npcData = {};
 let speciesData = { species: [], dragonTypes: [] };
 
 // Load both JSONs
 Promise.all([
     fetch("data/worldbuilding.json").then(res => res.json()),
-    fetch("data/species_new.json").then(res => res.json())
+    fetch("data/species.json").then(res => res.json())
 ]).then(([worldbuilding, species]) => {
     npcData = worldbuilding;
     speciesData = species;
@@ -53,7 +53,7 @@ function formatSpecies(s) {
 function extractFeature(species) {
     const features = [];
 
-    // species_new.json flat format: feature_name / feature_effect / fetAction / fetCheck etc.
+    // species.json flat format: feature_name / feature_effect / fetAction / fetCheck etc.
     if (species.feature_name) {
         let line = species.feature_name;
         if (species.feature_effect) line += `: ${species.feature_effect}`;

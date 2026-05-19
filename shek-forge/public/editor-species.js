@@ -32,7 +32,7 @@ registerEditor('species', {
         lineage:          group || '',
         option:           '',
         name:             '',
-        description:      '',
+        description:      { physical: '', environment: '', culture: '', lore: '' },
         size:             '5-7',
         lifespan:         80,
         language:         'Imperial',
@@ -142,12 +142,38 @@ registerEditor('species', {
             </div>
         </div>
 
-        <div class="forge-section">
-            <div class="section-header">Description</div>
-            <div class="section-body">
-                <textarea class="field-input" rows="6"
-                    onchange="updateField(${idx},'description',this.value)"
-                    oninput="markUnsaved()">${fh('description')}</textarea>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+            <div class="forge-section" style="margin-bottom:0">
+                <div class="section-header section-header-split">Physical <button class="sp-copy-btn" onclick="spCopy('sp-phys-${idx}',this)">⎘ Copy</button></div>
+                <div class="section-body">
+                    <textarea id="sp-phys-${idx}" class="field-input" rows="8" spellcheck="true"
+                        onchange="updateField(${idx},'description.physical',this.value)"
+                        oninput="markUnsaved()">${escHtml(String(entry.description?.physical ?? ''))}</textarea>
+                </div>
+            </div>
+            <div class="forge-section" style="margin-bottom:0">
+                <div class="section-header section-header-split">Environment <button class="sp-copy-btn" onclick="spCopy('sp-env-${idx}',this)">⎘ Copy</button></div>
+                <div class="section-body">
+                    <textarea id="sp-env-${idx}" class="field-input" rows="8" spellcheck="true"
+                        onchange="updateField(${idx},'description.environment',this.value)"
+                        oninput="markUnsaved()">${escHtml(String(entry.description?.environment ?? ''))}</textarea>
+                </div>
+            </div>
+            <div class="forge-section" style="margin-bottom:0">
+                <div class="section-header section-header-split">Culture <button class="sp-copy-btn" onclick="spCopy('sp-cult-${idx}',this)">⎘ Copy</button></div>
+                <div class="section-body">
+                    <textarea id="sp-cult-${idx}" class="field-input" rows="8" spellcheck="true"
+                        onchange="updateField(${idx},'description.culture',this.value)"
+                        oninput="markUnsaved()">${escHtml(String(entry.description?.culture ?? ''))}</textarea>
+                </div>
+            </div>
+            <div class="forge-section" style="margin-bottom:0">
+                <div class="section-header section-header-split">Lore <button class="sp-copy-btn" onclick="spCopy('sp-lore-${idx}',this)">⎘ Copy</button></div>
+                <div class="section-body">
+                    <textarea id="sp-lore-${idx}" class="field-input" rows="8" spellcheck="true"
+                        onchange="updateField(${idx},'description.lore',this.value)"
+                        oninput="markUnsaved()">${escHtml(String(entry.description?.lore ?? ''))}</textarea>
+                </div>
             </div>
         </div>
 
@@ -227,4 +253,33 @@ registerEditor('species', {
             </div>
         </div>`;
     },
+
 });
+
+// ── SPECIES COPY HELPER ───────────────────────────────────────────────────────
+(function injectCopyBtnStyle() {
+    const s = document.createElement('style');
+    s.textContent = `
+        .sp-copy-btn {
+            background: none; border: 1px solid #3a3520; color: #7a6030;
+            font-family: 'Share Tech Mono', monospace; font-size: 8px;
+            letter-spacing: .08em; padding: 1px 6px; border-radius: 2px;
+            cursor: pointer; transition: color .15s, border-color .15s;
+            float: right; margin-top: -1px;
+        }
+        .sp-copy-btn:hover { color: #e0aa44; border-color: #7a5518; }
+    `;
+    document.head.appendChild(s);
+})();
+
+function spCopy(taId, btn) {
+    const ta = document.getElementById(taId);
+    if (!ta || !ta.value.trim()) return;
+    navigator.clipboard.writeText(ta.value).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = '✓ Copied';
+        setTimeout(() => btn.textContent = orig, 1500);
+    });
+}
+
+

@@ -10,13 +10,13 @@
     "theme_color": "#0c0c0f",
     "icons": [
         {
-            "src": "../assets/icons/play.png",
+            "src": "../assets/icons/check20-app.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "../assets/icons/features.png",
+            "src": "../assets/icons/check20-app.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"

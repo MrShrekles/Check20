@@ -1,4 +1,4 @@
-/* Active Sheet — mobile-first gameplay runner */
+﻿/* Active Sheet — mobile-first gameplay runner */
 
 const DATA_BASE = window.location.pathname.includes('/active-sheet/') ? '../data/' : 'data/';
 const titleCase = s => s ? s.charAt(0).toUpperCase() + s.slice(1).replace(/ \w/g, c => c.toUpperCase()) : '';
@@ -1095,15 +1095,14 @@ function renderRefTables() {
                 <span class="ref-table-num">${i + 1}</span>
                 <span class="ref-table-entry">${e}</span>
             </div>`).join('');
-        return `<details class="ref-table-card">
-            <summary class="ref-table-head">
+        return `<div class="ref-table-card">
+            <div class="ref-table-head" data-roll-table="${type}" role="button" tabindex="0" aria-label="Roll ${type} table">
                 <span class="ref-table-title">${table.icon || ''} ${type}</span>
-                <button class="spell-cast-btn ref-roll-inline" type="button"
-                    data-roll-table="${type}">⚄ Roll</button>
                 <span class="equip-cat-badge">${table.category}</span>
-            </summary>
-            <div class="ref-table-entries">${rows}</div>
-        </details>`;
+                <button class="ref-expand-btn" type="button" data-expand-table="${type}" aria-label="Show entries">▾</button>
+            </div>
+            <div class="ref-table-entries" id="ref-entries-${type}" hidden>${rows}</div>
+        </div>`;
     }).join('');
 }
 
@@ -1160,13 +1159,21 @@ function bindRefPanel() {
         rollAndShowRefTable(type, 'ref-quick-result');
     });
 
-    // Per-card roll buttons (prevent details toggle)
+    // Whole card header rolls; expand button toggles entries
     document.getElementById('ref-tables-grid')?.addEventListener('click', e => {
-        const btn = e.target.closest('[data-roll-table]');
-        if (!btn) return;
-        e.preventDefault();
-        e.stopPropagation();
-        rollDamageTable(btn.dataset.rollTable);
+        const expandBtn = e.target.closest('[data-expand-table]');
+        if (expandBtn) {
+            e.stopPropagation();
+            const entriesEl = document.getElementById(`ref-entries-${expandBtn.dataset.expandTable}`);
+            if (entriesEl) {
+                entriesEl.hidden = !entriesEl.hidden;
+                expandBtn.textContent = entriesEl.hidden ? '▾' : '▴';
+            }
+            return;
+        }
+        const head = e.target.closest('[data-roll-table]');
+        if (!head) return;
+        rollDamageTable(head.dataset.rollTable);
         setActivePanel('chat');
     });
 }
@@ -1517,7 +1524,7 @@ let allSpeciesData = [];
 async function loadSpeciesData() {
     if (allSpeciesData.length) return;
     try {
-        const res = await fetch(DATA_BASE + 'species_new.json');
+        const res = await fetch(DATA_BASE + 'species.json');
         const json = await res.json();
         allSpeciesData = json?.species || [];
     } catch (e) { console.warn('Could not load species data', e); }
@@ -1711,18 +1718,19 @@ function bindSpeciesPicker() {
 
 // ── FEATURES PANEL TABS ───────────────────────────────────────────────────────
 
+function setFeatTab(target) {
+    document.querySelectorAll('.feat-tab').forEach(t =>
+        t.classList.toggle('is-active', t.dataset.featTab === target));
+    document.querySelectorAll('.feat-tab-content').forEach(c =>
+        c.classList.toggle('is-active', c.id === `feat-tab-${target}`));
+    if (target === 'class') renderSpeciesView();
+    if (state.char) state.char.featTab = target;
+}
+
 function bindFeatTabs() {
     document.querySelectorAll('.feat-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            const target = tab.dataset.featTab;
-            document.querySelectorAll('.feat-tab').forEach(t =>
-                t.classList.toggle('is-active', t.dataset.featTab === target));
-            document.querySelectorAll('.feat-tab-content').forEach(c =>
-                c.classList.toggle('is-active', c.id === `feat-tab-${target}`));
-            if (target === 'class') renderSpeciesView();
-        });
+        tab.addEventListener('click', () => setFeatTab(tab.dataset.featTab));
     });
-
 }
 
 // ── SPECIES VIEW ──────────────────────────────────────────────────────────────
@@ -1768,6 +1776,33 @@ function renderClassView() {
     const pathProgSteps = pathEntry?.path?.steps?.filter(s => Number(s.step) !== 0) || [];
     const talentProgSteps = talentEntry?.talent?.steps?.filter(s => Number(s.step) !== 0) || [];
 
+    // Strip Roman numeral suffix to find upgrade family (e.g. "Relentless II" → "Relentless")
+    const featFamily = name => (name || '').replace(/\s+(II|III|IV|V|VI|VII|VIII)\s*$/i, '').trim();
+
+    // Group unlocked progression steps under their base feature
+    function buildGroupedCards(initSteps, progSteps, checkedArr) {
+        const baseCards = new Map(); // family → { baseHtml, upgrades: [] }
+        initSteps.forEach(s => {
+            const fam = featFamily(s.name);
+            baseCards.set(fam, { baseHtml: renderStepCard(s), upgrades: [] });
+        });
+        progSteps.forEach((s, i) => {
+            if (!checkedArr[i]) return;
+            const fam = featFamily(s.name);
+            const isUpgrade = (s.action || '').toLowerCase() === 'upgrade' && baseCards.has(fam);
+            if (isUpgrade) {
+                baseCards.get(fam).upgrades.push(renderStepCard(s));
+            } else {
+                baseCards.set(fam + '__' + i, { baseHtml: renderStepCard(s), upgrades: [] });
+            }
+        });
+        return [...baseCards.values()].map(({ baseHtml, upgrades }) =>
+            upgrades.length
+                ? `<div class="feat-upgrade-group">${baseHtml}<div class="feat-upgrades">${upgrades.join('')}</div></div>`
+                : baseHtml
+        ).join('');
+    }
+
     function sectionBlock(key, label, cardsHtml) {
         if (!cardsHtml.trim()) return '';
         const collapsed = sectionCollapsed[key];
@@ -1786,13 +1821,11 @@ function renderClassView() {
         : '';
 
     const pathCards = (pathInit.length || pathProgSteps.length)
-        ? pathInit.map(renderStepCard).join('') +
-        pathProgSteps.map((s, i) => state.progression.pathChecked[i] ? renderStepCard(s) : '').join('')
+        ? buildGroupedCards(pathInit, pathProgSteps, state.progression.pathChecked)
         : '';
 
     const talentCards = (talentInit.length || talentProgSteps.length)
-        ? talentInit.map(renderStepCard).join('') +
-        talentProgSteps.map((s, i) => state.progression.talentChecked[i] ? renderStepCard(s) : '').join('')
+        ? buildGroupedCards(talentInit, talentProgSteps, state.progression.talentChecked)
         : '';
 
     el.innerHTML = `
@@ -3468,30 +3501,45 @@ function bindProgressionPanel() {
             return;
         }
 
-        // ── Armor edit: inline form ──────────────────────────────
+        // ── Equipment edit ────────────────────────────────────────
         if (action === 'edit-equip') {
             const item = state.equipment[idx];
             if (!item) return;
+            // Weapons get the full weapon modal
+            if ((item.category || '') === 'weapon') { openWeaponModal(idx); return; }
             const isArmorItem = (item.category || '') === 'armor';
-            const armorFields = isArmorItem ? `
+            const specificFields = isArmorItem ? `
                 <div class="equip-edit-grid">
                     <label class="field">
                         <span class="field-label">Armor Rating</span>
                         <input type="number" class="equip-edit-rating" value="${item.armorRating || 0}" min="0" />
                     </label>
                     <label class="field">
-                        <span class="field-label">Check Bonuses</span>
-                        <input type="text" class="equip-edit-notes" value="${esc(item.notes || '')}" placeholder="Stealth -2, Agility -1…" />
+                        <span class="field-label">Bulk</span>
+                        <input type="text" class="equip-edit-bulk" value="${esc(item.bulk || '')}" placeholder="2" />
                     </label>
-                </div>` : `
+                </div>
                 <label class="field">
-                    <span class="field-label">Stats / Notes</span>
-                    <input type="text" class="equip-edit-notes" value="${esc(item.notes || '')}" placeholder="1d6 Impact · Melee…" />
-                </label>`;
+                    <span class="field-label">Check Penalties</span>
+                    <input type="text" class="equip-edit-notes" value="${esc(item.notes || '')}" placeholder="Stealth -2, Agility -1…" />
+                </label>` : `
+                <div class="equip-edit-grid">
+                    <label class="field">
+                        <span class="field-label">Stats / Notes</span>
+                        <input type="text" class="equip-edit-notes" value="${esc(item.notes || '')}" placeholder="1d6 · Short · Bulk 1…" />
+                    </label>
+                    <label class="field">
+                        <span class="field-label">Bulk</span>
+                        <input type="text" class="equip-edit-bulk" value="${esc(item.bulk || '')}" placeholder="1" />
+                    </label>
+                </div>`;
             row.innerHTML = `<div class="equip-edit-form">
-                <div class="step-edit-title">${item.name}</div>
-                ${armorFields}
-                <label class="field" style="margin-top:8px">
+                <label class="field">
+                    <span class="field-label">Name</span>
+                    <input type="text" class="equip-edit-name" value="${esc(item.name || '')}" placeholder="Item name…" />
+                </label>
+                ${specificFields}
+                <label class="field" style="margin-top:6px">
                     <span class="field-label">Description / Flavor</span>
                     <textarea class="step-edit-desc equip-edit-desc" rows="2">${esc(item.flavor || '')}</textarea>
                 </label>
@@ -3512,13 +3560,16 @@ function bindProgressionPanel() {
             const item = state.equipment[idx];
             if (!item) return;
             const isArmorItem = (item.category || '') === 'armor';
+            const nameVal = row.querySelector('.equip-edit-name')?.value?.trim();
+            if (nameVal) item.name = nameVal;
+            item.notes  = row.querySelector('.equip-edit-notes')?.value?.trim() || '';
+            item.bulk   = row.querySelector('.equip-edit-bulk')?.value?.trim()  || '';
+            item.flavor = row.querySelector('.equip-edit-desc')?.value?.trim()  || '';
+            item.hideRoll = row.querySelector('.equip-edit-hideroll')?.checked || false;
             if (isArmorItem) {
                 item.armorRating = parseInt(row.querySelector('.equip-edit-rating')?.value || '0', 10) || 0;
                 recalcArmorBonuses();
             }
-            item.notes = row.querySelector('.equip-edit-notes')?.value?.trim() || '';
-            item.flavor = row.querySelector('.equip-edit-desc')?.value?.trim() || '';
-            item.hideRoll = row.querySelector('.equip-edit-hideroll')?.checked || false;
             saveState();
             renderEquipment();
             return;
@@ -3825,6 +3876,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bindSpeciesPicker();
     syncSpeciesDisplay();
     bindFeatTabs();
+    if (state.char?.featTab) setFeatTab(state.char.featTab);
     renderSpeciesView();
     bindXpControls();
     bindProgressionPanel();

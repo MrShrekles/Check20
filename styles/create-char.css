@@ -552,6 +552,34 @@ button, input, select, textarea, a {
 .stat-name {
     font-size: 13px;
     font-weight: 600;
+    display: flex; flex-direction: column; gap: 1px;
+}
+.stat-hint {
+    font-size: 10px; font-weight: 400; color: var(--muted);
+}
+
+.guide-sub em { font-style: italic; color: var(--muted); }
+
+/* Progression preview in build guide */
+.guide-progression { margin-top: 8px; }
+.guide-prog-head {
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    cursor: pointer; list-style: none; padding: 4px 0;
+}
+.guide-prog-head::-webkit-details-marker { display: none; }
+.guide-prog-list { display: flex; flex-direction: column; gap: 2px; padding-top: 4px; }
+.guide-prog-row {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; padding: 3px 0;
+    border-top: 1px solid var(--line);
+}
+.guide-prog-upgrade { opacity: 0.7; }
+.guide-prog-lvl  { font-size: 10px; color: var(--muted); min-width: 24px; }
+.guide-prog-name { flex: 1; font-weight: 600; }
+.guide-prog-type { font-size: 10px; color: var(--muted); }
+.guide-prog-check {
+    font-size: 10px; font-weight: 700; color: var(--accent);
+    background: var(--accent-dim); border-radius: 4px; padding: 1px 5px;
 }
 
 .stat-stepper {
@@ -630,6 +658,13 @@ button, input, select, textarea, a {
 }
 
 .detail-roll-btn:active { background: rgba(255,255,255,0.14); transform: scale(0.97); }
+
+.detail-equip-add { display: flex; flex-direction: column; }
+.extra-equip-row  { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-top: 1px solid var(--line); margin-top: 4px; }
+.extra-equip-info { flex: 1; display: flex; flex-direction: column; gap: 1px; }
+.extra-equip-name  { font-size: 13px; font-weight: 700; }
+.extra-equip-notes { font-size: 11px; color: var(--muted); }
+.extra-equip-cat   { font-size: 10px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; }
 
 .detail-textarea {
     width: 100%;

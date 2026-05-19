@@ -296,6 +296,7 @@ function renderEditor() {
             </div>
         </div>
         <div class="fields-scroll">${innerHtml}</div>`;
+    editor.afterRender?.(entry, state.currentIndex);
 }
 
 function renderEditorStub() {

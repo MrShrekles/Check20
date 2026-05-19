@@ -40,34 +40,33 @@
                 <details>
                     <summary>Settings</summary>
 
-                    <p><strong>Type</strong></p>
+                    <p><strong>Base</strong></p>
                     <div>
-                        <label><input type="checkbox" id="chkRandomBase" checked> Randomize Base</label>
+                        <label><input type="checkbox" id="chkRandomBase" checked> Randomize</label>
                         &nbsp;
-                        <label><input type="checkbox" id="chkRandomAdd" checked> Randomize Add</label>
+                        <select id="selBase" disabled></select>
                     </div>
                     <div style="margin-top:6px">
-                        <label>Base: <select id="selBase" disabled></select></label>
-                        &nbsp;
-                        <label>Add: <select id="selAdd" disabled></select></label>
-                    </div>
-
-                    <p><strong>Filters</strong></p>
-                    <div>
-                        <label>Size: <select id="filterSize"><option value="">Any</option></select></label>
-                        &nbsp;
                         <label>Rarity: <select id="filterRarity"><option value="">Any</option></select></label>
                         &nbsp;
-                        <label>Behavior: <select id="filterBehavior"><option value="">Any</option></select></label>
+                        <label>Size: <select id="filterSize"><option value="">Any</option></select></label>
                         &nbsp;
-                        <label>Environment: <select id="filterEnvironment"><option value="">Any</option></select></label>
+                        <label>Origin: <select id="filterBaseOrigin"><option value="">Any</option></select></label>
+                    </div>
+
+                    <p><strong>Mod</strong></p>
+                    <div>
+                        <label><input type="checkbox" id="chkRandomMod" checked> Randomize</label>
+                        &nbsp;
+                        <select id="selMod" disabled></select>
+                    </div>
+                    <div style="margin-top:6px">
+                        <label>Mod Origin: <select id="filterModOrigin"><option value="">Any</option></select></label>
                     </div>
 
                     <p><strong>Compose</strong></p>
                     <div>
-                        <label><input type="checkbox" id="chkConcatName" checked> Title uses "Base + Add"</label>
-                        &nbsp;
-                        <label><input type="checkbox" id="chkNumbersAdd" checked> Numbers add up (e.g., movement)</label>
+                        <label><input type="checkbox" id="chkConcatName" checked> Title uses "Mod + Base"</label>
                     </div>
                 </details>
             </section>

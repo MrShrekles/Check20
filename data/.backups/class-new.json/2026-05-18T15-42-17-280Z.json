@@ -9597,6 +9597,19 @@
               "condition": ""
             },
             {
+              "step": 0,
+              "name": "Cursed Immortality",
+              "action": "Special",
+              "check": "Spirit",
+              "range": "",
+              "description": "You are immortal. You always have been, technically. When you take the Death condition, you may immediately make a Spirit check to remove it. If you fail, you remain dead for 1 hour to 6 weeks, which is deeply inconvenient but not permanent.",
+              "duration": "1 hour",
+              "damage": "",
+              "damageType": "",
+              "armor": "",
+              "condition": ""
+            },
+            {
               "step": 1,
               "name": "The Power Lingers",
               "action": "Resource",
@@ -9727,7 +9740,7 @@
               "condition": ""
             },
             {
-              "step": 11,
+              "step": 1,
               "name": "The Power Lingers",
               "action": "Resource",
               "check": "",
@@ -9740,7 +9753,7 @@
               "condition": ""
             },
             {
-              "step": 12,
+              "step": 2,
               "name": "Memories of Truth",
               "action": "Special",
               "check": "Mental",
@@ -9753,7 +9766,7 @@
               "condition": ""
             },
             {
-              "step": 13,
+              "step": 3,
               "name": "Scars of Omniscience",
               "action": "Passive",
               "check": "Influence",
@@ -9766,7 +9779,7 @@
               "condition": ""
             },
             {
-              "step": 14,
+              "step": 4,
               "name": "Divine Editorializing",
               "action": "Special",
               "check": "",
@@ -9779,7 +9792,7 @@
               "condition": ""
             },
             {
-              "step": 15,
+              "step": 5,
               "name": "Denial of Apotheosis",
               "action": "Special",
               "check": "",
@@ -9792,7 +9805,7 @@
               "condition": ""
             },
             {
-              "step": 16,
+              "step": 6,
               "name": "I Have Seen This Before",
               "action": "Off-Action",
               "check": "",
@@ -9805,7 +9818,7 @@
               "condition": "Confused"
             },
             {
-              "step": 17,
+              "step": 7,
               "name": "Unimpressed",
               "action": "Off-Action",
               "check": "",
@@ -9818,7 +9831,7 @@
               "condition": ""
             },
             {
-              "step": 18,
+              "step": 8,
               "name": "What Did you Say?",
               "action": "Action",
               "check": "",
@@ -9831,7 +9844,7 @@
               "condition": "Stunned"
             },
             {
-              "step": 19,
+              "step": 9,
               "name": "Forgotten",
               "action": "Off-Action",
               "check": "",
@@ -9844,7 +9857,7 @@
               "condition": ""
             },
             {
-              "step": 20,
+              "step": 10,
               "name": "Apology Accepted",
               "action": "Off-Action",
               "check": "",
@@ -15727,7 +15740,7 @@
               "check": "",
               "range": "",
               "description": "After casting a spell, if the result is even, you may apply a non-major condition to the target. If the result is odd, you gain a the Slowed condition.",
-              "duration": "Until the end of your next turn",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -15752,7 +15765,7 @@
               "action": "Upgrade",
               "check": "",
               "range": "",
-              "description": "If the result of a roll for a spell is even, repair +3 Armor. If odd, your Armor is reduced by -3 instead (minimum 0).",
+              "description": "If the result of a spell is even, gain +9 temporary Armor until the start of your next turn. If odd, your Armor is reduced by -3 instead (minimum 0).",
               "duration": "",
               "damage": "",
               "damageType": "",

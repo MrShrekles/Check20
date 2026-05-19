@@ -22,8 +22,10 @@ const state = {
     selectedId: null,
 };
 
+let GOD_MAP = new Map(); // lowercased name → { slug, name, words, desc }
+
 async function loadSpecies() {
-    const tryPaths = ['data/species_new.json', 'species_new.json'];
+    const tryPaths = ['data/species.json', 'species.json'];
     for (const p of tryPaths) {
         try {
             const res = await fetch(p);
@@ -33,7 +35,25 @@ async function loadSpecies() {
             return;
         } catch { }
     }
-    console.error('Could not load species_new.json');
+    console.error('Could not load species.json');
+}
+
+async function loadGods() {
+    const tryPaths = ['data/gods.json', 'gods.json'];
+    for (const p of tryPaths) {
+        try {
+            const res = await fetch(p);
+            if (!res.ok) continue;
+            const raw = await res.json();
+            const gods = Array.isArray(raw) ? raw : raw.gods || [];
+            GOD_MAP = new Map(gods.map(g => {
+                const name = String(g.name || '').trim();
+                const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                return [name.toLowerCase(), { slug, name, words: g.words || '', desc: g.desc || '' }];
+            }));
+            return;
+        } catch { }
+    }
 }
 
 function normalizeSpecies(arr) {

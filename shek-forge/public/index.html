@@ -14,6 +14,12 @@
     <div class="titlebar-brand">⚙ FORGE</div>
     <div class="titlebar-sep"></div>
     <div class="titlebar-path" id="titlePath">Loading...</div>
+    <div class="codex-nav">
+      <span class="codex-nav-label">Codex</span>
+      <a href="/monster-forge.html" class="codex-nav-btn" title="Monster Forge — codex-style editor">🗡 Monsters</a>
+    </div>
+    <div class="titlebar-sep"></div>
+
     <div class="titlebar-right">
       <div class="file-type-badge" id="fileTypeBadge"></div>
       <div class="status-dot" id="statusDot"></div>
@@ -119,6 +125,18 @@
         <div class="settings-row">
           <div class="settings-label">Compact Mode</div>
           <button class="settings-toggle" id="compactToggle" onclick="toggleCompact()">OFF</button>
+        </div>
+
+        <div class="settings-section-label" style="margin-top:4px">Field Sizing</div>
+
+        <div class="settings-row settings-slider-row">
+          <div class="settings-label">Input Size <span id="inputSizeVal" class="settings-slider-val"></span></div>
+          <input type="range" id="inputSizeSlider" class="settings-slider" min="1" max="5" step="1" oninput="setInputSize(+this.value)">
+        </div>
+
+        <div class="settings-row settings-slider-row">
+          <div class="settings-label">Textbox Height <span id="textareaHeightVal" class="settings-slider-val"></span></div>
+          <input type="range" id="textareaHeightSlider" class="settings-slider" min="1" max="5" step="1" oninput="setTextareaHeight(+this.value)">
         </div>
 
         <div class="settings-section-label" style="margin-top:4px">Display</div>

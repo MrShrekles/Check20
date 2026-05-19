@@ -15,6 +15,23 @@ function syncToggle(id, on) {
     el.classList.toggle('on', on);
 }
 
+// Input size: 5 steps mapping to vertical padding values
+const INPUT_SIZE_STEPS = [
+    { pv: '2px',  ph: '5px',  label: 'XS' },
+    { pv: '3px',  ph: '6px',  label: 'S'  },
+    { pv: '4px',  ph: '8px',  label: 'M'  },
+    { pv: '6px',  ph: '10px', label: 'L'  },
+    { pv: '9px',  ph: '12px', label: 'XL' },
+];
+// Textarea height: 5 steps
+const TEXTAREA_HEIGHT_STEPS = [
+    { h: '36px',  label: 'XS' },
+    { h: '46px',  label: 'S'  },
+    { h: '56px',  label: 'M'  },
+    { h: '80px',  label: 'L'  },
+    { h: '120px', label: 'XL' },
+];
+
 function applyForgeSettings(s) {
     const scale = s.fontScale || 1;
 
@@ -39,6 +56,37 @@ function applyForgeSettings(s) {
     // Invert — flips dark UI to light
     document.body.classList.toggle('forge-invert', !!s.invert);
     syncToggle('invertToggle', !!s.invert);
+
+    // Input size
+    const inputStep = INPUT_SIZE_STEPS[(s.inputSize || 3) - 1];
+    document.documentElement.style.setProperty('--input-padding-v', inputStep.pv);
+    document.documentElement.style.setProperty('--input-padding-h', inputStep.ph);
+    const inputSlider = document.getElementById('inputSizeSlider');
+    if (inputSlider) inputSlider.value = s.inputSize || 3;
+    const inputVal = document.getElementById('inputSizeVal');
+    if (inputVal) inputVal.textContent = inputStep.label;
+
+    // Textarea height
+    const taStep = TEXTAREA_HEIGHT_STEPS[(s.textareaHeight || 3) - 1];
+    document.documentElement.style.setProperty('--textarea-min-height', taStep.h);
+    const taSlider = document.getElementById('textareaHeightSlider');
+    if (taSlider) taSlider.value = s.textareaHeight || 3;
+    const taVal = document.getElementById('textareaHeightVal');
+    if (taVal) taVal.textContent = taStep.label;
+}
+
+function setInputSize(step) {
+    const s = loadForgeSettings();
+    s.inputSize = step;
+    saveForgeSettings(s);
+    applyForgeSettings(s);
+}
+
+function setTextareaHeight(step) {
+    const s = loadForgeSettings();
+    s.textareaHeight = step;
+    saveForgeSettings(s);
+    applyForgeSettings(s);
 }
 
 function setFontScale(scale) {

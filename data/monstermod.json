@@ -1,0 +1,691 @@
+[
+  {
+    "name": "Forest",
+    "origin": "nature",
+    "environment": "Forest",
+    "lairType": "Hollow Tree / Root Den",
+    "motivation": "Protecting its territory from those who wander too deep",
+    "movementMod": {
+      "climb": 15
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Canopy Stalker",
+        "effect": "Attacks made from elevated terrain or trees have advantage.",
+        "type": "passive"
+      },
+      {
+        "name": "Root Net",
+        "effect": "Once per combat, may cause roots to erupt beneath a creature within reach range. Target must succeed a Physical check or be Restrained until end of their next turn.",
+        "range": "reach",
+        "type": "off-action"
+      }
+    ]
+  },
+  {
+    "name": "Tundra",
+    "origin": "elemental",
+    "environment": "Tundra",
+    "lairType": "Frozen Cave / Permafrost Den",
+    "motivation": "Hunting scarce prey across a harsh frozen land",
+    "movementMod": {
+      "swim": 20,
+      "burrow": 10
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": {
+      "name": "Frost Breath",
+      "damage": "1d6",
+      "type": "Cold"
+    },
+    "spells": [],
+    "features": [
+      {
+        "name": "Frozen Coat",
+        "effect": "Resistant to cold damage. Immune to the Frozen condition.",
+        "type": "passive"
+      },
+      {
+        "name": "Blizzard Surge",
+        "effect": "When in an open outdoor environment, may spend an action to create a 10 ft radius snow squall. Creatures inside have disadvantage on ranged attacks until the start of this creature's next turn.",
+        "range": "short",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Desert",
+    "origin": "nature",
+    "environment": "Desert",
+    "lairType": "Sand Burrow / Ruin Shelter",
+    "motivation": "Guarding a rare water source or oasis",
+    "movementMod": {
+      "burrow": 25
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Heat Endurance",
+        "effect": "Ignores difficult terrain from sand or extreme heat. Never suffers the Exhausted condition from environmental heat.",
+        "type": "passive"
+      },
+      {
+        "name": "Sand Strike",
+        "effect": "Once per round, may kick up a cloud of sand as part of a melee attack. On hit, target must also succeed an Agility check or be Blinded until end of their next turn.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Coastal",
+    "origin": "nature",
+    "environment": "Coastal",
+    "lairType": "Tidal Cave / Rocky Shore Nest",
+    "motivation": "Feeding from tide pools and stalking the shallows",
+    "movementMod": {
+      "swim": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Amphibious",
+        "effect": "Breathes air and water equally. Does not suffer movement penalties in shallow water.",
+        "type": "passive"
+      },
+      {
+        "name": "Undertow Pull",
+        "effect": "On a successful melee hit while in water, target must succeed a Physical check or be dragged 10 ft toward deeper water.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Abyssal",
+    "origin": "nature",
+    "environment": "Deep Ocean",
+    "lairType": "Underwater Trench / Sunken Ruin",
+    "motivation": "Rising from crushing depths to hunt surface dwellers",
+    "movementMod": {
+      "swim": 40
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": {
+      "name": "Pressure Wave",
+      "damage": "1d8",
+      "type": "Impact"
+    },
+    "spells": [],
+    "features": [
+      {
+        "name": "Deep Pressure",
+        "effect": "Ignores all effects of water pressure. Has darkvision in underwater environments.",
+        "type": "passive"
+      },
+      {
+        "name": "Crushing Grip",
+        "effect": "When this creature grapples a target, the target takes [[1d4]] Impact damage at the start of each of its turns while grappled.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Swamp",
+    "origin": "nature",
+    "environment": "Swamp",
+    "lairType": "Bog Hollow / Root Mat Den",
+    "motivation": "Ambushing prey drawn by the smell of rot and decay",
+    "movementMod": {
+      "swim": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Bog Camouflage",
+        "effect": "In swamp or marsh terrain, attacks against this creature have disadvantage.",
+        "type": "passive"
+      },
+      {
+        "name": "Fetid Aura",
+        "effect": "Creatures that start their turn within reach must succeed a Survival check or gain the Sickened condition until they move out of range.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Cavernous",
+    "origin": "basic",
+    "environment": "Underground",
+    "lairType": "Cave System / Fungal Warren",
+    "motivation": "Nesting deep in the dark, guarding its clutch from light-bringers",
+    "movementMod": {
+      "climb": 25,
+      "burrow": 15
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Darkvision",
+        "effect": "Sees perfectly in complete darkness. Immune to the Blinded condition from magical darkness.",
+        "type": "passive"
+      },
+      {
+        "name": "Tremorsense",
+        "effect": "Detects any creature touching the ground within reach range, even through walls and rock.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Urban",
+    "origin": "basic",
+    "environment": "Urban",
+    "lairType": "Abandoned Building / Sewer Network",
+    "motivation": "Scavenging the discarded remnants of civilization",
+    "movementMod": {
+      "climb": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Crowd Cover",
+        "effect": "While in an area with 3 or more non-hostile creatures, attacks targeting this creature have disadvantage.",
+        "type": "passive"
+      },
+      {
+        "name": "Scavenge",
+        "effect": "Once per short rest, may find or improvise a weapon, shield, or useful item from surrounding debris. Narrator determines what is available.",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Ruins",
+    "origin": "arcane",
+    "environment": "Ruins",
+    "lairType": "Collapsed Hall / Ancient Crypt",
+    "motivation": "Bound by ancient oath or lingering curse to guard against all who enter",
+    "movementMod": {},
+    "melee": null,
+    "ranged": null,
+    "spell": {
+      "name": "Ruin Curse",
+      "damage": "1d6",
+      "type": "Arcane"
+    },
+    "spells": [],
+    "features": [
+      {
+        "name": "Ancient Ward",
+        "effect": "At the start of combat, gains [[PL * 2]] temporary armor that lasts until destroyed.",
+        "type": "passive"
+      },
+      {
+        "name": "Haunt",
+        "effect": "Once per combat, may flicker and reappear up to 20 ft away as a free action, appearing as though it briefly ceased to exist.",
+        "type": "free"
+      }
+    ]
+  },
+  {
+    "name": "Highland",
+    "origin": "nature",
+    "environment": "Mountain",
+    "lairType": "Cliffside Nest / Peak Cave",
+    "motivation": "Defending the high ground as sovereign, unchallenged territory",
+    "movementMod": {
+      "climb": 30,
+      "fly": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Sure-Footed",
+        "effect": "Immune to difficult terrain from rocky or elevated surfaces. Cannot be knocked Prone by wind or Impact on mountainous terrain.",
+        "type": "passive"
+      },
+      {
+        "name": "Dive Strike",
+        "effect": "If this creature moves at least 20 ft downward before attacking, the attack deals +[[1d6]] damage and target must succeed a Physical check or be knocked Prone.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Volcanic",
+    "origin": "elemental",
+    "environment": "Volcanic",
+    "lairType": "Lava Tube / Caldera Lair",
+    "motivation": "Drawn to geothermal heat, feeding on magma flows",
+    "movementMod": {
+      "burrow": 25
+    },
+    "melee": {
+      "name": "Magma Strike",
+      "damage": "1d6+1d4",
+      "type": "Fire"
+    },
+    "ranged": null,
+    "spell": {
+      "name": "Lava Jet",
+      "damage": "1d8",
+      "type": "Fire"
+    },
+    "spells": [],
+    "features": [
+      {
+        "name": "Heat Body",
+        "effect": "Creatures that hit this creature with a melee attack take [[1d4]] Fire damage from the heat.",
+        "type": "passive"
+      },
+      {
+        "name": "Magma Plating",
+        "effect": "Immune to fire damage. Resistant to physical damage from non-magical weapons.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Steppe",
+    "origin": "nature",
+    "environment": "Grassland",
+    "lairType": "Prairie Den / Tall Grass Burrow",
+    "motivation": "Migrating across open plains, following the herd or the season",
+    "movementMod": {
+      "walk": 15
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Open Field Sprint",
+        "effect": "May move an additional 15 ft when moving in a straight line on open terrain without obstacles.",
+        "type": "passive"
+      },
+      {
+        "name": "Stampede",
+        "effect": "Once per combat, may move up to full speed in a straight line. Every creature in its path must succeed a Physical check or be knocked Prone and take [[1d6]] Impact damage.",
+        "type": "action"
+      }
+    ]
+  },
+  {
+    "name": "Arcane Touched",
+    "origin": "arcane",
+    "environment": "Prime",
+    "lairType": "Arcane Nexus / Ley Line Convergence",
+    "motivation": "Drawn to sources of magical power to feed, guard, or corrupt",
+    "movementMod": {
+      "fly": 20
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": {
+      "name": "Arcane Burst",
+      "damage": "1d8",
+      "type": "Arcane"
+    },
+    "spells": [],
+    "features": [
+      {
+        "name": "Spell Resistance",
+        "effect": "When targeted by a spell, may make a Spirit check. On a success, reduce the spell's damage or effect by half.",
+        "type": "reaction"
+      },
+      {
+        "name": "Arcane Leech",
+        "effect": "When a spell is cast within short range, this creature gains [[1d4]] temporary wounds.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Mechanized",
+    "origin": "tech",
+    "environment": "Prime",
+    "lairType": "Factory Floor / Abandoned Workshop",
+    "motivation": "Executing its last programmed directive without pause or mercy",
+    "movementMod": {},
+    "melee": null,
+    "ranged": {
+      "name": "Integrated Cannon",
+      "damage": "1d8",
+      "type": "Tech"
+    },
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Iron Frame",
+        "effect": "Immune to Poison and Disease conditions. Has additional [[PL * 2]] armor.",
+        "type": "passive"
+      },
+      {
+        "name": "Overclock",
+        "effect": "Once per combat, may take an additional off-action on its turn.",
+        "type": "off-action"
+      }
+    ]
+  },
+  {
+    "name": "Crystal Bound",
+    "origin": "crystal",
+    "environment": "Prime",
+    "lairType": "Crystal Vein / Geode Chamber",
+    "motivation": "Defending the crystal formation it was born from or bonded to",
+    "movementMod": {},
+    "melee": null,
+    "ranged": null,
+    "spell": {
+      "name": "Crystal Shard",
+      "damage": "1d6+1d4",
+      "type": "Crystal"
+    },
+    "spells": [],
+    "features": [
+      {
+        "name": "Crystal Shell",
+        "effect": "When struck by a physical attack, the attacker takes [[1d4]] Piercing damage from crystal fragments.",
+        "type": "passive"
+      },
+      {
+        "name": "Resonance",
+        "effect": "Crystal and Arcane damage dealt by this creature ignores [[PL]] points of armor.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Vozian",
+    "origin": "vozian",
+    "environment": "Prime",
+    "lairType": "Vozian Ruin / Corrupted Ground",
+    "motivation": "Furthering Vozian will — spreading its influence across the living world",
+    "movementMod": {},
+    "melee": null,
+    "ranged": null,
+    "spell": {
+      "name": "Void Touch",
+      "damage": "1d6",
+      "type": "Eclipse"
+    },
+    "spells": [],
+    "features": [
+      {
+        "name": "Vozian Resilience",
+        "effect": "Immune to fear and charm effects. Cannot be moved against its will by spells.",
+        "type": "passive"
+      },
+      {
+        "name": "Infect",
+        "effect": "On a successful melee hit, target must succeed a Survival check or gain the Corrupted condition for 1 hour.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Timeworn",
+    "origin": "chrono",
+    "environment": "Prime",
+    "lairType": "Temporal Rift / Time-Locked Chamber",
+    "motivation": "Trapped between moments, lashing out at anything that disturbs its fractured timeline",
+    "movementMod": {},
+    "melee": null,
+    "ranged": null,
+    "spell": {
+      "name": "Temporal Lash",
+      "damage": "1d6",
+      "type": "Chrono"
+    },
+    "spells": [],
+    "features": [
+      {
+        "name": "Phase Step",
+        "effect": "Once per round, may teleport up to 15 ft as a free action.",
+        "type": "free"
+      },
+      {
+        "name": "Time Anchor",
+        "effect": "At the start of its turn, roll a d6. On a 1, it acts twice this turn. On a 6, it skips its turn entirely.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Chaos Warped",
+    "origin": "chaos",
+    "environment": "Prime",
+    "lairType": "Chaos Rift / Unstable Pocket Plane",
+    "motivation": "Spreading disorder — it exists to unravel structure and reason",
+    "movementMod": {
+      "fly": 15
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": {
+      "name": "Chaos Bolt",
+      "damage": "1d6+1d6",
+      "type": "Chaos"
+    },
+    "spells": [],
+    "features": [
+      {
+        "name": "Unstable Form",
+        "effect": "At the start of each turn, roll a d6. 1–2: attacks against it have disadvantage this turn. 3–4: normal. 5–6: attacks against it have advantage this turn.",
+        "type": "passive"
+      },
+      {
+        "name": "Chaos Aura",
+        "effect": "Spells cast within reach of this creature have a 1-in-6 chance to trigger a wild surge effect chosen by the Narrator.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Life Surge",
+    "origin": "life",
+    "environment": "Prime",
+    "lairType": "Necrotic Shrine / Life Well",
+    "motivation": "Consuming vitality to sustain its own unnatural existence",
+    "movementMod": {},
+    "melee": null,
+    "ranged": null,
+    "spell": {
+      "name": "Life Drain",
+      "damage": "1d8",
+      "type": "Eclipse"
+    },
+    "spells": [],
+    "features": [
+      {
+        "name": "Vampiric",
+        "effect": "When this creature deals damage, it heals for half the damage dealt (rounded down).",
+        "type": "passive"
+      },
+      {
+        "name": "Death Defiance",
+        "effect": "The first time this creature would drop to 0 wounds per day, it instead drops to 1. Once per day.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Elemental",
+    "origin": "elemental",
+    "environment": "Prime",
+    "lairType": "Elemental Rift / Planar Seam",
+    "motivation": "Anchoring its elemental essence to the material plane — it does not belong, and it knows it",
+    "movementMod": {
+      "fly": 25
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": {
+      "name": "Elemental Blast",
+      "damage": "1d8+1d4",
+      "type": "Elemental"
+    },
+    "spells": [],
+    "features": [
+      {
+        "name": "Elemental Nature",
+        "effect": "Immune to environmental effects of its native element. Attacks using that element deal +[[1d4]] additional damage.",
+        "type": "passive"
+      },
+      {
+        "name": "Planar Instability",
+        "effect": "When reduced below half wounds, its elemental attacks deal +[[1d6]] damage but it loses 5 ft of movement each round as it destabilizes.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Draconic",
+    "origin": "dragon",
+    "environment": "Prime",
+    "lairType": "Dragon Hoard / Ancient Lair",
+    "motivation": "Accumulating power and wealth — every intruder is an insult",
+    "movementMod": {
+      "fly": 40
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": {
+      "name": "Breath Weapon",
+      "damage": "2d6",
+      "type": "Fire"
+    },
+    "spells": [],
+    "features": [
+      {
+        "name": "Fearsome Presence",
+        "effect": "At the start of combat, all enemies within short range must succeed a Spirit check or gain the Fear condition for 1 round.",
+        "type": "passive"
+      },
+      {
+        "name": "Dragon Scales",
+        "effect": "Has additional [[PL * 3]] armor. Resistant to the damage type matching its breath weapon.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Celestial",
+    "origin": "celestial",
+    "environment": "Prime",
+    "lairType": "Sacred Shrine / Consecrated Ground",
+    "motivation": "Guarding holy ground — corruption cannot be permitted to touch this place",
+    "movementMod": {
+      "fly": 30
+    },
+    "melee": null,
+    "ranged": null,
+    "spell": {
+      "name": "Holy Smite",
+      "damage": "1d8",
+      "type": "Radiant"
+    },
+    "spells": [],
+    "features": [
+      {
+        "name": "Aura of Purity",
+        "effect": "Undead and Corrupted creatures within reach have disadvantage on attacks and Spirit checks.",
+        "type": "passive"
+      },
+      {
+        "name": "Divine Resilience",
+        "effect": "Resistant to Eclipse and Chaos damage.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Feral",
+    "origin": "nature",
+    "environment": "Wilderness",
+    "lairType": "Animal Den / Hidden Burrow",
+    "motivation": "Driven by primal hunger and territorial instinct — reason left long ago",
+    "movementMod": {
+      "walk": 10
+    },
+    "melee": {
+      "name": "Wild Frenzy",
+      "damage": "2d6",
+      "type": "Physical"
+    },
+    "ranged": null,
+    "spell": null,
+    "spells": [],
+    "features": [
+      {
+        "name": "Frenzy",
+        "effect": "When below half wounds, gains advantage on all melee attacks.",
+        "type": "passive"
+      },
+      {
+        "name": "Primal Sense",
+        "effect": "Cannot be surprised. Advantage on all Perception checks.",
+        "type": "passive"
+      }
+    ]
+  },
+  {
+    "name": "Demonic",
+    "origin": "chaos",
+    "environment": "Abyss",
+    "lairType": "Infernal Gate / Desecrated Ground",
+    "motivation": "Breaking through to the mortal realm to feast on fear and flesh",
+    "movementMod": {
+      "fly": 20
+    },
+    "melee": {
+      "name": "Demon Claw",
+      "damage": "1d8",
+      "type": "Eclipse"
+    },
+    "ranged": null,
+    "spell": {
+      "name": "Hellfire",
+      "damage": "1d6",
+      "type": "Fire"
+    },
+    "spells": [],
+    "features": [
+      {
+        "name": "Infernal Resistance",
+        "effect": "Resistant to Fire and Physical damage from non-magical weapons.",
+        "type": "passive"
+      },
+      {
+        "name": "Soul Hunger",
+        "effect": "When this creature kills an enemy, all allied creatures within reach gain [[1d4]] temporary wounds.",
+        "type": "passive"
+      }
+    ]
+  }
+]

@@ -131,8 +131,8 @@
       "description": "As a mage, you are a weaver of magic and a master of mysterious forces. Your power is formidable, but it's also unpredictable, and you'll need a creative mind to control it. Unlike other classes, your spellcasting doesn't rely on a pre-set list of spells. Instead, you combine magic words to create your own unique spells. This path is not without its risks and challenges. Your magic can have both positive and negative outcomes, and it's crucial to learn how to manage these ups and downs. One of the crucial aspects of being a mage is the practice of recording and sharing your knowledge. Whether you pass on your wisdom through spellbooks or spiritual knowledge transfer, your experiences and discoveries become a legacy for future characters you play because they all share your soul.",
       "features": [
         {
-          "name": "Archmage",
-          "description": "You have surpassed the limits of conventional spellcasting. Your spells require no spoken words or gestures. Once per day, cast a spell costing 3 SP or less as an Off-Action."
+          "name": "Mana Recovery",
+          "description": "Recover +4 Mana on a Press On"
         },
         {
           "name": "Spellburn",

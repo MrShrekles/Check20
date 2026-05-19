@@ -210,6 +210,7 @@ function createBookRow(m) {
     // ── Expanded detail ──
     const meleeAtk  = m.melee  || m.melee_attack  || null;
     const rangedAtk = m.ranged || m.ranged_attack || null;
+    const spellAtk  = m.spell  || null;
     const attackLine = (atk, label) => atk?.name
         ? `<div class="mb-attack"><strong>${label}:</strong> ${atk.name}${atk.damage ? ` — ${atk.damage}` : ""}${(atk.type || atk.damage_type) ? ` <em>${atk.type || atk.damage_type}</em>` : ""}</div>`
         : "";
@@ -242,12 +243,13 @@ function createBookRow(m) {
         <div class="mb-detail">
             <div class="mb-meta-row">
                 <span><strong>Move:</strong> ${moveText}</span>
-                ${m.environment ? `<span><strong>Env:</strong> ${m.environment}</span>`   : ""}
-                ${m.behavior    ? `<span><strong>Behavior:</strong> ${m.behavior}</span>` : ""}
-                ${m.motivation  ? `<span><strong>Motif:</strong> ${m.motivation}</span>`  : ""}
+                ${m.environment ? `<span><strong>Env:</strong> ${m.environment}</span>`         : ""}
+                ${m.behavior    ? `<span><strong>Behavior:</strong> ${m.behavior}</span>`   : ""}
+                ${m.lairType    ? `<span><strong>Lair:</strong> ${m.lairType}</span>`       : ""}
+                ${m.motivation  ? `<span><strong>Motif:</strong> ${m.motivation}</span>`    : ""}
             </div>
             ${m.description ? `<p class="mb-description">${parseLinks(m.description)}</p>` : ""}
-            ${(meleeAtk?.name || rangedAtk?.name) ? `<div class="mb-attacks">${attackLine(meleeAtk, "Melee")}${attackLine(rangedAtk, "Ranged")}</div>` : ""}
+            ${(meleeAtk?.name || rangedAtk?.name || spellAtk?.name) ? `<div class="mb-attacks">${attackLine(meleeAtk, "Melee")}${attackLine(rangedAtk, "Ranged")}${attackLine(spellAtk, "Spell")}</div>` : ""}
             ${featuresHTML ? `<div class="mb-features">${featuresHTML}</div>` : ""}
             ${spellsHTML   ? `<div class="mb-spells">${spellsHTML}</div>`     : ""}
             ${m.lore ? `<p class="mb-lore">${parseLinks(m.lore)}</p>` : ""}
@@ -303,6 +305,7 @@ function buildMonsterPacket(m) {
         move_climb:     m.climb           ?? 0,
         melee:  { name: meleeAtk.name  || "", damage: meleeAtk.damage  || "1d6", type: meleeAtk.type  || meleeAtk.damage_type  || "", equipped: !!meleeAtk.equipped },
         ranged: { name: rangedAtk.name || "", damage: rangedAtk.damage || "1d6", type: rangedAtk.type || rangedAtk.damage_type || "", equipped: !!rangedAtk.equipped },
+        spell:  m.spell ? { name: m.spell.name || "", damage: m.spell.damage || "", type: m.spell.type || m.spell.damage_type || "" } : null,
         feature: {
             name:   m.feature_name   || f0.name   || "",
             action: m.feature_type   || f0.type   || "Action",
@@ -377,6 +380,7 @@ function copyMonsterForChat(m, btn) {
     };
     fmtAtk(meleeAtk,  "Melee");
     fmtAtk(rangedAtk, "Ranged");
+    if (m.spell?.name) fmtAtk(m.spell, "Spell");
     if (atkLines.length) { lines.push(""); lines.push("**ATTACKS**"); atkLines.forEach(a => lines.push(a)); }
 
     // Features — support both legacy fields and features array
@@ -772,23 +776,28 @@ function addToBookFromGenerator(mon) {
         })
         .map(f => { Object.keys(f).forEach(k => f[k] === undefined && delete f[k]); return f; });
 
+    const mov = mon.movement || {};
     const entry = {
         name:        mon.name || "Unnamed Creature",
-        _group:      dash(mon.infoLine)    || undefined,
-        origin:      mon.origins?.filter(Boolean).join(" / ") || undefined,
+        _group:      dash(mon.baseType || mon.infoLine) || undefined,
+        origin:      (mon.origins?.filter(Boolean).join(" / ")) || undefined,
         size:        dash(mon.size)        || undefined,
         rarity:      dash(mon.rarity)      || undefined,
         environment: dash(mon.environment) || undefined,
         behavior:    dash(mon.behavior)    || undefined,
+        motivation:  dash(mon.motivation)  || undefined,
+        lairType:    dash(mon.lairType)    || undefined,
         description: dash(mon.description) || undefined,
-        walk:        mon.moveWalk  || moveFb.walk  || 0,
-        fly:         mon.moveFly   || moveFb.fly   || 0,
-        swim:        mon.moveSwim  || moveFb.swim  || 0,
-        climb:       mon.moveClimb || moveFb.climb || 0,
+        walk:        mov.walk  || mon.moveWalk  || moveFb.walk  || 0,
+        fly:         mov.fly   || mon.moveFly   || moveFb.fly   || 0,
+        swim:        mov.swim  || mon.moveSwim  || moveFb.swim  || 0,
+        climb:       mov.climb || mon.moveClimb || moveFb.climb || 0,
         features:    features.length ? features : undefined,
         pl:          mon.pl     || undefined,
         melee:       mon.melee  || undefined,
         ranged:      mon.ranged || undefined,
+        spell:       mon.spell  || undefined,
+        spells:      (Array.isArray(mon.spells) && mon.spells.length) ? mon.spells : undefined,
     };
 
     Object.keys(entry).forEach(k => {

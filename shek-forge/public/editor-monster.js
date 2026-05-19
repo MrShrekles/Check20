@@ -39,12 +39,20 @@ const M_SCHEMA = {
         featureRangeKey: 'featureRange', featureEffectKey: 'featureEffect',
         featureDurationKey: 'featureDuration', featureDamageKey: 'featureDamage',
         hasLore: false, hasMotivation: false, hasBaseType: true,
-    }
+    },
+    monsterbase: {
+        groupKey: 'baseType', hasLore: false, hasMotivation: false, hasBaseType: true,
+    },
+    monstermod: {
+        groupKey: 'origin', hasLore: false, hasMotivation: true, hasBaseType: false,
+    },
 };
 
 function getMonsterSchema() {
     const e = state.data && state.data[0];
     if (!e) return M_SCHEMA.monsterbook;
+    if ('movementMod' in e) return M_SCHEMA.monstermod;
+    if (e.movement && typeof e.movement === 'object' && !Array.isArray(e.movement)) return M_SCHEMA.monsterbase;
     if ('feature_name' in e || 'walk' in e || 'feature_effect' in e) return M_SCHEMA.monsterbook;
     return M_SCHEMA.monstertype;
 }
@@ -56,6 +64,51 @@ function stepMovement(entryIndex, key, delta) {
     markUnsaved();
     const inp = document.getElementById(`move-${key}-${entryIndex}`);
     if (inp) inp.value = newVal;
+}
+
+// movement.{key} — absolute values for monsterbase
+function stepBaseMovement(idx, key, delta) {
+    if (!state.data[idx].movement) state.data[idx].movement = {};
+    const cur = state.data[idx].movement[key] || 0;
+    const newVal = Math.max(0, cur + delta);
+    state.data[idx].movement[key] = newVal;
+    markUnsaved();
+    const inp = document.getElementById(`move-${key}-${idx}`);
+    if (inp) inp.value = newVal;
+}
+function setBaseMovement(idx, key, val) {
+    if (!state.data[idx].movement) state.data[idx].movement = {};
+    state.data[idx].movement[key] = Math.max(0, val);
+    markUnsaved();
+}
+
+// movementMod.{key} — delta values for monstermod (can be negative)
+function stepModMovement(idx, key, delta) {
+    if (!state.data[idx].movementMod) state.data[idx].movementMod = {};
+    const cur = state.data[idx].movementMod[key] || 0;
+    state.data[idx].movementMod[key] = cur + delta;
+    markUnsaved();
+    const inp = document.getElementById(`move-${key}-${idx}`);
+    if (inp) inp.value = state.data[idx].movementMod[key];
+}
+function setModMovement(idx, key, val) {
+    if (!state.data[idx].movementMod) state.data[idx].movementMod = {};
+    state.data[idx].movementMod[key] = val;
+    markUnsaved();
+}
+
+// toggle an attack slot between null (inactive) and an empty object (active) for base/mod
+function toggleBaseAttack(idx, key, active) {
+    if (active) {
+        if (!state.data[idx][key]) state.data[idx][key] = { name: '', damage: '', type: '' };
+    } else {
+        state.data[idx][key] = null;
+    }
+    markUnsaved();
+    const row = document.getElementById(`atk-row-${key}-${idx}`);
+    if (row) {
+        row.querySelectorAll('input:not([type=checkbox]), select').forEach(el => { el.disabled = !active; });
+    }
 }
 
 // ── PL / PHYSICAL / MENTAL ────────────────────────────────────────────────────
@@ -702,12 +755,258 @@ function openSpellPicker(idx) {
     });
 }
 
+// ── BASE / MOD ATTACK BLOCK ───────────────────────────────────────────────────
+function renderBaseModAttacks(entry, idx, isOverride) {
+    const sel = buildSelect;
+    const label = isOverride ? 'Override' : 'Active';
+    return ['melee', 'ranged', 'spell'].map(key => {
+        const atk = entry[key] || {};
+        const active = entry[key] !== null && entry[key] !== undefined;
+        return `
+        <div class="attack-row" id="atk-row-${key}-${idx}">
+            <div class="attack-label">${key.charAt(0).toUpperCase() + key.slice(1)}</div>
+            <label class="attack-equipped">
+                <input type="checkbox" ${active ? 'checked' : ''}
+                    onchange="toggleBaseAttack(${idx},'${key}',this.checked)">
+                <span>${label}</span>
+            </label>
+            <input id="atk-name-${key}-${idx}" class="field-input attack-name" type="text" placeholder="Name..."
+                value="${escAttr(atk.name || '')}" ${!active ? 'disabled' : ''}
+                onchange="updateField(${idx},'${key}.name',this.value)" oninput="markUnsaved()">
+            <input id="atk-damage-${key}-${idx}" class="field-input attack-damage mono" type="text" placeholder="e.g. 1d6"
+                value="${escAttr(atk.damage || '')}" ${!active ? 'disabled' : ''}
+                onchange="updateField(${idx},'${key}.damage',this.value)" oninput="markUnsaved()">
+            <select id="atk-type-${key}-${idx}" class="field-input attack-type" ${!active ? 'disabled' : ''}
+                onchange="updateField(${idx},'${key}.type',this.value)">
+                ${sel(MD.featureDamage, atk.type || '')}
+            </select>
+        </div>`;
+    }).join('');
+}
+
+// ── RENDER: MONSTER BASE ──────────────────────────────────────────────────────
+function renderMonsterBase(entry, idx) {
+    const sel = buildSelect;
+    const fa  = key => escAttr(String(entry[key] ?? ''));
+    const fh  = key => escHtml(String(entry[key] ?? ''));
+    const mov = entry.movement || {};
+
+    const groupOptions = [...new Set(state.data.map(e => e.baseType).filter(Boolean))].sort()
+        .map(g => `<option value="${escAttr(g)}">`).join('');
+
+    return `
+        <div class="forge-section">
+            <div class="section-header">Name</div>
+            <div class="section-body">
+                <input class="field-input" style="font-size:13px;font-family:'Cinzel',serif;letter-spacing:0.04em;"
+                    type="text" value="${fa('name')}"
+                    onchange="updateField(${idx},'name',this.value)" oninput="markUnsaved()">
+            </div>
+        </div>
+
+        <div class="section-pair">
+            <div class="forge-section">
+                <div class="section-header">Identity</div>
+                <div class="section-body">
+                    <div class="field-grid">
+                        <datalist id="monster-group-options">${groupOptions}</datalist>
+                        <div class="field-wrap">
+                            <label class="field-label">Base Type</label>
+                            <input class="field-input" type="text" list="monster-group-options"
+                                value="${fa('baseType')}"
+                                onchange="updateField(${idx},'baseType',this.value);refreshGroups()" oninput="markUnsaved()">
+                        </div>
+                        <div class="field-wrap">
+                            <label class="field-label">Origin</label>
+                            <select class="field-input" onchange="updateField(${idx},'origin',this.value)">
+                                ${sel(MD.origin, entry.origin)}
+                            </select>
+                        </div>
+                        <div class="field-wrap">
+                            <label class="field-label">Size</label>
+                            <select class="field-input" onchange="updateField(${idx},'size',this.value)">
+                                ${sel(MD.size, entry.size)}
+                            </select>
+                        </div>
+                        <div class="field-wrap">
+                            <label class="field-label">Rarity</label>
+                            <select class="field-input" onchange="updateField(${idx},'rarity',this.value)">
+                                ${sel(MD.rarity, entry.rarity)}
+                            </select>
+                        </div>
+                        <div class="field-wrap">
+                            <label class="field-label">Behavior</label>
+                            <select class="field-input" onchange="updateField(${idx},'behavior',this.value)">
+                                ${sel(MD.behavior, entry.behavior)}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="forge-section">
+                <div class="section-header">Movement <span style="font-size:0.75em;opacity:0.5">(absolute ft)</span></div>
+                <div class="section-body">
+                    <div class="movement-row">
+                        ${['walk','fly','swim','climb','burrow'].map(k => `
+                        <div class="movement-cell">
+                            <label class="movement-label">${k.charAt(0).toUpperCase() + k.slice(1)}</label>
+                            <div class="movement-stepper">
+                                <button class="step-btn" onclick="stepBaseMovement(${idx},'${k}',-5)">−</button>
+                                <input id="move-${k}-${idx}" class="field-input mono" type="number" min="0" step="5" value="${mov[k] || 0}"
+                                    onchange="setBaseMovement(${idx},'${k}',parseFloat(this.value)||0)" oninput="markUnsaved()">
+                                <button class="step-btn" onclick="stepBaseMovement(${idx},'${k}',5)">+</button>
+                            </div>
+                        </div>`).join('')}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="forge-section">
+            <div class="section-header">Attacks</div>
+            <div class="section-body" style="padding:0">
+                ${renderBaseModAttacks(entry, idx, false)}
+            </div>
+        </div>
+
+        <div class="forge-section">
+            <div class="section-header section-header-split">
+                <span>Features</span>
+                <button class="btn-section-add" onclick="addExtraFeature(${idx})">+ Add</button>
+            </div>
+            <div class="extra-features-list" id="extra-features-${idx}">
+                ${(entry.features?.length)
+                    ? entry.features.map((f, fi) => renderExtraFeature(idx, fi, f)).join('')
+                    : '<div class="extra-features-empty">No features yet</div>'}
+            </div>
+        </div>
+
+        <div class="forge-section">
+            <div class="section-header section-header-split">
+                <span>Spells</span>
+                <button class="btn-section-add" onclick="openSpellPicker(${idx})">+ Add</button>
+            </div>
+            <div class="extra-features-list" id="monster-spells-${idx}">
+                ${(entry.spells?.length)
+                    ? entry.spells.map((s, si) => renderMonsterSpell(idx, si, s)).join('')
+                    : '<div class="extra-features-empty">No spells — use search to add</div>'}
+            </div>
+        </div>
+
+        <div class="forge-section">
+            <div class="section-header">Description</div>
+            <div class="section-body">
+                <textarea class="field-input" rows="5"
+                    onchange="updateField(${idx},'description',this.value)"
+                    oninput="markUnsaved()">${fh('description')}</textarea>
+            </div>
+        </div>`;
+}
+
+// ── RENDER: MONSTER MOD ───────────────────────────────────────────────────────
+function renderMonsterMod(entry, idx) {
+    const sel = buildSelect;
+    const fa  = key => escAttr(String(entry[key] ?? ''));
+    const mod = entry.movementMod || {};
+
+    return `
+        <div class="forge-section">
+            <div class="section-header">Name</div>
+            <div class="section-body">
+                <input class="field-input" style="font-size:13px;font-family:'Cinzel',serif;letter-spacing:0.04em;"
+                    type="text" value="${fa('name')}"
+                    onchange="updateField(${idx},'name',this.value)" oninput="markUnsaved()">
+            </div>
+        </div>
+
+        <div class="forge-section">
+            <div class="section-header">Mod Identity</div>
+            <div class="section-body">
+                <div class="field-grid">
+                    <div class="field-wrap">
+                        <label class="field-label">Origin</label>
+                        <select class="field-input" onchange="updateField(${idx},'origin',this.value);refreshGroups()">
+                            ${sel(MD.origin, entry.origin)}
+                        </select>
+                    </div>
+                    <div class="field-wrap">
+                        <label class="field-label">Environment</label>
+                        <input class="field-input" type="text" value="${fa('environment')}"
+                            onchange="updateField(${idx},'environment',this.value)" oninput="markUnsaved()">
+                    </div>
+                    <div class="field-wrap">
+                        <label class="field-label">Lair Type</label>
+                        <input class="field-input" type="text" value="${fa('lairType')}"
+                            onchange="updateField(${idx},'lairType',this.value)" oninput="markUnsaved()">
+                    </div>
+                    <div class="field-wrap full">
+                        <label class="field-label">Motivation</label>
+                        <input class="field-input" type="text" value="${fa('motivation')}"
+                            onchange="updateField(${idx},'motivation',this.value)" oninput="markUnsaved()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="forge-section">
+            <div class="section-header">Movement Delta <span style="font-size:0.75em;opacity:0.5">(+ adds, − subtracts, 0 = no change)</span></div>
+            <div class="section-body">
+                <div class="movement-row">
+                    ${['walk','fly','swim','climb','burrow'].map(k => `
+                    <div class="movement-cell">
+                        <label class="movement-label">${k.charAt(0).toUpperCase() + k.slice(1)}</label>
+                        <div class="movement-stepper">
+                            <button class="step-btn" onclick="stepModMovement(${idx},'${k}',-5)">−</button>
+                            <input id="move-${k}-${idx}" class="field-input mono" type="number" step="5" value="${mod[k] || 0}"
+                                onchange="setModMovement(${idx},'${k}',parseFloat(this.value)||0)" oninput="markUnsaved()">
+                            <button class="step-btn" onclick="stepModMovement(${idx},'${k}',5)">+</button>
+                        </div>
+                    </div>`).join('')}
+                </div>
+            </div>
+        </div>
+
+        <div class="forge-section">
+            <div class="section-header">Attack Overrides <span style="font-size:0.75em;opacity:0.5">(checked = replaces Base attack)</span></div>
+            <div class="section-body" style="padding:0">
+                ${renderBaseModAttacks(entry, idx, true)}
+            </div>
+        </div>
+
+        <div class="forge-section">
+            <div class="section-header section-header-split">
+                <span>Features</span>
+                <button class="btn-section-add" onclick="addExtraFeature(${idx})">+ Add</button>
+            </div>
+            <div class="extra-features-list" id="extra-features-${idx}">
+                ${(entry.features?.length)
+                    ? entry.features.map((f, fi) => renderExtraFeature(idx, fi, f)).join('')
+                    : '<div class="extra-features-empty">No features yet</div>'}
+            </div>
+        </div>
+
+        <div class="forge-section">
+            <div class="section-header section-header-split">
+                <span>Spells</span>
+                <button class="btn-section-add" onclick="openSpellPicker(${idx})">+ Add</button>
+            </div>
+            <div class="extra-features-list" id="monster-spells-${idx}">
+                ${(entry.spells?.length)
+                    ? entry.spells.map((s, si) => renderMonsterSpell(idx, si, s)).join('')
+                    : '<div class="extra-features-empty">No spells — use search to add</div>'}
+            </div>
+        </div>`;
+}
+
 // ── REGISTER ──────────────────────────────────────────────────────────────────
 registerEditor('monster', {
 
     groupKey: (data) => {
         const e = data && data[0];
         if (!e) return '_group';
+        if ('movementMod' in e) return 'origin';
+        if (e.movement && typeof e.movement === 'object' && !Array.isArray(e.movement)) return 'baseType';
         return ('feature_name' in e || 'walk' in e) ? '_group' : 'baseType';
     },
 
@@ -758,6 +1057,21 @@ registerEditor('monster', {
 
     newEntry: (group) => {
         const sch = getMonsterSchema();
+        if (sch === M_SCHEMA.monsterbase) {
+            return {
+                name: '', baseType: group || '', origin: '', description: '',
+                size: 'Medium', rarity: 'Common', behavior: 'Neutral',
+                movement: { walk: 30 },
+                melee: null, ranged: null, spell: null, spells: [], features: [],
+            };
+        }
+        if (sch === M_SCHEMA.monstermod) {
+            return {
+                name: '', origin: group || '', environment: '', lairType: '', motivation: '',
+                movementMod: {},
+                melee: null, ranged: null, spell: null, spells: [], features: [],
+            };
+        }
         const e = { name: '' };
         if (sch.hasBaseType) e.baseType = group || ''; else e._group = group || '';
         e.origin = ''; e.size = ''; e.rarity = ''; e.environment = ''; e.behavior = ''; e.description = '';
@@ -775,6 +1089,9 @@ registerEditor('monster', {
 
     render: (entry, idx) => {
         const sch = getMonsterSchema();
+        if (sch === M_SCHEMA.monsterbase) return renderMonsterBase(entry, idx);
+        if (sch === M_SCHEMA.monstermod)  return renderMonsterMod(entry, idx);
+
         const sel = buildSelect;
         const fa  = (key) => escAttr(String(entry[key] ?? ''));
         const fh  = (key) => escHtml(String(entry[key] ?? ''));

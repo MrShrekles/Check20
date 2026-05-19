@@ -1,170 +1,125 @@
 // monster-builder.js
 document.addEventListener('DOMContentLoaded', () => {
-    const $ = (s) => document.querySelector(s);
-    const ce = (t) => document.createElement(t);
-    const nonEmpty = (v) => v !== undefined && v !== null && String(v).trim() !== "";
-    const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
+    const $ = s => document.querySelector(s);
+    const rand = arr => arr[Math.floor(Math.random() * arr.length)];
+    const nonEmpty = v => v !== undefined && v !== null && String(v).trim() !== "";
+    const cap = s => String(s).charAt(0).toUpperCase() + String(s).slice(1);
 
-    const btnGenerate = $("#btnGenerate");
-    const btnClearAll = $("#btnClearAll");
-    const chkRandomBase = $("#chkRandomBase");
-    const chkRandomAdd = $("#chkRandomAdd");
-    const selBase = $("#selBase");
-    const selAdd = $("#selAdd");
-    const chkConcatName  = $("#chkConcatName");
-    const chkNumbersAdd  = $("#chkNumbersAdd");
-    const filterSize     = $("#filterSize");
-    const filterRarity   = $("#filterRarity");
-    const filterBehavior = $("#filterBehavior");
-    const filterEnv      = $("#filterEnvironment");
-
-    const BASE_MOVE = 30;
-    const ZERO = 0;
-
-    const originClass = (o) => {
+    const originClass = o => {
         const k = String(o || "none").trim().toLowerCase();
-        return ["basic", "arcane", "tech", "crystal", "nature", "vozian", "chrono", "chaos", "life", "elemental", "dragon", "celestial", "none"].includes(k) ? k : "none";
+        return ["basic","arcane","tech","crystal","nature","vozian","chrono","chaos","life","elemental","dragon","celestial","none"]
+            .includes(k) ? k : "none";
     };
 
-    const STORAGE_KEY = "c20_monsters_v1";
+    const STORAGE_KEY = "c20_monsters_v2";
     let saveTimer = null;
     const debounce = (fn, ms = 400) => (...args) => { clearTimeout(saveTimer); saveTimer = setTimeout(() => fn(...args), ms); };
 
-    let outGrid = $("#monster-output") || $("#monsterOutput");
-    if (!outGrid) {
-        outGrid = ce("div");
-        outGrid.id = "monster-output";
-        outGrid.className = "monster-grid";
-        ($("main") || document.body).appendChild(outGrid);
-    }
+    // ── UI refs ──
+    const btnGenerate    = $("#btnGenerate");
+    const btnClearAll    = $("#btnClearAll");
+    const chkRandBase    = $("#chkRandomBase");
+    const chkRandMod     = $("#chkRandomMod");
+    const selBase        = $("#selBase");
+    const selMod         = $("#selMod");
+    const chkConcatName  = $("#chkConcatName");
+    const filterRarity   = $("#filterRarity");
+    const filterSize     = $("#filterSize");
+    const filterBaseOrigin = $("#filterBaseOrigin");
+    const filterModOrigin  = $("#filterModOrigin");
 
-    const PRIMARY_URL = "data/monstertype.json";
-    const FALLBACK_URL = "./monstertype.json";
-    let DATA = { base: [], add: [] };
+    let outGrid = $("#monsterOutput");
+    let DATA = { base: [], mod: [] };
 
-    loadData(PRIMARY_URL).catch(() => loadData(FALLBACK_URL)).then(() => { populateSelectors(); wire(); loadFromStorage(); })
-        .catch(err => console.error("[monster] Failed to load monstertype.json:", err));
+    // ── Load data ──
+    Promise.all([
+        fetch("data/monsterbase.json", { cache: "no-store" }).then(r => r.json()),
+        fetch("data/monstermod.json",  { cache: "no-store" }).then(r => r.json())
+    ]).then(([bases, mods]) => {
+        DATA.base = bases;
+        DATA.mod  = mods;
+        populateFilters();
+        populateSelectors();
+        wireEvents();
+        loadFromStorage();
+    }).catch(err => console.error("[monster-builder] Failed to load data:", err));
 
-    async function loadData(url) {
-        const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-        const json = await res.json();
-
-        if (Array.isArray(json)) {
-            DATA.base = json.map(normalize);
-            DATA.add = [];
-        } else {
-            DATA.base = Array.isArray(json.base) ? json.base.map(normalize) : [];
-            DATA.add = Array.isArray(json.add) ? json.add.map(normalize) : [];
-        }
-    }
-
-    function normalize(row) {
-        const r = { ...row };
-        for (const k of Object.keys(r)) if (typeof r[k] === "string" && r[k].trim() === "") r[k] = undefined;
-
-        r.name ??= "";
-        r.baseType ??= "";
-        r.origin ??= "none";
-        r.description ??= "";
-        r.size ??= "Medium";
-        r.environment ??= "Prime";
-        r.behavior ??= "Neutral";
-        r.rarity ??= "Common";
-
-        r.featureName ??= "";
-        r.featureEffect ??= "";
-        r.featureAction ??= "Action";
-        r.featureRange ??= "";
-        r.featureDuration ??= "Instant";
-        r.featureDamage ??= "";
-
-        r.pl     = nonEmpty(r.pl)     ? Number(r.pl)    : 0;
-        r.melee  = (r.melee  && r.melee.name)  ? r.melee  : null;
-        r.ranged = (r.ranged && r.ranged.name) ? r.ranged : null;
-
-        // Normalize add-type movement fields to standard names
-        if (!nonEmpty(r.movement) && nonEmpty(r.movementAdd)) r.movement = r.movementAdd;
-        if (!nonEmpty(r.fly)      && nonEmpty(r.flyAdd))      r.fly      = r.flyAdd;
-        if (!nonEmpty(r.swim)     && nonEmpty(r.swimAdd))     r.swim     = r.swimAdd;
-        if (!nonEmpty(r.climb)    && nonEmpty(r.climbAdd))    r.climb    = r.climbAdd;
-
-        r.movement = nonEmpty(r.movement) ? r.movement : undefined;
-        r.fly      = nonEmpty(r.fly)      ? r.fly      : undefined;
-        r.swim     = nonEmpty(r.swim)     ? r.swim     : undefined;
-        r.climb    = nonEmpty(r.climb)    ? r.climb    : undefined;
-        r.burrow   = nonEmpty(r.burrow)   ? r.burrow   : undefined;
-
-        return r;
-    }
-
-    function populateSelectors() {
-        fillFilter(filterSize,     DATA.base, "size");
-        fillFilter(filterRarity,   DATA.base, "rarity");
-        fillFilter(filterBehavior, DATA.base, "behavior");
-        fillFilter(filterEnv,      DATA.base, "environment");
-        repopulateBase();
-        fill(selAdd, DATA.add);
-        togglePickers();
-        [filterSize, filterRarity, filterBehavior, filterEnv].forEach(f =>
-            f?.addEventListener("change", repopulateBase)
-        );
+    // ── Filters ──
+    function populateFilters() {
+        fillFilter(filterRarity,    DATA.base, "rarity");
+        fillFilter(filterSize,      DATA.base, "size");
+        fillFilter(filterBaseOrigin, DATA.base, "origin");
+        fillFilter(filterModOrigin,  DATA.mod,  "origin");
     }
 
     function fillFilter(sel, arr, key) {
         if (!sel) return;
         const vals = [...new Set(arr.map(e => e[key]).filter(nonEmpty))].sort();
         sel.innerHTML = `<option value="">Any</option>` +
-            vals.map(v => `<option value="${v}">${v}</option>`).join("");
+            vals.map(v => `<option value="${v}">${cap(v)}</option>`).join("");
     }
 
-    function applyBaseFilters(arr) {
-        const size = filterSize?.value    || "";
-        const rar  = filterRarity?.value  || "";
-        const beh  = filterBehavior?.value || "";
-        const env  = filterEnv?.value     || "";
-        const filtered = arr.filter(e =>
-            (!size || e.size        === size) &&
-            (!rar  || e.rarity      === rar)  &&
-            (!beh  || e.behavior    === beh)  &&
-            (!env  || e.environment === env)
+    function filteredBases() {
+        const rar = filterRarity?.value   || "";
+        const sz  = filterSize?.value     || "";
+        const ori = filterBaseOrigin?.value || "";
+        const pool = DATA.base.filter(b =>
+            (!rar || b.rarity  === rar) &&
+            (!sz  || b.size    === sz)  &&
+            (!ori || b.origin  === ori)
         );
-        return filtered.length ? filtered : arr;
+        return pool.length ? pool : DATA.base;
+    }
+
+    function filteredMods() {
+        const ori = filterModOrigin?.value || "";
+        const pool = DATA.mod.filter(m => !ori || m.origin === ori);
+        return pool.length ? pool : DATA.mod;
+    }
+
+    // ── Selectors ──
+    function populateSelectors() {
+        repopulateBase();
+        repopulateMod();
+        togglePickers();
+        [filterRarity, filterSize, filterBaseOrigin].forEach(f =>
+            f?.addEventListener("change", () => { repopulateBase(); })
+        );
+        filterModOrigin?.addEventListener("change", repopulateMod);
     }
 
     function repopulateBase() {
-        const pool = applyBaseFilters(DATA.base);
         if (!selBase) return;
-        selBase.innerHTML = "";
-        pool.forEach((m, i) => {
-            const label = [m.name, m.baseType].filter(Boolean).join(" — ");
-            selBase.add(new Option(label || `(Unnamed ${i})`, String(DATA.base.indexOf(m))));
-        });
-    }
-    function fill(select, list) {
-        if (!select) return;
-        select.innerHTML = "";
-        list.forEach((m, i) => {
-            const label = [m.name, m.baseType].filter(Boolean).join(" — ");
-            select.add(new Option(label || `(Unnamed ${i})`, String(i)));
-        });
-    }
-    function togglePickers() {
-        if (selBase) selBase.disabled = chkRandomBase ? !!chkRandomBase.checked : true;
-        if (selAdd) selAdd.disabled = (chkRandomAdd ? !!chkRandomAdd.checked : true) || DATA.add.length === 0;
+        const pool = filteredBases();
+        selBase.innerHTML = pool.map((b, i) => {
+            const idx = DATA.base.indexOf(b);
+            return `<option value="${idx}">${b.name}${b.baseType ? " — " + b.baseType : ""}</option>`;
+        }).join("");
     }
 
-    function wire() {
-        chkRandomBase?.addEventListener("change", togglePickers);
-        chkRandomAdd?.addEventListener("change", togglePickers);
+    function repopulateMod() {
+        if (!selMod) return;
+        const pool = filteredMods();
+        selMod.innerHTML = pool.map((m, i) => {
+            const idx = DATA.mod.indexOf(m);
+            return `<option value="${idx}">${m.name} (${m.environment || m.origin})</option>`;
+        }).join("");
+    }
+
+    function togglePickers() {
+        if (selBase) selBase.disabled = !!chkRandBase?.checked;
+        if (selMod)  selMod.disabled  = !!chkRandMod?.checked;
+    }
+
+    // ── Wire events ──
+    function wireEvents() {
+        chkRandBase?.addEventListener("change", togglePickers);
+        chkRandMod?.addEventListener("change", togglePickers);
 
         btnGenerate?.addEventListener("click", () => {
             const base = pickBase();
-            const add = pickAdd();
-            const composed = compose(base, add, {
-                concatName: chkConcatName ? !!chkConcatName.checked : true,
-                numbersAdd: chkNumbersAdd ? !!chkNumbersAdd.checked : true
-            });
+            const mod  = pickMod();
+            const composed = compose(base, mod);
             outGrid.prepend(renderCard(composed));
             autosaveNow();
         });
@@ -172,284 +127,234 @@ document.addEventListener('DOMContentLoaded', () => {
         btnClearAll?.addEventListener("click", () => { outGrid.replaceChildren(); autosaveNow(); });
     }
 
+    // ── Pick ──
     function pickBase() {
         if (!DATA.base.length) return {};
-        const pool = applyBaseFilters(DATA.base);
-        if (!selBase || chkRandomBase?.checked) return rand(pool);
-        const idx = Number(selBase.value) || 0;
-        return DATA.base[idx] || rand(pool);
-    }
-    function pickAdd() {
-        if (!DATA.add.length) return null;
-        if (!selAdd || chkRandomAdd?.checked) return rand(DATA.add);
-        const raw = selAdd.value;
-        if (raw === "" || raw == null) return null;
-        const idx = Number(raw);
-        return Number.isFinite(idx) ? (DATA.add[idx] ?? null) : null;
+        if (!selBase || chkRandBase?.checked) return rand(filteredBases());
+        const idx = Number(selBase.value);
+        return DATA.base[idx] ?? rand(filteredBases());
     }
 
-    function compose(base, add, opts) {
-        const concatName = opts?.concatName !== false;
-        const numbersAdd = opts?.numbersAdd !== false;
-
-        const name = (concatName && nonEmpty(base?.name) && nonEmpty(add?.name))
-            ? `${base.name} ${add.name}`
-            : (base?.name || add?.name || "Unnamed Creature");
-
-        const origins = [base?.origin, add?.origin]
-            .filter(nonEmpty)
-            .map(s => String(s).trim())
-            .filter((v, i, a) => a.findIndex(x => x.toLowerCase() === v.toLowerCase()) === i);
-
-        const infoLine = joinDistinct([base?.baseType, add?.baseType], " + ");
-        const description = [base?.description, add?.description].filter(nonEmpty).join(" ");
-        const moveResult   = buildMovementLine(base, add, numbersAdd);
-        const movementText = moveResult.text;
-        const environment = joinDistinct([base?.environment, add?.environment], " / ") || "—";
-        const behavior = joinDistinct([base?.behavior, add?.behavior], " / ") || "—";
-        const rarity = joinDistinct([base?.rarity, add?.rarity], " / ") || "—";
-        const size = joinDistinct([base?.size, add?.size], " / ") || "—";
-
-        const features = [];
-        const bf = featureLine(base, false);
-        const af = featureLine(add, true);
-        if (bf) features.push(bf);
-        if (af) features.push(af);
-
-        return { name, origins, infoLine, description, movementText,
-                 moveWalk: moveResult.walk, moveFly: moveResult.fly,
-                 moveSwim: moveResult.swim, moveClimb: moveResult.climb,
-                 environment, behavior, rarity, size, features,
-                 pl:     base?.pl     || 0,
-                 melee:  base?.melee  || null,
-                 ranged: base?.ranged || null };
+    function pickMod() {
+        if (!DATA.mod.length) return null;
+        if (!selMod || chkRandMod?.checked) return rand(filteredMods());
+        const idx = Number(selMod.value);
+        return DATA.mod[idx] ?? rand(filteredMods());
     }
 
-    function joinDistinct(vals, sep = " ") {
-        const arr = vals.filter(nonEmpty).map(s => String(s).trim());
-        if (!arr.length) return "";
-        const lower = arr.map(s => s.toLowerCase());
-        return lower.length === 2 && lower[0] === lower[1] ? arr[0] : arr.join(sep);
-    }
+    // ── Compose ──
+    function compose(base, mod) {
+        const concat = chkConcatName ? !!chkConcatName.checked : true;
+        const baseName = base?.name || "Creature";
+        const modName  = mod?.name  || "";
 
-    function buildMovementLine(base, add, numbersAdd) {
-        const modes = ["movement", "fly", "swim", "climb", "burrow"];
-        const b = coerceMove(base, BASE_MOVE);
-        const a = coerceMove(add, ZERO);
-        const out = {};
+        const name = (concat && modName) ? `${modName} ${baseName}` : baseName;
 
-        for (const m of modes) {
-            const bv = b[m], av = a[m];
-            const nb = isFinite(bv), na = isFinite(av);
-            if (nb || na) {
-                const val = numbersAdd ? ((+bv || 0) + (+av || 0)) : (na ? +av : (+bv || 0));
-                if (val) out[m] = val;
-            } else {
-                const phrase = preferPhrase(bv, av);
-                if (phrase) out[m] = phrase;
+        const origins = [...new Set(
+            [base?.origin, mod?.origin].filter(nonEmpty).map(s => s.trim().toLowerCase())
+        )];
+
+        // Movement: base is absolute, mod is delta
+        const movement = { ...(base?.movement || { walk: 30 }) };
+        if (mod?.movementMod) {
+            for (const k of Object.keys(mod.movementMod)) {
+                movement[k] = (movement[k] || 0) + mod.movementMod[k];
             }
         }
+        for (const k of Object.keys(movement)) {
+            if (movement[k] <= 0) delete movement[k];
+        }
 
-        const parts = [];
-        if (out.movement) parts.push(modeText("Walk", out.movement));
-        if (out.fly) parts.push(modeText("Fly", out.fly));
-        if (out.swim) parts.push(modeText("Swim", out.swim));
-        if (out.climb) parts.push(modeText("Climb", out.climb));
-        if (out.burrow) parts.push(modeText("Burrow", out.burrow));
+        // Attacks: mod overrides base (null on mod = keep base's)
+        const melee  = mod?.melee  !== undefined ? mod.melee  : base?.melee  || null;
+        const ranged = mod?.ranged !== undefined ? mod.ranged : base?.ranged || null;
+        const spell  = mod?.spell  !== undefined ? mod.spell  : base?.spell  || null;
+
+        // Features: base first, then mod (tagged so card can style differently)
+        const baseFeatures = (base?.features || []).map(f => ({ ...f, _src: "base" }));
+        const modFeatures  = (mod?.features  || []).map(f => ({ ...f, _src: "mod" }));
+        const features = [...baseFeatures, ...modFeatures];
+
+        // Spells: merged
+        const spells = [...(base?.spells || []), ...(mod?.spells || [])];
 
         return {
-            text: `Movement: ${parts.length ? parts.join(", ") : "—"}`,
-            walk:  isFinite(out.movement) ? +out.movement : 0,
-            fly:   isFinite(out.fly)      ? +out.fly      : 0,
-            swim:  isFinite(out.swim)     ? +out.swim     : 0,
-            climb: isFinite(out.climb)    ? +out.climb    : 0,
+            name,
+            baseName,
+            modName,
+            baseType:    base?.baseType    || "",
+            origins,
+            size:        base?.size        || "Medium",
+            rarity:      base?.rarity      || "Common",
+            behavior:    base?.behavior    || "",
+            environment: mod?.environment  || "",
+            lairType:    mod?.lairType     || "",
+            motivation:  mod?.motivation   || "",
+            description: base?.description || "",
+            movement,
+            melee,
+            ranged,
+            spell,
+            features,
+            spells,
         };
     }
 
-    function coerceMove(row = {}, baseWalk = BASE_MOVE) {
-        const out = {};
-        const walkMod = nonEmpty(row.movement) ? (isFinite(+row.movement) ? +row.movement : 0) : 0;
-        out.movement = baseWalk + walkMod;
-
-        for (const m of ["fly", "swim", "climb", "burrow"]) {
-            const raw = nonEmpty(row[m]) ? row[m] : ZERO;
-            const num = toNum(raw, out.movement);
-            if (isFinite(num)) out[m] = num;
-            else {
-                const phrase = normalizePhrase(String(raw), out.movement);
-                if (phrase) out[m] = phrase;
-            }
-        }
-        return out;
-    }
-
-    function toNum(v, walk) {
-        if (v == null) return NaN;
-        if (typeof v === "number" && isFinite(v)) return v;
-        const s = String(v).trim().toLowerCase();
-        if (/^\d+$/.test(s)) return Number(s);
-        if (isFinite(walk)) {
-            if (s.includes("equal to movement")) return walk;
-            if (s.includes("half") && s.includes("movement")) return Math.floor(walk / 2);
-            if (s.includes("double") && s.includes("movement")) return walk * 2;
-        }
-        return NaN;
-    }
-    function normalizePhrase(s, walk) {
-        const t = s.trim().toLowerCase();
-        if (t === "none") return "";
-        if (t === "hover") return "Hover";
-        if (!isFinite(walk)) return cap(s);
-        if (t.includes("equal to movement")) return walk;
-        if (t.includes("half") && t.includes("movement")) return Math.floor(walk / 2);
-        if (t.includes("double") && t.includes("movement")) return walk * 2;
-        return cap(s);
-    }
-    function preferPhrase(a, b) {
-        const A = nonEmpty(a) ? String(a).trim() : "";
-        const B = nonEmpty(b) ? String(b).trim() : "";
-        if (!A && !B) return "";
-        if (!B) return pretty(A);
-        if (!A) return pretty(B);
-        if (B.toLowerCase() === "none") return pretty(A);
-        return pretty(B);
-    }
-    function pretty(v) { return v === "none" ? "" : cap(v); }
-    function modeText(label, v) { return isFinite(v) ? `${label}: ${v} ft` : `${label}: ${v}`; }
-    const cap = (s) => String(s).charAt(0).toUpperCase() + String(s).slice(1);
-
-    function featureLine(src, isAdd) {
-        if (!src) return null;
-        const any = [src.featureName, src.featureEffect, src.featureAction, src.featureRange, src.featureDuration, src.featureDamage].some(nonEmpty);
-        if (!any) return null;
-
-        const name = nonEmpty(src.featureName) ? src.featureName : (isAdd ? "Add Feature" : "Feature");
-        const meta = [src.featureAction, src.featureRange, src.featureDuration, src.featureDamage].filter(nonEmpty);
-        const metaTxt = meta.length ? ` (${meta.join(" · ")})` : "";
-        const eff = nonEmpty(src.featureEffect) ? `: ${src.featureEffect}` : "";
-
-        return { text: `${name}${metaTxt}${eff}`, isAdd: !!isAdd,
-                 name, action: src.featureAction, range: src.featureRange,
-                 duration: src.featureDuration, damage: src.featureDamage,
-                 effect: src.featureEffect };
-    }
-
+    // ── Render card ──
     function renderCard(mon) {
         const el = document.createElement("div");
         el.className = "monster-card";
-        el.style.position = "relative";
 
-        const originPills = (mon.origins || []).map((o, i) =>
-            `<span class="origin-tag ${originClass(o)}" style="top:${2 + i * 2}rem; right:1rem;">${esc(o)}</span>`
+        const originPills = mon.origins.map(o =>
+            `<span class="origin-tag ${originClass(o)}">${esc(cap(o))}</span>`
         ).join("");
 
-        const featuresHTML = (mon.features?.length
-            ? `<div class="feature-block"><ul class="features">${mon.features.map(f => `<li ${f.isAdd ? 'class="add-line"' : ''} contenteditable="true">${esc(f.text)}</li>`).join("")
-            }</ul></div>`
-            : "");
+        const moveText = buildMoveText(mon.movement);
 
-        const attackHTML = (mon.melee?.name || mon.ranged?.name) ? `
-      <div class="info-mon">
-        ${mon.pl ? `<span><strong>PL:</strong> ${esc(String(mon.pl))}</span>` : ""}
-        ${mon.melee?.name  ? `<span><strong>Melee:</strong> ${esc(mon.melee.name)} ${esc(mon.melee.damage || "")}${mon.melee.type ? ` (${esc(mon.melee.type)})` : ""}</span>` : ""}
-        ${mon.ranged?.name ? `<span><strong>Ranged:</strong> ${esc(mon.ranged.name)} ${esc(mon.ranged.damage || "")}${mon.ranged.type ? ` (${esc(mon.ranged.type)})` : ""}</span>` : ""}
-      </div>` : (mon.pl ? `<div class="info-mon"><span><strong>PL:</strong> ${esc(String(mon.pl))}</span></div>` : "");
+        const attacksHTML = buildAttacksHTML(mon);
 
-        const infoBlock = `
-      <div class="info-mon">
-        <span><strong>Move:</strong> ${esc(mon.movementText)}</span>
-        <span><strong>Env:</strong> ${esc(mon.environment)}</span>
-        <span><strong>Behav:</strong> ${esc(mon.behavior)}</span>
-        <span><strong>Rarity:</strong> ${esc(mon.rarity)}</span>
-        <span><strong>Size:</strong> ${esc(mon.size)}</span>
-      </div>
-    `;
+        const infoRows = [
+            mon.behavior    && `<span><strong>Behavior:</strong> ${esc(mon.behavior)}</span>`,
+            mon.environment && `<span><strong>Env:</strong> ${esc(mon.environment)}</span>`,
+            mon.lairType    && `<span><strong>Lair:</strong> ${esc(mon.lairType)}</span>`,
+        ].filter(Boolean).join("");
+
+        const motivationHTML = mon.motivation
+            ? `<p class="mon-motivation"><em>${esc(mon.motivation)}</em></p>` : "";
+
+        const featuresHTML = mon.features.length ? `
+            <div class="feature-block">
+                <ul class="features">${mon.features.map(f => {
+                    const meta = [f.type || f.action, f.range, f.duration, f.damage].filter(nonEmpty).join(" · ");
+                    const text = `<strong>${esc(f.name)}</strong>${meta ? ` <span class="feat-meta">(${esc(meta)})</span>` : ""}${f.effect ? `: ${esc(f.effect)}` : ""}`;
+                    return `<li class="${f._src === "mod" ? "mod-line" : ""}" contenteditable="true">${text}</li>`;
+                }).join("")}</ul>
+            </div>` : "";
+
+        const spellsHTML = mon.spells.length ? `
+            <div class="mon-spells"><strong>Spells:</strong> ${mon.spells.map(s => esc(s.name || s)).join(", ")}</div>` : "";
 
         el.innerHTML = `
-      ${originPills}
-      <h3 class="title" contenteditable="true">${esc(mon.name)}</h3>
-      ${mon.infoLine ? `<div class="pillline" contenteditable="true">${esc(mon.infoLine)}</div>` : ""}
-      ${mon.description ? `<p class="mon-meta" contenteditable="true">${esc(mon.description)}</p>` : ""}
-      ${infoBlock}
-      ${attackHTML}
-      ${featuresHTML}
-      <div class="button-row">
-        <button class="secondary btn-copy">Copy</button>
-        <button class="secondary btn-add-book">Add to Book</button>
-        <button class="ghost btn-remove">Remove</button>
-      </div>
-    `.trim();
+            <div class="origin-pill-row">${originPills}</div>
+            <h3 class="title" contenteditable="true">${esc(mon.name)}</h3>
+            <div class="pillline" contenteditable="true">${esc([mon.baseType, mon.size, mon.rarity].filter(nonEmpty).join(" · "))}</div>
+            ${mon.description ? `<p class="mon-meta" contenteditable="true">${esc(mon.description)}</p>` : ""}
+            <div class="info-mon">
+                <span><strong>Move:</strong> ${esc(moveText)}</span>
+                ${infoRows}
+            </div>
+            ${attacksHTML}
+            ${motivationHTML}
+            ${featuresHTML}
+            ${spellsHTML}
+            <div class="button-row">
+                <button class="secondary btn-copy">Copy</button>
+                <button class="secondary btn-add-book">Add to Book</button>
+                <button class="ghost btn-remove">Remove</button>
+            </div>
+        `.trim();
 
         el.__mon = mon;
+
         el.querySelector(".btn-remove")?.addEventListener("click", () => { el.remove(); autosaveNow(); });
-        el.querySelector(".btn-add-book")?.addEventListener("click", (e) => {
+
+        el.querySelector(".btn-add-book")?.addEventListener("click", e => {
             if (typeof window.addToBookFromGenerator === "function") {
-                // Capture any in-place edits the user made to the contenteditable fields
-                const mon = {
-                    ...el.__mon,
-                    name:        el.querySelector(".title")?.textContent.trim()    || el.__mon.name,
-                    infoLine:    el.querySelector(".pillline")?.textContent.trim() || el.__mon.infoLine,
-                    description: el.querySelector(".mon-meta")?.textContent.trim() || el.__mon.description,
-                };
-                window.addToBookFromGenerator(mon);
+                const live = captureEdits(el, mon);
+                window.addToBookFromGenerator(live);
                 const btn = e.currentTarget;
                 btn.textContent = "Added!";
                 btn.disabled = true;
                 setTimeout(() => { btn.textContent = "Add to Book"; btn.disabled = false; }, 1500);
             }
         });
+
         el.querySelector(".btn-copy")?.addEventListener("click", async () => {
-            const text = [
-                el.querySelector(".title")?.textContent.trim(),
-                el.querySelector(".pillline")?.textContent.trim(),
-                ...[...el.querySelectorAll(".mon-meta")].map(p => p.textContent.trim()),
-                ...[...el.querySelectorAll(".info-mon span")].map(s => s.textContent.trim()),
-                ...[...el.querySelectorAll(".features li")].map(li => `• ${li.textContent.trim()}`)
-            ].filter(Boolean).join("\n");
-            try { await navigator.clipboard.writeText(text); } catch { }
+            const text = buildCopyText(el, mon);
+            try { await navigator.clipboard.writeText(text); } catch {}
         });
 
         el.addEventListener("input", debounce(autosaveNow, 400));
         return el;
     }
 
-    function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": "&#39;" }[c])); }
+    function buildMoveText(movement) {
+        const labels = { walk: "Walk", fly: "Fly", swim: "Swim", climb: "Climb", burrow: "Burrow" };
+        return Object.entries(movement)
+            .filter(([, v]) => v > 0)
+            .map(([k, v]) => `${labels[k] || k}: ${v} ft`)
+            .join(", ") || "—";
+    }
 
-    /* ---------- Save/Load ---------- */
+    function buildAttacksHTML(mon) {
+        const atk = (label, a) => {
+            if (!a?.name) return `<span class="atk-empty"><strong>${label}:</strong> —</span>`;
+            const dmg = [a.damage, a.type].filter(nonEmpty).join(" ");
+            return `<span><strong>${label}:</strong> ${esc(a.name)}${dmg ? ` — ${esc(dmg)}` : ""}</span>`;
+        };
+        const any = mon.melee?.name || mon.ranged?.name || mon.spell?.name;
+        if (!any && !mon.melee && !mon.ranged && !mon.spell) return "";
+        return `<div class="info-mon attacks-block">
+            ${atk("Melee",  mon.melee)}
+            ${atk("Ranged", mon.ranged)}
+            ${atk("Spell",  mon.spell)}
+        </div>`;
+    }
+
+    function captureEdits(el, mon) {
+        return {
+            ...mon,
+            name:        el.querySelector(".title")?.textContent.trim()   || mon.name,
+            description: el.querySelector(".mon-meta")?.textContent.trim() || mon.description,
+        };
+    }
+
+    function buildCopyText(el, mon) {
+        const lines = [];
+        lines.push(el.querySelector(".title")?.textContent.trim() || mon.name);
+        lines.push(el.querySelector(".pillline")?.textContent.trim() || "");
+        if (mon.description) lines.push(el.querySelector(".mon-meta")?.textContent.trim() || "");
+        const infoSpans = [...el.querySelectorAll(".info-mon span")];
+        infoSpans.forEach(s => lines.push(s.textContent.trim()));
+        if (mon.motivation) lines.push(`Motivation: ${mon.motivation}`);
+        [...el.querySelectorAll(".features li")].forEach(li => lines.push(`• ${li.textContent.trim()}`));
+        return lines.filter(Boolean).join("\n");
+    }
+
+    function esc(s) {
+        return String(s).replace(/[&<>"']/g, c =>
+            ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": "&#39;" }[c])
+        );
+    }
+
+    // ── Save / Load ──
     function snapshotCard(el) {
         return {
             mon: el.__mon || null,
             edits: {
                 title: el.querySelector(".title")?.textContent || "",
-                pill: el.querySelector(".pillline")?.textContent || "",
-                desc: el.querySelector(".mon-meta")?.textContent || "",
-                info: [...el.querySelectorAll(".info-mon span")].map(s => s.textContent || ""),
-                features: [...el.querySelectorAll(".features li")].map(li => li.textContent || "")
+                pill:  el.querySelector(".pillline")?.textContent || "",
+                desc:  el.querySelector(".mon-meta")?.textContent || "",
             }
         };
     }
+
     function restoreCard(snap) {
-        const card = renderCard(snap.mon || compose({}, null, {}));
+        const card = renderCard(snap.mon || {});
         if (snap.edits) {
-            const set = (sel, val) => { const n = card.querySelector(sel); if (n && val != null) n.textContent = val; };
-            set(".title", snap.edits.title);
+            const set = (sel, val) => { const n = card.querySelector(sel); if (n && val) n.textContent = val; };
+            set(".title",   snap.edits.title);
             set(".pillline", snap.edits.pill);
             set(".mon-meta", snap.edits.desc);
-
-            const spans = [...card.querySelectorAll(".info-mon span")];
-            if (spans.length && Array.isArray(snap.edits.info)) {
-                snap.edits.info.forEach((val, i) => { if (spans[i]) spans[i].lastChild.nodeValue = " " + val.split(/:\s*/).pop(); });
-            }
-            const lis = [...card.querySelectorAll(".features li")];
-            snap.edits.features.forEach((t, i) => { if (lis[i]) lis[i].textContent = t; });
         }
         return card;
     }
+
     function autosaveNow() {
-        const cards = [...document.querySelectorAll(".monster-card")];
-        const payload = cards.map(snapshotCard);
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(payload)); } catch (e) { console.warn("[monster] save failed:", e); }
+        const payload = [...document.querySelectorAll(".monster-card")].map(snapshotCard);
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(payload)); } catch (e) { console.warn("[monster-builder] save failed:", e); }
     }
+
     function loadFromStorage() {
         try {
             const raw = localStorage.getItem(STORAGE_KEY);
@@ -458,30 +363,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!Array.isArray(arr)) return;
             outGrid.replaceChildren();
             arr.forEach(snap => outGrid.appendChild(restoreCard(snap)));
-        } catch (e) { console.warn("[monster] load failed:", e); }
+        } catch (e) { console.warn("[monster-builder] load failed:", e); }
     }
-    function exportMonsters() {
-        try {
-            const blob = new Blob([localStorage.getItem(STORAGE_KEY) || "[]"], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url; a.download = "monsters.json";
-            document.body.appendChild(a); a.click();
-            setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 0);
-        } catch (e) { console.warn("[monster] export failed:", e); }
-    }
-    function importMonsters(file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-            try { localStorage.setItem(STORAGE_KEY, reader.result); loadFromStorage(); }
-            catch (e) { console.warn("[monster] import failed:", e); }
-        };
-        reader.readAsText(file);
-    }
-
-    // Optional external hooks if you add buttons in HTML:
-    $("#btnSaveAll")?.addEventListener("click", autosaveNow);
-    $("#btnLoadAll")?.addEventListener("click", loadFromStorage);
-    $("#btnExport")?.addEventListener("click", exportMonsters);
-    $("#fileImport")?.addEventListener("change", e => importMonsters(e.target.files[0]));
 });

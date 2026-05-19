@@ -157,7 +157,6 @@
             <div    class="tb-sep tb-select-only"></div>
             <button class="tb-btn tb-case tb-select-only" title="Change case">Aa ▾</button>
             <div    class="tb-sep tb-select-only"></div>
-            <button class="tb-btn tb-pl" title="Insert @{pl}">@{pl}</button>
             <button class="tb-btn tb-check"     title="Insert a check">☑ Check</button>
             <button class="tb-btn tb-condition" title="Insert a condition">⚠ Cond</button>
             <button class="tb-btn tb-economy"   title="Insert economy opener">Action ▾</button>
@@ -389,11 +388,6 @@
         apply(`[[${selected()}]]`);
     });
 
-    toolbar.querySelector('.tb-pl').addEventListener('mousedown', e => {
-        e.preventDefault();
-        apply('@{pl}');
-    });
-
     toolbar.querySelector('.tb-case').addEventListener('mousedown', e => {
         e.preventDefault();
         e.stopPropagation();
@@ -504,7 +498,8 @@
             const el = document.activeElement;
 
             if (!el || !el.classList.contains('field-input')
-                    || el.type === 'number' || el.tagName === 'SELECT') {
+                    || el.type === 'number' || el.tagName === 'SELECT'
+                    || (typeof state !== 'undefined' && state.fileType === 'species')) {
                 hideToolbar();
                 return;
             }

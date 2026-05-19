@@ -1,0 +1,787 @@
+/* ═══════════════════════════════════════════════════════════════
+   FORGE CODEX — Monster Forge styles
+   Copied from main.css + spells.css + monster.css, then extended
+   for Forge-specific needs (editable rows, save bar, compose)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Variables — monster red theme ───────────────────── */
+:root {
+  --dark:    #1a0e0e;
+  --dark-2:  #210f0f;
+  --dark-3:  #3a1a1a;
+  --theme-1: #2a0f0f;
+  --theme-2: #4a1515;
+  --theme-3: #6b2c2c;
+  --green-1: #180808;
+  --green-2: #7b1c1c;
+  --green-3: #c46060;
+  --warm-1:  #6b1010;
+  --warm-2:  #991a1a;
+  --warm-3:  #d9b382;
+  --gold:    goldenrod;
+  --gold-1:  #664900;
+  --gold-2:  #af8000;
+  --gold-3:  #ffd700;
+  --white:   whitesmoke;
+  --cream:   #d9b382;
+  --text-cream:  #f0e5c5;
+  --text-gold:   #ffd700;
+  --text-plain:  #fffaf0;
+  --border-radius: 8px;
+  --box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  --padding: 8px;
+}
+
+/* ── Reset / Base ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Candara", "Segoe UI", sans-serif;
+  background: var(--dark);
+  color: var(--white);
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.7);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Top bar ──────────────────────────────────────────── */
+.mf-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--theme-1);
+  border-bottom: 2px solid var(--gold-1);
+  height: 44px;
+}
+
+.mf-brand {
+  font-family: "Cinzel", serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 0 16px;
+  white-space: nowrap;
+  border-right: 1px solid var(--theme-3);
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.mf-tabs {
+  display: flex;
+  height: 100%;
+}
+
+.mf-tab {
+  height: 100%;
+  padding: 0 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--cream);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.mf-tab:hover { background: var(--green-1); color: var(--white); }
+.mf-tab.active {
+  background: var(--green-2);
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+.mf-topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+}
+
+.mf-back {
+  font-size: 0.78rem;
+  color: var(--text-cream);
+  opacity: 0.6;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.mf-back:hover { opacity: 1; color: var(--gold); }
+
+.mf-save-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; }
+.mf-save-dot.saved  { background: #4caf50; }
+.mf-save-dot.saving { background: var(--gold); animation: pulse 0.8s ease-in-out infinite; }
+.mf-save-dot.error  { background: #e53935; }
+
+.mf-save-text {
+  font-size: 0.75rem;
+  color: var(--text-cream);
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+/* ── Filter bar ───────────────────────────────────────── */
+.mf-filterbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 7px 10px;
+  background: var(--dark-2);
+  border-bottom: 1px solid var(--theme-2);
+  position: sticky;
+  top: 44px;
+  z-index: 40;
+}
+
+.mf-filterbar input[type="text"] {
+  flex: 1 1 160px;
+  min-width: 120px;
+  background: var(--dark);
+  color: var(--white);
+  border: 1px solid var(--theme-2);
+  border-radius: var(--border-radius);
+  padding: 5px 10px;
+  font-family: inherit;
+  font-size: 0.82rem;
+}
+.mf-filterbar input[type="text"]:focus { outline: none; border-color: var(--gold-2); }
+
+.mf-filterbar select {
+  background: var(--dark);
+  color: var(--white);
+  border: 1px solid var(--theme-2);
+  border-radius: var(--border-radius);
+  padding: 5px 8px;
+  font-size: 0.82rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+.mf-filterbar select:focus { outline: none; border-color: var(--gold-2); }
+
+.mf-type-pills { display: flex; gap: 3px; }
+
+.mf-type-pill {
+  background: transparent;
+  border: 1px solid var(--theme-3);
+  color: var(--text-cream);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.mf-type-pill:hover { background: var(--theme-2); border-color: var(--gold-2); }
+.mf-type-pill.active { background: var(--theme-2); border-color: var(--gold); color: var(--gold); }
+
+.mf-filterbar-right { margin-left: auto; display: flex; gap: 5px; }
+
+/* ── Generic Forge buttons ────────────────────────────── */
+.mf-btn {
+  background: transparent;
+  border: 1px solid var(--theme-3);
+  color: var(--text-cream);
+  border-radius: var(--border-radius);
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.mf-btn:hover { background: var(--theme-2); border-color: var(--gold-2); color: var(--gold); }
+
+.mf-btn-gold {
+  border-color: var(--gold-2);
+  color: var(--gold);
+}
+.mf-btn-gold:hover { background: var(--gold-2); color: var(--dark); }
+
+.mf-btn-danger {
+  border-color: var(--warm-2);
+  color: #ff9999;
+}
+.mf-btn-danger:hover { background: var(--warm-2); color: #fff; }
+
+/* ── Tab content ──────────────────────────────────────── */
+.mf-tab-content { display: block; }
+.mf-tab-content.hidden { display: none; }
+
+/* ── Entry list ───────────────────────────────────────── */
+.mf-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 10px 40px;
+}
+
+/* ── Group headers ────────────────────────────────────── */
+.mf-group-header {
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--gold);
+  border-bottom: 1px solid var(--theme-2);
+  padding: 14px 4px 4px;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+.mf-group-count {
+  font-size: 0.7em;
+  opacity: 0.4;
+  font-weight: normal;
+  letter-spacing: 0;
+}
+
+/* ── Spell row (from spells.css, adapted) ─────────────── */
+.spell-row {
+  background: var(--dark-2);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  transition: background .15s, border-color .15s;
+}
+.spell-row:hover { background: #251010; border-color: rgba(180,80,80,.35); }
+.spell-row.open  { background: #1c0d0d; border-color: var(--gold-1); }
+
+.spell-row-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.65rem;
+  cursor: pointer;
+  user-select: none;
+  flex-wrap: wrap;
+}
+
+.spell-row-arrow {
+  font-size: 0.6rem;
+  color: var(--green-3);
+  flex-shrink: 0;
+  width: 10px;
+  transition: color .15s;
+}
+.spell-row.open .spell-row-arrow { color: var(--gold); }
+
+.spell-row-name {
+  font-weight: bold;
+  font-size: 0.88rem;
+  color: var(--gold);
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.spell-row-tags {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+/* ── Compact tag chips ────────────────────────────────── */
+.mb-tag {
+  font-size: 0.6rem;
+  padding: 2px 5px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.mb-tag-group  { background: var(--warm-2); }
+.mb-tag-origin { background: var(--theme-2); }
+.mb-tag-rarity { background: var(--dark-3); border: 1px solid var(--theme-3); }
+.mb-tag-size   { background: transparent; border: 1px solid var(--theme-3); color: var(--text-cream); }
+.mb-tag-env    { background: #1a3020; border: 1px solid #2d5a40; color: #80c090; }
+
+/* BASE / MOD type pill */
+.forge-type-pill {
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+.forge-type-base { background: var(--theme-2); color: #ffb0b0; }
+.forge-type-mod  { background: #1a2a1a; color: #90c090; border: 1px solid #2d4a2d; }
+.forge-type-book { background: var(--gold-1); color: var(--gold-3); }
+
+/* ── Expanded detail area ─────────────────────────────── */
+.spell-row-detail {
+  display: none;
+  border-top: 1px solid rgba(180,100,0,.25);
+  background: #150a0a;
+}
+.spell-row.open .spell-row-detail { display: block; }
+
+.forge-detail {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── Section label within detail ─────────────────────── */
+.fd-section {
+  font-size: 0.65rem;
+  font-weight: bold;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.7;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(180,100,0,.15);
+  padding-bottom: 2px;
+}
+
+/* ── Form grid ────────────────────────────────────────── */
+.fd-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 6px 10px;
+}
+.fd-grid.fd-grid-wide { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.fd-full { grid-column: 1 / -1; }
+
+.fd-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fd-label {
+  font-size: 0.65rem;
+  color: var(--text-cream);
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Inputs within the forge detail */
+.forge-detail input[type="text"],
+.forge-detail input[type="number"],
+.forge-detail select,
+.forge-detail textarea {
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--white);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: inherit;
+  font-size: 0.84rem;
+  width: 100%;
+  transition: border-color 0.12s;
+}
+.forge-detail input:focus,
+.forge-detail select:focus,
+.forge-detail textarea:focus {
+  outline: none;
+  border-color: var(--gold-2);
+}
+
+.forge-detail input[type="number"] {
+  font-family: "Share Tech Mono", monospace;
+  text-align: center;
+  padding: 4px 2px;
+}
+
+.forge-detail textarea {
+  resize: vertical;
+  min-height: 56px;
+  line-height: 1.4;
+}
+
+/* Name input - bigger */
+.forge-detail .fd-name-input {
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  padding: 5px 10px;
+}
+
+/* ── Movement steppers ────────────────────────────────── */
+.fd-move-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fd-move-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 64px;
+}
+
+.fd-move-label {
+  font-size: 0.62rem;
+  color: var(--text-cream);
+  opacity: 0.55;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.fd-stepper {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.fd-step-btn {
+  background: var(--theme-2);
+  border: none;
+  color: var(--cream);
+  width: 20px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  border-radius: 3px 0 0 3px;
+  transition: background 0.12s;
+  flex-shrink: 0;
+}
+.fd-step-btn:last-child { border-radius: 0 3px 3px 0; }
+.fd-step-btn:hover { background: var(--warm-2); }
+
+.fd-stepper input[type="number"] {
+  width: 44px;
+  height: 26px;
+  text-align: center;
+  border-radius: 0;
+  padding: 2px;
+  font-size: 0.82rem;
+  border-left: none;
+  border-right: none;
+}
+
+/* ── Attack rows ──────────────────────────────────────── */
+.fd-attacks { display: flex; flex-direction: column; gap: 4px; }
+
+.fd-attack-row {
+  display: grid;
+  grid-template-columns: 60px auto 1fr 70px 120px;
+  gap: 4px;
+  align-items: center;
+}
+
+.fd-attack-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-cream);
+  opacity: 0.7;
+}
+
+.fd-attack-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  color: var(--text-cream);
+  opacity: 0.65;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.fd-attack-toggle input { width: auto; padding: 0; cursor: pointer; }
+
+.fd-attack-row input:disabled,
+.fd-attack-row select:disabled { opacity: 0.35; cursor: not-allowed; }
+
+@media (max-width: 600px) {
+  .fd-attack-row { grid-template-columns: 60px 1fr 70px 120px; }
+  .fd-attack-toggle { display: none; }
+}
+
+/* ── Feature list ─────────────────────────────────────── */
+.fd-features { display: flex; flex-direction: column; gap: 6px; }
+
+.fd-feature {
+  background: rgba(0,0,0,0.3);
+  border-left: 2px solid var(--warm-2);
+  border-radius: 0 5px 5px 0;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fd-feature-top {
+  display: grid;
+  grid-template-columns: 1fr 110px 90px 24px;
+  gap: 4px;
+  align-items: center;
+}
+
+.fd-feature-top input,
+.fd-feature-top select { font-size: 0.8rem; }
+
+.fd-feat-del {
+  background: transparent;
+  border: none;
+  color: var(--warm-3);
+  cursor: pointer;
+  font-size: 0.9rem;
+  opacity: 0.5;
+  padding: 0;
+  text-align: center;
+  transition: opacity 0.15s;
+}
+.fd-feat-del:hover { opacity: 1; color: #ff6060; }
+
+.fd-feature textarea { font-size: 0.8rem; min-height: 44px; }
+
+.fd-feat-add {
+  align-self: flex-start;
+  font-size: 0.75rem;
+  padding: 3px 10px;
+  margin-top: 2px;
+}
+
+/* Empty feature state */
+.fd-feat-empty {
+  font-size: 0.78rem;
+  color: var(--text-cream);
+  opacity: 0.35;
+  font-style: italic;
+  padding: 4px 0;
+}
+
+/* ── Row action buttons ───────────────────────────────── */
+.fd-row-actions {
+  display: flex;
+  gap: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  flex-wrap: wrap;
+}
+
+/* ── PL bar (book entries) ────────────────────────────── */
+.fd-pl-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.fd-pl-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 70px;
+}
+
+/* ── Origin pill colors (from monster.css) ────────────── */
+.origin-tag { padding: 2px 6px; border-radius: 4px; font-size: 0.62rem; font-weight: bold; text-transform: uppercase; letter-spacing: 3px; }
+.origin-tag.basic     { background: darkslategray; }
+.origin-tag.arcane    { background: darkcyan; }
+.origin-tag.tech      { background: darkblue; }
+.origin-tag.crystal   { background: rgb(79,0,0); }
+.origin-tag.nature    { background: #1b7a41; }
+.origin-tag.vozian    { background: #502379; }
+.origin-tag.chrono    { background: #8a5408; }
+.origin-tag.chaos     { background: #331f0e; }
+.origin-tag.life      { background: #6b2a6a; }
+.origin-tag.elemental { background: #275c65; }
+.origin-tag.dragon    { background: #ff5500; }
+.origin-tag.celestial { background: #7a4000; }
+.origin-tag.none      { background: #666; }
+
+/* ── Compose bar (Book tab) ───────────────────────────── */
+.mf-compose-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  background: var(--theme-1);
+  border-bottom: 1px solid var(--theme-2);
+}
+
+.mf-compose-label {
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.mf-compose-bar select {
+  flex: 1 1 180px;
+  background: var(--dark);
+  color: var(--white);
+  border: 1px solid var(--theme-2);
+  border-radius: var(--border-radius);
+  padding: 5px 8px;
+  font-size: 0.82rem;
+  font-family: inherit;
+}
+.mf-compose-bar select:focus { outline: none; border-color: var(--gold-2); }
+
+.mf-compose-sep { color: var(--gold-2); font-size: 1.2rem; line-height: 1; flex-shrink: 0; }
+
+/* ── Compose preview ──────────────────────────────────── */
+.mf-compose-preview {
+  padding: 0 10px;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.25s ease, padding 0.25s ease;
+}
+.mf-compose-preview.visible {
+  max-height: 500px;
+  padding: 10px;
+}
+
+.mf-preview-card {
+  background: var(--dark-2);
+  border: 1px solid var(--theme-3);
+  border-radius: var(--border-radius);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mf-preview-name {
+  font-family: "Cinzel", serif;
+  font-size: 1.1rem;
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.mf-preview-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+
+.mf-preview-meta {
+  font-size: 0.78rem;
+  color: var(--text-cream);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+
+.mf-preview-attacks { font-size: 0.8rem; }
+.mf-preview-attacks div { color: var(--text-cream); margin-bottom: 2px; }
+.mf-preview-attacks strong { color: var(--gold); }
+
+.mf-preview-features { display: flex; flex-direction: column; gap: 3px; }
+.mf-preview-feature {
+  font-size: 0.78rem;
+  padding: 3px 8px;
+  background: var(--theme-1);
+  border-left: 2px solid var(--warm-2);
+  border-radius: 0 4px 4px 0;
+}
+
+.mf-preview-motivation {
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--text-cream);
+  opacity: 0.7;
+}
+
+.mf-preview-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ── Toast notifications ──────────────────────────────── */
+.mf-toast-container {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 999;
+  pointer-events: none;
+}
+
+.mf-toast {
+  background: var(--dark-2);
+  border: 1px solid var(--theme-3);
+  border-radius: var(--border-radius);
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  color: var(--white);
+  box-shadow: var(--box-shadow);
+  animation: toast-in 0.2s ease;
+  pointer-events: auto;
+}
+.mf-toast.success { border-color: #4caf50; color: #90ee90; }
+.mf-toast.error   { border-color: var(--warm-2); color: #ff9999; }
+
+@keyframes toast-in { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+
+/* ── Spells list in detail (simplified) ──────────────── */
+.fd-spells { display: flex; flex-direction: column; gap: 3px; }
+
+.fd-spell-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  background: rgba(0,0,0,0.25);
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+.fd-spell-name { flex: 1; color: var(--gold); }
+.fd-spell-meta { opacity: 0.5; font-size: 0.72rem; }
+
+/* ── Dialog overlay ───────────────────────────────────── */
+.mf-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mf-dialog-overlay.hidden { display: none; }
+
+.mf-dialog {
+  background: var(--dark-2);
+  border: 1px solid var(--theme-3);
+  border-radius: var(--border-radius);
+  padding: 20px 24px;
+  min-width: 280px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.mf-dialog-title {
+  font-family: "Cinzel", serif;
+  color: var(--gold);
+  font-size: 1rem;
+  font-weight: 700;
+}
+.mf-dialog-text { font-size: 0.85rem; color: var(--text-cream); opacity: 0.8; }
+.mf-dialog-actions { display: flex; gap: 8px; justify-content: flex-end; }

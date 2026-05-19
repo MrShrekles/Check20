@@ -283,7 +283,7 @@ const SB_SOURCES = [
   { file:"data/armor.json",       label:"Armor",     page:"armor.html",        extract: d => d.map(x=>({ name:x.name, sub:x.category||"",      desc:x.description||"" })) },
   { file:"data/monsterbook.json", label:"Monster",   page:"monster.html",      extract: d => d.map(x=>({ name:x.name, sub:x._group||"",        desc:x.description||x.lore||"" })) },
   { file:"data/gods.json",        label:"Deity",     page:"gods.html",         extract: d => d.map(x=>({ name:x.name, sub:x.words||"",         desc:x.desc||"" })) },
-  { file:"data/species_new.json", label:"Species",   page:"species_new.html",  extract: d => (d.species||[]).map(x=>({ name:x.name, sub:x.lineage||"", desc:x.description||"" })) },
+  { file:"data/species.json", label:"Species",   page:"species_new.html",  extract: d => (d.species||[]).map(x=>({ name:x.name, sub:x.lineage||"", desc:x.description?.physical||x.description||"" })) },
   { file:"data/class-new.json",   label:"Class",     page:"class.html",        extract: d => { const a=[];for(const g of Object.values(d.classes||{}))for(const c of(Array.isArray(g)?g:[]))a.push({name:c.name,sub:c.class||"",desc:c.desc||""});return a; } },
   { file:"data/enchanted.json",   label:"Enchanted", page:"enchanted.html",    extract: d => d.map(x=>({ name:x.name, sub:x.type||"",          desc:(x.description||"")+" "+(x.effect||"") })) },
 ];

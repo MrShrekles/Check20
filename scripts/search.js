@@ -51,13 +51,13 @@ const SEARCH_SOURCES = [
     })),
   },
   {
-    file:  "data/species_new.json",
+    file:  "data/species.json",
     label: "Species",
     page:  "species_new.html",
     extract: data => (data.species || []).map(d => ({
       name: d.name,
       sub:  d.lineage || "",
-      desc: d.description || "",
+      desc: d.description?.physical || d.description || "",
     })),
   },
   {
