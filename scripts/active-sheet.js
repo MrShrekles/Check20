@@ -1,6 +1,26 @@
 ﻿/* Active Sheet — mobile-first gameplay runner */
 
 const DATA_BASE = window.location.pathname.includes('/active-sheet/') ? '../data/' : 'data/';
+
+// ── PWA INSTALL ───────────────────────────────────────────────────────────────
+let _installPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    _installPrompt = e;
+    // Reveal the install button if settings are already open
+    _syncInstallUI();
+});
+window.addEventListener('appinstalled', () => {
+    _installPrompt = null;
+    _syncInstallUI();
+});
+function _syncInstallUI() {
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+        || window.navigator.standalone === true;
+    document.getElementById('settings-app-installed')?.toggleAttribute('hidden', !isStandalone);
+    document.getElementById('settings-app-installable')?.toggleAttribute('hidden', isStandalone || !_installPrompt);
+    document.getElementById('settings-app-unavailable')?.toggleAttribute('hidden', isStandalone || !!_installPrompt);
+}
 const titleCase = s => s ? s.charAt(0).toUpperCase() + s.slice(1).replace(/ \w/g, c => c.toUpperCase()) : '';
 
 // ── CHECKS ────────────────────────────────────────────────────────────────────
@@ -138,7 +158,6 @@ const state = {
         xp: 0,
     },
     chat: [],  // [{ type: 'roll'|'msg', text, time }]
-    rollLog: [],
 };
 
 // ── XP HELPERS ────────────────────────────────────────────────────────────────
@@ -210,19 +229,25 @@ function armorRatingFor(item) {
 }
 
 function recalcArmorBonuses() {
-    // Recalculates check modifiers from equipped armor (e.g. Stealth penalty from heavy armor).
-    // Armor max is set manually via the health editor — not derived here.
     const allChecks = [...state.checks.physical, ...state.checks.mental];
     allChecks.forEach(c => { c.armorBonus = 0; });
+
+    let totalArmor = 0;
     state.equipment.filter(e => e.category === 'armor').forEach(item => {
+        totalArmor += armorRatingFor(item);
         const mods = parseArmorMods(item.notes || '');
         Object.entries(mods).forEach(([key, val]) => {
             const chk = allChecks.find(c => c.key === key);
             if (chk) chk.armorBonus += val;
         });
     });
+
+    state.resources.armor.max = totalArmor;
+    state.resources.armor.current = Math.min(state.resources.armor.current, totalArmor);
+
     renderQuickChecks();
     saveState();
+    syncUI();
 }
 
 const SPELL_STAT_MAP = {
@@ -538,6 +563,7 @@ function saveWeaponToState() {
     item.check       = document.getElementById('wm-check-stat-input')?.value      || '';
     item.critRange   = parseInt(document.getElementById('wm-crit')?.value  || '20', 10);
     item.attackBonus = parseInt(document.getElementById('wm-bonus')?.value || '0',  10);
+    item.flavor      = document.getElementById('wm-flavor-input')?.value.trim()   || '';
     weaponModalItem  = item;
     saveState();
     syncUI();
@@ -559,6 +585,7 @@ function openWeaponModal(itemIndex) {
     document.getElementById('wm-weight-input').value          = w.properties || '—';
     document.getElementById('wm-crit').value                  = w.critRange || 20;
     document.getElementById('wm-bonus').value                 = w.attackBonus || 0;
+    document.getElementById('wm-flavor-input').value          = w.flavor || '';
 
     const checkLabel = w.check ? w.check.split(',')[0].trim() : '';
     populateWmCheckSelect(checkLabel);
@@ -645,53 +672,14 @@ function pushChatWeaponAttack({ weapon, checkLabel, checkMod, attackBonus, rollN
         desc: weapon.flavor || '',
         rollType,
         conditions: [...(conditions || [])],
+        tableRolls: autoTableRolls(d20Total, weapon.damageType),
     });
     if (state.chat.length > 100) state.chat.length = 100;
     saveState();
     setActivePanel('chat');
 }
 
-function renderWeaponAttackEntry(entry) {
-    const nat = naturalRoll(entry.rollNote);
-    const resClass = nat === 20 ? 'chat-res--nat20' : nat === 1 ? 'chat-res--nat1' : '';
-    const typeLbl = entry.rollType === 'adv' ? '· Adv' : entry.rollType === 'dis' ? '· Dis' : '';
-    const bonusTxt = entry.attackBonus ? ` ${fmtSigned(entry.attackBonus)}` : '';
-    const condHtml = entry.conditions?.length
-        ? `<div class="chat-roll-cond">${entry.conditions.join(' · ')}</div>` : '';
-
-    const dmgHtml = entry.damageRoll ? `
-        <div class="chat-dice-chip">
-            <span class="chat-dice-notation">${entry.damageRoll.notation}</span>
-            <span class="chat-dice-arrow">→</span>
-            <span class="chat-dice-total">${entry.damageRoll.total}</span>
-            ${entry.damageRoll.rolls.length > 1 ? `<span class="chat-dice-detail">[${entry.damageRoll.rolls.join('+')}]</span>` : ''}
-        </div>
-        <div class="chat-wep-meta">${[entry.damageType, entry.range].filter(Boolean).join(' · ')}</div>`
-        : `<div class="chat-wep-meta">${[entry.damage, entry.damageType, entry.range].filter(Boolean).join(' · ')}</div>`;
-
-    return `<div class="chat-roll-card chat-roll--weapon">
-        <div class="chat-card-head">
-            <span class="chat-card-title">⚔ ${entry.charName ? `${entry.charName} · ` : ''}${entry.weaponName}</span>
-            <span class="chat-time">${entry.time}</span>
-        </div>
-        <div class="chat-wep-body">
-            <div class="chat-wep-col">
-                <div class="chat-attack-label">${entry.checkLabel}</div>
-                <div class="chat-roll-result ${resClass}">${entry.d20Total}</div>
-                <div class="chat-roll-breakdown">${entry.rollNote} ${fmtSigned(entry.checkMod)}${bonusTxt} ${typeLbl}</div>
-            </div>
-            <div class="chat-wep-col chat-wep-col--right">
-                <div class="chat-attack-label">DAMAGE</div>
-                ${dmgHtml}
-            </div>
-        </div>
-        ${successHtml(entry.d20Total)}
-        ${damageTableBtnHtml(entry.d20Total, entry.damageType)}
-        ${entry.d20Total < 15 ? `<button class="provoke-btn" type="button"> Provoke!</button>` : ''}
-        ${entry.desc ? `${expandableDesc(entry.desc)}` : ''}
-        ${condHtml}
-    </div>`;
-}
+// renderWeaponAttackEntry is defined in chat-cards.js
 
 // ── SPELLS PANEL ──────────────────────────────────────────────────────────────
 
@@ -1241,9 +1229,10 @@ function openSpellRollModal(spell, intent) {
 
     // Stat row
     const diceMatch = (intent.effect || '').match(/\[\[(\d+d\d+[!]?(?:[+-]\d+)?)\]\]/i);
-    document.getElementById('srm-damage').textContent = diceMatch ? diceMatch[1] : '—';
+    document.getElementById('srm-damage').textContent  = diceMatch ? diceMatch[1] : '—';
     document.getElementById('srm-dmg-type').textContent = spell.transmission || '—';
-    document.getElementById('srm-range').textContent = intent.range || '—';
+    document.getElementById('srm-manner').textContent   = spell.manner || '—';
+    document.getElementById('srm-range').textContent    = intent.range || '—';
     document.getElementById('srm-duration').textContent = (intent.duration || '—').trim();
 
     // Description
@@ -1343,6 +1332,7 @@ function srmDoRoll(spendMana) {
 function bindSpellRollModal() {
     document.getElementById('srm-close')?.addEventListener('click', closeSpellRollModal);
     document.getElementById('srm-scrim')?.addEventListener('click', closeSpellRollModal);
+
 
     document.getElementById('srm-check-chips')?.addEventListener('click', e => {
         const chip = e.target.closest('.drawer-check-chip');
@@ -1476,6 +1466,7 @@ function openSettings() {
     }
     document.getElementById('reset-confirm').hidden = true;
     document.getElementById('btn-reset-char').hidden = false;
+    _syncInstallUI();
     document.getElementById('settings-modal').hidden = false;
 }
 
@@ -1495,6 +1486,14 @@ function bindSettings() {
     document.getElementById('btn-settings')?.addEventListener('click', openSettings);
     document.getElementById('settings-close')?.addEventListener('click', closeSettings);
     document.getElementById('settings-scrim')?.addEventListener('click', closeSettings);
+
+    document.getElementById('btn-install-app')?.addEventListener('click', async () => {
+        if (!_installPrompt) return;
+        _installPrompt.prompt();
+        const { outcome } = await _installPrompt.userChoice;
+        if (outcome === 'accepted') _installPrompt = null;
+        _syncInstallUI();
+    });
 
     document.getElementById('btn-export-settings')?.addEventListener('click', () => {
         closeSettings();
@@ -1675,13 +1674,16 @@ function applySpeciesSelection() {
 }
 
 function syncSpeciesDisplay() {
-    const nameEl = document.getElementById('bio-species-name');
-    const subEl = document.getElementById('bio-species-sub');
-    if (nameEl) nameEl.textContent = titleCase(state.char.species) || '—';
-    if (subEl) {
-        const parts = [state.char.speciesLineage, state.char.size].filter(Boolean);
-        subEl.textContent = parts.join(' · ');
-    }
+    const species = titleCase(state.char.species) || '—';
+    const sub     = state.char.speciesLineage || '';
+    const nameEl  = document.getElementById('bio-species-name');
+    const subEl   = document.getElementById('bio-species-sub');
+    if (nameEl) nameEl.textContent = species;
+    if (subEl)  subEl.textContent  = sub;
+    const editNameEl = document.getElementById('bio-species-name-edit');
+    const editSubEl  = document.getElementById('bio-species-sub-edit');
+    if (editNameEl) editNameEl.textContent = species;
+    if (editSubEl)  editSubEl.textContent  = sub;
 }
 
 function bindSpeciesPicker() {
@@ -1943,40 +1945,101 @@ function renderProgStep(s, index, type) {
     </div>`;
 }
 
+// ── DRAG REORDER ──────────────────────────────────────────────────────────────
+
+function bindDragReorder(container, array, onDrop) {
+    if (!container) return;
+
+    // Single shared drop-line element
+    const line = document.createElement('div');
+    line.className = 'drag-drop-line';
+    line.hidden = true;
+    container.appendChild(line);
+
+    function clearState() {
+        line.hidden = true;
+        container.querySelectorAll('.drag-row--dragging').forEach(r => r.classList.remove('drag-row--dragging'));
+    }
+
+    container.addEventListener('pointerdown', e => {
+        if (!e.target.closest('.drag-handle')) return;
+        const dragRow = e.target.closest('[data-drag-idx]');
+        if (!dragRow) return;
+        e.preventDefault();
+
+        if (navigator.vibrate) navigator.vibrate(30);
+
+        const dragFrom = parseInt(dragRow.dataset.dragIdx);
+        dragRow.classList.add('drag-row--dragging');
+
+        let dropIdx = -1;
+
+        function onMove(ev) {
+            ev.preventDefault();
+            const el = document.elementFromPoint(ev.clientX, ev.clientY);
+            const target = el?.closest('[data-drag-idx]');
+            if (!target || target === dragRow) { line.hidden = true; dropIdx = -1; return; }
+
+            const rect = target.getBoundingClientRect();
+            const after = ev.clientY > rect.top + rect.height / 2;
+            dropIdx = parseInt(target.dataset.dragIdx) + (after ? 1 : 0);
+            // Clamp to account for removing the dragged item
+            if (dropIdx > dragFrom) dropIdx--;
+
+            // Position line
+            line.hidden = false;
+            const containerRect = container.getBoundingClientRect();
+            line.style.top = `${(after ? rect.bottom : rect.top) - containerRect.top}px`;
+        }
+
+        function onUp(ev) {
+            document.removeEventListener('pointermove', onMove);
+            document.removeEventListener('pointerup', onUp);
+            clearState();
+
+            if (dropIdx >= 0 && dropIdx !== dragFrom) {
+                const [moved] = array.splice(dragFrom, 1);
+                array.splice(dropIdx, 0, moved);
+                if (navigator.vibrate) navigator.vibrate(15);
+                onDrop();
+            }
+            dropIdx = -1;
+        }
+
+        document.addEventListener('pointermove', onMove, { passive: false });
+        document.addEventListener('pointerup', onUp);
+    });
+}
+
 function renderOtherGains() {
     const html = state.progression.otherGains.length
         ? state.progression.otherGains.map((g, i) => `
-            <div class="row">
+            <div class="row drag-row" data-drag-idx="${i}">
+                <span class="drag-handle" title="Drag to reorder">⠿</span>
                 <span class="check-row-label">${g}</span>
                 <button class="check-adj" data-remove-gain="${i}" style="color:#ff6060" aria-label="Remove">✕</button>
             </div>`).join('')
         : '<p class="empty-hint">Items gained during play</p>';
     const el1 = document.getElementById('other-gains-list');
     const el2 = document.getElementById('prog-other-gains-list');
-    if (el1) el1.innerHTML = html;
-    if (el2) el2.innerHTML = html;
+    if (el1) { el1.innerHTML = html; bindDragReorder(el1, state.progression.otherGains, () => { saveState(); renderOtherGains(); }); }
+    if (el2) { el2.innerHTML = html; bindDragReorder(el2, state.progression.otherGains, () => { saveState(); renderOtherGains(); }); }
 }
 
 // ── EQUIPMENT ─────────────────────────────────────────────────────────────────
 
 let equipTab = 'all';
-let newEquipCat = 'gear';
-
-function setEquipCat(cat) {
-    newEquipCat = cat;
-    document.querySelectorAll('.equip-type-btn').forEach(b =>
-        b.classList.toggle('is-sel', b.dataset.cat === cat));
-}
 
 function renderEquipment() {
     const el = document.getElementById('equip-list');
     if (!el) return;
+    const nonGear = state.equipment.filter(e => (e.category || 'gear') !== 'gear');
     const visible = equipTab === 'all'
-        ? state.equipment
+        ? nonGear
         : state.equipment.filter(e => (e.category || 'gear') === equipTab);
 
     if (!visible.length) {
-        el.innerHTML = `<p class="empty-hint">${state.equipment.length ? `No ${equipTab} items` : 'No equipment added'
+        el.innerHTML = `<p class="empty-hint">${nonGear.length ? `No ${equipTab} items` : 'No equipment added'
             }</p>`;
         return;
     }
@@ -1995,21 +2058,64 @@ function renderEquipment() {
                     data-action="roll" data-name="${esc(item.name)}"
                     data-desc="${esc(item.notes || '')}" data-tag="${esc(cat)}" data-check=""><img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>`;
 
-        const editBtn = `<button class="step-action-btn step-edit-trigger" type="button" title="Edit"
-                    data-action="edit-equip" data-equip-index="${i}">✎</button>`;
-
-        return `<div class="row" data-equip-row="${i}">
+        const modTags = [
+            item.moveMod     ? `Move ${item.moveMod > 0 ? '+' : ''}${item.moveMod} ft`              : '',
+            item.lowlightMod ? `Low Light ${item.lowlightMod > 0 ? '+' : ''}${item.lowlightMod} ft` : '',
+        ].filter(Boolean).join(' · ');
+        return `<div class="row drag-row" data-equip-row="${i}" data-drag-idx="${i}">
+            <span class="drag-handle" title="Drag to reorder">⠿</span>
             <div class="equip-info">
                 <div class="equip-row-name">${item.name} ${catLabel}</div>
                 ${item.notes ? `<div class="equip-row-notes">${item.notes}</div>` : ''}
                 ${item.flavor ? `<div class="equip-row-notes" style="color:var(--muted)">${item.flavor}</div>` : ''}
+                ${modTags ? `<div class="equip-row-notes" style="color:var(--accent)">${modTags}</div>` : ''}
             </div>
             <div class="equip-row-actions">
                 ${rollBtn}
                 <button class="step-action-btn" type="button" title="Send to chat"
                     data-action="chat" data-name="${esc(item.name)}"
                     data-desc="${esc(item.flavor || item.notes || '')}"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
-                ${editBtn}
+                ${isArmor ? `<button class="step-action-btn" type="button" title="Edit"
+                    data-action="edit-armor" data-equip-index="${i}">✎</button>` : ''}
+                <button class="step-action-btn" type="button" style="color:#ff6060"
+                    data-action="del-equip" data-equip-index="${i}" aria-label="Remove">✕</button>
+            </div>
+        </div>`;
+    }).join('');
+    bindDragReorder(el, state.equipment, () => { saveState(); renderEquipment(); recalcArmorBonuses(); });
+}
+
+// ── INVENTORY ─────────────────────────────────────────────────────────────────
+
+function renderInventory() {
+    const el = document.getElementById('inventory-list');
+    if (!el) return;
+    const gear = state.equipment.filter(e => (e.category || 'gear') === 'gear');
+    if (!gear.length) {
+        el.innerHTML = '<p class="empty-hint">No items in inventory</p>';
+        return;
+    }
+    el.innerHTML = gear.map(item => {
+        const i = state.equipment.indexOf(item);
+        const rollBtn = item.hideRoll ? '' :
+            `<button class="step-action-btn" type="button" title="Roll"
+                data-action="roll" data-name="${esc(item.name)}"
+                data-desc="${esc(item.notes || '')}" data-tag="gear" data-check=""><img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>`;
+        const modTags = [
+            item.moveMod    ? `Move ${item.moveMod > 0 ? '+' : ''}${item.moveMod} ft`         : '',
+            item.lowlightMod ? `Low Light ${item.lowlightMod > 0 ? '+' : ''}${item.lowlightMod} ft` : '',
+        ].filter(Boolean).join(' · ');
+        return `<div class="row" data-equip-row="${i}">
+            <div class="equip-info">
+                <div class="equip-row-name">${item.name}</div>
+                ${item.notes ? `<div class="equip-row-notes">${item.notes}</div>` : ''}
+                ${modTags ? `<div class="equip-row-notes" style="color:var(--accent)">${modTags}</div>` : ''}
+            </div>
+            <div class="equip-row-actions">
+                ${rollBtn}
+                <button class="step-action-btn" type="button" title="Send to chat"
+                    data-action="chat" data-name="${esc(item.name)}"
+                    data-desc="${esc(item.notes || '')}"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
                 <button class="step-action-btn" type="button" style="color:#ff6060"
                     data-action="del-equip" data-equip-index="${i}" aria-label="Remove">✕</button>
             </div>
@@ -2067,12 +2173,8 @@ function pushChatFeature({ name, tags, desc }) {
 }
 
 // successCount / successHtml / naturalRoll / fmtSigned / diceChipsHtml /
-// expandableDesc / damageTableBtnHtml / chatTimestamp / render*Entry
-// are all defined in chat-cards.js (loaded before this script).
-
-function successCount(total) {
-    return total >= 15 ? Math.floor((total - 10) / 5) : 0;
-}
+// expandableDesc / damageTableBtnHtml / chatTimestamp / render*Entry /
+// rollDiceNotation / autoTableRolls — all defined in chat-cards.js.
 
 function rollDamageTable(damageType) {
     const table = damageData[damageType];
@@ -2456,10 +2558,8 @@ function cacheEls() {
     els.rollLabel = document.getElementById('roll-label');
     els.rollMod = document.getElementById('roll-mod');
     els.btnRoll = document.getElementById('btn-roll');
-    els.mainLog = document.getElementById('roll-log');
 
     els.btnClearConditions = document.getElementById('btn-clear-conditions');
-    els.btnClearLog = document.getElementById('btn-clear-log');
 
     // MN-max-input removed — mana max is now auto-calculated from class features
 
@@ -2737,10 +2837,14 @@ function allChecks() { return [...state.checks.physical, ...state.checks.mental]
 function renderQuickChecks() {
     els.quickChecks.innerHTML = '';
     ['physical', 'mental'].forEach(group => {
-        const header = document.createElement('div');
-        header.className = 'checks-group-label';
-        header.textContent = group === 'physical' ? 'Physical' : 'Mental';
-        els.quickChecks.appendChild(header);
+        const label = group === 'physical' ? 'Physical' : 'Mental';
+        const details = document.createElement('details');
+        details.className = 'checks-group';
+        details.open = true;
+        const summary = document.createElement('summary');
+        summary.className = 'checks-group-label';
+        summary.textContent = label;
+        details.appendChild(summary);
         const grid = document.createElement('div');
         grid.className = 'quick-grid';
         state.checks[group].forEach(chk => {
@@ -2764,7 +2868,8 @@ function renderQuickChecks() {
             });
             grid.appendChild(b);
         });
-        els.quickChecks.appendChild(grid);
+        details.appendChild(grid);
+        els.quickChecks.appendChild(details);
     });
 }
 
@@ -2821,12 +2926,8 @@ function bindDrawer() {
             rollType: selSeg,
             conditions: [...state.activeConditions],
         });
-        pushRollLog(`${label}: ${rollNote} ${fmtSigned(mod)} = ${total}`);
-        renderLogs();
         closeDrawer();
     });
-
-    els.btnClearLog.addEventListener('click', () => { state.rollLog = []; renderLogs(); });
     els.btnClearConditions.addEventListener('click', () => {
         state.activeConditions.clear();
         saveState();
@@ -3014,14 +3115,227 @@ function openDrawer(label = null, checkStr = null) {
 }
 
 function closeDrawer() {
-    if (els.rollDrawer.contains(document.activeElement)) {
-    }
+    if (els.rollDrawer.contains(document.activeElement)) document.activeElement.blur();
     els.rollDrawer.classList.remove('is-open');
     els.rollDrawer.setAttribute('aria-hidden', 'true');
     els.rollDrawer.inert = true;
 }
 
 // ── SECTION EDITORS ───────────────────────────────────────────────────────────
+
+// ── ADD EQUIPMENT DRAWER ──────────────────────────────────────────────────────
+
+function bindAddEquipDrawer() {
+    const drawer  = document.getElementById('add-equip-drawer');
+    if (!drawer) return;
+
+    let aeCategory   = 'weapon';
+    let aeEditIndex  = -1;
+
+    function aeStepVal(id) { return parseInt(document.getElementById(id)?.dataset.val || '0', 10); }
+
+    function openAeDrawer() {
+        // Populate selects from constants (idempotent)
+        const dtSel = document.getElementById('ae-w-dmg-type');
+        if (dtSel && !dtSel.options.length) {
+            dtSel.innerHTML = `<option value="">—</option>` +
+                DAMAGE_TYPES.map(t => `<option>${t}</option>`).join('');
+        }
+        const rangeSel = document.getElementById('ae-w-range');
+        if (rangeSel && !rangeSel.options.length) {
+            rangeSel.innerHTML = RANGES.map(r => `<option>${r}</option>`).join('');
+        }
+        drawer.inert = false;
+        drawer.removeAttribute('aria-hidden');
+        drawer.classList.add('is-open');
+    }
+
+    function closeAeDrawer() {
+        if (drawer.contains(document.activeElement)) document.activeElement.blur();
+        drawer.classList.remove('is-open');
+        drawer.setAttribute('aria-hidden', 'true');
+        drawer.inert = true;
+        document.getElementById('ae-search').value = '';
+        document.getElementById('ae-search-results').hidden = true;
+        document.getElementById('ae-add-btn').textContent = '+ Add Item';
+        aeEditIndex = -1;
+    }
+
+    function openAeDrawerForEdit(idx) {
+        const item = state.equipment[idx];
+        if (!item) return;
+        aeEditIndex = idx;
+        setAeCategory('armor');
+        openAeDrawer();
+        document.getElementById('ae-drawer-title').textContent = 'Edit Armor';
+        document.getElementById('ae-add-btn').textContent = '✓ Save Changes';
+        document.getElementById('ae-a-name').value  = item.name  || '';
+        document.getElementById('ae-a-notes').value = item.notes || '';
+        const ratingOut = document.getElementById('ae-a-rating');
+        ratingOut.dataset.val = item.armorRating || 0;
+        ratingOut.textContent = item.armorRating || 0;
+        document.getElementById('ae-desc').value = item.flavor || '';
+        const moveOut = document.getElementById('ae-move');
+        moveOut.dataset.val = item.moveMod || 0; moveOut.textContent = item.moveMod || 0;
+        const llOut = document.getElementById('ae-lowlight');
+        llOut.dataset.val = item.lowlightMod || 0; llOut.textContent = item.lowlightMod || 0;
+    }
+
+    window.openAeDrawerForEdit = openAeDrawerForEdit;
+
+    function resetAeForm() {
+        ['ae-w-name','ae-w-damage','ae-w-dmg-type','ae-w-range','ae-w-props','ae-w-check',
+         'ae-a-name','ae-a-notes','ae-desc'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+        ['ae-w-atk','ae-a-rating','ae-move','ae-lowlight'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.dataset.val = '0'; el.textContent = '0'; }
+        });
+    }
+
+    function setAeCategory(cat) {
+        aeCategory = cat;
+        document.querySelectorAll('[data-ae-cat]').forEach(b =>
+            b.classList.toggle('is-sel', b.dataset.aeCat === cat));
+        document.getElementById('ae-weapon-fields').hidden = cat !== 'weapon';
+        document.getElementById('ae-armor-fields').hidden  = cat !== 'armor';
+        document.getElementById('ae-drawer-title').textContent = cat === 'armor' ? 'Add Armor' : 'Add Weapon';
+    }
+
+    // Open
+    document.getElementById('btn-open-add-equip')?.addEventListener('click', openAeDrawer);
+
+    // Close
+    drawer.addEventListener('click', e => {
+        if (e.target.matches('[data-ae-close]')) closeAeDrawer();
+    });
+
+    // Type toggle
+    drawer.addEventListener('click', e => {
+        const btn = e.target.closest('[data-ae-cat]');
+        if (btn) setAeCategory(btn.dataset.aeCat);
+    });
+
+    // Steppers
+    drawer.addEventListener('click', e => {
+        const btn = e.target.closest('.ae-step-btn');
+        if (!btn) return;
+        const out = document.getElementById(btn.dataset.aeTarget);
+        if (!out) return;
+        const cur = parseInt(out.dataset.val || '0', 10);
+        const next = cur + parseInt(btn.dataset.aeStep, 10);
+        out.dataset.val = next;
+        out.textContent = next >= 0 && btn.dataset.aeTarget !== 'ae-move' && btn.dataset.aeTarget !== 'ae-lowlight'
+            ? next : (next >= 0 ? `+${next}` : next);
+        // simpler: just show the number
+        out.textContent = next;
+    });
+
+    // Search
+    const searchEl = document.getElementById('ae-search');
+    const resultsEl = document.getElementById('ae-search-results');
+    searchEl?.addEventListener('input', () => {
+        const q = searchEl.value.trim().toLowerCase();
+        if (!q) { resultsEl.hidden = true; return; }
+        const wMatches = weaponsData.filter(w => w.name.toLowerCase().includes(q)).slice(0, 5)
+            .map(w => ({ name: w.name, sub: [w.damage, w.damageType, w.range].filter(Boolean).join(' · '), kind: 'weapon', data: w }));
+        const aMatches = armorData.filter(a => a.name.toLowerCase().includes(q)).slice(0, 3)
+            .map(a => ({ name: a.name, sub: `Armor ${a.armor}`, kind: 'armor', data: a }));
+        const all = [...wMatches, ...aMatches];
+        if (!all.length) { resultsEl.hidden = true; return; }
+        resultsEl.hidden = false;
+        resultsEl.innerHTML = all.map((r, i) =>
+            `<button class="ae-result" type="button" data-ae-idx="${i}">${r.name}<span class="ae-result-sub">${r.sub}</span></button>`
+        ).join('');
+        resultsEl._results = all;
+    });
+
+    resultsEl?.addEventListener('click', e => {
+        const btn = e.target.closest('.ae-result');
+        if (!btn) return;
+        const r = resultsEl._results?.[parseInt(btn.dataset.aeIdx, 10)];
+        if (!r) return;
+        if (r.kind === 'weapon') {
+            setAeCategory('weapon');
+            document.getElementById('ae-w-name').value    = r.data.name || '';
+            document.getElementById('ae-w-damage').value  = r.data.damage || '';
+            document.getElementById('ae-w-dmg-type').value = r.data.damageType || '';
+            document.getElementById('ae-w-range').value   = r.data.range || '';
+            document.getElementById('ae-w-props').value   = r.data.properties && r.data.properties !== '—' ? r.data.properties : '';
+            document.getElementById('ae-w-check').value   = r.data.check ? r.data.check.split(',')[0].trim() : '';
+        } else {
+            setAeCategory('armor');
+            document.getElementById('ae-a-name').value  = r.data.name || '';
+            document.getElementById('ae-a-notes').value = r.data.checkBonus || '';
+            const ratingOut = document.getElementById('ae-a-rating');
+            ratingOut.dataset.val = r.data.armor || 0;
+            ratingOut.textContent = r.data.armor || 0;
+        }
+        searchEl.value = '';
+        resultsEl.hidden = true;
+    });
+
+    // Add button
+    document.getElementById('ae-add-btn')?.addEventListener('click', () => {
+        const moveMod     = aeStepVal('ae-move');
+        const lowlightMod = aeStepVal('ae-lowlight');
+
+        // Edit existing armor
+        if (aeEditIndex >= 0 && aeCategory === 'armor') {
+            const item = state.equipment[aeEditIndex];
+            if (!item) return;
+            const name   = document.getElementById('ae-a-name').value.trim();
+            if (!name) return;
+            item.name        = name;
+            item.notes       = document.getElementById('ae-a-notes').value.trim();
+            item.armorRating = aeStepVal('ae-a-rating');
+            item.flavor      = document.getElementById('ae-desc')?.value.trim() || '';
+            if (moveMod) item.moveMod = moveMod; else delete item.moveMod;
+            if (lowlightMod) item.lowlightMod = lowlightMod; else delete item.lowlightMod;
+            recalcArmorBonuses(); renderEquipment(); calcDerived();
+            resetAeForm(); closeAeDrawer();
+            return;
+        }
+
+        if (aeCategory === 'weapon') {
+            const name = document.getElementById('ae-w-name').value.trim();
+            if (!name) return;
+            const damage     = document.getElementById('ae-w-damage').value;
+            const damageType = document.getElementById('ae-w-dmg-type').value;
+            const range      = document.getElementById('ae-w-range').value;
+            const properties = document.getElementById('ae-w-props').value || '—';
+            const check      = document.getElementById('ae-w-check').value;
+            const atkBonus   = aeStepVal('ae-w-atk');
+            const desc  = document.getElementById('ae-desc')?.value.trim() || '';
+            const entry = {
+                name, category: 'weapon', damage, damageType, range, properties, check,
+                attackBonus: atkBonus, critRange: 20,
+                notes: [damage, damageType, range].filter(Boolean).join(' · '),
+                flavor: desc,
+            };
+            if (moveMod)     entry.moveMod = moveMod;
+            if (lowlightMod) entry.lowlightMod = lowlightMod;
+            state.equipment.push(entry);
+            saveState(); renderEquipment(); calcDerived();
+        } else {
+            const name   = document.getElementById('ae-a-name').value.trim();
+            if (!name) return;
+            const notes  = document.getElementById('ae-a-notes').value.trim();
+            const rating = aeStepVal('ae-a-rating');
+            const desc  = document.getElementById('ae-desc')?.value.trim() || '';
+            const entry = { name, category: 'armor', notes, armorRating: rating, flavor: desc };
+            if (moveMod)     entry.moveMod = moveMod;
+            if (lowlightMod) entry.lowlightMod = lowlightMod;
+            state.equipment.push(entry);
+            recalcArmorBonuses(); renderEquipment(); calcDerived();
+        }
+
+        resetAeForm();
+        closeAeDrawer();
+    });
+}
 
 function bindSectionEditors() {
     document.querySelectorAll('.gear-btn').forEach(btn => {
@@ -3063,11 +3377,12 @@ function bindSectionEditors() {
 function populateEditor(editorId) {
     if (editorId === 'health-editor') {
         const bonusEl = document.getElementById('hp-bonus-input');
-        const armorMaxEl = document.getElementById('armor-max-input');
         if (bonusEl) bonusEl.value = state.resources.hp.bonus || 0;
-        if (armorMaxEl) armorMaxEl.value = state.resources.armor.max || 0;
+        const moveModEl = document.getElementById('move-mod-input');
+        const lowlightModEl = document.getElementById('lowlight-mod-input');
+        if (moveModEl) moveModEl.value = state.resources.moveMod || 0;
+        if (lowlightModEl) lowlightModEl.value = state.resources.lowlightMod || 0;
     }
-    if (editorId === 'equip-editor') setEquipCat('gear');
     if (editorId === 'res-editor') renderCustomResEditorList();
     if (editorId === 'checks-editor') syncEditCheckInputs();
     if (editorId === 'class-editor') {
@@ -3088,11 +3403,9 @@ function populateEditor(editorId) {
 function saveEditor(target) {
     if (target === 'health') {
         const bonusEl = document.getElementById('hp-bonus-input');
-        const armorMaxEl = document.getElementById('armor-max-input');
         state.resources.hp.bonus = clampNum(bonusEl?.value || '0');
-        const newArmorMax = clampNum(armorMaxEl?.value || '0');
-        state.resources.armor.max = newArmorMax;
-        state.resources.armor.current = Math.min(state.resources.armor.current, newArmorMax);
+        state.resources.moveMod = Number(document.getElementById('move-mod-input')?.value) || 0;
+        state.resources.lowlightMod = Number(document.getElementById('lowlight-mod-input')?.value) || 0;
         calcDerived(); saveState(); syncUI();
     }
     if (target === 'checks') {
@@ -3140,36 +3453,26 @@ function saveEditor(target) {
 
         saveState(); renderClassView(); renderProgression(); calcManaMax();
     }
-    if (target === 'equipment') {
-        const nameInput = document.getElementById('equip-name-input');
-        const notesInput = document.getElementById('equip-notes-input');
+    if (target === 'inventory') {
+        const nameInput = document.getElementById('inv-name-input');
+        const notesInput = document.getElementById('inv-notes-input');
         const name = nameInput?.value.trim();
         if (name) {
-            const weapon = weaponsData.find(w => w.name.toLowerCase() === name.toLowerCase());
-            const armor = armorData.find(a => a.name.toLowerCase() === name.toLowerCase());
-            const notes = notesInput?.value.trim()
-                || (weapon ? `${weapon.damage} ${weapon.damageType} · ${weapon.range}` : '')
-                || (armor ? `${armor.armor} Armor${armor.checkBonus ? '; ' + armor.checkBonus : ''}` : '');
-            const category = armor ? 'armor' : newEquipCat;
-            const entry = { name: weapon?.name || armor?.name || name, notes, category };
-            if (weapon) {
-                Object.assign(entry, {
-                    damage: weapon.damage, damageType: weapon.damageType,
-                    check: weapon.check, range: weapon.range,
-                    properties: weapon.properties, desc: weapon.description || '',
-                    attackBonus: 0, critRange: 20,
-                });
-            } else if (armor) {
-                Object.assign(entry, { armorRating: armor.armor || 0 });
-            } else if (category === 'weapon') {
-                Object.assign(entry, parseWeaponData(entry));
-            }
+            const moveMod = Number(document.getElementById('inv-move-input')?.value) || 0;
+            const lowlightMod = Number(document.getElementById('inv-lowlight-input')?.value) || 0;
+            const entry = { name, notes: notesInput?.value.trim() || '', category: 'gear' };
+            if (moveMod) entry.moveMod = moveMod;
+            if (lowlightMod) entry.lowlightMod = lowlightMod;
             state.equipment.push(entry);
             if (nameInput) nameInput.value = '';
             if (notesInput) notesInput.value = '';
-            setEquipCat('gear');
-            if (category === 'armor') { recalcArmorBonuses(); renderEquipment(); }
-            else { saveState(); renderEquipment(); }
+            const moveInput = document.getElementById('inv-move-input');
+            const llInput = document.getElementById('inv-lowlight-input');
+            if (moveInput) moveInput.value = 0;
+            if (llInput) llInput.value = 0;
+            saveState();
+            renderInventory();
+            calcDerived();
         }
         return true;
     }
@@ -3199,40 +3502,6 @@ function saveEditor(target) {
 }
 
 // ── BIO ───────────────────────────────────────────────────────────────────────
-
-function bindBio() {
-    document.getElementById('btn-export')?.addEventListener('click', () => {
-        const payload = JSON.stringify({
-            char: state.char,
-            resources: state.resources,
-            checks: state.checks,
-            activeConditions: [...state.activeConditions],
-            equipment: state.equipment,
-            progression: state.progression,
-        }, null, 2);
-        const blob = new Blob([payload], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${state.char.name || 'character'}-active-sheet.json`;
-        a.click();
-        URL.revokeObjectURL(url);
-    });
-
-    els.btnSaveBio?.addEventListener('click', () => {
-        state.char.name = document.getElementById('char-name')?.value.trim() || '';
-        state.char.level = clampNum(document.getElementById('char-level')?.value) || 1;
-        state.char.age = document.getElementById('char-age')?.value.trim() || '';
-        state.char.size = document.getElementById('char-size')?.value.trim() || '';
-        state.char.diet = document.getElementById('char-diet')?.value.trim() || '';
-        state.char.language = document.getElementById('char-language')?.value.trim() || '';
-        state.char.motivation = document.getElementById('char-motivation')?.value.trim() || '';
-        state.char.trinket = document.getElementById('char-trinket')?.value.trim() || '';
-        saveState();
-        syncTopbar();
-        setActivePanel('play');
-    });
-}
 
 function loyaltyVal(raw) {
     if (typeof raw === 'number') return Math.max(-5, Math.min(5, raw));
@@ -3312,18 +3581,35 @@ function bindBio() {
         URL.revokeObjectURL(url);
     });
 
+    function openBioEdit() {
+        document.getElementById('bio-display').hidden   = true;
+        document.getElementById('bio-edit-form').hidden = false;
+        document.getElementById('btn-bio-edit').textContent = '✕ Cancel';
+    }
+    function closeBioEdit() {
+        document.getElementById('bio-display').hidden   = false;
+        document.getElementById('bio-edit-form').hidden = true;
+        document.getElementById('btn-bio-edit').textContent = '✏ Edit';
+    }
+
+    document.getElementById('btn-bio-edit')?.addEventListener('click', () => {
+        const editing = !document.getElementById('bio-edit-form').hidden;
+        editing ? closeBioEdit() : openBioEdit();
+    });
+
     els.btnSaveBio?.addEventListener('click', () => {
-        state.char.name = document.getElementById('char-name')?.value.trim() || '';
-        state.char.level = clampNum(document.getElementById('char-level')?.value) || 1;
-        state.char.age = document.getElementById('char-age')?.value.trim() || '';
-        state.char.size = document.getElementById('char-size')?.value.trim() || '';
-        state.char.diet = document.getElementById('char-diet')?.value.trim() || '';
-        state.char.language = document.getElementById('char-language')?.value.trim() || '';
+        state.char.name       = document.getElementById('char-name')?.value.trim() || '';
+        state.char.level      = clampNum(document.getElementById('char-level')?.value) || 1;
+        state.char.age        = document.getElementById('char-age')?.value.trim() || '';
+        state.char.size       = document.getElementById('char-size')?.value.trim() || '';
+        state.char.diet       = document.getElementById('char-diet')?.value.trim() || '';
+        state.char.language   = document.getElementById('char-language')?.value.trim() || '';
         state.char.motivation = document.getElementById('char-motivation')?.value.trim() || '';
-        state.char.trinket = document.getElementById('char-trinket')?.value.trim() || '';
+        state.char.trinket    = document.getElementById('char-trinket')?.value.trim() || '';
         saveState();
         syncTopbar();
-        setActivePanel('play');
+        syncBioDisplay();
+        closeBioEdit();
     });
 
     // Notes — auto-save on blur
@@ -3377,6 +3663,17 @@ function bindBio() {
     });
 }
 
+function syncBioDisplay() {
+    const txt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || '—'; };
+    txt('bio-display-name',       state.char.name);
+    txt('bio-display-size',       state.char.size);
+    txt('bio-display-age',        state.char.age);
+    txt('bio-display-diet',       state.char.diet);
+    txt('bio-display-lang',       state.char.language);
+    txt('bio-display-motivation', state.char.motivation);
+    txt('bio-display-trinket',    state.char.trinket);
+}
+
 function syncBioInputs() {
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val ?? ''; };
     set('char-name', state.char.name);
@@ -3388,6 +3685,7 @@ function syncBioInputs() {
     set('char-motivation', state.char.motivation);
     set('char-trinket', state.char.trinket);
     set('char-notes', state.char.notes);
+    syncBioDisplay();
     syncSpeciesDisplay();
     renderNpcList();
 }
@@ -3492,12 +3790,13 @@ function bindProgressionPanel() {
         if (action === 'del-equip-yes') {
             const removed = state.equipment.splice(idx, 1)[0];
             if (removed?.category === 'armor') { recalcArmorBonuses(); renderEquipment(); }
-            else { saveState(); renderEquipment(); }
+            else { saveState(); renderEquipment(); renderInventory(); }
             return;
         }
 
         if (action === 'del-equip-no') {
             renderEquipment();
+            renderInventory();
             return;
         }
 
@@ -3580,34 +3879,6 @@ function bindProgressionPanel() {
         }
     });
 
-    // Equipment type toggle
-    document.querySelector('.equip-type-toggle')?.addEventListener('click', e => {
-        const btn = e.target.closest('.equip-type-btn');
-        if (btn) setEquipCat(btn.dataset.cat);
-    });
-
-    // Auto-detect category + fill notes when a known item name is selected
-    document.getElementById('equip-name-input')?.addEventListener('change', e => {
-        const name = e.target.value.trim();
-        const lower = name.toLowerCase();
-        const weapon = weaponsData.find(w => w.name.toLowerCase() === lower);
-        const armor = !weapon && armorData.find(a => a.name.toLowerCase() === lower);
-        const notesEl = document.getElementById('equip-notes-input');
-        if (weapon) {
-            setEquipCat('weapon');
-            if (notesEl && !notesEl.value) {
-                notesEl.value = `${weapon.damage} ${weapon.damageType} · ${weapon.range}`;
-            }
-        } else if (armor) {
-            setEquipCat('armor');
-            if (notesEl && !notesEl.value) {
-                notesEl.value = `${armor.armor} Armor${armor.checkBonus ? '; ' + armor.checkBonus : ''}`;
-            }
-        } else {
-            setEquipCat(inferEquipCategory(name, notesEl?.value || ''));
-        }
-    });
-
     // Equipment category sub-tabs
     document.querySelector('.equip-tab-row')?.addEventListener('click', e => {
         const tab = e.target.closest('.equip-tab');
@@ -3635,6 +3906,11 @@ function bindProgressionPanel() {
 
         if (action === 'weapon-roll') {
             openWeaponModal(parseInt(btn.dataset.equipIndex, 10));
+            return;
+        }
+
+        if (action === 'edit-armor') {
+            openAeDrawerForEdit(parseInt(btn.dataset.equipIndex, 10));
             return;
         }
 
@@ -3731,10 +4007,12 @@ function calcDerived() {
             : Math.min(state.resources.hp.current, wounds);
     }
 
-    // Speed = 30 + floor(Agility/2)*5 ft
-    const speed = 30 + Math.floor(agi / 2) * 5;
-    // Low Light Vision = 30 + floor(Observation/2)*5 ft
-    const lowlight = 30 + Math.floor(obs / 2) * 5;
+    // Speed = 30 + floor(Agility/2)*5 + manual mod + item bonuses
+    const itemMoveBonus = state.equipment.reduce((sum, e) => sum + (e.moveMod || 0), 0);
+    const itemLowlightBonus = state.equipment.reduce((sum, e) => sum + (e.lowlightMod || 0), 0);
+    const speed = 30 + Math.floor(agi / 2) * 5 + (state.resources.moveMod || 0) + itemMoveBonus;
+    // Low Light Vision = 30 + floor(Observation/2)*5 + manual mod + item bonuses
+    const lowlight = 30 + Math.floor(obs / 2) * 5 + (state.resources.lowlightMod || 0) + itemLowlightBonus;
 
     const speedEl = document.getElementById('derived-speed');
     const lowlightEl = document.getElementById('derived-lowlight');
@@ -3798,41 +4076,10 @@ function syncUI() {
     if (labelDisplay) labelDisplay.textContent = state.resources.classRes.label;
     renderCustomResPills();
     calcDerived();
-    renderLogs();
 }
-
-// ── LOGS ──────────────────────────────────────────────────────────────────────
-
-function renderLogs() {
-    if (els.mainLog) {
-        els.mainLog.innerHTML = '';
-        state.rollLog.slice(0, 8).forEach(line => {
-            const li = document.createElement('li'); li.textContent = line; els.mainLog.appendChild(li);
-        });
-    }
-}
-
-function pushRollLog(line) { state.rollLog.unshift(line); if (state.rollLog.length > 20) state.rollLog.length = 20; }
 
 // ── DICE UTILITIES ────────────────────────────────────────────────────────────
-
-function rollDiceNotation(raw) {
-    const clean = raw.replace(/\[\[|\]\]/g, '').trim();
-    const m = clean.match(/^(\d+)d(\d+)(!?)([+-]\d+)?$/i);
-    if (!m) return null;
-    const count = parseInt(m[1]);
-    const sides = parseInt(m[2]);
-    const explode = !!m[3];
-    const bonus = m[4] ? parseInt(m[4]) : 0;
-    const rolls = [];
-    for (let i = 0; i < count; i++) {
-        let r = Math.floor(Math.random() * sides) + 1;
-        rolls.push(r);
-        if (explode) while (r === sides) { r = Math.floor(Math.random() * sides) + 1; rolls.push(r); }
-    }
-    const total = rolls.reduce((a, b) => a + b, 0) + bonus;
-    return { notation: clean, rolls, bonus, total };
-}
+// rollDiceNotation is defined in chat-cards.js
 
 function parseDiceFromText(text) {
     if (!text) return [];
@@ -3855,6 +4102,23 @@ function clampNum(v) { const n = Number(v); return Number.isFinite(n) ? Math.max
 
 document.addEventListener('DOMContentLoaded', () => {
     loadState();
+
+    // Fire after Firebase auth resolves so uid is available
+    function _trackSession() {
+        if (typeof arcTrack === 'function') {
+            arcTrack('session_open', {
+                charName:  state.char?.name  || '',
+                charClass: state.char?.classKey || '',
+                charLevel: state.char?.level  || 1,
+            });
+        }
+    }
+    if (window.__arc?.uid) {
+        _trackSession();
+    } else {
+        document.addEventListener('arc:firebase-ready', _trackSession, { once: true });
+    }
+
     cacheEls();
     bindNav();
     bindResources();
@@ -3864,6 +4128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bindBio();
     bindSectionEditors();
     bindWeaponModal();
+    bindAddEquipDrawer();
     bindFeatureRollModal();
     bindSettings();
     bindSpellsPanel();
@@ -3884,6 +4149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     syncBioInputs();
     syncTopbar();
     renderEquipment();
+    renderInventory();
     renderOtherGains();
     renderChat();
     bindDiceRoller();

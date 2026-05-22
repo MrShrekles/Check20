@@ -721,6 +721,16 @@ function buildAndSave() {
         rollLog: [],
     };
 
+    if (typeof arcTrack === 'function') {
+        arcTrack('char_created', {
+            classKey:    wiz.classKey,
+            pathName:    wiz.pathName,
+            talentName:  wiz.talentName,
+            speciesName: wiz.speciesName,
+            stats:       { ...wiz.stats },
+        });
+    }
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     window.location.href = 'active-sheet.html';
 }

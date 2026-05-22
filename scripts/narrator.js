@@ -134,7 +134,12 @@ function renderParty() {
     });
 }
 
-document.getElementById('btn-invite')?.addEventListener('click', createRoom);
+document.getElementById('btn-invite')?.addEventListener('click', () => {
+    if (currentRoomCode) {
+        if (!confirm(`You already have room ${currentRoomCode} open.\n\nCreating a new room will close the current one. Players will need the new code.\n\nAre you sure?`)) return;
+    }
+    createRoom();
+});
 
 document.getElementById('btn-add-player')?.addEventListener('click', function() {
     const name      = document.getElementById('pp-name')?.value.trim();
@@ -1068,32 +1073,18 @@ document.getElementById('btn-nar-dice-roll')?.addEventListener('click', () => {
 
 // ── GENERATORS: MONSTER ───────────────────────────────────────────────────────
 
-function rollNarDice(notation) {
-    if (!notation) return null;
-    const m = /^(\d+)d(\d+)([+-]\d+)?$/i.exec(String(notation).trim());
-    if (!m) return null;
-    const count = parseInt(m[1], 10), sides = parseInt(m[2], 10), bonus = parseInt(m[3] || '0', 10);
-    const rolls = Array.from({ length: count }, () => Math.ceil(Math.random() * sides));
-    return { notation, rolls, total: rolls.reduce((s, r) => s + r, 0) + bonus };
-}
+// rollDiceNotation is defined in chat-cards.js
 
 function extractAndRollDice(text) {
     const matches = [...(text || '').matchAll(/\[\[(\d+d\d+(?:[+-]\d+)?)\]\]/gi)];
-    return matches.map(m => rollNarDice(m[1])).filter(Boolean);
+    return matches.map(m => rollDiceNotation(m[1])).filter(Boolean);
 }
 
 function subPL(text, pl) {
     return (text || '').replace(/\bPL\b/g, pl ?? '?');
 }
 
-function autoTableRolls(d20Total, damageType) {
-    const n = successCount(d20Total);
-    if (n < 2 || !damageType || !window.damageData?.[damageType]) return null;
-    return Array.from({ length: n - 1 }, () => {
-        const roll = Math.ceil(Math.random() * 6);
-        return { roll, result: window.damageData[damageType].entries[roll - 1] || '—' };
-    });
-}
+// autoTableRolls is defined in chat-cards.js
 
 function monsterAttackEntry(m, atk, atkType) {
     const checkMod = m.check_physical || 0;
@@ -1105,7 +1096,7 @@ function monsterAttackEntry(m, atk, atkType) {
         weaponName: atk.name,
         checkLabel: 'PHYSICAL', checkMod, attackBonus: 0,
         rollNote: `d20(${d20})`, d20Total, rollType: 'flat',
-        damageRoll: rollNarDice(atk.damage),
+        damageRoll: rollDiceNotation(atk.damage),
         damageType, range: atkType === 'melee' ? 'Melee' : 'Ranged',
         tableRolls: autoTableRolls(d20Total, damageType),
         conditions: [], time: chatTimestamp(),

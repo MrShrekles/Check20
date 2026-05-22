@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ARC20 Analytics</title>
+    <script type="module" src="../scripts/firebase.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: system-ui, sans-serif;
+            background: #0c0c0f;
+            color: #d4d4d8;
+            min-height: 100vh;
+            padding: 24px 16px;
+        }
+
+        #gate {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            gap: 12px;
+        }
+        #gate h1 { font-size: 1.2rem; color: #a1a1aa; }
+        #gate input {
+            padding: 8px 14px;
+            border: 1px solid #3f3f46;
+            border-radius: 6px;
+            background: #18181b;
+            color: #f4f4f5;
+            font-size: 1rem;
+            width: 220px;
+            text-align: center;
+        }
+        #gate button {
+            padding: 8px 20px;
+            background: #7c3aed;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        #gate .err { color: #f87171; font-size: 0.85rem; }
+
+        #dashboard { display: none; }
+
+        h1.dash-title {
+            font-size: 1.4rem;
+            color: #f4f4f5;
+            margin-bottom: 6px;
+        }
+        .dash-subtitle {
+            color: #71717a;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+
+        .stat-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: #18181b;
+            border: 1px solid #27272a;
+            border-radius: 10px;
+            padding: 16px 20px;
+            min-width: 140px;
+        }
+        .stat-card .num {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #a78bfa;
+            line-height: 1;
+        }
+        .stat-card .lbl {
+            font-size: 0.78rem;
+            color: #71717a;
+            margin-top: 4px;
+        }
+
+        .section {
+            background: #18181b;
+            border: 1px solid #27272a;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            font-size: 0.95rem;
+            color: #a1a1aa;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 14px;
+        }
+
+        .bar-list { display: flex; flex-direction: column; gap: 7px; }
+        .bar-row { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; }
+        .bar-label { width: 130px; flex-shrink: 0; color: #d4d4d8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .bar-track { flex: 1; height: 12px; background: #27272a; border-radius: 6px; overflow: hidden; }
+        .bar-fill { height: 100%; background: #7c3aed; border-radius: 6px; transition: width 0.4s ease; }
+        .bar-count { width: 28px; text-align: right; color: #71717a; font-size: 0.8rem; }
+
+        .timeline { display: flex; flex-direction: column; gap: 6px; }
+        .tl-row {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            font-size: 0.82rem;
+            color: #a1a1aa;
+        }
+        .tl-date { width: 110px; flex-shrink: 0; color: #71717a; }
+        .tl-event { flex: 1; }
+
+        .loading { color: #52525b; font-size: 0.9rem; text-align: center; padding: 32px 0; }
+
+        @media (min-width: 600px) {
+            body { padding: 32px 32px; }
+            .stat-row { gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Password gate -->
+<div id="gate">
+    <h1>ARC20 Analytics</h1>
+    <input type="password" id="gate-pw" placeholder="Password" />
+    <button id="gate-btn">Enter</button>
+    <span class="err" id="gate-err" hidden>Incorrect password.</span>
+</div>
+
+<!-- Dashboard (shown after auth) -->
+<div id="dashboard">
+    <h1 class="dash-title">ARC20 Analytics</h1>
+    <p class="dash-subtitle" id="dash-range">Loading…</p>
+
+    <div class="stat-row">
+        <div class="stat-card"><div class="num" id="stat-chars">—</div><div class="lbl">Characters Created</div></div>
+        <div class="stat-card"><div class="num" id="stat-sessions">—</div><div class="lbl">Session Opens</div></div>
+        <div class="stat-card"><div class="num" id="stat-players">—</div><div class="lbl">Unique Players</div></div>
+        <div class="stat-card"><div class="num" id="stat-today">—</div><div class="lbl">Created Today</div></div>
+    </div>
+
+    <div class="section">
+        <h2>Class Distribution</h2>
+        <div class="bar-list" id="chart-class"><p class="loading">Loading…</p></div>
+    </div>
+
+    <div class="section">
+        <h2>Species Distribution</h2>
+        <div class="bar-list" id="chart-species"><p class="loading">Loading…</p></div>
+    </div>
+
+    <div class="section">
+        <h2>Path Distribution</h2>
+        <div class="bar-list" id="chart-path"><p class="loading">Loading…</p></div>
+    </div>
+
+    <div class="section">
+        <h2>Talent Distribution</h2>
+        <div class="bar-list" id="chart-talent"><p class="loading">Loading…</p></div>
+    </div>
+
+    <div class="section">
+        <h2>Average Stats by Class</h2>
+        <div id="stats-by-class"><p class="loading">Loading…</p></div>
+    </div>
+
+    <div class="section">
+        <h2>Recent Characters (last 20)</h2>
+        <div class="timeline" id="recent-chars"><p class="loading">Loading…</p></div>
+    </div>
+</div>
+
+<script>
+// ── Gate ──────────────────────────────────────────────────────────────────────
+const PASS = 'arc20admin';
+
+document.getElementById('gate-btn').addEventListener('click', tryUnlock);
+document.getElementById('gate-pw').addEventListener('keydown', e => {
+    if (e.key === 'Enter') tryUnlock();
+});
+
+function tryUnlock() {
+    if (document.getElementById('gate-pw').value === PASS) {
+        document.getElementById('gate').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadAnalytics();
+    } else {
+        document.getElementById('gate-err').hidden = false;
+    }
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function count(arr, key) {
+    return arr.reduce((m, item) => {
+        const v = item[key] || '(none)';
+        m[v] = (m[v] || 0) + 1;
+        return m;
+    }, {});
+}
+
+function renderBars(containerId, countObj) {
+    const el = document.getElementById(containerId);
+    const entries = Object.entries(countObj).sort((a, b) => b[1] - a[1]);
+    if (!entries.length) { el.innerHTML = '<p class="loading">No data yet.</p>'; return; }
+    const max = entries[0][1];
+    el.innerHTML = entries.map(([label, n]) => `
+        <div class="bar-row">
+            <span class="bar-label" title="${label}">${label}</span>
+            <div class="bar-track"><div class="bar-fill" style="width:${Math.round((n/max)*100)}%"></div></div>
+            <span class="bar-count">${n}</span>
+        </div>`).join('');
+}
+
+function fmtDate(ts) {
+    if (!ts) return '';
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function fmtDateTime(ts) {
+    if (!ts) return '';
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return d.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+}
+
+function todayStr() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// ── Load ──────────────────────────────────────────────────────────────────────
+
+async function loadAnalytics() {
+    // Wait for firebase to be ready
+    await new Promise(resolve => {
+        if (window.__arc?.uid) return resolve();
+        document.addEventListener('arc:firebase-ready', resolve, { once: true });
+    });
+
+    const arc = window.__arc;
+    const colRef = arc.collection(arc.db, 'analytics');
+    const q = arc.query(colRef, arc.orderBy('timestamp', 'desc'), arc.limit(2000));
+
+    let snap;
+    try {
+        snap = await arc.getDocs(q);
+    } catch (e) {
+        document.getElementById('dash-range').textContent = 'Error loading data: ' + e.message;
+        return;
+    }
+
+    const all = [];
+    snap.forEach(d => all.push({ id: d.id, ...d.data() }));
+
+    const chars    = all.filter(e => e.type === 'char_created');
+    const sessions = all.filter(e => e.type === 'session_open');
+
+    // Unique players (by uid)
+    const uniqueUids = new Set(all.map(e => e.uid).filter(Boolean));
+
+    // Today count
+    const today = todayStr();
+    const todayCount = chars.filter(e => {
+        if (!e.timestamp) return false;
+        const d = e.timestamp.toDate ? e.timestamp.toDate() : new Date(e.timestamp);
+        const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        return ds === today;
+    }).length;
+
+    // Date range
+    const sorted = all.filter(e => e.timestamp).sort((a, b) => {
+        const ta = a.timestamp.toDate ? a.timestamp.toDate() : new Date(a.timestamp);
+        const tb = b.timestamp.toDate ? b.timestamp.toDate() : new Date(b.timestamp);
+        return ta - tb;
+    });
+    const first = sorted.length ? fmtDate(sorted[0].timestamp) : '—';
+    const last  = sorted.length ? fmtDate(sorted[sorted.length - 1].timestamp) : '—';
+
+    // Fill stat cards
+    document.getElementById('stat-chars').textContent    = chars.length;
+    document.getElementById('stat-sessions').textContent = sessions.length;
+    document.getElementById('stat-players').textContent  = uniqueUids.size;
+    document.getElementById('stat-today').textContent    = todayCount;
+    document.getElementById('dash-range').textContent    = chars.length
+        ? `${first} → ${last} · ${all.length} total events`
+        : 'No data yet.';
+
+    // Distribution charts
+    renderBars('chart-class',   count(chars, 'classKey'));
+    renderBars('chart-species', count(chars, 'speciesName'));
+    renderBars('chart-path',    count(chars, 'pathName'));
+    renderBars('chart-talent',  count(chars, 'talentName'));
+
+    // Average stats by class
+    renderStatsByClass(chars);
+
+    // Recent characters list
+    const recentEl = document.getElementById('recent-chars');
+    const recent = chars.slice(0, 20);
+    if (!recent.length) {
+        recentEl.innerHTML = '<p class="loading">No characters yet.</p>';
+    } else {
+        recentEl.innerHTML = recent.map(c => `
+            <div class="tl-row">
+                <span class="tl-date">${fmtDateTime(c.timestamp)}</span>
+                <span class="tl-event">${c.classKey || '?'} · ${c.speciesName || '?'} · ${c.pathName || '?'} / ${c.talentName || '?'}</span>
+            </div>`).join('');
+    }
+}
+
+function renderStatsByClass(chars) {
+    const el = document.getElementById('stats-by-class');
+    const byClass = {};
+    for (const c of chars) {
+        if (!c.classKey || !c.stats) continue;
+        if (!byClass[c.classKey]) byClass[c.classKey] = { count: 0, totals: {} };
+        byClass[c.classKey].count++;
+        for (const [k, v] of Object.entries(c.stats)) {
+            byClass[c.classKey].totals[k] = (byClass[c.classKey].totals[k] || 0) + (v || 0);
+        }
+    }
+
+    const classes = Object.keys(byClass).sort();
+    if (!classes.length) { el.innerHTML = '<p class="loading">No data yet.</p>'; return; }
+
+    const STAT_KEYS = ['agi','cra','ste','str','sur','inf','int','lck','obs','spi'];
+    const LABELS    = { agi:'Agi', cra:'Cra', ste:'Ste', str:'Str', sur:'Sur', inf:'Inf', int:'Int', lck:'Lck', obs:'Obs', spi:'Spi' };
+
+    el.innerHTML = classes.map(cls => {
+        const { count, totals } = byClass[cls];
+        const avgs = STAT_KEYS.map(k => {
+            const avg = (totals[k] || 0) / count;
+            return `<span title="${LABELS[k]}: ${avg.toFixed(1)}" style="display:inline-block;min-width:36px;font-size:0.75rem;color:#a1a1aa">${LABELS[k]}<br><strong style="color:#d4d4d8">${avg.toFixed(1)}</strong></span>`;
+        }).join('');
+        return `<div style="margin-bottom:12px">
+            <div style="font-size:0.85rem;color:#c4b5fd;margin-bottom:4px">${cls} <span style="color:#52525b">(n=${count})</span></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">${avgs}</div>
+        </div>`;
+    }).join('');
+}
+</script>
+</body>
+</html>

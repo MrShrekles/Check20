@@ -34,6 +34,34 @@ function successCount(total) {
     return total >= 15 ? Math.floor((total - 10) / 5) : 0;
 }
 
+function rollDiceNotation(raw) {
+    const clean = (raw || '').replace(/\[\[|\]\]/g, '').trim();
+    const m = clean.match(/^(\d+)d(\d+)(!?)([+-]\d+)?$/i);
+    if (!m) return null;
+    const count = Math.min(parseInt(m[1]), 20);
+    const sides  = Math.min(parseInt(m[2]), 100);
+    const explode = !!m[3], bonus = m[4] ? parseInt(m[4]) : 0;
+    const rolls = [];
+    for (let i = 0; i < count; i++) {
+        let r = Math.floor(Math.random() * sides) + 1;
+        rolls.push(r);
+        if (explode) {
+            let cap = 20;
+            while (r === sides && cap-- > 0) { r = Math.floor(Math.random() * sides) + 1; rolls.push(r); }
+        }
+    }
+    return { notation: clean, rolls, bonus, total: rolls.reduce((a, b) => a + b, 0) + bonus };
+}
+
+function autoTableRolls(d20Total, damageType) {
+    const n = successCount(d20Total);
+    if (n < 2 || !damageType || !window.damageData?.[damageType]) return null;
+    return Array.from({ length: n - 1 }, () => {
+        const roll = Math.floor(Math.random() * 6) + 1;
+        return { roll, result: window.damageData[damageType].entries[roll - 1] || '—' };
+    });
+}
+
 function successHtml(total) {
     const n = successCount(total);
     if (n === 0) return `<div class="roll-outcome roll-outcome--fail">✗ No Success</div>`;
@@ -90,7 +118,7 @@ function renderWeaponAttackEntry(entry) {
         const base   = entry.damageRoll.total;
         const total  = isCrit ? base * 2 : base;
         const rolls  = entry.damageRoll.rolls || [];
-        const breakdown = rolls.length ? `[${rolls.join('+')}]` : '';
+        const breakdown = rolls.length > 6 ? `[${rolls.length} dice]` : rolls.length ? `[${rolls.join('+')}]` : '';
         const detail = isCrit
             ? `<span class="chat-dice-detail">${breakdown}×2</span><span class="chat-crit-label">CRIT</span>`
             : breakdown ? `<span class="chat-dice-detail">${breakdown}</span>` : '';

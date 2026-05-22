@@ -14,7 +14,6 @@ function parseDice(text) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("✅ Tooltips active.");
 
     const tooltipLibrary = {
         "Provoke":"This happens if an attack misses, or when a creature willingly moves out of another’s melee range. The target is granted a counterattack",

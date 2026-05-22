@@ -87,6 +87,16 @@
                         style="text-transform:uppercase" />
                     <button id="btn-join-session" class="home-btn home-btn--primary" type="button" disabled>Join</button>
                 </div>
+                <button id="btn-create-room" class="home-btn" type="button" disabled>+ Create Room</button>
+
+                <!-- Are you sure confirm (shown before creating when already in a room) -->
+                <div id="home-create-confirm" hidden style="margin-top:10px;padding:12px;background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.3);border-radius:10px">
+                    <p style="font-size:13px;color:#e06060;margin:0 0 10px">You're already in room <strong id="confirm-room-code"></strong>. Creating a new room means you'll need a new code. Are you sure?</p>
+                    <div style="display:flex;gap:8px">
+                        <button id="btn-create-confirm-yes" class="home-btn home-btn--primary" type="button" style="flex:1;background:#e06060;border-color:#e06060">Yes, New Room</button>
+                        <button id="btn-create-confirm-no" class="home-btn home-btn--ghost" type="button" style="flex:1">Cancel</button>
+                    </div>
+                </div>
             </div>
 
             <p id="join-status" class="home-join-status" hidden></p>

@@ -22,6 +22,7 @@
     <!-- page logic -->
     <script src="../scripts/chat-cards.js" defer></script>
     <script type="module" src="../scripts/firebase.js"></script>
+    <script src="../scripts/analytics.js" defer></script>
     <script src="../scripts/active-sheet.js" defer></script>
 </head>
 
@@ -88,9 +89,10 @@
                     <div class="section-editor" id="health-editor">
                         <div class="editor-grid">
                             <label class="field"><span class="field-label">Wound Bonus</span><input id="hp-bonus-input" type="number" inputmode="numeric" min="0" value="0" /></label>
-                            <label class="field"><span class="field-label">Armor Max</span><input id="armor-max-input" type="number" inputmode="numeric" min="0" value="0" /></label>
+                            <label class="field"><span class="field-label">Move Mod</span><input id="move-mod-input" type="number" inputmode="numeric" step="1" value="0" /></label>
+                            <label class="field"><span class="field-label">Low Light Mod</span><input id="lowlight-mod-input" type="number" inputmode="numeric" step="1" value="0" /></label>
                         </div>
-                        <p class="field-hint">Wound Bonus adds to Agi + Str. Armor Max is set manually.</p>
+                        <p class="field-hint">Wound Bonus adds to Agi + Str. Armor is auto-calculated from equipped armor. Move/Low Light Mod add flat bonuses to derived values.</p>
                         <button class="done-btn" data-save="health" type="button">✓ Done</button>
                     </div>
                     <div class="resource-grid">
@@ -203,16 +205,6 @@
                     </div>
                 </div>
 
-                <!-- Recent -->
-                <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title">Recent</h2>
-                        <button class="ghost-btn" id="btn-clear-log" type="button">Clear</button>
-                    </div>
-                    <ol class="roll-log" id="roll-log" aria-label="Recent rolls">
-                        <!-- log items injected by JS -->
-                    </ol>
-                </div>
             </section>
 
             <!-- FEATURES -->
@@ -269,8 +261,8 @@
 
                 <!-- Tab row: Class | Equipment -->
                 <div class="feat-tab-row">
-                    <button class="feat-tab is-active" data-feat-tab="class"  type="button">Class</button>
-                    <button class="feat-tab"           data-feat-tab="equip"  type="button">Equipment</button>
+                    <button class="feat-tab is-active" data-feat-tab="class" type="button">Class</button>
+                    <button class="feat-tab"           data-feat-tab="equip" type="button">Equipment</button>
                 </div>
 
                 <!-- Class tab -->
@@ -309,28 +301,32 @@
                     <div class="section">
                         <div class="section-head">
                             <h2 class="section-title">Equipment</h2>
-                            <button class="gear-btn" data-editor="equip-editor" type="button" aria-label="Add equipment">⚙</button>
+                            <button class="gear-btn" id="btn-open-add-equip" type="button" aria-label="Add equipment">⚙</button>
                         </div>
                         <div class="equip-tab-row">
                             <button class="equip-tab is-active" data-equip-tab="all"    type="button">All</button>
                             <button class="equip-tab"           data-equip-tab="weapon" type="button">Weapons</button>
-                            <button class="equip-tab"           data-equip-tab="gear"   type="button">Gear</button>
                             <button class="equip-tab"           data-equip-tab="armor"  type="button">Armor</button>
                         </div>
-                        <div class="section-editor" id="equip-editor">
-                            <label class="field"><span class="field-label">Name</span><input id="equip-name-input" type="text" placeholder="Item name…" autocomplete="off" /></label>
-                            <label class="field"><span class="field-label">Notes</span><input id="equip-notes-input" type="text" placeholder="Stats, description…" autocomplete="off" /></label>
-                            <div class="equip-type-row">
-                                <span class="field-label">Type</span>
-                                <div class="equip-type-toggle">
-                                    <button class="equip-type-btn is-sel" data-cat="gear"   type="button">Gear</button>
-                                    <button class="equip-type-btn"        data-cat="weapon" type="button">Weapon</button>
-                                    <button class="equip-type-btn"        data-cat="armor"  type="button">Armor</button>
-                                </div>
-                            </div>
-                            <button class="done-btn" data-save="equipment" type="button">+ Add Item</button>
-                        </div>
                         <div class="list" id="equip-list"><p class="empty-hint">No equipment added</p></div>
+                    </div>
+
+                    <!-- Inventory — stacked below equipment -->
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Inventory</h2>
+                            <button class="gear-btn" data-editor="inventory-editor" type="button" aria-label="Add item">⚙</button>
+                        </div>
+                        <div class="section-editor" id="inventory-editor">
+                            <label class="field"><span class="field-label">Name</span><input id="inv-name-input" type="text" placeholder="Item name…" autocomplete="off" /></label>
+                            <label class="field"><span class="field-label">Notes</span><input id="inv-notes-input" type="text" placeholder="Description…" autocomplete="off" /></label>
+                            <div class="editor-grid">
+                                <label class="field"><span class="field-label">Move Bonus</span><input id="inv-move-input" type="number" inputmode="numeric" step="1" value="0" placeholder="0" /></label>
+                                <label class="field"><span class="field-label">Low Light Bonus</span><input id="inv-lowlight-input" type="number" inputmode="numeric" step="1" value="0" placeholder="0" /></label>
+                            </div>
+                            <button class="done-btn" data-save="inventory" type="button">+ Add Item</button>
+                        </div>
+                        <div class="list" id="inventory-list"><p class="empty-hint">No items in inventory</p></div>
                     </div>
                 </div>
 
@@ -344,35 +340,54 @@
                     <div class="section">
                         <div class="section-head">
                             <h2 class="section-title">Character</h2>
-                            <button class="ghost-btn" id="btn-export" type="button">Export</button>
+                            <button class="ghost-btn" id="btn-bio-edit" type="button">&#9998; Edit</button>
                         </div>
-                        <div class="form">
-                            <label class="field">
-                                <span class="field-label">Name</span>
-                                <input id="char-name" type="text" inputmode="text" autocomplete="off" />
-                            </label>
+
+                        <!-- Compact read-only display -->
+                        <div class="bio-display" id="bio-display">
+                            <div class="bio-display-name" id="bio-display-name">—</div>
+                            <div class="bio-display-species">
+                                <span id="bio-species-name">—</span><span id="bio-species-sub" class="bio-display-sub"></span>
+                            </div>
+                            <div class="bio-display-grid">
+                                <div class="bio-display-item"><span class="bio-display-label">Size</span><span id="bio-display-size">—</span></div>
+                                <div class="bio-display-item"><span class="bio-display-label">Age</span><span id="bio-display-age">—</span></div>
+                                <div class="bio-display-item"><span class="bio-display-label">Diet</span><span id="bio-display-diet">—</span></div>
+                                <div class="bio-display-item"><span class="bio-display-label">Language</span><span id="bio-display-lang">—</span></div>
+                            </div>
+                            <div class="bio-display-full"><span class="bio-display-label">Motivation</span><p id="bio-display-motivation">—</p></div>
+                            <div class="bio-display-full"><span class="bio-display-label">Trinket</span><p id="bio-display-trinket">—</p></div>
+                        </div>
+
+                        <!-- Edit form -->
+                        <div class="bio-edit-form" id="bio-edit-form" hidden>
                             <div class="field">
                                 <span class="field-label">Species</span>
                                 <div class="species-locked">
                                     <div class="species-locked-info">
-                                        <span class="species-locked-name" id="bio-species-name">—</span>
-                                        <span class="species-locked-sub"  id="bio-species-sub"></span>
+                                        <span class="species-locked-name" id="bio-species-name-edit">—</span>
+                                        <span class="species-locked-sub"  id="bio-species-sub-edit"></span>
                                     </div>
-                                    <button class="species-change-btn" id="btn-species-edit" type="button">✏ Change</button>
+                                    <button class="species-change-btn" id="btn-species-edit" type="button">&#9998; Change</button>
                                 </div>
                             </div>
+                            <label class="field"><span class="field-label">Name</span>
+                                <input id="char-name" type="text" inputmode="text" autocomplete="off" />
+                            </label>
                             <div class="bio-row">
                                 <label class="field"><span class="field-label">Size</span><input id="char-size" type="text" autocomplete="off" /></label>
                                 <label class="field"><span class="field-label">Age</span><input id="char-age" type="text" autocomplete="off" /></label>
                                 <label class="field"><span class="field-label">Diet</span><input id="char-diet" type="text" autocomplete="off" /></label>
                             </div>
                             <label class="field"><span class="field-label">Language</span><input id="char-language" type="text" autocomplete="off" /></label>
-                            <label class="field">
-                                <span class="field-label">Motivation</span>
+                            <label class="field"><span class="field-label">Motivation</span>
                                 <textarea id="char-motivation" rows="3"></textarea>
                             </label>
                             <label class="field"><span class="field-label">Trinket</span><input id="char-trinket" type="text" autocomplete="off" /></label>
-                            <button class="primary-btn" id="btn-save-bio" type="button">Save</button>
+                            <div class="bio-edit-btns">
+                                <button class="primary-btn" id="btn-save-bio" type="button">Save</button>
+                                <button class="ghost-btn" id="btn-export" type="button">Export</button>
+                            </div>
                         </div>
                     </div>
 
@@ -640,6 +655,124 @@
             </div>
         </section>
 
+        <!-- Add Equipment Drawer -->
+        <section class="drawer" id="add-equip-drawer" aria-hidden="true" inert>
+            <div class="drawer-scrim" data-ae-close></div>
+            <div class="drawer-sheet" role="dialog" aria-modal="true" aria-label="Add Equipment">
+                <div class="drawer-handle" aria-hidden="true"></div>
+                <div class="drawer-head">
+                    <div class="drawer-title" id="ae-drawer-title">Add Equipment</div>
+                    <button class="icon-btn" type="button" data-ae-close aria-label="Close">✕</button>
+                </div>
+                <div class="drawer-body">
+
+                    <!-- Optional search -->
+                    <div class="ae-search-wrap">
+                        <input id="ae-search" type="text" class="ae-search-input" placeholder="Search weapons &amp; armor…" autocomplete="off" />
+                        <div id="ae-search-results" class="ae-search-results" hidden></div>
+                    </div>
+
+                    <!-- Type toggle -->
+                    <div class="equip-type-toggle ae-type-toggle">
+                        <button class="equip-type-btn is-sel" data-ae-cat="weapon" type="button">Weapon</button>
+                        <button class="equip-type-btn"        data-ae-cat="armor"  type="button">Armor</button>
+                    </div>
+
+                    <!-- Weapon fields -->
+                    <div id="ae-weapon-fields">
+                        <label class="field"><span class="field-label">Name</span>
+                            <input id="ae-w-name" type="text" placeholder="Weapon name…" autocomplete="off" />
+                        </label>
+                        <div class="ae-row">
+                            <label class="field"><span class="field-label">Damage</span>
+                                <input id="ae-w-damage" type="text" list="ae-damage-list"
+                                    placeholder="1d6" autocomplete="off" class="ae-search-input" style="margin:0" />
+                                <datalist id="ae-damage-list">
+                                    <option value="1d4"/>
+                                    <option value="1d6"/>
+                                    <option value="2d6"/>
+                                    <option value="3d6"/>
+                                    <option value="2d4!"/>
+                                </datalist>
+                            </label>
+                            <label class="field"><span class="field-label">Damage Type</span>
+                                <select id="ae-w-dmg-type" class="sheet-select"></select>
+                            </label>
+                        </div>
+                        <div class="ae-row">
+                            <label class="field"><span class="field-label">Range</span>
+                                <select id="ae-w-range" class="sheet-select"></select>
+                            </label>
+                            <label class="field"><span class="field-label">Properties</span>
+                                <select id="ae-w-props" class="sheet-select">
+                                    <option value="">—</option>
+                                    <option>Light</option><option>Hefty</option>
+                                </select>
+                            </label>
+                        </div>
+                        <label class="field"><span class="field-label">Check Stat</span>
+                            <select id="ae-w-check" class="sheet-select">
+                                <option value="">— any —</option>
+                                <option>Agility</option><option>Crafting</option><option>Influence</option>
+                                <option>Intellect</option><option>Luck</option><option>Observation</option>
+                                <option>Spirit</option><option>Stealth</option><option>Strength</option><option>Survival</option>
+                            </select>
+                        </label>
+                        <label class="field"><span class="field-label">Attack Bonus</span>
+                            <div class="ae-stepper">
+                                <button class="ae-step-btn" data-ae-step="-1" data-ae-target="ae-w-atk" type="button">−</button>
+                                <output id="ae-w-atk" class="ae-step-val" data-val="0">0</output>
+                                <button class="ae-step-btn" data-ae-step="1" data-ae-target="ae-w-atk" type="button">+</button>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Armor fields -->
+                    <div id="ae-armor-fields" hidden>
+                        <label class="field"><span class="field-label">Name</span>
+                            <input id="ae-a-name" type="text" placeholder="Armor name…" autocomplete="off" />
+                        </label>
+                        <label class="field"><span class="field-label">Notes</span>
+                            <input id="ae-a-notes" type="text" placeholder="Stealth −1, Agility −1…" autocomplete="off" />
+                        </label>
+                        <label class="field"><span class="field-label">Armor Rating</span>
+                            <div class="ae-stepper">
+                                <button class="ae-step-btn" data-ae-step="-1" data-ae-target="ae-a-rating" type="button">−</button>
+                                <output id="ae-a-rating" class="ae-step-val" data-val="0">0</output>
+                                <button class="ae-step-btn" data-ae-step="1" data-ae-target="ae-a-rating" type="button">+</button>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Description (magic items, special effects, etc.) -->
+                    <label class="field">
+                        <span class="field-label">Description</span>
+                        <textarea id="ae-desc" class="ae-desc-input" rows="2" placeholder="Magic properties, special effects, flavor…"></textarea>
+                    </label>
+
+                    <!-- Shared bonuses -->
+                    <div class="ae-bonuses">
+                        <label class="field"><span class="field-label">Move Bonus</span>
+                            <div class="ae-stepper">
+                                <button class="ae-step-btn" data-ae-step="-5" data-ae-target="ae-move" type="button">−</button>
+                                <output id="ae-move" class="ae-step-val" data-val="0">0</output>
+                                <button class="ae-step-btn" data-ae-step="5" data-ae-target="ae-move" type="button">+</button>
+                            </div>
+                        </label>
+                        <label class="field"><span class="field-label">Low Light Bonus</span>
+                            <div class="ae-stepper">
+                                <button class="ae-step-btn" data-ae-step="-5" data-ae-target="ae-lowlight" type="button">−</button>
+                                <output id="ae-lowlight" class="ae-step-val" data-val="0">0</output>
+                                <button class="ae-step-btn" data-ae-step="5" data-ae-target="ae-lowlight" type="button">+</button>
+                            </div>
+                        </label>
+                    </div>
+
+                    <button class="primary-btn ae-add-btn" id="ae-add-btn" type="button">+ Add Item</button>
+                </div>
+            </div>
+        </section>
+
         <!-- Floating Roll button (thumb friendly) -->
     </main>
 
@@ -689,6 +822,14 @@
                 </label>
             </div>
 
+            <!-- Description / flavor -->
+            <label class="wm-edit-field wm-edit-field--wide" style="margin-bottom:10px">
+                <span class="wm-stat-label">Description</span>
+                <textarea id="wm-flavor-input" class="wm-edit-input" rows="2"
+                    placeholder="Magic properties, flavor…"
+                    style="resize:vertical;width:100%;box-sizing:border-box"></textarea>
+            </label>
+
             <!-- Check chips (for rolling — updated by check stat select) -->
             <div class="wm-section">
                 <div class="wm-label">Roll with</div>
@@ -728,6 +869,20 @@
                 <button class="settings-action-btn settings-action-btn--danger" id="btn-leave-session-sheet" type="button">Leave Session</button>
             </div>
 
+            <div class="settings-section" id="settings-app-section">
+                <div class="settings-section-title">App</div>
+                <div id="settings-app-installed" hidden>
+                    <p class="settings-hint">Running as installed app. To uninstall: find the ARC20 icon on your home screen or app drawer, long-press it, and choose <strong>Uninstall</strong> or <strong>Remove</strong>.</p>
+                </div>
+                <div id="settings-app-installable" hidden>
+                    <p class="settings-hint">Install ARC20 as an app for offline use and a faster experience.</p>
+                    <button class="settings-action-btn" id="btn-install-app" type="button">⬇ Install App</button>
+                </div>
+                <div id="settings-app-unavailable" hidden>
+                    <p class="settings-hint">To install: open this page in Chrome or Safari, tap the browser menu, and choose <strong>Add to Home Screen</strong> or <strong>Install App</strong>.</p>
+                </div>
+            </div>
+
             <div class="settings-section">
                 <div class="settings-section-title">Character</div>
                 <button class="settings-action-btn" id="btn-export-settings" type="button">Export Save File</button>
@@ -763,10 +918,11 @@
                 <div class="wm-check-chips" id="srm-check-chips"></div>
             </div>
 
-            <!-- Stat row: Damage / Type / Range / Duration -->
+            <!-- Stat row: Damage / Transmission / Manner / Range / Duration -->
             <div class="wm-stats" id="srm-stats">
                 <div class="wm-stat"><div class="wm-stat-label">Damage</div><div class="wm-stat-val" id="srm-damage">—</div></div>
-                <div class="wm-stat"><div class="wm-stat-label">Type</div><div class="wm-stat-val" id="srm-dmg-type">—</div></div>
+                <div class="wm-stat"><div class="wm-stat-label">Transmission</div><div class="wm-stat-val" id="srm-dmg-type">—</div></div>
+                <div class="wm-stat"><div class="wm-stat-label">Manner</div><div class="wm-stat-val" id="srm-manner">—</div></div>
                 <div class="wm-stat"><div class="wm-stat-label">Range</div><div class="wm-stat-val" id="srm-range">—</div></div>
                 <div class="wm-stat"><div class="wm-stat-label">Duration</div><div class="wm-stat-val" id="srm-duration">—</div></div>
             </div>
@@ -781,13 +937,12 @@
                 <button class="roll-seg-btn" type="button" data-seg="dis">Disadvantage</button>
             </div>
 
-            <details class="wm-advanced">
-                <summary>Bonus</summary>
-                <div class="wm-advanced-grid" style="grid-template-columns:1fr">
-                    <label class="field"><span class="field-label">Modifier Bonus</span>
-                        <input id="srm-bonus" type="number" value="0" /></label>
-                </div>
-            </details>
+            <!-- Check bonus -->
+            <label class="field" style="margin-top:10px">
+                <span class="field-label">Check Bonus</span>
+                <input id="srm-bonus" type="number" inputmode="numeric" step="1" value="0"
+                    style="width:100%;box-sizing:border-box" />
+            </label>
 
             <!-- Low mana warning -->
             <div class="srm-mana-warn" id="srm-mana-warn" hidden>⚠ Not enough mana</div>

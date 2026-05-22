@@ -42,7 +42,6 @@ function saveCurrentToSlot(existingId = null) {
             id,
             name,
             classKey: data.char?.classKey || '',
-            level:    data.char?.level    || 1,
             savedAt:  Date.now(),
         });
         setSaves(saves);
@@ -87,7 +86,7 @@ function renderCurrent() {
 
     section.hidden = false;
     nameEl.textContent = data.char.name;
-    const parts = [data.char.classKey, data.char.species, `Lv ${data.char.level || 1}`].filter(Boolean);
+    const parts = [data.char.classKey, data.char.species].filter(Boolean);
     metaEl.textContent = parts.join(' · ');
 }
 
@@ -103,7 +102,7 @@ function renderSaves() {
         <div class="save-entry">
             <div class="save-info">
                 <span class="save-name">${s.name}</span>
-                <span class="save-meta">${[s.classKey, `Lv ${s.level || 1}`, fmtDate(s.savedAt)].filter(Boolean).join(' · ')}</span>
+                <span class="save-meta">${[s.classKey, fmtDate(s.savedAt)].filter(Boolean).join(' · ')}</span>
             </div>
             <div class="save-actions">
                 <button class="save-btn save-btn--load" data-load="${s.id}" type="button">Load</button>
@@ -128,14 +127,70 @@ document.addEventListener('arc:firebase-ready', () => {
     const room = localStorage.getItem('arc-room');
 
     if (room) {
-        // Show active session banner instead of join form
-        document.getElementById('home-active-session').hidden   = false;
-        document.getElementById('home-join-form-wrap').hidden   = true;
+        document.getElementById('home-active-session').hidden    = false;
+        document.getElementById('home-join-form-wrap').hidden    = true;
         document.getElementById('home-session-code').textContent = room;
     } else {
-        const btn = document.getElementById('btn-join-session');
-        if (btn) btn.disabled = false;
+        const joinBtn   = document.getElementById('btn-join-session');
+        const createBtn = document.getElementById('btn-create-room');
+        if (joinBtn)   joinBtn.disabled   = false;
+        if (createBtn) createBtn.disabled = false;
     }
+});
+
+function genRoomCode() {
+    return Array.from({ length: 6 }, () => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.floor(Math.random() * 32)]).join('');
+}
+
+async function doCreateRoom() {
+    const arc = window.__arc;
+    if (!arc?.db || !arc?.uid) { showJoinStatus('Still connecting — try again.', 'error'); return; }
+
+    showJoinStatus('Creating room…', 'info');
+    const code = genRoomCode();
+    try {
+        await arc.setDoc(arc.doc(arc.db, 'rooms', code), {
+            hostUid:   arc.uid,
+            createdAt: arc.serverTimestamp(),
+            status:    'active',
+        });
+
+        // Write player entry
+        const active = (() => { try { return JSON.parse(localStorage.getItem('arc-active-sheet') || 'null'); } catch { return null; } })();
+        const c = active?.char || {}, r = active?.resources || {};
+        await arc.setDoc(arc.doc(arc.db, 'rooms', code, 'players', arc.uid), {
+            name: c.name || 'Player', armor: r.armor?.current ?? 0,
+            woundsCur: r.hp?.current ?? 0, woundsMax: r.hp?.max ?? 0,
+            mnCur: r.MN?.current ?? 0, mnMax: r.MN?.max ?? 0,
+            gold: c.gold ?? 0, updatedAt: arc.serverTimestamp(),
+        }, { merge: true });
+
+        localStorage.setItem('arc-room', code);
+        showJoinStatus(`Room ${code} created! Loading…`, 'success');
+        setTimeout(() => { window.location.href = 'active-sheet.html'; }, 800);
+    } catch(e) {
+        console.error('[ARC] create room failed:', e);
+        showJoinStatus('Failed to create room. Try again.', 'error');
+    }
+}
+
+document.getElementById('btn-create-room')?.addEventListener('click', () => {
+    const existing = localStorage.getItem('arc-room');
+    if (existing) {
+        document.getElementById('confirm-room-code').textContent = existing;
+        document.getElementById('home-create-confirm').hidden = false;
+    } else {
+        doCreateRoom();
+    }
+});
+
+document.getElementById('btn-create-confirm-yes')?.addEventListener('click', () => {
+    document.getElementById('home-create-confirm').hidden = true;
+    doCreateRoom();
+});
+
+document.getElementById('btn-create-confirm-no')?.addEventListener('click', () => {
+    document.getElementById('home-create-confirm').hidden = true;
 });
 
 // Rejoin existing session
