@@ -391,7 +391,11 @@ function renderSpeciesDetail() {
     detail.hidden = false;
     detail.innerHTML = `
         <div class="species-detail-name">${titleCase(s.name)}</div>
-        <p class="species-detail-desc">${s.description.slice(0, 240)}…</p>
+        <p class="species-detail-desc">${(() => {
+            const d = s.description;
+            const text = typeof d === 'string' ? d : (d?.physical || d?.environment || '');
+            return text.slice(0, 280) + (text.length > 280 ? '…' : '');
+        })()}</p>
         <div class="species-detail-facts">
             ${s.size     ? `<span>Size: ${s.size}</span>` : ''}
             ${s.diet     ? `<span>Diet: ${s.diet}</span>` : ''}
@@ -471,87 +475,38 @@ const CHECK_KEY = {
     influence:'inf', intellect:'int', luck:'lck', observation:'obs', spirit:'spi',
 };
 
-function buildGuide() {
-    const counts = {};
-    function tally(checkStr) {
-        if (!checkStr) return;
-        checkStr.split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
-            .forEach(c => { counts[c] = (counts[c] || 0) + 1; });
-    }
-
-    const base    = classBaseData.find(c => c.name === wiz.classKey) || {};
-    const entries = classOptData[(wiz.classKey || '').toLowerCase()] || [];
-    const pathEntry   = wiz.pathName   ? entries.find(e => e.name === wiz.pathName)   : null;
-    const talentEntry = wiz.talentName ? entries.find(e => e.name === wiz.talentName) : null;
-
-    (base.features || []).forEach(f => tally(f.check));
-    (pathEntry?.path?.steps   || []).forEach(s => tally(s.check));
-    (talentEntry?.talent?.steps || []).forEach(s => tally(s.check));
-
-    return Object.entries(counts)
-        .filter(([label, n]) => n > 0 && CHECK_KEY[label])
-        .sort((a, b) => b[1] - a[1])
-        .map(([label, count]) => ({ label, key: CHECK_KEY[label], count }));
-}
-
 function renderBuildGuide() {
     const el = document.getElementById('build-guide');
     if (!el) return;
 
-    const guide = buildGuide();
+    const entries     = classOptData[(wiz.classKey || '').toLowerCase()] || [];
+    const pathEntry   = wiz.pathName   ? entries.find(e => e.name === wiz.pathName)   : null;
+    const talentEntry = wiz.talentName ? entries.find(e => e.name === wiz.talentName) : null;
 
-    // Clear row highlights
-    document.querySelectorAll('#step-stats .stat-row').forEach(r => {
-        r.classList.remove('stat-row--primary', 'stat-row--secondary');
-    });
+    const steps = [
+        ...(pathEntry?.path?.steps   || []).map(s => ({ ...s, source: wiz.pathName })),
+        ...(talentEntry?.talent?.steps || []).map(s => ({ ...s, source: wiz.talentName })),
+    ].filter(s => s.name && s.check);
 
-    if (!guide.length) { el.hidden = true; return; }
-
-    const maxCount  = guide[0].count;
-    const primaries = guide.filter(g => g.count === maxCount);
-
-    const chips = guide.map(g => {
-        const cls = g.count === maxCount ? 'guide-chip guide-chip--primary' : 'guide-chip';
-        return `<span class="${cls}">${g.label[0].toUpperCase() + g.label.slice(1)} ×${g.count}</span>`;
-    }).join('');
-
-    // Build progression preview
-    const classObj = allClasses?.find(c => c.class === wiz.classKey);
-    const pathSteps  = classObj?.path?.steps  || [];
-    const talentSteps = classObj?.talent?.steps || [];
-    const allSteps = [...pathSteps, ...talentSteps]
-        .filter(s => s.name)
-        .sort((a, b) => (a.step || 0) - (b.step || 0));
-    const progressionHtml = allSteps.length ? `
-        <details class="guide-progression">
-            <summary class="guide-prog-head">▶ What you'll unlock (${allSteps.length} abilities)</summary>
-            <div class="guide-prog-list">
-                ${allSteps.map(s => {
-                    const check = s.check ? `<span class="guide-prog-check">${s.check}</span>` : '';
-                    const isUpgrade = s.action === 'Upgrade';
-                    return `<div class="guide-prog-row${isUpgrade ? ' guide-prog-upgrade' : ''}">
-                        <span class="guide-prog-lvl">Lv${s.step || 0}</span>
-                        <span class="guide-prog-name">${s.name}${isUpgrade ? ' ↑' : ''}</span>
-                        <span class="guide-prog-type">${s.action || ''}</span>
-                        ${check}
-                    </div>`;
-                }).join('')}
-            </div>
-        </details>` : '';
+    if (!steps.length) { el.hidden = true; return; }
 
     el.hidden = false;
     el.innerHTML = `
-        <div class="guide-label">Your abilities use</div>
-        <div class="guide-chips">${chips}</div>
-        <div class="guide-sub">Put your highest points into highlighted stats. Dimmed checks are ones <em>opponents</em> roll — you don't need those.</div>
-        ${progressionHtml}`;
-
-    // Highlight stat rows
-    guide.forEach(g => {
-        const row = document.querySelector(`#step-stats .stat-row[data-key="${g.key}"]`);
-        if (!row) return;
-        row.classList.add(g.count === maxCount ? 'stat-row--primary' : 'stat-row--secondary');
-    });
+        <div class="guide-feat-label">Abilities that use checks</div>
+        <div class="guide-feat-list">
+            ${steps.map(s => s.description ? `
+                <details class="guide-feat-row guide-feat-row--expand">
+                    <summary class="guide-feat-summary">
+                        <span class="guide-feat-name">${s.name}</span>
+                        <span class="guide-feat-check">${s.check}</span>
+                    </summary>
+                    <p class="guide-feat-desc">${s.description}</p>
+                </details>` : `
+                <div class="guide-feat-row">
+                    <span class="guide-feat-name">${s.name}</span>
+                    <span class="guide-feat-check">${s.check}</span>
+                </div>`).join('')}
+        </div>`;
 }
 
 function pointsSpent()  { return STAT_KEYS.reduce((n, k) => n + wiz.stats[k], 0); }
@@ -582,24 +537,6 @@ function adjustStat(key, delta) {
     refreshStats();
 }
 
-function applySuggested() {
-    STAT_KEYS.forEach(k => wiz.stats[k] = 0);
-    const lim   = classLimits();
-    const guide = buildGuide();
-    const pools = [10, 5, 3, 2]; // priority spread
-
-    if (guide.length) {
-        // Assign points to the top checks by usage, capped at class max
-        guide.slice(0, pools.length).forEach((g, i) => {
-            wiz.stats[g.key] = Math.min(pools[i], lim.max);
-        });
-    } else {
-        // Fallback generic spread
-        const spread = { agi: 10, str: 5, sur: 3, cra: 2 };
-        Object.entries(spread).forEach(([k, v]) => { wiz.stats[k] = Math.min(v, lim.max); });
-    }
-    refreshStats();
-}
 
 // ── STEP 5: REVIEW ────────────────────────────────────────────────────────────
 
@@ -812,7 +749,6 @@ document.addEventListener('DOMContentLoaded', () => {
         adjustStat(row.dataset.key, Number(btn.dataset.adj));
     });
 
-    document.getElementById('btn-suggest').addEventListener('click', applySuggested);
 
     // Starting Details — delegated roll buttons (robust against DOM timing)
     document.querySelector('.wiz-body')?.addEventListener('click', e => {

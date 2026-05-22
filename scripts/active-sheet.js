@@ -246,6 +246,7 @@ function recalcArmorBonuses() {
     state.resources.armor.current = Math.min(state.resources.armor.current, totalArmor);
 
     renderQuickChecks();
+    syncInitiativeDisplay();
     saveState();
     syncUI();
 }
@@ -2636,6 +2637,32 @@ function syncRecoveryUI() {
     if (restBtn) { restBtn.disabled = lr; restBtn.textContent = lr ? 'Done' : 'Rest'; }
 }
 
+function syncInitiativeDisplay() {
+    const agiCheck = [...state.checks.physical, ...state.checks.mental].find(c => c.key === 'agi');
+    const mod = (agiCheck?.mod || 0) + (agiCheck?.bonus || 0) + (agiCheck?.armorBonus || 0);
+    const el = document.getElementById('initiative-agi-val');
+    if (el) el.textContent = mod >= 0 ? `+${mod}` : `${mod}`;
+}
+
+function bindInitiative() {
+    document.getElementById('btn-roll-initiative')?.addEventListener('click', () => {
+        const agiCheck = [...state.checks.physical, ...state.checks.mental].find(c => c.key === 'agi');
+        const agiMod = (agiCheck?.mod || 0) + (agiCheck?.bonus || 0) + (agiCheck?.armorBonus || 0);
+        const bonus  = parseInt(document.getElementById('initiative-bonus')?.value || '0', 10) || 0;
+        const mod    = agiMod + bonus;
+        const d20    = Math.floor(Math.random() * 20) + 1;
+        const total  = d20 + mod;
+        state.chat.unshift({
+            type: 'roll', label: 'Initiative', charName: state.char?.name || 'Player',
+            mod, rollNote: `d20(${d20})`, total, rollType: 'flat',
+            conditions: [...state.activeConditions], time: chatTimestamp(),
+        });
+        if (state.chat.length > 100) state.chat.length = 100;
+        saveState(); renderChat();
+        setActivePanel('chat');
+    });
+}
+
 function bindRecovery() {
     // Populate config inputs from saved state
     const setInput = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
@@ -4134,6 +4161,8 @@ document.addEventListener('DOMContentLoaded', () => {
     bindSpellsPanel();
     bindSpellRollModal();
     bindRefPanel();
+    bindInitiative();
+    syncInitiativeDisplay();
     bindRecovery();
     applyTheme();
     bindPlayTabs();
