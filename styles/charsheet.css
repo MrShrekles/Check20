@@ -17,8 +17,9 @@
    13. Progression page
    14. Gear tables (page 2)
    15. Page shells & navigation
-   16. Miscellaneous utilities
-   17. Print styles (consolidated)
+   16. Charsheet header (screen only)
+   17. Miscellaneous utilities
+   18. Print styles (consolidated)
    ============================================================ */
 
 
@@ -80,12 +81,21 @@ h4 {
 
 h2 {
     text-align: center;
-    font-size: 1.3em;
-    border-bottom: 2px solid #333;
+    font-size: 1em;
+    background: #1e1e1e;
+    color: #fff;
+    padding: 4px 10px;
+    margin: 0 0 5px;
+    letter-spacing: 1px;
 }
 
 h4 {
-    border-bottom: 2px solid var(--medium);
+    background: #444;
+    color: #fff;
+    padding: 2px 6px;
+    font-size: .75em;
+    letter-spacing: .5px;
+    margin: 5px 0 2px;
 }
 
 table {
@@ -118,6 +128,11 @@ textarea {
     background: none;
     color: var(--black);
     text-align: left;
+}
+
+.circle-input {
+    text-align: center;
+    font-weight: 700;
 }
 
 input:focus,
@@ -358,6 +373,24 @@ textarea {
     opacity: .8;
 }
 
+.origin-pill {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-size: .65em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    background: #2a2a2a;
+    color: #fff;
+    vertical-align: middle;
+    line-height: 1.6;
+}
+
+.origin-pill:empty {
+    display: none;
+}
+
 
 /* ============================================================
    8. DRAGON TYPE
@@ -429,13 +462,18 @@ textarea {
 .ref-card {
     border: 1px solid var(--black);
     border-radius: var(--radius-1);
-    background: none;
+    background: #fff;
 }
 
 .ref-card h3 {
     margin-top: 0;
-    border-bottom: 1px solid var(--black);
-    font-size: .95rem;
+    font-size: .85rem;
+    background: #2a2a2a;
+    color: #fff;
+    padding: 3px 8px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-bottom: none;
 }
 
 .ref-card ul,
@@ -523,9 +561,9 @@ textarea {
 }
 
 #conditions .category-row {
-    background-color: #ccc;
+    background-color: #333;
+    color: #fff;
     font-weight: 700;
-    font-style: italic;
 }
 
 
@@ -578,7 +616,97 @@ textarea {
 }
 
 #page2 textarea {
-    height: 80px;
+    height: 50px;
+}
+
+/* Make both columns stretch to the same height */
+#page2 .two-column {
+    align-items: stretch;
+}
+
+/* Right column becomes a flex column so items can fill remaining space */
+#page2 .column:last-child {
+    display: flex;
+    flex-direction: column;
+}
+
+.items-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.items-section > h4 {
+    flex: none;
+}
+
+.items-section > .gear-table {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* NPC TRACKER */
+.section--npcs {
+    margin-top: 10px;
+    border-top: 2px solid #1e1e1e;
+    padding-top: 4px;
+}
+
+.npc-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.npc-table col.col-name    { width: 22%; }
+.npc-table col.col-faction { width: 20%; }
+.npc-table col.col-status  { width: 10%; }
+.npc-table col.col-notes   { width: 48%; }
+
+.npc-table th {
+    background: #333;
+    color: #fff;
+    padding: 3px 5px;
+    font-size: .72em;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border: 1px solid #222;
+}
+
+.npc-table td {
+    border: 1px solid var(--black);
+    padding: 0 2px;
+    height: 1.6em;
+}
+
+.npc-table td input {
+    border: none;
+    border-radius: 0;
+    padding: 1px 3px;
+}
+
+.npc-status-cell {
+    text-align: center;
+    font-size: .65em;
+    letter-spacing: 2px;
+    color: #555;
+    white-space: nowrap;
+}
+
+/* Session notes lined area */
+#session-notes {
+    height: 160px;
+    resize: none;
+    line-height: 2em;
+    background-image: repeating-linear-gradient(
+        transparent,
+        transparent calc(2em - 1px),
+        #ddd calc(2em - 1px),
+        #ddd 2em
+    );
+    background-size: 100% 2em;
+    padding: 0 4px;
+    overflow: hidden;
 }
 
 .gear-table {
@@ -588,11 +716,14 @@ textarea {
 }
 
 .gear-table th {
-    background-color: var(--medium);
+    background-color: #444;
+    color: #fff;
     text-transform: uppercase;
     font-weight: 700;
     padding: 2px 4px;
-    border: 1px solid var(--black);
+    border: 1px solid #222;
+    font-size: .72em;
+    letter-spacing: .5px;
 }
 
 .gear-table td {
@@ -641,7 +772,71 @@ textarea {
 
 
 /* ============================================================
-   16. MISCELLANEOUS UTILITIES
+   16. CHARSHEET HEADER (screen only — not printed)
+   ============================================================ */
+#header-placeholder .main-header {
+    background: #111;
+    color: #fff;
+    border-bottom: 2px solid #333;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+#header-placeholder .header-title {
+    font-family: Verdana, sans-serif;
+    font-size: .85rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin: 0;
+    white-space: nowrap;
+    cursor: default;
+}
+
+/* hide the dropdown nav — not needed on the sheet */
+#header-placeholder .flex-item:has(details) {
+    display: none;
+}
+
+#header-placeholder .flex-container {
+    display: flex;
+    gap: 6px;
+    flex-wrap: nowrap;
+    padding: 0;
+    margin: 0;
+}
+
+#header-placeholder .nav-button,
+#header-placeholder .header-cta {
+    background: #222;
+    color: #aaa;
+    border: 1px solid #444;
+    border-radius: 3px;
+    padding: 3px 10px;
+    font-size: .7rem;
+    font-family: Verdana, sans-serif;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .15s, color .15s;
+}
+
+#header-placeholder .nav-button:hover,
+#header-placeholder .header-cta:hover {
+    background: #333;
+    color: #fff;
+}
+
+#header-placeholder .header-cta--sheet {
+    border-color: #888;
+    color: #fff;
+}
+
+/* ============================================================
+   17. MISCELLANEOUS UTILITIES
    ============================================================ */
 .item-entry {
     display: flex;
@@ -680,7 +875,132 @@ body.compact-print ol li {
 
 
 /* ============================================================
-   17. PRINT STYLES (CONSOLIDATED)
+   18. PAGE BANNERS
+   ============================================================ */
+.page-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #111;
+    color: #fff;
+    padding: 5px 10px;
+    margin-bottom: 8px;
+    font-family: Verdana, sans-serif;
+    font-size: .65em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.page-banner .banner-title {
+    font-size: 1.3em;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.page-banner .banner-sys {
+    opacity: .6;
+}
+
+.page-banner .banner-pg {
+    opacity: .6;
+}
+
+
+/* ============================================================
+   19. COMBAT FOOTER — conditions checklist + press on
+   ============================================================ */
+.section--combat-footer {
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 2px solid #1e1e1e;
+}
+
+.combat-footer-grid {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 12px;
+    align-items: start;
+}
+
+.conditions-checklist {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0 10px;
+    margin-top: 4px;
+}
+
+.cond-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.cond-cat {
+    font-size: .6em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #555;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 3px;
+    padding-bottom: 1px;
+}
+
+.cond-col label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: .68em;
+    font-weight: normal;
+    cursor: pointer;
+    line-height: 1.4;
+}
+
+.cond-col input[type="checkbox"] {
+    width: auto;
+    flex: none;
+    cursor: pointer;
+}
+
+.cond-desc {
+    color: #777;
+    font-style: italic;
+}
+
+.press-on-tracker {
+    display: flex;
+    gap: 10px;
+    margin: 6px 0 10px;
+}
+
+.press-on-tracker label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: .7em;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.press-on-tracker input[type="checkbox"] {
+    width: 1.3em;
+    height: 1.3em;
+    cursor: pointer;
+    flex: none;
+}
+
+.combat-notes {
+    width: 100%;
+    min-height: 55px;
+    resize: vertical;
+    font-size: .7em;
+    border: 1px solid var(--black);
+    padding: 3px;
+}
+
+
+/* ============================================================
+   20. PRINT STYLES (CONSOLIDATED)
    ============================================================ */
 @media print {
 

@@ -6,24 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Sheet</title>
     <link rel="stylesheet" href="styles/charsheet.css">
-    <link rel="stylesheet" href="styles/sidebar.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
     <script src="scripts/char_class.js" defer></script>
     <script src="scripts/charsheet.js" defer></script>
     <script src="scripts/char_save.js" defer></script>
     <script src="scripts/header.js" defer></script>
-    <script src="scripts/sidebar.js" defer></script>
 </head>
 
 <body data-page-title="Character Sheet">
     <div class="no-print" id="header-placeholder"></div>
 
 
-    <button class="nav-button" onclick="location.href='index.html'">Homepage</button>
     <form id="character-sheet">
 
         <!-- ==================== PAGE 1 — Combat Reference ==================== -->
         <div class="char-page" id="page1">
+            <div class="page-banner">
+                <span class="banner-sys">ARC20</span>
+                <span class="banner-title">Combat</span>
+                <span class="banner-pg">pg. 1</span>
+            </div>
             <div class="two-column">
 
                 <!-- LEFT: stats + species -->
@@ -174,13 +176,13 @@
                     <div class="section">
                         <div class="two-column">
                             <div class="column" style="padding-left:0">
-                                <label for="path">Path</label>
+                                <label for="path">Path <span class="origin-pill" id="path-origin-pill"></span></label>
                                 <select name="path" id="path">
                                     <option value="">Select Path</option>
                                 </select>
                             </div>
                             <div class="column" style="padding-right:0">
-                                <label for="talent">Talent</label>
+                                <label for="talent">Talent <span class="origin-pill" id="talent-origin-pill"></span></label>
                                 <select name="talent" id="talent">
                                     <option value="">Select Talent</option>
                                 </select>
@@ -227,13 +229,73 @@
 
                 </div>
             </div>
+
+            <!-- Combat footer: active conditions + press on tracker -->
+            <div class="section section--combat-footer">
+                <div class="combat-footer-grid">
+
+                    <div>
+                        <h4>Active Conditions</h4>
+                        <div class="conditions-checklist">
+                            <div class="cond-col">
+                                <span class="cond-cat">Corpus</span>
+                                <label><input type="checkbox" name="cond-bleeding"> Bleeding <span class="cond-desc">— no healing</span></label>
+                                <label><input type="checkbox" name="cond-broken"> Broken <span class="cond-desc">— Phys Dis</span></label>
+                                <label><input type="checkbox" name="cond-concussion"> Concussion <span class="cond-desc">— Men+Cast Dis</span></label>
+                                <label><input type="checkbox" name="cond-coughing"> Coughing <span class="cond-desc">— Men Dis</span></label>
+                                <label><input type="checkbox" name="cond-dislocation"> Dislocation <span class="cond-desc">— Phys Dis</span></label>
+                                <label><input type="checkbox" name="cond-slowed"> Slowed <span class="cond-desc">— ½ Move</span></label>
+                                <label><input type="checkbox" name="cond-pinned"> Pinned <span class="cond-desc">— no move</span></label>
+                                <label><input type="checkbox" name="cond-prone"> Prone <span class="cond-desc">— Rng Dis</span></label>
+                            </div>
+                            <div class="cond-col">
+                                <span class="cond-cat">Cognition</span>
+                                <label><input type="checkbox" name="cond-blind"> Blind <span class="cond-desc">— Atk Dis</span></label>
+                                <label><input type="checkbox" name="cond-charmed"> Charmed <span class="cond-desc">— Men Dis</span></label>
+                                <label><input type="checkbox" name="cond-confused"> Confused <span class="cond-desc">— Men Dis</span></label>
+                                <label><input type="checkbox" name="cond-deaf"> Deaf <span class="cond-desc">— Cast Dis</span></label>
+                                <label><input type="checkbox" name="cond-fear"> Fear <span class="cond-desc">— Dash/Hide</span></label>
+                            </div>
+                            <div class="cond-col">
+                                <span class="cond-cat">Special</span>
+                                <label><input type="checkbox" name="cond-intangible"> Intangible <span class="cond-desc">— no Phys Atk</span></label>
+                                <label><input type="checkbox" name="cond-invisible"> Invisible <span class="cond-desc">— no OA</span></label>
+                                <label><input type="checkbox" name="cond-unconscious"> Unconscious <span class="cond-desc">— no Act</span></label>
+                            </div>
+                            <div class="cond-col">
+                                <span class="cond-cat">Major</span>
+                                <label><input type="checkbox" name="cond-stunned"> Stunned <span class="cond-desc">— All Dis</span></label>
+                                <label><input type="checkbox" name="cond-exhaustion"> Exhaustion <span class="cond-desc">— All Dis</span></label>
+                                <label><input type="checkbox" name="cond-constrained"> Constrained <span class="cond-desc">— no Atk</span></label>
+                                <label><input type="checkbox" name="cond-exposed"> Exposed <span class="cond-desc">— ×2 Dmg</span></label>
+                                <label><input type="checkbox" name="cond-injured"> Injured <span class="cond-desc">— 0 HP = Death</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4>Press On <small>(2/day)</small></h4>
+                        <div class="press-on-tracker">
+                            <label><input type="checkbox" name="pressOn1"> Use 1</label>
+                            <label><input type="checkbox" name="pressOn2"> Use 2</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
 
         <!-- ==================== PAGE 2 — Setup & Inventory ==================== -->
         <div class="char-page" id="page2">
+            <div class="page-banner">
+                <span class="banner-sys">ARC20</span>
+                <span class="banner-title">Inventory &amp; Details</span>
+                <span class="banner-pg">pg. 2</span>
+            </div>
             <div class="two-column">
 
-                <!-- LEFT: character details + notes -->
+                <!-- LEFT: character details + session notes -->
                 <div class="column">
                     <h2>Character Details</h2>
                     <div class="grid grid--2">
@@ -245,7 +307,7 @@
                             <label for="age">Age</label>
                             <div class="input-with-button">
                                 <input type="number" id="age" name="age" inputmode="numeric" min="0" placeholder="Years">
-                                <button type="button" id="roll-age-sheet" title="Roll Age">🎲</button>
+                                <button type="button" id="roll-age-sheet" title="Roll Age" class="no-print">🎲</button>
                             </div>
                         </div>
                         <div class="form-row">
@@ -270,15 +332,15 @@
                             Motivation
                             <button type="button" id="roll-motivation-sheet" class="no-print" title="Roll Motivation">🎲</button>
                         </label>
-                        <textarea id="motivation" name="motivation" rows="3" placeholder="e.g. Overcoming past failures"></textarea>
+                        <textarea id="motivation" name="motivation" rows="2" placeholder="e.g. Overcoming past failures"></textarea>
                     </div>
 
-                    <div class="form-row" style="margin-top:.3in">
+                    <div class="form-row">
                         <label for="trinket">
                             Trinket
                             <button type="button" id="roll-trinket-sheet" class="no-print" title="Roll Trinket">🎲</button>
                         </label>
-                        <textarea id="trinket" name="trinket" rows="3" placeholder="e.g. Shotgun shell that was once shot at you, kept as a lucky charm"></textarea>
+                        <textarea id="trinket" name="trinket" rows="2" placeholder="e.g. Shotgun shell kept as a lucky charm"></textarea>
                     </div>
 
                     <div class="form-row">
@@ -286,7 +348,7 @@
                             Additional Equipment
                             <button type="button" id="roll-addEquip-sheet" class="no-print" title="Roll Additional Equipment">🎲</button>
                         </label>
-                        <textarea id="addEquip" name="addEquip" rows="4"></textarea>
+                        <textarea id="addEquip" name="addEquip" rows="2"></textarea>
                     </div>
 
                     <div class="form-row">
@@ -296,16 +358,19 @@
                         </label>
                         <input type="number" id="gp" name="gp" placeholder="Amount" inputmode="numeric" min="0">
                     </div>
+
+                    <div class="form-row">
+                        <label for="session-notes">Session Notes</label>
+                        <textarea id="session-notes" name="session-notes" rows="8" placeholder="Objectives, reminders, loot to claim…"></textarea>
+                    </div>
                 </div>
 
-                <!-- RIGHT: gear -->
+                <!-- RIGHT: gear — items section stretches to fill column height -->
                 <div class="column">
                     <h2>Inventory</h2>
 
-                    <!-- Class starting equipment -->
                     <ul id="class-equipment" class="feature-list"></ul>
 
-                    <!-- Weapons -->
                     <h4>Weapons</h4>
                     <table class="gear-table">
                         <thead>
@@ -314,162 +379,125 @@
                                 <th>Check</th>
                                 <th>Damage</th>
                                 <th>Range</th>
-                                <th>Hefty</th>
+                                <th>Traits</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><input type="text" name="w1-name"></td>
-                                <td><input type="text" name="w1-dmg"></td>
-                                <td><input type="text" name="w1-type"></td>
-                                <td><input type="text" name="w1-range"></td>
-                                <td><input type="text" name="w1-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="w2-name"></td>
-                                <td><input type="text" name="w2-dmg"></td>
-                                <td><input type="text" name="w2-type"></td>
-                                <td><input type="text" name="w2-range"></td>
-                                <td><input type="text" name="w2-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="w3-name"></td>
-                                <td><input type="text" name="w3-dmg"></td>
-                                <td><input type="text" name="w3-type"></td>
-                                <td><input type="text" name="w3-range"></td>
-                                <td><input type="text" name="w3-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="w4-name"></td>
-                                <td><input type="text" name="w4-dmg"></td>
-                                <td><input type="text" name="w4-type"></td>
-                                <td><input type="text" name="w4-range"></td>
-                                <td><input type="text" name="w4-notes"></td>
-                            </tr>
+                            <tr><td><input type="text" name="w1-name"></td><td><input type="text" name="w1-dmg"></td><td><input type="text" name="w1-type"></td><td><input type="text" name="w1-range"></td><td><input type="text" name="w1-notes"></td></tr>
+                            <tr><td><input type="text" name="w2-name"></td><td><input type="text" name="w2-dmg"></td><td><input type="text" name="w2-type"></td><td><input type="text" name="w2-range"></td><td><input type="text" name="w2-notes"></td></tr>
+                            <tr><td><input type="text" name="w3-name"></td><td><input type="text" name="w3-dmg"></td><td><input type="text" name="w3-type"></td><td><input type="text" name="w3-range"></td><td><input type="text" name="w3-notes"></td></tr>
+                            <tr><td><input type="text" name="w4-name"></td><td><input type="text" name="w4-dmg"></td><td><input type="text" name="w4-type"></td><td><input type="text" name="w4-range"></td><td><input type="text" name="w4-notes"></td></tr>
                         </tbody>
                     </table>
 
-                    <!-- Armor -->
                     <h4>Armor</h4>
                     <table class="gear-table">
                         <thead>
                             <tr>
                                 <th>Name</th>
                                 <th>Armor Value</th>
-                                <th>---</th>
+                                <th>Qualities</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><input type="text" name="a1-name"></td>
-                                <td><input type="text" name="a1-value"></td>
-                                <td><input type="text" name="a1-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="a2-name"></td>
-                                <td><input type="text" name="a2-value"></td>
-                                <td><input type="text" name="a2-notes"></td>
-                            </tr>
+                            <tr><td><input type="text" name="a1-name"></td><td><input type="text" name="a1-value"></td><td><input type="text" name="a1-notes"></td></tr>
+                            <tr><td><input type="text" name="a2-name"></td><td><input type="text" name="a2-value"></td><td><input type="text" name="a2-notes"></td></tr>
                         </tbody>
                     </table>
 
-                    <!-- Items -->
-                    <h4>Items</h4>
-                    <table class="gear-table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>---</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="text" name="i1-name"></td>
-                                <td><input type="text" name="i1-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i2-name"></td>
-                                <td><input type="text" name="i2-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i3-name"></td>
-                                <td><input type="text" name="i3-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i4-name"></td>
-                                <td><input type="text" name="i4-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i5-name"></td>
-                                <td><input type="text" name="i5-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i6-name"></td>
-                                <td><input type="text" name="i6-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i1-name"></td>
-                                <td><input type="text" name="i1-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i2-name"></td>
-                                <td><input type="text" name="i2-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i3-name"></td>
-                                <td><input type="text" name="i3-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i4-name"></td>
-                                <td><input type="text" name="i4-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i5-name"></td>
-                                <td><input type="text" name="i5-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i6-name"></td>
-                                <td><input type="text" name="i6-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i1-name"></td>
-                                <td><input type="text" name="i1-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i2-name"></td>
-                                <td><input type="text" name="i2-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i3-name"></td>
-                                <td><input type="text" name="i3-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i4-name"></td>
-                                <td><input type="text" name="i4-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i5-name"></td>
-                                <td><input type="text" name="i5-notes"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="i6-name"></td>
-                                <td><input type="text" name="i6-notes"></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <!-- Items — flex-fills remaining column space -->
+                    <div class="items-section">
+                        <h4>Items</h4>
+                        <table class="gear-table">
+                            <colgroup>
+                                <col style="width:55%">
+                                <col style="width:45%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Notes / Bulk</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><input type="text" name="i1-name"></td><td><input type="text" name="i1-notes"></td></tr>
+                                <tr><td><input type="text" name="i2-name"></td><td><input type="text" name="i2-notes"></td></tr>
+                                <tr><td><input type="text" name="i3-name"></td><td><input type="text" name="i3-notes"></td></tr>
+                                <tr><td><input type="text" name="i4-name"></td><td><input type="text" name="i4-notes"></td></tr>
+                                <tr><td><input type="text" name="i5-name"></td><td><input type="text" name="i5-notes"></td></tr>
+                                <tr><td><input type="text" name="i6-name"></td><td><input type="text" name="i6-notes"></td></tr>
+                                <tr><td><input type="text" name="i7-name"></td><td><input type="text" name="i7-notes"></td></tr>
+                                <tr><td><input type="text" name="i8-name"></td><td><input type="text" name="i8-notes"></td></tr>
+                                <tr><td><input type="text" name="i9-name"></td><td><input type="text" name="i9-notes"></td></tr>
+                                <tr><td><input type="text" name="i10-name"></td><td><input type="text" name="i10-notes"></td></tr>
+                                <tr><td><input type="text" name="i11-name"></td><td><input type="text" name="i11-notes"></td></tr>
+                                <tr><td><input type="text" name="i12-name"></td><td><input type="text" name="i12-notes"></td></tr>
+                                <tr><td><input type="text" name="i13-name"></td><td><input type="text" name="i13-notes"></td></tr>
+                                <tr><td><input type="text" name="i14-name"></td><td><input type="text" name="i14-notes"></td></tr>
+                                <tr><td><input type="text" name="i15-name"></td><td><input type="text" name="i15-notes"></td></tr>
+                                <tr><td><input type="text" name="i16-name"></td><td><input type="text" name="i16-notes"></td></tr>
+                                <tr><td><input type="text" name="i17-name"></td><td><input type="text" name="i17-notes"></td></tr>
+                                <tr><td><input type="text" name="i18-name"></td><td><input type="text" name="i18-notes"></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
             </div>
+
+            <!-- NPC TRACKER — full-width below both columns -->
+            <div class="section section--npcs">
+                <h2>NPC Tracker</h2>
+                <table class="npc-table">
+                    <colgroup>
+                        <col class="col-name">
+                        <col class="col-faction">
+                        <col class="col-status">
+                        <col class="col-notes">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Faction / Role</th>
+                            <th>Status</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><input type="text" name="npc1-name"></td><td><input type="text" name="npc1-faction"></td><td class="npc-status-cell">○A &nbsp;○N &nbsp;○E</td><td><input type="text" name="npc1-notes"></td></tr>
+                        <tr><td><input type="text" name="npc2-name"></td><td><input type="text" name="npc2-faction"></td><td class="npc-status-cell">○A &nbsp;○N &nbsp;○E</td><td><input type="text" name="npc2-notes"></td></tr>
+                        <tr><td><input type="text" name="npc3-name"></td><td><input type="text" name="npc3-faction"></td><td class="npc-status-cell">○A &nbsp;○N &nbsp;○E</td><td><input type="text" name="npc3-notes"></td></tr>
+                        <tr><td><input type="text" name="npc4-name"></td><td><input type="text" name="npc4-faction"></td><td class="npc-status-cell">○A &nbsp;○N &nbsp;○E</td><td><input type="text" name="npc4-notes"></td></tr>
+                        <tr><td><input type="text" name="npc5-name"></td><td><input type="text" name="npc5-faction"></td><td class="npc-status-cell">○A &nbsp;○N &nbsp;○E</td><td><input type="text" name="npc5-notes"></td></tr>
+                        <tr><td><input type="text" name="npc6-name"></td><td><input type="text" name="npc6-faction"></td><td class="npc-status-cell">○A &nbsp;○N &nbsp;○E</td><td><input type="text" name="npc6-notes"></td></tr>
+                        <tr><td><input type="text" name="npc7-name"></td><td><input type="text" name="npc7-faction"></td><td class="npc-status-cell">○A &nbsp;○N &nbsp;○E</td><td><input type="text" name="npc7-notes"></td></tr>
+                        <tr><td><input type="text" name="npc8-name"></td><td><input type="text" name="npc8-faction"></td><td class="npc-status-cell">○A &nbsp;○N &nbsp;○E</td><td><input type="text" name="npc8-notes"></td></tr>
+                        <tr><td><input type="text" name="npc9-name"></td><td><input type="text" name="npc9-faction"></td><td class="npc-status-cell">○A &nbsp;○N &nbsp;○E</td><td><input type="text" name="npc9-notes"></td></tr>
+                        <tr><td><input type="text" name="npc10-name"></td><td><input type="text" name="npc10-faction"></td><td class="npc-status-cell">○A &nbsp;○N &nbsp;○E</td><td><input type="text" name="npc10-notes"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
 
         <!-- ==================== PAGE 3 — Progression ==================== -->
         <div class="char-page" id="page-progression">
+            <div class="page-banner">
+                <span class="banner-sys">ARC20</span>
+                <span class="banner-title">Progression</span>
+                <span class="banner-pg">pg. 3</span>
+            </div>
             <div id="progression">
                 <p class="progression-placeholder no-print">Select a class, path, and talent on page 1 to see progression here.</p>
             </div>
         </div>
 
         <div class="char-page" id="con-page">
+            <div class="page-banner">
+                <span class="banner-sys">ARC20</span>
+                <span class="banner-title">Conditions &amp; Damage</span>
+                <span class="banner-pg">pg. 4</span>
+            </div>
             <!-- Conditions -->
             <section id="conditions">
                 <table>
@@ -804,6 +832,11 @@
         </div>
 
         <div class="char-page" id="page3">
+            <div class="page-banner">
+                <span class="banner-sys">ARC20</span>
+                <span class="banner-title">Quick Reference</span>
+                <span class="banner-pg">pg. 5</span>
+            </div>
             <section class="reference-grid">
                 <div class="ref-card">
                     <h3>Action Types</h3>

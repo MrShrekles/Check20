@@ -233,32 +233,32 @@ body.sheet-darkmode {
     padding: 0px;
 }
 
-select {
+.charsheet select {
     background-color: var(--theme-2);
     border: none;
     color: var(--text-plain);
 }
 
-input[type="radio"] {
+.charsheet input[type="radio"] {
     display: none;
 }
 
-input[type="checkbox"] {
+.charsheet input[type="checkbox"] {
     background-color: var(--theme-1);
 }
 
 /* Label */
-label {
+.charsheet label {
     color: var(--text-cream);
 }
 
 /* Headings */
-h3 {
+.charsheet h3 {
     color: var(--text-cream);
 }
 
 /* Textarea */
-textarea {
+.charsheet textarea {
     background-color: var(--theme-1);
     max-width: 95%;
     color: var(--text-plain);
@@ -273,26 +273,26 @@ textarea {
 }
 
 /* Focus Effect */
-textarea:focus {
+.charsheet textarea:focus {
     background-color: var(--theme-2);
     outline: none;
     box-shadow: 0 0 5px var(--warm-1);
     border-color: var(--warm-1);
 }
 
-section {
+.charsheet section {
     display: none;
 }
 
-summary h3 {
+.charsheet summary h3 {
     color: var(--darkgold);
 }
 
-summary strong {
+.charsheet summary strong {
     cursor: pointer;
 }
 
-p {
+.charsheet p {
     color: var(--text-plain);
     width: 80%;
 }
@@ -375,21 +375,21 @@ p {
 }
 
 /* Show content based on radio button */
-#npc:checked~.tabs+.npc-content {
+.charsheet #npc:checked~.tabs+.npc-content {
     display: block;
 }
 
-#player:checked~.tabs+.player-content {
+.charsheet #player:checked~.tabs+.player-content {
     display: block;
 }
 
-#ship:checked~.tabs+.ship-content {
+.charsheet #ship:checked~.tabs+.ship-content {
     display: block;
 }
 
-#npc:checked~.content #npc-content,
-#player:checked~.content #player-content,
-#ship:checked~.content #ship-content {
+.charsheet #npc:checked~.content #npc-content,
+.charsheet #player:checked~.content #player-content,
+.charsheet #ship:checked~.content #ship-content {
     display: block;
 }
 
@@ -2440,7 +2440,7 @@ label.icon-toggle input[type="checkbox"] {
 }
 
 /* Show when use_spellpoints is checked */
-input[name="attr_use_spellpoints"]:checked~.content .toggle-sp {
+.charsheet input[name="attr_use_spellpoints"]:checked~.content .toggle-sp {
     display: block;
 }
 
