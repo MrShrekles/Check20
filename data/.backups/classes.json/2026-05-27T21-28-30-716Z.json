@@ -12,7 +12,7 @@
         },
         {
           "name": "Bolster",
-          "description": "Gain +1 Bolster at the start of your turn in combat. Spend 1 Bolster to heal [[1d4]] and remove 1 condition as a Half-Action, or gain [[1d4]] to an attack check and damage roll."
+          "description": "At combat initiative gain 1 Bolster, then gain +1 additional at the start of each turn or when you kill or submit an enemy losing all Bolster at the end of combat. You can Bolster to either: When you Attack gain [[1d4]] to the check and damage, or remove one condition and heal for +2"
         }
       ],
       "equipment": [

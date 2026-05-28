@@ -35,14 +35,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         // --- Paths / Talents strictly from class-new.json ---
         const classKey = chosenName.toLowerCase();
         const entries = Array.isArray(optClasses?.[classKey]) ? optClasses[classKey] : []; // classes.{key} → array
-        // Build selects the same way as class-loader: only items with steps
-        populate(pathSel, entries.filter(e => Array.isArray(e?.path?.steps) && e.path.steps.length).map(e => e.name), "Select a Path");
-        populate(talentSel, entries.filter(e => Array.isArray(e?.talent?.steps) && e.talent.steps.length).map(e => e.name), "Select a Talent");
+        // Pass full entry objects so populate can attach data-origin to each option
+        populate(pathSel, entries.filter(e => Array.isArray(e?.path?.steps) && e.path.steps.length), "Select a Path");
+        populate(talentSel, entries.filter(e => Array.isArray(e?.talent?.steps) && e.talent.steps.length), "Select a Talent");
 
-        // Clear detail panes + progression page
+        // Clear detail panes + progression page + origin pills
         byId('path-details').innerHTML = '';
         byId('talent-details').innerHTML = '';
         byId('progression').innerHTML = '';
+        setOriginPill('path-origin-pill', '');
+        setOriginPill('talent-origin-pill', '');
 
         // Hook up change handlers (mirror class-loader behavior)
         wireBranchHandlers(entries);
@@ -68,10 +70,12 @@ function wireBranchHandlers(entries) {
     pathSel.onchange = () => {
         const chosen = entries.find(e => e.name === pathSel.value && Array.isArray(e?.path?.steps));
         renderBranch(chosen, true);
+        setOriginPill('path-origin-pill', chosen?.origin || '');
     };
     talentSel.onchange = () => {
         const chosen = entries.find(e => e.name === talentSel.value && Array.isArray(e?.talent?.steps));
         renderBranch(chosen, false);
+        setOriginPill('talent-origin-pill', chosen?.origin || '');
     };
 }
 
@@ -83,9 +87,11 @@ function renderBranch(entry, isPath) {
     const initial = steps.filter(s => Number(s?.step) === 0);
     const rest = steps.filter(s => Number(s?.step) !== 0);
 
+    const originTag = entry?.origin ? `<span class="origin-pill">${entry.origin}</span>` : '';
+
     // Page 1 (summary + initial)
     byId(paneId).innerHTML = entry ? `
-    <h4>${entry.name}</h4>
+    <h4>${entry.name} ${originTag}</h4>
     ${initial.length ? `
       <div class="features">
         <ul class="step-list">${initial.map(renderStep).join('')}</ul>
@@ -103,7 +109,7 @@ function renderBranch(entry, isPath) {
     }
     const target = byId(isPath ? 'path-progression' : 'talent-progression');
     target.innerHTML = entry ? `
-    <h3>${entry.name} ${isPath ? 'Path' : 'Talent'}</h3>
+    <h3>${entry.name} ${originTag} ${isPath ? 'Path' : 'Talent'}</h3>
     ${rest.length ? renderStepList(rest, isPath) : `<p>No progression data.</p>`}
   ` : '';
 }
@@ -141,7 +147,17 @@ function renderInlineTags(s) {
     return tags.join(' ');
 }
 
-function populate(sel, names = [], label = "Select...") {
-    sel.innerHTML = `<option value="">${label}</option>` + (names || []).map(n => `<option value="${n}">${n}</option>`).join('');
+function populate(sel, entries = [], label = "Select...") {
+    sel.innerHTML = `<option value="">${label}</option>` +
+        (entries || []).map(e => {
+            const name = typeof e === 'string' ? e : e.name;
+            const originAttr = (typeof e === 'object' && e.origin) ? ` data-origin="${e.origin}"` : '';
+            return `<option value="${name}"${originAttr}>${name}</option>`;
+        }).join('');
+}
+function setOriginPill(id, origin) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = origin || '';
 }
 function byId(id) { return document.getElementById(id); }
