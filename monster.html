@@ -14,6 +14,7 @@
     <script src="scripts/almanac.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/codex-ui.js"></script>
     <script src="scripts/monster-builder.js"></script>
     <script src="scripts/monsterbook.js"></script>
     <script src="scripts/toolbar-mobile.js" defer></script>
@@ -87,16 +88,27 @@
                     <span class="toolbar-toggle-chevron">▼</span>
                 </button>
                 <div class="toolbar-collapsible">
-                    <div class="book-controls-bar">
-                        <input type="text" id="bookSearch" placeholder="Search monsters..." oninput="filterBook()">
-                        <select id="filterBookOrigin" onchange="filterBook()"><option value="">All Origins</option></select>
-                        <select id="filterBookSize" onchange="filterBook()"><option value="">Any Size</option></select>
-                        <select id="filterBookRarity" onchange="filterBook()"><option value="">Any Rarity</option></select>
-                        <button class="button book-bar-btn" onclick="clearBookFilters()">Clear</button>
-                        <button class="button book-bar-btn" id="btnCollapseAll" onclick="toggleCollapseAll()">Collapse All</button>
-                        <button class="button book-bar-btn" onclick="exportMonsterBook()">Download JSON</button>
+                    <input type="text" id="bookSearch" class="book-search-full" placeholder="Search monsters…" oninput="filterBook()">
+                    <div class="book-toolbar-grid">
+                        <div class="book-controls-col">
+                            <div class="book-dropdowns-row">
+                                <select id="filterBookOrigin" onchange="filterBook()"><option value="">All Origins</option></select>
+                                <select id="filterBookSize" onchange="filterBook()"><option value="">Any Size</option></select>
+                                <select id="filterBookRarity" onchange="filterBook()"><option value="">Any Rarity</option></select>
+                            </div>
+                            <div class="book-actions-row">
+                                <button class="book-bar-btn" onclick="clearBookFilters()">Clear</button>
+                                <button class="book-bar-btn" id="btnCollapseAll" onclick="toggleCollapseAll()">Collapse All</button>
+                                <button class="book-bar-btn" onclick="exportMonsterBook()">↓ JSON</button>
+                                <div class="codex-size-btns" id="codex-size-btns">
+                                    <button class="codex-size-btn" data-size="small">S</button>
+                                    <button class="codex-size-btn active" data-size="medium">M</button>
+                                    <button class="codex-size-btn" data-size="large">L</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="filterBookGroup" class="book-group-pills"></div>
                     </div>
-                    <div id="filterBookGroup" class="book-group-pills"></div>
                 </div>
             </div>
 

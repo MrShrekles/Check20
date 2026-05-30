@@ -528,6 +528,7 @@ function buildEnchantedRow(it, term) {
 document.addEventListener('DOMContentLoaded', async () => {
     initTabs();
     initToolbars();
+    initCodexSize();
     initExpandCollapse();
     initWeaponFilters();
     initArmorFilters();

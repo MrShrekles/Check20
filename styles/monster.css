@@ -74,7 +74,7 @@ body[data-page-title="Monsters"] .monster-card:hover {
     width: 100%;
     box-sizing: border-box;
     padding: 0.5rem var(--padding);
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(var(--codex-min, 260px), 1fr));
 }
 
 /* PL / Ph / Mt chips in collapsed head */
@@ -793,25 +793,44 @@ body[data-page-title="Monsters"] .monster-card:hover {
     z-index: 9;
 }
 
-.book-controls-bar {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-}
-
-.book-controls-bar #bookSearch {
-    flex: 1 1 180px;
+/* ── Full-width search above the 2-col grid ── */
+.book-search-full {
+    width: 100%;
     padding: 6px 10px;
+    margin-bottom: 6px;
     background: var(--dark);
     color: var(--white);
     border: 1px solid var(--theme-2);
     border-radius: var(--border-radius);
-    min-width: 120px;
+    font-size: 0.85rem;
+    box-sizing: border-box;
 }
 
-.book-controls-bar select {
-    padding: 5px 8px;
+/* ── 2-col toolbar grid ── */
+.book-toolbar-grid {
+    display: grid;
+    grid-template-columns: minmax(160px, 280px) 1fr;
+    gap: 10px;
+    align-items: start;
+}
+
+.book-controls-col {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.book-dropdowns-row {
+    display: flex;
+    gap: 4px;
+}
+
+.book-dropdowns-row select {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    padding: 4px 6px;
+    font-size: 0.78rem;
     background: var(--dark);
     color: var(--white);
     border: 1px solid var(--theme-2);
@@ -821,11 +840,35 @@ body[data-page-title="Monsters"] .monster-card:hover {
     width: auto;
 }
 
+.book-actions-row {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
 .book-bar-btn {
-    padding: 5px 10px !important;
-    font-size: 0.83em !important;
+    padding: 4px 9px;
+    font-size: 0.78rem;
     white-space: nowrap;
     flex-shrink: 0;
+    background: var(--dark-2);
+    color: var(--text-cream);
+    border: 1px solid var(--theme-2);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    box-shadow: none;
+    transform: none !important;
+}
+
+.book-bar-btn:hover {
+    background: var(--theme-1);
+    border-color: var(--gold);
+    transform: none !important;
+}
+
+@media (max-width: 600px) {
+    .book-toolbar-grid { grid-template-columns: 1fr; }
 }
 
 .btn-cog {
@@ -859,8 +902,8 @@ body[data-page-title="Monsters"] .monster-card:hover {
 .book-group-pills {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
-    margin-bottom: 6px;
+    gap: 4px;
+    align-content: flex-start;
 }
 
 .group-pill {

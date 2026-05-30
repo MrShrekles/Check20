@@ -9,11 +9,14 @@ function escapeHTML(s) {
 
 function linkifyDesc(text) {
     if (!text) return '';
-    return escapeHTML(text).replace(/\[([^\]]+)\]/g, (match, name) => {
-        const god = (typeof GOD_MAP !== 'undefined') && GOD_MAP.get(name.toLowerCase());
-        if (god) return `<span class="god-ref" data-god="${escapeHTML(name.toLowerCase())}">${escapeHTML(name)}</span>`;
-        return match;
-    });
+    return escapeHTML(text)
+        .replace(/\[([^\]]+)\]/g, (match, name) => {
+            const god = (typeof GOD_MAP !== 'undefined') && GOD_MAP.get(name.toLowerCase());
+            if (god) return `<span class="god-ref" data-god="${escapeHTML(name.toLowerCase())}">${escapeHTML(name)}</span>`;
+            return match;
+        })
+        .replace(/\n\n+/g, '<br><br>')
+        .replace(/\n/g, '<br>');
 }
 
 // ── GOD TOOLTIP ──────────────────────────────────────────────────────────────
@@ -81,9 +84,10 @@ function renderCard(s) {
         lore         && `<h4 class="desc-section-label">Lore</h4><p>${linkifyDesc(lore)}</p>`,
     ].filter(Boolean).join('');
 
+    const displayName = s.name.replace(/\s*\([^)]*\)/g, '').trim();
     el.innerHTML = `
-    <img class="cover" loading="lazy" src="${cover}" alt="${escapeHTML(s.name)}" data-slug="${escapeHTML(s.slug)}">
-    <header><h3>${escapeHTML(s.name)}</h3></header>
+    <img class="cover" loading="lazy" src="${cover}" alt="${escapeHTML(displayName)}" data-slug="${escapeHTML(s.slug)}">
+    <header><h3>${escapeHTML(displayName)}</h3></header>
     <div class="species-meta">${chips}</div>
     <div class="species-body collapsed">
       <div class="species-desc">${descHtml}</div>

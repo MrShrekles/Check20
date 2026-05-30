@@ -19,20 +19,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     applyFilters();
 });
 
+/* ====== Filter pip ====== */
+function updateFilterPip() {
+    const hasFilters = !!state.q || state.exclude.option.size > 0;
+    document.getElementById('species-filter-toggle')?.classList.toggle('has-filters', hasFilters);
+}
+
 /* ====== UI Wiring ====== */
 function wireUI() {
     const q = document.getElementById('species-search');
     const sort = document.getElementById('species-sort');
     const clr = document.getElementById('species-clear');
 
-    const sizeSlider = document.getElementById('card-size-slider');
-    if (sizeSlider) {
-        const saved = localStorage.getItem('species_card_size');
-        if (saved) { sizeSlider.value = saved; document.documentElement.style.setProperty('--card-min', saved + 'px'); }
-        sizeSlider.addEventListener('input', () => {
-            document.documentElement.style.setProperty('--card-min', sizeSlider.value + 'px');
-            localStorage.setItem('species_card_size', sizeSlider.value);
-        });
+    const filterToggle = document.getElementById('species-filter-toggle');
+    const filterPanel  = document.getElementById('species-filter-panel');
+    filterToggle?.addEventListener('click', () => {
+        const open = filterPanel.classList.toggle('open');
+        filterToggle.classList.toggle('open', open);
+    });
+
+    const SPECIES_SIZE = {
+        small:  { '--card-min': '300px', '--card-body-size': '0.9rem',  '--card-header-size': '0.9rem',  '--card-lh': '1.5',  '--card-header-pad': '.45rem .6rem', '--card-meta-pad': '.3rem .6rem'  },
+        medium: { '--card-min': '500px', '--card-body-size': '1rem',    '--card-header-size': '1rem',    '--card-lh': '1.6',  '--card-header-pad': '.6rem .7rem',  '--card-meta-pad': '.4rem .7rem'  },
+        large:  { '--card-min': '700px', '--card-body-size': '1.08rem', '--card-header-size': '1.08rem', '--card-lh': '1.65', '--card-header-pad': '.7rem .85rem', '--card-meta-pad': '.5rem .85rem' },
+    };
+    const sizeBtns = document.querySelectorAll('.card-size-wrap .size-btn');
+    if (sizeBtns.length) {
+        const applyCardSize = key => {
+            const vars = SPECIES_SIZE[key] || SPECIES_SIZE.medium;
+            Object.entries(vars).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+        };
+        const saved = localStorage.getItem('species_card_size') || 'medium';
+        applyCardSize(saved);
+        sizeBtns.forEach(b => b.classList.toggle('active', b.dataset.size === saved));
+        sizeBtns.forEach(b => b.addEventListener('click', () => {
+            const s = b.dataset.size;
+            applyCardSize(s);
+            localStorage.setItem('species_card_size', s);
+            sizeBtns.forEach(x => x.classList.toggle('active', x === b));
+        }));
     }
 
     q?.addEventListener('input', debounce(() => {
@@ -199,6 +224,7 @@ function applyFilters() {
     const countEl = document.getElementById('species-count');
     if (countEl) countEl.textContent = `${out.length} result${out.length === 1 ? '' : 's'}`;
 
+    updateFilterPip();
     renderGrid(out);
 }
 

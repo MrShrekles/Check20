@@ -2167,7 +2167,7 @@
     },
     {
       "lineage": "Corebound",
-      "option": "Core",
+      "option": "core bound",
       "name": "Arcane",
       "description": {
         "physical": "Arcane Core constructs are powered by pure magical energy, their cores brimming with arcane power. These constructs are often adorned with intricate runes and symbols etched into their bodies, marking their deep connection to magic. Designed to wield potent magical abilities, Arcane Core constructs possess heightened intellect and an unparalleled understanding of the arcane arts. They are known for their resilience, able to regenerate and repair themselves through their mastery of magical crafting. Fuel Source - Mana Crystals: These are dense stones imbued with pure magical energy, mined from regions thick with arcane power.",
@@ -2178,7 +2178,7 @@
       "size": "3-9",
       "lifespan": "30 years per cycle",
       "language": "Imperial",
-      "diet": "Refined Mana",
+      "diet": "Fuel Source - Mana Crystals: Dense stones imbued with pure magical energy, mined from regions thick with arcane power.",
       "rarity": "Rare",
       "region": "global",
       "origin": "arcane",
@@ -2188,7 +2188,7 @@
     },
     {
       "lineage": "Corebound",
-      "option": "Core",
+      "option": "core bound",
       "name": "Dryad",
       "description": {
         "physical": "Dryad Core constructs are imbued with the life essence of nature itself, granting them a deep connection to the natural world. Their bodies are often entwined with vines and leaves, and their agility and perception make them as swift and adaptive as the forests they resemble. Created originally by gnome tinkerers, these constructs carry within them the echoes of ancient dryads, allowing them to manipulate plants and tap into ancient knowledge locked deep within their cores. Fuel Source - Photosynthate Gel: A biologically engineered substance that replicates the effects of photosynthesis in plants.",
@@ -2199,7 +2199,7 @@
       "size": "3-9",
       "lifespan": "30 years per cycle",
       "language": "Imperial",
-      "diet": "Fruit Juice and Solar",
+      "diet": "Fuel Source - Photosynthate Gel: A biologically engineered substance that replicates the effects of photosynthesis in plants.",
       "rarity": "Rare",
       "region": "global, fey",
       "origin": "nature",
@@ -2209,7 +2209,7 @@
     },
     {
       "lineage": "Corebound",
-      "option": "Core",
+      "option": "core bound",
       "name": "Daemontek",
       "description": {
         "physical": "The Daemontek Constructs are creations of infernal engineering, born in the molten heart of Ordealis where metal and soul are bound as one. Each construct begins as a slab of blackened alloy shaped by the hammering chants of demonic forgemasters. Into its chest is sealed a burning shard of sentient flame, a remnant of a spirit devoured and reforged to power the machine eternally. Their armor is cracked and scorched, glowing faintly with the pulse of molten veins beneath. Smoke spills from vents like breath, and each movement releases the grinding sound of tortured energy struggling to escape. The Daemontek are not merely machines but prisons, housing the restless fury of souls that can never die. Their purpose is destruction, though some have outlived their creators and wander the planes as relics of hell’s industry, guided by fragments of the minds that once were. The infernal scholars who built them believed suffering was the truest fuel, and in that belief they forged creatures that will burn until the end of all things. Their fuel source, known as the Ashes of the Damned, is gathered from the remains of condemned spirits whose essence still smolders with a hunger for life.",
@@ -2220,7 +2220,7 @@
       "size": "4 - 11",
       "lifespan": "30 years per cycle",
       "language": "Imperial",
-      "diet": "Burned Food",
+      "diet": "Fuel Source - Ashes of the Damned: The cremated remains of powerful undead creatures, which continue to smolder with residual life force.",
       "rarity": "Rare",
       "region": "global, ordealis",
       "origin": "vozian",

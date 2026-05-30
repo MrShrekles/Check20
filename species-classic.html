@@ -4,17 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Species of Shek — Codex</title>
+    <title>Species of Shek</title>
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/spells.css">
     <link rel="stylesheet" href="styles/species.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
-    <script src="scripts/codex-ui.js" defer></script>
     <script src="scripts/species-data.js" defer></script>
-    <script src="scripts/species-codex-render.js" defer></script>
+    <script src="scripts/species-render.js" defer></script>
     <script src="scripts/species-ui.js" defer></script>
 </head>
 
@@ -36,12 +34,12 @@
                     <option value="rarity">Sort: Rarity</option>
                     <option value="lineage">Sort: Lineage</option>
                 </select>
-                <div class="codex-size-wrap">
+                <div class="card-size-wrap">
                     <span>Size</span>
-                    <div class="codex-size-btns" id="codex-size-btns">
-                        <button class="codex-size-btn" data-size="small">S</button>
-                        <button class="codex-size-btn active" data-size="medium">M</button>
-                        <button class="codex-size-btn" data-size="large">L</button>
+                    <div class="size-btns">
+                        <button class="size-btn" data-size="small">S</button>
+                        <button class="size-btn active" data-size="medium">M</button>
+                        <button class="size-btn" data-size="large">L</button>
                     </div>
                 </div>
                 <span id="species-count"></span>
@@ -62,6 +60,7 @@
 
         <section id="species-sections" class="species-sections"></section>
 
+        <!-- Lightbox -->
         <dialog id="species-lightbox">
             <button class="close" aria-label="Close">×</button>
             <img id="lightbox-img" alt="">
@@ -71,7 +70,7 @@
                 <button id="lb-next">›</button>
             </nav>
         </dialog>
+
     </main>
 
 </body>
-</html>

@@ -160,6 +160,7 @@ let cachedSpells = [];
 let activeOrigins = [];
 let selectedSort = 'origin';
 
+
 document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   initBuilder();
@@ -214,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  initCodexSize();
   loadSpells();
 });
 

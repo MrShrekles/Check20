@@ -117,11 +117,12 @@ registerEditor('species', {
                                 value="${entry.lifespan ?? ''}"
                                 onchange="updateField(${idx},'lifespan',parseFloat(this.value)||0)" oninput="markUnsaved()">
                         </div>
+                        <datalist id="sp-diet-opts-${idx}">${SPD.diet.filter(Boolean).map(d => `<option value="${escAttr(d)}">`).join('')}</datalist>
                         <div class="field-wrap">
                             <label class="field-label">Diet</label>
-                            <select class="field-input" onchange="updateField(${idx},'diet',this.value)">
-                                ${sel(SPD.diet, entry.diet || '')}
-                            </select>
+                            <input class="field-input" type="text" list="sp-diet-opts-${idx}"
+                                value="${fa('diet')}"
+                                onchange="updateField(${idx},'diet',this.value)" oninput="markUnsaved()">
                         </div>
                         <datalist id="sp-lang-opts-${idx}">${languages.map(l => `<option value="${escAttr(l)}">`).join('')}</datalist>
                         <div class="field-wrap full">

@@ -20,18 +20,49 @@
 
 .spell-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(var(--codex-min, 380px), 1fr));
   align-items: start;
   gap: 4px var(--padding);
   padding: var(--padding);
 }
 
-@media (max-width: 900px) {
-  .spell-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
 @media (max-width: 580px) {
   .spell-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Codex size toggle buttons ── */
+.codex-size-wrap {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .8rem;
+  color: var(--text-muted, #888);
+}
+.codex-size-btns {
+  display: flex;
+  gap: 2px;
+}
+.codex-size-btn {
+  padding: 2px 8px;
+  font-size: .75rem;
+  font-weight: 600;
+  background: transparent;
+  border: 1px solid var(--gold-1, #c8922a);
+  color: var(--text-muted, #888);
+  border-radius: var(--border-radius, 4px);
+  cursor: pointer;
+  transition: background .1s, color .1s;
+  box-shadow: none;
+  transform: none !important;
+}
+.codex-size-btn:hover {
+  background: var(--dark-2, #222);
+  color: var(--text-cream);
+}
+.codex-size-btn.active {
+  background: var(--gold-1, #c8922a);
+  color: var(--dark-1, #111);
+  border-color: var(--gold-2);
 }
 
 /* ── Section headers span all columns ── */
@@ -71,7 +102,7 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.5rem 0.6rem;
+  padding: var(--codex-row-pad, 0.5rem 0.6rem);
   cursor: pointer;
   user-select: none;
   flex-wrap: wrap;
@@ -91,7 +122,7 @@
 
 .spell-row-name {
   font-weight: bold;
-  font-size: 0.88rem;
+  font-size: var(--codex-name-size, 0.88rem);
   color: var(--gold);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -107,7 +138,7 @@
 }
 
 .spell-row-tags span {
-  font-size: 0.65rem;
+  font-size: var(--codex-tag-size, 0.65rem);
   padding: 2px 6px;
   border-radius: 3px;
   text-transform: uppercase;
@@ -118,7 +149,7 @@
 .spell-row-tags .origin { background-color: var(--theme-1); }
 
 .spell-row-cost {
-  font-size: 0.75rem;
+  font-size: var(--codex-cost-size, 0.75rem);
   color: var(--text-cream);
   font-family: monospace;
   margin-left: auto;
@@ -162,7 +193,7 @@
 
 .intent-name {
   font-weight: bold;
-  font-size: 0.82rem;
+  font-size: var(--codex-intent-size, 0.82rem);
   color: var(--gold);
 }
 
@@ -177,13 +208,14 @@
 }
 
 .intent-meta {
-  font-size: 0.7rem;
+  font-size: var(--codex-meta-size, 0.7rem);
   color: var(--text-cream);
   opacity: .75;
 }
 
 .intent-effect {
-  font-size: 0.83rem;
+  font-size: var(--codex-effect-size, 0.83rem);
+  line-height: var(--codex-lh, 1.5);
   color: var(--white);
   margin: 0;
   white-space: pre-wrap;

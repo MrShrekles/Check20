@@ -823,6 +823,7 @@ function addToBookFromGenerator(mon) {
 window.addToBookFromGenerator = addToBookFromGenerator;
 
 document.addEventListener('DOMContentLoaded', () => {
+    initCodexSize();
     loadMonsterBook();
 
     // ===== Monster Link Tooltip & Navigation =====

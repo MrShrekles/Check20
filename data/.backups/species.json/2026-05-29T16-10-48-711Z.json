@@ -1933,9 +1933,9 @@
       "name": "Clothari",
       "description": {
         "physical": "The Clothari are an insectoid people shaped in the image of their creator, Clotho. Standing slightly taller than humans on average, they possess slender segmented bodies covered in smooth chitin ranging from pale ivory and silver to deep obsidian. Their most striking features are their multiple reflective eyes, capable of perceiving subtle movements and patterns others overlook. Fine strands of silk can be produced from specialized glands along their arms, fingers, and abdomen, allowing them to weave intricate structures, clothing, tools, and art. Though unmistakably insectoid, their posture, expressions, and mannerisms are remarkably humanoid, lending them an unsettling familiarity.",
-        "environment": "The Clothari inhabit the Kingslands, a sprawling gothic empire of towering cathedrals, iron bridges, and black stone keeps. At its heart rises the Weaverspire, a colossal tower wrapped in endless layers of black silk that stretches into the clouds. The silk never decays and seems to absorb light, giving the structure an almost impossible silhouette against the sky.\nAround the Weaverspire, entire cities have been constructed from stone reinforced with enchanted webbing. Vast silk bridges connect distant towers, while enormous web-canopies stretch over marketplaces and noble districts. The empire values order, infrastructure, and careful planning. Roads are immaculate, records are meticulously maintained, and every district appears intentionally placed as though the entire nation were a single woven design.",
-        "culture": "The Clothari view existence as a tapestry of interconnected choices. While they do not believe fate is absolute, they believe every action creates threads that influence countless others. Because of this, patience, planning, and observation are highly respected virtues. Most Clothari spend part of every day weaving. Some create practical goods, while others weave symbolic patterns meant to record family histories, important events, or personal philosophies. A Clothari's greatest possession is often their Lifetapestry, a continually expanding work that chronicles their existence through woven symbols and colors.\nTheir society places great value on prediction, strategy, and education. Scholars, architects, navigators, and advisors occupy positions of prestige. Open displays of emotion are uncommon, though Clothari are not emotionless. Rather, they are taught to understand emotions as threads to be examined before being acted upon.\nDespite their reputation for calculation, Clothari communities are tightly connected. Family structures often extend beyond bloodlines into vast weaving circles where individuals contribute to shared projects, businesses, and civic duties. To a Clothari, success is rarely individual; it is proof that the pattern is functioning correctly.",
-        "lore": "Long ago, Clotho was imprisoned within the Fallen Abyss, cast into darkness by powers that feared her growing understanding of the hidden patterns governing reality. For ages she remained bound beneath the world, studying the movements of gods, mortals, and stars through the cracks of her prison. When the fall of VoZo shattered ancient balances and weakened countless seals, Clotho seized her opportunity. She escaped the Fallen Abyss and emerged within the northern reaches of the Kingslands. There she claimed a barren stretch of stone and shadow, raising a great spire from black silk drawn from her own divine essence.\nThe Weaverspire grew rapidly, climbing higher each year as Clotho spun endless webs across the surrounding land. From these divine strands she fashioned servants to aid her work. These first creations became the Clothari. Unlike many created peoples, the Clothari were not born for war or worship. They were created as caretakers of the Pattern. Each was given an instinctive understanding that all things are connected and that the world itself is an unfinished tapestry.\nOver generations, the Clothari transformed the region around the Weaverspire into a powerful empire. Cities rose where webs once hung. Roads followed the paths Clotho first traced across the land. Noble houses formed around ancient weaving circles, each claiming stewardship over a portion of the Pattern. Today, the Clothari remain devoted to their creator, though not always through faith alone. Many view Clotho less as a goddess and more as the greatest architect to ever exist. They believe the universe contains hidden structures waiting to be understood, and that through patience, observation, and careful action, every thread can eventually reveal its place within the greater design."
+        "environment": "The Clothari inhabit the Kingslands, a sprawling gothic empire of towering cathedrals, iron bridges, and black stone keeps. At its heart rises the Weaverspire, a colossal tower wrapped in endless layers of black silk that stretches into the clouds. The silk never decays and seems to absorb light, giving the structure an almost impossible silhouette against the sky.\n\nAround the Weaverspire, entire cities have been constructed from stone reinforced with enchanted webbing. Vast silk bridges connect distant towers, while enormous web-canopies stretch over marketplaces and noble districts. The empire values order, infrastructure, and careful planning. Roads are immaculate, records are meticulously maintained, and every district appears intentionally placed as though the entire nation were a single woven design.",
+        "culture": "The Clothari view existence as a tapestry of interconnected choices. While they do not believe fate is absolute, they believe every action creates threads that influence countless others. Because of this, patience, planning, and observation are highly respected virtues.\n\nMost Clothari spend part of every day weaving. Some create practical goods, while others weave symbolic patterns meant to record family histories, important events, or personal philosophies. A Clothari's greatest possession is often their Lifetapestry, a continually expanding work that chronicles their existence through woven symbols and colors.\n\nTheir society places great value on prediction, strategy, and education. Scholars, architects, navigators, and advisors occupy positions of prestige. Open displays of emotion are uncommon, though Clothari are not emotionless. Rather, they are taught to understand emotions as threads to be examined before being acted upon.\n\nDespite their reputation for calculation, Clothari communities are tightly connected. Family structures often extend beyond bloodlines into vast weaving circles where individuals contribute to shared projects, businesses, and civic duties. To a Clothari, success is rarely individual; it is proof that the pattern is functioning correctly.",
+        "lore": "Long ago, Clotho was imprisoned within the Fallen Abyss, cast into darkness by powers that feared her growing understanding of the hidden patterns governing reality. For ages she remained bound beneath the world, studying the movements of gods, mortals, and stars through the cracks of her prison.\n\nWhen the fall of VoZo shattered ancient balances and weakened countless seals, Clotho seized her opportunity. She escaped the Fallen Abyss and emerged within the northern reaches of the Kingslands. There she claimed a barren stretch of stone and shadow, raising a great spire from black silk drawn from her own divine essence.\n\nThe Weaverspire grew rapidly, climbing higher each year as Clotho spun endless webs across the surrounding land. From these divine strands she fashioned servants to aid her work. These first creations became the Clothari.\n\nUnlike many created peoples, the Clothari were not born for war or worship. They were created as caretakers of the Pattern. Each was given an instinctive understanding that all things are connected and that the world itself is an unfinished tapestry.\n\nOver generations, the Clothari transformed the region around the Weaverspire into a powerful empire. Cities rose where webs once hung. Roads followed the paths Clotho first traced across the land. Noble houses formed around ancient weaving circles, each claiming stewardship over a portion of the Pattern.\n\nToday, the Clothari remain devoted to their creator, though not always through faith alone. Many view Clotho less as a goddess and more as the greatest architect to ever exist. They believe the universe contains hidden structures waiting to be understood, and that through patience, observation, and careful action, every thread can eventually reveal its place within the greater design."
       },
       "size": "5-6",
       "lifespan": 120,
@@ -2166,8 +2166,8 @@
       "fetRange": "Short"
     },
     {
-      "lineage": "Corebound",
-      "option": "Core",
+      "lineage": "human",
+      "option": "core bound",
       "name": "Arcane",
       "description": {
         "physical": "Arcane Core constructs are powered by pure magical energy, their cores brimming with arcane power. These constructs are often adorned with intricate runes and symbols etched into their bodies, marking their deep connection to magic. Designed to wield potent magical abilities, Arcane Core constructs possess heightened intellect and an unparalleled understanding of the arcane arts. They are known for their resilience, able to regenerate and repair themselves through their mastery of magical crafting. Fuel Source - Mana Crystals: These are dense stones imbued with pure magical energy, mined from regions thick with arcane power.",
@@ -2178,7 +2178,7 @@
       "size": "3-9",
       "lifespan": "30 years per cycle",
       "language": "Imperial",
-      "diet": "Refined Mana",
+      "diet": "Fuel Source - Mana Crystals: Dense stones imbued with pure magical energy, mined from regions thick with arcane power.",
       "rarity": "Rare",
       "region": "global",
       "origin": "arcane",
@@ -2187,8 +2187,8 @@
       "fetAction": "Resource"
     },
     {
-      "lineage": "Corebound",
-      "option": "Core",
+      "lineage": "human",
+      "option": "core bound",
       "name": "Dryad",
       "description": {
         "physical": "Dryad Core constructs are imbued with the life essence of nature itself, granting them a deep connection to the natural world. Their bodies are often entwined with vines and leaves, and their agility and perception make them as swift and adaptive as the forests they resemble. Created originally by gnome tinkerers, these constructs carry within them the echoes of ancient dryads, allowing them to manipulate plants and tap into ancient knowledge locked deep within their cores. Fuel Source - Photosynthate Gel: A biologically engineered substance that replicates the effects of photosynthesis in plants.",
@@ -2199,7 +2199,7 @@
       "size": "3-9",
       "lifespan": "30 years per cycle",
       "language": "Imperial",
-      "diet": "Fruit Juice and Solar",
+      "diet": "Fuel Source - Photosynthate Gel: A biologically engineered substance that replicates the effects of photosynthesis in plants.",
       "rarity": "Rare",
       "region": "global, fey",
       "origin": "nature",
@@ -2208,8 +2208,8 @@
       "fetAction": "Passive"
     },
     {
-      "lineage": "Corebound",
-      "option": "Core",
+      "lineage": "human",
+      "option": "core bound",
       "name": "Daemontek",
       "description": {
         "physical": "The Daemontek Constructs are creations of infernal engineering, born in the molten heart of Ordealis where metal and soul are bound as one. Each construct begins as a slab of blackened alloy shaped by the hammering chants of demonic forgemasters. Into its chest is sealed a burning shard of sentient flame, a remnant of a spirit devoured and reforged to power the machine eternally. Their armor is cracked and scorched, glowing faintly with the pulse of molten veins beneath. Smoke spills from vents like breath, and each movement releases the grinding sound of tortured energy struggling to escape. The Daemontek are not merely machines but prisons, housing the restless fury of souls that can never die. Their purpose is destruction, though some have outlived their creators and wander the planes as relics of hell’s industry, guided by fragments of the minds that once were. The infernal scholars who built them believed suffering was the truest fuel, and in that belief they forged creatures that will burn until the end of all things. Their fuel source, known as the Ashes of the Damned, is gathered from the remains of condemned spirits whose essence still smolders with a hunger for life.",
@@ -2220,7 +2220,7 @@
       "size": "4 - 11",
       "lifespan": "30 years per cycle",
       "language": "Imperial",
-      "diet": "Burned Food",
+      "diet": "Fuel Source - Ashes of the Damned: The cremated remains of powerful undead creatures, which continue to smolder with residual life force.",
       "rarity": "Rare",
       "region": "global, ordealis",
       "origin": "vozian",

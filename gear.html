@@ -13,6 +13,7 @@
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/codex-ui.js"></script>
     <script src="scripts/gear.js"></script>
 </head>
 <body data-page-title="Gear">
@@ -24,6 +25,14 @@
             <button class="tab-btn" data-tab="armor">🛡 Armor</button>
             <button class="tab-btn" data-tab="items">🎒 Items</button>
             <button class="tab-btn" data-tab="enchanted">✨ Enchanted</button>
+            <div class="codex-size-wrap" style="margin-left:auto;">
+                <span>Size</span>
+                <div class="codex-size-btns" id="codex-size-btns">
+                    <button class="codex-size-btn" data-size="small">S</button>
+                    <button class="codex-size-btn active" data-size="medium">M</button>
+                    <button class="codex-size-btn" data-size="large">L</button>
+                </div>
+            </div>
         </div>
 
         <!-- ═══════════ WEAPONS TAB ═══════════ -->
