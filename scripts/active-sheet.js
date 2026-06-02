@@ -1784,21 +1784,40 @@ function renderClassView() {
 
     // Group unlocked progression steps under their base feature
     function buildGroupedCards(initSteps, progSteps, checkedArr) {
-        const baseCards = new Map(); // family → { baseHtml, upgrades: [] }
+        const baseCards = new Map();
+        const romanRx = /\s+(II|III|IV|V|VI|VII|VIII)\s*$/i;
+
+        // Step-0 features are always bases
         initSteps.forEach(s => {
-            const fam = featFamily(s.name);
-            baseCards.set(fam, { baseHtml: renderStepCard(s), upgrades: [] });
+            baseCards.set(featFamily(s.name), { baseHtml: renderStepCard(s), upgrades: [] });
         });
+
+        // Pass 1: register unlocked steps that are clearly base features
+        // Skip anything with action="Upgrade" OR a roman-numeral suffix — those are upgrades
         progSteps.forEach((s, i) => {
             if (!checkedArr[i]) return;
+            if ((s.action || '').toLowerCase() === 'upgrade') return;
+            if (romanRx.test(s.name)) return;
             const fam = featFamily(s.name);
-            const isUpgrade = (s.action || '').toLowerCase() === 'upgrade' && baseCards.has(fam);
-            if (isUpgrade) {
+            if (!baseCards.has(fam)) {
+                baseCards.set(fam, { baseHtml: renderStepCard(s), upgrades: [] });
+            }
+        });
+
+        // Pass 2: attach upgrades — caught by action="Upgrade" OR roman-numeral name suffix
+        progSteps.forEach((s, i) => {
+            if (!checkedArr[i]) return;
+            const isUpgrade = (s.action || '').toLowerCase() === 'upgrade' || romanRx.test(s.name);
+            if (!isUpgrade) return;
+            const fam = featFamily(s.name);
+            if (baseCards.has(fam)) {
                 baseCards.get(fam).upgrades.push(renderStepCard(s));
             } else {
+                // Orphan — base not found or not yet unlocked, show standalone
                 baseCards.set(fam + '__' + i, { baseHtml: renderStepCard(s), upgrades: [] });
             }
         });
+
         return [...baseCards.values()].map(({ baseHtml, upgrades }) =>
             upgrades.length
                 ? `<div class="feat-upgrade-group">${baseHtml}<div class="feat-upgrades">${upgrades.join('')}</div></div>`
@@ -2159,7 +2178,7 @@ function pushChatRecovery({ title, gains }) {
     setActivePanel('chat');
 }
 
-function pushChatFeature({ name, tags, desc }) {
+function pushChatFeature({ name, tags, desc, upgrades }) {
     state.chat.unshift({
         type: 'feature', time: chatTimestamp(),
         charName: state.char.name || '',
@@ -2167,6 +2186,7 @@ function pushChatFeature({ name, tags, desc }) {
         tags: tags || [],
         desc: desc || '',
         diceRolls: parseDiceFromText(desc),
+        upgrades: upgrades || [],
     });
     if (state.chat.length > 100) state.chat.length = 100;
     saveState();
@@ -2229,8 +2249,11 @@ function renderChat() {
             li.innerHTML = renderRecoveryEntry(entry);
         } else {
             // Plain message or legacy text entry
+            const emojiOnly = isEmojiOnly(entry.text);
             li.className = 'chat-entry--msg';
-            li.innerHTML = `<span class="chat-time">${entry.time}</span><span class="chat-text">${entry.text || ''}</span>`;
+            li.innerHTML = emojiOnly
+                ? `<span class="chat-time">${entry.time}</span><div class="chat-emoji-block"><span class="chat-text chat-emoji-big">${entry.text || ''}</span>${EMOJI_REACTIONS_HTML}</div>`
+                : `<span class="chat-time">${entry.time}</span><span class="chat-text">${entry.text || ''}</span>`;
         }
         el.appendChild(li);
     });
@@ -2318,6 +2341,7 @@ function renderSharedChat() {
 
     sharedChatMsgs.forEach(m => {
         const li    = document.createElement('li');
+        if (m.id) li.dataset.chatId = m.id;
         const isMe  = m.uid === window.__arc?.uid;
         const isNar = m.isNarrator;
 
@@ -2345,8 +2369,11 @@ function renderSharedChat() {
         } else if (m.type === 'turn') {
             li.innerHTML = renderTurnEntry(m);
         } else {
+            const emojiOnly = isEmojiOnly(m.text);
             li.className = 'chat-entry--msg';
-            li.innerHTML = `${badge}<span class="chat-time">${m.time || ''}</span><span class="chat-text">${m.text || ''}</span>`;
+            li.innerHTML = emojiOnly
+                ? `${badge}<span class="chat-time">${m.time || ''}</span><div class="chat-emoji-block"><span class="chat-text chat-emoji-big">${m.text || ''}</span>${EMOJI_REACTIONS_HTML}</div>`
+                : `${badge}<span class="chat-time">${m.time || ''}</span><span class="chat-text">${m.text || ''}</span>`;
         }
 
         el.appendChild(li);
@@ -2371,6 +2398,15 @@ document.addEventListener('arc:firebase-ready', () => {
 
     // Start shared chat listener
     listenToSharedChat(room);
+
+    // Broadcast emoji reactions — stored on room doc (reuses existing listener above)
+    document.addEventListener('emoji-react', async ({ detail }) => {
+        try {
+            await arc.updateDoc(arc.doc(arc.db, 'rooms', room), {
+                lastReaction: { chatMsgId: detail.chatMsgId, anim: detail.anim, by: arc.uid, at: arc.serverTimestamp() },
+            });
+        } catch(e) { console.error('[ARC] emoji-react write failed:', e); }
+    });
 
     // Show session section in settings
     const sessSection = document.getElementById('settings-session-section');
@@ -2401,13 +2437,20 @@ document.addEventListener('arc:firebase-ready', () => {
         snap => renderPlayerLoot(snap.docs.map(d => ({ id: d.id, ...d.data() }))),
     );
 
-    // Listen to room doc for gold
+    // Listen to room doc for gold + emoji reactions
     _roomUnsub = arc.onSnapshot(
         arc.doc(arc.db, 'rooms', room),
         snap => {
-            const gold = snap.data()?.gold ?? 0;
+            const data = snap.data() || {};
+            const gold = data.gold ?? 0;
             const el = document.getElementById('player-gold-val');
             if (el) el.textContent = gold;
+
+            const r = data.lastReaction;
+            if (r?.at && r?.chatMsgId && r?.anim && r.by !== arc.uid) {
+                const ageMs = Date.now() - r.at.toMillis();
+                if (ageMs <= 4000) triggerEmojiReaction(r.chatMsgId, r.anim);
+            }
         },
     );
 });
@@ -2453,6 +2496,23 @@ function renderPlayerLoot(items) {
             const id   = btn.dataset.lootId;
             const item = items.find(x => x.id === id);
             if (!item) return;
+
+            // 1. Add to personal inventory
+            state.equipment.push({ name: item.name, notes: item.desc || '', category: 'gear' });
+            saveState();
+            renderInventory();
+
+            // 2. Announce in shared chat
+            broadcastChatEntry({
+                type:      'feature',
+                name:      item.name,
+                tags:      [`Claimed by ${state.char?.name || 'Player'}`],
+                desc:      item.desc || '',
+                time:      chatTimestamp(),
+                diceRolls: [],
+            });
+
+            // 3. Remove from party loot
             try {
                 if (item.amount <= 1) {
                     await arc.deleteDoc(arc.doc(arc.db, 'rooms', room, 'loot', id));
@@ -3953,7 +4013,27 @@ function bindProgressionPanel() {
             const tags = check
                 ? check.split(',').map(s => s.trim()).filter(Boolean).map(s => `Check: ${s}`)
                 : [];
-            pushChatFeature({ name, tags, desc });
+
+            // Collect upgrades if this is a base card inside a feat-upgrade-group
+            const card = btn.closest('.step-card');
+            const group = card?.closest('.feat-upgrade-group');
+            const isBase = group && !card.closest('.feat-upgrades');
+            const upgrades = isBase
+                ? [...group.querySelectorAll('.feat-upgrades .step-card')].map(uc => {
+                    const cb = uc.querySelector('.step-action-btn[data-action="chat"]');
+                    if (!cb) return null;
+                    const uCheck = cb.dataset.check || '';
+                    return {
+                        name: cb.dataset.name || '',
+                        desc: cb.dataset.desc || '',
+                        tags: uCheck
+                            ? uCheck.split(',').map(s => s.trim()).filter(Boolean).map(s => `Check: ${s}`)
+                            : [],
+                    };
+                }).filter(Boolean)
+                : [];
+
+            pushChatFeature({ name, tags, desc, upgrades });
             return;
         }
 

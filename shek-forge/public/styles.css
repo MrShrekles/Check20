@@ -311,7 +311,46 @@ body.type-class { --accent: #5a78cc; --accent-dim: #2a3e7a; --accent-bright: #88
 .extra-feature-header {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
+    padding: 5px 8px;
+    background: rgba(200, 146, 42, 0.06);
+    border-bottom: 1px solid var(--border);
+}
+.extra-feature-body { padding: 8px; }
+.class-step-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--accent-bright);
+    background: var(--accent-dim);
+    min-width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: 0;
+}
+.extra-feature-header .class-step-name {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    background: transparent;
+    border-color: transparent;
+    transition: border-color 0.15s, background 0.15s;
+    padding-left: 3px;
+}
+.extra-feature-header .class-step-name:hover { border-color: var(--border-bright); }
+.extra-feature-header .class-step-name:focus { background: var(--bg-card); border-color: var(--accent); }
+.class-step-action-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    white-space: nowrap;
+    opacity: 0.85;
 }
 
 /* ── HEXGEN THEME ── */
@@ -636,6 +675,89 @@ body.type-species { --accent: #9850c0; --accent-dim: #4e1e70; --accent-bright: #
 .file-type-dot.dot-species   { background: #9850c0; }
 .file-type-badge.badge-species { color: #9850c0; border-color: #9850c0; }
 
+/* ── LOOT EDITOR ── */
+body.type-loot { --accent: #5c9e5c; --accent-dim: #1e3a1e; --accent-bright: #88cc88; --bg-hover: #0e1a0e; --bg-active: #122012; --border: #1e3a1e; --border-bright: #2e5a2e; --text-muted: #5c8a5c; }
+.file-type-dot.dot-loot   { background: #5c9e5c; }
+.file-type-badge.badge-loot { color: #5c9e5c; border-color: #5c9e5c; }
+
+.loot-editor { display: flex; flex-direction: column; gap: 0; }
+
+.loot-tier-card {
+    border: 1px solid var(--border-bright);
+    border-radius: 4px;
+    background: var(--bg-hover);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+}
+.loot-tier-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.loot-tier-label-wrap { display: flex; flex-direction: column; gap: 3px; }
+.loot-tier-range,
+.loot-tier-rolls,
+.loot-tier-bonus,
+.loot-tier-gold { display: flex; flex-direction: column; gap: 3px; }
+.loot-mini-label { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); }
+.loot-inline { display: flex; align-items: center; gap: 4px; }
+.loot-sep { color: var(--text-muted); font-size: 12px; }
+.loot-num { width: 54px; text-align: center; }
+.loot-tier-del { margin-left: auto; align-self: flex-start; }
+
+.loot-tier-pools { display: flex; flex-direction: column; gap: 6px; }
+.loot-pools-row { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+.loot-pool-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 2px 8px 2px 6px; border-radius: 12px; font-size: 11px;
+}
+.loot-pool-badge .loot-pool-remove {
+    background: none; border: none; cursor: pointer; font-size: 13px;
+    line-height: 1; padding: 0 0 0 2px; color: inherit; opacity: .7;
+}
+.loot-pool-badge .loot-pool-remove:hover { opacity: 1; }
+.loot-add-pools { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.loot-pool-add { font-size: 10px; padding: 2px 7px; border-radius: 10px; opacity: .7; }
+.loot-pool-add:hover { opacity: 1; }
+
+.loot-pool-section { border-top: 1px solid var(--border); padding-top: 10px; }
+.loot-pool-rows { display: flex; flex-direction: column; gap: 3px; margin-bottom: 6px; }
+.loot-item-row { display: flex; align-items: center; gap: 4px; }
+.loot-item-input { flex: 1; }
+.loot-new-row { display: flex; gap: 6px; align-items: center; padding-top: 4px; }
+.loot-new-input { flex: 1; font-size: 12px; background: var(--bg-panel); border: 1px dashed var(--border-bright); border-radius: 3px; padding: 5px 8px; color: var(--text-primary); }
+.loot-new-input:focus { outline: 1px solid var(--accent); border-color: var(--accent); }
+
+.loot-source-legend { display: flex; flex-wrap: wrap; gap: 10px; padding: 8px 0 14px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
+.loot-legend-item { display: flex; align-items: center; gap: 4px; font-size: 11px; }
+.loot-tier-section-label { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin: 8px 0 4px; }
+
+.loot-rarities { display: flex; flex-wrap: wrap; gap: 4px; }
+.loot-rarity-btn {
+    background: var(--bg-panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 2px 9px; font-size: 10px; cursor: pointer;
+    color: var(--text-muted); transition: background .1s, color .1s, border-color .1s;
+}
+.loot-rarity-btn.is-on { background: var(--accent-dim); color: var(--accent-bright); border-color: var(--accent); }
+.loot-rarity-btn:hover { border-color: var(--border-bright); color: var(--text-primary); }
+
+/* ── CLASS QUALITY CHECKER ── */
+.class-qc-list     { display: flex; flex-direction: column; gap: 6px; padding: 8px; }
+.class-qc-empty    { padding: 10px 12px; font-size: 11px; color: var(--green-bright); font-style: italic; }
+.class-qc-issue    { border: 1px solid var(--border-bright); border-radius: 3px; overflow: hidden; }
+.class-qc-card-hd  { display: flex; align-items: center; gap: 8px; padding: 5px 10px; background: rgba(200,146,42,0.07); border-bottom: 1px solid var(--border); }
+.class-qc-badge    { font-family: 'Share Tech Mono', monospace; font-size: 8px; padding: 1px 5px; border-radius: 2px; background: var(--accent-dim); color: var(--accent-bright); flex-shrink: 0; letter-spacing: 0.05em; }
+.class-qc-name     { font-family: 'Cinzel', serif; font-size: 11px; color: var(--accent-bone); flex: 1; letter-spacing: 0.03em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.class-qc-card-bd  { padding: 7px 10px; display: flex; flex-direction: column; gap: 6px; }
+.class-qc-type     { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; }
+.class-qc-detail   { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+.class-qc-actions  { display: flex; gap: 6px; }
+.class-qc-cnt      { font-family: 'Share Tech Mono', monospace; font-size: 9px; padding: 1px 6px; border-radius: 2px; margin-left: 5px; vertical-align: middle; }
+.class-qc-cnt-warn { background: rgba(200,80,40,0.2); color: #dd7755; border: 1px solid rgba(200,80,40,0.35); }
+.class-qc-cnt-ok   { background: rgba(74,124,89,0.2); color: var(--green-bright); border: 1px solid var(--green); }
+
 /* ── RESPONSIVE: narrow window ── */
 @media (max-width: 680px) {
     .sidebar { width: 180px; }
@@ -645,3 +767,4 @@ body.type-species { --accent: #9850c0; --accent-dim: #4e1e70; --accent-bright: #
     .section-pair { flex-direction: column; }
     .fields-scroll { padding: 10px 12px 24px; }
 }
+

@@ -681,6 +681,14 @@ details.minion-card[open] .minion-chevron {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    cursor: text;
+    outline: none;
+}
+
+.jsess-title:focus {
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    outline: none;
 }
 
 .jsess-date {
@@ -696,6 +704,26 @@ details.minion-card[open] .minion-chevron {
     color: var(--text);
     border-top: 1px solid var(--line);
     white-space: pre-wrap;
+}
+
+.jsess-notes-edit {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text);
+    background: transparent;
+    border: none;
+    border-top: 1px solid var(--line);
+    resize: vertical;
+    font-family: inherit;
+    outline: none;
+}
+
+.jsess-notes-edit:focus {
+    background: rgba(255,255,255,0.03);
 }
 
 /* ── GENERATORS: SEGMENTED CONTROL ───────────────────────────────── */
@@ -974,6 +1002,7 @@ details.minion-card[open] .minion-chevron {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    cursor: pointer;
 }
 
 .gen-mon-group {
@@ -1027,6 +1056,41 @@ details.minion-card[open] .minion-chevron {
 .gen-mon-meta {
     font-size: 11px;
     color: var(--muted);
+}
+
+.gen-mon-pl-adj {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 0 8px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 6px;
+}
+
+.gen-mon-pl-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+}
+
+.gen-pl-val {
+    font-size: 15px;
+    font-weight: 900;
+    min-width: 20px;
+    text-align: center;
+    color: var(--accent);
+}
+
+.gen-pl-derived {
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: 4px;
+}
+
+.gen-pl-derived strong {
+    color: var(--text);
 }
 
 .gen-mon-motivation,

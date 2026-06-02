@@ -12,7 +12,7 @@ function setActivePanel(key) {
     document.querySelectorAll('.nav-btn[data-nav]').forEach(btn => {
         btn.classList.toggle('is-active', btn.dataset.nav === key);
     });
-    if (key === 'generators') { ensureMonsters(); ensureWorld(); ensureQuest(); ensureCommerce(); ensureHex(); }
+    if (key === 'generators') { ensureMonsters(); ensureWorld(); ensureQuest(); ensureCommerce(); ensureHex(); ensureGods(); ensureLoot(); }
     if (key === 'initiative') { ensureMonsters(); }
     if (key === 'party')      { ensureMonsters(); }
 }
@@ -44,6 +44,9 @@ const nar = {
     genEnchanted: [],  // generated enchanted items
     genMedicine:  [],  // generated medicine items
     genHexes:        [],  // generated hex tiles
+    genGods:         [],  // rolled god objects
+    monPlOverrides:  {},  // name → overridden PL
+    genLoot:         [],  // rolled loot results
     journalNpcs:     [],  // { id, name, pl, phys, ment, hp, notes, equipment, narratorNotes }
     monFavorites:    [],  // monster names pinned in generator
     questLog:        [],  // { id, text, done }
@@ -269,8 +272,9 @@ function renderMinions() {
                     </details>`).join('')}
             </div>` : '';
 
-        const checksHtml = mon
-            ? `<span class="enc-mon-checks">PL<strong>${mon.pl ?? '—'}</strong> Ph<strong>${mon.check_physical ?? 0}</strong> Mt<strong>${mon.check_mental ?? 0}</strong></span>`
+        const ms = mon ? effectiveStats(mon) : null;
+        const checksHtml = ms
+            ? `<span class="enc-mon-checks">PL<strong>${ms.pl ?? '—'}</strong> Ph<strong>${ms.ph}</strong> Mt<strong>${ms.mt}</strong></span>`
             : `<span class="minion-pl">PL ${m.pl ?? '?'}</span>`;
 
         const row = (hasAbilities) => `<div class="minion-row">
@@ -437,6 +441,12 @@ async function claimLootItem(id) {
                 amount: item.amount - 1,
             });
         }
+        postToSharedChat({
+            type: 'feature', name: item.name,
+            tags: ['Removed from Inventory'],
+            desc: item.desc || '',
+            time: chatTimestamp(), diceRolls: [],
+        });
     } catch(e) { console.error('[ARC] claimLoot failed:', e); }
 }
 
@@ -536,7 +546,7 @@ function renderEnemyMonster(e, label) {
                 <span class="enc-init-mini">${e.initiative}</span>
                 <div class="enc-mon-info">
                     <span class="enc-name">${label}</span>
-                    ${mon ? `<span class="enc-mon-checks">PL<strong>${mon.pl ?? '—'}</strong> Ph<strong>${mon.check_physical ?? 0}</strong> Mt<strong>${mon.check_mental ?? 0}</strong>${(mon.check_mental||0)>0?` MN<strong>${(mon.check_mental||0)*2}</strong>`:''}</span>` : ''}
+                    ${mon ? (() => { const es = effectiveStats(mon); return `<span class="enc-mon-checks">PL<strong>${es.pl ?? '—'}</strong> Ph<strong>${es.ph}</strong> Mt<strong>${es.mt}</strong>${es.mt>0?` MN<strong>${es.mt*2}</strong>`:''}</span>`; })() : ''}
                 </div>
                 <div class="enc-card-ctrl">
                     ${mon ? `<button class="step-action-btn enc-link-btn" data-enc-action="link-mon" data-enc-name="${e.name}">↗</button>` : ''}
@@ -817,6 +827,7 @@ async function endSession() {
     if (roomUnsubscribe)   { roomUnsubscribe();   roomUnsubscribe   = null; }
     if (chatUnsubscribe)   { chatUnsubscribe();   chatUnsubscribe   = null; }
 
+
     currentRoomCode = null;
     localStorage.removeItem('arc-narrator-room');
     fbPlayers = []; fbLoot = []; fbGold = 0; fbSharedChat = [];
@@ -1004,18 +1015,33 @@ function renderSessions() {
     el.innerHTML = nar.sessions.map(s => `
         <div class="jsess-card">
             <div class="jsess-head">
-                <span class="jsess-title">${s.title || 'Untitled Session'}</span>
+                <span class="jsess-title" contenteditable="true" data-sess-title="${s.id}">${s.title || 'Untitled'}</span>
                 <span class="jsess-date">${s.date || ''}</span>
-                <button class="jrow-view-btn" data-sess-toggle="${s.id}">V</button>
+                <button class="jrow-view-btn" data-sess-toggle="${s.id}">▾</button>
                 <button class="gen-mon-remove" data-sess-remove="${s.id}">✕</button>
             </div>
-            <div class="jsess-notes" id="jsess-notes-${s.id}" hidden>${s.notes ? s.notes.replace(/\n/g,'<br>') : ''}</div>
+            <textarea class="jsess-notes-edit" data-sess-notes="${s.id}" hidden rows="5">${s.notes || ''}</textarea>
         </div>`).join('');
 
     el.querySelectorAll('[data-sess-toggle]').forEach(btn => {
         btn.addEventListener('click', () => {
-            const det = document.getElementById(`jsess-notes-${btn.dataset.sessToggle}`);
-            if (det) det.hidden = !det.hidden;
+            const ta = el.querySelector(`[data-sess-notes="${btn.dataset.sessToggle}"]`);
+            if (!ta) return;
+            ta.hidden = !ta.hidden;
+            btn.textContent = ta.hidden ? '▾' : '▴';
+            if (!ta.hidden) ta.focus();
+        });
+    });
+    el.querySelectorAll('[data-sess-title]').forEach(span => {
+        span.addEventListener('blur', () => {
+            const s = nar.sessions.find(x => x.id === span.dataset.sessTitle);
+            if (s) { s.title = span.textContent.trim() || 'Untitled'; saveNar(); }
+        });
+    });
+    el.querySelectorAll('[data-sess-notes]').forEach(ta => {
+        ta.addEventListener('input', () => {
+            const s = nar.sessions.find(x => x.id === ta.dataset.sessNotes);
+            if (s) { s.notes = ta.value; saveNar(); }
         });
     });
     el.querySelectorAll('[data-sess-remove]').forEach(btn => {
@@ -1140,7 +1166,15 @@ async function ensureMonsters() {
     } catch(e) { console.error('Failed to load monsterbook.json', e); }
 }
 
-function monsterHp(m) { return (m.pl ?? 1) * 5; }
+function effectiveStats(m) {
+    const pl      = (nar.monPlOverrides?.[m.name] ?? m.pl ?? 1);
+    const base    = m.pl || 1;
+    const phFrac  = (m.check_physical ?? 0) / base;
+    const ph      = Math.max(0, Math.min(pl, Math.round(pl * phFrac)));
+    return { pl, hp: pl * pl, ph, mt: pl - ph };
+}
+
+function monsterHp(m) { return (nar.monPlOverrides?.[m?.name] ?? m?.pl ?? 1) ** 2; }
 
 function getMonster(name) { return GEN_MONSTERS.find(m => m.name === name) || null; }
 
@@ -1184,8 +1218,8 @@ function renderGenMonsterList() {
                 <button class="gen-mon-remove" data-remove="${name}">✕</button>
             </div></div>`;
 
-        const hp  = monsterHp(m);
-        const cid = `gmc-${i}`;
+        const stats = effectiveStats(m);
+        const cid   = `gmc-${i}`;
 
         const moveParts = [
             m.walk  && `Walk ${m.walk}`,
@@ -1254,14 +1288,14 @@ function renderGenMonsterList() {
         const card = `<div class="gen-mon-card" id="${cid}">
             <div class="gen-mon-head">
                 <div class="gen-mon-info">
-                    <span class="gen-mon-name">${m.name}</span>
+                    <span class="gen-mon-name" data-cid="${cid}">${m.name}</span>
                     <span class="gen-mon-group">${m._group || m.origin || ''}</span>
                 </div>
                 <div class="gen-mon-stats">
-                    <span>PL <strong>${m.pl ?? '—'}</strong></span>
-                    <span>HP <strong>${hp}</strong></span>
-                    <span>Ph <strong>${m.check_physical ?? 0}</strong></span>
-                    <span>Mt <strong>${m.check_mental ?? 0}</strong></span>
+                    <span>PL <strong id="${cid}-s-pl">${stats.pl ?? '—'}</strong></span>
+                    <span>HP <strong id="${cid}-s-hp">${stats.hp}</strong></span>
+                    <span>Ph <strong id="${cid}-s-ph">${stats.ph}</strong></span>
+                    <span>Mt <strong id="${cid}-s-mt">${stats.mt}</strong></span>
                 </div>
                 <div class="gen-mon-card-btns">
                     <button class="gen-mon-fav${nar.monFavorites.includes(m.name) ? ' is-fav' : ''}" data-fav="${m.name}" title="Favorite">★</button>
@@ -1270,6 +1304,13 @@ function renderGenMonsterList() {
                 </div>
             </div>
             <div class="gen-mon-expanded" id="${cid}-exp" hidden>
+                <div class="gen-mon-pl-adj">
+                    <span class="gen-mon-pl-label">PL</span>
+                    <button class="step-action-btn gen-pl-btn" data-pl-delta="-1" data-pl-mon="${m.name}" data-pl-cid="${cid}">−</button>
+                    <span class="gen-pl-val" id="${cid}-pl-val">${stats.pl}</span>
+                    <button class="step-action-btn gen-pl-btn" data-pl-delta="1" data-pl-mon="${m.name}" data-pl-cid="${cid}">+</button>
+                    <span class="gen-pl-derived">HP <strong id="${cid}-pl-hp">${stats.hp}</strong> · Ph <strong id="${cid}-pl-ph">${stats.ph}</strong> · Mt <strong id="${cid}-pl-mt">${stats.mt}</strong></span>
+                </div>
                 <div class="gen-mon-meta">${[m.size, m.origin, m.rarity, m.environment, m.behavior].filter(Boolean).join(' · ')}</div>
                 ${m.motivation ? `<div class="gen-mon-motivation">Motif: ${m.motivation}</div>` : ''}
                 ${moveParts.length ? `<div class="gen-mon-move">${moveParts.join(' / ')}</div>` : ''}
@@ -1278,7 +1319,7 @@ function renderGenMonsterList() {
                 ${featsHtml}
                 ${spellsHtml}
                 <div class="gen-mon-card-actions">
-                    <button class="done-btn gen-mon-init-btn" data-add-init="${m.name}" data-hp="${hp}">+ Init</button>
+                    <button class="done-btn gen-mon-init-btn" data-add-init="${m.name}" data-hp="${stats.hp}" id="${cid}-init-btn">+ Init</button>
                     <button class="gen-mon-action-btn" data-mon-minion="${m.name}">+ Minion</button>
                     <button class="gen-mon-action-btn" data-mon-chat="${m.name}">+ Chat</button>
                     <button class="gen-mon-action-btn gen-mon-action-btn--roll" data-mon-roll="${m.name}">◎ Roll20</button>
@@ -1308,6 +1349,43 @@ function renderGenMonsterList() {
             if (!exp) return;
             exp.hidden = !exp.hidden;
             btn.textContent = exp.hidden ? '▾' : '▴';
+        });
+    });
+
+    el.querySelectorAll('.gen-pl-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const monName = btn.dataset.plMon;
+            const cid     = btn.dataset.plCid;
+            const m       = getMonster(monName);
+            if (!m) return;
+            if (!nar.monPlOverrides) nar.monPlOverrides = {};
+            const cur  = nar.monPlOverrides[monName] ?? m.pl ?? 1;
+            const next = Math.max(1, cur + parseInt(btn.dataset.plDelta, 10));
+            nar.monPlOverrides[monName] = next;
+            saveNar();
+            const s   = effectiveStats(m);
+            const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+            set(`${cid}-s-pl`,  s.pl);
+            set(`${cid}-s-hp`,  s.hp);
+            set(`${cid}-s-ph`,  s.ph);
+            set(`${cid}-s-mt`,  s.mt);
+            set(`${cid}-pl-val`, s.pl);
+            set(`${cid}-pl-hp`,  s.hp);
+            set(`${cid}-pl-ph`,  s.ph);
+            set(`${cid}-pl-mt`,  s.mt);
+            const initBtn = document.getElementById(`${cid}-init-btn`);
+            if (initBtn) initBtn.dataset.hp = s.hp;
+        });
+    });
+
+    el.querySelectorAll('.gen-mon-name[data-cid]').forEach(nameEl => {
+        nameEl.addEventListener('click', () => {
+            const cid = nameEl.dataset.cid;
+            const exp = document.getElementById(cid + '-exp');
+            const togBtn = el.querySelector(`.gen-mon-toggle[data-cid="${cid}"]`);
+            if (!exp) return;
+            exp.hidden = !exp.hidden;
+            if (togBtn) togBtn.textContent = exp.hidden ? '▾' : '▴';
         });
     });
 
@@ -1571,9 +1649,11 @@ function saveNpcToJournal(n) {
     setActivePanel('party');
 }
 
-function appendToJournal(text) {
-    nar.sessions.push({ id: crypto.randomUUID(), title: 'Generator Note', date: '', notes: text.trim() });
+function appendToJournal(text, title = 'Generator Note') {
+    nar.sessions.unshift({ id: crypto.randomUUID(), title, date: '', notes: text.trim() });
     saveNar(); renderSessions();
+    setActivePanel('journal');
+    setTimeout(() => document.querySelector('#journal-session-list .jsess-card')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
 }
 
 function renderGenNpcList() {
@@ -1660,6 +1740,7 @@ function renderGenLocList() {
                     <span class="gen-npc-species">${l.area}</span>
                 </div>
                 <div class="gen-npc-btns">
+                    <button class="gen-npc-journal" data-loc-journal="${l.id}">＋J</button>
                     <button class="gen-mon-remove" data-loc-remove="${l.id}">✕</button>
                 </div>
             </summary>
@@ -1675,6 +1756,13 @@ function renderGenLocList() {
     el.querySelectorAll('.gen-npc-head button').forEach(btn =>
         btn.addEventListener('click', e => e.stopPropagation())
     );
+    el.querySelectorAll('[data-loc-journal]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const l = nar.genLocations.find(x => x.id === btn.dataset.locJournal);
+            if (l) appendToJournal(locationToJournalText(l), 'Location');
+        });
+    });
     el.querySelectorAll('[data-loc-id][contenteditable]').forEach(span => {
         span.addEventListener('click', e => e.stopPropagation());
         span.addEventListener('blur', () => {
@@ -1701,6 +1789,284 @@ document.getElementById('npc-gen-seg')?.querySelectorAll('[data-npc-tab]').forEa
         document.getElementById('gen-npc-panel').hidden = (npcActiveTab !== 'npc');
         document.getElementById('gen-loc-panel').hidden = (npcActiveTab !== 'location');
     });
+});
+
+// ── GENERATORS: LOOT ─────────────────────────────────────────────────────────
+
+let LOOT_DATA   = null;
+let lootLoaded  = false;
+let lootPl      = 5;
+
+async function ensureLoot() {
+    if (lootLoaded) return;
+    try {
+        const [lootCfg, items, weapons, armor, enchanted, medicine, enchGenRaw] = await Promise.all([
+            fetch('../data/loot.json').then(r => r.json()),
+            fetch('../data/items.json').then(r => r.json()),
+            fetch('../data/weapons.json').then(r => r.json()),
+            fetch('../data/armor.json').then(r => r.json()),
+            fetch('../data/enchanted.json').then(r => r.json()),
+            fetch('../data/medicine.json').then(r => r.json()),
+            fetch('../data/enchantedgen.json').then(r => r.json()),
+        ]);
+        LOOT_DATA = {
+            config: lootCfg, items, weapons, armor, enchanted,
+            medData: {
+                prefixes:  medicine.filter(x => x.category === 'prefix').map(x => x.value),
+                bases:     medicine.filter(x => x.category === 'base').map(x => x.value),
+                suffixes:  medicine.filter(x => x.category === 'suffix').map(x => x.value),
+                effects:   medicine.filter(x => x.category === 'effects').map(x => x.value),
+            },
+            enchGen: {
+                prefixes:    enchGenRaw.filter(x => x.type === 'prefix').map(x => x.text),
+                effects:     enchGenRaw.filter(x => x.type === 'effect').map(x => x.text),
+                damageTypes: enchGenRaw.filter(x => x.type === 'damageType').map(x => x.text),
+                checks:      enchGenRaw.filter(x => x.type === 'check').map(x => x.text),
+                itemTypes:   enchGenRaw.filter(x => x.type === 'itemType').map(x => x.text),
+            },
+        };
+        lootLoaded = true;
+        renderGenLootList();
+    } catch(e) { console.error('Failed to load loot data', e); }
+}
+
+function rollLoot(pl) {
+    const { config, items, weapons, armor, enchanted, medData, enchGen } = LOOT_DATA;
+    const tier  = config.tiers.find(t => pl >= t.min && pl <= t.max) || config.tiers[config.tiers.length - 1];
+    const gold  = Math.floor((tier.goldMin + Math.random() * (tier.goldMax - tier.goldMin)) * pl);
+    const count = tier.rolls + (Math.random() < tier.bonus ? 1 : 0);
+    const rarities = tier.rarities || null;
+    const wP = arr => arr[Math.floor(Math.random() * arr.length)];
+    const byR = arr => {
+        if (!rarities) return arr;
+        const f = arr.filter(x => rarities.includes((x.rarity || 'common').toLowerCase()));
+        return f.length ? f : arr;
+    };
+    const picks = [];
+    for (let i = 0; i < count; i++) {
+        const cat = tier.pools[Math.floor(Math.random() * tier.pools.length)];
+        let res = null;
+        if (cat === 'item') {
+            const it = wP(items);
+            if (it) res = { cat, name: it.name, desc: it.description || '', meta: it.category || '' };
+        } else if (cat === 'medicine') {
+            const name   = `${wP(medData.prefixes)} ${wP(medData.bases)} ${wP(medData.suffixes)}`;
+            res = { cat, name, desc: wP(medData.effects), meta: 'Medicine' };
+        } else if (cat === 'weapon') {
+            const w = wP(byR(weapons));
+            if (w) res = { cat, name: w.name, desc: [w.damage, w.damageType].filter(Boolean).join(' '), meta: [w.category, w.rarity].filter(Boolean).join(' · ') };
+        } else if (cat === 'armor') {
+            const a = wP(byR(armor));
+            if (a) res = { cat, name: a.name, desc: a.description || `+${a.armor} Armor Rating`, meta: a.rarity || '' };
+        } else if (cat === 'enchanted') {
+            if (Math.random() < 0.5 && enchanted.length) {
+                const e = wP(enchanted);
+                res = { cat, name: e.name, desc: e.effect || e.description || '', meta: e.type || 'Enchanted' };
+            } else {
+                const effect = wP(enchGen.effects)
+                    .replace('{type}', wP(enchGen.damageTypes))
+                    .replace('{check}', wP(enchGen.checks));
+                res = { cat, name: `${wP(enchGen.prefixes)} ${wP(enchGen.itemTypes)}`, desc: effect, meta: 'Enchanted' };
+            }
+        }
+        if (res) picks.push(res);
+    }
+    return { id: crypto.randomUUID(), pl, tier: tier.label, gold, items: picks };
+}
+
+function renderGenLootList() {
+    const el = document.getElementById('gen-loot-list');
+    if (!el) return;
+    if (!nar.genLoot?.length) { el.innerHTML = '<p class="empty-hint">Set PL and tap Roll.</p>'; return; }
+
+    const CAT_COLOR = { item:'#8899aa', medicine:'#44bb88', weapon:'#cc5544', armor:'#aa7744', enchanted:'#aa77cc' };
+    const CAT_LABEL = { item:'Item', medicine:'Medicine', weapon:'Weapon', armor:'Armor', enchanted:'Enchanted' };
+
+    el.innerHTML = nar.genLoot.map((r, i) => `
+        <div class="gen-quest-card">
+            <div class="gen-npc-row" style="margin-bottom:4px">
+                <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">PL ${r.pl} · ${r.tier}</span>
+                <button class="gen-mon-remove" data-loot-remove="${r.id}" style="margin-left:auto">✕</button>
+            </div>
+            <div class="gen-npc-row" style="margin-bottom:6px">
+                <span class="gen-npc-label">Gold</span>
+                <span style="font-weight:800;color:var(--accent)">⬡ ${r.gold} GP</span>
+            </div>
+            <div class="gen-quest-rows">
+                ${r.items.map(it => `
+                <div class="gen-npc-row" style="align-items:flex-start;gap:6px">
+                    <span class="gen-npc-label" style="color:${CAT_COLOR[it.cat]||'#888'};flex-shrink:0">${CAT_LABEL[it.cat]||it.cat}</span>
+                    <span style="display:flex;flex-direction:column;gap:1px">
+                        <span style="font-weight:700">${it.name}</span>
+                        ${it.desc ? `<span style="font-size:10px;color:var(--muted)">${it.desc}</span>` : ''}
+                        ${it.meta ? `<span style="font-size:10px;color:var(--muted);opacity:.6">${it.meta}</span>` : ''}
+                    </span>
+                </div>`).join('')}
+            </div>
+            <div class="gen-quest-actions">
+                <button class="gen-npc-journal" data-loot-inv="${r.id}">＋Inv</button>
+            </div>
+        </div>`).join('');
+
+    el.querySelectorAll('[data-loot-inv]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const r = nar.genLoot.find(x => x.id === btn.dataset.lootInv);
+            if (!r) return;
+            if (currentRoomCode) {
+                const arc = window.__arc;
+                if (arc?.db) {
+                    try {
+                        for (const it of r.items) {
+                            await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', crypto.randomUUID()), {
+                                name: it.text.split(' — ')[0], desc: it.text, amount: 1, bulk: 1, addedAt: arc.serverTimestamp(),
+                            });
+                        }
+                    } catch(e) { console.error('[ARC] loot inv failed:', e); }
+                }
+            } else {
+                r.items.forEach(it => {
+                    nar.inventory.push({ id: crypto.randomUUID(), name: it.text.split(' — ')[0], desc: it.text, amount: 1, bulk: 1 });
+                });
+                saveNar(); renderInventory();
+            }
+            setActivePanel('party');
+            setTimeout(() => document.getElementById('inventory-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+        });
+    });
+
+    el.querySelectorAll('[data-loot-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            nar.genLoot = nar.genLoot.filter(x => x.id !== btn.dataset.lootRemove);
+            saveNar(); renderGenLootList();
+        });
+    });
+}
+
+// PL stepper
+document.getElementById('loot-pl-dec')?.addEventListener('click', () => {
+    lootPl = Math.max(1, lootPl - 1);
+    const el = document.getElementById('loot-pl-val');
+    if (el) el.textContent = lootPl;
+});
+document.getElementById('loot-pl-inc')?.addEventListener('click', () => {
+    lootPl++;
+    const el = document.getElementById('loot-pl-val');
+    if (el) el.textContent = lootPl;
+});
+
+document.getElementById('btn-gen-loot')?.addEventListener('click', () => {
+    if (!lootLoaded) { ensureLoot(); return; }
+    if (!nar.genLoot) nar.genLoot = [];
+    nar.genLoot.unshift(rollLoot(lootPl));
+    if (nar.genLoot.length > 10) nar.genLoot.length = 10;
+    saveNar(); renderGenLootList();
+});
+
+// ── GENERATORS: GOD ──────────────────────────────────────────────────────────
+
+let GEN_GODS     = [];
+let godsLoaded   = false;
+
+async function ensureGods() {
+    if (godsLoaded) return;
+    try {
+        const res = await fetch('../data/gods.json');
+        GEN_GODS = await res.json();
+        godsLoaded = true;
+        renderGenGodList();
+    } catch(e) { console.error('Failed to load gods.json', e); }
+}
+
+function renderGenGodList() {
+    const el = document.getElementById('gen-god-list');
+    if (!el) return;
+    if (!nar.genGods.length) {
+        el.innerHTML = '<p class="empty-hint">Tap Random to roll a god.</p>';
+        return;
+    }
+
+    el.innerHTML = nar.genGods.map((g, i) => {
+        const cid     = `ggc-${i}`;
+        const words   = (g.words || '').split(',').map(w => w.trim()).filter(Boolean);
+        const excerpt = g.desc ? (g.desc.length > 160 ? g.desc.slice(0, 157) + '…' : g.desc) : '';
+        return `<div class="gen-mon-card" id="${cid}">
+            <div class="gen-mon-head">
+                <div class="gen-mon-info">
+                    <span class="gen-mon-name" data-cid="${cid}">${g.name}</span>
+                    <span class="gen-mon-group">${words.slice(0, 3).join(' · ')}</span>
+                </div>
+                <div class="gen-mon-stats">
+                    <span>Rank <strong>${g.rank ?? '—'}</strong></span>
+                </div>
+                <div class="gen-mon-card-btns">
+                    <button class="gen-mon-toggle" data-cid="${cid}">▾</button>
+                    <button class="gen-mon-remove" data-god-remove="${i}">✕</button>
+                </div>
+            </div>
+            <div class="gen-mon-expanded" id="${cid}-exp" hidden>
+                ${g.location ? `<div class="gen-mon-meta">${g.location}</div>` : ''}
+                ${excerpt    ? `<div class="gen-mon-desc">${excerpt}</div>` : ''}
+                ${g.blessFeature ? `<div class="gen-mon-motivation">Blessing: ${g.blessFeature}</div>` : ''}
+                <div class="gen-mon-card-actions">
+                    <button class="gen-mon-action-btn" data-god-chat="${i}">+ Chat</button>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+
+    el.querySelectorAll('.gen-mon-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const exp = document.getElementById(btn.dataset.cid + '-exp');
+            if (!exp) return;
+            exp.hidden = !exp.hidden;
+            btn.textContent = exp.hidden ? '▾' : '▴';
+        });
+    });
+
+    el.querySelectorAll('.gen-mon-name[data-cid]').forEach(nameEl => {
+        nameEl.addEventListener('click', () => {
+            const exp    = document.getElementById(nameEl.dataset.cid + '-exp');
+            const togBtn = el.querySelector(`.gen-mon-toggle[data-cid="${nameEl.dataset.cid}"]`);
+            if (!exp) return;
+            exp.hidden = !exp.hidden;
+            if (togBtn) togBtn.textContent = exp.hidden ? '▾' : '▴';
+        });
+    });
+
+    el.querySelectorAll('[data-god-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            nar.genGods.splice(parseInt(btn.dataset.godRemove, 10), 1);
+            saveNar(); renderGenGodList();
+        });
+    });
+
+    el.querySelectorAll('[data-god-chat]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const g = nar.genGods[parseInt(btn.dataset.godChat, 10)];
+            if (!g) return;
+            const words = (g.words || '').split(',').map(w => w.trim()).filter(Boolean);
+            postToSharedChat({
+                type: 'feature', name: g.name,
+                tags: [`Rank ${g.rank ?? '—'}`, ...(g.location ? [g.location] : []), ...words.slice(0, 3)],
+                desc: g.desc || '',
+                time: chatTimestamp(), diceRolls: [],
+            });
+            setActivePanel('chat');
+        });
+    });
+}
+
+document.getElementById('btn-gen-god')?.addEventListener('click', () => {
+    if (!godsLoaded) { ensureGods(); return; }
+    if (!GEN_GODS.length) return;
+    const g = GEN_GODS[Math.floor(Math.random() * GEN_GODS.length)];
+    nar.genGods.unshift({ name: g.name, words: g.words || '', desc: g.desc || '', rank: g.rank ?? null, blessName: g.blessName || '', blessFeature: g.blessFeature || '', location: g.location || '' });
+    if (nar.genGods.length > 5) nar.genGods.length = 5;
+    saveNar(); renderGenGodList();
+    // Auto-expand the new card
+    const exp    = document.getElementById('ggc-0-exp');
+    const togBtn = document.querySelector('.gen-mon-toggle[data-cid="ggc-0"]');
+    if (exp) { exp.hidden = false; if (togBtn) togBtn.textContent = '▴'; }
 });
 
 document.getElementById('btn-gen-npc')?.addEventListener('click', () => {
@@ -1778,12 +2144,21 @@ function questToJournalText(q) {
     return `\n--- Quest ---\nGiver: ${q.giver}\nTarget: ${q.target}\nTwist: ${q.twist}\nReward: ${q.reward}\n`;
 }
 
+function dungeonToJournalText(d) {
+    const trap = d.trap ? `\nTrap: ${d.trap.name} (${d.trap.dmg})\nEffect: ${d.trap.effect}` : '';
+    return `\n--- Door & Trap ---\nDoor: ${d.door}\nLock: ${d.lockName} — ${d.lockKey}\nHint: ${d.lockHint}${trap}\n`;
+}
+
+function hexToJournalText(h) {
+    return `\n--- Hex Tile ---\nEnvironment: ${h.env}\nLord: ${h.lord}\nPopulation: ${h.population} · ${h.temperament}\nEnemy: ${h.enemy} (PL ${h.pl})\nFeatures: ${h.features.join(', ') || 'None'}\nResources: ${h.resources.join(', ') || 'None'}\nSpecies: ${h.species.join(', ') || 'None'}\n`;
+}
+
 function makeGenCard(rows, onRemove, onJournal) {
     const id = crypto.randomUUID();
     return { id, rows, onRemove, onJournal };
 }
 
-function renderQuestCards(listId, items, rowsFn, journalFn) {
+function renderQuestCards(listId, items, rowsFn, journalFn, journalTitle = 'Generator Note') {
     const el = document.getElementById(listId);
     if (!el) return;
     if (!items.length) {
@@ -1811,7 +2186,7 @@ function renderQuestCards(listId, items, rowsFn, journalFn) {
         el.querySelectorAll('[data-journal]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const item = items.find(x => x.id === btn.dataset.itemId);
-                if (item) appendToJournal(journalFn(item));
+                if (item) appendToJournal(journalFn(item), journalTitle);
             });
         });
     }
@@ -1828,7 +2203,7 @@ function renderQuestCards(listId, items, rowsFn, journalFn) {
 function renderGenQuestList() {
     renderQuestCards('gen-quest-list', nar.genQuests,
         q => [['Giver', q.giver], ['Target', q.target], ['Twist', q.twist], ['Reward', q.reward]],
-        questToJournalText);
+        questToJournalText, 'Quest');
 }
 
 function renderGenDungeonList() {
@@ -1839,13 +2214,14 @@ function renderGenDungeonList() {
             ['Hint', d.lockHint],
             ...(d.trap ? [['Trap', `${d.trap.name} (${d.trap.dmg})`], ['Effect', d.trap.effect]] : []),
         ],
-        null);
+        dungeonToJournalText, 'Door & Trap');
 }
 
 function renderGenRoomsList() {
     renderQuestCards('gen-rooms-list', nar.genRooms,
         r => [['Room', r.location], ['Object', r.object], ['Person', r.person], ['Hook', r.conflict]],
-        r => `\n--- Room ---\n${r.location}\nObject: ${r.object}\nPerson: ${r.person}\nHook: ${r.conflict}\n`);
+        r => `\n--- Room ---\n${r.location}\nObject: ${r.object}\nPerson: ${r.person}\nHook: ${r.conflict}\n`,
+        'Room');
 }
 
 // Quest sub-tab switching
@@ -1958,9 +2334,36 @@ function renderCommerceList(listId, items, rowsFn, removeKey) {
                 </div>`).join('')}
             </div>
             <div class="gen-quest-actions">
+                <button class="gen-npc-journal" data-com-inv="${item.id}" data-com-list="${removeKey}">＋Inv</button>
                 <button class="gen-mon-remove" data-com-remove="${item.id}" data-com-list="${removeKey}">✕</button>
             </div>
         </div>`).join('');
+    el.querySelectorAll('[data-com-inv]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const id   = btn.dataset.comInv;
+            const list = btn.dataset.comList;
+            const src  = list === 'mundane' ? nar.genMundane : list === 'enchanted' ? nar.genEnchanted : nar.genMedicine;
+            const item = src.find(x => x.id === id);
+            if (!item) return;
+            const desc    = item.description || item.effect || item.desc || '';
+            const invItem = { id: crypto.randomUUID(), name: item.name, desc, amount: 1, bulk: item.bulk ?? 1 };
+            if (currentRoomCode) {
+                const arc = window.__arc;
+                if (arc?.db) {
+                    try {
+                        await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', invItem.id), {
+                            name: invItem.name, desc: invItem.desc, amount: invItem.amount, bulk: invItem.bulk, addedAt: arc.serverTimestamp(),
+                        });
+                    } catch(e) { console.error('[ARC] addLoot failed:', e); }
+                }
+            } else {
+                nar.inventory.push(invItem);
+                saveNar(); renderInventory();
+            }
+            setActivePanel('party');
+            setTimeout(() => document.getElementById('inventory-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+        });
+    });
     el.querySelectorAll('[data-com-remove]').forEach(btn => {
         btn.addEventListener('click', () => {
             const id = btn.dataset.comRemove;
@@ -2129,11 +2532,18 @@ function renderGenHexList() {
                 </div>`).join('')}
             </div>
             <div class="gen-quest-actions">
+                <button class="gen-npc-journal" data-hex-journal="${h.id}">＋J</button>
                 <button class="gen-mon-remove" data-hex-remove="${h.id}">✕</button>
             </div>
         </div>`;
     }).join('');
 
+    el.querySelectorAll('[data-hex-journal]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const h = nar.genHexes.find(x => x.id === btn.dataset.hexJournal);
+            if (h) appendToJournal(hexToJournalText(h), 'Hex Tile');
+        });
+    });
     el.querySelectorAll('[data-hex-remove]').forEach(btn => {
         btn.addEventListener('click', () => {
             nar.genHexes = nar.genHexes.filter(x => x.id !== btn.dataset.hexRemove);
@@ -2160,6 +2570,7 @@ document.getElementById('btn-gen-hex')?.addEventListener('click', () => {
 
 // ── FIREBASE: SHARED CHAT ─────────────────────────────────────────────────────
 
+
 function listenToSharedChat(code) {
     if (chatUnsubscribe) chatUnsubscribe();
     const arc = window.__arc;
@@ -2173,6 +2584,17 @@ function listenToSharedChat(code) {
         renderNarChat();
     }, err => console.error('[ARC] chat listener:', err));
 }
+
+// Broadcast emoji reactions — stored on the room doc (no new security rule needed)
+document.addEventListener('emoji-react', async ({ detail }) => {
+    const arc = window.__arc;
+    if (!arc?.db || !arc?.uid || !currentRoomCode) return;
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), {
+            lastReaction: { chatMsgId: detail.chatMsgId, anim: detail.anim, by: arc.uid, at: arc.serverTimestamp() },
+        });
+    } catch(e) { console.error('[ARC] emoji-react write failed:', e); }
+});
 
 async function postToSharedChat(entry) {
     const arc = window.__arc;
@@ -2268,7 +2690,10 @@ function buildSharedChatCard(m) {
     } else if (m.type === 'turn') {
         cardHtml = renderTurnEntry(m);
     } else {
-        cardHtml = `<div class="chat-entry--msg"><span class="chat-time">${m.time || ''}</span><span class="chat-text">${m.text || ''}</span></div>`;
+        const emojiOnly = isEmojiOnly(m.text);
+        cardHtml = emojiOnly
+            ? `<div class="chat-entry--msg"><span class="chat-time">${m.time || ''}</span><div class="chat-emoji-block"><span class="chat-text chat-emoji-big">${m.text || ''}</span>${EMOJI_REACTIONS_HTML}</div></div>`
+            : `<div class="chat-entry--msg"><span class="chat-time">${m.time || ''}</span><span class="chat-text">${m.text || ''}</span></div>`;
     }
 
     const deleteBtn = m.id
@@ -2504,11 +2929,11 @@ let fbPlayers        = [];
 let fbLoot           = [];
 let fbGold           = 0;
 let fbSharedChat     = [];
-let currentRoomCode  = localStorage.getItem('arc-narrator-room') || null;
-let partyUnsubscribe = null;
-let lootUnsubscribe  = null;
-let roomUnsubscribe  = null;
-let chatUnsubscribe  = null;
+let currentRoomCode   = localStorage.getItem('arc-narrator-room') || null;
+let partyUnsubscribe  = null;
+let lootUnsubscribe   = null;
+let roomUnsubscribe   = null;
+let chatUnsubscribe   = null;
 
 document.addEventListener('arc:firebase-ready', () => {
     if (currentRoomCode) restoreRoom(currentRoomCode);
@@ -2537,6 +2962,7 @@ async function createRoom() {
         listenToLoot(code);
         listenToRoomDoc(code);
         listenToSharedChat(code);
+
     } catch(e) { console.error('[ARC] createRoom failed:', e); alert('Failed to create room.'); }
 }
 
@@ -2551,6 +2977,7 @@ async function restoreRoom(code) {
             listenToLoot(code);
             listenToRoomDoc(code);
             listenToSharedChat(code);
+    
         } else {
             localStorage.removeItem('arc-narrator-room');
             currentRoomCode = null;
@@ -2584,9 +3011,16 @@ function listenToRoomDoc(code) {
     roomUnsubscribe = arc.onSnapshot(
         arc.doc(arc.db, 'rooms', code),
         snap => {
-            fbGold = snap.data()?.gold ?? 0;
+            const data = snap.data() || {};
+            fbGold = data.gold ?? 0;
             const valEl = document.getElementById('party-gold-val');
             if (valEl) valEl.textContent = fbGold;
+
+            const r = data.lastReaction;
+            if (r?.at && r?.chatMsgId && r?.anim && r.by !== arc.uid) {
+                const ageMs = Date.now() - r.at.toMillis();
+                if (ageMs <= 4000) triggerEmojiReaction(r.chatMsgId, r.anim);
+            }
         },
         err => console.error('[ARC] room doc listener error:', err)
     );

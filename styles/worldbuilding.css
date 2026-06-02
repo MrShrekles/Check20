@@ -200,6 +200,17 @@
 .gen-card--trap .gc-val        { color: var(--white); }
 .gen-card--trap .gc-divider    { background: #350a0a; }
 
+.gen-card--loot                { background: #0d160d; border-top: 3px solid #5c9e5c; }
+.gen-card--loot .gc-badge      { background: #162616; color: #7dbf7d; }
+.gen-card--loot .gc-title      { color: #7dbf7d; font-size: 1.1rem; }
+.gen-card--loot .gc-divider    { background: #1e351e; }
+.gen-card--loot .gc-key        { color: #5c9e5c; }
+.gen-card--loot .gc-val        { color: var(--white); }
+.gc-key--enchanted             { color: #cc99ff !important; }
+.gc-key--legendary             { color: #f0c060 !important; }
+.gc-key--consumable            { color: #7dbfdf !important; }
+.gc-key--material              { color: #c0a06a !important; }
+
 /* Rarity tags shared by enchanted cards */
 .gc-tag--element  { background: var(--theme-1); color: var(--green-3); }
 .gc-tag--common   { background: var(--dark-3);  color: #888; }

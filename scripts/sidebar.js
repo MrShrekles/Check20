@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(html => {
       target.innerHTML = html;
       initSidebar();
+      loadSidebarConditions();
     })
     .catch(err => console.error("Failed to load sidebar:", err));
 });
@@ -283,7 +284,7 @@ const SB_SOURCES = [
   { file:"data/armor.json",       label:"Armor",     page:"armor.html",        extract: d => d.map(x=>({ name:x.name, sub:x.category||"",      desc:x.description||"" })) },
   { file:"data/monsterbook.json", label:"Monster",   page:"monster.html",      extract: d => d.map(x=>({ name:x.name, sub:x._group||"",        desc:x.description||x.lore||"" })) },
   { file:"data/gods.json",        label:"Deity",     page:"gods.html",         extract: d => d.map(x=>({ name:x.name, sub:x.words||"",         desc:x.desc||"" })) },
-  { file:"data/species.json", label:"Species",   page:"species_new.html",  extract: d => (d.species||[]).map(x=>({ name:x.name, sub:x.lineage||"", desc:x.description?.physical||x.description||"" })) },
+  { file:"data/species.json", label:"Species",   page:"species.html",      extract: d => (d.species||[]).map(x=>({ name:x.name, sub:x.lineage||"", desc:x.description?.physical||x.description||"" })) },
   { file:"data/class-new.json",   label:"Class",     page:"class.html",        extract: d => { const a=[];for(const g of Object.values(d.classes||{}))for(const c of(Array.isArray(g)?g:[]))a.push({name:c.name,sub:c.class||"",desc:c.desc||""});return a; } },
   { file:"data/enchanted.json",   label:"Enchanted", page:"enchanted.html",    extract: d => d.map(x=>({ name:x.name, sub:x.type||"",          desc:(x.description||"")+" "+(x.effect||"") })) },
 ];
@@ -333,7 +334,7 @@ function renderSbResults(hits, container, term) {
       const excerpt = e.desc.length > 90 ? e.desc.slice(0,90).trim()+"…" : e.desc;
       const card = document.createElement("a");
       card.className = "sb-sr-card";
-      card.href = e.page;
+      card.href = `${e.page}?open=${encodeURIComponent(e.name)}`;
       card.innerHTML = `
         <div class="sb-sr-top">
           <strong class="sb-sr-name">${sbHL(e.name, term)}</strong>
@@ -628,6 +629,24 @@ function initSidebarSearch() {
     input.addEventListener("input", renderSpells);
   } else {
     input.addEventListener("input", () => highlightPageText(input.value.trim()));
+  }
+}
+
+async function loadSidebarConditions() {
+  const tbody = document.getElementById("sidebar-conditions-tbody");
+  if (!tbody) return;
+  try {
+    const resp = await fetch("/data/conditions.json");
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const conditions = await resp.json();
+    const categories = [...new Set(conditions.map(c => c.category))];
+    tbody.innerHTML = categories.map(cat => {
+      const rows = conditions.filter(c => c.category === cat);
+      return `<tr><td colspan="3" class="category-row">${cat} Conditions</td></tr>` +
+        rows.map(c => `<tr><td>${c.name}</td><td>${c.effect}</td><td>${c.duration}</td></tr>`).join('');
+    }).join('');
+  } catch (e) {
+    console.error('Failed to load conditions for sidebar', e);
   }
 }
 

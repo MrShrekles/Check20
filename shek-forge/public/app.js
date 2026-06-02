@@ -25,7 +25,7 @@ const TYPE_CONFIG = {
     weapon:  { icon: '⚔', label: 'Weapons',  bodyClass: 'type-weapon',  badgeClass: 'badge-weapon',  dotClass: 'dot-weapon'  },
     armor:   { icon: '🛡', label: 'Armor',    bodyClass: 'type-armor',   badgeClass: 'badge-armor',   dotClass: 'dot-armor'   },
     hexgen:  { icon: '⬡', label: 'Tables',   bodyClass: 'type-hexgen',  badgeClass: 'badge-hexgen',  dotClass: 'dot-hexgen'  },
-    class:   { icon: '⚑', label: 'Paths',    bodyClass: 'type-class',   badgeClass: 'badge-class',   dotClass: 'dot-class'   },
+    class:   { icon: '⚑', label: 'Options',   bodyClass: 'type-class',   badgeClass: 'badge-class',   dotClass: 'dot-class'   },
     spell:      { icon: '✦', label: 'Spells',    bodyClass: 'type-spell',      badgeClass: 'badge-spell',      dotClass: 'dot-spell'      },
     species:    { icon: '❧', label: 'Species',   bodyClass: 'type-species',    badgeClass: 'badge-species',    dotClass: 'dot-species'    },
     enchanted:    { icon: '✧', label: 'Enchanted',    bodyClass: 'type-enchanted',    badgeClass: 'badge-enchanted',    dotClass: 'dot-enchanted'    },
@@ -33,6 +33,7 @@ const TYPE_CONFIG = {
     quest:        { icon: '⚔', label: 'Quests',       bodyClass: 'type-quest',        badgeClass: 'badge-quest',        dotClass: 'dot-quest'        },
     traps:        { icon: '⚠', label: 'Traps',        bodyClass: 'type-traps',        badgeClass: 'badge-traps',        dotClass: 'dot-traps'        },
     worldbuilding:{ icon: '🌐', label: 'Worldbuilding',bodyClass: 'type-worldbuilding',badgeClass: 'badge-worldbuilding',dotClass: 'dot-worldbuilding'},
+    loot:         { icon: '⬡', label: 'Loot',         bodyClass: 'type-loot',         badgeClass: 'badge-loot',         dotClass: 'dot-loot'         },
     generic: { icon: '◈', label: 'Entries',  bodyClass: '',             badgeClass: 'badge-generic', dotClass: 'dot-generic' },
 };
 function tc() { return TYPE_CONFIG[state.fileType] || TYPE_CONFIG.generic; }
@@ -62,6 +63,11 @@ async function loadFileList() {
         if (json.error) { showToast(json.error, 'error'); return; }
         state.files = json.files;
         state.folderPath = json.folder;
+        // Keep currentFileModified in sync so autoUpdateTick doesn't mistake a save for an external edit
+        if (state.currentFile) {
+            const info = state.files.find(f => f.name === state.currentFile);
+            if (info) state.currentFileModified = info.modified;
+        }
         renderFileList();
         updateTitle();
     } catch (e) { showToast('Cannot connect to server', 'error'); }
@@ -435,7 +441,7 @@ function updateTitle() {
 }
 function updateToolbar() {
     const has = !!state.currentFile;
-    ['btnReload','btnBackups','btnNew','btnSave','btnExport'].forEach(id => { const el = document.getElementById(id); if (el) el.disabled = !has; });
+    ['btnReload','btnBackups','btnNew'].forEach(id => { const el = document.getElementById(id); if (el) el.disabled = !has; });
     document.getElementById('toolbarTitle').textContent = has ? state.currentFile.replace('.json','') : '—';
     document.getElementById('toolbarCount').textContent = has ? `${state.data.length} ${tc().label.toLowerCase()}` : '';
 }

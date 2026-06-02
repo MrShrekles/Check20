@@ -18240,8 +18240,8 @@
               "range": "",
               "description": "When a creature dies within short range, you may use an off-action to release a [[1d4]] toxic damage bloom from the corpse that heals allies for half the damage dealt",
               "duration": "",
-              "damage": "1d4",
-              "damageType": "Toxic",
+              "damage": "",
+              "damageType": "",
               "armor": "",
               "condition": "Confused"
             },
@@ -18392,11 +18392,11 @@
               "step": 4,
               "name": "Dragonbound: Breath",
               "action": "Upgrade",
-              "check": "Agility",
+              "check": "",
               "range": "",
               "description": "Once per day, exhale a breath weapon in a short range cone dealing [[2d6]] damage of your chosen type. Creatures in the area may make an Agility check to halve the damage.",
               "duration": "",
-              "damage": "2d6",
+              "damage": "",
               "damageType": "",
               "armor": "",
               "condition": ""
@@ -18418,14 +18418,14 @@
               "step": 6,
               "name": "Dragonbound: Vent",
               "action": "Upgrade",
-              "check": "Survival",
+              "check": "",
               "range": "Short",
               "description": "Once per day when you are Injured, the spirit vents pressure. All creatures within short range must pass a Survival check or take [[1d4]] damage of your chosen type and gain the Slowed condition.",
               "duration": "",
               "damage": "1d4",
               "damageType": "Elemental",
               "armor": "",
-              "condition": "Slowed, Injured"
+              "condition": ""
             },
             {
               "step": 7,
@@ -18451,7 +18451,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": ""
             },
             {
               "step": 9,
@@ -18473,7 +18473,7 @@
               "check": "",
               "range": "",
               "description": "Once per long rest, surrender control briefly to the dragon spirit. For 1 minute it acts through you: you gain flight speed equal to your movement, your attacks deal an additional [[1d6]] damage of your chosen type, and you are immune to all conditions. When the minute ends, gain the Exhausted condition.",
-              "duration": "1 minute",
+              "duration": "",
               "damage": "1d6",
               "damageType": "",
               "armor": "",
@@ -18552,8 +18552,8 @@
               "range": "",
               "description": "This can be applied as Ritual Ink during a long rest. As an Off-action when hit with a melee attack, deal [[1d6]] fire damage",
               "duration": "",
-              "damage": "1d6",
-              "damageType": "Fire",
+              "damage": "",
+              "damageType": "",
               "armor": "",
               "condition": ""
             },
@@ -18561,7 +18561,7 @@
               "step": 5,
               "name": "Ritual Ink: Eye of Pain",
               "action": "Action",
-              "check": "Spirit",
+              "check": "",
               "range": "",
               "description": "This tattoo can be applied using Ritual Ink during a Long Rest. As an action, the bearer targets a creature they can see. The target takes [[1d6]] Psychic damage and must pass a Spirit check or become Slowed until the end of their next turn",
               "duration": "",
@@ -18587,7 +18587,7 @@
               "step": 7,
               "name": "Ritual Ink: Howling Sigil",
               "action": "Special",
-              "check": "Mental",
+              "check": "",
               "range": "Reach",
               "description": "This tattoo can be applied using Ritual Ink during a Long Rest. The bearer may let loose a magical howl as an action. Enemies in short range must pass a Mental check or take -1 to all checks until the end of their next turn. Usable once per day",
               "duration": "",

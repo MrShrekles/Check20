@@ -12528,8 +12528,8 @@
               "range": "Medium",
               "description": "As an Action, summon the Wyrm of Substructure, a titanic manifestation of living pipeline, sewage coils, and steel bones. It bursts from the ground reshaping the battlefield. It deals [[2d6]] impact damage to all creatures you choose in a medium range. It then coils around a zone, forming impenetrable cover and granting Full Cover to allies inside. After 1 minute, the wyrm disassembles cleanly, returning the infrastructure to full function without lasting damage.",
               "duration": "",
-              "damage": "2d6",
-              "damageType": "Impact",
+              "damage": "",
+              "damageType": "",
               "armor": "",
               "condition": ""
             },
@@ -12575,7 +12575,7 @@
             {
               "step": 1,
               "name": "Fabrication Union Access",
-              "action": "Resource",
+              "action": "",
               "check": "",
               "range": "",
               "description": "Gain access to a Fabrication Union. You immediately select one Merchant Feature from that Union. You may now visit the Union to request Information and access its unique goods or services.",
@@ -12589,7 +12589,7 @@
               "step": 2,
               "name": "Engineer",
               "action": "Action",
-              "check": "Crafting",
+              "check": "",
               "range": "",
               "description": "Make a Crafting check to produce a small blessed tool suited to the current situation, a warding spike, a consecrated lock, a balance weight that disrupts magic. These items can deal 2 damage, remove a Corpus condition, or cause a minor effect as determined by the Narrator.",
               "duration": "",
@@ -12614,7 +12614,7 @@
             {
               "step": 4,
               "name": "Fast Fabrication II",
-              "action": "Upgrade",
+              "action": "",
               "check": "",
               "range": "",
               "description": "You may now apply both effects simultaneously to the same target. The repair and the weapon bonus activate together as a single action.",
@@ -12628,12 +12628,12 @@
               "step": 5,
               "name": "Exembar's Envoy",
               "action": "Action",
-              "check": "crafting",
+              "check": "",
               "range": "",
-              "description": "Spend 1 Merchant Token to call forth a spirit of Exembar that remains until its not needed. It has PL equal to your Crafting check, can make a [[1d6]] solar attack, or may repair [[1d4]] armor on an ally within reach as an action.",
+              "description": "Spend 1 Merchant Token to call forth a spirit of Exembar that reamins until its not needed. It has PL equal to your Crafting check, can make a [[1d6]] solar attack, or may repair [[1d4]] armor on an ally within reach as an action.",
               "duration": "1 day",
-              "damage": "1d6",
-              "damageType": "Solar",
+              "damage": "",
+              "damageType": "",
               "armor": "",
               "condition": ""
             },
@@ -12653,28 +12653,28 @@
             {
               "step": 7,
               "name": "Fast Fabrication III",
-              "action": "Upgrade",
+              "action": "Off-Action",
               "check": "",
               "range": "",
               "description": "You may now use Fast Fabrication as an off-action. In addition, the weapon bonus becomes +2, and the armor repair increases to [[2d6]].",
               "duration": "",
-              "damage": "2",
+              "damage": "",
               "damageType": "",
-              "armor": "2d6",
+              "armor": "",
               "condition": ""
             },
             {
               "step": 8,
-              "name": "Engineer II",
+              "name": "Engineer III",
               "action": "Upgrade",
-              "check": "Agility",
+              "check": "",
               "range": "Reach",
               "description": "You may now deploy up to 2 companions at once. When a companion hits 0 HP, it detonates, forcing nearby enemies in reach range to make an Agility check or take [[3d6]] impact damage and become Confused until the end of their next turn. Additionally, your companions may now use off-actions to aid an ally, activate levers, or trigger items during your turn.",
               "duration": "",
-              "damage": "3d6",
-              "damageType": "Impact",
+              "damage": "",
+              "damageType": "",
               "armor": "",
-              "condition": "Confused"
+              "condition": ""
             },
             {
               "step": 9,
@@ -12684,10 +12684,10 @@
               "range": "",
               "description": "You may now have 2 Envoys active simultaneously. When an Envoy is destroyed it releases a burst of radiant energy, all enemies within reach take [[2d6]] radiant damage and must make a Mental check or become Confused until the end of their next turn.",
               "duration": "",
-              "damage": "2d6",
-              "damageType": "Solar",
+              "damage": "",
+              "damageType": "",
               "armor": "",
-              "condition": "Confused"
+              "condition": ""
             },
             {
               "step": 10,
@@ -12800,7 +12800,7 @@
               "check": "",
               "range": "",
               "description": "At the start of combat, Allies within reach gain +5 armor for 1 minute and +10 movement speed",
-              "duration": "1 minute",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -12851,7 +12851,7 @@
               "action": "Resource",
               "check": "",
               "range": "",
-              "description": "You may spend 2 Merchant Tokens at your Union to purchase a factory or warehouse. When you do, choose the type of facility (e.g., vehicle yard, weapons shop, golem forge) and set the primary item or service it produces. This location becomes part of your trade empire. Once per in-game month, when you visit or check in, the facility increases your maximum merchant token by 1 and gives 1000 gp per month when you check in. You may only operate one investment of this type at a time.",
+              "description": "You may spend 2 Merchant Tokens at your Union to purchase a factory or warehouse. When you do, choose the type of facility (e.g., vehicle yard, weapons shop, golem forge) and set the primary item or service it produces. This location becomes part of your trade empire. Once per in-game month, when you visit or check in, the facility provides 1d100 Ã— 10 gp and 1 Merchant Token as income, contract returns, or supply credit. You may only operate one investment of this type at a time.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -12908,8 +12908,8 @@
               "range": "",
               "description": "When you use Ledger Roll, the target also gains +10 armor until the start of their next turn or deal [[1d6]] psychic damage",
               "duration": "Until the end of your next turn",
-              "damage": "1d6",
-              "damageType": "Psychic",
+              "damage": "",
+              "damageType": "",
               "armor": 10,
               "condition": ""
             },
@@ -12969,7 +12969,7 @@
               "step": 7,
               "name": "Papercut",
               "action": "Action",
-              "check": "Survival",
+              "check": "",
               "range": "",
               "description": "As an action, send a flurry of razor-sharp loose pages at a creature within short range. Deal [[1d6]] slashing damage and force a Survival check. On failure, the target gains the Bleeding condition.",
               "duration": "",
@@ -13080,7 +13080,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned"
+              "condition": ""
             },
             {
               "step": 4,
@@ -13106,7 +13106,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Slowed"
+              "condition": ""
             },
             {
               "step": 6,
@@ -13153,7 +13153,7 @@
               "action": "Resource",
               "check": "",
               "range": "",
-              "description": "Spend 3 Merchant Tokens to establish a transport node in a city you have visited. Once per in-game month, when you visit or check in with any node, gain [[1d20 × 5]] gp and one useful lead, rumor, or travel detail. Each additional city costs 3 Merchant Tokens and increases the multiplier by +1.",
+              "description": "You may spend 1 Merchant Token to establish a caravan office, stables, or transit hub in a city you've visited. This location joins your personal transport network. Once per in-game month, when you visit or check in with any node in your network, you gain [[1d20 Ã— 5]] gp and receive one lead, rumor, or useful travel detail from your network. You may expand the network to a new city by spending another Merchant Token, increasing the multiple by +1 per city (Ã—6 for 2 cities, Ã—7 for 3, etc.)",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -13194,7 +13194,7 @@
               "range": "",
               "description": "As an action, you throw a prepared meal at a creature within short range. If the target is an ally, they heal 1 wound. If the target is an enemy, they take [[1d6]] physical damage.",
               "duration": "",
-              "damage": "1d6",
+              "damage": "",
               "damageType": "",
               "armor": "",
               "condition": ""
@@ -13242,40 +13242,40 @@
               "step": 4,
               "name": "Main Dish: Garlic Powder",
               "action": "Upgrade",
-              "check": "Survival",
+              "check": "",
               "range": "",
               "description": "When you use Main Dish on an enemy, they must pass a Survival check or gain the Coughing condition.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Coughing"
+              "condition": ""
             },
             {
               "step": 5,
               "name": "Main Dish: Greasy",
               "action": "Upgrade",
-              "check": "Agility",
+              "check": "",
               "range": "",
               "description": "When you use Main Dish, enemy targets must pass an Agility check or become Prone.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Prone"
+              "condition": ""
             },
             {
               "step": 6,
               "name": "Main Dish: Brain Freeze",
               "action": "Upgrade",
-              "check": "Survival",
+              "check": "",
               "range": "",
               "description": "When you use Main Dish, the target must pass a Survival check or become Slowed until the end of their next turn.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Slowed"
+              "condition": ""
             },
             {
               "step": 7,
@@ -13353,7 +13353,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Broken"
+              "condition": ""
             },
             {
               "step": 1,
@@ -13405,7 +13405,7 @@
               "damage": "1d6",
               "damageType": "Eclipse",
               "armor": "",
-              "condition": "Broken"
+              "condition": ""
             },
             {
               "step": 5,
@@ -13431,7 +13431,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Invisible"
+              "condition": ""
             },
             {
               "step": 7,
@@ -13453,7 +13453,7 @@
               "check": "",
               "range": "",
               "description": "You can replicate any written document or signature after studying it for 1 minute. For the next hour, your forged version counts as legitimate to anyone without magical verification. Gain advantage on Influence when using forged documents.",
-              "duration": "1 minute",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -13621,7 +13621,7 @@
               "action": "Resource",
               "check": "",
               "range": "",
-              "description": "Spend 3 Merchant Tokens to establish a fame node in a city where you have performed. Once per in-game month, when you visit or check in with any node, gain [[1d10 × 5]] gp and one rumor, contact, or social invitation. Each additional city costs 3 Merchant Token and increases the multiplier by +1.",
+              "description": "You may spend 1 Merchant Token to establish a fan club, press office, or event promoter in a city you've performed in. This location joins your growing fame network. Once per in-game month, when you visit or check in with any node in your network, gain [[1d10 Ã— 5]] gp in appearance fees, endorsements, or donations. Additionally, you receive one rumor, contact, or invitation tied to local social events. Each new city added increases the payout multiplier by +1 (Ã—6 for 2 cities, Ã—7 for 3, etc.)",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -13704,7 +13704,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Invisible"
+              "condition": ""
             },
             {
               "step": 4,
@@ -13743,7 +13743,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Broken"
+              "condition": ""
             },
             {
               "step": 7,
@@ -13866,7 +13866,7 @@
               "step": 4,
               "name": "Reliquary: Fear",
               "action": "Upgrade",
-              "check": "Spirit",
+              "check": "",
               "range": "",
               "description": "When you use a Reliquary as a weapon, the first time a creature is hit by that weapon they must make a Spirit check or take the Fear condition",
               "duration": "",
@@ -13892,7 +13892,7 @@
               "step": 6,
               "name": "Reliquary: Anchor",
               "action": "Upgrade",
-              "check": "Spirit",
+              "check": "",
               "range": "Reach",
               "description": "Place the reliquary at a location. Spirits and undead cannot cross a within reach range unless they succeed a Spirit check. Lasts 1 minute",
               "duration": "1 minute",
@@ -13908,8 +13908,8 @@
               "check": "",
               "range": "",
               "description": "As an action, summon a PL[[1d6]] Spirit Revenant for 1 minute to complete a specific task, such as guarding, scouting, or attacking. You can only have 1 revenant at a time. The revenant serves you loyally within this time frame and disappears upon completing its mission.",
-              "duration": "1 minute",
-              "damage": "1d6",
+              "duration": "",
+              "damage": "",
               "damageType": "",
               "armor": "",
               "condition": ""
@@ -13921,7 +13921,7 @@
               "check": "",
               "range": "",
               "description": "You place a Profane Mark on a creature as a action. You can use it to gain advantage on a check and deal an additional [[1d4]] Eclipse damage. The mark remains for 1 hour and you know the general direction of marked targets Once used, the mark dissipates in a subtle puff of ghostly smoke",
-              "duration": "1 hour",
+              "duration": "",
               "damage": "1d4",
               "damageType": "Eclipse",
               "armor": "",
@@ -13938,7 +13938,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Death"
+              "condition": ""
             },
             {
               "step": 10,
@@ -13970,7 +13970,7 @@
               "step": 0,
               "name": "Briar Charm",
               "action": "Action",
-              "check": "Spirit",
+              "check": "",
               "range": "Reach",
               "description": "Touch a creature within reach, wrapping them in enchanted thorns until the end of your next turn. If an ally then they gain +5 armor. Melee attackers take [[1d4]] piercing damage. If an enemy then make a Spirit check, on a success they take [[1d6]] piercing damage",
               "duration": "Until the end of your next turn",
@@ -13990,7 +13990,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned"
+              "condition": ""
             },
             {
               "step": 2,
@@ -14009,7 +14009,7 @@
               "step": 3,
               "name": "Briar Charm: Nightshade",
               "action": "Upgrade",
-              "check": "Survival",
+              "check": "",
               "range": "",
               "description": "When Briar Charm is used on an enemy, they must pass a Survival check or gain the Coughing condition",
               "duration": "",
@@ -14026,7 +14026,7 @@
               "range": "",
               "description": "When Briar Charm is used on an enemy, increase the thorn damage to [[2d6]] and you can choose to do Toxic damage",
               "duration": "",
-              "damage": "2d6",
+              "damage": "",
               "damageType": "Toxic",
               "armor": "",
               "condition": ""
@@ -14035,7 +14035,7 @@
               "step": 5,
               "name": "Briar Charm: Druid’s Reprieve",
               "action": "Upgrade",
-              "check": "Spirit",
+              "check": "",
               "range": "",
               "description": "When Briar Charm is used on an ally, make a Spirit check to also remove 1 Corpus condition.",
               "duration": "",
@@ -14052,10 +14052,10 @@
               "range": "Short",
               "description": "As an action, create a poisonous fog within short range that deals [[1d6]] toxic damage to all creatures that breathe. They must make a Survival check or take the Coughing condition.",
               "duration": "Instant",
-              "damage": "1d6",
-              "damageType": "Toxic",
+              "damage": "",
+              "damageType": "",
               "armor": "",
-              "condition": "Pinned, Coughing"
+              "condition": "Pinned"
             },
             {
               "step": 7,
@@ -14239,7 +14239,7 @@
             {
               "step": 9,
               "name": "Glasshand II",
-              "action": "Upgrade",
+              "action": "Off-Action",
               "check": "",
               "range": "Long",
               "description": "Your Glasshands can now drift as far as long range. As an off-action, command one to pierce a target within range for [[1d6]] piercing damage.",
@@ -14304,7 +14304,7 @@
             {
               "step": 2,
               "name": "Pathfinder II",
-              "action": "Upgrade",
+              "action": "Special",
               "check": "Agility",
               "range": "",
               "description": "When you use your full movement, gain advantage on your next agility check.",
@@ -14416,7 +14416,7 @@
               "damage": "2d6",
               "damageType": "Fire",
               "armor": "",
-              "condition": "Prone, Pinned, invisible"
+              "condition": "Prone, Pinned"
             }
           ]
         },
@@ -14536,7 +14536,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Intangible"
+              "condition": ""
             },
             {
               "step": 8,
@@ -14705,7 +14705,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": ""
             },
             {
               "step": 9,
@@ -14718,7 +14718,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed"
+              "condition": ""
             },
             {
               "step": 10,
@@ -14874,7 +14874,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": ""
             },
             {
               "step": 10,
@@ -14882,8 +14882,8 @@
               "action": "Upgrade",
               "check": "",
               "range": "",
-              "description": "The curse lasts for 1 minute. All conditions and effects applied by the curse remain for the full duration unless magically removed.",
-              "duration": "1 minute",
+              "description": "The curse lasts for 3 rounds. All conditions and effects applied by the curse remain for the full duration unless magically removed.",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -15107,7 +15107,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Intangible"
+              "condition": ""
             },
             {
               "step": 4,
@@ -15126,14 +15126,14 @@
               "step": 5,
               "name": "Anchored Impact",
               "action": "Special",
-              "check": "Physical",
+              "check": "",
               "range": "",
               "description": "When you deal damage with a spell, the target must make a Physical check or gain the Pinned condition until the end of their next turn.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned"
+              "condition": ""
             },
             {
               "step": 6,
@@ -15155,7 +15155,7 @@
               "check": "",
               "range": "",
               "description": "Your spellbook becomes a PL9 creature. When they reach 0 hp they teleport into your inventory as your spellbout for 1 hour. They can cast spells up to a Surge intent, and have 3 Mana total.",
-              "duration": "1 hour",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -15180,12 +15180,12 @@
               "action": "Upgrade",
               "check": "",
               "range": "",
-              "description": "Once per rest, when you hit a creature with a Surge or higher spell, they gain the Constrained condition until the end of their next turn. each additional success deals [[1d6]] impact damage",
+              "description": "Once per rest, when you hit a creature with a Surge or higher spell, they gain the Constrained condition until the end of their next turn. On a success+, the effect lasts 2 rounds.",
               "duration": "",
-              "damage": "1d6",
-              "damageType": "Impact",
+              "damage": "",
+              "damageType": "",
               "armor": "",
-              "condition": "Constrained"
+              "condition": ""
             },
             {
               "step": 10,
@@ -15194,11 +15194,11 @@
               "check": "",
               "range": "",
               "description": "You can cast a Cataclysmic spell intent once per day for half the Mana, but immediately take the Confused and Exhausted conditions for 1 minute",
-              "duration": "1 minute",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused"
+              "condition": ""
             }
           ]
         },
@@ -15263,7 +15263,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused"
+              "condition": ""
             },
             {
               "step": 4,
@@ -15354,7 +15354,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused"
+              "condition": ""
             }
           ]
         },
@@ -15390,7 +15390,7 @@
               "range": "Reach",
               "description": "As an action once per day, grant a creature within reach a shimmering shield of light. The shield negates the next instance of damage and fades after 1 minute if unused.",
               "duration": "",
-              "damage": "",
+              "damage": "1d6",
               "damageType": "",
               "armor": "",
               "condition": ""
@@ -15402,9 +15402,9 @@
               "check": "",
               "range": "",
               "description": "Summon a weapon of radiant light that lasts for 1 minute. The weapon takes the form of any melee weapon and can be wielded by you or an ally. It uses Agility, Spirit, Strength, or your Spellcasting check for attacks and deals [[2d6]] Solar damage",
-              "duration": "1 minute",
-              "damage": "2d6",
-              "damageType": "Solar",
+              "duration": "",
+              "damage": "",
+              "damageType": "",
               "armor": "",
               "condition": ""
             },
@@ -15416,8 +15416,8 @@
               "range": "",
               "description": "As an off-action, deal [[1d6]] Solar damage to creatures you choose in reach range",
               "duration": "",
-              "damage": "1d6",
-              "damageType": "Solar",
+              "damage": "",
+              "damageType": "",
               "armor": "",
               "condition": ""
             },
@@ -15549,7 +15549,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Broken"
+              "condition": ""
             },
             {
               "step": 2,
@@ -15601,20 +15601,20 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Slowed"
+              "condition": ""
             },
             {
               "step": 6,
               "name": "Eyes of the Unreal",
               "action": "Passive",
-              "check": "Mental",
+              "check": "",
               "range": "",
               "description": "Your vision fractures across timelines and lies. You can see illusions, glamours, and invisible creatures at all times. Once per rest, you may declare a hidden truth (such as \"He’s already dead\" or \"This isn't real\"). All creatures within reach must make a Mental check or gain the Confused condition as reality shudders around them.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Invisible, Confused"
+              "condition": "Invisible"
             },
             {
               "step": 7,
@@ -15753,7 +15753,7 @@
               "check": "",
               "range": "",
               "description": "Premonition now lasts until the end of your next turn, applying to all checks against the target.",
-              "duration": "Until the end of your next turn",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -15822,7 +15822,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Exhaustion"
+              "condition": ""
             }
           ]
         },
@@ -15857,7 +15857,7 @@
               "check": "",
               "range": "Self",
               "description": "When you cast a spell, Gain +2 crystal armor (temporary), up to +10 above your max. Replaces older instances. Lasts 1 minute or until you Press On",
-              "duration": "1 minute",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": 2,
@@ -15905,7 +15905,7 @@
             {
               "step": 5,
               "name": "Crystalline Spellcaster II",
-              "action": "Upgrade",
+              "action": "Special",
               "check": "",
               "range": "",
               "description": "Once per turn, when you deal spell damage, you may split it to hit a second target within short range.",
@@ -15958,12 +15958,12 @@
               "step": 9,
               "name": "Crystallize II",
               "action": "Upgrade",
-              "check": "Physical",
+              "check": "",
               "range": "",
               "description": "Crystallized enemies who fail their Physical check now also take [[1d6]] piercing damage from shard growth at the start of their turn.",
               "duration": "",
-              "damage": "1d6",
-              "damageType": "Piercing",
+              "damage": "",
+              "damageType": "",
               "armor": "",
               "condition": ""
             },
@@ -16026,11 +16026,11 @@
               "check": "Strength",
               "range": "Short",
               "description": "Once per day, as an action, when you sense Nature-origin magic nearby, you may enter a draconic rage for 1 minute. While raging, gain +2 Strength and enemies using Nature-origin spells within short range have disadvantage on Spellcasting checks against you. This rage ends early if you take the Charmed condition.",
-              "duration": "1 minute",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed"
+              "condition": ""
             },
             {
               "step": 3,
@@ -16052,8 +16052,8 @@
               "check": "",
               "range": "",
               "description": "As an action, for 1 hour summon a small dragonkin companion (PL 4) resembling a pseudo dragon, drakeling, or wyrmling of your dragon type. It flies, speaks your language, and shares your elemental affinity. The companion can deliver touch spells, scout, or attack with [[1d4]] elemental damage.",
-              "duration": "1 hour",
-              "damage": "1d4",
+              "duration": "",
+              "damage": "",
               "damageType": "",
               "armor": "",
               "condition": ""
@@ -16075,7 +16075,7 @@
               "step": 6,
               "name": "Dragon’s Breath II",
               "action": "Upgrade",
-              "check": "Physical",
+              "check": "",
               "range": "",
               "description": "Your breath weapon now deals [[2d6]] damage and pushes affected creatures 5 feet away on a failed Physical check.",
               "duration": "",
@@ -16130,11 +16130,11 @@
               "check": "",
               "range": "",
               "description": "Once per long rest, become a true dragon for 1 minute. You are Giant sized, gain +50 armor, flight is not impeded by armor or additional creatures, and deal +[[2d6]] damage with spells. After you become Stunned and Exhausted for 1 minute, this cannot be removed by any means",
-              "duration": "1 minute",
-              "damage": "2d6",
+              "duration": "",
+              "damage": "",
               "damageType": "",
               "armor": 50,
-              "condition": "Stunned"
+              "condition": ""
             }
           ]
         },
@@ -16221,11 +16221,11 @@
               "check": "",
               "range": "",
               "description": "As a half-action, summon 10 armor made of stone. It lasts for 1 minute or until broken, cannot use again until the armor is depleted or removed.",
-              "duration": "1 minute",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": 10,
-              "condition": "Broken"
+              "condition": ""
             },
             {
               "step": 6,
@@ -16251,13 +16251,13 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Invisible"
+              "condition": ""
             },
             {
               "step": 8,
               "name": "Smoke Affinity",
               "action": "Action",
-              "check": "Survival",
+              "check": "",
               "range": "",
               "description": "As an action, exhale choking smoke at a target within reach. On a failed Survival check, they are blinded and coughing until the end of their next turn.",
               "duration": "",
@@ -16287,8 +16287,8 @@
               "range": "",
               "description": "You may use Dual Affinity twice per day. If you use more than twice before a Long Rest, take [[2d6]] psychic damage",
               "duration": "",
-              "damage": "2d6",
-              "damageType": "Psychic",
+              "damage": "",
+              "damageType": "",
               "armor": "",
               "condition": ""
             }
@@ -16342,7 +16342,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Death"
+              "condition": ""
             },
             {
               "step": 3,
@@ -16381,7 +16381,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Death"
+              "condition": ""
             },
             {
               "step": 6,
@@ -16400,7 +16400,7 @@
               "step": 7,
               "name": "Loyal Guard",
               "action": "Resource",
-              "check": "Survival",
+              "check": "",
               "range": "",
               "description": "You have a number of minions equal to your Survival check, each at PL2. When grouped, they act as a swarm with total PL equal to twice your Survival. These minions are bound to your life force and will only defend you or your Soul Container without question.",
               "duration": "",
@@ -16420,7 +16420,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Bleeding, Slowed"
+              "condition": ""
             },
             {
               "step": 9,
@@ -16494,7 +16494,7 @@
               "check": "Mental",
               "range": "",
               "description": "Once per rest as an action, transform into a beast of your size or smaller. Gain its physical traits and movement, and +20 armor. When this armor is depleted, you revert to your true form. You may hold the form indefinitely, but must make a Mental check each hour to maintain control. On a failed check, become Feral for 1 minute. On each subsequent failure, the feral state lasts 1 day, then 1 year per failure. While Feral, you lose control, cannot communicate, and act based on instinct and aggression.",
-              "duration": "1 minute",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": 20,
@@ -16508,8 +16508,8 @@
               "range": "",
               "description": "You leave no tracks on natural ground and move silently in vegetation. When a creature hits you with a melee attack, they take [[1d4]] piercing damage.",
               "duration": "",
-              "damage": "1d4",
-              "damageType": "Piercing",
+              "damage": "",
+              "damageType": "",
               "armor": "",
               "condition": ""
             },
@@ -16524,7 +16524,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned"
+              "condition": ""
             },
             {
               "step": 5,
@@ -16542,7 +16542,7 @@
             {
               "step": 6,
               "name": "Thornskin II",
-              "action": "Upgrade",
+              "action": "Action",
               "check": "",
               "range": "",
               "description": "As an action, become invisible while motionless in natural cover (plants, shadows, foliage). Lasts until you move or act",
@@ -16550,16 +16550,16 @@
               "damage": "",
               "damageType": "",
               "armor": 40,
-              "condition": "Invisible"
+              "condition": ""
             },
             {
               "step": 7,
               "name": "Tree Speech II",
-              "action": "Upgrade",
+              "action": "Action",
               "check": "",
               "range": "",
-              "description": "Once per day as an action, You can call and command small plants and beasts. They act as a PL3 Verdant Swarm, and will remain for 1 minute",
-              "duration": "1 minute",
+              "description": "Once per day as an action, You can call and command small plants and beasts. They act as a PL3 Verdant Swarm, and will remain for one minute",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -16572,7 +16572,7 @@
               "check": "",
               "range": "",
               "description": "As an action once per day, turn a short-range area into vibrant terrain for 1 minute. It becomes difficult terrain to enemies and grants +1 Mana per round to allies within. It also contains drinkable water and ambient food.",
-              "duration": "1 minute",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -16595,14 +16595,14 @@
               "step": 10,
               "name": "Verdant Reckoning",
               "action": "Action",
-              "check": "Physical",
+              "check": "",
               "range": "Medium",
-              "description": "You snap your root heart or crush your sprig, unleashing the wild’s answer to steel and smoke. Cracks split the ground beneath your enemies as thorny vines burst upward, twisting through concrete, steel, and flesh. All creatures in medium range must make a Physical check or take [[4d6]] nature damage and gain the Constrained condition until the end of their next turn. Even on a success, they take half damage and are Slowed. Windows shatter. Streetlamps short. The city remembers the forest it buried",
+              "description": "You snap your root heart or crush your sprig, unleashing the wild’s answer to steel and smoke. Cracks split the earth beneath your enemies as thorny vines burst upward, twisting through concrete, steel, and flesh. All creatures in medium range must make a Physical check or take [[4d6]] nature damage and gain the Constrained condition until the end of their next turn. Even on a success, they take half damage and are Slowed. Windows shatter. Streetlamps short. The city remembers the forest it buried",
               "duration": "",
-              "damage": "4d6",
-              "damageType": "Nature",
+              "damage": "",
+              "damageType": "",
               "armor": "",
-              "condition": "Constrained, Slowed"
+              "condition": "Constrained"
             }
           ]
         },
@@ -16650,7 +16650,7 @@
               "check": "Crafting",
               "range": "Short",
               "description": "Once per day, as an action, create a stationary object that suppresses magical traps and ongoing magical effects within short range for 1 hour. Suppressed effects resume when the duration ends or the object is removed.",
-              "duration": "1 hour",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -16702,7 +16702,7 @@
               "check": "",
               "range": "",
               "description": "Once per long rest, you can craft a temporary magical item without the need for materials. This magical item is imbued with a spell you craft with your words of power that has a feature you design. This item lasts for 24 hours and is a standard weapon unless otherwise specified",
-              "duration": "1 day",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -16711,11 +16711,11 @@
             {
               "step": 7,
               "name": "Storage",
-              "action": "Resource",
+              "action": "",
               "check": "",
               "range": "",
               "description": "The Impossible Pocket is a weightless, extra-dimensional pouch that holds up to 10 bulk of items, each no larger than 2 bulk individually. Items are automatically sorted for quick retrieval. Storing or retrieving an item takes an Off-Action. It can also hold a single Tiny creature (1 bulk or less) for up to 1 hour with breathable air, though discomfort begins after 5 minutes.",
-              "duration": "1 hour",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -16724,11 +16724,11 @@
             {
               "step": 8,
               "name": "Rapid Recharge",
-              "action": "Action",
+              "action": "",
               "check": "",
               "range": "",
               "description": "As an action, you can choose to Overclock your tech to rapidly regain [[1d6]] Mana that last until the end of your next turn.",
-              "duration": "Until the end of your next turn",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -16737,7 +16737,7 @@
             {
               "step": 9,
               "name": "Fabricator",
-              "action": "Special",
+              "action": "",
               "check": "Crafting",
               "range": "",
               "description": "Your device and body work in tandem. Gain additional wounds equal to your Crafting check. When you get a success+ with a crafting check in combat, regain +1 Mana.",
@@ -17021,7 +17021,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned, Confused"
+              "condition": ""
             },
             {
               "step": 7,
@@ -17097,7 +17097,7 @@
               "description": "You conjure a spectral chain and lash a creature within reach range. On a hit, deal [[1d6]] Vozian damage",
               "duration": "",
               "damage": "1d6",
-              "damageType": "Vozian",
+              "damageType": "",
               "armor": "",
               "condition": ""
             },
@@ -17109,8 +17109,8 @@
               "range": "",
               "description": "Your chain becomes searing hot. On a hit, deal an additional [[1d4]] Fire damage. If the creature is Flammable or wearing easily ignited clothing they take the damage again at the start of their next turn",
               "duration": "",
-              "damage": "1d4",
-              "damageType": "Fire",
+              "damage": "",
+              "damageType": "",
               "armor": "",
               "condition": ""
             },
@@ -17125,7 +17125,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned"
+              "condition": ""
             },
             {
               "step": 3,
@@ -17162,9 +17162,9 @@
               "description": "If the target is Pinned, your Chain Lash deals +[[1d6]] damage and ignores Immunity to Vozian damage.",
               "duration": "",
               "damage": "1d6",
-              "damageType": "Vozian",
+              "damageType": "",
               "armor": "",
-              "condition": "Pinned"
+              "condition": ""
             },
             {
               "step": 6,
@@ -17177,7 +17177,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Prone, Pinned"
+              "condition": "Prone"
             },
             {
               "step": 7,
@@ -17252,8 +17252,8 @@
               "range": "Short",
               "description": "Summon a bound celestial spirit at a point within short range. Each is a creature Brakkus defeated and chained into eternal service. The spirit is PL6, performs one unique action on arrival, and remains until the end of your next turn. Only one Chaincard can be active at a time. With this ability you summon Darren, a celestial pirate ghost still wearing the chains that killed him. On arrival he slashes one creature within reach for [[1d6]] solar damage.",
               "duration": "Until the end of your next turn",
-              "damage": "1d6",
-              "damageType": "Solar",
+              "damage": "",
+              "damageType": "",
               "armor": "",
               "condition": ""
             },
@@ -17300,14 +17300,14 @@
               "step": 4,
               "name": "The Pale Sovereign",
               "action": "Action",
-              "check": "Spirit",
+              "check": "",
               "range": "",
               "description": "A deposed celestial monarch still wearing a shattered crown. On arrival, one creature in medium range must pass a Spirit check or gain the Fear condition. When it fades, the ground within reach becomes difficult terrain.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": ""
             },
             {
               "step": 5,
@@ -17339,14 +17339,14 @@
               "step": 7,
               "name": "Lattice Engine",
               "action": "Action",
-              "check": "Survival",
+              "check": "",
               "range": "",
               "description": "A geometric construct of interlocking rings and chain-gears built from the bones of a defeated chaos god. On arrival, one creature in reach must pass a Survival check or gain the Stunned condition. When it fades, deal [[1d6]] solar damage to all creatures in reach.",
               "duration": "",
               "damage": "1d6",
               "damageType": "Eclipse",
               "armor": "",
-              "condition": "Stunned"
+              "condition": ""
             },
             {
               "step": 8,
@@ -17359,7 +17359,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Invisible"
+              "condition": ""
             },
             {
               "step": 9,
@@ -17385,7 +17385,7 @@
               "damage": "1d6",
               "damageType": "Impact",
               "armor": "",
-              "condition": "Prone"
+              "condition": ""
             }
           ]
         }
@@ -17420,7 +17420,7 @@
               "check": "",
               "range": "Self",
               "description": "Once per day, encase yourself in hardened beetle shell. Gain +20 Armor and immunity to Slashing and Impact damage for 1 minute. Your movement speed is halved during this time.",
-              "duration": "1 minute",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": 20,
@@ -17443,14 +17443,14 @@
               "step": 3,
               "name": "Locust Totem",
               "action": "Action",
-              "check": "Mental",
+              "check": "",
               "range": "Reach",
               "description": "Once per day, summon a cloud of illusory locusts. All creatures within reach range must pass a Mental check or become Confused until they can no longer see you.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused"
+              "condition": ""
             },
             {
               "step": 4,
@@ -17495,7 +17495,7 @@
               "step": 7,
               "name": "Swarm: Heavy Hive",
               "action": "Upgrade",
-              "check": "Physical",
+              "check": "",
               "range": "",
               "description": "Increase your swarm’s PL by +1. Your swarm can now lift or carry medium or smaller objects. It can slowly retrieve weapons, drop potions, carry armor, or manipulate switches. Creatures may resist being carried with a Physical check.",
               "duration": "",
@@ -17513,7 +17513,7 @@
               "description": "Increase your swarm’s PL by +1. You may bind the swarm to a melee or ranged weapon you wield. While fused, the weapon gains +2 to hit and deals +4 Toxic damage. The swarm cannot attack independently during this time.",
               "duration": "1 minute",
               "damage": 4,
-              "damageType": "Toxic",
+              "damageType": "",
               "armor": "",
               "condition": ""
             },
@@ -17526,9 +17526,9 @@
               "description": "Increase your swarm’s PL by +1. Your swarm burrows beneath a creature and erupts in a pillar of chitinous spikes. The target takes [[1d6]] Piercing damage and is Pinned until the end of their next turn. If already Pinned, they are Slowed instead.",
               "duration": "",
               "damage": "1d6",
-              "damageType": "Piercing",
+              "damageType": "",
               "armor": "",
-              "condition": "Slowed, Pinned"
+              "condition": ""
             },
             {
               "step": 10,
@@ -17539,7 +17539,7 @@
               "description": "Increase your swarm’s PL by +1. Its attacks deal an additional [[1d4]] Toxic damage and impose -2 to the target’s next check until the end of their turn.",
               "duration": "",
               "damage": "1d4",
-              "damageType": "Toxic",
+              "damageType": "",
               "armor": "",
               "condition": ""
             }
@@ -17580,7 +17580,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned, Slowed"
+              "condition": "Pinned"
             },
             {
               "step": 2,
@@ -17593,20 +17593,20 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Constrained, Pinned"
+              "condition": "Constrained"
             },
             {
               "step": 3,
               "name": "Drowse: Sleep Spiral",
               "action": "Upgrade",
-              "check": "Mental",
+              "check": "",
               "range": "",
               "description": "When you use Drowse on a creature that is already Constrained, they must pass a Mental check or fall Unconscious until the end of their next turn or until they take damage.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Unconscious, Constrained"
+              "condition": "Unconscious"
             },
             {
               "step": 4,
@@ -17638,7 +17638,7 @@
               "step": 6,
               "name": "Drowse: Mindfog",
               "action": "Upgrade",
-              "check": "Mental",
+              "check": "",
               "range": "",
               "description": "When you use Drowse on an enemy, they take [[1d6]] Psychic damage if they fail their Mental check",
               "duration": "",
@@ -17658,7 +17658,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed"
+              "condition": ""
             },
             {
               "step": 8,
@@ -17671,13 +17671,13 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused"
+              "condition": ""
             },
             {
               "step": 9,
               "name": "Hauntfog",
               "action": "Action",
-              "check": "Mental",
+              "check": "",
               "range": "Medium",
               "description": "Once per day as an action, create a swarm of illusory insects, fog, or creeping shadows in a medium range area. Enemies inside must pass a Mental check or become Confused, while confused in this way they must move at least half their movement on their turn",
               "duration": "",
@@ -17729,14 +17729,14 @@
               "step": 1,
               "name": "Spectral: Passthrough",
               "action": "Upgrade",
-              "check": "Spirit",
+              "check": "",
               "range": "Reach",
               "description": "When you become Intangible, you may choose one creature you pass through immediately within reach. They must pass a Spirit check or become Slowed until the end of their next turn",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Intangible, Slowed"
+              "condition": "Intangible"
             },
             {
               "step": 2,
@@ -17771,7 +17771,7 @@
               "check": "",
               "range": "",
               "description": "You can maintain intangible with your Spectral feature for 1 minute.",
-              "duration": "1 minute",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -17849,11 +17849,11 @@
               "check": "",
               "range": "",
               "description": "Choose a single broken object, suit of armor, puppet, scarecrow, or corpse. It becomes a PL2 animated servant for 1 day, glowing faintly with spectral threads. It can follow simple commands (e.g., “stand here,” “follow that person,” “retrieve that key”) and can be stationed as a trap, lookout, or mimic. While active, it can send you one-word telepathic warnings such as “Intruder,” “Fire,” or “Help,” no matter the distance. You may only have one Tethered Bones active at a time",
-              "duration": "1 day",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Broken"
+              "condition": ""
             }
           ]
         }
@@ -17872,14 +17872,14 @@
               "step": 0,
               "name": "Trickpack",
               "action": "Resource",
-              "check": "Agility",
+              "check": "",
               "range": "",
               "description": "You carry a glamour-charmed satchel. You may store one item inside that cannot be detected by any means. Once per turn, an ally or yourself may reach into the satchel and retrieve one of the following random items:\n1. Banana Peel: A creature stepping on it must pass an Agility check or fall Prone.\n2. Alarm Clock: Emits a loud clang at a set time, alerting or distracting creatures in reach range.\n3. Potion of Water: Can be used to quench flames, trigger water-based effects, or hydrate.\n4. Throwing Sand: Blinds one adjacent creature until the start of their next turn on a successful Agility check.\n5. Fey Cigarette: Grants +2 Influence for 1 minute, but gain Stealth Disadvantage.\n6. Paper Mask: Grants a fake identity (Disguise) for 1 minute or until removed",
-              "duration": "1 minute",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Prone, Charmed"
+              "condition": ""
             },
             {
               "step": 1,
@@ -17915,10 +17915,10 @@
               "range": "",
               "description": "Add three new randomized items to the draw table:\n1. Rust Marble: When placed on metal, causes light corrosion. Weaken a weapon or structure, reducing its effectiveness or integrity.\n2. Spectacle Stone: Holding it to your eye allows you to detect magic, illusions, or invisible creatures in reach range until the end of your next turn.\n3. Heartseed Charm: A dried seed that warms when near strong emotion. Grants +2 to checks involving empathy, Influence, or Intellect for 1 minute.\n4. Scorch Rock: A hot coal-like pebble. Can ignite dry material or deal [[1d4]] Fire damage if pressed to a creature’s skin",
               "duration": "1 minute",
-              "damage": "1d4",
-              "damageType": "Fire",
+              "damage": "",
+              "damageType": "",
               "armor": "",
-              "condition": "Invisible"
+              "condition": ""
             },
             {
               "step": 4,
@@ -17953,7 +17953,7 @@
               "check": "",
               "range": "",
               "description": "Once per day, you may command your Trickpack to transform into a living, fey-grown getaway mount or vehicle. It sprouts mossy wheels, bark plating, and thorn reins, or takes the form of an oversized forest creature. It has short-range flight or wall-climbing and can phase into overgrowth as an action, vanishing from pursuit. The Trickpack cannot be used for other effects while in this form and reforms at your side after 1 hour or when dismissed. May only be activated in natural terrain or when near a feyline.",
-              "duration": "Other effects while in this form and reforms at your side after 1 hour",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -17970,7 +17970,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused"
+              "condition": ""
             },
             {
               "step": 8,
@@ -18048,7 +18048,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Invisible"
+              "condition": ""
             },
             {
               "step": 2,
@@ -18069,10 +18069,10 @@
               "action": "Upgrade",
               "check": "",
               "range": "",
-              "description": "A PL6 elemental Host of your choosing now greets guests. Once per visit, it may serve a magical cocktail that grants +2 to the next Spellcasting check or gives [[1d6]] healing.",
+              "description": "A PL6 elemental Host of your choosing now greets guests. Once per visit, it may serve a magical cocktail that grants +2 to the next Spellcasting check or restores [[1d6]] HP.",
               "duration": "",
-              "damage": "1d6",
-              "damageType": "Healing",
+              "damage": "",
+              "damageType": "",
               "armor": "",
               "condition": ""
             },
@@ -18152,7 +18152,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed"
+              "condition": ""
             },
             {
               "step": 10,
@@ -18165,7 +18165,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed"
+              "condition": ""
             }
           ]
         }
@@ -18195,20 +18195,20 @@
             },
             {
               "step": 1,
-              "name": "Bloom: Temporal Spores",
+              "name": "Chrono-Celium: Temporal Spores",
               "action": "Upgrade",
-              "check": "Survival",
+              "check": "",
               "range": "Short",
               "description": "Once per turn when an enemy within reach takes damage, the celium releases spores that slow their personal timeline. They must pass a Survival check or gain the Slowed condition.",
               "duration": "Until the end of your next turn",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Slowed"
+              "condition": ""
             },
             {
               "step": 2,
-              "name": "Bloom: Anchored",
+              "name": "Chrono-Celium: Anchored",
               "action": "Upgrade",
               "check": "",
               "range": "",
@@ -18221,37 +18221,24 @@
             },
             {
               "step": 3,
-              "name": "Bloom: Bloom",
-              "action": "Upgrade",
-              "check": "Survival",
-              "range": "",
-              "description": "As an action, Release a pulse of temporal spores in short range. Enemies take [[1d6]] toxic damage and must pass a Survival check or gain the Slowed condition. Allies caught in the bloom may reroll one check before the end of their next turn.",
-              "duration": "Until the end of your next turn",
-              "damage": "1d6",
-              "damageType": "Toxic",
-              "armor": "",
-              "condition": "Coughing, Slowed"
-            },
-            {
-              "step": 4,
-              "name": "Bloom: Corpsebloom",
+              "name": "Chrono-Celium: Bloom",
               "action": "Upgrade",
               "check": "",
               "range": "",
-              "description": "When a creature dies within short range, you may use an off-action to release a [[1d4]] toxic damage bloom from the corpse that heals allies for half the damage dealt",
-              "duration": "",
-              "damage": "1d4",
-              "damageType": "Toxic",
+              "description": "Release a pulse of temporal spores in short range. Enemies take [[1d6]] chrono damage and must pass a Survival check or gain the Slowed condition. Allies caught in the bloom may reroll one check before your next turn.",
+              "duration": "Until the end of your next turn",
+              "damage": "",
+              "damageType": "",
               "armor": "",
-              "condition": "Confused"
+              "condition": "Coughing"
             },
             {
-              "step": 5,
-              "name": "Bloom: Psychotropic",
+              "step": 4,
+              "name": "Chrono-Celium: Corpsebloom",
               "action": "Upgrade",
-              "check": "Mental",
+              "check": "",
               "range": "",
-              "description": "When you deal toxic damage enemies must pass a Mental check or gain the Confused condition as fractured timelines flood their perception.",
+              "description": "When a creature dies within short range, you may use an off-action to release a Bloom from that corpse at no action cost.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -18259,12 +18246,25 @@
               "condition": "Confused"
             },
             {
+              "step": 5,
+              "name": "Chrono-Celium: Psychotropic",
+              "action": "Upgrade",
+              "check": "",
+              "range": "",
+              "description": "Enemies who fail against Bloom must also pass a Mental check or gain the Confused condition as fractured timelines flood their perception.",
+              "duration": "",
+              "damage": "",
+              "damageType": "",
+              "armor": "",
+              "condition": ""
+            },
+            {
               "step": 6,
-              "name": "Bloom: Sustaining Loop",
+              "name": "Chrono-Celium: Sustaining Loop",
               "action": "Off-Action",
               "check": "",
               "range": "Short",
-              "description": "When a creature you hit with toxic damage dies, regain 1 Mana as the fungus absorbs the collapsed timeline.",
+              "description": "When a creature affected by your spores dies, regain 1 Mana as the celium absorbs the collapsed timeline.",
               "duration": "",
               "damage": "1d6",
               "damageType": "Nature",
@@ -18273,12 +18273,12 @@
             },
             {
               "step": 7,
-              "name": "Bloom: Armor",
+              "name": "Chrono-Celium: Armor",
               "action": "Off-Action",
               "check": "",
               "range": "",
-              "description": "Once per day, as an off-action Temporal mycelium hardens across your skin, granting +15 armor for 1 minute. While active you cannot be aged, withered, or affected by time-based debuffs.",
-              "duration": "1 minute",
+              "description": "Temporal mycelium hardens across your skin as an off-action, granting +5 armor for 1 minute. While active you cannot be aged, withered, or affected by time-based debuffs.",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": 5,
@@ -18308,20 +18308,20 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear, Death"
+              "condition": "Fear"
             },
             {
               "step": 10,
               "name": "Sporelings",
               "action": "Action",
-              "check": "Survival",
+              "check": "",
               "range": "",
-              "description": "Once per day, release a swarm of chrono-sporelings into short range. They are PL2, last 1 minute, cling to targets dealing [[1d4]] toxic damage each round, and count as difficult terrain. Creatures that end their turn in the swarm must pass a Survival check or age rapidly, gaining the Slowed condition.",
-              "duration": "1 minute",
+              "description": "Once per day, release a swarm of chrono-sporelings into short range. They are PL2, last 1 minute, cling to targets dealing [[1d4]] chrono damage each round, and count as difficult terrain. Creatures that end their turn in the swarm must pass a Survival check or age rapidly, gaining the Slowed condition.",
+              "duration": "",
               "damage": "1d4",
               "damageType": "Toxic",
               "armor": "",
-              "condition": "Slowed"
+              "condition": ""
             }
           ]
         }
@@ -18392,11 +18392,11 @@
               "step": 4,
               "name": "Dragonbound: Breath",
               "action": "Upgrade",
-              "check": "Agility",
+              "check": "",
               "range": "",
               "description": "Once per day, exhale a breath weapon in a short range cone dealing [[2d6]] damage of your chosen type. Creatures in the area may make an Agility check to halve the damage.",
               "duration": "",
-              "damage": "2d6",
+              "damage": "",
               "damageType": "",
               "armor": "",
               "condition": ""
@@ -18418,14 +18418,14 @@
               "step": 6,
               "name": "Dragonbound: Vent",
               "action": "Upgrade",
-              "check": "Survival",
+              "check": "",
               "range": "Short",
               "description": "Once per day when you are Injured, the spirit vents pressure. All creatures within short range must pass a Survival check or take [[1d4]] damage of your chosen type and gain the Slowed condition.",
               "duration": "",
               "damage": "1d4",
               "damageType": "Elemental",
               "armor": "",
-              "condition": "Slowed, Injured"
+              "condition": ""
             },
             {
               "step": 7,
@@ -18451,7 +18451,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": ""
             },
             {
               "step": 9,
@@ -18473,7 +18473,7 @@
               "check": "",
               "range": "",
               "description": "Once per long rest, surrender control briefly to the dragon spirit. For 1 minute it acts through you: you gain flight speed equal to your movement, your attacks deal an additional [[1d6]] damage of your chosen type, and you are immune to all conditions. When the minute ends, gain the Exhausted condition.",
-              "duration": "1 minute",
+              "duration": "",
               "damage": "1d6",
               "damageType": "",
               "armor": "",
@@ -18552,8 +18552,8 @@
               "range": "",
               "description": "This can be applied as Ritual Ink during a long rest. As an Off-action when hit with a melee attack, deal [[1d6]] fire damage",
               "duration": "",
-              "damage": "1d6",
-              "damageType": "Fire",
+              "damage": "",
+              "damageType": "",
               "armor": "",
               "condition": ""
             },
@@ -18561,7 +18561,7 @@
               "step": 5,
               "name": "Ritual Ink: Eye of Pain",
               "action": "Action",
-              "check": "Spirit",
+              "check": "",
               "range": "",
               "description": "This tattoo can be applied using Ritual Ink during a Long Rest. As an action, the bearer targets a creature they can see. The target takes [[1d6]] Psychic damage and must pass a Spirit check or become Slowed until the end of their next turn",
               "duration": "",
@@ -18587,7 +18587,7 @@
               "step": 7,
               "name": "Ritual Ink: Howling Sigil",
               "action": "Special",
-              "check": "Mental",
+              "check": "",
               "range": "Reach",
               "description": "This tattoo can be applied using Ritual Ink during a Long Rest. The bearer may let loose a magical howl as an action. Enemies in short range must pass a Mental check or take -1 to all checks until the end of their next turn. Usable once per day",
               "duration": "",

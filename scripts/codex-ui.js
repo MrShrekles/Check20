@@ -26,3 +26,38 @@ function initCodexSize() {
         btns.forEach(x => x.classList.toggle('active', x === b));
     }));
 }
+
+// ─── Deep-link: ?open=ItemName ────────────────────────────────────────────────
+// Navigating from search results appends ?open=Name. Once the target page
+// renders its rows, this finds the matching .spell-row, opens it, and scrolls.
+function handleCodexDeepLink() {
+    const target = new URLSearchParams(window.location.search).get('open');
+    if (!target) return;
+    const targetLower = target.toLowerCase();
+
+    function tryExpand() {
+        for (const row of document.querySelectorAll('.spell-row')) {
+            const nameEl = row.querySelector('.spell-row-name');
+            if (!nameEl) continue;
+            if (nameEl.textContent.trim().toLowerCase() === targetLower) {
+                row.classList.add('open');
+                const arrow = row.querySelector('.spell-row-arrow');
+                if (arrow) arrow.textContent = '▼';
+                row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return true;
+            }
+        }
+        return false;
+    }
+
+    if (tryExpand()) return;
+
+    // Rows render async — watch for them
+    const observer = new MutationObserver(() => {
+        if (tryExpand()) observer.disconnect();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    setTimeout(() => observer.disconnect(), 8000);
+}
+
+document.addEventListener('DOMContentLoaded', handleCodexDeepLink);

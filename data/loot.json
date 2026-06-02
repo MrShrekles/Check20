@@ -1,0 +1,44 @@
+{
+  "tiers": [
+    {
+      "label": "Scavenge",
+      "min": 1, "max": 3,
+      "rolls": 1, "bonus": 0.3,
+      "goldMin": 1, "goldMax": 4,
+      "rarities": ["common"],
+      "pools": ["item", "item", "item", "medicine"]
+    },
+    {
+      "label": "Common",
+      "min": 4, "max": 6,
+      "rolls": 1, "bonus": 0.5,
+      "goldMin": 3, "goldMax": 8,
+      "rarities": ["common", "uncommon"],
+      "pools": ["item", "item", "medicine", "weapon"]
+    },
+    {
+      "label": "Uncommon",
+      "min": 7, "max": 10,
+      "rolls": 2, "bonus": 0.4,
+      "goldMin": 6, "goldMax": 16,
+      "rarities": ["uncommon", "rare"],
+      "pools": ["item", "medicine", "weapon", "weapon", "armor", "enchanted"]
+    },
+    {
+      "label": "Rare",
+      "min": 11, "max": 15,
+      "rolls": 2, "bonus": 0.7,
+      "goldMin": 12, "goldMax": 32,
+      "rarities": ["rare", "very rare"],
+      "pools": ["weapon", "armor", "enchanted", "enchanted", "enchanted"]
+    },
+    {
+      "label": "Legendary",
+      "min": 16, "max": 999,
+      "rolls": 3, "bonus": 0.6,
+      "goldMin": 25, "goldMax": 70,
+      "rarities": ["very rare", "legendary", "mythic"],
+      "pools": ["weapon", "armor", "enchanted", "enchanted", "enchanted", "enchanted"]
+    }
+  ]
+}

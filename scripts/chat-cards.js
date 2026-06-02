@@ -16,6 +16,53 @@ function chatTimestamp() {
     return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
+// Returns true when a string contains only emoji (and whitespace / joiners)
+function isEmojiOnly(str) {
+    const t = (str || '').trim();
+    return t.length > 0 && t.replace(/\p{Extended_Pictographic}|️|︎|‍|\s/gu, '').length === 0;
+}
+
+const EMOJI_REACTIONS_HTML = `
+<div class="chat-emoji-reactions">
+  <button class="chat-emoji-react-btn" type="button" data-emoji-anim="dance"  title="Dance">💃</button>
+  <button class="chat-emoji-react-btn" type="button" data-emoji-anim="spin"   title="Spin">🌀</button>
+  <button class="chat-emoji-react-btn" type="button" data-emoji-anim="shake"  title="Shake">🫨</button>
+  <button class="chat-emoji-react-btn" type="button" data-emoji-anim="boing"  title="Boing">🪀</button>
+  <button class="chat-emoji-react-btn" type="button" data-emoji-anim="pop"    title="Pop">💥</button>
+  <button class="chat-emoji-react-btn" type="button" data-emoji-anim="flip"   title="Flip">🔄</button>
+</div>`;
+
+// Trigger an emoji animation by chat message ID — called by Firebase reaction listener
+function triggerEmojiReaction(chatMsgId, anim) {
+    const li    = document.querySelector(`[data-chat-id="${chatMsgId}"]`);
+    const emoji = li?.querySelector('.chat-emoji-big');
+    if (!emoji || [...emoji.classList].some(c => c.startsWith('is-anim-'))) return;
+    const cls = `is-anim-${anim}`;
+    emoji.classList.add(cls);
+    emoji.addEventListener('animationend', () => emoji.classList.remove(cls), { once: true });
+}
+
+// Reaction buttons — delegated on document, works in both active-sheet and narrator
+document.addEventListener('click', e => {
+    const btn = e.target.closest('[data-emoji-anim]');
+    if (!btn) return;
+    const emoji     = btn.closest('.chat-emoji-block')?.querySelector('.chat-emoji-big');
+    const chatMsgId = btn.closest('[data-chat-id]')?.dataset.chatId;
+    if (!emoji) return;
+    if ([...emoji.classList].some(c => c.startsWith('is-anim-'))) return;
+
+    // Play locally
+    const anim = btn.dataset.emojiAnim;
+    const cls  = `is-anim-${anim}`;
+    emoji.classList.add(cls);
+    emoji.addEventListener('animationend', () => emoji.classList.remove(cls), { once: true });
+
+    // Broadcast to session (handled by active-sheet.js / narrator.js)
+    if (chatMsgId) {
+        document.dispatchEvent(new CustomEvent('emoji-react', { detail: { chatMsgId, anim } }));
+    }
+});
+
 function fmtSigned(n) { const v = Number(n) || 0; return v >= 0 ? `+${v}` : `${v}`; }
 
 function naturalRoll(rollNote) {
@@ -284,6 +331,19 @@ function renderTurnEntry(entry) {
 function renderFeatureEntry(entry) {
     const tagsHtml = entry.tags?.length
         ? `<div class="chat-feat-tags">${entry.tags.map(t => `<span class="chat-feat-tag">${t}</span>`).join('')}</div>` : '';
+
+    const upgradesHtml = entry.upgrades?.length
+        ? `<div class="chat-feat-upgrades">${entry.upgrades.map(u => {
+            const uTags = u.tags?.length
+                ? `<div class="chat-feat-tags">${u.tags.map(t => `<span class="chat-feat-tag">${t}</span>`).join('')}</div>` : '';
+            return `<div class="chat-feat-upgrade">
+                <div class="chat-feat-upgrade-name">↳ ${u.name || ''}</div>
+                ${uTags}
+                ${u.desc ? `<p class="chat-feat-upgrade-desc">${u.desc}</p>` : ''}
+            </div>`;
+        }).join('')}</div>`
+        : '';
+
     return `<div class="chat-feat-card">
         <div class="chat-card-head">
             <span class="chat-card-title">⚡ ${entry.name || ''}</span>
@@ -292,5 +352,6 @@ function renderFeatureEntry(entry) {
         ${tagsHtml}
         ${diceChipsHtml(entry.diceRolls)}
         ${expandableDesc(entry.desc)}
+        ${upgradesHtml}
     </div>`;
 }

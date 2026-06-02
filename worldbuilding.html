@@ -177,6 +177,24 @@
 
         </div>
 
+        <!-- ── ROW 3: LOOT ──────────────────────────────────────────── -->
+        <div class="gen-grid">
+            <details class="gen-panel" open>
+                <summary class="gen-panel-summary">Loot Generator</summary>
+                <div class="gen-controls">
+                    <label style="display:flex;align-items:center;gap:6px;font-size:.9em">
+                        PL
+                        <button class="button" id="loot-pl-dec" style="padding:0 10px">−</button>
+                        <span id="loot-pl-display" style="min-width:24px;text-align:center;font-weight:800;font-size:1.1em">5</span>
+                        <button class="button" id="loot-pl-inc" style="padding:0 10px">+</button>
+                    </label>
+                    <button class="button" id="generate-loot">Roll Loot</button>
+                    <button id="clear-loot">Clear</button>
+                </div>
+                <div class="flex-container gen-output" id="loot-output"></div>
+            </details>
+        </div>
+
         <!-- ── HEX REFERENCE TABLES ──────────────────────────────── -->
         <details>
             <summary>Hex Reference Tables</summary>

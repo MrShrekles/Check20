@@ -37,6 +37,7 @@ function detectFileType(data) {
     if ('type' in e && 'text' in e && ['giver','target','twist','reward'].includes(e.type)) return 'quest';
     if ('type' in e && ['door','lock','trap'].includes(e.type)) return 'traps';
     if (groups.has('affinities') && groups.has('motivations')) return 'worldbuilding';
+    if (groups.has('tiers') && groups.has('mundane')) return 'loot';
     return 'generic';
 }
 
@@ -57,6 +58,21 @@ function analyzeStructure(parsed) {
             }
         }
         if (keys.length > 1 && keys.every(k => Array.isArray(parsed[k]))) {
+            // If any array contains strings, use mixed path so strings become { value }
+            const hasMixed = keys.some(k => parsed[k].length > 0 && typeof parsed[k][0] === 'string');
+            if (hasMixed) {
+                const data = [], groupMeta = {};
+                for (const key of keys) {
+                    const val = parsed[key];
+                    if (val.length > 0 && typeof val[0] === 'string') {
+                        for (const s of val) data.push({ _group: key, value: s });
+                    } else {
+                        for (const e of val) data.push({ _group: key, ...e });
+                    }
+                    groupMeta[key] = null;
+                }
+                return { type: 'mixed', originalKeys: keys, groupMeta, data };
+            }
             const data = [];
             for (const g of keys) for (const e of parsed[g]) data.push({ _group: g, ...e });
             return { type: 'grouped', groups: parsed, data };

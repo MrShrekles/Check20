@@ -4,7 +4,7 @@
 const CD = {
     classes:     ['tank', 'professional', 'support', 'merchant', 'mage'],
     origins:     ['', 'arcane', 'tech', 'nature', 'celestial', 'chrono', 'crystal', 'dragon', 'elemental', 'fey', 'life', 'vozian', 'chaos', 'basic'],
-    actions:     ['', 'Resource', 'Action', 'Half Action', 'Off-Action', 'Passive', 'Special', 'Upgrade', 'Domineer', 'Manifest', 'Decay'],
+    actions:     ['', 'Resource', 'Action', 'Half Action', 'Off-Action', 'Passive', 'Special', 'Upgrade'],
     ranges:      ['', 'Self', 'Touch', 'Melee', 'Reach', 'Short', 'Medium', 'Long', 'Area', 'Known'],
     damageTypes: ['', 'Impact', 'Piercing', 'Slashing', 'Acid', 'Eclipse', 'Fire', 'Fluid', 'Ice', 'Lightning', 'Solar', 'Thunder', 'Toxic', 'Nature', 'Psychic', 'Vozian', 'Healing'],
 };
@@ -57,30 +57,49 @@ function classAddStep(entryIdx, branch) {
     });
 }
 
+// ── ACTION TYPE COLORS ────────────────────────────────────────────────────────
+const CD_ACTION_COLORS = {
+    'Resource':    '#4a7c59',
+    'Action':      '#c8922a',
+    'Half Action': '#9a6e20',
+    'Off-Action':  '#7755aa',
+    'Passive':     '#3d7080',
+    'Special':     '#b85c28',
+    'Upgrade':     '#2e7faa',
+};
+
 // ── STEP RENDERER ─────────────────────────────────────────────────────────────
 function renderClassStep(step, si, idx, branch, durId, condId) {
     const pp    = key => escAttr(`${branch}.steps.${si}.${key}`);
     const sel   = (opts, val) => opts.map(o =>
         `<option value="${escAttr(o)}"${o === (val ?? '') ? ' selected' : ''}>${escHtml(o) || '—'}</option>`
     ).join('');
-    const isTalent = branch === 'talent';
 
-    return `<div class="extra-feature">
+    const actionColor = CD_ACTION_COLORS[step.action] || 'var(--border-bright)';
+    const actionTag   = step.action
+        ? `<span class="class-step-action-tag" style="color:${actionColor};">${escHtml(step.action)}</span>`
+        : '';
+
+    return `<div class="extra-feature" style="border-left:3px solid ${actionColor};">
         <div class="extra-feature-header">
             <span class="class-step-num">${step.step ?? si}</span>
             <input class="extra-feature-name field-input class-step-name" type="text"
                 value="${escAttr(step.name || '')}"
                 onchange="updateField(${idx},'${pp('name')}',this.value)" oninput="markUnsaved()"
                 placeholder="Step name...">
-            <select class="field-input class-step-action" style="width:120px;flex-shrink:0;"
-                onchange="updateField(${idx},'${pp('action')}',this.value)">
-                ${sel(CD.actions, step.action)}
-            </select>
+            ${actionTag}
             <button class="extra-feature-delete"
                 onclick="classRemoveStep(${idx},'${branch}',${si})">✕</button>
         </div>
         <div class="extra-feature-body">
             <div class="field-flex">
+                <div class="field-wrap fw-sm">
+                    <label class="field-label">Action</label>
+                    <select class="field-input class-step-action"
+                        onchange="updateField(${idx},'${pp('action')}',this.value);renderEditor()">
+                        ${sel(CD.actions, step.action)}
+                    </select>
+                </div>
                 <div class="field-wrap fw-md">
                     <label class="field-label">Check</label>
                     <input class="field-input" type="text" placeholder="Strength, Agility"
@@ -208,7 +227,251 @@ function renderClassEntry(entry, idx) {
 
     return identitySection
         + renderClassBranch(entry, idx, 'path')
-        + renderClassBranch(entry, idx, 'talent');
+        + renderClassBranch(entry, idx, 'talent')
+        + renderClassQualityCheck(entry, idx);
+}
+
+// ── QUALITY CHECKER ───────────────────────────────────────────────────────────
+
+const CLASS_QC = {
+    conditions: [
+        'Bleeding','Broken','Concussion','Coughing','Dislocation','Slowed',
+        'Pinned','Prone','Blind','Charmed','Confused','Deaf','Fear',
+        'Injured','Stunned','Exhaustion','Invisible','Intangible',
+        'Constrained','Deafened','Death',
+    ],
+    checks: [
+        'Strength','Agility','Intellect','Survival','Observation','Crafting',
+        'Spirit','Mental','Physical','Stealth','Performance','Provoke','Medicine',
+    ],
+    // matches "for 1 minute", "until end of your next turn", etc.
+    durationRx: /(?:for |lasts? |remains? for )([\w\s]+?(?:minute|round|hour|day)s?|until (?:the )?end of (?:your next turn|combat|the round|the turn)|until the start of your next turn|end of combat)/i,
+};
+
+let _qcIssues  = [];   // filled each render, used by click handlers
+let _qcIgnCache = null;
+
+function _qcGetIgnored() {
+    if (!_qcIgnCache) {
+        try { _qcIgnCache = new Set(JSON.parse(localStorage.getItem('classQC_v1') || '[]')); }
+        catch(e) { _qcIgnCache = new Set(); }
+    }
+    return _qcIgnCache;
+}
+
+function classQCIgnore(key) {
+    _qcIgnCache = null;
+    const s = _qcGetIgnored();
+    s.add(key);
+    localStorage.setItem('classQC_v1', JSON.stringify([...s]));
+    renderEditor();
+    renderEntryList();
+}
+
+function classQCUnignoreAll(entryName) {
+    _qcIgnCache = null;
+    const s = _qcGetIgnored();
+    const pfx = `${entryName}::`;
+    for (const k of [...s]) { if (k.startsWith(pfx)) s.delete(k); }
+    localStorage.setItem('classQC_v1', JSON.stringify([...s]));
+    renderEditor();
+    renderEntryList();
+}
+
+function classQCApply(entryIdx, issueKey) {
+    const issue = _qcIssues.find(i => i.key === issueKey);
+    if (!issue?.fix) return;
+    updateField(entryIdx, issue.fix.path, issue.fix.value);
+    classQCIgnore(issueKey); // re-renders
+}
+
+function classQCAnalyze(entry) {
+    const ignored = _qcGetIgnored();
+    const issues  = [];
+
+    // All feature names in this entry (used for upgrade-by-reference detection)
+    const allNames = new Set();
+    for (const b of ['path','talent']) {
+        for (const s of (entry[b]?.steps || [])) { if (s.name) allNames.add(s.name); }
+    }
+
+    for (const branch of ['path','talent']) {
+        const steps = entry[branch]?.steps || [];
+        for (let si = 0; si < steps.length; si++) {
+            const step = steps[si];
+            const desc  = step.description || '';
+
+            const push = (code, label, detail, fix = null) => {
+                const key = `${entry.name}::${branch}::${step.name}::${code}`;
+                if (!ignored.has(key)) issues.push({ key, branch, si, step, code, label, detail, fix });
+            };
+
+            // ── 1. Blank action field ────────────────────────────────────────
+            if (!step.action) {
+                const likelyUpgrade =
+                    /\bwhen you (?:use |cast |activate )?[A-Z]/.test(desc) ||
+                    /\s(?:II|III|IV|V|VI|VII)$/.test(step.name);
+                push('empty_action', 'Missing action type', 'Action field is blank.',
+                    likelyUpgrade ? { path: `${branch}.steps.${si}.action`, value: 'Upgrade', label: 'Set → Upgrade' } : null
+                );
+            }
+
+            // ── 2. Conditions in description missing from field ──────────────
+            const currConds = new Set(
+                (step.condition || '').split(',').map(c => c.trim().toLowerCase()).filter(Boolean)
+            );
+            const newConds = CLASS_QC.conditions.filter(c =>
+                new RegExp(`\\b${c}\\b`, 'i').test(desc) && !currConds.has(c.toLowerCase())
+            );
+            if (newConds.length) {
+                const merged = step.condition
+                    ? `${step.condition}, ${newConds.join(', ')}`
+                    : newConds.join(', ');
+                push('missing_condition', 'Condition in description not in field',
+                    `Detected: ${newConds.join(', ')}`,
+                    { path: `${branch}.steps.${si}.condition`, value: merged, label: 'Add to Field' }
+                );
+            }
+
+            // ── 3. Check name in description but field empty ─────────────────
+            if (!step.check) {
+                const chkRx = new RegExp(`\\b(${CLASS_QC.checks.join('|')}) check\\b`, 'i');
+                const chkM  = desc.match(chkRx);
+                if (chkM) {
+                    const isTargetSave = /\b(?:must make|succeed on|each creature|enemies|opponents?|targets?)\b/i.test(desc);
+                    const note = isTargetSave ? ' (looks like a target save — verify before applying)' : '';
+                    push('missing_check', 'Check in description, field empty',
+                        `Detected "${chkM[1]} check"${note}.`,
+                        { path: `${branch}.steps.${si}.check`, value: chkM[1], label: 'Add Check' }
+                    );
+                }
+            }
+
+            // ── 4. Duration in description but field empty ───────────────────
+            if (!step.duration) {
+                const durM = desc.match(CLASS_QC.durationRx);
+                if (durM) {
+                    const cleaned = durM[1].charAt(0).toUpperCase() + durM[1].slice(1);
+                    push('missing_duration', 'Duration in description, field empty',
+                        `Detected: "${cleaned}"`,
+                        { path: `${branch}.steps.${si}.duration`, value: cleaned, label: 'Apply' }
+                    );
+                }
+            }
+
+            // ── 5. Damage dice in description but damage field empty ─────────
+            if (!step.damage) {
+                const diceM = desc.match(/\[?\[?(\d+d\d+)\]?\]?/);
+                if (diceM) {
+                    push('missing_damage', 'Damage dice in description, field empty',
+                        `Detected: "${diceM[1]}"`,
+                        { path: `${branch}.steps.${si}.damage`, value: diceM[1], label: 'Apply' }
+                    );
+                }
+            }
+
+            // ── 6. Damage set without a type, or type set without damage ────────
+            const hasDmg  = step.damage  !== '' && step.damage  !== undefined && step.damage  !== null;
+            const hasType = step.damageType !== '' && step.damageType !== undefined && step.damageType !== null;
+            if (hasDmg && !hasType) {
+                const typeList = CD.damageTypes.filter(Boolean);
+                const typeRx   = new RegExp(`\\b(${typeList.join('|')})\\s+damage\\b`, 'i');
+                const typeM    = desc.match(typeRx);
+                const detected = typeM ? typeList.find(t => t.toLowerCase() === typeM[1].toLowerCase()) : null;
+                push('damage_no_type', 'Damage value has no damage type',
+                    `Damage is "${step.damage}" but Damage Type is empty.${detected ? ` Detected: ${detected}` : ''}`,
+                    detected ? { path: `${branch}.steps.${si}.damageType`, value: detected, label: `Apply ${detected}` } : null
+                );
+            }
+            if (hasType && !hasDmg) {
+                push('type_no_damage', 'Damage type set but no damage value',
+                    `Damage Type is "${step.damageType}" but Damage field is empty.`,
+                    null
+                );
+            }
+
+            // ── 7. Roman-numeral name suffix but action isn't Upgrade ────────
+            if (step.action && step.action !== 'Upgrade' && /\s(?:II|III|IV|V|VI|VII)$/.test(step.name)) {
+                push('upgrade_by_name', 'Name suggests Upgrade but action differs',
+                    `"${step.name}" looks like a follow-up feature, but action is "${step.action}".`,
+                    { path: `${branch}.steps.${si}.action`, value: 'Upgrade', label: 'Set → Upgrade' }
+                );
+            }
+
+            // ── 7. Description says "When you use [Feature]" but not Upgrade ─
+            if (step.action !== 'Upgrade') {
+                for (const name of allNames) {
+                    if (name === step.name || name.length < 4) continue;
+                    const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    if (new RegExp(`\\bwhen you (?:use (?:the )?|cast |activate )?${escaped}\\b`, 'i').test(desc)) {
+                        push('upgrade_by_ref', `References "${name}" — may be an Upgrade`,
+                            `"When you … ${name}" found in description, action is "${step.action || '(blank)'}".`,
+                            { path: `${branch}.steps.${si}.action`, value: 'Upgrade', label: 'Set → Upgrade' }
+                        );
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    return issues;
+}
+
+function renderClassQualityCheck(entry, idx) {
+    const issues = classQCAnalyze(entry);
+    _qcIssues = issues;
+
+    const TYPE_COLOR = {
+        empty_action:       '#cc5544',
+        missing_condition:  '#cc8833',
+        missing_check:      '#cc8833',
+        missing_duration:   '#7788bb',
+        missing_damage:     '#7788bb',
+        damage_no_type:     '#cc5544',
+        type_no_damage:     '#cc5544',
+        upgrade_by_name:    '#44aacc',
+        upgrade_by_ref:     '#44aacc',
+    };
+
+    const body = issues.length === 0
+        ? `<div class="class-qc-empty">✓ No issues detected.</div>`
+        : `<div class="class-qc-list">${issues.map(issue => {
+            const branchLbl  = issue.branch === 'path' ? 'PATH' : 'TALENT';
+            const typeColor  = TYPE_COLOR[issue.code] || '#888888';
+            const fixBtn = issue.fix
+                ? `<button class="btn btn-green" style="font-size:9px;padding:2px 8px;"
+                       onclick="classQCApply(${idx},'${escAttr(issue.key)}')"
+                   >${escHtml(issue.fix.label)}</button>`
+                : '';
+            const ignBtn = `<button class="btn btn-ghost" style="font-size:9px;padding:2px 8px;"
+                    onclick="classQCIgnore('${escAttr(issue.key)}')"
+                >Ignore</button>`;
+            return `<div class="class-qc-issue" style="border-left:3px solid ${typeColor};">
+                <div class="class-qc-card-hd">
+                    <span class="class-qc-badge">${escHtml(branchLbl)} ${issue.si}</span>
+                    <span class="class-qc-name">${escHtml(issue.step.name || '(unnamed)')}</span>
+                </div>
+                <div class="class-qc-card-bd">
+                    <div class="class-qc-type" style="color:${typeColor};">${escHtml(issue.label)}</div>
+                    <div class="class-qc-detail">${escHtml(issue.detail)}</div>
+                    <div class="class-qc-actions">${fixBtn}${ignBtn}</div>
+                </div>
+            </div>`;
+        }).join('')}</div>`;
+
+    const badge = issues.length > 0
+        ? `<span class="class-qc-cnt class-qc-cnt-warn">${issues.length}</span>`
+        : `<span class="class-qc-cnt class-qc-cnt-ok">✓</span>`;
+
+    return `<div class="forge-section">
+        <div class="section-header section-header-split">
+            <span>Quality Check ${badge}</span>
+            <button class="btn btn-ghost" style="font-size:9px;padding:1px 8px;"
+                onclick="classQCUnignoreAll('${escAttr(entry.name)}')">Reset Ignored</button>
+        </div>
+        ${body}
+    </div>`;
 }
 
 // ── REGISTER ──────────────────────────────────────────────────────────────────
@@ -222,10 +485,14 @@ registerEditor('class', {
         const talentSteps = entry.talent?.steps?.length ?? 0;
         const origin      = entry.origin || '';
         const color       = CD_ORIGIN_COLORS[origin] || '#666';
+        const issueCount  = classQCAnalyze(entry).length;
+        const badges = [];
+        if (origin) badges.push({ label: origin, color });
+        if (issueCount > 0) badges.push({ label: `⚠ ${issueCount}`, color: '#cc7733' });
         return {
             name:   entry.name || '(unnamed)',
             meta:   `${pathSteps}p · ${talentSteps}t`,
-            badges: origin ? [{ label: origin, color }] : [],
+            badges,
         };
     },
 

@@ -1,0 +1,134 @@
+[
+  {
+    "name": "Bleeding",
+    "category": "Corpus",
+    "effect": "Cannot recover wounds or receive healing.",
+    "duration": "Lasts 1 minute"
+  },
+  {
+    "name": "Broken",
+    "category": "Corpus",
+    "effect": "Physical Disadvantage",
+    "duration": "Lasts 6 weeks"
+  },
+  {
+    "name": "Concussion",
+    "category": "Corpus",
+    "effect": "Mental Disadvantage, Spellcasting Disadvantage",
+    "duration": "Until a Long Rest"
+  },
+  {
+    "name": "Coughing",
+    "category": "Corpus",
+    "effect": "Mental Disadvantage",
+    "duration": "Until a Press On or irritant removed"
+  },
+  {
+    "name": "Dislocation",
+    "category": "Corpus",
+    "effect": "Physical Disadvantage",
+    "duration": "Off-Action Survival Check, or Until a Long Rest"
+  },
+  {
+    "name": "Slowed",
+    "category": "Corpus",
+    "effect": "Movement halved",
+    "duration": "Until source removed or until the end of your next turn"
+  },
+  {
+    "name": "Pinned",
+    "category": "Corpus",
+    "effect": "Cannot move; restrained by an object or creature.",
+    "duration": "Off-Action Physical Check"
+  },
+  {
+    "name": "Prone",
+    "category": "Corpus",
+    "effect": "Disadvantage on ranged attacks; advantage for melee attacks against you.",
+    "duration": "Requires 15 ft of movement to stand."
+  },
+  {
+    "name": "Blind",
+    "category": "Cognition",
+    "effect": "Disadvantage on attack checks; attacks against you have advantage.",
+    "duration": "Off-Action removal unless permanent"
+  },
+  {
+    "name": "Charmed",
+    "category": "Cognition",
+    "effect": "Mental Disadvantage; cannot attack the source of the charm.",
+    "duration": "Ends based on the charm's source"
+  },
+  {
+    "name": "Confused",
+    "category": "Cognition",
+    "effect": "Mental Disadvantage; attacks against you have +1",
+    "duration": "Until end of next turn"
+  },
+  {
+    "name": "Deaf",
+    "category": "Cognition",
+    "effect": "Stealth disadvantage; Provoke disadvantage",
+    "duration": "Until end of next turn"
+  },
+  {
+    "name": "Fear",
+    "category": "Cognition",
+    "effect": "Must dash away or hide until the end of your next turn. Typically cannot be the same source twice.",
+    "duration": "Ends if you cannot see the source until the start of your next turn."
+  },
+  {
+    "name": "Intangible",
+    "category": "Special",
+    "effect": "Immune to physical damage. Cannot attack non-intangible creatures. Cannot move through inorganic material. Half Movement.",
+    "duration": "Ends after the effect's duration or through magical disruption. "
+  },
+  {
+    "name": "Invisible",
+    "category": "Special",
+    "effect": "Cannot be targeted by opportunity attacks; attacks against you have disadvantage.",
+    "duration": "Ends after making an aggressive action or when revealed by substances like powder or oil."
+  },
+  {
+    "name": "Stunned",
+    "category": "Major",
+    "effect": "Disadvantage on all checks; movement halved.",
+    "duration": "Until end of next turn or Press On"
+  },
+  {
+    "name": "Exhaustion",
+    "category": "Major",
+    "effect": "Disadvantage on all checks; movement halved.",
+    "duration": "Persists until a long rest, magical recovery, or specific intervention (e.g., caffeine)."
+  },
+  {
+    "name": "Constrained",
+    "category": "Major",
+    "effect": "Cannot make attack actions; attacks against you have advantage.",
+    "duration": "Off-Action removal if possible; escape check from restraints"
+  },
+  {
+    "name": "Unconscious",
+    "category": "Major",
+    "effect": "Unable to act; vulnerable to critical hits and Finishers.",
+    "duration": "Ends after a set duration, damage taken, or Off-Action ally assistance."
+  },
+  {
+    "name": "Exposed",
+    "category": "Major",
+    "effect": "Take double damage",
+    "duration": "Until end of next turn or Press On"
+  },
+  {
+    "name": "Injured",
+    "category": "Major",
+    "effect": "At 0 wounds, any further damage causes immediate Death.",
+    "duration": "Healing removes the condition. Excess damage does not carry over."
+  },
+  {
+    "name": "Death",
+    "category": "Major",
+    "effect": "Character dies and cannot interact with the living world.",
+    "duration": "Only resurrection magic can remove this condition."
+  }
+]

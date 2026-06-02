@@ -1943,14 +1943,6 @@
         "duration": "1 hour",
         "effect": "Create a portal on a solid surface within medium range. At the start of your next turn, create a second portal within medium range. The two portals become linked for 1 hour. Creatures, objects, and projectiles entering one portal immediately exit the other, preserving momentum.",
         "cost": 3
-      },
-      {
-        "intent": "Whisper",
-        "range": "Short",
-        "target": "Area",
-        "area": "reach",
-        "duration": "Instant",
-        "effect": "Tear a brief rift beneath a creature within Short Range. The target makes a Physical check or tumbles through space, reappearing within Reach and landing Prone."
       }
     ]
   },

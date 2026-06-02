@@ -173,6 +173,7 @@
 
     // ---------- Render loop (card view) ----------
     let raf = null;
+    let lastRendered = [];
     function scheduleRender() { if (raf) cancelAnimationFrame(raf); raf = requestAnimationFrame(render); }
 
     function render() {
@@ -191,6 +192,7 @@
         else if (sortSel.value === 'origin') data = data.slice().sort((a, b) => (a.origins[0] || '').localeCompare(b.origins[0] || '') || a.name.localeCompare(b.name));
         else data = data.slice().sort((a, b) => a.name.localeCompare(b.name));
 
+        lastRendered = data;
         count.textContent = `${data.length} / ${gods.length}`;
 
         const frag = document.createDocumentFragment();
@@ -423,6 +425,28 @@
         const H = Math.round(hue), S = Math.round(sat), L = Math.round(light);
         return `background:hsl(${H} ${S}% ${L}%); border-color:hsl(${H} ${Math.max(0,S-15)}% ${Math.max(0,L-12)}%);`;
     }
+
+    // ---------- Random god ----------
+    $('#random-god').addEventListener('click', () => {
+        const pool = lastRendered.length ? lastRendered : gods;
+        if (!pool.length) return;
+        const g = pool[Math.floor(Math.random() * pool.length)];
+        const card = document.getElementById(g.slug);
+        if (!card) return;
+        // Switch to card view if in tree mode
+        if (viewMode === 'tree') btnCard.click();
+        // Expand if collapsed
+        card.classList.remove('collapsed');
+        const body = card.querySelector('.god-body');
+        const more = card.querySelector('.read-more');
+        const toggleBtn = card.querySelector('button[data-act="toggle"]');
+        if (body) body.classList.remove('collapsed');
+        if (more) more.textContent = 'Show less';
+        if (toggleBtn) toggleBtn.textContent = 'Hide';
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        card.style.outline = '2px solid var(--theme)';
+        setTimeout(() => card.style.outline = '', 1800);
+    });
 
     function split(v) { return v ? String(v).split(/[|,]/).map(s => s.trim()).filter(Boolean) : []; }
     function splitCSV(v) { return v ? String(v).split(',').map(s => s.trim()).filter(Boolean) : []; }
