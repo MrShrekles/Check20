@@ -8,7 +8,7 @@
     <link rel="icon" href="../assets/icons/check20-app.png" type="image/png" />
     <link rel="apple-touch-icon" href="../assets/icons/check20-app.png" />
     <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#0c0c0f" />
+    <meta name="theme-color" content="#1b2c2c" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -38,7 +38,6 @@
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Chat</h2>
-                        <button class="ghost-btn" id="btn-nar-clear-chat" type="button">Clear</button>
                     </div>
                     <ol class="nar-chat-log" id="nar-chat-log">
                         <li class="empty-hint" style="list-style:none">Create a session to see the shared feed.</li>
@@ -86,7 +85,10 @@
                     <div class="section-head">
                         <h2 class="section-title">Party View</h2>
                         <div style="display:flex;gap:6px;align-items:center">
-                            <button class="room-code-badge" id="room-code-badge" hidden title="Tap to copy code"></button>
+                            <button class="room-code-badge" id="room-code-badge" hidden title="Tap to copy code">
+                                <span class="room-badge-name" id="room-badge-name"></span><span class="room-badge-code" id="room-badge-code"></span>
+                            </button>
+                            <button class="ghost-btn privacy-btn" id="btn-privacy-mode" type="button" title="Privacy mode — hides room code for streaming" hidden>👁</button>
                             <button class="ghost-btn" id="btn-invite" type="button">Invite</button>
                         </div>
                     </div>
@@ -528,10 +530,27 @@
         </div>
     </dialog>
 
+    <!-- Room Creation Dialog -->
+    <dialog id="room-create-dialog" class="nar-dialog">
+        <div class="nar-dialog-inner">
+            <p class="nar-dialog-name">Name Your Campaign</p>
+            <input id="room-name-input" class="nar-dialog-input" type="text"
+                   placeholder="e.g. The Velvet Circuit…" maxlength="40" autocomplete="off" />
+            <div id="room-name-suggestions" class="nar-dialog-suggestions"></div>
+            <textarea id="room-welcome-input" class="nar-dialog-textarea"
+                      placeholder="Welcome message for players… (optional)" rows="3" maxlength="200"></textarea>
+            <button class="nar-dialog-action" id="btn-create-room-confirm" type="button">Create Session</button>
+            <button class="nar-dialog-action nar-dialog-action--cancel" id="btn-create-room-cancel" type="button">Cancel</button>
+        </div>
+    </dialog>
+
     <!-- Bottom navigation (5 tabs) -->
     <nav class="bottom-nav nar-nav" aria-label="Bottom navigation">
-        <button class="nav-btn" data-nav="chat" type="button" aria-controls="panel-chat">
-            <img class="nav-icon" src="../assets/icons/chat.png" alt="" aria-hidden="true" />
+        <button class="nav-btn" data-nav="chat" data-tip="Session Chat" type="button" aria-controls="panel-chat">
+            <span class="nav-icon-wrap">
+                <img class="nav-icon" src="../assets/icons/chat.png" alt="" aria-hidden="true" />
+                <span class="nav-notif" id="chat-notif" hidden></span>
+            </span>
             <span class="nav-label">Chat</span>
         </button>
         <button class="nav-btn is-active" data-nav="party" type="button" aria-controls="panel-party">

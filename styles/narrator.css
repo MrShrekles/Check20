@@ -419,6 +419,90 @@ details.minion-card[open] .minion-chevron {
     border-color: transparent;
 }
 
+/* ── SYSTEM CHAT MESSAGES ─────────────────────────────────────────── */
+
+.chat-system-msg {
+    display: flex;
+    justify-content: center;
+    padding: 2px 0;
+}
+
+.chat-sys-text {
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    letter-spacing: 0.04em;
+}
+
+/* ── PRIVACY / STREAMER MODE ──────────────────────────────────────── */
+
+.privacy-btn {
+    font-size: 14px;
+    padding: 4px 7px;
+    opacity: 0.5;
+    transition: opacity 0.15s;
+}
+
+.privacy-btn--active {
+    opacity: 1;
+    color: #e0a030;
+}
+
+body.privacy-mode .room-badge-code {
+    filter: blur(7px);
+    user-select: none;
+}
+
+body.privacy-mode .prow-name {
+    filter: blur(6px);
+    user-select: none;
+}
+
+/* ── ROOM CREATION DIALOG ─────────────────────────────────────────── */
+
+.nar-dialog-input,
+.nar-dialog-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    resize: none;
+}
+
+.nar-dialog-input:focus,
+.nar-dialog-textarea:focus {
+    outline: none;
+    border-color: var(--teal-light);
+}
+
+.nar-dialog-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.nar-name-suggestion {
+    padding: 5px 10px;
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+}
+
+.nar-name-suggestion:active {
+    background: var(--teal-dark);
+    color: var(--text);
+    border-color: var(--teal-light);
+}
+
 /* ── SHARED CHAT ──────────────────────────────────────────────────── */
 
 .nar-chat-log {
@@ -1590,4 +1674,78 @@ details.minion-card[open] .minion-chevron {
 .nar-roll-sub {
     font-size: 12px;
     color: var(--muted);
+}
+
+/* ── COLLAPSIBLE GENERATOR SECTIONS ──────────────────────────────────── */
+
+.section[data-collapse] .section-head {
+    cursor: pointer;
+    user-select: none;
+}
+
+.section[data-collapse] .section-title::before {
+    content: '▸ ';
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.section[data-collapse].is-open .section-title::before {
+    content: '▾ ';
+}
+
+/* Hide everything after the section-head when collapsed */
+.section[data-collapse]:not(.is-open) .section-head ~ * {
+    display: none !important;
+}
+
+/* ── DESKTOP LAYOUT — narrator-specific additions ─────────────────────
+ * Core 2-column layout (nav+chat left, panels right) is inherited from
+ * active-sheet.css since narrator.html also loads it.
+ * This block handles narrator-only elements.
+ * ─────────────────────────────────────────────────────────────────── */
+
+@media (min-width: 1100px) {
+    /* Inline code in narrator chat */
+    .chat-code {
+        font-family: "Courier New", monospace;
+        font-size: 0.85em;
+        background: rgba(70, 100, 100, 0.25);
+        border-radius: 3px;
+        padding: 1px 4px;
+    }
+
+    /* Settings / generator drawers stay in right column */
+    .nar-settings-panel,
+    .gen-drawer {
+        left: var(--left-w) !important;
+        right: 0 !important;
+    }
+}
+
+/* ── 2-PANEL RIGHT SIDE ≥ 1440px ─────────────────────────────────────
+ * Party pinned left, active panel on right — both visible at once.
+ * ─────────────────────────────────────────────────────────────────── */
+@media (min-width: 1440px) {
+    .panel-stack:has(#panel-generators.is-active),
+    .panel-stack:has(#panel-journal.is-active),
+    .panel-stack:has(#panel-initiative.is-active) {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 16px;
+        align-items: start;
+    }
+
+    .panel-stack:has(#panel-generators.is-active) #panel-party,
+    .panel-stack:has(#panel-journal.is-active) #panel-party,
+    .panel-stack:has(#panel-initiative.is-active) #panel-party {
+        display: block !important;
+        grid-column: 1;
+    }
+
+    .panel-stack:has(#panel-generators.is-active) #panel-generators,
+    .panel-stack:has(#panel-journal.is-active) #panel-journal,
+    .panel-stack:has(#panel-initiative.is-active) #panel-initiative {
+        grid-column: 2;
+    }
 }

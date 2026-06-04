@@ -4,7 +4,7 @@ import { initializeApp }        from 'https://www.gstatic.com/firebasejs/12.13.0
 import {
     getFirestore, doc, setDoc, getDoc,
     collection, onSnapshot, serverTimestamp, updateDoc, deleteDoc,
-    query, orderBy, limit, getDocs, writeBatch,
+    query, orderBy, limit, getDocs, writeBatch, where,
 } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
 import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js';
 
@@ -25,7 +25,7 @@ const auth = getAuth(app);
 window.__arc = {
     db, uid: null,
     doc, setDoc, getDoc, collection, onSnapshot, serverTimestamp, updateDoc, deleteDoc,
-    query, orderBy, limit, getDocs, writeBatch,
+    query, orderBy, limit, getDocs, writeBatch, where,
 };
 
 signInAnonymously(auth)

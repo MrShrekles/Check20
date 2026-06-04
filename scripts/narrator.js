@@ -15,6 +15,10 @@ function setActivePanel(key) {
     if (key === 'generators') { ensureMonsters(); ensureWorld(); ensureQuest(); ensureCommerce(); ensureHex(); ensureGods(); ensureLoot(); }
     if (key === 'initiative') { ensureMonsters(); }
     if (key === 'party')      { ensureMonsters(); }
+    if (key === 'chat') {
+        const notif = document.getElementById('chat-notif');
+        if (notif) notif.hidden = true;
+    }
 }
 
 document.querySelectorAll('.nav-btn[data-nav]').forEach(btn => {
@@ -141,7 +145,7 @@ document.getElementById('btn-invite')?.addEventListener('click', () => {
     if (currentRoomCode) {
         if (!confirm(`You already have room ${currentRoomCode} open.\n\nCreating a new room will close the current one. Players will need the new code.\n\nAre you sure?`)) return;
     }
-    createRoom();
+    openCreateRoomDialog();
 });
 
 document.getElementById('btn-add-player')?.addEventListener('click', function() {
@@ -834,12 +838,14 @@ async function endSession() {
     updateChatInputState();
 
     // Reset UI
-    const badge   = document.getElementById('room-code-badge');
-    const goldRow = document.getElementById('party-gold-row');
-    const invite  = document.getElementById('btn-invite');
-    if (badge)   { badge.hidden = true; badge.textContent = ''; }
-    if (goldRow) goldRow.hidden = true;
-    if (invite)  invite.textContent = 'Invite';
+    const badge      = document.getElementById('room-code-badge');
+    const privacyBtn = document.getElementById('btn-privacy-mode');
+    const goldRow    = document.getElementById('party-gold-row');
+    const invite     = document.getElementById('btn-invite');
+    if (badge)      { badge.hidden = true; setBadgeContent('', ''); }
+    if (privacyBtn) privacyBtn.hidden = true;
+    if (goldRow)    goldRow.hidden = true;
+    if (invite)     invite.textContent = 'Invite';
 
     renderParty(); renderInventory(); renderNarChat();
 }
@@ -2579,9 +2585,16 @@ function listenToSharedChat(code) {
         arc.orderBy('postedAt', 'desc'),
         arc.limit(60)
     );
+    let prevChatCount = 0;
     chatUnsubscribe = arc.onSnapshot(q, snap => {
         fbSharedChat = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         renderNarChat();
+        if (snap.docs.length > prevChatCount) {
+            const chatPanel = document.getElementById('panel-chat');
+            const notif     = document.getElementById('chat-notif');
+            if (notif && !chatPanel?.classList.contains('is-active')) notif.hidden = false;
+        }
+        prevChatCount = snap.docs.length;
     }, err => console.error('[ARC] chat listener:', err));
 }
 
@@ -2631,15 +2644,23 @@ function rollNarDamageTable(damageType, count) {
 }
 
 document.getElementById('nar-chat-log')?.addEventListener('click', async e => {
-    // Delete message
+    // Remove message — marks removed:true, snapshot re-renders for everyone
     const deleteBtn = e.target.closest('.chat-delete-btn');
-    if (deleteBtn && window.__arc && nar.roomCode) {
+    if (deleteBtn && window.__arc && currentRoomCode) {
         const id = deleteBtn.dataset.chatId;
         if (id) {
             const arc = window.__arc;
-            await arc.deleteDoc(arc.doc(arc.db, 'rooms', nar.roomCode, 'chat', id));
-            fbSharedChat = fbSharedChat.filter(m => m.id !== id);
-            renderNarChat();
+            await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'chat', id), { removed: true });
+        }
+        return;
+    }
+    // Undo remove
+    const undoBtn = e.target.closest('.chat-undo-btn');
+    if (undoBtn && window.__arc && currentRoomCode) {
+        const id = undoBtn.dataset.chatId;
+        if (id) {
+            const arc = window.__arc;
+            await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'chat', id), { removed: false });
         }
         return;
     }
@@ -2663,6 +2684,13 @@ document.getElementById('nar-chat-log')?.addEventListener('click', async e => {
 });
 
 function buildSharedChatCard(m) {
+    if (m.removed) {
+        const undoBtn = m.id ? `<button class="chat-undo-btn" data-chat-id="${m.id}" title="Restore message" type="button">↩ Undo</button>` : '';
+        return `<li class="chat-msg-wrap chat-msg--removed" data-chat-id="${m.id || ''}">${undoBtn}<span class="chat-removed-text">— removed —</span></li>`;
+    }
+    if (m.type === 'system') {
+        return `<li class="chat-msg-wrap chat-system-msg" data-chat-id="${m.id || ''}"><span class="chat-sys-text">— ${m.text || ''} —</span></li>`;
+    }
     const isNar  = m.isNarrator;
     const isRoll = ['roll','dice','weapon-attack'].includes(m.type);
     const badge  = isNar
@@ -2692,8 +2720,8 @@ function buildSharedChatCard(m) {
     } else {
         const emojiOnly = isEmojiOnly(m.text);
         cardHtml = emojiOnly
-            ? `<div class="chat-entry--msg"><span class="chat-time">${m.time || ''}</span><div class="chat-emoji-block"><span class="chat-text chat-emoji-big">${m.text || ''}</span>${EMOJI_REACTIONS_HTML}</div></div>`
-            : `<div class="chat-entry--msg"><span class="chat-time">${m.time || ''}</span><span class="chat-text">${m.text || ''}</span></div>`;
+            ? `<div class="chat-entry--msg"><span class="chat-time">${m.time || ''}</span><div class="chat-emoji-block"><span class="chat-text chat-emoji-big">${parseInline(m.text)}</span>${EMOJI_REACTIONS_HTML}</div></div>`
+            : `<div class="chat-entry--msg"><span class="chat-time">${m.time || ''}</span><span class="chat-text">${parseInline(m.text)}</span></div>`;
     }
 
     const deleteBtn = m.id
@@ -2748,23 +2776,10 @@ if (narEmojiBtn && narEmojiPanel) {
     });
 }
 
-// Clear all shared chat (narrator only)
-document.getElementById('btn-nar-clear-chat')?.addEventListener('click', async () => {
-    if (!window.__arc || !nar.roomCode) return;
-    const arc = window.__arc;
-    const chatRef = arc.collection(arc.db, 'rooms', nar.roomCode, 'chat');
-    const snap = await arc.getDocs(chatRef);
-    const batch = arc.writeBatch(arc.db);
-    snap.docs.forEach(d => batch.delete(d.ref));
-    await batch.commit();
-    fbSharedChat = [];
-    renderNarChat();
-});
-
 // ── SETTINGS & THEME ─────────────────────────────────────────────────────────
 
-const NAR_DEFAULT_A1 = '#6b9cc8';
-const NAR_DEFAULT_A2 = '#c4622d';
+const NAR_DEFAULT_A1 = '#4c6e6e';  // teal-light
+const NAR_DEFAULT_A2 = '#b8860b';  // dark goldenrod
 
 function hexToRgb(hex) {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -2849,7 +2864,8 @@ function openSettings() {
             <div class="wm-label" style="margin-bottom:6px">Primary</div>
             ${sliderRow('a1', a1, sl1)}
             <div class="wm-label" style="margin:12px 0 6px">Secondary</div>
-            ${sliderRow('a2', a2, sl2)}`;
+            ${sliderRow('a2', a2, sl2)}
+            <button id="btn-reset-theme" class="settings-action-btn" style="margin-top:14px;border-color:rgba(70,100,100,0.45);color:var(--cream);">↺ Reset to Default Theme</button>`;
 
         function updateNarColor(key) {
             const h = parseInt(document.getElementById(`hue-${key}`)?.value || '210', 10);
@@ -2866,6 +2882,10 @@ function openSettings() {
             ['hue','sat','lit'].forEach(prefix => {
                 document.getElementById(`${prefix}-${key}`)?.addEventListener('input', () => updateNarColor(key));
             });
+        });
+        document.getElementById('btn-reset-theme')?.addEventListener('click', () => {
+            setTheme(NAR_DEFAULT_A1, NAR_DEFAULT_A2);
+            openSettings();
         });
     }
     document.getElementById('nar-reset-confirm').hidden = true;
@@ -2923,6 +2943,84 @@ document.getElementById('btn-nar-reset-confirm')?.addEventListener('click', () =
     closeSettings();
 });
 
+// ── ROOM CREATION DIALOG ─────────────────────────────────────────────────────
+
+const NOIR_NAMES = [
+    'The Obsidian Parlor', "Blackwell's Den", 'The Velvet Circuit',
+    'Iron Meridian', 'The Crimson Exchange', 'Thornfield Station',
+    'The Copper Casket', 'Red District', 'The Gilded Wreck',
+    'Ashmore & Associates', 'The Ironclad Suite', 'Dust & Gunpowder',
+];
+
+function openCreateRoomDialog() {
+    const nameInput = document.getElementById('room-name-input');
+    const msgInput  = document.getElementById('room-welcome-input');
+    const sugEl     = document.getElementById('room-name-suggestions');
+    if (nameInput) nameInput.value = '';
+    if (msgInput)  msgInput.value  = '';
+    if (sugEl) {
+        sugEl.innerHTML = NOIR_NAMES.map(n =>
+            `<button class="nar-name-suggestion" type="button">${n}</button>`
+        ).join('');
+        sugEl.querySelectorAll('.nar-name-suggestion').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (nameInput) { nameInput.value = btn.textContent; nameInput.focus(); }
+            });
+        });
+    }
+    document.getElementById('room-create-dialog')?.showModal();
+}
+
+document.getElementById('btn-create-room-confirm')?.addEventListener('click', () => {
+    const name       = document.getElementById('room-name-input')?.value.trim()    || '';
+    const welcomeMsg = document.getElementById('room-welcome-input')?.value.trim() || '';
+    document.getElementById('room-create-dialog')?.close();
+    createRoom(name, welcomeMsg);
+});
+
+document.getElementById('btn-create-room-cancel')?.addEventListener('click', () => {
+    document.getElementById('room-create-dialog')?.close();
+});
+
+// ── PRIVACY / STREAMER MODE ───────────────────────────────────────────────────
+
+let privacyMode = localStorage.getItem('arc-privacy-mode') === 'true';
+
+function applyPrivacyMode() {
+    document.body.classList.toggle('privacy-mode', privacyMode);
+    const btn = document.getElementById('btn-privacy-mode');
+    if (btn) {
+        btn.textContent = privacyMode ? '🙈' : '👁';
+        btn.title       = privacyMode ? 'Privacy mode ON — tap to show' : 'Privacy mode — hides room code for streaming';
+        btn.classList.toggle('privacy-btn--active', privacyMode);
+    }
+}
+
+document.getElementById('btn-privacy-mode')?.addEventListener('click', () => {
+    privacyMode = !privacyMode;
+    localStorage.setItem('arc-privacy-mode', privacyMode);
+    applyPrivacyMode();
+});
+
+applyPrivacyMode();
+
+// ── KEYBOARD SHORTCUTS ────────────────────────────────────────────────────────
+
+const KB_NAV = { '1': 'chat', '2': 'party', '3': 'generators', '4': 'journal', '5': 'initiative' };
+
+document.addEventListener('keydown', e => {
+    if (e.target.closest('input, textarea, [contenteditable]')) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+    if (KB_NAV[e.key]) { setActivePanel(KB_NAV[e.key]); return; }
+
+    if (e.key === '`') {
+        privacyMode = !privacyMode;
+        localStorage.setItem('arc-privacy-mode', privacyMode);
+        applyPrivacyMode();
+    }
+});
+
 // ── FIREBASE: ROOM ────────────────────────────────────────────────────────────
 
 let fbPlayers        = [];
@@ -2944,20 +3042,23 @@ function genRoomCode() {
     return Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
 }
 
-async function createRoom() {
+async function createRoom(name = '', welcomeMsg = '') {
     const arc = window.__arc;
     if (!arc?.db || !arc?.uid) { alert('Still connecting — try again in a moment.'); return; }
 
     const code = genRoomCode();
     try {
         await arc.setDoc(arc.doc(arc.db, 'rooms', code), {
-            narratorUid: arc.uid,
-            createdAt:   arc.serverTimestamp(),
-            status:      'active',
+            narratorUid:    arc.uid,
+            name:           name || '',
+            welcomeMsg:     welcomeMsg || '',
+            createdAt:      arc.serverTimestamp(),
+            lastActivityAt: arc.serverTimestamp(),
+            status:         'active',
         });
         currentRoomCode = code;
         localStorage.setItem('arc-narrator-room', code);
-        showRoomBadge(code);
+        showRoomBadge(code, name);
         listenToPlayers(code);
         listenToLoot(code);
         listenToRoomDoc(code);
@@ -2972,12 +3073,11 @@ async function restoreRoom(code) {
     try {
         const snap = await arc.getDoc(arc.doc(arc.db, 'rooms', code));
         if (snap.exists() && snap.data().status === 'active') {
-            showRoomBadge(code);
+            showRoomBadge(code, snap.data().name || '');
             listenToPlayers(code);
             listenToLoot(code);
             listenToRoomDoc(code);
             listenToSharedChat(code);
-    
         } else {
             localStorage.removeItem('arc-narrator-room');
             currentRoomCode = null;
@@ -3016,6 +3116,10 @@ function listenToRoomDoc(code) {
             const valEl = document.getElementById('party-gold-val');
             if (valEl) valEl.textContent = fbGold;
 
+            // Keep badge in sync if campaign name ever changes
+            const badge = document.getElementById('room-code-badge');
+            if (badge && !badge.hidden) setBadgeContent(code, data.name || '');
+
             const r = data.lastReaction;
             if (r?.at && r?.chatMsgId && r?.anim && r.by !== arc.uid) {
                 const ageMs = Date.now() - r.at.toMillis();
@@ -3041,13 +3145,26 @@ document.getElementById('party-gold-row')?.addEventListener('click', e => {
     if (btn) adjustGold(parseInt(btn.dataset.gold, 10));
 });
 
-function showRoomBadge(code) {
-    const badge     = document.getElementById('room-code-badge');
-    const inviteBtn = document.getElementById('btn-invite');
-    const goldRow   = document.getElementById('party-gold-row');
-    if (badge)     { badge.textContent = code; badge.hidden = false; }
-    if (inviteBtn) inviteBtn.textContent = 'New Room';
-    if (goldRow)   goldRow.hidden = false;
+function setBadgeContent(code, name) {
+    const nameEl = document.getElementById('room-badge-name');
+    const codeEl = document.getElementById('room-badge-code');
+    if (nameEl) nameEl.textContent = name ? `${name} ` : '';
+    if (codeEl) codeEl.textContent = name ? `· ${code}` : code;
+}
+
+function showRoomBadge(code, name) {
+    const badge      = document.getElementById('room-code-badge');
+    const privacyBtn = document.getElementById('btn-privacy-mode');
+    const inviteBtn  = document.getElementById('btn-invite');
+    const goldRow    = document.getElementById('party-gold-row');
+    if (badge) {
+        setBadgeContent(code, name);
+        badge.title  = `Room code: ${code} — tap to copy`;
+        badge.hidden = false;
+    }
+    if (privacyBtn) privacyBtn.hidden = false;
+    if (inviteBtn)  inviteBtn.textContent = 'New Room';
+    if (goldRow)    goldRow.hidden = false;
     const chatInput = document.getElementById('nar-chat-input');
     if (chatInput) chatInput.placeholder = 'Message the party…';
 }
@@ -3096,3 +3213,41 @@ renderGenHexList();
 renderJournalNpcs();
 renderQuestLog();
 renderSessions();
+
+// Generator sections — collapsible, start closed
+(function bindGenCollapse() {
+    document.querySelectorAll('#panel-generators .section').forEach(sec => {
+        sec.setAttribute('data-collapse', '');
+        sec.addEventListener('click', e => {
+            const head = e.target.closest('.section-head');
+            if (!head) return;
+            if (e.target.closest('button')) {
+                // Auto-expand when tapping an action button while collapsed
+                if (!sec.classList.contains('is-open')) sec.classList.add('is-open');
+                return;
+            }
+            sec.classList.toggle('is-open');
+        });
+    });
+})();
+
+// Mobile swipe left/right to cycle panels
+(function () {
+    const ORDER = ['chat', 'party', 'generators', 'journal', 'initiative'];
+    let sx = 0, sy = 0, live = false;
+    document.addEventListener('touchstart', e => {
+        if (e.target.closest('input, select, textarea, button, [role="slider"]')) { live = false; return; }
+        sx = e.touches[0].clientX; sy = e.touches[0].clientY; live = true;
+    }, { passive: true });
+    document.addEventListener('touchend', e => {
+        if (!live) return; live = false;
+        const dx = e.changedTouches[0].clientX - sx;
+        const dy = e.changedTouches[0].clientY - sy;
+        if (Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx)) return;
+        const cur = document.querySelector('.nav-btn.is-active')?.dataset.nav;
+        const idx = ORDER.indexOf(cur);
+        if (idx === -1) return;
+        const next = ORDER[idx + (dx < 0 ? 1 : -1)];
+        if (next) setActivePanel(next);
+    }, { passive: true });
+})();

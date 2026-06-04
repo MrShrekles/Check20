@@ -12,22 +12,31 @@
     --radius: 14px;
     --gap: 12px;
 
-    --bg: #0c0c0f;
-    --panel: #14141a;
-    --panel-2: #1a1a22;
-    --text: #f2f2f6;
-    --muted: rgba(242, 242, 246, 0.72);
+    /* ── Warm site palette ───────────────────────── */
+    --bg:      #1e1e1e;
+    --panel:   #282828;
+    --panel-2: #323232;
+    --text:    #fffaf0;
+    --muted:   rgba(220, 205, 185, 0.70);
 
-    --line: rgba(255, 255, 255, 0.10);
-    --focus: rgba(255, 255, 255, 0.18);
+    --line:    rgba(70, 100, 100, 0.35);
+    --focus:   rgba(70, 100, 100, 0.50);
+
+    --gold:       goldenrod;
+    --gold-dim:   rgba(218, 165, 32, 0.15);
+    --gold-glow:  rgba(218, 165, 32, 0.30);
+    --teal:       #2f4f4f;
+    --teal-light: #4c6e6e;
+    --teal-dark:  #1b2c2c;
+    --cream:      #d9b382;
 
     /* Per-character dual accent — overridden by applyTheme() */
-    --accent:      #6b9cc8;
-    --accent-dim:  rgba(107, 156, 200, 0.18);
-    --accent-mid:  rgba(107, 156, 200, 0.38);
-    --accent2:     #c4622d;
-    --accent2-dim: rgba(196, 98, 45, 0.18);
-    --accent2-mid: rgba(196, 98, 45, 0.38);
+    --accent:      #4c6e6e;
+    --accent-dim:  rgba(76, 110, 110, 0.18);
+    --accent-mid:  rgba(76, 110, 110, 0.38);
+    --accent2:     #b8860b;
+    --accent2-dim: rgba(184, 134, 11, 0.18);
+    --accent2-mid: rgba(184, 134, 11, 0.38);
 }
 
 /* Prevent auto-zoom on input focus in Android/iOS (triggered when font-size < 16px) */
@@ -43,6 +52,7 @@ body[data-page-title="Active-Sheet"] {
     background: var(--bg);
     color: var(--text);
     overflow-x: hidden;
+    font-family: "Candara", "Gill Sans", "Optima", sans-serif;
 }
 
 body[data-page-title="Active-Sheet"] #site-header {
@@ -395,9 +405,9 @@ body[data-page-title="Active-Sheet"] #site-header {
     width: 100%;
     min-height: 38px;
     border-radius: 12px;
-    border: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.07);
-    color: var(--text);
+    border: 1px solid rgba(70, 100, 100, 0.45);
+    background: rgba(70, 100, 100, 0.18);
+    color: var(--cream);
     font-size: 14px;
     font-weight: 700;
     touch-action: manipulation;
@@ -712,7 +722,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     min-height: 34px;
     border-radius: 8px;
     border: 1px solid var(--line);
-    background: #0f0f14;
+    background: #222222;
     color: var(--text);
     padding: 0;
     font-size: 14px;
@@ -734,7 +744,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     min-height: 48px;
     border-radius: 14px;
     border: 1px solid var(--line);
-    background: #0f0f14;
+    background: #222222;
     color: var(--text);
     padding: 0 14px;
     font-size: 16px;
@@ -856,7 +866,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     flex-wrap: wrap;
     gap: 4px;
     padding: 5px 12px;
-    background: rgba(10, 8, 12, 0.97);
+    background: rgba(24, 20, 20, 0.97);
     border-top: 1px solid rgba(220, 70, 70, 0.25);
     backdrop-filter: blur(8px);
 }
@@ -910,9 +920,9 @@ body[data-page-title="Active-Sheet"] #site-header {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
 
-    background: rgba(12, 12, 15, 0.96);
+    background: rgba(26, 26, 26, 0.97);
     backdrop-filter: blur(14px);
-    border-top: 1px solid var(--line);
+    border-top: 1px solid rgba(70, 100, 100, 0.4);
     z-index: 100;
 }
 
@@ -1156,7 +1166,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     width: 46px;
     height: 5px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba(70, 100, 100, 0.45);
     margin: 6px auto 10px auto;
 }
 
@@ -1193,7 +1203,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     min-height: 40px;
     border-radius: 10px;
     border: 1px solid var(--line);
-    background: #0f0f14;
+    background: #222222;
     color: var(--text);
     padding: 0 10px;
     font-size: 15px;
@@ -1267,7 +1277,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     min-height: 48px;
     border-radius: 14px;
     border: 1px solid var(--line);
-    background: #0f0f14;
+    background: #222222;
     color: var(--text);
     padding: 0 14px;
     font-size: 16px;
@@ -1395,7 +1405,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     min-height: 36px;
     border-radius: 10px;
     border: 1px solid var(--line);
-    background: #0f0f14;
+    background: #222222;
     color: var(--text);
     padding: 0 8px;
     font-size: 14px;
@@ -1410,7 +1420,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     min-height: 72px;
     border-radius: 10px;
     border: 1px solid var(--line);
-    background: #0f0f14;
+    background: #222222;
     color: var(--text);
     padding: 10px;
     font-size: 14px;
@@ -1447,7 +1457,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     min-height: 36px;
     border-radius: 10px;
     border: 1px solid var(--line);
-    background: #0f0f14;
+    background: #222222;
     color: var(--text);
     padding: 0 10px;
     font-size: 14px;
@@ -1460,7 +1470,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     min-height: 52px;
     border-radius: 10px;
     border: 1px solid var(--line);
-    background: #0f0f14;
+    background: #222222;
     color: var(--text);
     padding: 8px 10px;
     font-size: 14px;
@@ -1544,7 +1554,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     min-height: 44px;
     border-radius: 12px;
     border: 1px solid var(--line);
-    background: #0f0f14;
+    background: #222222;
     color: var(--text);
     padding: 0 12px;
     font-size: 15px;
@@ -1663,9 +1673,9 @@ body[data-page-title="Active-Sheet"] #site-header {
 }
 
 .step-edit-btn--save {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.20);
-    color: var(--text);
+    background: rgba(70, 100, 100, 0.20);
+    border-color: rgba(70, 100, 100, 0.50);
+    color: var(--cream);
 }
 
 .step-card {
@@ -1752,7 +1762,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     min-height: 52px;
     border-radius: 12px;
     border: 1px solid var(--line);
-    background: #0f0f14;
+    background: #222222;
     color: var(--text);
     font-size: 24px;
     font-weight: 900;
@@ -2532,8 +2542,8 @@ body[data-page-title="Active-Sheet"] #site-header {
 }
 
 .sp-card.is-sel {
-    border-color: rgba(255,255,255,0.5);
-    background: rgba(255,255,255,0.08);
+    border-color: var(--gold);
+    background: rgba(47, 79, 79, 0.40);
 }
 
 .sp-card-name {
@@ -2569,8 +2579,8 @@ body[data-page-title="Active-Sheet"] #site-header {
 }
 
 .sp-species-card.is-sel {
-    border-color: rgba(255,255,255,0.5);
-    background: rgba(255,255,255,0.08);
+    border-color: var(--gold);
+    background: rgba(47, 79, 79, 0.40);
 }
 
 .sp-species-head {
@@ -2587,8 +2597,8 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 /* Species detail panel */
 .sp-species-detail {
-    border: 1px solid rgba(255,255,255,0.2);
-    background: var(--panel-2);
+    border: 1px solid rgba(70, 100, 100, 0.50);
+    background: var(--teal-dark);
     border-radius: 14px;
     padding: 14px;
     margin-bottom: 8px;
@@ -2729,8 +2739,8 @@ body[data-page-title="Active-Sheet"] #site-header {
     align-items: center;
     justify-content: space-between;
     padding: calc(8px + var(--safe-t)) 12px 8px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--line);
+    background: var(--teal-dark);
+    border-bottom: 1px solid rgba(70, 100, 100, 0.45);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -3315,6 +3325,34 @@ body[data-page-title="Active-Sheet"] #site-header {
 }
 .chat-delete-btn:active { color: #e55; }
 
+.chat-msg--removed {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 8px;
+    opacity: 0.45;
+}
+.chat-removed-text {
+    font-style: italic;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+}
+.chat-undo-btn {
+    background: none;
+    border: 1px solid rgba(70,100,100,0.35);
+    border-radius: 4px;
+    color: var(--teal-light);
+    font-size: 11px;
+    padding: 1px 7px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+}
+.chat-undo-btn:hover { opacity: 1; color: var(--cream); }
+
 /* ── SPELLS PANEL ───────────────────────────────────────────── */
 
 .spell-mn-display {
@@ -3679,7 +3717,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     transition: background 0.12s, border-color 0.12s;
 }
 
-.chat-roll-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); }
+.chat-roll-card:hover { background: rgba(70,100,100,0.10); border-color: rgba(70,100,100,0.5); }
 
 .chat-roll--adv { border-left-color: #60e090; }
 .chat-roll--dis { border-left-color: #ff9060; }
@@ -3737,7 +3775,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     transition: background 0.12s, border-color 0.12s;
 }
 
-.chat-feat-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); }
+.chat-feat-card:hover { background: rgba(70,100,100,0.10); border-color: rgba(70,100,100,0.5); }
 
 .chat-feat-upgrades {
     margin-top: 8px;
@@ -3792,8 +3830,8 @@ body[data-page-title="Active-Sheet"] #site-header {
     display: flex;
     align-items: center;
     gap: 6px;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(70, 100, 100, 0.12);
+    border: 1px solid rgba(70, 100, 100, 0.35);
     border-radius: 9px;
     padding: 6px 10px;
 }
@@ -3945,14 +3983,14 @@ body[data-page-title="Active-Sheet"] #site-header {
     flex-direction: column;
     gap: 2px;
     padding: 8px 12px;
-    background: rgba(255,255,255,0.04);
+    background: rgba(70,100,100,0.06);
     border: 1px solid transparent;
     border-radius: 10px;
     font-size: 14px;
     transition: background 0.12s;
 }
 
-.chat-entry--msg:hover { background: rgba(255,255,255,0.07); }
+.chat-entry--msg:hover { background: rgba(70,100,100,0.12); }
 
 .chat-text { line-height: 1.4; }
 
@@ -3969,6 +4007,29 @@ body[data-page-title="Active-Sheet"] #site-header {
     text-align: center;
     padding: 6px 0;
     transform-origin: center bottom;
+}
+
+/* System messages (arrival/departure/events) */
+.chat-system-msg {
+    display: flex;
+    justify-content: center;
+    padding: 2px 0;
+}
+
+.chat-sys-text {
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    letter-spacing: 0.02em;
+}
+
+/* Inline code in chat messages */
+.chat-code {
+    font-family: "Courier New", monospace;
+    font-size: 0.85em;
+    background: rgba(70, 100, 100, 0.25);
+    border-radius: 3px;
+    padding: 1px 4px;
 }
 
 .chat-emoji-reactions {
@@ -4270,7 +4331,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     min-height: 44px;
     border-radius: 12px;
     border: 1px solid var(--line);
-    background: #0f0f14;
+    background: #222222;
     color: var(--text);
     padding: 0 12px;
     font-size: 15px;
@@ -4282,8 +4343,8 @@ body[data-page-title="Active-Sheet"] #site-header {
     padding: 0 16px;
     border-radius: 12px;
     border: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.09);
-    color: var(--text);
+    background: rgba(70, 100, 100, 0.22);
+    color: var(--cream);
     font-size: 14px;
     font-weight: 700;
     font-family: inherit;
@@ -4451,9 +4512,9 @@ body[data-page-title="Active-Sheet"] #site-header {
 }
 
 .equip-type-btn.is-sel {
-    color: var(--text);
-    background: rgba(255,255,255,0.10);
-    border-color: rgba(255,255,255,0.25);
+    color: var(--cream);
+    background: rgba(70, 100, 100, 0.22);
+    border-color: rgba(70, 100, 100, 0.55);
 }
 
 /* Equipment row display */
@@ -4529,8 +4590,8 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 .equip-tab.is-active {
     background: var(--panel-2);
-    color: var(--text);
-    border-color: rgba(255,255,255,0.2);
+    color: var(--cream);
+    border-color: rgba(70, 100, 100, 0.50);
 }
 
 .equip-cat-badge {
@@ -4601,5 +4662,223 @@ body[data-page-title="Active-Sheet"] #site-header {
     justify-content: space-between;
     gap: 8px;
     width: 100%;
+}
+
+/* ── TOOLTIPS (pointer devices only) ──────────────────────────── */
+
+@media (hover: hover) and (pointer: fine) {
+    [data-tip] {
+        position: relative;
+    }
+
+    [data-tip]::after {
+        content: attr(data-tip);
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: #111;
+        color: #e8e8e8;
+        border: 1px solid rgba(70, 100, 100, 0.5);
+        border-radius: 7px;
+        padding: 5px 9px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.15s 0.4s;
+        z-index: 500;
+    }
+
+    [data-tip]:hover::after { opacity: 1; }
+}
+
+/* ── DESKTOP / TABLET LAYOUT ─────────────────────────────────────── */
+
+@media (min-width: 768px) {
+    .panel-stack {
+        max-width: 760px;
+        padding: 0 16px;
+    }
+}
+
+@media (min-width: 1100px) {
+    /*
+     * 2-column layout:
+     *   LEFT  (--left-w): topbar left + nav strip + chat fills rest
+     *   RIGHT (remaining): active content panels
+     */
+    :root {
+        --left-w:     360px;
+        --topbar-h:   48px;
+        --navstrip-h: 66px;
+    }
+
+    /* ── Topbar: fixed, full width ── */
+    .app-topbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: var(--topbar-h);
+        padding-top: 8px;
+        padding-bottom: 8px;
+        z-index: 200;
+    }
+
+    /* ── Nav: horizontal strip at top of left column ── */
+    .bottom-nav {
+        position: fixed !important;
+        left: 0;
+        top: var(--topbar-h);
+        right: auto;
+        bottom: auto;
+        width: var(--left-w);
+        height: var(--navstrip-h);
+
+        display: grid !important;
+        grid-template-columns: repeat(5, 1fr);
+        align-items: center;
+
+        border-right: 1px solid rgba(70, 100, 100, 0.4);
+        border-top: none;
+        border-bottom: 1px solid rgba(70, 100, 100, 0.4);
+        padding: 0;
+    }
+
+    /* Chat tab hidden — always visible below */
+    .bottom-nav [data-nav="chat"] { display: none; }
+
+    .nav-btn {
+        height: var(--navstrip-h);
+        padding: 10px 4px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        width: 100%;
+    }
+
+    .nav-icon { width: 24px; height: 24px; }
+
+    .nav-label {
+        display: block;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        line-height: 1;
+    }
+
+    /* ── Chat panel: left column, below nav strip ── */
+    #panel-chat {
+        position: fixed !important;
+        left: 0;
+        top: calc(var(--topbar-h) + var(--navstrip-h));
+        width: var(--left-w);
+        height: calc(100vh - var(--topbar-h) - var(--navstrip-h));
+        display: flex !important;
+        flex-direction: column;
+        background: var(--bg);
+        border-right: 1px solid rgba(70, 100, 100, 0.4);
+        z-index: 50;
+        overflow: hidden;
+    }
+
+    #panel-chat #party-session-panel {
+        flex-shrink: 0;
+        max-height: 30%;
+        overflow-y: auto;
+        border-bottom: 1px solid rgba(70, 100, 100, 0.3);
+    }
+
+    #panel-chat > .section {
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0;
+        margin: 0;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    .chat-sticky-bottom {
+        position: static;
+        flex-shrink: 0;
+        padding-bottom: 8px;
+        border-top: 1px solid rgba(70, 100, 100, 0.3);
+    }
+
+    /* ── Right column: content panels ── */
+    .app {
+        margin-left: var(--left-w);
+        margin-right: 0;
+        padding-top: var(--topbar-h);
+        padding-bottom: 32px;
+    }
+
+    .panel-stack {
+        max-width: none;
+        margin: 0;
+        padding: 12px 24px 0;  /* breathing room below topbar */
+    }
+
+    /* ── Drawers / modals constrained to right column ── */
+    .drawer,
+    .weapon-modal,
+    .feat-roll-modal,
+    .settings-modal,
+    .sp-overlay {
+        left: var(--left-w) !important;
+        right: 0 !important;
+    }
+
+    /* Conditions bar in right column */
+    .conditions-bar {
+        left: var(--left-w);
+        right: 0;
+        bottom: 0;
+    }
+}
+
+/* ── 2-PANEL RIGHT SIDE ≥ 1440px ─────────────────────────────── */
+/*
+ * When a non-Play panel is active, show Play pinned on the left
+ * and the active panel on the right — both visible at once.
+ * Uses :has() — supported in Chrome 105+, Safari 15.4+, Firefox 121+
+ */
+@media (min-width: 1440px) {
+    .panel-stack:has(#panel-actions.is-active),
+    .panel-stack:has(#panel-spells.is-active),
+    .panel-stack:has(#panel-ref.is-active),
+    .panel-stack:has(#panel-progression.is-active) {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 16px;
+        align-items: start;
+    }
+
+    /* Play panel always in left column when 2-panel is active */
+    .panel-stack:has(#panel-actions.is-active) #panel-play,
+    .panel-stack:has(#panel-spells.is-active) #panel-play,
+    .panel-stack:has(#panel-ref.is-active) #panel-play,
+    .panel-stack:has(#panel-progression.is-active) #panel-play {
+        display: block;
+        grid-column: 1;
+        grid-row: 1;
+        border-right: 1px solid rgba(70, 100, 100, 0.25);
+        padding-right: 16px;
+    }
+
+    /* Active panel fills right column */
+    #panel-actions.is-active,
+    #panel-spells.is-active,
+    #panel-ref.is-active,
+    #panel-progression.is-active {
+        grid-column: 2;
+        grid-row: 1;
+    }
 }
 

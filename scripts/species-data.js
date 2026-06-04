@@ -76,11 +76,15 @@ function normalizeSpecies(arr) {
         let features = Array.isArray(o.features) ? o.features : null;
         if (!features) {
             const flatFeature = {
-                name: o.feature_name || o.featureName || o.fetName || 'Feature',
-                description: o.feature_effect || o.featureEffect || o.fetEffect || '',
-                action: o.fetAction || o.action || '',
-                damage: o.fetDamage || o.damage || '',
-                type: o.fetDamagetype || o.fetDamageType || o.damageType || o.type || ''
+                name:        o.feature_name    || o.featureName || o.fetName || 'Feature',
+                description: o.feature_effect  || o.featureEffect || o.fetEffect || '',
+                action:      o.fetAction       || o.action || '',
+                check:       o.fetCheck        || o.check  || '',
+                range:       o.fetRange        || o.range  || '',
+                duration:    o.fetDuration     || o.duration || '',
+                condition:   o.fetCondition    || o.condition || '',
+                damage:      o.fetDamage       || o.damage || '',
+                type:        o.fetDamagetype   || o.fetDamageType || o.damageType || o.type || '',
             };
             const hasAny = Object.values(flatFeature).some(v => (v ?? '').toString().trim().length);
             features = hasAny ? [flatFeature] : [];
@@ -98,12 +102,16 @@ function normalizeSpecies(arr) {
             }
         }
         o.features = features.map(f => ({
-            name: (f.name ?? '').toString().trim() || 'Feature',
+            name:        (f.name        ?? '').toString().trim() || 'Feature',
             description: (f.description ?? '').toString().trim(),
-            action: (f.action ?? '').toString().trim(),
-            damage: (f.damage ?? '').toString().trim(),
-            type: (f.type ?? '').toString().trim(),
-            options: Array.isArray(f.options) ? f.options : []
+            action:      (f.action      ?? '').toString().trim(),
+            check:       (f.check       ?? '').toString().trim(),
+            range:       (f.range       ?? '').toString().trim(),
+            duration:    (f.duration    ?? '').toString().trim(),
+            condition:   (f.condition   ?? '').toString().trim(),
+            damage:      (f.damage      ?? '').toString().trim(),
+            type:        (f.type        ?? '').toString().trim(),
+            options: Array.isArray(f.options) ? f.options : [],
         }));
 
         // normalize images to always be an array

@@ -9,7 +9,7 @@
     <link rel="icon" href="../assets/icons/check20-app.png" type="image/png" />
     <link rel="apple-touch-icon" href="../assets/icons/check20-app.png" />
     <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#0c0c0f" />
+    <meta name="theme-color" content="#1b2c2c" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -53,13 +53,13 @@
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Checks</h2>
-                        <button class="gear-btn" data-editor="checks-editor" type="button" aria-label="Edit check modifiers">⚙</button>
+                        <button class="gear-btn" data-editor="checks-editor" type="button" aria-label="Edit check modifiers" title="Edit check modifiers">⚙</button>
                     </div>
                     <div class="section-editor" id="checks-editor">
                         <div class="cet">
                             <div class="cet-header">
                                 <span></span>
-                                <span>Stat</span>
+                                <span>Check</span>
                                 <span class="cet-bon-hdr">Bonus</span>
                             </div>
                             <div class="cet-group">Physical</div>
@@ -84,7 +84,7 @@
                 <div class="section" aria-label="Resources">
                     <div class="section-head">
                         <h2 class="section-title">Health</h2>
-                        <button class="gear-btn" data-editor="health-editor" type="button" aria-label="Edit health maximums">⚙</button>
+                        <button class="gear-btn" data-editor="health-editor" type="button" aria-label="Edit health maximums" title="Edit wound bonus & movement">⚙</button>
                     </div>
                     <div class="section-editor" id="health-editor">
                         <div class="editor-grid">
@@ -232,7 +232,7 @@
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Resources</h2>
-                        <button class="gear-btn" data-editor="res-editor" type="button" aria-label="Edit resources">⚙</button>
+                        <button class="gear-btn" data-editor="res-editor" type="button" aria-label="Edit resources" title="Edit mana & class resources">⚙</button>
                     </div>
                     <div class="section-editor" id="res-editor">
                         <p class="field-hint" style="margin-bottom:8px">Mana max is calculated automatically from your class features.</p>
@@ -375,6 +375,7 @@
                             </div>
                             <div class="bio-display-full"><span class="bio-display-label">Motivation</span><p id="bio-display-motivation">—</p></div>
                             <div class="bio-display-full"><span class="bio-display-label">Trinket</span><p id="bio-display-trinket">—</p></div>
+                            <div class="bio-display-full"><span class="bio-display-label">Equipment</span><p id="bio-display-additional-equip">—</p></div>
                         </div>
 
                         <!-- Edit form -->
@@ -401,7 +402,14 @@
                             <label class="field"><span class="field-label">Motivation</span>
                                 <textarea id="char-motivation" rows="3"></textarea>
                             </label>
-                            <label class="field"><span class="field-label">Trinket</span><input id="char-trinket" type="text" autocomplete="off" /></label>
+                            <label class="field"><span class="field-label">Trinket</span>
+                                <textarea id="char-trinket" rows="2"></textarea>
+                            </label>
+                            <div class="field">
+                                <span class="field-label">Additional Equipment</span>
+                                <textarea id="char-additional-equip" rows="3" placeholder="Starting equipment…"></textarea>
+                                <button type="button" id="btn-roll-additional-equip" class="ghost-btn" style="margin-top:4px;font-size:11px;width:100%">🎲 Roll Equipment</button>
+                            </div>
                             <div class="bio-edit-btns">
                                 <button class="primary-btn" id="btn-save-bio" type="button">Save</button>
                                 <button class="ghost-btn" id="btn-export" type="button">Export</button>
@@ -577,7 +585,6 @@
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title" id="chat-panel-title">Session Chat</h2>
-                        <button class="ghost-btn" id="btn-clear-chat" type="button">Clear</button>
                     </div>
                     <ol class="chat-log" id="chat-log" aria-label="Session chat">
                         <!-- entries injected by JS -->
@@ -728,7 +735,7 @@
                                 </select>
                             </label>
                         </div>
-                        <label class="field"><span class="field-label">Check Stat</span>
+                        <label class="field"><span class="field-label">Check</span>
                             <select id="ae-w-check" class="sheet-select">
                                 <option value="">— any —</option>
                                 <option>Agility</option><option>Crafting</option><option>Influence</option>
@@ -827,7 +834,7 @@
                     </select>
                 </label>
                 <label class="wm-edit-field wm-edit-field--wide">
-                    <span class="wm-stat-label">Check Stat</span>
+                    <span class="wm-stat-label">Check</span>
                     <select id="wm-check-stat-input" class="wm-edit-input"></select>
                 </label>
                 <label class="wm-edit-field wm-edit-field--wide">
@@ -1067,30 +1074,30 @@
 
     <!-- Bottom navigation — outside <main> so no container can trap fixed positioning -->
     <nav class="bottom-nav" aria-label="Bottom navigation">
-        <button class="nav-btn" data-nav="chat" type="button" aria-controls="panel-chat">
+        <button class="nav-btn" data-nav="chat" data-tip="Session Chat" type="button" aria-controls="panel-chat">
             <span class="nav-icon-wrap">
                 <img class="nav-icon" src="../assets/icons/chat.png" alt="" aria-hidden="true" />
                 <span class="nav-notif" id="chat-notif" hidden></span>
             </span>
             <span class="nav-label">Chat</span>
         </button>
-        <button class="nav-btn is-active" data-nav="play" type="button" aria-controls="panel-play">
+        <button class="nav-btn is-active" data-nav="play" data-tip="Play" type="button" aria-controls="panel-play">
             <img class="nav-icon" src="../assets/icons/play.png" alt="" aria-hidden="true" />
             <span class="nav-label">Play</span>
         </button>
-        <button class="nav-btn" data-nav="actions" type="button" aria-controls="panel-actions">
+        <button class="nav-btn" data-nav="actions" data-tip="Features & Equipment" type="button" aria-controls="panel-actions">
             <img class="nav-icon" src="../assets/icons/features.png" alt="" aria-hidden="true" />
             <span class="nav-label">Features</span>
         </button>
-        <button class="nav-btn" data-nav="spells" type="button" aria-controls="panel-spells">
+        <button class="nav-btn" data-nav="spells" data-tip="Spells" type="button" aria-controls="panel-spells">
             <img class="nav-icon" src="../assets/icons/spells.png" alt="" aria-hidden="true" />
             <span class="nav-label">Spells</span>
         </button>
-        <button class="nav-btn" data-nav="ref" type="button" aria-controls="panel-ref">
+        <button class="nav-btn" data-nav="ref" data-tip="Reference Tables" type="button" aria-controls="panel-ref">
             <img class="nav-icon" src="../assets/icons/reference.png" alt="" aria-hidden="true" />
             <span class="nav-label">Ref</span>
         </button>
-        <button class="nav-btn" data-nav="progression" type="button" aria-controls="panel-progression">
+        <button class="nav-btn" data-nav="progression" data-tip="XP & Progression" type="button" aria-controls="panel-progression">
             <img class="nav-icon" src="../assets/icons/progression.png" alt="" aria-hidden="true" />
             <span class="nav-label">Progress</span>
         </button>

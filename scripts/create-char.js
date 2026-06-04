@@ -45,6 +45,39 @@ const wiz = {
     name:         '',
 };
 
+const EQUIPMENT_LIST = [
+    "A bandolier of shotgun shells, a gun cleaning kit, a holster for quick draw",
+    "Brewing equipment, a selection of rare herbs and magical ingredients, a few bottles of 'moonshine'",
+    "A book of abyssal texts, a set of writing tools and ink, a small collection of scrolls and manuscripts, and a silver holy symbol",
+    "Collection jars (for the leeches), a medical kit (with basic supplies)",
+    "A grappling hook (for scaling trees and buildings), a water-skin, and a small first-aid kit",
+    "A ledger, a set of fine writing implements, and a collection of valuable coins from various nations",
+    "A set of tattooing tools, a sketchbook, and a few magical inks with unique properties",
+    "A set of wooden stakes, a vial of holy water, and a guide to supernatural creatures",
+    "A whetstone, a set of weapon maintenance tools, and a training manual",
+    "Acrobat's tools, a small makeup kit, and a set of costume props",
+    "Animal handling tools, a portable cage, and a collection of treats for animals",
+    "Bedroll, a map of the region, and a signal whistle",
+    "Elemental gemstones, a collection of scrolls detailing elemental spells, and a small bound elemental creature",
+    "Golem maintenance kit, a manual on golem anatomy, and a small golem-making kit",
+    "Healer's kit, a wooden staff, and a collection of potions",
+    "Light hammer, a flask filled with liquor, and a lighter",
+    "Mechanics' tools, a portable workshop, and a few spare parts",
+    "Musical instrument with intricate carvings, Performer's Flourish (+1 Influence)",
+    "Old miner's helmet (with functioning lantern), a collection of precious stones",
+    "Rope, grappling hook, and lockpicks in a compact pouch",
+    "Ruined spellbook, a magical focus, and a pouch of magical reagents",
+    "Scale, a ledger, and a set of merchant's tools, Additional 50 gp",
+    "Thieves' tools, a collapsible grappling hook, and a set of lockpicks",
+    "A sturdy belt with multiple pouches, a canvas bag, and a small pocket knife",
+    "A small pouch of magical components, a spellbook, and a scroll case",
+    "Handcuffs, a notepad, and a magnifying glass in a leather case",
+    "Enchanted makeup kit, a mirror, and a small case of various potions",
+    "Pocket watch, a city map, a book on city architecture",
+    "A portable taco-making kit, a book on taco divination, exotic taco ingredients",
+    "A set of cheese-making tools, a selection of fine cheeses, an intelligent cheese",
+];
+
 const TRINKET_LIST = [
     "Shotgun shell that was once shot at you, kept as a lucky charm",
     "A broken practice weapon, a reminder of past failures and determination to improve",
@@ -497,14 +530,18 @@ function renderBuildGuide() {
             ${steps.map(s => s.description ? `
                 <details class="guide-feat-row guide-feat-row--expand">
                     <summary class="guide-feat-summary">
-                        <span class="guide-feat-name">${s.name}</span>
-                        <span class="guide-feat-check">${s.check}</span>
+                        <span class="guide-feat-left">
+                            <span class="guide-feat-name">${s.name}</span>
+                            <span class="guide-feat-check">${s.check}</span>
+                        </span>
                     </summary>
                     <p class="guide-feat-desc">${s.description}</p>
                 </details>` : `
                 <div class="guide-feat-row">
-                    <span class="guide-feat-name">${s.name}</span>
-                    <span class="guide-feat-check">${s.check}</span>
+                    <span class="guide-feat-left">
+                        <span class="guide-feat-name">${s.name}</span>
+                        <span class="guide-feat-check">${s.check}</span>
+                    </span>
                 </div>`).join('')}
         </div>`;
 }
@@ -789,6 +826,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = pick(TRINKET_LIST);
             wiz.trinket = result;
             const el = document.getElementById('detail-trinket');
+            if (el) { el.value = result; }
+        }
+
+        if (btn.id === 'roll-extra-equip') {
+            const result = pick(EQUIPMENT_LIST);
+            wiz.extraEquip = result;
+            const el = document.getElementById('detail-extra-equip');
             if (el) { el.value = result; }
         }
     });

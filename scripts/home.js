@@ -123,6 +123,15 @@ function showJoinStatus(msg, type) {
     el.hidden      = false;
 }
 
+// Pre-fill room code from ?room= share link before Firebase is ready
+(function () {
+    const param = new URLSearchParams(window.location.search).get('room');
+    if (param) {
+        const input = document.getElementById('join-code-input');
+        if (input) input.value = param.toUpperCase().slice(0, 6);
+    }
+})();
+
 document.addEventListener('arc:firebase-ready', () => {
     const room = localStorage.getItem('arc-room');
 
@@ -150,9 +159,10 @@ async function doCreateRoom() {
     const code = genRoomCode();
     try {
         await arc.setDoc(arc.doc(arc.db, 'rooms', code), {
-            hostUid:   arc.uid,
-            createdAt: arc.serverTimestamp(),
-            status:    'active',
+            hostUid:        arc.uid,
+            createdAt:      arc.serverTimestamp(),
+            lastActivityAt: arc.serverTimestamp(),
+            status:         'active',
         });
 
         // Write player entry
@@ -206,16 +216,68 @@ document.getElementById('btn-leave-session')?.addEventListener('click', async ()
     if (room && arc?.db && arc?.uid) {
         try {
             await arc.deleteDoc(arc.doc(arc.db, 'rooms', room, 'players', arc.uid));
+
+            // Departure announcement
+            const active     = (() => { try { return JSON.parse(localStorage.getItem('arc-active-sheet') || 'null'); } catch { return null; } })();
+            const playerName = active?.char?.name || 'A player';
+            const roomName   = localStorage.getItem('arc-room-name') || '';
+            const text = roomName ? `${playerName} has left ${roomName}.` : `${playerName} has left the session.`;
+            arc.setDoc(arc.doc(arc.db, 'rooms', room, 'chat', crypto.randomUUID()), {
+                type: 'system', text,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                postedAt: arc.serverTimestamp(),
+            }).catch(() => {});
         } catch(e) { console.error('[ARC] leave failed:', e); }
     }
 
     localStorage.removeItem('arc-room');
+    localStorage.removeItem('arc-room-name');
     document.getElementById('home-active-session').hidden   = true;
     document.getElementById('home-join-form-wrap').hidden   = false;
     const btn = document.getElementById('btn-join-session');
     if (btn) btn.disabled = !arc?.uid;
     showJoinStatus('Left session.', 'info');
 });
+
+let _pendingJoin = null;
+
+async function completeJoin(code, roomName) {
+    const arc    = window.__arc;
+    const active = (() => { try { return JSON.parse(localStorage.getItem('arc-active-sheet') || 'null'); } catch { return null; } })();
+    const c = active?.char      || {};
+    const r = active?.resources || {};
+    const playerName = c.name || 'A player';
+
+    await arc.setDoc(arc.doc(arc.db, 'rooms', code, 'players', arc.uid), {
+        name:      playerName,
+        armor:     r.armor?.current  ?? 0,
+        woundsCur: r.hp?.current     ?? 0,
+        woundsMax: r.hp?.max         ?? 0,
+        mnCur:     r.MN?.current     ?? 0,
+        mnMax:     r.MN?.max         ?? 0,
+        gold:      c.gold            ?? 0,
+        updatedAt: arc.serverTimestamp(),
+    }, { merge: true });
+
+    arc.updateDoc(arc.doc(arc.db, 'rooms', code), { lastActivityAt: arc.serverTimestamp() }).catch(() => {});
+
+    // Arrival announcement in shared chat
+    const arrivalText = roomName
+        ? `${playerName} has entered ${roomName}.`
+        : `${playerName} has joined the session.`;
+    arc.setDoc(arc.doc(arc.db, 'rooms', code, 'chat', crypto.randomUUID()), {
+        type:     'system',
+        text:     arrivalText,
+        time:     new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        postedAt: arc.serverTimestamp(),
+    }).catch(() => {});
+
+    localStorage.setItem('arc-room', code);
+    if (roomName) localStorage.setItem('arc-room-name', roomName);
+    else localStorage.removeItem('arc-room-name');
+    showJoinStatus('Joined! Loading…', 'success');
+    setTimeout(() => { window.location.href = 'active-sheet.html'; }, 700);
+}
 
 document.getElementById('btn-join-session')?.addEventListener('click', async () => {
     const input = document.getElementById('join-code-input');
@@ -233,27 +295,38 @@ document.getElementById('btn-join-session')?.addEventListener('click', async () 
             return;
         }
 
-        // Write initial character snapshot from active save
-        const active = (() => { try { return JSON.parse(localStorage.getItem('arc-active-sheet') || 'null'); } catch { return null; } })();
-        const c = active?.char      || {};
-        const r = active?.resources || {};
+        const roomName   = snap.data().name       || '';
+        const welcomeMsg = snap.data().welcomeMsg || '';
 
-        await arc.setDoc(arc.doc(arc.db, 'rooms', code, 'players', arc.uid), {
-            name:      c.name            || 'Player',
-            armor:     r.armor?.current  ?? 0,
-            woundsCur: r.hp?.current     ?? 0,
-            woundsMax: r.hp?.max         ?? 0,
-            mnCur:     r.MN?.current     ?? 0,
-            mnMax:     r.MN?.max         ?? 0,
-            gold:      c.gold            ?? 0,
-            updatedAt: arc.serverTimestamp(),
-        }, { merge: true });
+        if (roomName || welcomeMsg) {
+            _pendingJoin = { code, roomName };
+            document.getElementById('entry-room-name').textContent = roomName || `Room ${code}`;
+            const msgEl = document.getElementById('entry-room-msg');
+            if (msgEl) { msgEl.textContent = welcomeMsg; msgEl.hidden = !welcomeMsg; }
+            document.getElementById('home-join-section').hidden = true;
+            document.getElementById('home-entry-screen').hidden = false;
+            return;
+        }
 
-        localStorage.setItem('arc-room', code);
-        showJoinStatus('Joined! Loading…', 'success');
-        setTimeout(() => { window.location.href = 'active-sheet.html'; }, 700);
+        await completeJoin(code, roomName);
     } catch(e) {
         console.error('[ARC] join failed:', e);
+        showJoinStatus('Connection error. Try again.', 'error');
+    }
+});
+
+document.getElementById('btn-enter-room')?.addEventListener('click', async () => {
+    if (!_pendingJoin) return;
+    const { code, roomName } = _pendingJoin;
+    _pendingJoin = null;
+    document.getElementById('home-entry-screen').hidden = true;
+    document.getElementById('home-join-section').hidden = false;
+    showJoinStatus('Joining…', 'info');
+    try {
+        await completeJoin(code, roomName);
+    } catch(e) {
+        console.error('[ARC] join failed:', e);
+        document.getElementById('home-join-form-wrap').hidden = false;
         showJoinStatus('Connection error. Try again.', 'error');
     }
 });

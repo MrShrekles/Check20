@@ -19,6 +19,7 @@ const GD = {
     damageType: ['', 'Impact', 'Piercing', 'Slashing', 'Acid', 'Eclipse', 'Fire', 'Fluid', 'Ice', 'Lightning', 'Solar', 'Thunder', 'Toxic', 'Nature', 'Psychic', 'Vozian', 'Healing', 'Physical', 'Impact, Slashing'],
     rarity:     ['', 'common', 'uncommon', 'rare', 'very rare', 'legendary'],
     hefty:      ['yes', 'no'],
+    checks:     ['', 'Strength', 'Agility', 'Intellect', 'Survival', 'Observation', 'Crafting', 'Spirit', 'Mental', 'Physical', 'Stealth', 'Performance', 'Provoke', 'Medicine'],
 };
 
 const WEAPON_CATEGORY_COLORS = {
@@ -137,8 +138,9 @@ function renderWeaponForm(e, idx) {
                         </div>
                         <div class="field-wrap full">
                             <label class="field-label">Check</label>
-                            <input class="field-input" type="text" placeholder="e.g. Agility, Strength"
-                                value="${escAttr(e.check || '')}" onchange="updateField(${idx},'check',this.value)" oninput="markUnsaved()">
+                            <select class="field-input" onchange="updateField(${idx},'check',this.value)">
+                                ${sel(GD.checks, e.check)}
+                            </select>
                         </div>
                     </div>
                 </div>

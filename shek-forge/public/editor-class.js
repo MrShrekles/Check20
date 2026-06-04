@@ -5,6 +5,7 @@ const CD = {
     classes:     ['tank', 'professional', 'support', 'merchant', 'mage'],
     origins:     ['', 'arcane', 'tech', 'nature', 'celestial', 'chrono', 'crystal', 'dragon', 'elemental', 'fey', 'life', 'vozian', 'chaos', 'basic'],
     actions:     ['', 'Resource', 'Action', 'Half Action', 'Off-Action', 'Passive', 'Special', 'Upgrade'],
+    checks:      ['', 'Strength', 'Agility', 'Intellect', 'Survival', 'Observation', 'Crafting', 'Spirit', 'Mental', 'Physical', 'Stealth', 'Performance', 'Provoke', 'Medicine'],
     ranges:      ['', 'Self', 'Touch', 'Melee', 'Reach', 'Short', 'Medium', 'Long', 'Area', 'Known'],
     damageTypes: ['', 'Impact', 'Piercing', 'Slashing', 'Acid', 'Eclipse', 'Fire', 'Fluid', 'Ice', 'Lightning', 'Solar', 'Thunder', 'Toxic', 'Nature', 'Psychic', 'Vozian', 'Healing'],
 };
@@ -39,6 +40,17 @@ function classRemoveStep(entryIdx, branch, stepIdx) {
     renderEditor();
 }
 
+function classReorderStep(entryIdx, branch, fromIdx, dir) {
+    const steps = state.data[entryIdx]?.[branch]?.steps;
+    if (!Array.isArray(steps)) return;
+    const toIdx = fromIdx + dir;
+    if (toIdx < 0 || toIdx >= steps.length) return;
+    [steps[fromIdx], steps[toIdx]] = [steps[toIdx], steps[fromIdx]];
+    steps.forEach((s, i) => { s.step = i; });
+    markUnsaved();
+    renderEditor();
+}
+
 function classAddStep(entryIdx, branch) {
     const entry = state.data[entryIdx];
     if (!entry?.[branch]) entry[branch] = { steps: [] };
@@ -63,22 +75,19 @@ const CD_ACTION_COLORS = {
     'Action':      '#c8922a',
     'Half Action': '#9a6e20',
     'Off-Action':  '#7755aa',
-    'Passive':     '#3d7080',
+    'Passive':     '#3d7a48',
     'Special':     '#b85c28',
     'Upgrade':     '#2e7faa',
 };
 
 // ── STEP RENDERER ─────────────────────────────────────────────────────────────
-function renderClassStep(step, si, idx, branch, durId, condId) {
+function renderClassStep(step, si, idx, branch, durId, condId, total) {
     const pp    = key => escAttr(`${branch}.steps.${si}.${key}`);
     const sel   = (opts, val) => opts.map(o =>
         `<option value="${escAttr(o)}"${o === (val ?? '') ? ' selected' : ''}>${escHtml(o) || '—'}</option>`
     ).join('');
 
     const actionColor = CD_ACTION_COLORS[step.action] || 'var(--border-bright)';
-    const actionTag   = step.action
-        ? `<span class="class-step-action-tag" style="color:${actionColor};">${escHtml(step.action)}</span>`
-        : '';
 
     return `<div class="extra-feature" style="border-left:3px solid ${actionColor};">
         <div class="extra-feature-header">
@@ -87,7 +96,12 @@ function renderClassStep(step, si, idx, branch, durId, condId) {
                 value="${escAttr(step.name || '')}"
                 onchange="updateField(${idx},'${pp('name')}',this.value)" oninput="markUnsaved()"
                 placeholder="Step name...">
-            ${actionTag}
+            <button class="step-reorder-btn" title="Move up"
+                onclick="classReorderStep(${idx},'${branch}',${si},-1)"
+                ${si === 0 ? 'disabled' : ''}>▲</button>
+            <button class="step-reorder-btn" title="Move down"
+                onclick="classReorderStep(${idx},'${branch}',${si},1)"
+                ${si === total - 1 ? 'disabled' : ''}>▼</button>
             <button class="extra-feature-delete"
                 onclick="classRemoveStep(${idx},'${branch}',${si})">✕</button>
         </div>
@@ -102,9 +116,10 @@ function renderClassStep(step, si, idx, branch, durId, condId) {
                 </div>
                 <div class="field-wrap fw-md">
                     <label class="field-label">Check</label>
-                    <input class="field-input" type="text" placeholder="Strength, Agility"
-                        value="${escAttr(step.check || '')}"
-                        onchange="updateField(${idx},'${pp('check')}',this.value)" oninput="markUnsaved()">
+                    <select class="field-input"
+                        onchange="updateField(${idx},'${pp('check')}',this.value)">
+                        ${sel(CD.checks, step.check)}
+                    </select>
                 </div>
                 <div class="field-wrap fw-sm">
                     <label class="field-label">Range</label>
@@ -169,7 +184,7 @@ function renderClassBranch(entry, idx, branch) {
                        <datalist id="${condId}">${condOpts}</datalist>`;
 
     const items = steps.length
-        ? steps.map((s, si) => renderClassStep(s, si, idx, branch, durId, condId)).join('')
+        ? steps.map((s, si) => renderClassStep(s, si, idx, branch, durId, condId, steps.length)).join('')
         : `<div class="extra-features-empty">No steps — click + Step to add one</div>`;
 
     return `<div class="forge-section">

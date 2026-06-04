@@ -8590,7 +8590,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed"
+              "condition": ""
             },
             {
               "step": 9,
@@ -8616,7 +8616,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused, Stunned"
+              "condition": "Confused"
             }
           ]
         },

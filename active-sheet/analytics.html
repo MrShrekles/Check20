@@ -13,9 +13,10 @@
             background: #0c0c0f;
             color: #d4d4d8;
             min-height: 100vh;
-            padding: 24px 16px;
+            padding: 24px 16px 48px;
         }
 
+        /* ── Gate ─────────────────────────────────────────── */
         #gate {
             display: flex;
             flex-direction: column;
@@ -46,88 +47,254 @@
         }
         #gate .err { color: #f87171; font-size: 0.85rem; }
 
-        #dashboard { display: none; }
+        /* ── Dashboard ────────────────────────────────────── */
+        #dashboard { display: none; max-width: 900px; margin: 0 auto; }
 
-        h1.dash-title {
-            font-size: 1.4rem;
-            color: #f4f4f5;
+        .dash-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
             margin-bottom: 6px;
         }
-        .dash-subtitle {
-            color: #71717a;
-            font-size: 0.85rem;
-            margin-bottom: 24px;
-        }
+        h1.dash-title { font-size: 1.4rem; color: #f4f4f5; }
+        .dash-refresh  { font-size: 0.75rem; color: #52525b; }
+        .dash-subtitle { color: #71717a; font-size: 0.82rem; margin-bottom: 24px; }
 
+        /* ── Stat Cards ───────────────────────────────────── */
         .stat-row {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
-            margin-bottom: 28px;
+            margin-bottom: 10px;
         }
         .stat-card {
             background: #18181b;
             border: 1px solid #27272a;
             border-radius: 10px;
-            padding: 16px 20px;
-            min-width: 140px;
+            padding: 14px 18px;
+            min-width: 120px;
+            flex: 1;
+        }
+        .stat-card.stat-card--live {
+            border-color: #3b2d60;
+            background: #1a1428;
         }
         .stat-card .num {
-            font-size: 2rem;
+            font-size: 1.9rem;
             font-weight: 700;
             color: #a78bfa;
             line-height: 1;
         }
+        .stat-card--live .num { color: #c4b5fd; }
         .stat-card .lbl {
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             color: #71717a;
             margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
+        .stat-card .sub { font-size: 0.68rem; color: #52525b; margin-top: 2px; }
 
+        /* ── Section ──────────────────────────────────────── */
         .section {
             background: #18181b;
             border: 1px solid #27272a;
             border-radius: 10px;
             padding: 16px 20px;
-            margin-bottom: 20px;
-        }
-        .section h2 {
-            font-size: 0.95rem;
-            color: #a1a1aa;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
             margin-bottom: 14px;
         }
+        .section.section--live { border-color: #3b2d60; }
+        .section h2 {
+            font-size: 0.78rem;
+            color: #71717a;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            margin-bottom: 12px;
+        }
+        .section.section--live h2 { color: #9b72cf; }
 
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .section-header h2 { margin-bottom: 0; }
+
+        /* ── Live Dot ─────────────────────────────────────── */
+        .live-dot {
+            display: inline-block;
+            width: 7px; height: 7px;
+            background: #4ca859;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: pulse 2s infinite;
+            vertical-align: middle;
+        }
+        @keyframes pulse {
+            0%,100% { opacity: 1; }
+            50%      { opacity: 0.4; }
+        }
+
+        /* ── Room List ────────────────────────────────────── */
+        .rooms-list { display: flex; flex-direction: column; gap: 5px; }
+
+        .room-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            background: #0e0e12;
+            border: 1px solid #27272a;
+            border-radius: 7px;
+            font-size: 0.84rem;
+            transition: border-color 0.15s;
+        }
+        .room-row--stale   { border-color: #3d2222; }
+        .room-row--idle    { border-color: #3d3212; }
+        .room-row--active  { border-color: #1a3d28; }
+
+        .room-identity { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+        .room-campaign-name {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #c9a227;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 140px;
+        }
+
+        .room-code {
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: #c4b5fd;
+            letter-spacing: 0.12em;
+            min-width: 68px;
+        }
+
+        .room-status {
+            font-size: 0.72rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+            background: #27272a;
+            color: #71717a;
+            white-space: nowrap;
+        }
+        .room-status--active { background: #1a3d28; color: #4ca859; }
+        .room-status--idle   { background: #3d3212; color: #c9a227; }
+        .room-status--stale  { background: #3d2222; color: #e05555; }
+
+        .room-age { margin-left: auto; color: #52525b; font-size: 0.72rem; flex-shrink: 0; }
+
+        .room-actions { display: flex; gap: 4px; flex-shrink: 0; }
+
+        /* ── Admin Buttons ────────────────────────────────── */
+        .admin-btn {
+            padding: 3px 9px;
+            border: 1px solid #3f3f46;
+            border-radius: 5px;
+            background: #18181b;
+            color: #a1a1aa;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: background 0.15s, color 0.15s;
+        }
+        .admin-btn:hover        { background: #27272a; color: #f4f4f5; }
+        .admin-btn:disabled     { opacity: 0.4; cursor: default; }
+        .admin-btn--danger      { border-color: #7f1d1d; color: #e05555; }
+        .admin-btn--danger:hover { background: #3d1010; color: #f87171; }
+        .admin-btn--warn        { border-color: #7f5d10; color: #c9a227; }
+        .admin-btn--warn:hover  { background: #3d2d08; }
+
+        .bulk-actions { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; }
+
+        /* ── Room expanded detail ─────────────────────────── */
+        .room-detail {
+            display: none;
+            margin-top: 8px;
+            padding: 8px 10px;
+            background: #07070a;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+        .room-row.is-open .room-detail { display: block; }
+        .room-row.is-open { cursor: default; }
+        .room-row { cursor: pointer; }
+
+        .room-info-grid {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+            color: #71717a;
+            font-size: 0.74rem;
+        }
+        .room-info-grid span strong { color: #a1a1aa; }
+
+        .player-list { display: flex; flex-direction: column; gap: 4px; }
+        .player-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 6px;
+            border-radius: 4px;
+            background: #0e0e14;
+        }
+        .presence-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .presence-dot--live   { background: #4ca859; }
+        .presence-dot--recent { background: #c9a227; }
+        .presence-dot--away   { background: #52525b; }
+
+        .player-name { color: #d4d4d8; font-size: 0.8rem; flex: 1; }
+        .player-seen { color: #52525b; font-size: 0.72rem; }
+
+        .room-toggle { margin-left: 4px; color: #52525b; font-size: 0.7rem; flex-shrink: 0; }
+
+        /* ── Bar Charts ───────────────────────────────────── */
         .bar-list { display: flex; flex-direction: column; gap: 7px; }
         .bar-row { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; }
         .bar-label { width: 130px; flex-shrink: 0; color: #d4d4d8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .bar-track { flex: 1; height: 12px; background: #27272a; border-radius: 6px; overflow: hidden; }
-        .bar-fill { height: 100%; background: #7c3aed; border-radius: 6px; transition: width 0.4s ease; }
+        .bar-track { flex: 1; height: 10px; background: #27272a; border-radius: 6px; overflow: hidden; }
+        .bar-fill  { height: 100%; background: #7c3aed; border-radius: 6px; transition: width 0.4s ease; }
         .bar-count { width: 28px; text-align: right; color: #71717a; font-size: 0.8rem; }
 
+        /* ── Timeline ─────────────────────────────────────── */
         .timeline { display: flex; flex-direction: column; gap: 6px; }
-        .tl-row {
-            display: flex;
-            align-items: baseline;
-            gap: 10px;
-            font-size: 0.82rem;
-            color: #a1a1aa;
-        }
-        .tl-date { width: 110px; flex-shrink: 0; color: #71717a; }
+        .tl-row { display: flex; align-items: baseline; gap: 10px; font-size: 0.82rem; color: #a1a1aa; }
+        .tl-date  { width: 110px; flex-shrink: 0; color: #71717a; }
         .tl-event { flex: 1; }
 
-        .loading { color: #52525b; font-size: 0.9rem; text-align: center; padding: 32px 0; }
-
-        @media (min-width: 600px) {
-            body { padding: 32px 32px; }
-            .stat-row { gap: 16px; }
+        /* ── Privacy notice ───────────────────────────────── */
+        .privacy-notice {
+            margin-top: 24px;
+            padding: 14px 16px;
+            background: #111118;
+            border: 1px solid #27272a;
+            border-radius: 10px;
+            font-size: 0.76rem;
+            color: #52525b;
+            line-height: 1.7;
         }
+        .privacy-notice strong { color: #71717a; }
+
+        /* ── Misc ─────────────────────────────────────────── */
+        .loading   { color: #52525b; font-size: 0.85rem; text-align: center; padding: 20px 0; }
+        .empty-msg { color: #52525b; font-size: 0.83rem; font-style: italic; }
+        .gap-24    { margin-bottom: 24px; }
+
+        @media (min-width: 600px) { body { padding: 32px 32px 64px; } }
     </style>
 </head>
 <body>
 
-<!-- Password gate -->
+<!-- Gate -->
 <div id="gate">
     <h1>ARC20 Analytics</h1>
     <input type="password" id="gate-pw" placeholder="Password" />
@@ -135,11 +302,15 @@
     <span class="err" id="gate-err" hidden>Incorrect password.</span>
 </div>
 
-<!-- Dashboard (shown after auth) -->
+<!-- Dashboard -->
 <div id="dashboard">
-    <h1 class="dash-title">ARC20 Analytics</h1>
+    <div class="dash-header">
+        <h1 class="dash-title">ARC20 Analytics</h1>
+        <span class="dash-refresh" id="dash-refresh"></span>
+    </div>
     <p class="dash-subtitle" id="dash-range">Loading…</p>
 
+    <!-- Aggregate stats -->
     <div class="stat-row">
         <div class="stat-card"><div class="num" id="stat-chars">—</div><div class="lbl">Characters Created</div></div>
         <div class="stat-card"><div class="num" id="stat-sessions">—</div><div class="lbl">Session Opens</div></div>
@@ -147,34 +318,71 @@
         <div class="stat-card"><div class="num" id="stat-today">—</div><div class="lbl">Created Today</div></div>
     </div>
 
+    <!-- Live stats -->
+    <div class="stat-row gap-24">
+        <div class="stat-card stat-card--live">
+            <div class="num" id="stat-active-rooms">—</div>
+            <div class="lbl"><span class="live-dot"></span>Active Rooms</div>
+            <div class="sub">status=active in Firestore</div>
+        </div>
+        <div class="stat-card stat-card--live">
+            <div class="num" id="stat-live-players">—</div>
+            <div class="lbl"><span class="live-dot"></span>Live Now</div>
+            <div class="sub">Heartbeat &lt; 3 min ago</div>
+        </div>
+        <div class="stat-card stat-card--live">
+            <div class="num" id="stat-active-players">—</div>
+            <div class="lbl">Player Sessions</div>
+            <div class="sub">Total player docs in rooms</div>
+        </div>
+        <div class="stat-card stat-card--live">
+            <div class="num" id="stat-stale-rooms">—</div>
+            <div class="lbl">Stale Rooms</div>
+            <div class="sub">Empty &gt; 1 day since last join</div>
+        </div>
+    </div>
+
+    <!-- Live rooms section -->
+    <div class="section section--live gap-24">
+        <div class="section-header">
+            <h2><span class="live-dot"></span>Active Rooms</h2>
+            <div class="bulk-actions" id="bulk-actions"></div>
+        </div>
+        <div class="rooms-list" id="rooms-list"><p class="loading">Loading…</p></div>
+    </div>
+
+    <!-- Distribution charts -->
     <div class="section">
         <h2>Class Distribution</h2>
         <div class="bar-list" id="chart-class"><p class="loading">Loading…</p></div>
     </div>
-
     <div class="section">
         <h2>Species Distribution</h2>
         <div class="bar-list" id="chart-species"><p class="loading">Loading…</p></div>
     </div>
-
     <div class="section">
         <h2>Path Distribution</h2>
         <div class="bar-list" id="chart-path"><p class="loading">Loading…</p></div>
     </div>
-
     <div class="section">
         <h2>Talent Distribution</h2>
         <div class="bar-list" id="chart-talent"><p class="loading">Loading…</p></div>
     </div>
-
     <div class="section">
         <h2>Average Stats by Class</h2>
         <div id="stats-by-class"><p class="loading">Loading…</p></div>
     </div>
-
     <div class="section">
         <h2>Recent Characters (last 20)</h2>
         <div class="timeline" id="recent-chars"><p class="loading">Loading…</p></div>
+    </div>
+
+    <!-- Privacy notice -->
+    <div class="privacy-notice">
+        <strong>What this dashboard tracks:</strong> character build choices (class, species, path, talent, base stats) and session open events.
+        Player identities are anonymous Firebase UIDs — no names or accounts are linked.<br><br>
+        <strong>What is NOT tracked:</strong> chat message content, character names, or personally identifiable information.
+        Room player data (HP, armor, gold) lives only in active sessions and is never written to analytics.
     </div>
 </div>
 
@@ -232,90 +440,302 @@ function fmtDateTime(ts) {
     return d.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 }
 
+function fmtAge(ts) {
+    if (!ts) return '';
+    const d   = ts.toDate ? ts.toDate() : new Date(ts);
+    const ms  = Date.now() - d.getTime();
+    const min = Math.floor(ms / 60000);
+    if (min < 2)  return 'just now';
+    if (min < 60) return `${min}m ago`;
+    const hr = Math.floor(min / 60);
+    if (hr < 24)  return `${hr}h ago`;
+    return `${Math.floor(hr / 24)}d ago`;
+}
+
+function ageMs(ts) {
+    if (!ts) return 0;
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return Date.now() - d.getTime();
+}
+
 function todayStr() {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
+function shareUrl(roomCode) {
+    return new URL(`home.html?room=${roomCode}`, window.location.href).href;
+}
+
+// ── Room Management ───────────────────────────────────────────────────────────
+
+async function deleteRoom(code) {
+    const arc = window.__arc;
+    if (!arc?.db) return;
+    for (const sub of ['players', 'loot', 'chat']) {
+        try {
+            const snap = await arc.getDocs(arc.collection(arc.db, 'rooms', code, sub));
+            if (!snap.empty) {
+                const batch = arc.writeBatch(arc.db);
+                snap.docs.forEach(d => batch.delete(d.ref));
+                await batch.commit();
+            }
+        } catch {}
+    }
+    await arc.deleteDoc(arc.doc(arc.db, 'rooms', code));
+}
+
+function roomRowCount() {
+    return document.querySelectorAll('#rooms-list .room-row').length;
+}
+
+function presenceClass(updatedAt) {
+    if (!updatedAt) return 'away';
+    const ms = ageMs(updatedAt);
+    if (ms < 3 * 60000)  return 'live';
+    if (ms < 30 * 60000) return 'recent';
+    return 'away';
+}
+
+function presenceLabel(updatedAt) {
+    if (!updatedAt) return 'never synced';
+    const ms = ageMs(updatedAt);
+    if (ms < 3 * 60000)  return 'live now';
+    if (ms < 30 * 60000) return `active ${fmtAge(updatedAt)}`;
+    return `last seen ${fmtAge(updatedAt)}`;
+}
+
+function renderRooms(rooms, playerDocs) {
+    const allPlayers  = playerDocs.flat();
+    const livePlayers = allPlayers.filter(p => presenceClass(p.updatedAt) === 'live');
+
+    document.getElementById('stat-active-rooms').textContent  = rooms.length;
+    document.getElementById('stat-active-players').textContent = allPlayers.length;
+    document.getElementById('stat-live-players').textContent  = livePlayers.length;
+
+    const HOUR = 3600000;
+    const annotated = rooms.map((r, i) => ({
+        ...r,
+        players: playerDocs[i],
+        pc:      playerDocs[i].length,
+        age:     ageMs(r.lastActivityAt || r.createdAt),
+        actTs:   r.lastActivityAt || r.createdAt,
+    })).sort((a, b) => {
+        if (b.pc !== a.pc) return b.pc - a.pc;
+        return a.age - b.age;
+    });
+
+    const staleIds = annotated.filter(r => r.pc === 0 && r.age > 24 * HOUR).map(r => r.id);
+    document.getElementById('stat-stale-rooms').textContent = staleIds.length;
+
+    const bulkEl = document.getElementById('bulk-actions');
+    if (staleIds.length) {
+        bulkEl.innerHTML = `<button class="admin-btn admin-btn--warn" id="btn-clear-stale">Clear ${staleIds.length} stale room${staleIds.length > 1 ? 's' : ''}</button>`;
+        document.getElementById('btn-clear-stale').addEventListener('click', async () => {
+            if (!confirm(`Delete ${staleIds.length} empty room(s)? This cannot be undone.`)) return;
+            const btn = document.getElementById('btn-clear-stale');
+            btn.disabled = true; btn.textContent = 'Deleting…';
+            for (const code of staleIds) {
+                await deleteRoom(code);
+                document.querySelector(`#rooms-list .room-row[data-room="${code}"]`)?.remove();
+            }
+            document.getElementById('stat-active-rooms').textContent = roomRowCount();
+            document.getElementById('stat-stale-rooms').textContent  = 0;
+            bulkEl.innerHTML = '';
+        });
+    } else {
+        bulkEl.innerHTML = '<span style="font-size:0.72rem;color:#52525b">No stale rooms</span>';
+    }
+
+    if (!annotated.length) {
+        document.getElementById('rooms-list').innerHTML = '<p class="empty-msg">No active rooms right now.</p>';
+        return;
+    }
+
+    document.getElementById('rooms-list').innerHTML = annotated.map(r => {
+        const isActive    = r.pc > 0;
+        const isStale     = r.pc === 0 && r.age > 24 * HOUR;
+        const isVeryStale = r.pc === 0 && r.age > 72 * HOUR;
+
+        const rowClass   = isActive ? ' room-row--active' : isVeryStale ? ' room-row--stale' : isStale ? ' room-row--idle' : '';
+        const statusHtml = isActive
+            ? `<span class="room-status room-status--active">${r.pc} player${r.pc !== 1 ? 's' : ''}</span>`
+            : isVeryStale ? `<span class="room-status room-status--stale">Stale &gt;3d</span>`
+            : isStale     ? `<span class="room-status room-status--idle">Idle &gt;24h</span>`
+            :               `<span class="room-status">0 players</span>`;
+
+        const ageLabel  = r.lastActivityAt ? 'active ' : 'created ';
+        const createdStr = r.createdAt ? `Created ${fmtDate(r.createdAt)}` : '';
+        const actStr     = r.lastActivityAt ? `Last join ${fmtAge(r.lastActivityAt)}` : '';
+
+        const playersHtml = r.players.length
+            ? `<div class="player-list">${r.players.map(p => {
+                const pc = presenceClass(p.updatedAt);
+                return `<div class="player-row">
+                    <span class="presence-dot presence-dot--${pc}"></span>
+                    <span class="player-name">${p.name || 'Unknown'}</span>
+                    <span class="player-seen">${presenceLabel(p.updatedAt)}</span>
+                </div>`;
+              }).join('')}</div>`
+            : '<span style="color:#52525b;font-size:0.75rem">No player docs in this room.</span>';
+
+        return `<div class="room-row${rowClass}" data-room="${r.id}">
+            <div class="room-identity">
+                ${r.name ? `<span class="room-campaign-name">${r.name}</span>` : ''}
+                <span class="room-code">${r.id}</span>
+            </div>
+            ${statusHtml}
+            <span class="room-age" title="${r.lastActivityAt ? 'Last player joined' : 'Room created'}">${ageLabel}${fmtAge(r.actTs)}</span>
+            <span class="room-toggle">▾</span>
+            <div class="room-actions">
+                <button class="admin-btn" data-copy="${r.id}" title="Copy invite link">⛓ Invite</button>
+                <button class="admin-btn admin-btn--danger" data-delete="${r.id}" title="Delete room">✕</button>
+            </div>
+            <div class="room-detail">
+                <div class="room-info-grid">
+                    ${r.name      ? `<span><strong>Campaign:</strong> ${r.name}</span>`     : ''}
+                    ${createdStr  ? `<span><strong>Created:</strong> ${createdStr}</span>`  : ''}
+                    ${actStr      ? `<span><strong>Last join:</strong> ${actStr}</span>`     : ''}
+                    <span><strong>Player docs:</strong> ${r.pc}</span>
+                </div>
+                ${playersHtml}
+            </div>
+        </div>`;
+    }).join('');
+
+    // Expand/collapse rows on click
+    document.querySelectorAll('#rooms-list .room-row').forEach(row => {
+        row.addEventListener('click', e => {
+            if (e.target.closest('.room-actions')) return;
+            row.classList.toggle('is-open');
+            const tog = row.querySelector('.room-toggle');
+            if (tog) tog.textContent = row.classList.contains('is-open') ? '▴' : '▾';
+        });
+    });
+
+    // Wire copy buttons
+    document.querySelectorAll('#rooms-list [data-copy]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            navigator.clipboard.writeText(shareUrl(btn.dataset.copy)).then(() => {
+                const orig = btn.textContent;
+                btn.textContent = '✓ Copied';
+                setTimeout(() => { btn.textContent = orig; }, 1500);
+            });
+        });
+    });
+
+    // Wire delete buttons
+    document.querySelectorAll('#rooms-list [data-delete]').forEach(btn => {
+        btn.addEventListener('click', async e => {
+            e.stopPropagation();
+            const code  = btn.dataset.delete;
+            const hasPl = btn.closest('.room-row').querySelector('.room-status--active');
+            const msg   = hasPl
+                ? `Delete room ${code}? It has active players — they will be disconnected.`
+                : `Delete room ${code}?`;
+            if (!confirm(msg)) return;
+            btn.disabled = true; btn.textContent = '…';
+            await deleteRoom(code);
+            btn.closest('.room-row').remove();
+            document.getElementById('stat-active-rooms').textContent = roomRowCount();
+        });
+    });
+}
+
 // ── Load ──────────────────────────────────────────────────────────────────────
 
 async function loadAnalytics() {
-    // Wait for firebase to be ready
     await new Promise(resolve => {
         if (window.__arc?.uid) return resolve();
         document.addEventListener('arc:firebase-ready', resolve, { once: true });
     });
 
     const arc = window.__arc;
-    const colRef = arc.collection(arc.db, 'analytics');
-    const q = arc.query(colRef, arc.orderBy('timestamp', 'desc'), arc.limit(2000));
 
-    let snap;
-    try {
-        snap = await arc.getDocs(q);
-    } catch (e) {
-        document.getElementById('dash-range').textContent = 'Error loading data: ' + e.message;
-        return;
-    }
+    const [snap, roomsSnap] = await Promise.all([
+        arc.getDocs(arc.query(
+            arc.collection(arc.db, 'analytics'),
+            arc.orderBy('timestamp', 'desc'),
+            arc.limit(2000)
+        )).catch(e => { console.error(e); return null; }),
+        arc.getDocs(arc.query(
+            arc.collection(arc.db, 'rooms'),
+            arc.where('status', '==', 'active')
+        )).catch(e => { console.error(e); return null; }),
+    ]);
 
-    const all = [];
-    snap.forEach(d => all.push({ id: d.id, ...d.data() }));
+    // ── Analytics events ──
+    if (snap) {
+        const all      = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const chars    = all.filter(e => e.type === 'char_created');
+        const sessions = all.filter(e => e.type === 'session_open');
+        const uniqueUids = new Set(all.map(e => e.uid).filter(Boolean));
 
-    const chars    = all.filter(e => e.type === 'char_created');
-    const sessions = all.filter(e => e.type === 'session_open');
+        const today = todayStr();
+        const todayCount = chars.filter(e => {
+            if (!e.timestamp) return false;
+            const d  = e.timestamp.toDate ? e.timestamp.toDate() : new Date(e.timestamp);
+            const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+            return ds === today;
+        }).length;
 
-    // Unique players (by uid)
-    const uniqueUids = new Set(all.map(e => e.uid).filter(Boolean));
+        const sorted = all.filter(e => e.timestamp).sort((a, b) => {
+            const ta = a.timestamp.toDate ? a.timestamp.toDate() : new Date(a.timestamp);
+            const tb = b.timestamp.toDate ? b.timestamp.toDate() : new Date(b.timestamp);
+            return ta - tb;
+        });
 
-    // Today count
-    const today = todayStr();
-    const todayCount = chars.filter(e => {
-        if (!e.timestamp) return false;
-        const d = e.timestamp.toDate ? e.timestamp.toDate() : new Date(e.timestamp);
-        const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-        return ds === today;
-    }).length;
+        document.getElementById('stat-chars').textContent    = chars.length;
+        document.getElementById('stat-sessions').textContent = sessions.length;
+        document.getElementById('stat-players').textContent  = uniqueUids.size;
+        document.getElementById('stat-today').textContent    = todayCount;
+        document.getElementById('dash-range').textContent    = chars.length
+            ? `${fmtDate(sorted[0]?.timestamp)} → ${fmtDate(sorted[sorted.length - 1]?.timestamp)} · ${all.length} total events`
+            : 'No data yet.';
 
-    // Date range
-    const sorted = all.filter(e => e.timestamp).sort((a, b) => {
-        const ta = a.timestamp.toDate ? a.timestamp.toDate() : new Date(a.timestamp);
-        const tb = b.timestamp.toDate ? b.timestamp.toDate() : new Date(b.timestamp);
-        return ta - tb;
-    });
-    const first = sorted.length ? fmtDate(sorted[0].timestamp) : '—';
-    const last  = sorted.length ? fmtDate(sorted[sorted.length - 1].timestamp) : '—';
+        renderBars('chart-class',   count(chars, 'classKey'));
+        renderBars('chart-species', count(chars, 'speciesName'));
+        renderBars('chart-path',    count(chars, 'pathName'));
+        renderBars('chart-talent',  count(chars, 'talentName'));
+        renderStatsByClass(chars);
 
-    // Fill stat cards
-    document.getElementById('stat-chars').textContent    = chars.length;
-    document.getElementById('stat-sessions').textContent = sessions.length;
-    document.getElementById('stat-players').textContent  = uniqueUids.size;
-    document.getElementById('stat-today').textContent    = todayCount;
-    document.getElementById('dash-range').textContent    = chars.length
-        ? `${first} → ${last} · ${all.length} total events`
-        : 'No data yet.';
-
-    // Distribution charts
-    renderBars('chart-class',   count(chars, 'classKey'));
-    renderBars('chart-species', count(chars, 'speciesName'));
-    renderBars('chart-path',    count(chars, 'pathName'));
-    renderBars('chart-talent',  count(chars, 'talentName'));
-
-    // Average stats by class
-    renderStatsByClass(chars);
-
-    // Recent characters list
-    const recentEl = document.getElementById('recent-chars');
-    const recent = chars.slice(0, 20);
-    if (!recent.length) {
-        recentEl.innerHTML = '<p class="loading">No characters yet.</p>';
+        const recent = chars.slice(0, 20);
+        document.getElementById('recent-chars').innerHTML = recent.length
+            ? recent.map(c => `
+                <div class="tl-row">
+                    <span class="tl-date">${fmtDateTime(c.timestamp)}</span>
+                    <span class="tl-event">${c.classKey || '?'} · ${c.speciesName || '?'} · ${c.pathName || '?'} / ${c.talentName || '?'}</span>
+                </div>`).join('')
+            : '<p class="loading">No characters yet.</p>';
     } else {
-        recentEl.innerHTML = recent.map(c => `
-            <div class="tl-row">
-                <span class="tl-date">${fmtDateTime(c.timestamp)}</span>
-                <span class="tl-event">${c.classKey || '?'} · ${c.speciesName || '?'} · ${c.pathName || '?'} / ${c.talentName || '?'}</span>
-            </div>`).join('');
+        document.getElementById('dash-range').textContent = 'Error loading analytics.';
     }
+
+    // ── Rooms ──
+    if (roomsSnap) {
+        const rooms = roomsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const playerDocs = await Promise.all(
+            rooms.map(r =>
+                arc.getDocs(arc.collection(arc.db, 'rooms', r.id, 'players'))
+                   .then(s => s.docs.map(d => ({ id: d.id, ...d.data() })))
+                   .catch(() => [])
+            )
+        );
+        renderRooms(rooms, playerDocs);
+    } else {
+        document.getElementById('rooms-list').innerHTML = '<p class="empty-msg">Could not load rooms.</p>';
+        document.getElementById('stat-active-rooms').textContent  = '—';
+        document.getElementById('stat-active-players').textContent = '—';
+        document.getElementById('stat-live-players').textContent  = '—';
+        document.getElementById('stat-stale-rooms').textContent   = '—';
+    }
+
+    document.getElementById('dash-refresh').textContent =
+        'Refreshed ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
 }
+
+// ── Stats by class ────────────────────────────────────────────────────────────
 
 function renderStatsByClass(chars) {
     const el = document.getElementById('stats-by-class');
@@ -328,7 +748,6 @@ function renderStatsByClass(chars) {
             byClass[c.classKey].totals[k] = (byClass[c.classKey].totals[k] || 0) + (v || 0);
         }
     }
-
     const classes = Object.keys(byClass).sort();
     if (!classes.length) { el.innerHTML = '<p class="loading">No data yet.</p>'; return; }
 
@@ -341,8 +760,8 @@ function renderStatsByClass(chars) {
             const avg = (totals[k] || 0) / count;
             return `<span title="${LABELS[k]}: ${avg.toFixed(1)}" style="display:inline-block;min-width:36px;font-size:0.75rem;color:#a1a1aa">${LABELS[k]}<br><strong style="color:#d4d4d8">${avg.toFixed(1)}</strong></span>`;
         }).join('');
-        return `<div style="margin-bottom:12px">
-            <div style="font-size:0.85rem;color:#c4b5fd;margin-bottom:4px">${cls} <span style="color:#52525b">(n=${count})</span></div>
+        return `<div style="margin-bottom:14px">
+            <div style="font-size:0.85rem;color:#c4b5fd;margin-bottom:6px">${cls} <span style="color:#52525b">(n=${count})</span></div>
             <div style="display:flex;gap:8px;flex-wrap:wrap">${avgs}</div>
         </div>`;
     }).join('');

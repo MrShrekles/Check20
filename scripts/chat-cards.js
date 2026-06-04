@@ -22,6 +22,17 @@ function isEmojiOnly(str) {
     return t.length > 0 && t.replace(/\p{Extended_Pictographic}|️|︎|‍|\s/gu, '').length === 0;
 }
 
+// Escape HTML then render *bold*, _italic_, `code` markdown-lite
+function parseInline(text) {
+    if (!text) return '';
+    return text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/_(.+?)_/g, '<em>$1</em>')
+        .replace(/`(.+?)`/g, '<code class="chat-code">$1</code>');
+}
+
 const EMOJI_REACTIONS_HTML = `
 <div class="chat-emoji-reactions">
   <button class="chat-emoji-react-btn" type="button" data-emoji-anim="dance"  title="Dance">💃</button>

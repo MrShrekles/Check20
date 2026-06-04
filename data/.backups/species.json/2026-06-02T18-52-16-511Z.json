@@ -123,8 +123,7 @@
       "fetDamage": "1d6",
       "fetDamagetype": "Impact",
       "sub-fet-name": "Light Wings",
-      "sub-fet-effect": "You have a fly speed equal to your movement speed while you carry 1 or fewer Hefty items and have no major conditions. You can carry 1 Small or smaller creature without penalty. You cannot carry a Medium or larger creature.",
-      "fetCondition": "Prone"
+      "sub-fet-effect": "You have a fly speed equal to your movement speed while you carry 1 or fewer Hefty items and have no major conditions. You can carry 1 Small or smaller creature without penalty. You cannot carry a Medium or larger creature."
     },
     {
       "lineage": "Apex",
@@ -170,8 +169,7 @@
       "feature_effect": "You are immune to fire damage and deal an additional 1 fire damage on melee attacks and spells. If you take the Death condition, you instead burn to ash and return to life after 1d4 weeks. This ability cannot occur more than once per year.",
       "fetAction": "Special",
       "fetDamage": 1,
-      "fetDamagetype": "Fire",
-      "fetCondition": "Death"
+      "fetDamagetype": "Fire"
     },
     {
       "lineage": "Apex",
@@ -309,8 +307,7 @@
       "feature_effect": "As an action, let out a mocking howl, causing enemies within Short range to make a Mental check or take the Confused condition until the end of their next turn.",
       "fetAction": "Action",
       "fetCheck": "Intellect",
-      "fetRange": "Short",
-      "fetCondition": "Confused"
+      "fetRange": "Short"
     },
     {
       "lineage": "Apex",
@@ -401,8 +398,7 @@
       "fetAction": "Action",
       "fetCheck": "Spirit",
       "fetRange": "Short",
-      "fetDuration": "Until the end of their next turn",
-      "fetCondition": "Prone, Fear"
+      "fetDuration": "Until the end of their next turn"
     },
     {
       "lineage": "Grazer",
@@ -466,8 +462,7 @@
       "origin": "vozian",
       "feature_name": "Infernal Charge",
       "feature_effect": "Your horns are natural weapons (Str or Agi; Light; 1d4 Physical, Piercing). If you move at least 20 ft toward a target before attacking, you have advantage on your next melee Attack. On a success+, you may choose to pin the target instead of rolling on the success table.",
-      "fetAction": "Special",
-      "fetDamage": "1d4"
+      "fetAction": "Special"
     },
     {
       "lineage": "Grazer",
@@ -490,8 +485,7 @@
       "feature_effect": "Your horns are natural weapons (Str or Agi; Light; 1d4 Physical, Piercing). You are never lost in a location you have visited before. As an action, you can create illusory walls that match the surrounding area. These walls last for 1 minute and can be used to mislead or redirect creatures in mazes or corridors.",
       "fetAction": "Action",
       "fetRange": "Short",
-      "fetDuration": "1 minute",
-      "fetDamage": "1d4"
+      "fetDuration": "1 minute"
     },
     {
       "lineage": "Apex",
@@ -514,8 +508,7 @@
       "feature_effect": "+2 Stealth. On a success+ Stealth check, you gain the Invisible condition until the end of your next turn.",
       "fetAction": "Special",
       "fetCheck": "Stealth",
-      "fetDuration": "Until the end of their next turn",
-      "fetCondition": "Invisible"
+      "fetDuration": "Until the end of their next turn"
     },
     {
       "lineage": "Apex",
@@ -643,10 +636,7 @@
       "origin": "nature",
       "feature_name": "Rolling Charge",
       "feature_effect": "As an action, curl into a ball and roll up to half your movement in a straight line, dealing [[1d6]] Impact damage to all creatures in your path. Targets must succeed on a Physical check or be knocked Prone. You also take the prone condition at the end of the action.",
-      "fetAction": "Action",
-      "fetCondition": "Prone",
-      "fetDamage": "1d6",
-      "fetDamagetype": "Impact"
+      "fetAction": "Action"
     },
     {
       "lineage": "Apex",
@@ -691,8 +681,7 @@
       "origin": "nature",
       "feature_name": "Iron Curl",
       "feature_effect": "As an off-action, curl into a ball to double your armor until the start of your next turn, but you gain the Constrained condition",
-      "fetAction": "Off-Action",
-      "fetCondition": "Constrained"
+      "fetAction": "Off-Action"
     },
     {
       "lineage": "Grazer",
@@ -757,8 +746,7 @@
       "origin": "nature",
       "feature_name": "Burrower",
       "feature_effect": "You have a burrow speed equal to half your movement and are immune to the Blind condition.",
-      "fetAction": "Passive",
-      "fetCondition": "Blind"
+      "fetAction": "Passive"
     },
     {
       "lineage": "Apex",
@@ -779,10 +767,7 @@
       "origin": "nature",
       "feature_name": "Tuff Tail",
       "feature_effect": "Your prehensile tail is a natural weapon (Agi or Str; Light; 1d6 Impact). On a success+, you may knock the target Prone instead of rolling on the success table.",
-      "fetAction": "Special",
-      "fetCondition": "Prone",
-      "fetDamage": "1d6",
-      "fetDamagetype": "Impact"
+      "fetAction": "Special"
     },
     {
       "lineage": "Apex",
@@ -979,11 +964,7 @@
       "origin": "nature",
       "feature_name": "Bounding Strike",
       "feature_effect": "You can jump half your movement as part of a melee Attack, dealing an additional [[1d4]] Impact damage and knocking the target Prone if they fail a Strength check.",
-      "fetAction": "Special",
-      "fetCondition": "Prone",
-      "fetCheck": "Strength",
-      "fetDamage": "1d4",
-      "fetDamagetype": "Impact"
+      "fetAction": "Special"
     },
     {
       "lineage": "Apex",
@@ -1028,8 +1009,7 @@
       "feature_effect": "As an action, make a deep bellow. Enemies within reach must make a Mental check. On a failure, they take the Fear condition.",
       "fetAction": "Action",
       "fetCheck": "Mental",
-      "fetRange": "Reach",
-      "fetCondition": "Fear"
+      "fetRange": "Reach"
     },
     {
       "lineage": "Apex",
@@ -1094,8 +1074,7 @@
       "origin": "nature",
       "feature_name": "Regeneration",
       "feature_effect": "Once per day, As an Off-Action, make a Survival check to remove a non-major condition.",
-      "fetAction": "Action",
-      "fetCheck": "Survival"
+      "fetAction": "Action"
     },
     {
       "lineage": "Apex",
@@ -1189,8 +1168,7 @@
       "fetCheck": "Agility",
       "fetDuration": "Until the end of their next turn",
       "fetDamage": "1d4",
-      "fetDamagetype": "Impact",
-      "fetCondition": "Prone"
+      "fetDamagetype": "Impact"
     },
     {
       "lineage": "Shifter",
@@ -1331,8 +1309,7 @@
       "feature_effect": "As an action target a large or smaller creature within reach, using your icy breathe they take the Slowed condition until the end of their next turn",
       "fetAction": "Action",
       "fetRange": "Reach",
-      "fetDuration": "Until end of target’s next turn",
-      "fetCondition": "Slowed"
+      "fetDuration": "Until end of target’s next turn"
     },
     {
       "lineage": "dragon",
@@ -1356,8 +1333,7 @@
       "fetAction": "Action",
       "fetCheck": "Survival",
       "fetRange": "Reach",
-      "fetDuration": "Until end of next turn",
-      "fetCondition": "Deaf"
+      "fetDuration": "Until end of next turn"
     },
     {
       "lineage": "dragon",
@@ -1540,8 +1516,7 @@
       "fetAction": "Action",
       "fetCheck": "Spirit",
       "fetRange": "Short",
-      "fetDuration": "Until end of next turn",
-      "fetCondition": "Fear"
+      "fetDuration": "Until end of next turn"
     },
     {
       "lineage": "dragon",
@@ -1748,8 +1723,7 @@
       "fetRange": "Melee",
       "fetDuration": "While maintained",
       "fetDamage": "1d4",
-      "fetDamagetype": "Toxic",
-      "fetCondition": "Broken"
+      "fetDamagetype": "Toxic"
     },
     {
       "lineage": "dragon",
@@ -1771,8 +1745,7 @@
       "feature_name": "Improvisational",
       "feature_effect": "Once per rest, as an action, you may assemble a temporary tool or simple device from nearby materials, choosing a basic item (grappling hook, noise maker, simple trap, fake key, lure, or timer) that functions for 1 hour or until Broken.",
       "fetAction": "Action",
-      "fetDuration": "1 hour",
-      "fetCondition": "Broken"
+      "fetDuration": "1 hour"
     },
     {
       "lineage": "dragon",
@@ -1838,8 +1811,7 @@
       "feature_name": "Sensory Fungus",
       "feature_effect": "You gain blindsight within melee range, allowing you to sense invisible creatures and illusions while they remain within that range.",
       "fetAction": "Passive",
-      "fetRange": "Melee",
-      "fetCondition": "Invisible"
+      "fetRange": "Melee"
     },
     {
       "lineage": "dragon",
@@ -1999,8 +1971,7 @@
       "origin": "vozian",
       "feature_name": "Ashform",
       "feature_effect": "Once per day as an Off-Action gain the Intangible condition until the end of your next turn. While Intangible in this way you are immune to spellcasting effects.",
-      "fetAction": "Off-Action",
-      "fetCondition": "Intangible"
+      "fetAction": "Off-Action"
     },
     {
       "lineage": "goblijjin",
@@ -2044,8 +2015,7 @@
       "feature_name": "Coward",
       "feature_effect": "You have advantage on Influence checks when begging, bargaining, or playing dead. If you succeed, the target creature is Charmed by you. But if you fail, you take the Fear condition until the end of your next turn.",
       "fetAction": "Passive",
-      "fetCheck": "Influence",
-      "fetCondition": "Charmed, Fear"
+      "fetCheck": "Influence"
     },
     {
       "lineage": "goblijjin",
@@ -2129,9 +2099,7 @@
       "origin": "nature",
       "feature_name": "Environmental Shifter",
       "feature_effect": "As an action blend into any surface like a wooden wall, stone, or even a campfire or water. While in this form you have the Invisible condition. When you are shifted you can make attacks with a stealth check, adding your Stealth check to the damage once per creature.",
-      "fetAction": "Action",
-      "fetCondition": "Invisible",
-      "fetCheck": "Stealth"
+      "fetAction": "Action"
     },
     {
       "lineage": "Shifter",
@@ -2173,8 +2141,7 @@
       "origin": "vozian",
       "feature_name": "Dreadful",
       "feature_effect": "As an action, shift your facial structure into that of a horrifying visage, monster or illusion. Creatures within reach range and make a mental check, on a failure they gain the fear condition and immunity to this effect.",
-      "fetAction": "Action",
-      "fetCondition": "Fear"
+      "fetAction": "Action"
     },
     {
       "lineage": "Shifter",
@@ -2216,7 +2183,7 @@
       "region": "global",
       "origin": "arcane",
       "feature_name": "Arcane Core",
-      "feature_effect": "At the end of character creation, convert all your wounds into armor. Your armor regenerates at a rate of 1 point per hour. As an action, you may repair yourself, restoring [[2d6]] armor. If your armor is ever reduced to 0, you enter a dormant state where you cannot act or respond, but your regeneration continues until fully restored when you awake again. Removing the core during the dormant state resets your personality and erases all memories. If the core is damaged in this state, it can become permanently inoperable.",
+      "feature_effect": "At the end of character creation, convert all your wounds into armor. Your armor regenerates at a rate of 1 point per hour. As an action, you may repair yourself, restoring [[1d10]] armor. If your armor is ever reduced to 0, you enter a dormant state where you cannot act or respond, but your regeneration continues until fully restored when you awake again. Removing the core during the dormant state resets your personality and erases all memories. If the core is damaged in this state, it can become permanently inoperable.",
       "fetAction": "Resource"
     },
     {
@@ -2238,8 +2205,7 @@
       "origin": "nature",
       "feature_name": "Dryad Core",
       "feature_effect": "You have an additional +5 armor. Your armor regenerates at a rate of 1 point per hour. When you have no armor enter a Rootform state, while in this state you have advantage on Physical Checks and disadvantage on Mental Checks. If you take the Injured condition you are no longer in Rootform state, and you cannot enter Rootform until you Press On or Long Rest.",
-      "fetAction": "Passive",
-      "fetCondition": "Injured"
+      "fetAction": "Passive"
     },
     {
       "lineage": "Corebound",
@@ -2260,8 +2226,7 @@
       "origin": "vozian",
       "feature_name": "Vozian Core",
       "feature_effect": "Once per turn, you may burn your core. Choose one of your checks to take a –1 penalty until your next Press On or Long Rest. In exchange, you gain advantage on all checks until the end of your next turn. You may only burn your core once per turn. The first time you take the death condition, take -1 to all checks and remove the condition. You have a -1 to all checks until your next Long Rest",
-      "fetAction": "Resource",
-      "fetCondition": "Death"
+      "fetAction": "Resource"
     },
     {
       "lineage": "human",
@@ -2371,8 +2336,7 @@
       "feature_effect": "When you hit a medium sized creature with a melee attack, you may use an off-action to drive them into the ground or into a wall. The target must succeed a Physical check or be knocked Prone and Pinned until the end of their next turn.",
       "fetAction": "Off-Action",
       "fetCheck": "Physical",
-      "images": "assets/species/breaker-elf",
-      "fetCondition": "Pinned, Prone"
+      "images": "assets/species/breaker-elf"
     },
     {
       "lineage": "human",
@@ -2394,8 +2358,7 @@
       "feature_name": "Duskwither Bloom",
       "feature_effect": "As an action once per day as an Off-Action, expand your senses through the fine spores that drift from your hair and skin. Until the end of your next turn, you are aware of all creatures within Short range, even if they are hidden, obscured, or behind cover. You can choose one creature that must make a Mental check or gain the Coughing condition for 1 minute as spores settle in their lungs.",
       "fetAction": "Off-Action",
-      "fetDuration": "Until the end of their next turn",
-      "fetCondition": "Coughing"
+      "fetDuration": "Until the end of their next turn"
     },
     {
       "lineage": "human",
@@ -2460,8 +2423,7 @@
       "feature_name": "Eclipse Born",
       "feature_effect": "As a half-action, gain the Invisible condition while in darkness until the end of your next turn.",
       "fetAction": "Half-Action",
-      "fetDuration": "Until the end of their next turn",
-      "fetCondition": "Invisible"
+      "fetDuration": "Until the end of their next turn"
     },
     {
       "lineage": "human",
@@ -2482,9 +2444,7 @@
       "origin": "elemental",
       "feature_name": "Mana Water",
       "feature_effect": "You carry enchanted water from your homeland in a jug, gourd, or vessel. At the start of your turn, the water swirls around you, granting +1 armor (max 5). Once per day, as an action, you may release the water to either heal an ally within reach for [[1d6]] or grant them +3 armor for 1 minute. If your vessel is destroyed, you lose this feature until you return to a source of sacred water.",
-      "fetAction": "Resource",
-      "fetDamage": "1d6",
-      "fetDamagetype": "Healing"
+      "fetAction": "Resource"
     },
     {
       "lineage": "human",
@@ -2657,8 +2617,7 @@
       "feature_name": "Pleasant Aura",
       "feature_effect": "You have a knack for spinning tales and warming hearts. Once per day as an off-action, make a contested Luck check with creature. If you success the creature is Charmed by you for 1 minute, on a failure you become Confused until the end of your next turn",
       "fetAction": "Off-Action",
-      "fetCheck": "Luck",
-      "fetCondition": "Charmed, Confused"
+      "fetCheck": "Luck"
     },
     {
       "lineage": "human",
@@ -2682,8 +2641,7 @@
       "fetAction": "Action",
       "fetCheck": "Influence",
       "fetRange": "Short",
-      "fetDuration": "Until the end of their next turn",
-      "fetCondition": "Prone"
+      "fetDuration": "Until the end of their next turn"
     },
     {
       "lineage": "jotun",
@@ -2706,8 +2664,7 @@
       "feature_effect": "You can speak with plants and animals, they always speak in riddles. As an action blend in with plants, moss, or debris and you turn Invisible until the end of your next turn.",
       "fetAction": "Action",
       "fetDuration": "Until the end of their next turn",
-      "images": "assets/species/muskila",
-      "fetCondition": "Invisible"
+      "images": "assets/species/muskila"
     },
     {
       "lineage": "jotun",
@@ -2753,8 +2710,7 @@
       "fetRange": "Short",
       "fetDuration": "Instant",
       "sub-fet-name": "Drift Wings",
-      "sub-fet-effect": "You cannot gain altitude using your wings. When you fall, you descend slowly and take no fall damage. You cannot carry Medium or larger creatures or 1 or more Hefty items while drifting.",
-      "fetCondition": "Prone"
+      "sub-fet-effect": "You cannot gain altitude using your wings. When you fall, you descend slowly and take no fall damage. You cannot carry Medium or larger creatures or 1 or more Hefty items while drifting."
     },
     {
       "lineage": "realmsplit",
@@ -2843,8 +2799,7 @@
       "origin": "elemental",
       "feature_name": "Smoke Shroud",
       "feature_effect": "When you take a half-action stance, everything within reach range of you is enveloped in smoke. Creatures in the smoke have the blind condition but you do not.",
-      "fetAction": "Half-Action",
-      "fetCondition": "Blind"
+      "fetAction": "Half-Action"
     },
     {
       "lineage": "realmsplit",
@@ -2978,8 +2933,7 @@
       "feature_effect": "As an action, you may manipulate surrounding sound waves. Choose one: either project your voice clearly to a creature within long range regardless of obstacles, or emit a sharp burst that forces a creature within Short range to make a Physical check or become Confused until the end of their next turn.",
       "fetAction": "Action",
       "fetCheck": "Survival",
-      "fetDuration": "Until the end of their next turn",
-      "fetCondition": "Confused"
+      "fetDuration": "Until the end of their next turn"
     },
     {
       "lineage": "realmsplit",
@@ -3001,8 +2955,7 @@
       "feature_name": "Frost Touch",
       "feature_effect": "As an action, you may place your hand on a creature within reach and impose or remove the Slowed or Pinned condition until the end of their next turn..",
       "fetAction": "Action",
-      "fetDuration": "Until the end of their next turn",
-      "fetCondition": "Slowed, Pinned"
+      "fetDuration": "Until the end of their next turn"
     },
     {
       "lineage": "realmsplit",
@@ -3045,8 +2998,7 @@
       "feature_name": "Mistform",
       "feature_effect": "As an action gain the Intangible or invisible condition until the end of your next turn.",
       "fetAction": "Action",
-      "fetDuration": "Until the end of your next turn",
-      "fetCondition": "Invisible, Intangible"
+      "fetDuration": "Until the end of your next turn"
     },
     {
       "lineage": "realmsplit",
@@ -3114,8 +3066,7 @@
       "feature_effect": "You can perceive and speak with nearby spirits, even if they are invisible or bound. This includes lingering souls, echoes, or residual haunts within Short range. Once per rest as an Off-Action, you may allow a spirit to briefly channel through you, granting you advantage on a single Mental check. The spirit must be willing or present in the area.",
       "fetAction": "Off-Action",
       "fetCheck": "Mental",
-      "fetRange": "Short",
-      "fetCondition": "Invisible"
+      "fetRange": "Short"
     },
     {
       "lineage": "realmsplit",
@@ -3207,8 +3158,7 @@
       "fetCheck": "Spirit",
       "fetRange": "Short",
       "sub-fet-name": "Skeletal Heavy Wings",
-      "sub-fet-effect": "You have towering skeletal wings that carry the silence of the grave. You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty.",
-      "fetCondition": "Fear"
+      "sub-fet-effect": "You have towering skeletal wings that carry the silence of the grave. You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty."
     },
     {
       "lineage": "realmsplit",
@@ -3257,8 +3207,7 @@
       "fetAction": "Action",
       "fetDuration": "Until the end of their next turn",
       "sub-fet-name": "Light Wings",
-      "sub-fet-effect": "Your wings are weathered scrolls and stitched bindings.You have a fly speed equal to your movement speed while you carry 1 or fewer Hefty items and have no major conditions. You can carry 1 Small or smaller creature without penalty. You cannot carry a Medium or larger creature.",
-      "fetCondition": "Stunned"
+      "sub-fet-effect": "Your wings are weathered scrolls and stitched bindings.You have a fly speed equal to your movement speed while you carry 1 or fewer Hefty items and have no major conditions. You can carry 1 Small or smaller creature without penalty. You cannot carry a Medium or larger creature."
     },
     {
       "lineage": "realmsplit",
@@ -3281,9 +3230,7 @@
       "feature_effect": "Your wings are made of vibrating force that ripple through the air, you have no flight speed. Once per day as an Off-Action, you may activate a burst of sonic momentum. You immediately gain flight speed equal to twice your movement until the end of your next turn and all hostile creatures within Short range must succeed an Observation check or gain the Deaf condition until the end of their next turn.",
       "fetAction": "Action",
       "fetRange": "Short",
-      "fetDuration": "Until the end of your next turn",
-      "fetCondition": "Deaf",
-      "fetCheck": "Observation"
+      "fetDuration": "Until the end of your next turn"
     },
     {
       "lineage": "realmsplit",
@@ -3309,8 +3256,7 @@
       "fetRange": "Reach",
       "fetDuration": "Until the end of your next turn",
       "sub-fet-name": "Heavy Wings",
-      "sub-fet-effect": "You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty.",
-      "fetCondition": "Pinned"
+      "sub-fet-effect": "You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty."
     },
     {
       "lineage": "realmsplit",
@@ -3334,8 +3280,7 @@
       "fetAction": "Action",
       "fetCheck": "Survival",
       "sub-fet-name": "Heavy Wings",
-      "sub-fet-effect": "You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty.",
-      "fetCondition": "Deaf"
+      "sub-fet-effect": "You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty."
     },
     {
       "lineage": "realmsplit",
@@ -3433,8 +3378,7 @@
       "fetDamagetype": "Healing",
       "sub-fet-name": "Heavy Wings",
       "sub-fet-effect": "You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty.",
-      "images": "assets/species/greystone",
-      "fetCondition": "Slowed, Constrained"
+      "images": "assets/species/greystone"
     },
     {
       "lineage": "strigoi",
@@ -3458,8 +3402,7 @@
       "fetAction": "Passive",
       "sub-fet-name": "Undying Disease",
       "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions",
-      "images": "assets/species/inviere",
-      "fetCondition": "Death"
+      "images": "assets/species/inviere"
     },
     {
       "lineage": "strigoi",
@@ -3486,8 +3429,7 @@
       "fetDuration": "1 hour",
       "sub-fet-name": "Undying Disease",
       "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions.",
-      "images": "assets/species/Avutie",
-      "fetCondition": "Broken, Concussion, Charmed"
+      "images": "assets/species/Avutie"
     },
     {
       "lineage": "strigoi",
@@ -3534,9 +3476,7 @@
       "fetAction": "Special",
       "sub-fet-name": "Undying Disease",
       "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions",
-      "images": "assets/species/tristete",
-      "fetCondition": "Death",
-      "fetCheck": "Survival"
+      "images": "assets/species/tristete"
     },
     {
       "lineage": "symbiotes",
@@ -3582,8 +3522,7 @@
       "feature_effect": "As an Off-Action, you may touch a creature to siphon their essence without making a check, dealing [[1d4]] Psychic damage and healing for half the amount dealt. If the target is unaware of your presence, the damage is doubled. Make a Stealth check to remain undetected after the drain.",
       "fetAction": "Off-Action",
       "fetDamage": "1d4",
-      "fetDamagetype": "Psychic",
-      "fetCheck": "Stealth"
+      "fetDamagetype": "Psychic"
     },
     {
       "lineage": "symbiotes",
@@ -3693,9 +3632,7 @@
       "feature_name": "Blood Feast",
       "feature_effect": "You need to feed on blood, draining 1 pint in 1 minute from a living creature. After drinking, you heal [[1d6]], gain +10 armor and gain +1 to all checks for 1 hour. If you drink more than 1 pint from a creature, they gain the Exhausted condition for 1 hour.",
       "fetAction": "Special",
-      "fetDuration": "1 minute",
-      "fetDamage": "1d6",
-      "fetDamagetype": "Healing"
+      "fetDuration": "1 minute"
     },
     {
       "lineage": "Chitnari",
@@ -3809,8 +3746,7 @@
       "fetAction": "Action",
       "fetDuration": "Until the end of their next turn",
       "sub-fet-name": "Heavy Wings",
-      "sub-fet-effect": "You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty.",
-      "fetCondition": "Coughing"
+      "sub-fet-effect": "You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty."
     },
     {
       "lineage": "Chitnari",
@@ -3875,8 +3811,7 @@
       "origin": "nature",
       "feature_name": "Living Camouflage",
       "feature_effect": "While you are still and not attacking, you are considered Hidden regardless of cover. Creatures must pass an Observation check to detect you. Moving or attacking immediately ends this effect.",
-      "fetAction": "Special",
-      "fetCheck": "Observation"
+      "fetAction": "Special"
     },
     {
       "lineage": "Chitnari",
@@ -3899,8 +3834,7 @@
       "feature_effect": "Your powerful legs let you jump up to medium range without a check. As an Action you may leap and strike a creature on landing, dealing [[1d6]] Impact damage. On a success+, knock the target Prone.",
       "fetAction": "Special",
       "fetDamage": "1d6",
-      "fetDamagetype": "Impact",
-      "fetCondition": "Prone"
+      "fetDamagetype": "Impact"
     },
     {
       "lineage": "Chitnari",

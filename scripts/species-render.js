@@ -143,20 +143,31 @@ function refreshCard(idSlug) {
 
 /* ====== Feature block ====== */
 function renderFeatureLine(f) {
-    const name = (f.name || 'Feature').trim();
-    const action = (f.action || '').toString().trim();
-    const dmg = (f.damage || '').toString().trim();
-    const dtype = (f.type || '').toString().trim();
-    const effect = (f.description || '').toString().trim();
+    const name     = (f.name        || 'Feature').trim();
+    const action   = (f.action      || '').toString().trim();
+    const check    = (f.check       || '').toString().trim();
+    const range    = (f.range       || '').toString().trim();
+    const duration = (f.duration    || '').toString().trim();
+    const dmg      = (f.damage      || '').toString().trim();
+    const dtype    = (f.type        || '').toString().trim();
+    const effect   = (f.description || '').toString().trim();
 
-    const actionPill = action ? `<span class="feature-pill pill-action">${escapeHTML(action)}</span>` : '';
-    const dmgBits = [dmg, dtype].filter(Boolean).join(', ');
-    const dmgPill = dmgBits ? `<span class="feature-pill pill-dmg">${escapeHTML(dmgBits)}</span>` : '';
+    const condition  = (f.condition || '').toString().trim();
+
+    const actionPill    = action    ? `<span class="feature-pill pill-action">${escapeHTML(action)}</span>`       : '';
+    const checkPill     = check     ? `<span class="feature-pill pill-check">${escapeHTML(check)}</span>`         : '';
+    const rangePill     = range     ? `<span class="feature-pill pill-range">${escapeHTML(range)}</span>`         : '';
+    const durationPill  = duration  ? `<span class="feature-pill pill-duration">${escapeHTML(duration)}</span>`   : '';
+    const conditionPill = condition ? `<span class="feature-pill pill-condition">${escapeHTML(condition)}</span>` : '';
+    const dmgBits       = [dmg, dtype].filter(Boolean).join(' · ');
+    const dmgPill       = dmgBits   ? `<span class="feature-pill pill-dmg">${escapeHTML(dmgBits)}</span>`         : '';
+
+    const pills = [actionPill, checkPill, rangePill, durationPill, conditionPill, dmgPill].filter(Boolean).join('');
 
     return `
     <div class="feature-line">
       <div class="feature-name">${escapeHTML(name)}</div>
-      <div class="feature-pills">${actionPill} ${dmgPill}</div>
+      ${pills ? `<div class="feature-pills">${pills}</div>` : ''}
       <div class="feature-effect">${escapeHTML(effect)}</div>
     </div>
     `;

@@ -7,11 +7,11 @@
     <title>ARC20 — New Character</title>
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png" />
     <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#0c0c0f" />
+    <meta name="theme-color" content="#1b2c2c" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="ARC20" />
-    <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
     <link rel="stylesheet" href="../styles/home.css" />
     <link rel="stylesheet" href="../styles/create-char.css" />
     <script type="module" src="../scripts/firebase.js"></script>
@@ -95,7 +95,7 @@
                     <span class="points-count" id="points-count">20</span>
                 </div>
                 <div id="build-guide" hidden></div>
-                <p class="step-hint" style="margin-bottom:10px;">Max 10 per stat · <span id="points-total">20</span> points total.</p>
+                <p class="step-hint" style="margin-bottom:10px;">Max 10 per check · <span id="points-total">20</span> points total.</p>
                 <div class="stats-two-col">
                     <div class="stats-col">
                         <div class="stats-group-lbl">Physical</div>
@@ -116,7 +116,7 @@
                             </div>
                         </div>
                         <div class="stat-row" data-key="ste">
-                            <span class="stat-name">Stealth<span class="stat-hint">Hiding · Ambush</span></span>
+                            <span class="stat-name">Stealth<span class="stat-hint">Hiding · Skullduggery</span></span>
                             <div class="stat-stepper">
                                 <button class="stat-adj" data-adj="-1" type="button">−</button>
                                 <span class="stat-val" id="sv-ste">0</span>
@@ -143,7 +143,7 @@
                     <div class="stats-col">
                         <div class="stats-group-lbl">Mental</div>
                         <div class="stat-row" data-key="inf">
-                            <span class="stat-name">Influence<span class="stat-hint">Persuasion · Leadership</span></span>
+                            <span class="stat-name">Influence<span class="stat-hint">Persuasion · Charm</span></span>
                             <div class="stat-stepper">
                                 <button class="stat-adj" data-adj="-1" type="button">−</button>
                                 <span class="stat-val" id="sv-inf">0</span>
@@ -151,7 +151,7 @@
                             </div>
                         </div>
                         <div class="stat-row" data-key="int">
-                            <span class="stat-name">Intellect<span class="stat-hint">Knowledge · Spellcasting</span></span>
+                            <span class="stat-name">Intellect<span class="stat-hint">Academics · Logic</span></span>
                             <div class="stat-stepper">
                                 <button class="stat-adj" data-adj="-1" type="button">−</button>
                                 <span class="stat-val" id="sv-int">0</span>
@@ -195,8 +195,7 @@
                         <span class="detail-label">Starting Wealth</span>
                         <button class="detail-roll-btn" id="roll-wealth" type="button">🎲 Roll 1d100+50</button>
                     </div>
-                    <input id="detail-wealth" type="number" inputmode="numeric" min="0"
-                        placeholder="Gold pieces…" class="wiz-input" style="font-size:20px;font-weight:800;text-align:center;" />
+                    <input id="detail-wealth" type="number" inputmode="numeric" min="0" placeholder="Gold pieces…" class="wiz-input" style="font-size:20px;font-weight:800;text-align:center;" />
                 </div>
 
                 <div class="detail-row">
@@ -205,8 +204,7 @@
                             <span class="detail-label">Age</span>
                             <button class="detail-roll-btn" id="roll-age" type="button">🎲 Roll</button>
                         </div>
-                        <input id="detail-age" type="number" inputmode="numeric" min="1"
-                            placeholder="Years…" class="wiz-input" style="text-align:center;" />
+                        <input id="detail-age" type="number" inputmode="numeric" min="1" placeholder="Years…" class="wiz-input" style="text-align:center;" />
                     </div>
                     <div class="detail-block detail-block--half">
                         <div class="detail-head">
@@ -221,8 +219,7 @@
                         <span class="detail-label">Motivation</span>
                         <button class="detail-roll-btn" id="roll-motivation" type="button">🎲 Roll</button>
                     </div>
-                    <textarea id="detail-motivation" placeholder="What drives your character?"
-                        class="detail-textarea" rows="3"></textarea>
+                    <textarea id="detail-motivation" placeholder="What drives your character?" class="detail-textarea" rows="3"></textarea>
                 </div>
 
                 <div class="detail-block">
@@ -230,17 +227,15 @@
                         <span class="detail-label">Trinket</span>
                         <button class="detail-roll-btn" id="roll-trinket" type="button">🎲 Roll</button>
                     </div>
-                    <input id="detail-trinket" type="text" placeholder="A curious object…"
-                        autocomplete="off" class="wiz-input" />
+                    <textarea id="detail-trinket" placeholder="A curious object…" class="detail-textarea" rows="3"></textarea>
                 </div>
 
                 <div class="detail-block">
                     <div class="detail-head">
                         <span class="detail-label">Additional Equipment</span>
-                        <span class="detail-hint" style="font-size:11px;color:var(--muted)">One item per line</span>
+                        <button class="detail-roll-btn" id="roll-extra-equip" type="button">🎲 Roll</button>
                     </div>
-                    <textarea id="detail-extra-equip" class="detail-textarea" rows="4"
-                        placeholder="Rope (50ft)&#10;Torch x3&#10;Rations (3 days)&#10;Crowbar"></textarea>
+                    <textarea id="detail-extra-equip" class="detail-textarea" rows="4" placeholder="Rope (50ft)&#10;Torch x3&#10;Rations (3 days)&#10;Crowbar"></textarea>
                 </div>
             </div>
 
@@ -249,8 +244,7 @@
                 <p class="step-hint">Name your character and confirm your choices.</p>
                 <label class="wiz-field">
                     <span class="wiz-label">Character Name</span>
-                    <input id="wiz-name" type="text" placeholder="Enter a name…"
-                        autocomplete="off" class="wiz-input" />
+                    <input id="wiz-name" type="text" placeholder="Enter a name…" autocomplete="off" class="wiz-input" />
                 </label>
                 <div class="review-card" id="review-card"></div>
             </div>

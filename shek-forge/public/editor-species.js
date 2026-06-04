@@ -19,14 +19,18 @@ registerEditor('species', {
 
     entryTitle: (e) => e.name || '(unnamed)',
 
-    entryRow: (entry, showGroup) => ({
-        name: entry.name || '(unnamed)',
-        meta: [entry.option, entry.origin].filter(Boolean).join(' · '),
-        badges: [
-            showGroup && entry.lineage ? { label: entry.lineage, color: '#7a7a7a' } : null,
-            entry.rarity ? { label: entry.rarity, color: SP_RARITY_COLOR[entry.rarity] || '#888' } : null,
-        ].filter(Boolean),
-    }),
+    entryRow: (entry, showGroup) => {
+        const issueCount = spQCAnalyze(entry).length;
+        return {
+            name: entry.name || '(unnamed)',
+            meta: [entry.option, entry.origin].filter(Boolean).join(' · '),
+            badges: [
+                showGroup && entry.lineage ? { label: entry.lineage, color: '#7a7a7a' } : null,
+                entry.rarity ? { label: entry.rarity, color: SP_RARITY_COLOR[entry.rarity] || '#888' } : null,
+                issueCount > 0 ? { label: `⚠ ${issueCount}`, color: '#cc7733' } : null,
+            ].filter(Boolean),
+        };
+    },
 
     newEntry: (group) => ({
         lineage:          group || '',
@@ -43,6 +47,7 @@ registerEditor('species', {
         feature_name:     '',
         feature_effect:   '',
         fetAction:        '',
+        fetCondition:     '',
         'sub-fet-name':   '',
         'sub-fet-effect': '',
     }),
@@ -225,6 +230,12 @@ registerEditor('species', {
                             </select>
                         </div>
                         <div class="field-wrap full">
+                            <label class="field-label">Condition</label>
+                            <input class="field-input" type="text" placeholder="e.g. Prone, Stunned"
+                                value="${fa('fetCondition')}"
+                                onchange="updateField(${idx},'fetCondition',this.value)" oninput="markUnsaved()">
+                        </div>
+                        <div class="field-wrap full">
                             <label class="field-label">Effect</label>
                             <textarea class="field-input" rows="4"
                                 onchange="updateField(${idx},'feature_effect',this.value)"
@@ -252,10 +263,212 @@ registerEditor('species', {
                     </div>
                 </div>
             </div>
-        </div>`;
+        </div>
+        ${renderSpeciesQualityCheck(entry, idx)}`;
     },
 
 });
+
+// ── SPECIES QUALITY CHECKER ───────────────────────────────────────────────────
+
+let _spQCIssues   = [];
+let _spQCIgnCache = null;
+
+function _spQCGetIgnored() {
+    if (!_spQCIgnCache) {
+        try { _spQCIgnCache = new Set(JSON.parse(localStorage.getItem('speciesQC_v1') || '[]')); }
+        catch(e) { _spQCIgnCache = new Set(); }
+    }
+    return _spQCIgnCache;
+}
+
+function spQCIgnore(key) {
+    _spQCIgnCache = null;
+    const s = _spQCGetIgnored();
+    s.add(key);
+    localStorage.setItem('speciesQC_v1', JSON.stringify([...s]));
+    renderEditor();
+    renderEntryList();
+}
+
+function spQCUnignoreAll(entryName) {
+    _spQCIgnCache = null;
+    const s = _spQCGetIgnored();
+    const pfx = `${entryName}::`;
+    for (const k of [...s]) { if (k.startsWith(pfx)) s.delete(k); }
+    localStorage.setItem('speciesQC_v1', JSON.stringify([...s]));
+    renderEditor();
+    renderEntryList();
+}
+
+function spQCApply(entryIdx, issueKey) {
+    const issue = _spQCIssues.find(i => i.key === issueKey);
+    if (!issue?.fix) return;
+    updateField(entryIdx, issue.fix.path, issue.fix.value);
+    spQCIgnore(issueKey);
+}
+
+const SP_QC_CONDITIONS = [
+    'Bleeding','Broken','Concussion','Coughing','Dislocation','Slowed',
+    'Pinned','Prone','Blind','Charmed','Confused','Deaf','Fear',
+    'Injured','Stunned','Exhaustion','Invisible','Intangible','Constrained','Deafened','Death',
+];
+
+function spQCAnalyze(entry) {
+    const ignored  = _spQCGetIgnored();
+    const issues   = [];
+    const desc     = entry.feature_effect  || '';
+    const subDesc  = entry['sub-fet-effect'] || '';
+    const subName  = entry['sub-fet-name']   || '';
+    const featName = entry.feature_name      || '';
+
+    const push = (scope, code, label, detail, fix = null) => {
+        const key = `${entry.name}::${scope}::${code}`;
+        if (!ignored.has(key)) issues.push({ key, scope, code, label, detail, fix });
+    };
+
+    // ── Main feature checks ──────────────────────────────────────────────────
+    if (featName) {
+        // Action type missing
+        if (!entry.fetAction) {
+            push('main', 'no_action', 'Feature has no action type',
+                `"${featName}" has no action type set.`, null);
+        }
+
+        // Effect text missing
+        if (!desc.trim()) {
+            push('main', 'no_effect', 'Feature has no effect text',
+                `"${featName}" is named but the effect field is empty.`, null);
+        }
+
+        if (desc) {
+            // Condition in effect but fetCondition empty
+            if (!entry.fetCondition) {
+                const conds = SP_QC_CONDITIONS.filter(c => new RegExp(`\\b${c}\\b`, 'i').test(desc));
+                if (conds.length) {
+                    push('main', 'condition_in_desc', 'Condition mentioned in effect text',
+                        `Detected: ${conds.join(', ')} — species has no condition field; verify intent.`,
+                        { path: 'fetCondition', value: conds.join(', '), label: `Apply: ${conds.join(', ')}` }
+                    );
+                }
+            }
+
+            // Check mentioned but fetCheck empty
+            if (!entry.fetCheck) {
+                const validChecks = SPD.fetCheck.filter(Boolean);
+                const chkRx = new RegExp(`\\b(${validChecks.join('|')}) check\\b`, 'i');
+                const chkM  = desc.match(chkRx);
+                if (chkM) {
+                    const matched = validChecks.find(c => c.toLowerCase() === chkM[1].toLowerCase());
+                    push('main', 'no_check', 'Check in effect text, field empty',
+                        `Detected "${chkM[1]} check".`,
+                        matched ? { path: 'fetCheck', value: matched, label: `Add ${matched}` } : null
+                    );
+                }
+            }
+
+            // Damage dice in description but fetDamage empty
+            if (!entry.fetDamage) {
+                const diceM = desc.match(/\[?\[?(\d+d\d+)\]?\]?/);
+                if (diceM) {
+                    push('main', 'dice_in_desc', 'Damage dice in effect, field empty',
+                        `Detected: "${diceM[1]}"`,
+                        { path: 'fetDamage', value: diceM[1], label: 'Apply' }
+                    );
+                }
+            }
+        }
+
+        // Damage / type mismatch
+        const hasDmg  = entry.fetDamage    !== '' && entry.fetDamage    != null;
+        const hasType = entry.fetDamagetype !== '' && entry.fetDamagetype != null;
+        if (hasDmg && !hasType) {
+            const typeList = SPD.fetDamage.filter(Boolean);
+            const typeRx   = new RegExp(`\\b(${typeList.join('|')})\\s+damage\\b`, 'i');
+            const typeM    = desc.match(typeRx);
+            const detected = typeM ? typeList.find(t => t.toLowerCase() === typeM[1].toLowerCase()) : null;
+            push('main', 'damage_no_type', 'Damage value has no damage type',
+                `Damage is "${entry.fetDamage}" but Damage Type is empty.${detected ? ` Detected: ${detected}` : ''}`,
+                detected ? { path: 'fetDamagetype', value: detected, label: `Apply ${detected}` } : null
+            );
+        }
+        if (hasType && !hasDmg) {
+            push('main', 'type_no_damage', 'Damage type set but no damage value',
+                `Damage Type is "${entry.fetDamagetype}" but Damage field is empty.`, null);
+        }
+    }
+
+    // ── Sub-feature checks ───────────────────────────────────────────────────
+    if (subName && !subDesc.trim()) {
+        push('sub', 'sub_no_effect', 'Sub-feature has no effect text',
+            `"${subName}" is named but the effect field is empty.`, null);
+    }
+    if (subDesc && !subName.trim()) {
+        push('sub', 'sub_no_name', 'Sub-feature effect has no name',
+            'Sub-feature has effect text but no name.', null);
+    }
+
+    return issues;
+}
+
+const SP_QC_TYPE_COLOR = {
+    no_action:        '#cc5544',
+    no_effect:        '#cc5544',
+    condition_in_desc:'#cc8833',
+    no_check:         '#cc8833',
+    damage_no_type:   '#cc5544',
+    type_no_damage:   '#cc5544',
+    dice_in_desc:     '#7788bb',
+    sub_no_effect:    '#7788bb',
+    sub_no_name:      '#7788bb',
+};
+
+function renderSpeciesQualityCheck(entry, idx) {
+    const issues = spQCAnalyze(entry);
+    _spQCIssues = issues;
+
+    const body = issues.length === 0
+        ? `<div class="class-qc-empty">✓ No issues detected.</div>`
+        : `<div class="class-qc-list">${issues.map(issue => {
+            const scopeLbl  = issue.scope === 'sub' ? 'SUB' : 'MAIN';
+            const typeColor = SP_QC_TYPE_COLOR[issue.code] || '#888';
+            const fixBtn = issue.fix
+                ? `<button class="btn btn-green" style="font-size:9px;padding:2px 8px;"
+                       onclick="spQCApply(${idx},'${escAttr(issue.key)}')"
+                   >${escHtml(issue.fix.label)}</button>`
+                : '';
+            const ignBtn = `<button class="btn btn-ghost" style="font-size:9px;padding:2px 8px;"
+                    onclick="spQCIgnore('${escAttr(issue.key)}')"
+                >Ignore</button>`;
+            const featLabel = issue.scope === 'sub'
+                ? escHtml(entry['sub-fet-name'] || '(sub-feature)')
+                : escHtml(entry.feature_name   || '(main feature)');
+            return `<div class="class-qc-issue" style="border-left:3px solid ${typeColor};">
+                <div class="class-qc-card-hd">
+                    <span class="class-qc-badge">${scopeLbl}</span>
+                    <span class="class-qc-name">${featLabel}</span>
+                </div>
+                <div class="class-qc-card-bd">
+                    <div class="class-qc-type" style="color:${typeColor};">${escHtml(issue.label)}</div>
+                    <div class="class-qc-detail">${escHtml(issue.detail)}</div>
+                    <div class="class-qc-actions">${fixBtn}${ignBtn}</div>
+                </div>
+            </div>`;
+        }).join('')}</div>`;
+
+    const badge = issues.length > 0
+        ? `<span class="class-qc-cnt class-qc-cnt-warn">${issues.length}</span>`
+        : `<span class="class-qc-cnt class-qc-cnt-ok">✓</span>`;
+
+    return `<div class="forge-section">
+        <div class="section-header section-header-split">
+            <span>Quality Check ${badge}</span>
+            <button class="btn btn-ghost" style="font-size:9px;padding:1px 8px;"
+                onclick="spQCUnignoreAll('${escAttr(entry.name)}')">Reset Ignored</button>
+        </div>
+        ${body}
+    </div>`;
+}
 
 // ── SPECIES COPY HELPER ───────────────────────────────────────────────────────
 (function injectCopyBtnStyle() {

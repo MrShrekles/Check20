@@ -1,9 +1,9 @@
-/* Character Creation Wizard */
+/* Character Creation Wizard — themed to match the site */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: "Candara", "Gill Sans", "Optima", sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100dvh;
@@ -11,7 +11,6 @@ body {
     flex-direction: column;
 }
 
-/* Buttons and inputs don't inherit color in most browsers */
 button, input, select, textarea, a {
     color: var(--text);
     font-family: inherit;
@@ -28,13 +27,14 @@ button, input, select, textarea, a {
 
 .wiz-progress-track {
     height: 3px;
-    background: var(--line);
+    background: rgba(70, 100, 100, 0.3);
     flex-shrink: 0;
 }
 
 .wiz-progress-fill {
     height: 100%;
-    background: rgba(255,255,255,0.6);
+    background: var(--gold);
+    box-shadow: 0 0 6px var(--gold-glow);
     transition: width 0.3s ease;
     width: 0%;
 }
@@ -44,29 +44,35 @@ button, input, select, textarea, a {
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid rgba(70, 100, 100, 0.35);
+    background: var(--teal-dark);
     flex-shrink: 0;
 }
 
 .wiz-back {
     background: transparent;
     border: 0;
-    color: var(--muted);
+    color: var(--cream);
     font-size: 14px;
     font-weight: 700;
     font-family: inherit;
     cursor: pointer;
     padding: 4px 0;
     min-width: 60px;
+    opacity: 0.8;
 }
 
-.wiz-back:hover { color: var(--text); }
+.wiz-back:hover { color: var(--text); opacity: 1; }
 
 .wiz-step-label {
     font-size: 15px;
     font-weight: 800;
     text-align: center;
     flex: 1;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-shadow: 0 0 12px var(--gold-glow);
 }
 
 .wiz-cancel {
@@ -110,14 +116,15 @@ button, input, select, textarea, a {
 /* ── FOOTER ──────────────────────────────────────────────────────── */
 
 .wiz-footer {
-    border-top: 1px solid var(--line);
+    border-top: 1px solid rgba(70, 100, 100, 0.35);
+    background: var(--teal-dark);
     padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
     flex-shrink: 0;
 }
 
 .wiz-error {
     font-size: 13px;
-    color: #ff7070;
+    color: #e07070;
     margin-bottom: 8px;
     text-align: center;
 }
@@ -125,16 +132,23 @@ button, input, select, textarea, a {
 .wiz-next {
     width: 100%;
     min-height: 52px;
-    border-radius: 16px;
-    border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.10);
-    color: var(--text);
-    font-size: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--teal-light);
+    background: var(--teal);
+    color: var(--gold);
+    font-size: 17px;
     font-weight: 800;
     font-family: inherit;
+    letter-spacing: 0.06em;
     cursor: pointer;
     touch-action: manipulation;
-    transition: transform 0.1s;
+    transition: transform 0.1s, background 0.12s, border-color 0.12s;
+    text-shadow: 0 0 10px var(--gold-glow);
+}
+
+.wiz-next:hover {
+    background: #3a6060;
+    border-color: var(--gold);
 }
 
 .wiz-next:active { transform: scale(0.98); }
@@ -150,9 +164,9 @@ button, input, select, textarea, a {
 .class-card {
     width: 100%;
     text-align: left;
-    border: 1px solid var(--line);
+    border: 1px solid rgba(70, 100, 100, 0.38);
     background: var(--panel);
-    border-radius: 14px;
+    border-radius: 12px;
     padding: 14px;
     cursor: pointer;
     touch-action: manipulation;
@@ -160,15 +174,27 @@ button, input, select, textarea, a {
     font-family: inherit;
 }
 
+.class-card:hover {
+    border-color: var(--teal-light);
+    background: var(--panel-2);
+}
+
 .class-card.is-sel {
-    border-color: rgba(255,255,255,0.5);
-    background: rgba(255,255,255,0.08);
+    border-color: var(--gold);
+    background: rgba(47, 79, 79, 0.45);
+    box-shadow: 0 0 0 1px var(--gold-dim), inset 0 0 20px rgba(47,79,79,0.3);
 }
 
 .class-card-name {
     font-size: 16px;
     font-weight: 800;
     margin-bottom: 6px;
+    color: var(--text);
+    letter-spacing: 0.03em;
+}
+
+.class-card.is-sel .class-card-name {
+    color: var(--gold);
 }
 
 .class-card-desc {
@@ -190,32 +216,46 @@ button, input, select, textarea, a {
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--muted);
+    letter-spacing: 0.08em;
+    color: var(--cream);
 }
 
 .wiz-select {
     width: 100%;
     min-height: 46px;
-    border-radius: 12px;
-    border: 1px solid var(--line);
-    background: #0f0f14;
+    border-radius: 10px;
+    border: 1px solid rgba(70, 100, 100, 0.45);
+    background: var(--panel);
     color: var(--text);
     padding: 0 12px;
     font-size: 15px;
     font-family: inherit;
+    transition: border-color 0.12s;
+}
+
+.wiz-select:focus {
+    outline: none;
+    border-color: var(--teal-light);
+    box-shadow: 0 0 0 2px rgba(70, 100, 100, 0.20);
 }
 
 .wiz-input {
     width: 100%;
     min-height: 52px;
-    border-radius: 14px;
-    border: 1px solid var(--line);
-    background: #0f0f14;
+    border-radius: 12px;
+    border: 1px solid rgba(70, 100, 100, 0.45);
+    background: var(--panel);
     color: var(--text);
     padding: 0 14px;
     font-size: 17px;
     font-family: inherit;
+    transition: border-color 0.12s;
+}
+
+.wiz-input:focus {
+    outline: none;
+    border-color: var(--teal-light);
+    box-shadow: 0 0 0 2px rgba(70, 100, 100, 0.20);
 }
 
 .path-preview {
@@ -229,14 +269,14 @@ button, input, select, textarea, a {
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
+    letter-spacing: 0.10em;
+    color: var(--cream);
     padding-top: 4px;
 }
 
 .preview-feat {
-    background: var(--panel);
-    border: 1px solid var(--line);
+    background: var(--teal-dark);
+    border: 1px solid rgba(70, 100, 100, 0.40);
     border-radius: 10px;
     padding: 10px 12px;
     font-size: 13px;
@@ -244,23 +284,23 @@ button, input, select, textarea, a {
     line-height: 1.5;
 }
 
-.preview-feat strong { color: var(--text); }
+.preview-feat strong { color: var(--cream); }
 
 /* ── STEP 3: SPECIES ─────────────────────────────────────────────── */
 
 .spec-back {
     background: transparent;
     border: 0;
-    color: var(--muted);
+    color: var(--cream);
     font-size: 13px;
     font-weight: 700;
     padding: 0 0 12px;
     cursor: pointer;
     display: block;
+    opacity: 0.8;
 }
-.spec-back:hover { color: var(--text); }
+.spec-back:hover { color: var(--text); opacity: 1; }
 
-/* Lineage cards — same style as class cards */
 .lineage-grid, .option-grid {
     display: flex;
     flex-direction: column;
@@ -270,9 +310,9 @@ button, input, select, textarea, a {
 .lineage-card {
     width: 100%;
     text-align: left;
-    border: 1px solid var(--line);
+    border: 1px solid rgba(70, 100, 100, 0.38);
     background: var(--panel);
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 12px 14px;
     cursor: pointer;
     touch-action: manipulation;
@@ -280,9 +320,14 @@ button, input, select, textarea, a {
     font-family: inherit;
 }
 
+.lineage-card:hover {
+    border-color: var(--teal-light);
+    background: var(--panel-2);
+}
+
 .lineage-card.is-sel {
-    border-color: rgba(255,255,255,0.5);
-    background: rgba(255,255,255,0.08);
+    border-color: var(--gold);
+    background: rgba(47, 79, 79, 0.45);
 }
 
 .lineage-card-name {
@@ -291,6 +336,8 @@ button, input, select, textarea, a {
     text-transform: capitalize;
     margin-bottom: 3px;
 }
+
+.lineage-card.is-sel .lineage-card-name { color: var(--gold); }
 
 .lineage-card-meta {
     font-size: 11px;
@@ -306,9 +353,9 @@ button, input, select, textarea, a {
 
 .species-card {
     text-align: left;
-    border: 1px solid var(--line);
+    border: 1px solid rgba(70, 100, 100, 0.38);
     background: var(--panel);
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 10px;
     cursor: pointer;
     touch-action: manipulation;
@@ -316,9 +363,13 @@ button, input, select, textarea, a {
     transition: border-color 0.12s, background 0.12s;
 }
 
+.species-card:hover {
+    border-color: var(--teal-light);
+}
+
 .species-card.is-sel {
-    border-color: rgba(255,255,255,0.5);
-    background: rgba(255,255,255,0.08);
+    border-color: var(--gold);
+    background: rgba(47, 79, 79, 0.45);
 }
 
 .species-card-head {
@@ -334,6 +385,8 @@ button, input, select, textarea, a {
     font-weight: 800;
 }
 
+.species-card.is-sel .species-name { color: var(--gold); }
+
 .species-rarity {
     font-size: 10px;
     color: var(--muted);
@@ -347,11 +400,10 @@ button, input, select, textarea, a {
     font-style: italic;
 }
 
-/* Species detail card */
 .species-detail {
-    border: 1px solid rgba(255,255,255,0.2);
-    background: var(--panel);
-    border-radius: 14px;
+    border: 1px solid rgba(70, 100, 100, 0.45);
+    background: var(--teal-dark);
+    border-radius: 12px;
     padding: 14px;
     margin-top: 4px;
 }
@@ -360,6 +412,7 @@ button, input, select, textarea, a {
     font-size: 17px;
     font-weight: 800;
     margin-bottom: 6px;
+    color: var(--gold);
 }
 
 .species-detail-desc {
@@ -378,15 +431,15 @@ button, input, select, textarea, a {
 
 .species-detail-facts span {
     font-size: 11px;
-    color: var(--muted);
-    border: 1px solid var(--line);
+    color: var(--cream);
+    border: 1px solid rgba(70, 100, 100, 0.45);
     border-radius: 999px;
     padding: 2px 8px;
 }
 
 .species-detail-feat {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--line);
+    background: rgba(70, 100, 100, 0.12);
+    border: 1px solid rgba(70, 100, 100, 0.35);
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 6px;
@@ -401,7 +454,7 @@ button, input, select, textarea, a {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--muted);
+    color: var(--cream);
     display: block;
     margin-bottom: 2px;
 }
@@ -410,6 +463,7 @@ button, input, select, textarea, a {
     font-size: 13px;
     display: block;
     margin-bottom: 4px;
+    color: var(--text);
 }
 
 .species-detail-feat p {
@@ -424,8 +478,8 @@ button, input, select, textarea, a {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: var(--panel);
-    border: 1px solid var(--line);
+    background: var(--teal-dark);
+    border: 1px solid rgba(70, 100, 100, 0.45);
     border-radius: 12px;
     padding: 10px 14px;
     margin-bottom: 12px;
@@ -433,7 +487,7 @@ button, input, select, textarea, a {
 
 .points-label {
     font-size: 12px;
-    color: var(--muted);
+    color: var(--cream);
     font-weight: 600;
     flex: 1;
 }
@@ -443,9 +497,10 @@ button, input, select, textarea, a {
     font-weight: 900;
     min-width: 28px;
     text-align: right;
+    color: var(--gold);
     transition: color 0.2s;
+    text-shadow: 0 0 10px var(--gold-glow);
 }
-
 
 .stats-two-col {
     display: grid;
@@ -457,15 +512,15 @@ button, input, select, textarea, a {
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
+    letter-spacing: 0.10em;
+    color: var(--cream);
     padding: 0 0 8px;
 }
 
-/* ── ABILITY CHECK REFERENCE ────────────────────────────────────── */
+/* ── BUILD GUIDE ────────────────────────────────────────────────── */
 
 #build-guide {
-    border: 1px solid var(--line);
+    border: 1px solid rgba(70, 100, 100, 0.35);
     border-radius: 12px;
     overflow: hidden;
     margin-bottom: 14px;
@@ -475,31 +530,37 @@ button, input, select, textarea, a {
     font-size: 10px;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--muted);
+    letter-spacing: 0.10em;
+    color: var(--cream);
     padding: 8px 12px 6px;
-    background: var(--panel-2);
+    background: var(--teal-dark);
 }
 
-.guide-feat-list { background: var(--panel-2); }
+.guide-feat-list { background: var(--panel); }
 
 .guide-feat-row {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     padding: 6px 12px;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid rgba(70, 100, 100, 0.25);
     font-size: 13px;
 }
 
-.guide-feat-name { color: var(--text); font-weight: 500; flex: 1; }
+.guide-feat-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
 
-.guide-feat-row--expand { border-top: 1px solid var(--line); }
+.guide-feat-name { color: var(--text); font-weight: 500; }
+
+.guide-feat-row--expand { border-top: 1px solid rgba(70, 100, 100, 0.25); }
 .guide-feat-row--expand:first-child { border-top: none; }
 
 .guide-feat-summary {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 8px 12px;
     cursor: pointer;
@@ -513,7 +574,7 @@ button, input, select, textarea, a {
     content: '▾';
     font-size: 18px;
     line-height: 1;
-    color: var(--accent2);
+    color: var(--teal-light);
     flex-shrink: 0;
     transition: transform 0.2s;
     opacity: 0.85;
@@ -522,7 +583,7 @@ details[open] .guide-feat-summary::after {
     transform: rotate(-180deg);
     opacity: 1;
 }
-details[open] .guide-feat-summary { background: rgba(255,255,255,0.03); }
+details[open] .guide-feat-summary { background: rgba(70, 100, 100, 0.08); }
 
 .guide-feat-desc {
     font-size: 13px;
@@ -532,40 +593,40 @@ details[open] .guide-feat-summary { background: rgba(255,255,255,0.03); }
     padding: 2px 12px 12px;
     margin: 0;
     white-space: pre-wrap;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid rgba(70, 100, 100, 0.25);
 }
 
 .guide-feat-check {
     font-size: 11px;
     font-weight: 700;
-    color: var(--accent2);
-    background: var(--panel);
+    color: var(--gold);
+    background: rgba(47, 79, 79, 0.45);
     border-radius: 6px;
     padding: 2px 7px;
 }
 
-/* Stat row highlighting */
+/* Stat row */
 .stat-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 8px 6px;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid rgba(70, 100, 100, 0.2);
     border-radius: 8px;
     transition: background 0.12s;
 }
 
 .stat-row--primary {
-    background: var(--accent-dim);
+    background: rgba(47, 79, 79, 0.25);
 }
 
 .stat-row--primary .stat-name {
-    color: var(--accent);
+    color: var(--gold);
     font-weight: 800;
 }
 
 .stat-row--secondary {
-    background: rgba(255,255,255,0.03);
+    background: rgba(70, 100, 100, 0.06);
 }
 
 .stat-row:last-child { border-bottom: 0; }
@@ -581,7 +642,6 @@ details[open] .guide-feat-summary { background: rgba(255,255,255,0.03); }
 
 .guide-sub em { font-style: italic; color: var(--muted); }
 
-/* Progression preview in build guide */
 .guide-progression { margin-top: 8px; }
 .guide-prog-head {
     font-size: 11px; font-weight: 700; color: var(--muted);
@@ -592,15 +652,15 @@ details[open] .guide-feat-summary { background: rgba(255,255,255,0.03); }
 .guide-prog-row {
     display: flex; align-items: center; gap: 6px;
     font-size: 11px; padding: 3px 0;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid rgba(70, 100, 100, 0.2);
 }
 .guide-prog-upgrade { opacity: 0.7; }
 .guide-prog-lvl  { font-size: 10px; color: var(--muted); min-width: 24px; }
 .guide-prog-name { flex: 1; font-weight: 600; }
 .guide-prog-type { font-size: 10px; color: var(--muted); }
 .guide-prog-check {
-    font-size: 10px; font-weight: 700; color: var(--accent);
-    background: var(--accent-dim); border-radius: 4px; padding: 1px 5px;
+    font-size: 10px; font-weight: 700; color: var(--gold);
+    background: rgba(47, 79, 79, 0.45); border-radius: 4px; padding: 1px 5px;
 }
 
 .stat-stepper {
@@ -612,8 +672,8 @@ details[open] .guide-feat-summary { background: rgba(255,255,255,0.03); }
 .stat-adj {
     height: 28px;
     width: 28px;
-    border-radius: 8px;
-    border: 1px solid var(--line);
+    border-radius: 7px;
+    border: 1px solid rgba(70, 100, 100, 0.45);
     background: var(--panel);
     color: var(--text);
     font-size: 16px;
@@ -622,15 +682,17 @@ details[open] .guide-feat-summary { background: rgba(255,255,255,0.03); }
     cursor: pointer;
     font-family: inherit;
     touch-action: manipulation;
+    transition: background 0.1s;
 }
 
-.stat-adj:active { background: rgba(255,255,255,0.1); }
+.stat-adj:active { background: rgba(70, 100, 100, 0.3); }
 
 .stat-val {
     font-size: 16px;
     font-weight: 800;
     min-width: 22px;
     text-align: center;
+    color: var(--text);
 }
 
 /* ── STEP 5: STARTING DETAILS ───────────────────────────────────── */
@@ -644,8 +706,8 @@ details[open] .guide-feat-summary { background: rgba(255,255,255,0.03); }
 
 .detail-block {
     background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 14px;
+    border: 1px solid rgba(70, 100, 100, 0.35);
+    border-radius: 12px;
     padding: 14px;
     margin-bottom: 10px;
 }
@@ -663,49 +725,58 @@ details[open] .guide-feat-summary { background: rgba(255,255,255,0.03); }
 .detail-label {
     font-size: 14px;
     font-weight: 700;
+    color: var(--cream);
+    letter-spacing: 0.03em;
 }
 
 .detail-roll-btn {
-    border: 1px solid var(--line);
-    background: rgba(255,255,255,0.07);
-    border-radius: 10px;
+    border: 1px solid rgba(70, 100, 100, 0.45);
+    background: rgba(47, 79, 79, 0.3);
+    color: var(--cream);
+    border-radius: 8px;
     padding: 6px 12px;
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
     touch-action: manipulation;
     white-space: nowrap;
-    transition: background 0.1s;
+    transition: background 0.1s, border-color 0.1s;
 }
 
-.detail-roll-btn:active { background: rgba(255,255,255,0.14); transform: scale(0.97); }
+.detail-roll-btn:active { background: rgba(70, 100, 100, 0.5); transform: scale(0.97); }
 
 .detail-equip-add { display: flex; flex-direction: column; }
-.extra-equip-row  { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-top: 1px solid var(--line); margin-top: 4px; }
+.extra-equip-row  { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-top: 1px solid rgba(70,100,100,0.2); margin-top: 4px; }
 .extra-equip-info { flex: 1; display: flex; flex-direction: column; gap: 1px; }
 .extra-equip-name  { font-size: 13px; font-weight: 700; }
 .extra-equip-notes { font-size: 11px; color: var(--muted); }
-.extra-equip-cat   { font-size: 10px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; }
+.extra-equip-cat   { font-size: 10px; color: var(--teal-light); text-transform: uppercase; letter-spacing: 0.05em; }
 
 .detail-textarea {
     width: 100%;
     min-height: 70px;
-    border-radius: 10px;
-    border: 1px solid var(--line);
-    background: #0f0f14;
+    border-radius: 8px;
+    border: 1px solid rgba(70, 100, 100, 0.40);
+    background: var(--panel-2);
     color: var(--text);
     padding: 10px 12px;
     font-size: 14px;
     resize: vertical;
     font-family: inherit;
     box-sizing: border-box;
+    transition: border-color 0.12s;
+}
+
+.detail-textarea:focus {
+    outline: none;
+    border-color: var(--teal-light);
 }
 
 /* ── STEP 6: REVIEW ──────────────────────────────────────────────── */
 
 .review-card {
-    background: var(--panel);
-    border: 1px solid var(--line);
+    background: var(--teal-dark);
+    border: 1px solid rgba(70, 100, 100, 0.50);
     border-radius: 14px;
     padding: 14px;
     margin-top: 14px;
@@ -719,6 +790,13 @@ details[open] .guide-feat-summary { background: rgba(255,255,255,0.03); }
     align-items: baseline;
     gap: 10px;
     font-size: 14px;
+    border-bottom: 1px solid rgba(70, 100, 100, 0.2);
+    padding-bottom: 8px;
+}
+
+.review-row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
 }
 
 .review-lbl {
@@ -726,7 +804,7 @@ details[open] .guide-feat-summary { background: rgba(255,255,255,0.03); }
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--muted);
+    color: var(--cream);
     min-width: 56px;
     flex-shrink: 0;
 }

@@ -73,6 +73,41 @@ const CONDITION_EFFECTS = {
     'Unconscious': 'Cannot act — Vulnerable to crits & Finishers',
 };
 
+// ── ADDITIONAL EQUIPMENT TABLE ────────────────────────────────────────────────
+
+const EQUIPMENT_LIST = [
+    "A bandolier of shotgun shells, a gun cleaning kit, a holster for quick draw",
+    "Brewing equipment, a selection of rare herbs and magical ingredients, a few bottles of 'moonshine'",
+    "A book of abyssal texts, a set of writing tools and ink, a small collection of scrolls and manuscripts, and a silver holy symbol",
+    "Collection jars (for the leeches), a medical kit (with basic supplies)",
+    "A grappling hook (for scaling trees and buildings), a water-skin, and a small first-aid kit",
+    "A ledger, a set of fine writing implements, and a collection of valuable coins from various nations",
+    "A set of tattooing tools, a sketchbook, and a few magical inks with unique properties",
+    "A set of wooden stakes, a vial of holy water, and a guide to supernatural creatures",
+    "A whetstone, a set of weapon maintenance tools, and a training manual",
+    "Acrobat's tools, a small makeup kit, and a set of costume props",
+    "Animal handling tools, a portable cage, and a collection of treats for animals",
+    "Bedroll, a map of the region, and a signal whistle",
+    "Elemental gemstones, a collection of scrolls detailing elemental spells, and a small bound elemental creature",
+    "Golem maintenance kit, a manual on golem anatomy, and a small golem-making kit",
+    "Healer's kit, a wooden staff, and a collection of potions",
+    "Light hammer, a flask filled with liquor, and a lighter",
+    "Mechanics' tools, a portable workshop, and a few spare parts",
+    "Musical instrument with intricate carvings, Performer's Flourish (+1 Influence)",
+    "Old miner's helmet (with functioning lantern), a collection of precious stones",
+    "Rope, grappling hook, and lockpicks in a compact pouch",
+    "Ruined spellbook, a magical focus, and a pouch of magical reagents",
+    "Scale, a ledger, and a set of merchant's tools, Additional 50 gp",
+    "Thieves' tools, a collapsible grappling hook, and a set of lockpicks",
+    "A sturdy belt with multiple pouches, a canvas bag, and a small pocket knife",
+    "A small pouch of magical components, a spellbook, and a scroll case",
+    "Handcuffs, a notepad, and a magnifying glass in a leather case",
+    "Enchanted makeup kit, a mirror, and a small case of various potions",
+    "Pocket watch, a city map, a book on city architecture",
+    "A portable taco-making kit, a book on taco divination, exotic taco ingredients",
+    "A set of cheese-making tools, a selection of fine cheeses, an intelligent cheese",
+];
+
 // Which check keys each condition forces to Disadvantage ('all' = every check)
 const CONDITION_DISADVANTAGE = {
     'Broken': ['agi', 'cra', 'ste', 'str', 'sur'],
@@ -125,6 +160,7 @@ const state = {
         speciesFeature: null,  // { name, effect, action, check }
         speciesSubFeature: null,  // { name, effect }
         trinket: '',
+        additionalEquip: '',
         wealth: 0,
         featureOverrides: {},   // { [featureName]: { desc?: string, hideRoll?: bool } }
         theme: { a1: '', a2: '' }, // per-character dual accent colors
@@ -1356,8 +1392,8 @@ function bindSpellRollModal() {
 
 // ── SETTINGS & THEME ──────────────────────────────────────────────────────────
 
-const DEFAULT_A1 = '#6b9cc8';
-const DEFAULT_A2 = '#c4622d';
+const DEFAULT_A1 = '#4c6e6e';  // teal-light
+const DEFAULT_A2 = '#b8860b';  // dark goldenrod
 
 function hexToRgb(hex) {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -1432,7 +1468,8 @@ function buildThemeSliders(a1, a2) {
         <div class="wm-label" style="margin-bottom:6px">Primary</div>
         ${row('a1', a1, sl1)}
         <div class="wm-label" style="margin:12px 0 6px">Secondary</div>
-        ${row('a2', a2, sl2)}`;
+        ${row('a2', a2, sl2)}
+        <button id="btn-reset-theme" class="settings-action-btn" style="margin-top:14px;border-color:rgba(70,100,100,0.45);color:var(--cream);">↺ Reset to Default Theme</button>`;
 }
 
 function wireThemeSliders(getA1, getA2, onSave) {
@@ -1449,6 +1486,14 @@ function wireThemeSliders(getA1, getA2, onSave) {
         ['hue','sat','lit'].forEach(prefix => {
             document.getElementById(`${prefix}-${key}`)?.addEventListener('input', () => updateColor(key));
         });
+    });
+    document.getElementById('btn-reset-theme')?.addEventListener('click', () => {
+        onSave(DEFAULT_A1, DEFAULT_A2);
+        const container = document.getElementById('theme-swatches');
+        if (container) {
+            container.innerHTML = buildThemeSliders(DEFAULT_A1, DEFAULT_A2);
+            wireThemeSliders(() => DEFAULT_A1, () => DEFAULT_A2, onSave);
+        }
     });
 }
 
@@ -2342,6 +2387,14 @@ function renderSharedChat() {
     sharedChatMsgs.forEach(m => {
         const li    = document.createElement('li');
         if (m.id) li.dataset.chatId = m.id;
+
+        if (m.removed) {
+            li.className = 'chat-msg--removed';
+            li.innerHTML = '<span class="chat-removed-text">— removed —</span>';
+            el.appendChild(li);
+            return;
+        }
+
         const isMe  = m.uid === window.__arc?.uid;
         const isNar = m.isNarrator;
 
@@ -2368,12 +2421,15 @@ function renderSharedChat() {
             li.innerHTML = renderInitiativeCallEntry(m);
         } else if (m.type === 'turn') {
             li.innerHTML = renderTurnEntry(m);
+        } else if (m.type === 'system') {
+            li.className = 'chat-system-msg';
+            li.innerHTML = `<span class="chat-sys-text">— ${parseInline(m.text)} —</span>`;
         } else {
             const emojiOnly = isEmojiOnly(m.text);
             li.className = 'chat-entry--msg';
             li.innerHTML = emojiOnly
-                ? `${badge}<span class="chat-time">${m.time || ''}</span><div class="chat-emoji-block"><span class="chat-text chat-emoji-big">${m.text || ''}</span>${EMOJI_REACTIONS_HTML}</div>`
-                : `${badge}<span class="chat-time">${m.time || ''}</span><span class="chat-text">${m.text || ''}</span>`;
+                ? `${badge}<span class="chat-time">${m.time || ''}</span><div class="chat-emoji-block"><span class="chat-text chat-emoji-big">${parseInline(m.text)}</span>${EMOJI_REACTIONS_HTML}</div>`
+                : `${badge}<span class="chat-time">${m.time || ''}</span><span class="chat-text">${parseInline(m.text)}</span>`;
         }
 
         el.appendChild(li);
@@ -2453,6 +2509,11 @@ document.addEventListener('arc:firebase-ready', () => {
             }
         },
     );
+
+    // Presence heartbeat — keeps updatedAt fresh so analytics can show who's actually online
+    syncToRoom();
+    const _heartbeat = setInterval(syncToRoom, 60000);
+    window.addEventListener('beforeunload', () => clearInterval(_heartbeat));
 });
 
 function renderPlayerParty(players) {
@@ -3065,11 +3126,6 @@ function bindDrawer() {
         }
     });
 
-    document.getElementById('btn-clear-chat')?.addEventListener('click', () => {
-        state.chat = [];
-        saveState();
-        renderChat();
-    });
     document.getElementById('btn-send-msg')?.addEventListener('click', sendChatMsg);
     document.getElementById('chat-msg-input')?.addEventListener('keydown', e => {
         if (e.key === 'Enter') sendChatMsg();
@@ -3692,11 +3748,18 @@ function bindBio() {
         state.char.diet       = document.getElementById('char-diet')?.value.trim() || '';
         state.char.language   = document.getElementById('char-language')?.value.trim() || '';
         state.char.motivation = document.getElementById('char-motivation')?.value.trim() || '';
-        state.char.trinket    = document.getElementById('char-trinket')?.value.trim() || '';
+        state.char.trinket         = document.getElementById('char-trinket')?.value.trim() || '';
+        state.char.additionalEquip = document.getElementById('char-additional-equip')?.value.trim() || '';
         saveState();
         syncTopbar();
         syncBioDisplay();
         closeBioEdit();
+    });
+
+    // Additional Equipment roller
+    document.getElementById('btn-roll-additional-equip')?.addEventListener('click', () => {
+        const ta = document.getElementById('char-additional-equip');
+        if (ta) ta.value = EQUIPMENT_LIST[Math.floor(Math.random() * EQUIPMENT_LIST.length)];
     });
 
     // Notes — auto-save on blur
@@ -3757,8 +3820,9 @@ function syncBioDisplay() {
     txt('bio-display-age',        state.char.age);
     txt('bio-display-diet',       state.char.diet);
     txt('bio-display-lang',       state.char.language);
-    txt('bio-display-motivation', state.char.motivation);
-    txt('bio-display-trinket',    state.char.trinket);
+    txt('bio-display-motivation',       state.char.motivation);
+    txt('bio-display-trinket',          state.char.trinket);
+    txt('bio-display-additional-equip', state.char.additionalEquip);
 }
 
 function syncBioInputs() {
@@ -3771,6 +3835,7 @@ function syncBioInputs() {
     set('char-language', state.char.language);
     set('char-motivation', state.char.motivation);
     set('char-trinket', state.char.trinket);
+    set('char-additional-equip', state.char.additionalEquip);
     set('char-notes', state.char.notes);
     syncBioDisplay();
     syncSpeciesDisplay();
@@ -4269,4 +4334,25 @@ document.addEventListener('DOMContentLoaded', () => {
     updateXpDisplay();
     // Close drawer cleanly on boot (ensure inert state matches)
     closeDrawer();
+
+    // Mobile swipe left/right to cycle panels
+    (function () {
+        const ORDER = ['chat', 'play', 'actions', 'spells', 'ref', 'progression'];
+        let sx = 0, sy = 0, live = false;
+        document.addEventListener('touchstart', e => {
+            if (e.target.closest('input, select, textarea, button, [role="slider"]')) { live = false; return; }
+            sx = e.touches[0].clientX; sy = e.touches[0].clientY; live = true;
+        }, { passive: true });
+        document.addEventListener('touchend', e => {
+            if (!live) return; live = false;
+            const dx = e.changedTouches[0].clientX - sx;
+            const dy = e.changedTouches[0].clientY - sy;
+            if (Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx)) return;
+            const cur = els.navBtns.find(b => b.classList.contains('is-active'))?.dataset.nav;
+            const idx = ORDER.indexOf(cur);
+            if (idx === -1) return;
+            const next = ORDER[idx + (dx < 0 ? 1 : -1)];
+            if (next) setActivePanel(next);
+        }, { passive: true });
+    })();
 });

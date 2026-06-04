@@ -8,7 +8,7 @@
     <link rel="icon" href="../assets/icons/check20-app.png" type="image/png" />
     <link rel="apple-touch-icon" href="../assets/icons/check20-app.png" />
     <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#0c0c0f" />
+    <meta name="theme-color" content="#1b2c2c" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -109,6 +109,18 @@
         </div>
 
     </main>
+
+    <!-- Campaign Entry Screen (shown when joining a named room) -->
+    <div id="home-entry-screen" class="home-entry-screen" hidden>
+        <div class="home-entry-inner">
+            <div class="home-entry-eyebrow">You are entering</div>
+            <div class="home-entry-name" id="entry-room-name"></div>
+            <div class="home-entry-divider"></div>
+            <div class="home-entry-msg" id="entry-room-msg"></div>
+            <button id="btn-enter-room" class="home-btn home-btn--primary home-entry-btn" type="button">Enter</button>
+        </div>
+    </div>
+
 </body>
 
 </html>

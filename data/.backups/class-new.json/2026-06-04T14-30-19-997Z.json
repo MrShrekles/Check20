@@ -8585,12 +8585,12 @@
               "action": "Upgrade",
               "check": "Intellect",
               "range": "",
-              "description": "After a successful Cold Read, you may take an action to alter what you found. Shift Loyalty by +/- 2, apply Frightened or Charmed, or implant a persistent emotional state of your choice. At the end of the duration they are immune to this effect and have -10 loyalty with you.",
-              "duration": "1 minute",
+              "description": "",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed"
+              "condition": ""
             },
             {
               "step": 9,
@@ -8598,25 +8598,12 @@
               "action": "Action",
               "check": "Intellect, Mental",
               "range": "Medium",
-              "description": "Focus your will into a devastating mental strike against a creature within range. The target must make a Mental check; on a failure, they are Stunned until the end of their next turn and take psychic damage equal to your Intellect Check.\nOn a success they take half damage and suffer Disadvantage on their next check.",
+              "description": "Focus your will into a devastating mental strike against a creature within range. The target must make a Mental check; on a failure, they are Stunned until the end of their next turn and take psychic damage equal to your Intellect Check.\nOn a success they take half damage and suffer Disadvantage on their next check. If the target’s Intellect is lower than your spellcasting check, they also drop any held item.",
               "duration": "Instant",
               "damage": "Check",
               "damageType": "Psychic",
               "armor": "",
               "condition": "Stunned"
-            },
-            {
-              "step": 10,
-              "name": "Welcome to My World",
-              "action": "Action",
-              "check": "Mental",
-              "range": "Medium",
-              "description": "As an action once per day, project a total sensory domain over all creatures within Medium range for 1 minute. The domain is yours entirely; you choose the environment, the rules, and what exists inside it. While active, you gain Advantage on all checks made within it. Creatures inside must make a Mental check at the start of each turn or be Confused. On three consecutive failures they are Stunned for the remainder of the domain. The domain collapses if you are Stunned, knocked unconscious, or choose to end it.",
-              "duration": "1 minute",
-              "damage": "",
-              "damageType": "",
-              "armor": "",
-              "condition": "Confused, Stunned"
             }
           ]
         },
