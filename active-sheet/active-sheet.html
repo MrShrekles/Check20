@@ -20,6 +20,7 @@
     <script src="../scripts/tooltips.js" defer></script>
 
     <!-- page logic -->
+    <script src="../scripts/notifications.js" defer></script>
     <script src="../scripts/chat-cards.js" defer></script>
     <script type="module" src="../scripts/firebase.js"></script>
     <script src="../scripts/analytics.js" defer></script>
@@ -571,59 +572,103 @@
             <!-- CHAT -->
             <section class="panel" id="panel-chat" role="region" aria-label="Chat">
 
-                <!-- Party sub-tab — shown only when in a room -->
-                <div id="party-session-panel" hidden>
-                    <div class="section" style="margin-bottom:8px">
-                        <div class="section-head">
-                            <h2 class="section-title">Party</h2>
-                            <span class="party-room-code" id="player-room-badge"></span>
+                <!-- Chat / Initiative sub-tabs -->
+                <div class="chat-sub-tabs">
+                    <button class="chat-sub-tab is-active" data-chat-sub="messages" type="button">Messages</button>
+                    <button class="chat-sub-tab" data-chat-sub="initiative" type="button">Initiative</button>
+                </div>
+
+                <!-- Messages sub-panel -->
+                <div class="chat-sub-content" id="chat-sub-messages">
+                    <!-- Party sub-tab — shown only when in a room -->
+                    <div id="party-session-panel" hidden>
+                        <div class="section" style="margin-bottom:8px">
+                            <div class="section-head">
+                                <h2 class="section-title">Party</h2>
+                                <span class="party-room-code" id="player-room-badge"></span>
+                            </div>
+                            <div id="player-party-list"><p class="empty-hint">Connecting to session…</p></div>
                         </div>
-                        <div id="player-party-list"><p class="empty-hint">Connecting to session…</p></div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title" id="chat-panel-title">Session Chat</h2>
+                        </div>
+                        <ol class="chat-log" id="chat-log" aria-label="Session chat">
+                            <!-- entries injected by JS -->
+                        </ol>
+                        <div id="typing-indicator" class="typing-indicator" hidden>
+                            <span class="typing-dots"><span></span><span></span><span></span></span>
+                            <span class="typing-label">Narrator is typing…</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title" id="chat-panel-title">Session Chat</h2>
+                <!-- Initiative sub-panel (read-only, synced from room) -->
+                <div class="chat-sub-content" id="chat-sub-initiative" hidden>
+                    <div class="section">
+                        <div class="init-stats-row">
+                            <div class="init-stat">
+                                <span class="init-stat-label">Round</span>
+                                <span class="init-stat-val" id="player-enc-round">—</span>
+                            </div>
+                        </div>
+                        <div class="enc-turn-bar" id="player-enc-turn-bar" hidden>
+                            <span id="player-enc-active-name">—</span>'s turn
+                        </div>
+                        <div id="player-encounter-list">
+                            <p class="empty-hint">No encounter in progress.</p>
+                        </div>
                     </div>
-                    <ol class="chat-log" id="chat-log" aria-label="Session chat">
-                        <!-- entries injected by JS -->
-                    </ol>
                 </div>
 
-                <!-- Sticky dice roller + send, always visible above nav -->
+                <!-- Toolbar — outside scroll areas, always visible at bottom of chat panel -->
                 <div class="chat-sticky-bottom">
-                    <div class="dice-roller" id="dice-roller">
-                        <div class="dice-top-row">
-                            <label class="dice-count-field">
-                                <span class="dice-mult-label">×</span>
-                                <input class="dice-count-input" id="dice-count" type="number" inputmode="numeric" min="1" max="20" value="1" />
-                            </label>
-                            <select class="dice-type-select" id="dice-type">
-                                <option value="4">d4</option>
-                                <option value="6">d6</option>
-                                <option value="8">d8</option>
-                                <option value="10">d10</option>
-                                <option value="12">d12</option>
-                                <option value="20" selected>d20</option>
-                                <option value="100">d%</option>
-                            </select>
-                            <label class="dice-bonus-field">
-                                <span class="dice-bonus-label">+</span>
-                                <input class="dice-bonus-input" id="dice-bonus" type="number" inputmode="numeric" value="0" />
-                            </label>
-                            <button class="dice-roll-btn" id="btn-dice-roll" type="button">Roll</button>
+                    <!-- Dice panel (toggleable) -->
+                    <div class="nar-tool-panel" id="player-dice-panel" hidden>
+                        <div class="dice-roller" id="dice-roller">
+                            <div class="dice-top-row">
+                                <label class="dice-count-field">
+                                    <span class="dice-mult-label">×</span>
+                                    <input class="dice-count-input" id="dice-count" type="number" inputmode="numeric" min="1" max="20" value="1" />
+                                </label>
+                                <select class="dice-type-select" id="dice-type">
+                                    <option value="4">d4</option>
+                                    <option value="6">d6</option>
+                                    <option value="8">d8</option>
+                                    <option value="10">d10</option>
+                                    <option value="12">d12</option>
+                                    <option value="20" selected>d20</option>
+                                    <option value="100">d%</option>
+                                </select>
+                                <label class="dice-bonus-field">
+                                    <span class="dice-bonus-label">+</span>
+                                    <input class="dice-bonus-input" id="dice-bonus" type="number" inputmode="numeric" value="0" />
+                                </label>
+                                <button class="dice-roll-btn" id="btn-dice-roll" type="button">Roll</button>
+                            </div>
                         </div>
                     </div>
                     <!-- Emoji panel -->
                     <div class="emoji-panel" id="emoji-panel" hidden></div>
+                    <!-- Target panel -->
+                    <div class="nar-tool-panel" id="player-target-panel" hidden>
+                        <div class="voice-list" id="player-target-list"></div>
+                    </div>
                     <div class="chat-input-row">
-                        <button class="emoji-toggle-btn" id="emoji-btn" type="button" aria-label="Emoji">😊</button>
-                        <input id="chat-msg-input" type="text" placeholder="Say something…" autocomplete="off" />
-                        <button class="chat-send-btn" id="btn-send-msg" type="button">Send</button>
+                        <div class="chat-tool-btns">
+                            <button class="chat-tool-btn" id="player-dice-btn" type="button" aria-label="Dice roller" title="Dice roller">🎲</button>
+                            <button class="chat-tool-btn" id="emoji-btn" type="button" aria-label="Emoji">😊</button>
+                            <button class="chat-tool-btn" id="player-target-btn" type="button" aria-label="Target" title="Set target">🎯</button>
+                        </div>
+                        <div class="chat-msg-row">
+                            <input id="chat-msg-input" type="text" placeholder="Say something…" autocomplete="off" />
+                            <button class="chat-send-btn" id="btn-send-msg" type="button">Send</button>
+                        </div>
                     </div>
                 </div>
-                </div>
+
             </section>
 
         </section>
@@ -1073,6 +1118,14 @@
     <div class="conditions-bar" id="conditions-bar"></div>
 
     <!-- Bottom navigation — outside <main> so no container can trap fixed positioning -->
+    <!-- Global context bar: target — visible on all panels -->
+    <div class="global-ctx-bar" id="player-context-bar" hidden>
+        <span class="chat-ctx-chip chat-ctx-chip--target" id="player-target-chip" hidden>
+            <span class="chat-ctx-label" id="player-target-chip-label"></span>
+            <button class="chat-ctx-dismiss" id="player-target-dismiss" type="button">×</button>
+        </span>
+    </div>
+
     <nav class="bottom-nav" aria-label="Bottom navigation">
         <button class="nav-btn" data-nav="chat" data-tip="Session Chat" type="button" aria-controls="panel-chat">
             <span class="nav-icon-wrap">

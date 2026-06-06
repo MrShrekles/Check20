@@ -1,6 +1,20 @@
 // chat-cards.js — shared chat card renderers
 // Loaded by active-sheet.html and narrator.html before their respective scripts.
 
+const CONDITION_ICONS = {
+    'Bleeding':    '🩸', 'Broken':      '🦴', 'Concussion':  '💫', 'Coughing':    '🤧',
+    'Dislocation': '↕',  'Slowed':      '🐌', 'Pinned':      '📌', 'Prone':       '⬇',
+    'Blind':       '🚫', 'Charmed':     '💞', 'Confused':    '❓', 'Deaf':        '🔇',
+    'Fear':        '😨', 'Intangible':  '👻', 'Invisible':   '👤', 'Stunned':     '⚡',
+    'Exhaustion':  '💤', 'Constrained': '⛓', 'Unconscious': '😵', 'Exposed':     '🎯',
+    'Injured':     '🩹', 'Death':       '☠',
+};
+
+function condChip(name) {
+    const icon = CONDITION_ICONS[name];
+    return icon ? `${icon} ${name}` : name;
+}
+
 const EMOJI_SET = [
     '👍','👎','❤️','🔥','🎉','😂','😮','😢',
     '⚔️','🛡️','🎲','💀','✨','💥','🩸','🏹',
@@ -33,6 +47,32 @@ function parseInline(text) {
         .replace(/`(.+?)`/g, '<code class="chat-code">$1</code>');
 }
 
+// ── PERSISTENT REACTIONS ──────────────────────────────────────────────────────
+
+const REACTION_EMOJIS = ['👍','❤️','😂','😮','💀','🔥','⚔️','🎲'];
+
+function buildReactionBar(m, myUid) {
+    if (!m?.id) return '';
+    const reactions = m.reactions || {};
+    const chips = Object.entries(reactions)
+        .filter(([, uids]) => Array.isArray(uids) && uids.length > 0)
+        .map(([emoji, uids]) => {
+            const mine = myUid && uids.includes(myUid);
+            return `<button class="reaction-chip${mine ? ' is-mine' : ''}" data-emoji="${emoji}" type="button">${emoji} ${uids.length}</button>`;
+        }).join('');
+    const picker = REACTION_EMOJIS.map(e =>
+        `<button class="reaction-pick-btn" data-emoji="${e}" type="button">${e}</button>`
+    ).join('');
+    return `<div class="chat-reactions" data-msg-id="${m.id}"><div class="reaction-chips">${chips}<button class="reaction-add-btn" type="button" title="Add reaction">＋</button></div><div class="reaction-picker" hidden>${picker}</div></div>`;
+}
+
+// Close open reaction pickers when clicking outside
+document.addEventListener('click', e => {
+    if (!e.target.closest('.chat-reactions')) {
+        document.querySelectorAll('.reaction-picker:not([hidden])').forEach(p => { p.hidden = true; });
+    }
+});
+
 const EMOJI_REACTIONS_HTML = `
 <div class="chat-emoji-reactions">
   <button class="chat-emoji-react-btn" type="button" data-emoji-anim="dance"  title="Dance">💃</button>
@@ -42,6 +82,75 @@ const EMOJI_REACTIONS_HTML = `
   <button class="chat-emoji-react-btn" type="button" data-emoji-anim="pop"    title="Pop">💥</button>
   <button class="chat-emoji-react-btn" type="button" data-emoji-anim="flip"   title="Flip">🔄</button>
 </div>`;
+
+// Returns the author badge HTML for a shared chat message
+function authorBadge(m) {
+    if (!m.isNarrator) return `<div class="shared-author">${m.author || 'Player'}</div>`;
+    if (m.speakingAs)  return `<div class="shared-author shared-author--npc">🎭 ${m.speakingAs}</div>`;
+    return `<div class="shared-author shared-author--nar">◆ ${m.monsterName || 'Narrator'}</div>`;
+}
+
+// ── REFERENCE ACTIONS — shared between player and narrator ───────────────────
+const REF_ACTIONS = [
+    { group: 'Actions' },
+    { name: 'Attack',           desc: 'Make a melee or ranged attack against a creature or object within range.' },
+    { name: 'Stealth',          desc: 'Make a Stealth check. On success, you are unseen and your next attack has Advantage. Attacking, casting, or revealing yourself ends Stealth unless a feature says otherwise.' },
+    { name: 'Dash',             desc: 'Use your action to move again after moving, doubling your distance this turn.' },
+    { name: 'Cast a Spell',     desc: 'Requires sound, movement, and a Spellcasting check (usually Spirit). Spend the listed Mana cost.' },
+    { name: 'Grab or Hold',     desc: 'Make an opposed Strength check to impose the Pinned condition.' },
+    { name: 'Administer Potion',desc: 'Give a potion to a downed ally. Drinking one yourself is a Half-Action.' },
+    { group: 'Half-Actions' },
+    { name: 'Disarm',           desc: 'Make an opposed Strength or Agility check to disarm a creature.' },
+    { name: 'Help',             desc: 'Give a creature +1 to their next check this turn.' },
+    { name: 'Pick Up Item',     desc: 'Pick up a dropped or nearby item.' },
+    { name: 'Use an Object',    desc: 'Interact with levers, buttons, or similar objects.' },
+    { name: 'Disengage',        desc: "Move out of a creature's range without provoking opportunity attacks." },
+    { name: 'Unarmed Strike',   desc: 'Deals 1 BPorS damage. Can also be taken as an Off-Action.' },
+    { group: 'Stances (Half-Action)' },
+    { name: 'Advantage Stance',    desc: 'Gain Advantage on your next attack.' },
+    { name: 'Disadvantage Stance', desc: 'Give Disadvantage to enemies attacking you or allies in range.' },
+    { name: 'Offensive Stance',    desc: 'Use your Off-Action to Provoke.' },
+    { name: 'Reaction Stance',     desc: 'React to failed attacks against you.' },
+    { name: 'Guard Stance',        desc: 'When attacked, Provoke once without using an Off-Action. On all failed attacks, may Provoke at Disadvantage.' },
+    { group: 'Off-Actions' },
+    { name: 'Provoke',    desc: 'Attack creatures leaving your melee range without disengaging, when they fail a check against you, or per a specific ability.' },
+    { name: 'Drink',      desc: 'Drink or hand off a potion.' },
+    { name: 'Disrupt',    desc: "Impose Disadvantage on an enemy's attack with a successful check." },
+    { name: 'Block',      desc: 'Reduce incoming melee damage by half using a shield.' },
+    { name: 'Demoralize', desc: 'Force enemies to make a morale check with an Influence (Intimidate) roll.' },
+    { group: 'Non-Actions' },
+    { name: 'Switch Weapons', desc: 'Drop a weapon and draw another without spending action economy.' },
+    { name: 'Stress Push',    desc: 'Take 4 stress damage to gain a +3 bonus on a low roll.' },
+    { name: 'Roleplay',       desc: 'Briefly communicate or give orders without consequence.' },
+    { group: 'Special' },
+    { name: 'Called Shot',    desc: 'Declare before attacking. Accept a −10 to hit. On success, inflict a condition instead of normal damage.' },
+    { name: 'Finisher',       desc: 'Instantly eliminate a helpless, sleeping, or completely unaware target. Cannot be used on an active or aware opponent.' },
+    { name: 'Surprise Turn',  desc: 'Attacking from Stealth grants one extra action. Reveals your position unless an ability says otherwise.' },
+];
+
+// Poll card — used by both narrator and player chat renderers
+function renderPollCard(m, currentUid) {
+    const votes  = m.votes || {};
+    const myVote = currentUid ? votes[currentUid] : null;
+    const counts = {};
+    Object.values(votes).forEach(v => { counts[v] = (counts[v] || 0) + 1; });
+    const total = Object.keys(votes).length;
+    const opts  = (m.options || []).map(opt => {
+        const count   = counts[opt] || 0;
+        const pct     = total ? Math.round((count / total) * 100) : 0;
+        const voted   = myVote === opt;
+        return `<button class="poll-opt-btn${voted ? ' poll-opt-btn--voted' : ''}" data-poll-id="${m.id || ''}" data-choice="${opt}" type="button">
+            <span class="poll-opt-label">${opt}</span>
+            <span class="poll-opt-track"><span class="poll-opt-fill" style="width:${pct}%"></span></span>
+            <span class="poll-opt-count">${count || ''}</span>
+        </button>`;
+    }).join('');
+    return `<div class="poll-card">
+        <div class="poll-question">${parseInline(m.text || '')}</div>
+        <div class="poll-options">${opts}</div>
+        <div class="poll-footer">${total} vote${total !== 1 ? 's' : ''} · ${m.time || ''}</div>
+    </div>`;
+}
 
 // Trigger an emoji animation by chat message ID — called by Firebase reaction listener
 function triggerEmojiReaction(chatMsgId, anim) {
@@ -170,7 +279,7 @@ function renderWeaponAttackEntry(entry) {
     const typeLbl  = entry.rollType === 'adv' ? '· Adv' : entry.rollType === 'dis' ? '· Dis' : '';
     const bonusTxt = entry.attackBonus ? ` ${fmtSigned(entry.attackBonus)}` : '';
     const condHtml = entry.conditions?.length
-        ? `<div class="chat-roll-cond">${entry.conditions.join(' · ')}</div>` : '';
+        ? `<div class="chat-roll-cond">${entry.conditions.map(condChip).join(' · ')}</div>` : '';
 
     const dmgHtml = entry.damageRoll ? (() => {
         const base   = entry.damageRoll.total;
@@ -190,9 +299,11 @@ function renderWeaponAttackEntry(entry) {
     })()
         : `<div class="chat-wep-meta">${[entry.damage, entry.damageType, entry.range, entry.properties].filter(Boolean).join(' · ')}</div>`;
 
-    return `<div class="chat-roll-card chat-roll--weapon">
+    const critClass = isCrit ? ' chat-roll--crit' : nat === 1 ? ' chat-roll--fumble' : '';
+    return `<div class="chat-roll-card chat-roll--weapon${critClass}">
         <div class="chat-card-head">
             <span class="chat-card-title">⚔ ${entry.charName ? `${entry.charName} · ` : ''}${entry.weaponName || ''}</span>
+            ${isCrit ? '<span class="chat-crit-tag">CRIT</span>' : nat === 1 ? '<span class="chat-fumble-tag">FUMBLE</span>' : ''}
             <span class="chat-time">${entry.time || ''}</span>
         </div>
         <div class="chat-wep-body">
@@ -214,6 +325,7 @@ function renderWeaponAttackEntry(entry) {
                 <span class="chat-table-result">${r.result}</span>
               </div>`).join('')
             : damageTableBtnHtml(entry.d20Total, entry.damageType)}
+        ${entry.target ? `<div class="chat-roll-target">↠ ${entry.target}</div>` : ''}
         ${entry.d20Total < 15 ? `<button class="provoke-btn" type="button"> Provoke!</button>` : ''}
         ${entry.desc ? expandableDesc(entry.desc) : ''}
         ${condHtml}
@@ -224,9 +336,11 @@ function renderRollEntry(entry) {
     const fc        = entry.featureContext;
     const nat       = naturalRoll(entry.rollNote);
     const resClass  = nat === 20 ? 'chat-res--nat20' : nat === 1 ? 'chat-res--nat1' : '';
+    const critClass = nat === 20 ? ' chat-roll--crit' : nat === 1 ? ' chat-roll--fumble' : '';
+    const critTag   = nat === 20 ? '<span class="chat-crit-tag">CRIT</span>' : nat === 1 ? '<span class="chat-fumble-tag">FUMBLE</span>' : '';
     const typeLabel = entry.rollType === 'adv' ? '· Adv' : entry.rollType === 'dis' ? '· Dis' : '';
     const condHtml  = entry.conditions?.length
-        ? `<div class="chat-roll-cond">${entry.conditions.join(' · ')}</div>` : '';
+        ? `<div class="chat-roll-cond">${entry.conditions.map(condChip).join(' · ')}</div>` : '';
     const charLabel = entry.charName ? `${entry.charName} · ` : '';
 
     if (fc) {
@@ -239,9 +353,10 @@ function renderRollEntry(entry) {
         const borderClass = entry.rollType === 'adv' ? 'chat-roll--adv'
             : entry.rollType === 'dis' ? 'chat-roll--dis' : '';
         const modStr = entry.mod !== 0 ? ` ${fmtSigned(entry.mod)}` : '';
-        return `<div class="chat-roll-card ${borderClass}">
+        return `<div class="chat-roll-card ${borderClass}${critClass}">
             <div class="chat-card-head">
                 <span class="chat-card-title">⚡ ${charLabel}${fc.name}</span>
+                ${critTag}
                 <span class="chat-time">${entry.time || ''}</span>
             </div>
             ${tagsHtml}
@@ -267,15 +382,17 @@ function renderRollEntry(entry) {
     const borderClass = entry.rollType === 'adv' ? 'chat-roll--adv'
         : entry.rollType === 'dis' ? 'chat-roll--dis' : '';
     const modStr = entry.mod !== 0 ? ` ${fmtSigned(entry.mod)}` : '';
-    return `<div class="chat-roll-card ${borderClass}">
+    return `<div class="chat-roll-card ${borderClass}${critClass}">
         <div class="chat-card-head">
             <span class="chat-card-title">${charLabel}${entry.label || 'Roll'}</span>
+            ${critTag}
             <span class="chat-time">${entry.time || ''}</span>
         </div>
         <div class="chat-roll-result ${resClass}">${entry.total}</div>
         <div class="chat-roll-breakdown">${entry.rollNote || ''}${modStr}${typeLabel ? ` ${typeLabel}` : ''}</div>
-        ${successHtml(entry.total)}
-        ${entry.total < 15 ? `<button class="provoke-btn" type="button">⚡ Provoke!</button>` : ''}
+        ${entry.label !== 'Initiative' ? successHtml(entry.total) : ''}
+        ${entry.target ? `<div class="chat-roll-target">↠ ${entry.target}</div>` : ''}
+        ${entry.label !== 'Initiative' && entry.total < 15 ? `<button class="provoke-btn" type="button">⚡ Provoke!</button>` : ''}
         ${condHtml}
     </div>`;
 }

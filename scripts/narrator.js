@@ -1,10 +1,20 @@
 ﻿/* Narrator companion — ARC20 */
 
+// ── SPEAKING AS + TARGET state (declared early to avoid TDZ) ──────────────────
+let narSpeakingAs = null;
+let narTarget     = null;
+
 // ── PANELS ────────────────────────────────────────────────────────────────────
 
-const PANEL_IDS = ['chat', 'party', 'generators', 'journal', 'initiative'];
+const PANEL_IDS = ['chat', 'party', 'generators', 'journal', 'ref'];
 
 function setActivePanel(key) {
+    // On desktop (≥1100px) chat is always pinned to the left column — don't clear the right panel
+    if (key === 'chat' && window.innerWidth >= 1100) {
+        const notif = document.getElementById('chat-notif');
+        if (notif) notif.hidden = true;
+        return;
+    }
     PANEL_IDS.forEach(id => {
         const el = document.getElementById(`panel-${id}`);
         if (el) el.classList.toggle('is-active', id === key);
@@ -13,7 +23,6 @@ function setActivePanel(key) {
         btn.classList.toggle('is-active', btn.dataset.nav === key);
     });
     if (key === 'generators') { ensureMonsters(); ensureWorld(); ensureQuest(); ensureCommerce(); ensureHex(); ensureGods(); ensureLoot(); }
-    if (key === 'initiative') { ensureMonsters(); }
     if (key === 'party')      { ensureMonsters(); }
     if (key === 'chat') {
         const notif = document.getElementById('chat-notif');
@@ -25,7 +34,21 @@ document.querySelectorAll('.nav-btn[data-nav]').forEach(btn => {
     btn.addEventListener('click', () => setActivePanel(btn.dataset.nav));
 });
 
-fetch('../data/damage.json').then(r => r.json()).then(dj => { window.damageData = dj?.types || {}; }).catch(() => {});
+fetch('../data/damage.json').then(r => r.json()).then(dj => {
+    window.damageData = dj?.types || {};
+    renderNarRefTables();
+}).catch(() => {});
+
+let narCondGroups = {}, narCondEffects = {}, narCondDurations = {};
+fetch('../data/conditions.json').then(r => r.json()).then(data => {
+    narCondGroups = {}; narCondEffects = {}; narCondDurations = {};
+    data.forEach(c => {
+        (narCondGroups[c.category] = narCondGroups[c.category] || []).push(c.name);
+        narCondEffects[c.name]   = c.effect   || '';
+        narCondDurations[c.name] = c.duration || '';
+    });
+    renderNarRefConditions();
+}).catch(() => {});
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 
@@ -325,7 +348,7 @@ function renderMinions() {
             if (action === 'init') {
                 const ini = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
                 nar.encounter.push({ id: crypto.randomUUID(), name: m.name, type: 'enemy', hp: m.hp, maxHp: m.maxHp, initiative: ini });
-                saveNar(); renderEncounter(); setActivePanel('initiative'); return;
+                saveNar(); renderEncounter(); openInitiative(); return;
             }
             if (action === 'dec')    m.hp = Math.max(0, m.hp - 1);
             if (action === 'inc')    m.hp = Math.min(m.maxHp, m.hp + 1);
@@ -538,10 +561,10 @@ function renderEnemyMonster(e, label) {
     ` : '';
     const conds     = e.conditions || [];
     const condTags  = conds.map(cd =>
-        `<span class="enc-cond-tag" data-enc-action="rm-cond" data-enc-id="${e.id}" data-cond="${cd}">${cd} ×</span>`
+        `<span class="enc-cond-tag" data-enc-action="rm-cond" data-enc-id="${e.id}" data-cond="${cd}">${condChip(cd)} ×</span>`
     ).join('');
     const picker    = QUICK_CONDITIONS.map(cd =>
-        `<button class="enc-cond-pick${conds.includes(cd) ? ' is-on' : ''}" data-enc-action="toggle-cond" data-enc-id="${e.id}" data-cond="${cd}">${cd}</button>`
+        `<button class="enc-cond-pick${conds.includes(cd) ? ' is-on' : ''}" data-enc-action="toggle-cond" data-enc-id="${e.id}" data-cond="${cd}">${condChip(cd)}</button>`
     ).join('');
 
     return `<details class="enc-enemy-row">
@@ -576,6 +599,23 @@ function renderEnemyMonster(e, label) {
             </details>
         </div>
     </details>`;
+}
+
+function syncEncounter() {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    const payload = {
+        encounter: nar.encounter.map(e => ({
+            id: e.id, name: e.name, type: e.type || 'enemy',
+            hp: e.hp ?? e.maxHp ?? 0, maxHp: e.maxHp ?? 0,
+            initiative: e.initiative || 0,
+            hidden: e.hidden || false,
+            conditions: e.conditions || [],
+        })),
+        encounterRound: nar.round,
+        encounterTurnIndex: nar.turnIndex,
+    };
+    arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), payload).catch(() => {});
 }
 
 function renderEncounter() {
@@ -659,6 +699,7 @@ function renderEncounter() {
                         ${fbP ? `<span class="enc-mon-checks" style="color:#888">HP<strong style="color:#50a0dc">${hpCur ?? '?'}</strong>/${hpMax ?? '?'} MN<strong style="color:#50a0dc">${mnCur ?? '?'}</strong></span>` : ''}
                     </div>
                     <div class="enc-card-ctrl">
+                        <button class="step-action-btn enc-target-btn${narTarget === c.name ? ' is-on' : ''}" data-enc-action="set-target" data-enc-name="${c.name}" title="Set target">🎯</button>
                         <button class="step-action-btn" style="color:#ff6060" data-enc-action="remove" data-enc-id="${c.id}">✕</button>
                     </div>
                 </div>
@@ -713,7 +754,12 @@ function renderEncounter() {
             const id     = btn.dataset.encId;
             const action = btn.dataset.encAction;
             const c = nar.encounter.find(x => x.id === id);
-            if (!c && action !== 'remove' && action !== 'link-mon') return;
+            if (!c && action !== 'remove' && action !== 'link-mon' && action !== 'set-target') return;
+            if (action === 'set-target') {
+                const name = btn.dataset.encName;
+                narTarget = narTarget === name ? null : name;
+                updateNarContextBar(); renderEncounter(); return;
+            }
             if (action === 'toggle-cond') {
                 if (!c.conditions) c.conditions = [];
                 const cond = btn.dataset.cond;
@@ -744,6 +790,8 @@ function renderEncounter() {
             saveNar(); renderEncounter();
         });
     });
+
+    syncEncounter();
 }
 
 // Type select: show/hide relevant fields
@@ -877,10 +925,10 @@ function renderJournalNpcs() {
         ].filter(Boolean).join(' ');
         const nConds  = n.conditions || [];
         const condTags = nConds.map(cd =>
-            `<span class="enc-cond-tag" data-npc-rm-cond="${n.id}" data-cond="${cd}">${cd} ×</span>`
+            `<span class="enc-cond-tag" data-npc-rm-cond="${n.id}" data-cond="${cd}">${condChip(cd)} ×</span>`
         ).join('');
         const picker = QUICK_CONDITIONS.map(cd =>
-            `<button class="enc-cond-pick${nConds.includes(cd) ? ' is-on' : ''}" data-npc-cond="${n.id}" data-cond="${cd}">${cd}</button>`
+            `<button class="enc-cond-pick${nConds.includes(cd) ? ' is-on' : ''}" data-npc-cond="${n.id}" data-cond="${cd}">${condChip(cd)}</button>`
         ).join('');
         return `<details class="npc-card">
             <summary class="npc-card-head">
@@ -932,7 +980,7 @@ function renderJournalNpcs() {
             const hp  = parseInt(n.hp, 10) || 10;
             const ini = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
             nar.encounter.push({ id: crypto.randomUUID(), name: n.name, type: 'enemy', hp, maxHp: hp, initiative: ini });
-            saveNar(); renderEncounter(); setActivePanel('initiative');
+            saveNar(); renderEncounter(); openInitiative();
         });
     });
     el.querySelectorAll('[data-npc-cond]').forEach(btn => {
@@ -1404,8 +1452,7 @@ function renderGenMonsterList() {
             const hp = parseInt(btn.dataset.hp, 10);
             const initiative = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
             nar.encounter.push({ id: crypto.randomUUID(), name: btn.dataset.addInit, hp, maxHp: hp, initiative, type: 'enemy' });
-            saveNar(); renderEncounter();
-            setActivePanel('initiative');
+            saveNar(); renderEncounter(); openInitiative();
         });
     });
 
@@ -2589,11 +2636,37 @@ function listenToSharedChat(code) {
     chatUnsubscribe = arc.onSnapshot(q, snap => {
         fbSharedChat = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         renderNarChat();
-        if (snap.docs.length > prevChatCount) {
+        if (snap.docs.length > prevChatCount && prevChatCount > 0) {
             const chatPanel = document.getElementById('panel-chat');
             const notif     = document.getElementById('chat-notif');
             if (notif && !chatPanel?.classList.contains('is-active')) notif.hidden = false;
         }
+        // OS notification for incoming player messages
+        if (snap.docs.length > prevChatCount && prevChatCount > 0) {
+            snap.docChanges().forEach(change => {
+                if (change.type !== 'added') return;
+                const m = change.doc.data();
+                if (['system', 'turn'].includes(m.type) || m.removed || m.isNarrator) return;
+                const title = m.author ? `${m.author} — ${currentRoomCode || 'ARC20'}` : (currentRoomCode || 'ARC20');
+                const body  = m.type === 'roll'          ? `Rolled ${m.total ?? ''}` :
+                              m.type === 'weapon-attack' ? `${m.weaponName || 'Attack'} — ${m.total ?? ''}` :
+                              m.text ? m.text.slice(0, 80) : 'New message';
+                ArcNotify.show(title, body);
+            });
+        }
+        // Auto-add players who rolled initiative
+        snap.docChanges().forEach(change => {
+            if (change.type !== 'added') return;
+            const m = change.doc.data();
+            if (m.type !== 'roll' || m.label !== 'Initiative' || m.isNarrator || !m.charName || m.total == null) return;
+            const existing = nar.encounter.find(e => e.name === m.charName && e.type === 'player');
+            if (existing) {
+                existing.initiative = m.total;
+            } else {
+                nar.encounter.push({ id: crypto.randomUUID(), name: m.charName, type: 'player', hp: 0, maxHp: 0, initiative: m.total });
+            }
+            saveNar(); renderEncounter();
+        });
         prevChatCount = snap.docs.length;
     }, err => console.error('[ARC] chat listener:', err));
 }
@@ -2613,13 +2686,16 @@ async function postToSharedChat(entry) {
     const arc = window.__arc;
     if (!arc?.db || !arc?.uid || !currentRoomCode) return;
     try {
-        await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'chat', crypto.randomUUID()), {
+        const doc = {
             ...entry,
             author:     'Narrator',
             uid:        arc.uid,
             isNarrator: true,
             postedAt:   arc.serverTimestamp(),
-        });
+        };
+        if (narSpeakingAs) doc.speakingAs = narSpeakingAs;
+        if (narTarget)     doc.target     = narTarget;
+        await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'chat', crypto.randomUUID()), doc);
     } catch(e) { console.error('[ARC] postChat failed:', e); }
 }
 
@@ -2644,6 +2720,37 @@ function rollNarDamageTable(damageType, count) {
 }
 
 document.getElementById('nar-chat-log')?.addEventListener('click', async e => {
+    // Reaction add button (open/close picker)
+    const reactionAddBtn = e.target.closest('.reaction-add-btn');
+    if (reactionAddBtn) {
+        e.stopPropagation();
+        const picker = reactionAddBtn.closest('.chat-reactions')?.querySelector('.reaction-picker');
+        if (picker) picker.hidden = !picker.hidden;
+        return;
+    }
+    // Reaction picker button (select emoji)
+    const reactionPickBtn = e.target.closest('.reaction-pick-btn');
+    if (reactionPickBtn) {
+        const bar = reactionPickBtn.closest('.chat-reactions');
+        if (bar) { toggleNarReaction(bar.dataset.msgId, reactionPickBtn.dataset.emoji); bar.querySelector('.reaction-picker').hidden = true; }
+        return;
+    }
+    // Reaction chip (toggle existing reaction)
+    const reactionChip = e.target.closest('.reaction-chip');
+    if (reactionChip) {
+        const bar = reactionChip.closest('.chat-reactions');
+        if (bar) toggleNarReaction(bar.dataset.msgId, reactionChip.dataset.emoji);
+        return;
+    }
+    // Poll vote
+    const pollOptBtn = e.target.closest('.poll-opt-btn');
+    if (pollOptBtn && window.__arc && currentRoomCode) {
+        const arc    = window.__arc;
+        const pollId = pollOptBtn.dataset.pollId;
+        const choice = pollOptBtn.dataset.choice;
+        if (pollId) await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'chat', pollId), { [`votes.${arc.uid}`]: choice }).catch(() => {});
+        return;
+    }
     // Remove message — marks removed:true, snapshot re-renders for everyone
     const deleteBtn = e.target.closest('.chat-delete-btn');
     if (deleteBtn && window.__arc && currentRoomCode) {
@@ -2691,11 +2798,13 @@ function buildSharedChatCard(m) {
     if (m.type === 'system') {
         return `<li class="chat-msg-wrap chat-system-msg" data-chat-id="${m.id || ''}"><span class="chat-sys-text">— ${m.text || ''} —</span></li>`;
     }
+    if (m.type === 'poll') {
+        const deleteBtn = m.id ? `<button class="chat-delete-btn" data-chat-id="${m.id}" title="Delete poll" type="button">✕</button>` : '';
+        return `<li class="chat-msg-wrap" data-chat-id="${m.id || ''}">${deleteBtn}<div class="shared-author shared-author--nar">◆ Poll</div>${renderPollCard(m, window.__arc?.uid)}</li>`;
+    }
     const isNar  = m.isNarrator;
     const isRoll = ['roll','dice','weapon-attack'].includes(m.type);
-    const badge  = isNar
-        ? `<div class="shared-author shared-author--nar">◆ ${m.monsterName || 'Narrator'}</div>`
-        : `<div class="shared-author">${m.author || 'Player'}</div>`;
+    const badge  = authorBadge(m);
 
     // Narrator cards get tinted class based on type
     const narClass = isNar ? (isRoll ? ' scard--nar-roll' : ' scard--nar-text') : '';
@@ -2727,11 +2836,44 @@ function buildSharedChatCard(m) {
     const deleteBtn = m.id
         ? `<button class="chat-delete-btn" data-chat-id="${m.id}" title="Delete message" type="button">✕</button>`
         : '';
-    return `<li class="chat-msg-wrap ${narClass.trim()}" data-chat-id="${m.id || ''}">${deleteBtn}${badge}${cardHtml}</li>`;
+    const reactionBar = (m.id && m.type !== 'turn')
+        ? buildReactionBar(m, window.__arc?.uid)
+        : '';
+    return `<li class="chat-msg-wrap ${narClass.trim()}" data-chat-id="${m.id || ''}">${deleteBtn}${badge}${cardHtml}${reactionBar}</li>`;
 }
+
+async function toggleNarReaction(msgId, emoji) {
+    const arc = window.__arc;
+    const uid = arc?.uid;
+    if (!arc?.db || !currentRoomCode || !uid || !msgId) return;
+    const msg  = fbSharedChat.find(m => m.id === msgId);
+    const uids = msg?.reactions?.[emoji] || [];
+    const op   = uids.includes(uid) ? arc.arrayRemove(uid) : arc.arrayUnion(uid);
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'chat', msgId), { [`reactions.${emoji}`]: op });
+    } catch(e) { console.error('[ARC] toggleNarReaction:', e); }
+}
+
+// Typing indicator — write timestamp to room doc while narrator types
+let _typingTimer = null;
+function _writeTyping() {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    clearTimeout(_typingTimer);
+    arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), { typingNar: arc.serverTimestamp() }).catch(() => {});
+    _typingTimer = setTimeout(() => _clearTyping(), 4000);
+}
+function _clearTyping() {
+    clearTimeout(_typingTimer);
+    const arc = window.__arc;
+    if (arc?.db && currentRoomCode)
+        arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), { typingNar: null }).catch(() => {});
+}
+document.getElementById('nar-chat-input')?.addEventListener('input', _writeTyping);
 
 // Narrator chat input
 function sendNarChatMsg() {
+    _clearTyping();
     const input = document.getElementById('nar-chat-input');
     const text  = input?.value.trim();
     if (!text) return;
@@ -2748,33 +2890,55 @@ document.getElementById('nar-chat-input')?.addEventListener('keydown', e => {
     if (e.key === 'Enter') sendNarChatMsg();
 });
 
-// Narrator emoji picker
-const narEmojiBtn   = document.getElementById('nar-emoji-btn');
-const narEmojiPanel = document.getElementById('nar-emoji-panel');
-if (narEmojiBtn && narEmojiPanel) {
-    narEmojiPanel.innerHTML = buildEmojiPanel();
-    narEmojiBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        narEmojiPanel.hidden = !narEmojiPanel.hidden;
-    });
-    narEmojiPanel.addEventListener('click', e => {
-        const em = e.target.closest('.emoji-pick');
-        if (!em) return;
-        const input = document.getElementById('nar-chat-input');
-        if (input) {
-            const pos = input.selectionStart || input.value.length;
-            input.value = input.value.slice(0, pos) + em.textContent + input.value.slice(pos);
-            input.focus();
-            input.setSelectionRange(pos + em.textContent.length, pos + em.textContent.length);
-        }
-        narEmojiPanel.hidden = true;
-    });
+// Chat toolbar — emoji, dice, poll panels (one open at a time)
+(function () {
+    const dicePanel  = document.getElementById('nar-dice-panel');
+    const emojiPanel = document.getElementById('nar-emoji-panel');
+    const pollForm   = document.getElementById('nar-poll-form');
+    const panels     = [dicePanel, emojiPanel, pollForm].filter(Boolean);
+
+    function closeAll() { panels.forEach(p => { p.hidden = true; }); }
+
+    function toggle(panel) {
+        const wasHidden = panel.hidden;
+        closeAll();
+        panel.hidden = !wasHidden;
+    }
+
+    // Dice
+    const narEmojiBtn  = document.getElementById('nar-emoji-btn');
+    if (emojiPanel) {
+        emojiPanel.innerHTML = buildEmojiPanel();
+        narEmojiBtn?.addEventListener('click', () => toggle(emojiPanel));
+        emojiPanel.addEventListener('click', e => {
+            const em = e.target.closest('.emoji-pick');
+            if (!em) return;
+            const input = document.getElementById('nar-chat-input');
+            if (input) {
+                const pos = input.selectionStart || input.value.length;
+                input.value = input.value.slice(0, pos) + em.textContent + input.value.slice(pos);
+                input.focus();
+                input.setSelectionRange(pos + em.textContent.length, pos + em.textContent.length);
+            }
+            emojiPanel.hidden = true;
+        });
+    }
+
+    document.getElementById('nar-dice-btn')?.addEventListener('click', () => toggle(dicePanel));
+
     document.addEventListener('click', e => {
-        if (!narEmojiPanel.hidden && !narEmojiPanel.contains(e.target) && e.target !== narEmojiBtn) {
-            narEmojiPanel.hidden = true;
+        if (panels.some(p => !p.hidden) &&
+            !e.target.closest('.chat-tool-btn') &&
+            !e.target.closest('.nar-tool-panel') &&
+            !e.target.closest('.emoji-panel') &&
+            !e.target.closest('.poll-form')) {
+            closeAll();
         }
     });
-}
+
+    // Expose for poll creation block
+    window._narTogglePoll = () => toggle(pollForm);
+})();
 
 // ── SETTINGS & THEME ─────────────────────────────────────────────────────────
 
@@ -3063,6 +3227,7 @@ async function createRoom(name = '', welcomeMsg = '') {
         listenToLoot(code);
         listenToRoomDoc(code);
         listenToSharedChat(code);
+        ArcNotify.requestPermission().then(() => ArcNotify.registerPushToken(code));
 
     } catch(e) { console.error('[ARC] createRoom failed:', e); alert('Failed to create room.'); }
 }
@@ -3078,6 +3243,7 @@ async function restoreRoom(code) {
             listenToLoot(code);
             listenToRoomDoc(code);
             listenToSharedChat(code);
+            ArcNotify.requestPermission().then(() => ArcNotify.registerPushToken(code));
         } else {
             localStorage.removeItem('arc-narrator-room');
             currentRoomCode = null;
@@ -3213,6 +3379,125 @@ renderGenHexList();
 renderJournalNpcs();
 renderQuestLog();
 renderSessions();
+renderNarRefActions();
+bindNarRefPanel();
+
+// ── REFERENCE PANEL ──────────────────────────────────────────────────────────
+
+function renderNarRefTables() {
+    const grid = document.getElementById('ref-tables-grid');
+    if (!grid || !window.damageData) return;
+    const groups = {};
+    Object.entries(window.damageData).forEach(([type, table]) => {
+        const cat = table.category || 'Other';
+        (groups[cat] = groups[cat] || []).push([type, table]);
+    });
+    const CAT_ORDER = ['Physical', 'Elemental', 'Realm', 'Other'];
+    grid.innerHTML = CAT_ORDER.filter(c => groups[c]).map(cat =>
+        `<div class="spell-origin-header">${cat}</div>` +
+        groups[cat].map(([type, table]) => {
+            const rows = (table.entries || []).map((e, i) =>
+                `<div class="ref-table-row"><span class="ref-table-num">${i + 1}</span><span class="ref-table-entry">${e}</span></div>`
+            ).join('');
+            return `<div class="ref-table-card">
+                <div class="ref-table-head" data-roll-table="${type}" role="button" tabindex="0">
+                    <span class="ref-table-title">${table.icon || ''} ${type}</span>
+                    <button class="ref-expand-btn" type="button" data-expand-table="${type}">▾</button>
+                </div>
+                <div class="ref-table-entries" id="ref-entries-${type}" hidden>${rows}</div>
+            </div>`;
+        }).join('')
+    ).join('');
+}
+
+function renderNarRefConditions() {
+    const el = document.getElementById('ref-conditions-list');
+    if (!el) return;
+    el.innerHTML = Object.entries(narCondGroups).map(([group, names]) =>
+        `<div class="spell-origin-header">${group}</div>` +
+        names.map(name => `
+            <div class="ref-condition-row">
+                <span class="ref-condition-name">${condChip(name)}</span>
+                <span class="ref-condition-effect">${narCondEffects[name] || ''}</span>
+                ${narCondDurations[name] ? `<span class="ref-condition-duration">${narCondDurations[name]}</span>` : ''}
+            </div>`).join('')
+    ).join('');
+}
+
+function renderNarRefActions() {
+    const el = document.getElementById('ref-actions-list');
+    if (!el) return;
+    el.innerHTML = REF_ACTIONS.map(a => {
+        if (a.group) return `<div class="spell-origin-header">${a.group}</div>`;
+        return `<div class="ref-action-card">
+            <div class="ref-action-head"><span class="ref-action-name">${a.name}</span></div>
+            <div class="ref-action-desc">${a.desc}</div>
+        </div>`;
+    }).join('');
+}
+
+function bindNarRefPanel() {
+    document.querySelector('#panel-ref .ref-tab-row')?.addEventListener('click', e => {
+        const tab = e.target.closest('.ref-tab');
+        if (!tab) return;
+        const target = tab.dataset.refTab;
+        document.querySelectorAll('#panel-ref .ref-tab').forEach(t => t.classList.toggle('is-active', t === tab));
+        document.querySelectorAll('#panel-ref .ref-tab-content').forEach(c =>
+            c.classList.toggle('is-active', c.id === `ref-tab-${target}`));
+    });
+
+    document.getElementById('ref-tables-grid')?.addEventListener('click', e => {
+        const expandBtn = e.target.closest('[data-expand-table]');
+        if (expandBtn) {
+            e.stopPropagation();
+            const el = document.getElementById(`ref-entries-${expandBtn.dataset.expandTable}`);
+            if (el) { el.hidden = !el.hidden; expandBtn.textContent = el.hidden ? '▾' : '▴'; }
+            return;
+        }
+        const head = e.target.closest('[data-roll-table]');
+        if (head) { rollNarDamageTable(head.dataset.rollTable, 1); setActivePanel('chat'); }
+    });
+}
+
+// Poll creation
+(function () {
+    const pollBtn  = document.getElementById('nar-poll-btn');
+    const pollForm = document.getElementById('nar-poll-form');
+    if (!pollBtn || !pollForm) return;
+
+    function clearPollForm() {
+        document.getElementById('poll-question').value = '';
+        document.querySelectorAll('.poll-opt-input').forEach(i => i.value = '');
+    }
+
+    pollBtn.addEventListener('click', () => {
+        window._narTogglePoll?.();
+        if (!pollForm.hidden) document.getElementById('poll-question')?.focus();
+    });
+
+    document.getElementById('btn-poll-cancel')?.addEventListener('click', () => {
+        pollForm.hidden = true;
+        clearPollForm();
+    });
+
+    document.getElementById('btn-poll-submit')?.addEventListener('click', async () => {
+        const arc = window.__arc;
+        if (!arc?.db || !currentRoomCode) return;
+        const question = document.getElementById('poll-question')?.value.trim();
+        if (!question) { document.getElementById('poll-question')?.focus(); return; }
+        const opts = [...document.querySelectorAll('.poll-opt-input')]
+            .map(i => i.value.trim()).filter(Boolean);
+        if (opts.length < 2) { alert('Add at least 2 options.'); return; }
+        try {
+            await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'chat', crypto.randomUUID()), {
+                type: 'poll', text: question, options: opts, votes: {},
+                isNarrator: true, time: chatTimestamp(), postedAt: arc.serverTimestamp(),
+            });
+            pollForm.hidden = true;
+            clearPollForm();
+        } catch(e) { console.error('[ARC] post poll:', e); }
+    });
+})();
 
 // Generator sections — collapsible, start closed
 (function bindGenCollapse() {
@@ -3231,9 +3516,130 @@ renderSessions();
     });
 })();
 
+// ── CHAT SUB-TABS (Messages / Initiative) ─────────────────────────────────────
+function setNarChatSubTab(key) {
+    document.querySelectorAll('.chat-sub-tab').forEach(btn => {
+        btn.classList.toggle('is-active', btn.dataset.chatSub === key);
+    });
+    document.querySelectorAll('.chat-sub-content').forEach(el => {
+        el.hidden = el.id !== `chat-sub-${key}`;
+    });
+}
+
+document.querySelectorAll('.chat-sub-tab').forEach(btn => {
+    btn.addEventListener('click', () => setNarChatSubTab(btn.dataset.chatSub));
+});
+
+function openInitiative() {
+    setActivePanel('chat');
+    setNarChatSubTab('initiative');
+}
+
+// ── SPEAKING AS + TARGET ──────────────────────────────────────────────────────
+
+function updateNarContextBar() {
+    const bar         = document.getElementById('nar-context-bar');
+    const voiceChip   = document.getElementById('nar-voice-chip');
+    const voiceLabel  = document.getElementById('nar-voice-chip-label');
+    const targetChip  = document.getElementById('nar-target-chip');
+    const targetLabel = document.getElementById('nar-target-chip-label');
+    if (!bar) return;
+    if (voiceChip && voiceLabel) {
+        voiceChip.hidden  = !narSpeakingAs;
+        voiceLabel.textContent = narSpeakingAs ? `🎭 ${narSpeakingAs}` : '';
+    }
+    if (targetChip && targetLabel) {
+        targetChip.hidden  = !narTarget;
+        targetLabel.textContent = narTarget ? `🎯 ${narTarget}` : '';
+    }
+    bar.hidden = !narSpeakingAs && !narTarget;
+}
+
+function buildNarVoicePanel() {
+    const list = document.getElementById('nar-voice-list');
+    if (!list) return;
+    const npcs   = nar.journalNpcs.map(n => n.name).filter(Boolean);
+    const party  = nar.partyManual.map(p => p.name).filter(Boolean);
+    const voices = ['◆ Narrator', ...party, ...npcs];
+    list.innerHTML = voices.map(v =>
+        `<button class="voice-pick-btn${v === (narSpeakingAs ? `🎭 ${narSpeakingAs}` : '◆ Narrator') ? ' is-active' : ''}" data-voice="${v}" type="button">${v}</button>`
+    ).join('');
+    list.querySelectorAll('.voice-pick-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            narSpeakingAs = btn.dataset.voice === '◆ Narrator' ? null : btn.dataset.voice;
+            document.getElementById('nar-voice-panel').hidden = true;
+            updateNarContextBar();
+        });
+    });
+}
+
+function buildNarTargetPanel() {
+    const list = document.getElementById('nar-target-list');
+    if (!list) return;
+    const targets = nar.encounter.filter(e => !e.hidden).map(e => e.name);
+    nar.partyManual.forEach(p => { if (!targets.includes(p.name)) targets.push(p.name); });
+    if (!targets.length) { list.innerHTML = '<p class="empty-hint" style="padding:8px">No combatants yet.</p>'; return; }
+    list.innerHTML = targets.map(t =>
+        `<button class="voice-pick-btn${narTarget === t ? ' is-active' : ''}" data-target="${t}" type="button">🎯 ${t}</button>`
+    ).join('');
+    list.querySelectorAll('.voice-pick-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            narTarget = btn.dataset.target;
+            document.getElementById('nar-target-panel').hidden = true;
+            updateNarContextBar();
+        });
+    });
+}
+
+// Toolbar integration for voice and target
+(function() {
+    const panels = { voice: 'nar-voice-panel', target: 'nar-target-panel' };
+    function closeSpeakTargetPanels() {
+        Object.values(panels).forEach(id => { const el = document.getElementById(id); if (el) el.hidden = true; });
+    }
+
+    document.getElementById('nar-voice-btn')?.addEventListener('click', e => {
+        e.stopPropagation();
+        const panel = document.getElementById('nar-voice-panel');
+        const isHidden = panel.hidden;
+        closeSpeakTargetPanels();
+        if (isHidden) { buildNarVoicePanel(); panel.hidden = false; }
+    });
+
+    document.getElementById('nar-target-btn')?.addEventListener('click', e => {
+        e.stopPropagation();
+        const panel = document.getElementById('nar-target-panel');
+        const isHidden = panel.hidden;
+        closeSpeakTargetPanels();
+        if (isHidden) { buildNarTargetPanel(); panel.hidden = false; }
+    });
+
+    // Custom voice on Enter
+    document.getElementById('nar-voice-custom')?.addEventListener('keydown', e => {
+        if (e.key !== 'Enter') return;
+        const val = e.target.value.trim();
+        if (!val) return;
+        narSpeakingAs = val;
+        e.target.value = '';
+        document.getElementById('nar-voice-panel').hidden = true;
+        updateNarContextBar();
+    });
+
+    document.getElementById('nar-voice-dismiss')?.addEventListener('click', () => { narSpeakingAs = null; updateNarContextBar(); });
+    document.getElementById('nar-target-dismiss')?.addEventListener('click', () => { narTarget = null; updateNarContextBar(); });
+
+    // Close panels on outside click — but not when clicking inside the panels themselves
+    document.addEventListener('click', e => {
+        if (e.target.closest('#nar-voice-panel, #nar-voice-btn, #nar-target-panel, #nar-target-btn')) return;
+        closeSpeakTargetPanels();
+    });
+})();
+
 // Mobile swipe left/right to cycle panels
 (function () {
-    const ORDER = ['chat', 'party', 'generators', 'journal', 'initiative'];
+    const ORDER = ['chat', 'party', 'generators', 'journal', 'ref'];
     let sx = 0, sy = 0, live = false;
     document.addEventListener('touchstart', e => {
         if (e.target.closest('input, select, textarea, button, [role="slider"]')) { live = false; return; }

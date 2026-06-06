@@ -16,7 +16,7 @@ function parseDice(text) {
 document.addEventListener("DOMContentLoaded", async () => {
 
     const tooltipLibrary = {
-        "Provoke": "This happens if an attack misses, or when a creature willingly moves out of another’s melee range. The target is granted a counterattack",
+        "Provoke": "This happens if an attack misses, or when a creature willingly moves out of another's melee range. The target is granted a counterattack",
         "Advantage": "Roll a d20+4 then roll a d20, take the higher result",
         "Disadvantage": "Roll a d20-4 then roll a d20, take the lower result",
         // Actions
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "Reaction": "A special action taken out of turn, like an opportunity attack.",
         "Opportunity Attacks": "Attack creatures leaving your melee range without disengaging.",
         "Drink Something": "Use an Off-Action to drink or hand off a potion.",
-        "Disrupt": "Impose disadvantage on an enemy’s attack with a successful check.",
+        "Disrupt": "Impose disadvantage on an enemy's attack with a successful check.",
         "Block": "Reduce melee damage by half using a shield.",
         "Demoralize": "Force enemies to make a morale check with an Influence (Intimidate) roll.",
         "Stealth": "Attempt to hide from creatures to gain an advantage on your next Attack. Attacking reveals your position.",
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     try {
-        const resp = await fetch(‘/data/conditions.json’);
+        const resp = await fetch('/data/conditions.json');
         if (resp.ok) {
             const conditions = await resp.json();
             conditions.forEach(c => {

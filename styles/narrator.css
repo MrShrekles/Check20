@@ -1381,8 +1381,10 @@ body.privacy-mode .prow-name {
     color: #e05555;
 }
 
-.enc-card--player { border-color: var(--accent-mid); }
-.enc-card--event  { border-color: rgba(201, 162, 39, 0.35); }
+.enc-card--player   { border-color: var(--accent-mid); }
+.enc-card--event    { border-color: rgba(201, 162, 39, 0.35); }
+.enc-card--targeted { border-color: rgba(255,80,80,0.5); background: rgba(255,80,80,0.06); }
+.enc-target-btn.is-on { color: #ff8080; }
 
 .enc-event-note {
     font-size: 11px;
@@ -1676,6 +1678,45 @@ body.privacy-mode .prow-name {
     color: var(--muted);
 }
 
+/* ── POLL FORM (narrator only) ────────────────────────────────────────── */
+
+.poll-form {
+    padding: 8px 0 4px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.poll-q-input,
+.poll-opt-input {
+    width: 100%;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 7px 10px;
+    box-sizing: border-box;
+    font-size: 13px;
+    font-family: inherit;
+}
+
+.poll-q-input {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.poll-opts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.poll-form-btns {
+    display: flex;
+    gap: 6px;
+}
+
 /* ── COLLAPSIBLE GENERATOR SECTIONS ──────────────────────────────────── */
 
 .section[data-collapse] .section-head {
@@ -1728,8 +1769,7 @@ body.privacy-mode .prow-name {
  * ─────────────────────────────────────────────────────────────────── */
 @media (min-width: 1440px) {
     .panel-stack:has(#panel-generators.is-active),
-    .panel-stack:has(#panel-journal.is-active),
-    .panel-stack:has(#panel-initiative.is-active) {
+    .panel-stack:has(#panel-journal.is-active) {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 0 16px;
@@ -1737,15 +1777,13 @@ body.privacy-mode .prow-name {
     }
 
     .panel-stack:has(#panel-generators.is-active) #panel-party,
-    .panel-stack:has(#panel-journal.is-active) #panel-party,
-    .panel-stack:has(#panel-initiative.is-active) #panel-party {
+    .panel-stack:has(#panel-journal.is-active) #panel-party {
         display: block !important;
         grid-column: 1;
     }
 
     .panel-stack:has(#panel-generators.is-active) #panel-generators,
-    .panel-stack:has(#panel-journal.is-active) #panel-journal,
-    .panel-stack:has(#panel-initiative.is-active) #panel-initiative {
+    .panel-stack:has(#panel-journal.is-active) #panel-journal {
         grid-column: 2;
     }
 }

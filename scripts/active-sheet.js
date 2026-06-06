@@ -42,36 +42,27 @@ const CHECKS = {
     ],
 };
 
-const CONDITION_GROUPS = {
-    'Corpus': ['Bleeding', 'Broken', 'Concussion', 'Coughing', 'Dislocation', 'Pinned', 'Prone', 'Slowed'],
-    'Cognition': ['Blind', 'Charmed', 'Confused', 'Deaf', 'Fear'],
-    'Special': ['Intangible', 'Invisible'],
-    'Major': ['Constrained', 'Exhaustion', 'Exposed', 'Injured', 'Stunned', 'Unconscious'],
-};
+// Populated at runtime from conditions.json
+let CONDITION_GROUPS    = {};
+let CONDITION_EFFECTS   = {};
+let CONDITION_DURATIONS = {};
 
-const CONDITION_EFFECTS = {
-    'Bleeding': 'Cannot heal or recover wounds',
-    'Broken': 'Physical checks: Disadvantage',
-    'Concussion': 'Mental & Spell checks: Disadvantage',
-    'Coughing': 'Mental checks: Disadvantage',
-    'Dislocation': 'Physical checks: Disadvantage',
-    'Slowed': 'Movement: Halved',
-    'Pinned': 'Ranged attacks: Disadvantage',
-    'Prone': 'Cannot move until source removed',
-    'Blind': 'Attack rolls: Disadvantage — Attacks vs you: Advantage',
-    'Charmed': 'Mental checks: Disadvantage — Cannot attack charm source',
-    'Confused': 'Mental & Spell checks: Disadvantage',
-    'Deaf': 'Stealth & Spell checks: Disadvantage',
-    'Fear': 'Must dash or hide — Cannot approach source',
-    'Intangible': 'Cannot attack — Movement: Halved',
-    'Invisible': 'Attacks vs you: Disadvantage',
-    'Constrained': 'Cannot make attack actions — Attacks vs you: Advantage',
-    'Exhaustion': 'All checks: Disadvantage — Movement: Halved',
-    'Exposed': 'Incoming damage: Doubled',
-    'Injured': 'Any damage triggers Death condition',
-    'Stunned': 'All checks: Disadvantage — Movement: Halved',
-    'Unconscious': 'Cannot act — Vulnerable to crits & Finishers',
-};
+async function loadConditions() {
+    try {
+        const data = await (await fetch(DATA_BASE + 'conditions.json')).json();
+        CONDITION_GROUPS    = {};
+        CONDITION_EFFECTS   = {};
+        CONDITION_DURATIONS = {};
+        data.forEach(c => {
+            if (!CONDITION_GROUPS[c.category]) CONDITION_GROUPS[c.category] = [];
+            CONDITION_GROUPS[c.category].push(c.name);
+            CONDITION_EFFECTS[c.name]   = c.effect   || '';
+            CONDITION_DURATIONS[c.name] = c.duration || '';
+        });
+        renderConditions();
+        renderRefConditions();
+    } catch(e) { console.warn('[ARC] Could not load conditions:', e); }
+}
 
 // ── ADDITIONAL EQUIPMENT TABLE ────────────────────────────────────────────────
 
@@ -1074,61 +1065,38 @@ function bindFeatureRollModal() {
 
 // ── REFERENCE PANEL ───────────────────────────────────────────────────────────
 
-const REF_ACTIONS = [
-    { group: 'Actions' },
-    { name: 'Attack', desc: 'Make a melee or ranged attack against a creature or object within range.' },
-    { name: 'Stealth', desc: 'Make a Stealth check. On success, you are unseen and your next attack has Advantage. Attacking, casting, or revealing yourself ends Stealth unless a feature says otherwise.' },
-    { name: 'Dash', desc: 'Use your action to move again after moving, doubling your distance this turn.' },
-    { name: 'Cast a Spell', desc: 'Requires sound, movement, and a Spellcasting check (usually Spirit). Spend the listed Mana cost.' },
-    { name: 'Grab or Hold', desc: 'Make an opposed Strength check to impose the Pinned condition.' },
-    { name: 'Administer Potion', desc: 'Give a potion to a downed ally. Drinking one yourself is a Half-Action.' },
-    { group: 'Half-Actions' },
-    { name: 'Disarm', desc: 'Make an opposed Strength or Agility check to disarm a creature.' },
-    { name: 'Help', desc: 'Give a creature +1 to their next check this turn.' },
-    { name: 'Pick Up Item', desc: 'Pick up a dropped or nearby item.' },
-    { name: 'Use an Object', desc: 'Interact with levers, buttons, or similar objects.' },
-    { name: 'Disengage', desc: 'Move out of a creature\'s range without provoking opportunity attacks.' },
-    { name: 'Unarmed Strike', desc: 'Deals 1 BPorS damage. Can also be taken as an Off-Action.' },
-    { group: 'Stances (Half-Action)' },
-    { name: 'Advantage Stance', desc: 'Gain Advantage on your next attack.' },
-    { name: 'Disadvantage Stance', desc: 'Give Disadvantage to enemies attacking you or allies in range.' },
-    { name: 'Offensive Stance', desc: 'Use your Off-Action to Provoke.' },
-    { name: 'Reaction Stance', desc: 'React to failed attacks against you.' },
-    { name: 'Guard Stance', desc: 'When attacked, Provoke once without using an Off-Action. On all failed attacks, may Provoke at Disadvantage.' },
-    { group: 'Off-Actions' },
-    { name: 'Provoke', desc: 'Attack creatures leaving your melee range without disengaging, when they fail a check against you, or per a specific ability.' },
-    { name: 'Drink', desc: 'Drink or hand off a potion.' },
-    { name: 'Disrupt', desc: 'Impose Disadvantage on an enemy\'s attack with a successful check.' },
-    { name: 'Block', desc: 'Reduce incoming melee damage by half using a shield.' },
-    { name: 'Demoralize', desc: 'Force enemies to make a morale check with an Influence (Intimidate) roll.' },
-    { group: 'Non-Actions' },
-    { name: 'Switch Weapons', desc: 'Drop a weapon and draw another without spending action economy.' },
-    { name: 'Stress Push', desc: 'Take 4 stress damage to gain a +3 bonus on a low roll.' },
-    { name: 'Roleplay', desc: 'Briefly communicate or give orders without consequence.' },
-    { group: 'Special' },
-    { name: 'Called Shot', desc: 'Declare before attacking. Accept a −10 to hit. On success, inflict a condition (Bleeding, Broken, Blind, etc.) instead of normal damage.' },
-    { name: 'Finisher', desc: 'Instantly eliminate a helpless, sleeping, or completely unaware target. Cannot be used on an active or aware opponent.' },
-    { name: 'Surprise Turn', desc: 'Attacking from Stealth grants one extra action. Reveals your position unless an ability says otherwise.' },
-];
+// REF_ACTIONS defined in chat-cards.js (shared)
 
 function renderRefTables() {
     const grid = document.getElementById('ref-tables-grid');
     if (!grid || !damageData) return;
-    grid.innerHTML = Object.entries(damageData).map(([type, table]) => {
-        const rows = (table.entries || []).map((e, i) =>
-            `<div class="ref-table-row">
-                <span class="ref-table-num">${i + 1}</span>
-                <span class="ref-table-entry">${e}</span>
-            </div>`).join('');
-        return `<div class="ref-table-card">
-            <div class="ref-table-head" data-roll-table="${type}" role="button" tabindex="0" aria-label="Roll ${type} table">
-                <span class="ref-table-title">${table.icon || ''} ${type}</span>
-                <span class="equip-cat-badge">${table.category}</span>
-                <button class="ref-expand-btn" type="button" data-expand-table="${type}" aria-label="Show entries">▾</button>
-            </div>
-            <div class="ref-table-entries" id="ref-entries-${type}" hidden>${rows}</div>
-        </div>`;
-    }).join('');
+
+    // Group by category preserving JSON order
+    const groups = {};
+    Object.entries(damageData).forEach(([type, table]) => {
+        const cat = table.category || 'Other';
+        (groups[cat] = groups[cat] || []).push([type, table]);
+    });
+
+    const CAT_ORDER = ['Physical', 'Elemental', 'Realm', 'Other'];
+
+    grid.innerHTML = CAT_ORDER.filter(c => groups[c]).map(cat =>
+        `<div class="spell-origin-header">${cat}</div>` +
+        groups[cat].map(([type, table]) => {
+            const rows = (table.entries || []).map((e, i) =>
+                `<div class="ref-table-row">
+                    <span class="ref-table-num">${i + 1}</span>
+                    <span class="ref-table-entry">${e}</span>
+                </div>`).join('');
+            return `<div class="ref-table-card">
+                <div class="ref-table-head" data-roll-table="${type}" role="button" tabindex="0" aria-label="Roll ${type} table">
+                    <span class="ref-table-title">${table.icon || ''} ${type}</span>
+                    <button class="ref-expand-btn" type="button" data-expand-table="${type}" aria-label="Show entries">▾</button>
+                </div>
+                <div class="ref-table-entries" id="ref-entries-${type}" hidden>${rows}</div>
+            </div>`;
+        }).join('')
+    ).join('');
 }
 
 function renderRefConditions() {
@@ -1138,8 +1106,9 @@ function renderRefConditions() {
         <div class="spell-origin-header">${group}</div>
         ${names.map(name => `
             <div class="ref-condition-row">
-                <span class="ref-condition-name">${name}</span>
+                <span class="ref-condition-name">${condChip(name)}</span>
                 <span class="ref-condition-effect">${CONDITION_EFFECTS[name] || ''}</span>
+                ${CONDITION_DURATIONS[name] ? `<span class="ref-condition-duration">${CONDITION_DURATIONS[name]}</span>` : ''}
             </div>`).join('')}
     `).join('');
 }
@@ -2344,13 +2313,26 @@ function listenToSharedChat(code) {
     _chatUnsub = arc.onSnapshot(q, snap => {
         sharedChatMsgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         renderSharedChat();
-        // Badge if chat tab not active and messages increased
-        if (snap.docs.length > prevCount) {
+        // Badge + OS notification if chat tab not active and messages increased
+        if (snap.docs.length > prevCount && prevCount > 0) {
             const chatPanel = document.getElementById('panel-chat');
             const notif     = document.getElementById('chat-notif');
             if (notif && !chatPanel?.classList.contains('is-active')) {
                 notif.hidden = false;
             }
+            // Only notify for incoming messages (not own sends, not system/turn types)
+            snap.docChanges().forEach(change => {
+                if (change.type !== 'added') return;
+                const m = change.doc.data();
+                if (['system', 'turn'].includes(m.type) || m.removed) return;
+                if (m.uid === window.__arc?.uid) return;
+                const room    = localStorage.getItem('arc-room');
+                const title   = m.author ? `${m.author} — ${room || 'ARC20'}` : (room || 'ARC20');
+                const body    = m.type === 'roll'          ? `Rolled ${m.total ?? ''}` :
+                                m.type === 'weapon-attack' ? `${m.weaponName || 'Attack'} — ${m.total ?? ''}` :
+                                m.text ? m.text.slice(0, 80) : 'New message';
+                ArcNotify.show(title, body);
+            });
         }
         prevCount = snap.docs.length;
     }, err => console.error('[ARC] shared chat:', err));
@@ -2399,9 +2381,7 @@ function renderSharedChat() {
         const isNar = m.isNarrator;
 
         // Author badge — shown for other players and narrator
-        const badge = isNar
-            ? `<div class="shared-author shared-author--nar">◆ Narrator</div>`
-            : (!isMe ? `<div class="shared-author">${m.author || 'Player'}</div>` : '');
+        const badge = isNar ? authorBadge(m) : (!isMe ? `<div class="shared-author">${m.author || 'Player'}</div>` : '');
         if (isNar) {
             const isRoll = ['roll','dice','weapon-attack'].includes(m.type);
             li.classList.add('nar-msg', isRoll ? 'nar-msg--roll' : 'nar-msg--text');
@@ -2424,6 +2404,8 @@ function renderSharedChat() {
         } else if (m.type === 'system') {
             li.className = 'chat-system-msg';
             li.innerHTML = `<span class="chat-sys-text">— ${parseInline(m.text)} —</span>`;
+        } else if (m.type === 'poll') {
+            li.innerHTML = `<div class="shared-author shared-author--nar">◆ Poll</div>${renderPollCard(m, window.__arc?.uid)}`;
         } else {
             const emojiOnly = isEmojiOnly(m.text);
             li.className = 'chat-entry--msg';
@@ -2432,9 +2414,27 @@ function renderSharedChat() {
                 : `${badge}<span class="chat-time">${m.time || ''}</span><span class="chat-text">${parseInline(m.text)}</span>`;
         }
 
+        // Append reaction bar to all substantive message types
+        if (m.id && !['system', 'turn'].includes(m.type) && !m.removed) {
+            li.insertAdjacentHTML('beforeend', buildReactionBar(m, window.__arc?.uid));
+        }
         el.appendChild(li);
     });
 }
+
+async function togglePlayerReaction(msgId, emoji) {
+    const arc  = window.__arc;
+    const room = localStorage.getItem('arc-room');
+    const uid  = arc?.uid;
+    if (!arc?.db || !room || !uid || !msgId) return;
+    const msg  = sharedChatMsgs.find(m => m.id === msgId);
+    const uids = msg?.reactions?.[emoji] || [];
+    const op   = uids.includes(uid) ? arc.arrayRemove(uid) : arc.arrayUnion(uid);
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', room, 'chat', msgId), { [`reactions.${emoji}`]: op });
+    } catch(e) { console.error('[ARC] toggleReaction:', e); }
+}
+
 
 document.addEventListener('arc:firebase-ready', () => {
     const room = localStorage.getItem('arc-room');
@@ -2445,12 +2445,18 @@ document.addEventListener('arc:firebase-ready', () => {
     if (badgeEl) badgeEl.textContent = room;
     document.getElementById('party-session-panel').hidden = false;
 
-    // Intercept every chat push to broadcast to Firestore
+    // Intercept every chat push to broadcast to Firestore + inject target if set
     const _origUnshift = state.chat.unshift.bind(state.chat);
     state.chat.unshift = function(entry) {
+        if (playerTarget && ['roll', 'weapon-attack', 'feature'].includes(entry.type)) {
+            entry.target = playerTarget;
+        }
         _origUnshift(entry);
         broadcastChatEntry(entry);
     };
+
+    // Request notification permission and register token (Option B stub)
+    ArcNotify.requestPermission().then(() => ArcNotify.registerPushToken(room));
 
     // Start shared chat listener
     listenToSharedChat(room);
@@ -2507,6 +2513,14 @@ document.addEventListener('arc:firebase-ready', () => {
                 const ageMs = Date.now() - r.at.toMillis();
                 if (ageMs <= 4000) triggerEmojiReaction(r.chatMsgId, r.anim);
             }
+
+            const typingEl = document.getElementById('typing-indicator');
+            if (typingEl) {
+                const tn = data.typingNar;
+                typingEl.hidden = !(tn?.toMillis && Date.now() - tn.toMillis() < 5000);
+            }
+
+            renderEncounterReadonly(data);
         },
     );
 
@@ -2515,6 +2529,110 @@ document.addEventListener('arc:firebase-ready', () => {
     const _heartbeat = setInterval(syncToRoom, 60000);
     window.addEventListener('beforeunload', () => clearInterval(_heartbeat));
 });
+
+let playerTarget = null;
+let _lastEncounterData = null;
+
+function updatePlayerContextBar() {
+    const bar   = document.getElementById('player-context-bar');
+    const chip  = document.getElementById('player-target-chip');
+    const label = document.getElementById('player-target-chip-label');
+    if (!bar) return;
+    if (chip && label) {
+        chip.hidden = !playerTarget;
+        label.textContent = playerTarget ? `🎯 ${playerTarget}` : '';
+    }
+    bar.hidden = !playerTarget;
+}
+
+function buildPlayerTargetPanel() {
+    const list = document.getElementById('player-target-list');
+    if (!list) return;
+    const enc = _lastEncounterData?.encounter || [];
+    const targets = enc.filter(e => !e.hidden && e.type !== 'player').map(e => e.name);
+    if (!targets.length) { list.innerHTML = '<p class="empty-hint" style="padding:8px">No targets yet.</p>'; return; }
+    list.innerHTML = targets.map(t =>
+        `<button class="voice-pick-btn${playerTarget === t ? ' is-active' : ''}" data-target="${t}" type="button">🎯 ${t}</button>`
+    ).join('');
+    list.querySelectorAll('.voice-pick-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            playerTarget = btn.dataset.target;
+            document.getElementById('player-target-panel').hidden = true;
+            updatePlayerContextBar();
+        });
+    });
+}
+
+function renderEncounterReadonly(data) {
+    _lastEncounterData = data;
+    const listEl  = document.getElementById('player-encounter-list');
+    const roundEl = document.getElementById('player-enc-round');
+    const turnBar = document.getElementById('player-enc-turn-bar');
+    const nameEl  = document.getElementById('player-enc-active-name');
+    if (!listEl) return;
+
+    const enc = data.encounter || [];
+    const round = data.encounterRound || 1;
+    const turnIndex = data.encounterTurnIndex ?? 0;
+
+    if (roundEl) roundEl.textContent = round;
+
+    if (!enc.length) {
+        listEl.innerHTML = '<p class="empty-hint">No encounter in progress.</p>';
+        if (turnBar) turnBar.hidden = true;
+        return;
+    }
+
+    const sorted = [...enc].sort((a, b) => (b.initiative || 0) - (a.initiative || 0));
+    const activeIdx = turnIndex % sorted.length;
+    const active = sorted[activeIdx];
+    const activeName = active?.hidden ? '???' : (active?.name || '—');
+    const activeType = active?.type || 'enemy';
+
+    if (turnBar) {
+        turnBar.hidden = false;
+        turnBar.className = `enc-turn-bar enc-turn-bar--${activeType}`;
+    }
+    if (nameEl) nameEl.textContent = activeName;
+
+    listEl.innerHTML = sorted.map((c, i) => {
+        if (c.hidden) return '';
+        const isActive = i === activeIdx;
+        const hp    = c.hp ?? c.maxHp ?? 0;
+        const maxHp = c.maxHp || 1;
+        const pct   = maxHp > 0 ? Math.max(0, Math.min(100, Math.round((hp / maxHp) * 100))) : 0;
+        const barClr = pct > 60 ? 'var(--hp-ok,#4caf50)' : pct > 25 ? 'var(--hp-warn,#ff9800)' : 'var(--hp-crit,#f44336)';
+        const conds = (c.conditions || []).join(' · ');
+        const isPlayer = c.type === 'player';
+        const isEvent  = c.type === 'event';
+        const isTargeted = playerTarget === c.name;
+        return `<div class="enc-card${isActive ? ' enc-card--active' : ''}${isPlayer ? ' enc-card--player' : ''}${isEvent ? ' enc-card--event' : ''}${isTargeted ? ' enc-card--targeted' : ''}" data-set-target="${c.name}" style="cursor:pointer">
+            <div class="enc-card-row">
+                <span class="enc-init-badge${isPlayer ? ' enc-init-badge--player' : ''}">${c.initiative || 0}</span>
+                <div class="enc-mon-info">
+                    <span class="enc-name">${c.name}</span>
+                    ${conds ? `<span class="enc-readonly-conds">${conds}</span>` : ''}
+                </div>
+                ${isTargeted ? '<span class="enc-readonly-active-tag" style="color:#ff8080">🎯</span>' : isActive ? '<span class="enc-readonly-active-tag">▶</span>' : ''}
+            </div>
+            ${!isEvent && maxHp > 0 ? `
+            <div class="enc-hp-controls" style="pointer-events:none;opacity:0.8">
+                <span class="enc-hp">${hp}<span class="enc-hp-max">/${maxHp}</span></span>
+                <div class="enc-hp-bar-track enc-hp-bar-inline"><div class="enc-hp-bar-fill" style="width:${pct}%;background:${barClr}"></div></div>
+            </div>` : ''}
+        </div>`;
+    }).join('');
+
+    // Tap encounter card to set/toggle target
+    listEl.querySelectorAll('[data-set-target]').forEach(card => {
+        card.addEventListener('click', () => {
+            const name = card.dataset.setTarget;
+            playerTarget = playerTarget === name ? null : name;
+            updatePlayerContextBar();
+            renderEncounterReadonly(_lastEncounterData || {});
+        });
+    });
+}
 
 function renderPlayerParty(players) {
     const el = document.getElementById('player-party-list');
@@ -2719,6 +2837,13 @@ function syncConditionsBar() {
 }
 
 function setActivePanel(key) {
+    // On desktop (≥1100px) chat is always pinned to the left column — don't clear the right panel
+    if (key === 'chat' && window.innerWidth >= 1100) {
+        renderChat();
+        const notif = document.getElementById('chat-notif');
+        if (notif) notif.hidden = true;
+        return;
+    }
     Object.entries(els.panels).forEach(([k, el]) => el?.classList.toggle('is-active', k === key));
     els.navBtns.forEach(b => b.classList.toggle('is-active', b.dataset.nav === key));
     // play-tab-bio sits outside panel-play in the DOM; manually sync its visibility
@@ -2963,7 +3088,7 @@ function renderConditions() {
             const b = document.createElement('button');
             b.type = 'button';
             b.className = 'chip';
-            b.textContent = name;
+            b.textContent = condChip(name);
             b.setAttribute('aria-pressed', state.activeConditions.has(name) ? 'true' : 'false');
             b.addEventListener('click', () => {
                 const active = state.activeConditions.has(name);
@@ -3085,7 +3210,41 @@ function bindDrawer() {
 
     // Chat
     // Expand/collapse long descriptions in chat
-    document.getElementById('chat-log')?.addEventListener('click', e => {
+    document.getElementById('chat-log')?.addEventListener('click', async e => {
+        // Reaction add button (open/close picker)
+        const reactionAddBtn = e.target.closest('.reaction-add-btn');
+        if (reactionAddBtn) {
+            e.stopPropagation();
+            const picker = reactionAddBtn.closest('.chat-reactions')?.querySelector('.reaction-picker');
+            if (picker) picker.hidden = !picker.hidden;
+            return;
+        }
+        // Reaction picker button (select emoji)
+        const reactionPickBtn = e.target.closest('.reaction-pick-btn');
+        if (reactionPickBtn) {
+            const bar = reactionPickBtn.closest('.chat-reactions');
+            if (bar) { togglePlayerReaction(bar.dataset.msgId, reactionPickBtn.dataset.emoji); bar.querySelector('.reaction-picker').hidden = true; }
+            return;
+        }
+        // Reaction chip (toggle existing reaction)
+        const reactionChip = e.target.closest('.reaction-chip');
+        if (reactionChip) {
+            const bar = reactionChip.closest('.chat-reactions');
+            if (bar) togglePlayerReaction(bar.dataset.msgId, reactionChip.dataset.emoji);
+            return;
+        }
+        // Poll vote
+        const pollOptBtn = e.target.closest('.poll-opt-btn');
+        if (pollOptBtn) {
+            const arc    = window.__arc;
+            const room   = localStorage.getItem('arc-room');
+            const pollId = pollOptBtn.dataset.pollId;
+            const choice = pollOptBtn.dataset.choice;
+            if (arc?.db && room && pollId) {
+                await arc.updateDoc(arc.doc(arc.db, 'rooms', room, 'chat', pollId), { [`votes.${arc.uid}`]: choice }).catch(() => {});
+            }
+            return;
+        }
         const provoke = e.target.closest('.provoke-btn');
         if (provoke) {
             pushChatFeature({
@@ -3238,7 +3397,7 @@ function openDrawer(label = null, checkStr = null) {
             condList.innerHTML = active.map(name => {
                 const effect = CONDITION_EFFECTS[name] || '';
                 return `<div class="drawer-cond-entry">
-                    <span class="drawer-cond-name">${name}</span>
+                    <span class="drawer-cond-name">${condChip(name)}</span>
                     ${effect ? `<span class="drawer-cond-effect">${effect}</span>` : ''}
                 </div>`;
             }).join('');
@@ -4330,10 +4489,49 @@ document.addEventListener('DOMContentLoaded', () => {
     loadClassData();
     loadSpells();
     loadWeapons();     // calls recalcArmorBonuses() internally after armorData loads
+    loadConditions();
     recalcArmorBonuses(); // initial pass with cached armorRating fields (before fetch)
     updateXpDisplay();
     // Close drawer cleanly on boot (ensure inert state matches)
     closeDrawer();
+
+    // Chat sub-tabs (Messages / Initiative)
+    document.querySelectorAll('.chat-sub-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const key = btn.dataset.chatSub;
+            document.querySelectorAll('.chat-sub-tab').forEach(b => b.classList.toggle('is-active', b.dataset.chatSub === key));
+            document.querySelectorAll('.chat-sub-content').forEach(el => { el.hidden = el.id !== `chat-sub-${key}`; });
+        });
+    });
+
+    // Player dice button (toggleable panel)
+    const playerDicePanel = document.getElementById('player-dice-panel');
+    document.getElementById('player-dice-btn')?.addEventListener('click', e => {
+        e.stopPropagation();
+        if (!playerDicePanel) return;
+        playerDicePanel.hidden = !playerDicePanel.hidden;
+    });
+    document.addEventListener('click', e => {
+        if (!playerDicePanel?.contains(e.target) && e.target.id !== 'player-dice-btn') {
+            if (playerDicePanel) playerDicePanel.hidden = true;
+        }
+    });
+
+    // Player target button
+    const playerTargetPanel = document.getElementById('player-target-panel');
+    document.getElementById('player-target-btn')?.addEventListener('click', e => {
+        e.stopPropagation();
+        if (!playerTargetPanel) return;
+        const opening = playerTargetPanel.hidden;
+        playerTargetPanel.hidden = true;
+        if (opening) { buildPlayerTargetPanel(); playerTargetPanel.hidden = false; }
+    });
+    document.getElementById('player-target-dismiss')?.addEventListener('click', () => { playerTarget = null; updatePlayerContextBar(); });
+    document.addEventListener('click', e => {
+        if (!playerTargetPanel?.contains(e.target) && e.target.id !== 'player-target-btn') {
+            if (playerTargetPanel) playerTargetPanel.hidden = true;
+        }
+    });
 
     // Mobile swipe left/right to cycle panels
     (function () {
