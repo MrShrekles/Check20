@@ -1490,10 +1490,10 @@
       "option": "Drakonari",
       "name": "Radiance",
       "description": {
-        "physical": "Radiance Drakonari are among the most visually striking of all Drakonari lineages. Slightly smaller and more slender than many of their planar cousins, they possess elegant proportions and an almost statuesque bearing. Their scales range from ivory and gold to soft pearlescent hues that seem to shift subtly with the light. A gentle radiance constantly emanates from their bodies, illuminating their surroundings with a warm glow. Their horns often resemble crowns, halos, or branching flames of solid light, while luminous patterns flow beneath their scales like liquid sunlight. Even in silence, Radiance Drakonari command attention through sheer presence.",
-        "environment": "Radiance Drakonari are most commonly found within Celestia, though many establish enclaves in sacred sites, ancient temples, and places of spiritual significance throughout the mortal world. They prefer orderly and beautiful environments where harmony is actively maintained. Their settlements are often built around natural wonders, celestial phenomena, or locations believed to hold spiritual importance. Architecture tends toward open spaces, flowing light, and meticulous craftsmanship designed to inspire reflection and contemplation.",
-        "culture": "Radiance Drakonari place great value on responsibility, discipline, and the preservation of balance. While often perceived as noble or benevolent, they do not see themselves as heroes. Instead, they view themselves as stewards tasked with maintaining order where chaos threatens to overwhelm. Their confidence can sometimes be mistaken for arrogance, as many genuinely believe they are better equipped than others to make difficult decisions.\n\nDespite their aloof nature, Radiance Drakonari frequently act as mediators, judges, diplomats, and advisors. They prefer measured solutions over emotional reactions and often seek compromise before conflict. Personal ambition is generally expected to serve a greater purpose, with individual success viewed as meaningful only when it contributes to broader stability.",
-        "lore": "Radiance Drakonari trace their ancestry to Celestia, where they emerged among the great celestial powers that shape and regulate the planes. Unlike many celestial beings driven by absolute morality, the Radiance developed a more pragmatic philosophy. They believe that order, balance, and continuity are more important than simple notions of good and evil.\n\nThroughout history, Radiance Drakonari have acted as arbiters between rival powers, intervening when conflicts threaten to destabilize entire regions or planes. Their presence is often welcomed during crises but can become controversial when their solutions require sacrifices that others are unwilling to make.\n\nAmong other Drakonari, they are known for carrying themselves with an air of quiet authority. While some see this as wisdom and reliability, others view it as detached superiority. The Radiance themselves rarely concern themselves with such opinions. In their eyes, maintaining balance is not a matter of personal preference, but a responsibility that must be fulfilled regardless of recognition or gratitude."
+        "physical": "Radiance Drakonari are smaller than most planar Drakonari, their pearlescent scales emitting a soft, steady glow. Upright and refined in posture, they often carry themselves with quiet superiority. While aloof, they possess a strong sense of responsibility toward balance and mediation. Radiance Drakonari frequently intervene in conflicts not out of kindness, but out of duty to maintain equilibrium within planar and mortal systems.",
+        "environment": "[TBD]",
+        "culture": "[TBD]",
+        "lore": "[TBD]"
       },
       "size": "5-7",
       "lifespan": 400,
@@ -1503,23 +1503,21 @@
       "region": "Prime",
       "origin": "dragon",
       "feature_name": "Divine Shield",
-      "feature_effect": "As an action, give a creature within reach a radiant shield that protects them from the next instance of damage, it lasts until the end of your next turn",
+      "feature_effect": "As an action, give a creature a radiant shield that protects them from the next instance of damage, it lasts for 1 minute and glows in the dark.",
       "fetAction": "Action",
-      "fetRange": "Reach",
-      "fetDuration": "Until end of your next turn",
-      "fetDamagetype": "Radiant",
-      "sub-fet-effect": "Your antlers grant Advantage on Grapple checks. Natural weapon (Str or Agi; Light; 1d4 Physical; Piercing/Impact).",
-      "sub-fet-name": "Barbed Horns"
+      "fetRange": "Short",
+      "fetDuration": "1 minute",
+      "fetDamagetype": "Radiant"
     },
     {
       "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Astraleon",
       "description": {
-        "physical": "Astraleon Drakonari are tall, elegant, and highly expressive, with fluid features that seem to shift subtly depending on mood, environment, and magical influence. Their scales commonly display vibrant shades of violet, blue, teal, and rose, though these colors often change in intensity or hue throughout the day. Many possess fin-like crests, flowing whiskers, and decorative frills that resemble drifting nebulae or cosmic currents. Their eyes are unusually bright and reflective, often appearing to contain distant stars or swirling colors beneath the surface. No two Astraleon appear exactly alike, as their appearance naturally evolves alongside their experiences and emotional state.",
-        "environment": "Astraleon Drakonari rarely remain in one place for long. They are most commonly found along planar crossroads, trade routes, great cities, and regions where different cultures meet. Many are drawn to places rich in stories, knowledge, and new experiences rather than any particular climate or geography. Their settlements tend to be temporary, constantly evolving, or built around portals, observatories, libraries, and centers of learning. While they maintain communities of their own, most Astraleon spend at least part of their lives wandering between worlds.",
-        "culture": "Astraleon Drakonari value curiosity above nearly everything else. To them, understanding comes through experience rather than tradition, and personal growth is often measured by how much of the world one has explored. They are highly social and tend to form friendships with ease, often moving comfortably between different cultures and communities.\n\nPersonal boundaries can sometimes be a challenge for Astraleon, who approach people, ideas, and mysteries with equal enthusiasm. Fortunately, their genuine interest in others and natural charisma often softens any awkwardness this may create. They enjoy sharing stories, exchanging perspectives, and collecting experiences from every corner of existence. Rigid hierarchies and strict social expectations are generally viewed as obstacles to learning rather than sources of stability.",
-        "lore": "Astraleon Drakonari are believed to have emerged from the Dreamsea, a realm where thought, possibility, and travel intersect. Unlike many planar lineages that became defined by a single purpose, the Astraleon remained wanderers, forever drawn toward the unknown."
+        "physical": "Astraleon Drakonari are tall and expressive, their scales shifting subtly in hue in response to emotion and ambient energy. Curious and socially fluid, they are known to drift between cultures, planes, and social circles. Their lack of personal boundaries is often forgiven due to their charisma and genuine interest in others. Astraleon Drakonari value experience over structure and often act as explorers, scholars, or wandering advisors.",
+        "environment": "[TBD]",
+        "culture": "[TBD]",
+        "lore": "[TBD]"
       },
       "size": "5-7",
       "lifespan": 400,
@@ -1538,12 +1536,12 @@
       "option": "Drakonari",
       "name": "Vozurion",
       "description": {
-        "physical": "Vozurion Drakonari are among the largest and most physically imposing of all Drakonari lineages. Thick layers of scales and bony plating cover their bodies, creating a natural armor reinforced by numerous horns, spikes, and protrusions. Their coloration commonly ranges through deep reds, burnt orange, black, and dark purple, often arranged in vivid patterns that resemble molten stone or infernal fire. Massive horns sweep from the skull in complex crowns, while jagged spines run along the neck, shoulders, and back. Their glowing eyes and powerful physiques give them an unmistakable presence that few creatures can comfortably ignore.",
-        "environment": "Vozurion Drakonari are most commonly found in the harsh territories of Vozia, where strength, discipline, and loyalty are necessary for survival. Their cities are heavily fortified and often built into volcanic regions, rugged mountains, fortified canyons, or hostile wastelands. Massive citadels, military strongholds, and fortress-settlements dominate their architecture, reflecting their emphasis on security and order. They prefer environments where authority is clearly established and communities can unite against common threats.",
-        "culture": "Vozurion Drakonari value strength, loyalty, and acquisition. To them, power is meant to be exercised, wealth is meant to be gathered, and weakness is an invitation for stronger forces to take what is theirs. Their societies are highly structured, with clear hierarchies based on achievement, influence, and the ability to provide for those beneath them.\n\nUnlike their ancestor Tiamat, Vozurion temper their appetites with discipline. They believe hunger is natural and ambition is healthy, but both must be controlled and directed toward productive ends. A Vozurion who cannot master their desires is viewed as dangerous, while one who channels those desires into conquest, leadership, or prosperity earns admiration.\n\nLoyalty is sacred among the Vozurion. Betrayal is seen as the ultimate weakness, a failure of character that threatens the foundations of society itself. While they often appear harsh to outsiders, Vozurion communities tend to be tightly bound and fiercely protective of their own.",
-        "lore": "Many Vozurion claim descent from [Tiamat], the Queen of Demon Dragons and embodiment of Gluttony. When Tiamat was cast into the Ordealis, fragments of her bloodline spread throughout the realms. Some of these descendants inherited not only her immense physical power, but also a fraction of her endless hunger.\n\nMost Vozurion view Tiamat with a mixture of reverence and caution. She is respected as an ancestral force, but rarely worshipped directly. To them, Tiamat represents both the greatness and the danger within their lineage. Her rise demonstrates the power of ambition, while her fall serves as a warning of what happens when desire is allowed to consume everything else.\n\nBecause of this legacy, many Vozurion believe every creature possesses a hunger. Some hunger for food, others for wealth, power, knowledge, or recognition. Their philosophy teaches that hunger itself is not evil. What matters is whether one controls their hunger, or is controlled by it."
+        "physical": "Vozurion Drakonari are broad, heavily muscled humanoids adorned with numerous horns and thick, layered scales patterned in reds, purples, and oranges. Their presence is intense and commanding, radiating heat and authority. Fiercely loyal to Vozian-aligned kin and institutions, they respond violently to betrayal or perceived weakness. In structured hierarchies, Vozurion Drakonari are steadfast defenders and enforcers.",
+        "environment": "[TBD]",
+        "culture": "[TBD]",
+        "lore": "[TBD]"
       },
-      "size": "6-8",
+      "size": "5-7",
       "lifespan": 400,
       "language": "Imperial, Drak",
       "diet": "Omnivore",
@@ -1551,7 +1549,7 @@
       "region": "Prime",
       "origin": "dragon",
       "feature_name": "Nightmare Scream",
-      "feature_effect": "As an action howl at a target within short range, they must make a Mental check or take the Fear condition. On a success they are immune to this effect from you",
+      "feature_effect": "As an action howl at a target, they must make a Mental check or take the Fear condition. On a success they are immune to this effect",
       "fetAction": "Action",
       "fetCheck": "Spirit",
       "fetRange": "Short",
@@ -1563,10 +1561,10 @@
       "option": "Drakonari",
       "name": "Thornspike",
       "description": {
-        "physical": "Thornspike Drakonari are massive, heavily built creatures covered in dense layers of bony protrusions, jagged scales, and hardened spikes. Their coloration tends toward earthy browns, grays, muted greens, and dusty purples, allowing them to blend naturally into rocky terrain and dense undergrowth. Thick armor-like scales cover much of their body, with clusters of spikes concentrated along the neck, shoulders, back, and tail. Their mouths are lined with rows of barbed teeth designed for gripping and tearing prey, while specialized glands allow them to launch hardened spikes in place of traditional draconic breath. Even at rest, Thornspike Drakonari appear dangerous to approach.",
-        "environment": "Thornspike Drakonari thrive in harsh, untamed regions where survival is determined by strength and adaptability. They are most commonly found in badlands, thorn forests, rocky canyons, dense jungles, and rugged wilderness where natural defenses are often more important than constructed ones. Their settlements are usually built around defensible territory and valuable resources rather than aesthetics or comfort. Many communities appear almost indistinguishable from the surrounding landscape, hidden among cliffs, tangled vegetation, and natural fortifications.",
-        "culture": "Thornspike society is rooted in practicality. They value food, territory, shelter, and security above abstract ideals or political ambition. Respect is earned through competence and the ability to provide for one's community rather than status or ancestry. While outsiders often describe them as primitive, Thornspike Drakonari possess complex social structures built around survival and mutual necessity.\n\nThey tend to be direct and uncomplicated in their dealings. Promises are expected to be kept, threats are taken seriously, and resources are rarely wasted. Leadership often falls to those who consistently prove capable of protecting and sustaining the group. While conflict is common, unnecessary violence is generally viewed as foolish when valuable energy and resources are at stake.",
-        "lore": "The Thornspike are believed to descend from ancient draconic predators that survived by adapting their own bodies into living weapons. While other Drakonari developed elemental breath or sophisticated magical traditions, the Thornspike evolved armor, claws, teeth, and projectile spines capable of meeting almost any threat directly.\n\nMany legends portray them as the embodiment of nature's harsher truths. Hunger, competition, territory, and survival are not viewed as evils to overcome but realities to be understood and respected. This philosophy has made them remarkably resilient throughout history. Empires have risen and fallen around them, yet Thornspike clans continue to endure in regions others struggle to inhabit.\n\nAmong the Drakonari, they are often regarded as stubborn, dangerous, and difficult to intimidate. A Thornspike may lack the refinement of a Radiance or the ambition of a Vozurion, but few lineages can match their sheer determination to survive. When pushed into a corner, they become exactly what they were shaped to be: a wall of teeth, bone, and unyielding instinct."
+        "physical": "Thornspike Drakonari are bulky and rugged, their bodies covered in thorned, muted scales that serve as both armor and weapon. Their mouths are lined with barbed teeth, and they can expel volleys of hardened spikes rather than elemental breath. More instinct-driven than most Drakonari, they value territory, dominance, and immediate needs. Civilized Thornspike societies exist, but are harsh, utilitarian, and survival-focused.",
+        "environment": "[TBD]",
+        "culture": "[TBD]",
+        "lore": "[TBD]"
       },
       "size": "5-7",
       "lifespan": 400,
@@ -1590,10 +1588,10 @@
       "option": "Drakonari",
       "name": "Reaver",
       "description": {
-        "physical": "Reaver Drakonari are towering, broad-shouldered dragons with dense metallic scales and powerful physiques built for endurance rather than speed. Their coloration commonly ranges through bronze, copper, iron, and dark steel hues, often weathering over time like forged armor. Massive curved horns frame the head, forming natural crests that can withstand tremendous punishment. Thick tails end in heavy blades, clubs, or hardened ridges that serve as both tools and weapons. Their presence is imposing but controlled, carrying the weight of creatures accustomed to responsibility rather than conquest.",
-        "environment": "Reaver Drakonari are most commonly found in fortified cities, mountain strongholds, ancient kingdoms, and border territories where stability must be actively maintained. They favor regions with established laws, long histories, and strong institutions. Their settlements are built to endure for generations, with stone fortresses, massive gates, and public works designed to outlast their creators. Even in the wilderness, Reaver communities often serve as guardians of important roads, passes, and trade routes.",
-        "culture": "Duty lies at the heart of Reaver culture. Strength is respected, but only when tempered by discipline and responsibility. Reaver Drakonari believe power exists to serve others, not elevate oneself. Because of this, they often become judges, wardens, generals, lawkeepers, and protectors of their communities.\n\nHonor is treated as a practical obligation rather than a matter of personal pride. A promise must be fulfilled because others depend upon it. A leader must act fairly because instability harms everyone. While some outsiders mistake their reserved nature for coldness, Reavers simply place responsibility above personal desire. They are slow to act, but once committed, rarely waver.",
-        "lore": "Many legends claim the Reaver Drakonari descend from ancient dragons who chose stewardship over dominion. While other lineages pursued conquest, wealth, or power, the Reavers devoted themselves to preserving civilization through strength and stability.\n\nThroughout history they have stood as guardians during periods of upheaval, often intervening only when existing institutions prove unable to protect themselves. Their reputation for measured judgment has earned them positions as arbiters, commanders, and protectors across countless cultures.\n\nAmong the Drakonari, Reavers are often considered the embodiment of disciplined strength. They believe true power is not measured by what one can take, but by what one is willing to carry. A Reaver may possess the strength to rule, but their highest ideal is service. To them, the greatest victory is not defeating an enemy, but ensuring those under their protection never have to face one alone."
+        "physical": "Reaver Drakonari are towering humanoids clad in metallic scales, with massive curved horns and thick, bladed tails used as both weapon and tool. Despite their size and strength, they adhere to strict codes of honor and stewardship. Often acting as wardens, generals, or judges, Reaver Drakonari believe power exists to preserve balance, not dominate it. Their interventions are rare, but decisive.",
+        "environment": "[TBD]",
+        "culture": "[TBD]",
+        "lore": "[TBD]"
       },
       "size": "5-7",
       "lifespan": 400,
@@ -1603,24 +1601,22 @@
       "region": "Prime",
       "origin": "dragon",
       "feature_name": "Reaper's Tail",
-      "feature_effect": "You have a powerful bladed tail (Str or Agi; Light; 1d6 Physical; Slashing).",
-      "fetAction": "Passive",
+      "feature_effect": "As an Action or Off-Action use your bladed tail to make an attack dealing [[1d6]] slashing damage.",
+      "fetAction": "Special",
       "fetRange": "Melee",
       "fetDuration": "Instant",
       "fetDamage": "1d6",
-      "fetDamagetype": "Slashing",
-      "sub-fet-name": "Blade Horn",
-      "sub-fet-effect": "Natural bladed weapon (Str or Agi; Light; 1d6 Physical; Slashing)."
+      "fetDamagetype": "Slashing"
     },
     {
       "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Crystal",
       "description": {
-        "physical": "Crystal Drakonari are among the rarest Drakonari lineages, their bodies covered in living crystal formations that grow continuously throughout their lives. These crystalline structures emerge along the horns, shoulders, spine, and limbs, creating appearances that range from elegant gemstone crowns to heavily armored crystal shells. Their scales refract light into shifting colors, though many lineages are dominated by a single gemstone hue such as ruby, sapphire, emerald, or amethyst. Crystal growth often obscures portions of the face and body, giving them a sculptural appearance that many mistake for statues until they move.",
-        "environment": "Crystal Drakonari are most commonly found in crystal caverns, mountain ranges, ancient convergence points, and locations where magical energies naturally gather. They are drawn to places of stability and significance, often establishing settlements around ley lines, sacred sites, or ancient monuments. Their homes tend to be enduring structures carved directly into crystal formations or stone, designed to last for generations with little need for change.",
-        "culture": "Crystal Drakonari value patience, reflection, and perspective. They are rarely impulsive and often spend considerable time considering a decision before acting. Their societies place great importance on history, record-keeping, and preserving knowledge for future generations. Many serve as mediators, advisors, historians, and guardians, believing that understanding the past is essential to maintaining balance in the present. While outsiders sometimes mistake their deliberate nature for stubbornness, Crystal Drakonari simply view haste as the source of most mistakes.",
-        "lore": "Many scholars believe Crystal Drakonari emerged near powerful convergence points where draconic life and concentrated magical energies became intertwined. Over countless generations, their bodies adapted to these environments, developing living crystal structures that continue growing throughout their lives. Because of their exceptional longevity and strong cultural emphasis on memory, Crystal Drakonari often become living archives of history, preserving stories, traditions, and knowledge that might otherwise be lost. Among the Drakonari, they are widely respected as neutral arbiters and keepers of wisdom, often called upon when disputes require patience, perspective, and an understanding of consequences that stretch across centuries."
+        "physical": "Crystal Drakonari are rare and imposing, their bodies adorned with natural gemstone formations that grow along the shoulders, horns, and spine. Their scales refract light into shifting colors, giving them a sculptural, almost ceremonial appearance. Slow to act and deliberate in speech, they are revered for their wisdom and long memory. Crystal Drakonari often serve as mediators, historians, or guardians of places where balance and convergence are paramount.",
+        "environment": "[TBD]",
+        "culture": "[TBD]",
+        "lore": "[TBD]"
       },
       "size": "8-10",
       "lifespan": 400,
@@ -1630,10 +1626,10 @@
       "region": "Prime",
       "origin": "dragon",
       "feature_name": "Boulder Bash",
-      "feature_effect": "You have +3 Armor, when you deal melee damage, deal an additional +3 damage",
+      "feature_effect": "You have +3 Armor, when you deal Impact damage, deal an additional +3 damage",
       "fetAction": "Passive",
       "fetDamage": 3,
-      "fetDamagetype": ""
+      "fetDamagetype": "Impact"
     },
     {
       "lineage": "Dragon",

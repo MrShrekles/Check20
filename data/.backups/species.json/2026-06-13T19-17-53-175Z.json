@@ -1590,10 +1590,10 @@
       "option": "Drakonari",
       "name": "Reaver",
       "description": {
-        "physical": "Reaver Drakonari are towering, broad-shouldered dragons with dense metallic scales and powerful physiques built for endurance rather than speed. Their coloration commonly ranges through bronze, copper, iron, and dark steel hues, often weathering over time like forged armor. Massive curved horns frame the head, forming natural crests that can withstand tremendous punishment. Thick tails end in heavy blades, clubs, or hardened ridges that serve as both tools and weapons. Their presence is imposing but controlled, carrying the weight of creatures accustomed to responsibility rather than conquest.",
-        "environment": "Reaver Drakonari are most commonly found in fortified cities, mountain strongholds, ancient kingdoms, and border territories where stability must be actively maintained. They favor regions with established laws, long histories, and strong institutions. Their settlements are built to endure for generations, with stone fortresses, massive gates, and public works designed to outlast their creators. Even in the wilderness, Reaver communities often serve as guardians of important roads, passes, and trade routes.",
-        "culture": "Duty lies at the heart of Reaver culture. Strength is respected, but only when tempered by discipline and responsibility. Reaver Drakonari believe power exists to serve others, not elevate oneself. Because of this, they often become judges, wardens, generals, lawkeepers, and protectors of their communities.\n\nHonor is treated as a practical obligation rather than a matter of personal pride. A promise must be fulfilled because others depend upon it. A leader must act fairly because instability harms everyone. While some outsiders mistake their reserved nature for coldness, Reavers simply place responsibility above personal desire. They are slow to act, but once committed, rarely waver.",
-        "lore": "Many legends claim the Reaver Drakonari descend from ancient dragons who chose stewardship over dominion. While other lineages pursued conquest, wealth, or power, the Reavers devoted themselves to preserving civilization through strength and stability.\n\nThroughout history they have stood as guardians during periods of upheaval, often intervening only when existing institutions prove unable to protect themselves. Their reputation for measured judgment has earned them positions as arbiters, commanders, and protectors across countless cultures.\n\nAmong the Drakonari, Reavers are often considered the embodiment of disciplined strength. They believe true power is not measured by what one can take, but by what one is willing to carry. A Reaver may possess the strength to rule, but their highest ideal is service. To them, the greatest victory is not defeating an enemy, but ensuring those under their protection never have to face one alone."
+        "physical": "Reaver Drakonari are towering humanoids clad in metallic scales, with massive curved horns and thick, bladed tails used as both weapon and tool. Despite their size and strength, they adhere to strict codes of honor and stewardship. Often acting as wardens, generals, or judges, Reaver Drakonari believe power exists to preserve balance, not dominate it. Their interventions are rare, but decisive.",
+        "environment": "[TBD]",
+        "culture": "[TBD]",
+        "lore": "[TBD]"
       },
       "size": "5-7",
       "lifespan": 400,
@@ -1603,24 +1603,22 @@
       "region": "Prime",
       "origin": "dragon",
       "feature_name": "Reaper's Tail",
-      "feature_effect": "You have a powerful bladed tail (Str or Agi; Light; 1d6 Physical; Slashing).",
-      "fetAction": "Passive",
+      "feature_effect": "As an Action or Off-Action use your bladed tail to make an attack dealing [[1d6]] slashing damage.",
+      "fetAction": "Special",
       "fetRange": "Melee",
       "fetDuration": "Instant",
       "fetDamage": "1d6",
-      "fetDamagetype": "Slashing",
-      "sub-fet-name": "Blade Horn",
-      "sub-fet-effect": "Natural bladed weapon (Str or Agi; Light; 1d6 Physical; Slashing)."
+      "fetDamagetype": "Slashing"
     },
     {
       "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Crystal",
       "description": {
-        "physical": "Crystal Drakonari are among the rarest Drakonari lineages, their bodies covered in living crystal formations that grow continuously throughout their lives. These crystalline structures emerge along the horns, shoulders, spine, and limbs, creating appearances that range from elegant gemstone crowns to heavily armored crystal shells. Their scales refract light into shifting colors, though many lineages are dominated by a single gemstone hue such as ruby, sapphire, emerald, or amethyst. Crystal growth often obscures portions of the face and body, giving them a sculptural appearance that many mistake for statues until they move.",
-        "environment": "Crystal Drakonari are most commonly found in crystal caverns, mountain ranges, ancient convergence points, and locations where magical energies naturally gather. They are drawn to places of stability and significance, often establishing settlements around ley lines, sacred sites, or ancient monuments. Their homes tend to be enduring structures carved directly into crystal formations or stone, designed to last for generations with little need for change.",
-        "culture": "Crystal Drakonari value patience, reflection, and perspective. They are rarely impulsive and often spend considerable time considering a decision before acting. Their societies place great importance on history, record-keeping, and preserving knowledge for future generations. Many serve as mediators, advisors, historians, and guardians, believing that understanding the past is essential to maintaining balance in the present. While outsiders sometimes mistake their deliberate nature for stubbornness, Crystal Drakonari simply view haste as the source of most mistakes.",
-        "lore": "Many scholars believe Crystal Drakonari emerged near powerful convergence points where draconic life and concentrated magical energies became intertwined. Over countless generations, their bodies adapted to these environments, developing living crystal structures that continue growing throughout their lives. Because of their exceptional longevity and strong cultural emphasis on memory, Crystal Drakonari often become living archives of history, preserving stories, traditions, and knowledge that might otherwise be lost. Among the Drakonari, they are widely respected as neutral arbiters and keepers of wisdom, often called upon when disputes require patience, perspective, and an understanding of consequences that stretch across centuries."
+        "physical": "Crystal Drakonari are rare and imposing, their bodies adorned with natural gemstone formations that grow along the shoulders, horns, and spine. Their scales refract light into shifting colors, giving them a sculptural, almost ceremonial appearance. Slow to act and deliberate in speech, they are revered for their wisdom and long memory. Crystal Drakonari often serve as mediators, historians, or guardians of places where balance and convergence are paramount.",
+        "environment": "[TBD]",
+        "culture": "[TBD]",
+        "lore": "[TBD]"
       },
       "size": "8-10",
       "lifespan": 400,
@@ -1630,10 +1628,10 @@
       "region": "Prime",
       "origin": "dragon",
       "feature_name": "Boulder Bash",
-      "feature_effect": "You have +3 Armor, when you deal melee damage, deal an additional +3 damage",
+      "feature_effect": "You have +3 Armor, when you deal Impact damage, deal an additional +3 damage",
       "fetAction": "Passive",
       "fetDamage": 3,
-      "fetDamagetype": ""
+      "fetDamagetype": "Impact"
     },
     {
       "lineage": "Dragon",
