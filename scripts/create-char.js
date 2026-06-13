@@ -1,7 +1,9 @@
 ﻿/* Character Creation Wizard */
 
 const DATA_BASE = window.location.pathname.includes('/active-sheet/') ? '../data/' : 'data/';
+const IMG_BASE  = window.location.pathname.includes('/active-sheet/') ? '../assets/species/' : 'assets/species/';
 const titleCase = s => s ? s.charAt(0).toUpperCase() + s.slice(1).replace(/ \w/g, c => c.toUpperCase()) : '';
+const slugify   = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 const STORAGE_KEY  = 'arc-active-sheet';
 // Base limits — Professional class gets +5 points and max 15 per stat
@@ -407,6 +409,8 @@ function buildSpeciesGrid() {
     document.getElementById('species-grid').innerHTML = visible.map(s => `
         <button class="species-card${s.name === wiz.speciesName ? ' is-sel' : ''}"
                 type="button" data-species="${s.name}">
+            <img class="species-card-img" src="${IMG_BASE}${slugify(s.name)}.jpg" alt=""
+                 onerror="this.style.display='none'">
             <div class="species-card-head">
                 <span class="species-name">${titleCase(s.name)}</span>
                 <span class="species-rarity">${s.rarity || ''}</span>
@@ -423,6 +427,8 @@ function renderSpeciesDetail() {
     if (!s) { detail.hidden = true; return; }
     detail.hidden = false;
     detail.innerHTML = `
+        <img class="species-detail-img" src="${IMG_BASE}${slugify(s.name)}.jpg" alt="${titleCase(s.name)}"
+             onerror="this.style.display='none'">
         <div class="species-detail-name">${titleCase(s.name)}</div>
         <p class="species-detail-desc">${(() => {
             const d = s.description;

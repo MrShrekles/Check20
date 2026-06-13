@@ -1,7 +1,10 @@
 /* Home screen — character management */
 
-const ACTIVE_KEY = 'arc-active-sheet';
-const SAVES_KEY  = 'arc-saves';
+const ACTIVE_KEY   = 'arc-active-sheet';
+const SAVES_KEY    = 'arc-saves';
+const ACTIVE_SAVE_ID_KEY = 'arc-active-save-id';
+const SAVES_VISIBLE_LIMIT = 3;
+let showAllSaves = false;
 
 // ── STORAGE HELPERS ───────────────────────────────────────────────────────────
 
@@ -33,9 +36,10 @@ function saveCurrentToSlot(existingId = null) {
     try {
         const data = JSON.parse(raw);
         const name = data.char?.name || 'Unnamed';
-        const id   = existingId || `save_${Date.now()}`;
+        const id   = existingId || localStorage.getItem(ACTIVE_SAVE_ID_KEY) || `save_${Date.now()}`;
 
         localStorage.setItem(`arc-save-${id}`, raw);
+        localStorage.setItem(ACTIVE_SAVE_ID_KEY, id);
 
         const saves = getSaves().filter(s => s.id !== id);
         saves.unshift({
@@ -55,6 +59,7 @@ function loadSave(id) {
     const raw = localStorage.getItem(`arc-save-${id}`);
     if (!raw) { alert('Save not found.'); return; }
     localStorage.setItem(ACTIVE_KEY, raw);
+    localStorage.setItem(ACTIVE_SAVE_ID_KEY, id);
     window.location.href = 'active-sheet.html';
 }
 
@@ -63,6 +68,9 @@ function loadSave(id) {
 function deleteSave(id) {
     localStorage.removeItem(`arc-save-${id}`);
     setSaves(getSaves().filter(s => s.id !== id));
+    if (localStorage.getItem(ACTIVE_SAVE_ID_KEY) === id) {
+        localStorage.removeItem(ACTIVE_SAVE_ID_KEY);
+    }
     renderAll();
 }
 
@@ -94,11 +102,14 @@ function renderSaves() {
     const saves   = getSaves();
     const section = document.getElementById('home-saves-section');
     const list    = document.getElementById('saves-list');
+    const moreBtn = document.getElementById('saves-show-more');
 
     if (!saves.length) { section.hidden = true; return; }
 
     section.hidden = false;
-    list.innerHTML = saves.map(s => `
+    const visible = showAllSaves ? saves : saves.slice(0, SAVES_VISIBLE_LIMIT);
+
+    list.innerHTML = visible.map(s => `
         <div class="save-entry">
             <div class="save-info">
                 <span class="save-name">${s.name}</span>
@@ -109,6 +120,15 @@ function renderSaves() {
                 <button class="save-btn save-btn--del"  data-del="${s.id}"  type="button">✕</button>
             </div>
         </div>`).join('');
+
+    if (moreBtn) {
+        if (saves.length > SAVES_VISIBLE_LIMIT) {
+            moreBtn.hidden = false;
+            moreBtn.textContent = showAllSaves ? 'Show fewer' : `Show all (${saves.length})`;
+        } else {
+            moreBtn.hidden = true;
+        }
+    }
 }
 
 // ── EVENTS ────────────────────────────────────────────────────────────────────
@@ -205,7 +225,8 @@ document.getElementById('btn-create-confirm-no')?.addEventListener('click', () =
 
 // Rejoin existing session
 document.getElementById('btn-rejoin-session')?.addEventListener('click', () => {
-    window.location.href = 'active-sheet.html';
+    const hasCharacter = !!getActive()?.char?.name;
+    window.location.href = hasCharacter ? 'active-sheet.html' : 'create-char.html';
 });
 
 // Leave session
@@ -275,8 +296,11 @@ async function completeJoin(code, roomName) {
     localStorage.setItem('arc-room', code);
     if (roomName) localStorage.setItem('arc-room-name', roomName);
     else localStorage.removeItem('arc-room-name');
-    showJoinStatus('Joined! Loading…', 'success');
-    setTimeout(() => { window.location.href = 'active-sheet.html'; }, 700);
+
+    const hasCharacter = !!getActive()?.char?.name;
+    const dest = hasCharacter ? 'active-sheet.html' : 'create-char.html';
+    showJoinStatus(hasCharacter ? 'Joined! Loading…' : 'Joined! Let\'s build your character…', 'success');
+    setTimeout(() => { window.location.href = dest; }, 700);
 }
 
 document.getElementById('btn-join-session')?.addEventListener('click', async () => {
@@ -361,6 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (choice) saveCurrentToSlot();
         }
         localStorage.removeItem(ACTIVE_KEY);
+        localStorage.removeItem(ACTIVE_SAVE_ID_KEY);
         window.location.href = 'create-char.html';
     });
 
@@ -377,6 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const data = JSON.parse(ev.target.result);
                 localStorage.setItem(ACTIVE_KEY, JSON.stringify(data));
+                localStorage.removeItem(ACTIVE_SAVE_ID_KEY);
                 renderAll();
             } catch {
                 alert('Invalid save file.');
@@ -384,6 +410,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         reader.readAsText(file);
         e.target.value = '';
+    });
+
+    // Saves list — show all / show fewer toggle
+    document.getElementById('saves-show-more')?.addEventListener('click', () => {
+        showAllSaves = !showAllSaves;
+        renderSaves();
     });
 
     // Saves list — load or delete

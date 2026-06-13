@@ -7,7 +7,7 @@ import {
     query, orderBy, limit, getDocs, writeBatch, where,
     arrayUnion, arrayRemove,
 } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js';
-import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js';
+import { getAuth, signInAnonymously, GoogleAuthProvider, linkWithPopup, signInWithPopup } from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js';
 
 const firebaseConfig = {
     apiKey:            'AIzaSyDbM6Dc8KEnRgWuK2owVhMXAY87aZNBIDA',
@@ -27,6 +27,7 @@ window.__arc = {
     db, uid: null,
     doc, setDoc, getDoc, collection, onSnapshot, serverTimestamp, updateDoc, deleteDoc,
     query, orderBy, limit, getDocs, writeBatch, where, arrayUnion, arrayRemove,
+    auth, GoogleAuthProvider, linkWithPopup, signInWithPopup,
 };
 
 signInAnonymously(auth)

@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="../styles/active-sheet.css" />
     <link rel="stylesheet" href="../styles/narrator.css" />
     <script src="../scripts/notifications.js" defer></script>
+    <script src="../scripts/automod-wordlist.js" defer></script>
     <script src="../scripts/chat-cards.js" defer></script>
     <script type="module" src="../scripts/firebase.js"></script>
     <script src="../scripts/narrator.js" defer></script>
@@ -164,7 +165,7 @@
                         <div class="voice-list" id="nar-target-list"></div>
                     </div>
                     <!-- Two-row input: icons on top, message + send below -->
-                    <div class="chat-input-row">
+                    <div class="chat-input-row" id="chat-input-row">
                         <div class="chat-tool-btns">
                             <button class="chat-tool-btn" id="nar-dice-btn" type="button" aria-label="Dice roller" title="Dice roller">🎲</button>
                             <button class="chat-tool-btn" id="nar-emoji-btn" type="button" aria-label="Emoji">😊</button>
@@ -202,8 +203,7 @@
                         <span>Name</span>
                         <span>Arm</span>
                         <span>Wounds</span>
-                        <span>MN</span>
-                        <span>Gold</span>
+                        <span>XP</span>
                         <span></span>
                     </div>
 
@@ -235,71 +235,53 @@
                     </details>
                 </div>
 
-                <!-- NPCs -->
+                <!-- Characters (NPCs / Minions / Companions) -->
                 <div class="section party-subsection">
                     <div class="section-head">
-                        <h2 class="section-title">NPCs</h2>
+                        <h2 class="section-title">Characters</h2>
                     </div>
-                    <div id="journal-npc-list">
-                        <p class="empty-hint">No NPCs saved.</p>
+                    <div id="character-list">
+                        <p class="empty-hint">No characters added.</p>
                     </div>
                     <details class="nar-add-form" style="margin-top:8px">
-                        <summary class="nar-add-summary">+ Add NPC</summary>
+                        <summary class="nar-add-summary">+ Add Character</summary>
                         <div class="nar-form">
-                            <label class="nar-form-field"><span class="nar-form-label">Name</span>
-                                <input id="jnpc-name" type="text" placeholder="NPC name…" autocomplete="off" /></label>
-                            <div class="nar-stat-row">
-                                <label class="nar-form-field"><span class="nar-form-label">PL</span>
-                                    <input id="jnpc-pl" type="number" inputmode="numeric" placeholder="—" /></label>
-                                <label class="nar-form-field"><span class="nar-form-label">Phys</span>
-                                    <input id="jnpc-phys" type="number" inputmode="numeric" placeholder="—" /></label>
-                                <label class="nar-form-field"><span class="nar-form-label">Ment</span>
-                                    <input id="jnpc-ment" type="number" inputmode="numeric" placeholder="—" /></label>
-                                <label class="nar-form-field"><span class="nar-form-label">HP</span>
-                                    <input id="jnpc-hp" type="number" inputmode="numeric" placeholder="—" /></label>
+                            <div class="gen-seg" role="group" id="char-role-seg" style="margin-bottom:6px">
+                                <button class="gen-seg-btn is-sel" data-char-role="npc" type="button">NPC</button>
+                                <button class="gen-seg-btn" data-char-role="minion" type="button">Minion</button>
                             </div>
-                            <label class="nar-form-field"><span class="nar-form-label">Notes</span>
-                                <input id="jnpc-notes" type="text" placeholder="Species, faction…" autocomplete="off" /></label>
-                            <label class="nar-form-field"><span class="nar-form-label">Equipment</span>
-                                <input id="jnpc-equip" type="text" placeholder="Signature item…" autocomplete="off" /></label>
-                            <label class="nar-form-field"><span class="nar-form-label">Narrator Notes</span>
-                                <input id="jnpc-nar" type="text" placeholder="Secret motivation, loyalty…" autocomplete="off" /></label>
-                        </div>
-                        <button class="done-btn" id="btn-add-jnpc" type="button">+ Add NPC</button>
-                    </details>
-                </div>
-
-                <!-- Minions & Companions -->
-                <div class="section party-subsection">
-                    <div class="section-head">
-                        <h2 class="section-title">Minions &amp; Companions</h2>
-                    </div>
-
-                    <div class="minion-header">
-                        <span>Name</span>
-                        <span>PL phys/ment</span>
-                        <span>HP</span>
-                        <span></span>
-                    </div>
-
-                    <div id="minion-list">
-                        <p class="empty-hint">No minions or companions.</p>
-                    </div>
-
-                    <details class="nar-add-form" style="margin-top:8px">
-                        <summary class="nar-add-summary">+ Add Minion / Companion</summary>
-                        <div class="nar-form">
+                            <input type="hidden" id="char-role" value="npc" />
                             <label class="nar-form-field"><span class="nar-form-label">Name</span>
-                                <input id="mn-name" type="text" placeholder="Name…" autocomplete="off" /></label>
-                            <div class="nar-stat-row">
-                                <label class="nar-form-field"><span class="nar-form-label">PL</span>
-                                    <input id="mn-pl" type="number" inputmode="numeric" min="1" value="3" /></label>
-                                <label class="nar-form-field"><span class="nar-form-label">Origin</span>
-                                    <input id="mn-origin" type="text" placeholder="Nature, Arcane…" autocomplete="off" /></label>
+                                <input id="char-name" type="text" placeholder="Name…" autocomplete="off" /></label>
+                            <div id="char-npc-fields">
+                                <div class="nar-stat-row">
+                                    <label class="nar-form-field"><span class="nar-form-label">PL</span>
+                                        <input id="char-pl" type="number" inputmode="numeric" placeholder="—" /></label>
+                                    <label class="nar-form-field"><span class="nar-form-label">Phys</span>
+                                        <input id="char-phys" type="number" inputmode="numeric" placeholder="—" /></label>
+                                    <label class="nar-form-field"><span class="nar-form-label">Ment</span>
+                                        <input id="char-ment" type="number" inputmode="numeric" placeholder="—" /></label>
+                                    <label class="nar-form-field"><span class="nar-form-label">HP</span>
+                                        <input id="char-hp-npc" type="number" inputmode="numeric" placeholder="—" /></label>
+                                </div>
+                                <label class="nar-form-field"><span class="nar-form-label">Notes</span>
+                                    <input id="char-notes" type="text" placeholder="Species, faction…" autocomplete="off" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Equipment</span>
+                                    <input id="char-equip" type="text" placeholder="Signature item…" autocomplete="off" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Narrator Notes</span>
+                                    <input id="char-nar" type="text" placeholder="Secret motivation, loyalty…" autocomplete="off" /></label>
                             </div>
-                            <p class="field-hint" id="mn-hp-preview" style="margin:4px 0 0">HP: 9 (PL² = 3×3)</p>
+                            <div id="char-minion-fields" hidden>
+                                <div class="nar-stat-row">
+                                    <label class="nar-form-field"><span class="nar-form-label">PL</span>
+                                        <input id="char-mn-pl" type="number" inputmode="numeric" min="1" value="3" /></label>
+                                    <label class="nar-form-field"><span class="nar-form-label">Origin</span>
+                                        <input id="char-mn-origin" type="text" placeholder="Nature, Arcane…" autocomplete="off" /></label>
+                                </div>
+                                <p class="field-hint" id="char-hp-preview" style="margin:4px 0 0">HP: 9 (PL² = 3×3)</p>
+                            </div>
                         </div>
-                        <button class="done-btn" id="btn-add-minion" type="button">+ Add</button>
+                        <button class="done-btn" id="btn-add-character" type="button">+ Add</button>
                     </details>
                 </div>
 
@@ -518,21 +500,19 @@
 
             <!-- REFERENCE -->
             <section class="panel" id="panel-ref" role="region" aria-label="Reference">
-                <div class="section">
-                    <div class="ref-tab-row">
-                        <button class="ref-tab is-active" data-ref-tab="tables" type="button">Damage Tables</button>
-                        <button class="ref-tab" data-ref-tab="conditions" type="button">Conditions</button>
-                        <button class="ref-tab" data-ref-tab="actions" type="button">Actions</button>
-                    </div>
-                    <div class="ref-tab-content is-active" id="ref-tab-tables">
-                        <div class="ref-tables-grid" id="ref-tables-grid"></div>
-                    </div>
-                    <div class="ref-tab-content" id="ref-tab-conditions">
-                        <div class="ref-conditions-list" id="ref-conditions-list"></div>
-                    </div>
-                    <div class="ref-tab-content" id="ref-tab-actions">
-                        <div class="ref-actions-list" id="ref-actions-list"></div>
-                    </div>
+                <div class="ref-tab-row">
+                    <button class="ref-tab is-active" data-ref-tab="tables" type="button">Damage Tables</button>
+                    <button class="ref-tab" data-ref-tab="conditions" type="button">Conditions</button>
+                    <button class="ref-tab" data-ref-tab="actions" type="button">Actions</button>
+                </div>
+                <div class="ref-tab-content is-active" id="ref-tab-tables">
+                    <div class="ref-tables-grid" id="ref-tables-grid"></div>
+                </div>
+                <div class="ref-tab-content" id="ref-tab-conditions">
+                    <div class="ref-conditions-list" id="ref-conditions-list"></div>
+                </div>
+                <div class="ref-tab-content" id="ref-tab-actions">
+                    <div class="ref-actions-list" id="ref-actions-list"></div>
                 </div>
             </section>
 

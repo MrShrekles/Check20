@@ -198,7 +198,7 @@
     {
       "lineage": "Apex",
       "option": "Beruklians",
-      "name": "Howler ",
+      "name": "Howler",
       "description": {
         "physical": "Howler Monkey humanoids are lean, agile primates known for their expressive features, long limbs, and incredibly powerful vocal cords. Their fur ranges through shades of black, brown, red, and gold, often growing thicker around the neck and shoulders. Most possess long prehensile tails used for climbing, balance, and gesturing during conversation. Their faces are highly animated, constantly shifting with emotion, laughter, or exaggerated reactions. Howlers are rarely still for long, often pacing, climbing, swinging, or using broad physical gestures while speaking. Their most defining trait is their thunderous scream, capable of carrying across forests, city streets, or battlefields with startling intensity.",
         "environment": "Howlers thrive in dense jungles, crowded districts, traveling caravans, and anywhere large social groups gather. They prefer lively environments filled with noise, movement, and constant interaction rather than isolated or quiet settlements. Their communities are often built vertically through trees, stacked platforms, hanging bridges, or tightly packed urban neighborhoods designed for communal living. Music, shouting, celebration, and public gatherings are common within Howler settlements, making them feel chaotic but energetic to outsiders. Even their homes tend to be open and communal, with little expectation of silence or privacy.",
@@ -1261,7 +1261,7 @@
       "fetDuration": "Until the start of your next turn"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Viridian",
       "description": {
@@ -1286,7 +1286,7 @@
       "fetDamagetype": "Acid"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Pyre",
       "description": {
@@ -1311,7 +1311,7 @@
       "fetDamagetype": "Fire"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Shard",
       "description": {
@@ -1335,7 +1335,7 @@
       "fetCondition": "Slowed"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Cloudburst",
       "description": {
@@ -1360,7 +1360,7 @@
       "fetCondition": "Deaf"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Aquarion",
       "description": {
@@ -1384,7 +1384,7 @@
       "fetDuration": "Instant"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Venom",
       "description": {
@@ -1408,7 +1408,7 @@
       "fetDamagetype": "Toxic"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Zephyr",
       "description": {
@@ -1429,7 +1429,7 @@
       "fetAction": "Passive"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Ashen",
       "description": {
@@ -1451,7 +1451,7 @@
       "fetDuration": "Until end of next turn"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Shadowraith",
       "description": {
@@ -1473,7 +1473,7 @@
       "fetRange": "Short"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Radiance",
       "description": {
@@ -1497,7 +1497,7 @@
       "fetDamagetype": "Radiant"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Astraleon",
       "description": {
@@ -1519,7 +1519,7 @@
       "fetDuration": "Until end of next turn"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Vozurion",
       "description": {
@@ -1544,7 +1544,7 @@
       "fetCondition": "Fear"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Thornspike",
       "description": {
@@ -1568,7 +1568,7 @@
       "fetDamagetype": "Piercing"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Reaver",
       "description": {
@@ -1593,7 +1593,7 @@
       "fetDamagetype": "Slashing"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Drakonari",
       "name": "Crystal",
       "description": {
@@ -1616,7 +1616,7 @@
       "fetDamagetype": "Impact"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "Green",
       "description": {
@@ -1637,7 +1637,7 @@
       "fetAction": "Passive"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "Red",
       "description": {
@@ -1658,7 +1658,7 @@
       "fetAction": "Passive"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "White",
       "description": {
@@ -1679,7 +1679,7 @@
       "fetAction": "Passive"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "Grey",
       "description": {
@@ -1704,7 +1704,7 @@
       "fetDamagetype": "Thunder"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "Blue",
       "description": {
@@ -1726,7 +1726,7 @@
       "fetDuration": "Once per turn"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "Yellow",
       "description": {
@@ -1752,7 +1752,7 @@
       "fetCondition": "Broken"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "Teal",
       "description": {
@@ -1775,7 +1775,7 @@
       "fetCondition": "Broken"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "Gold",
       "description": {
@@ -1796,7 +1796,7 @@
       "fetAction": "Passive"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "Grim",
       "description": {
@@ -1819,7 +1819,7 @@
       "fetDuration": "Instant"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "Black",
       "description": {
@@ -1842,7 +1842,7 @@
       "fetCondition": "Invisible"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "Purple",
       "description": {
@@ -1865,7 +1865,7 @@
       "fetDuration": "Instant"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "Mosaic",
       "description": {
@@ -1889,7 +1889,7 @@
       "fetDamage": 1
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "Spiked",
       "description": {
@@ -1913,7 +1913,7 @@
       "fetDamagetype": "Piercing"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "Rust",
       "description": {
@@ -1935,7 +1935,7 @@
       "fetDuration": "Start of combat"
     },
     {
-      "lineage": "dragon",
+      "lineage": "Dragon",
       "option": "Kobari",
       "name": "Neutral",
       "description": {
@@ -1981,9 +1981,9 @@
       "fetDamagetype": "Slashing"
     },
     {
-      "lineage": "goblijjin",
-      "option": "goblin",
-      "name": "ashling",
+      "lineage": "Goblijjin",
+      "option": "Goblin",
+      "name": "Ashling",
       "description": {
         "physical": "A darker, more enigmatic offshoot of the goblin lineage, the Vozian Goblins trace their roots directly to the heart of VoZo's malevolent power. Often found in the haunting landscapes of the Ashlands, they stand taller and exude an aura of mysterious energy. Their matte violet skin sets them apart, and their names, often more ominous like \"Shadowgleam\" or \"Gloomwhisper\", hint at their deeper connection to the ancient evil. These goblins are a wild force, driven by an insatiable curiosity and a desire to reclaim the legacy of their forebears.",
         "environment": "[TBD]",
@@ -2003,9 +2003,9 @@
       "fetCondition": "Intangible"
     },
     {
-      "lineage": "goblijjin",
-      "option": "goblin",
-      "name": "coin'err",
+      "lineage": "Goblijjin",
+      "option": "Goblin",
+      "name": "Coin'err",
       "description": {
         "physical": "The bustling streets of Shek's cities are home to a different breed of goblins - the City Goblins. They have traded the vast open wilderness for the intricate labyrinths of urban life. Dressed in whatever finery they can acquire, often with an eccentric flair, these goblins are savvy traders, skilled artisans, and street-smart entrepreneurs. Their names often reflect their trades or peculiar habits, leading to goblins called \"Silkthread\" or \"Dingledangle\". Even in the cities, their mischievous nature shines, but it's tempered with a keen sense of business acumen.",
         "environment": "[TBD]",
@@ -2025,9 +2025,9 @@
       "images": "assets/species/coinerr"
     },
     {
-      "lineage": "goblijjin",
-      "option": "goblin",
-      "name": "raskalz",
+      "lineage": "Goblijjin",
+      "option": "Goblin",
+      "name": "Raskalz",
       "description": {
         "physical": "In the vast stretches of Shek's untamed wilderness, the Wild Goblins thrive. These little rascals, often named with playful and bizarre monikers like \"Gigglemud\" or \"Plopfoot\", live in transient communities that rise and fall with the seasons. Their lives are a blend of mischief and survival, as they harness their innate cunning to navigate the challenges of the wild. Wild Goblins are known for their unyielding spirit and an uncanny ability to adapt quickly to their surroundings, making them elusive adversaries and curious allies.",
         "environment": "[TBD]",
@@ -2048,8 +2048,8 @@
       "fetCondition": "Charmed, Fear"
     },
     {
-      "lineage": "goblijjin",
-      "option": "hojjoblin",
+      "lineage": "Goblijjin",
+      "option": "Hojjoblin",
       "name": "Falken",
       "description": {
         "physical": "When the towers fell and the red light faded, not all Hojjoblins ran into the wilds. Some stayed behind in the Broken cities Faulkaust once ruled, digging into the ruins and rewriting the blueprints. These became the Falken. Refined, relentless, and quietly ambitious, they remember who made them and see no reason to forget. Falken are tall for goblinkind, with smooth violet or lavender skin that gives them an almost regal quality. Unlike their wild kin, whose black hair grows coarse and wild, Falken often have fine, silken strands they style, sometimes straight, sometimes curled tight, and sometimes barely growing at all. Their eyes shimmer faintly with internal calculation, always scanning, always measuring.\rIn cities, they are architects of influence. Some design bridges or rail systems, others design networks of information or power. Their minds move in patterns others struggle to see, always seeking efficiency, elevation, and legacy. Falken are often known by a single name or title, their identity tied not to clan but to accomplishments. They rarely show emotion, but their passion lies just under the surface. To them, every flaw is a challenge, every system a puzzle. They do not dream of perfection. They engineer it.",
@@ -2069,8 +2069,8 @@
       "fetAction": "Passive"
     },
     {
-      "lineage": "goblijjin",
-      "option": "hojjoblin",
+      "lineage": "Goblijjin",
+      "option": "Hojjoblin",
       "name": "Rotjäger",
       "description": {
         "physical": "The Rotjäger Hojgoblins are blood-bound hunters born from the shadow of ancient wars. They were shaped by an empire that sought to erase magic from the world, their bodies and minds molded into perfect weapons of silence and pursuit. Their skin carries the tones of dried blood, soot, or twilight iron, and their eyes burn faintly with crimson light when the scent of sorcery reaches them. Rotjägers live by a strict code of eradication, a faith in the purity of a world untainted by spellcraft. They see magic as infection, a living corruption that must be cauterized at its source. When a Rotjäger moves through a settlement, whispers vanish and lights are dimmed. They hunt in disciplined packs, each step a ritual of precision, each kill a necessary offering to order. Though they are feared as assassins and zealots, there are those who call upon them in desperation when rogue casters or cursed beasts emerge from the dark. To see a Rotjäger at work is to witness the absolute absence of mercy.",
@@ -2090,8 +2090,8 @@
       "fetAction": "Off-Action"
     },
     {
-      "lineage": "goblijjin",
-      "option": "hojjoblin",
+      "lineage": "Goblijjin",
+      "option": "Hojjoblin",
       "name": "Wild",
       "description": {
         "physical": "The red-skinned Hojjoblins of the frontier are not beasts. They are tacticians without blueprints, warlords without cities, and engineers of violence shaped by nature’s fury. Known only as the Wild Hojjoblins by outsiders, they call themselves nothing. They don't need names to know who leads or who kills best. Born from goblins impaled by Faulkaust’s ruby spires, these Hojjoblins did not stay near the ruins of their creation. They fled into the unclaimed lands, Bleeding intellect and instinct. The crimson stain never left them. It darkened their skin, sharpened their bones, and burned precision into their instincts. Where others survive, they dominate. Where others build, they overtake.\rTheir black hair grows thick and tangled, often braided with bone or wire. Their eyes are reflective pools of blood and calculation. Wild Hojjoblins do not speak in ranks or politics. They speak in angles, trajectories, and probability. Every raid is planned for, to the second. Every retreat is bait. Every Death serves the next kill. They feel no need to return to civilization. Why go back to the towers, when the forest is already theirs? Why serve a king, when you can build a warpath that never ends? To face a Wild Hojjoblin is not to fight a person. It is to challenge a living stratagem that has already accounted for your next five moves.",
@@ -2112,7 +2112,7 @@
     },
     {
       "lineage": "Shifter",
-      "option": "changeling",
+      "option": "Changeling",
       "name": "Elemental",
       "description": {
         "physical": "In the heart of the world's wild frontiers, where nature’s forces rage unchecked, the Elemental Changelings were born. Their origins are the stuff of ancient myths, tales of the world's formation and the spirits that shaped it.\nIt is said that an Elemental Changeling can listen to the whispers of the winds, converse with the babbling brooks, and coax the very mountains to shift. Their ceremonies are spectacles of elemental mastery, where fire and water dance, stone and air embrace, and the spirits of nature join in a harmonious chorus.",
@@ -2135,7 +2135,7 @@
     },
     {
       "lineage": "Shifter",
-      "option": "changeling",
+      "option": "Changeling",
       "name": "Greyling",
       "description": {
         "physical": "Changelings are quiet imposters. They are creatures that replace themselves in the life of someone else. While the old stories speak of fey mischief and forest spirits, most changelings don't know where they came from. They are almost human: their voice slightly wrong, their smile too still, their movements rehearsed. Found in villages, orphanages, or city gutters, they blend into society until someone looks too closely. Raised in place of the real child, they often become wanderers or con artists, driven by a subtle sense of displacement. Some seek truth. Others play the role they were given. Many are hunted by those who believe the switch can be undone.",
@@ -2156,8 +2156,8 @@
     },
     {
       "lineage": "Shifter",
-      "option": "changeling",
-      "name": "haunted",
+      "option": "Changeling",
+      "name": "Haunted",
       "description": {
         "physical": "Beneath the veil of the mortal realm, in places tainted by darkness and flame, the Vozian Changelings emerged. Their genesis is intertwined with tales of forbidden pacts and infernal bargains. Driven by a hunger for power or desperation, their ancestors sought out the infernal entities of the Vozian depths, forging bonds that would change the course of their lineage forever.\rNow, these changelings walk the world bearing both the gift and curse of their infernal heritage. With the ability to assume forms that mirror the nightmares of many, they are both feared and revered. Settlements speak of the Vozian emissaries who can turn the tide of battles with their fiery presence, while whispered campfire stories warn of their wrath. But not all Vozians are agents of destruction; some seek redemption, hoping to use their formidable abilities to protect, rather than to terrorize.",
         "environment": "[TBD]",
@@ -2178,8 +2178,8 @@
     },
     {
       "lineage": "Shifter",
-      "option": "changeling",
-      "name": "uncanny",
+      "option": "Changeling",
+      "name": "Uncanny",
       "description": {
         "physical": "The Nemuri are not born, but instead they are dreamed. Slipping from the Dreamsea into cradles and lives that were not meant for them, Nemuri Changelings replace the ones who were supposed to be. Their presence is uncanny: calm, graceful, soft-spoken, yet never fully here. Many don't even know they're not the original until a dream reminds them. Some fade into society. Others awaken to what they are and return to walk the Dreamsea, keeping watch over its fragile boundary. They are protectors by instinct, guarding reality from the bleed of nightmares. It’s said you can see a true changeling by looking into their eyes and realizing they're somewhere else.",
         "environment": "[TBD]",
@@ -2264,8 +2264,8 @@
       "fetCondition": "Death"
     },
     {
-      "lineage": "human",
-      "option": "dwarf",
+      "lineage": "Human",
+      "option": "Dwarf",
       "name": "Breaker",
       "description": {
         "physical": "The Breaker dwarves, a distinct lineage of dwarves, have long resided in the depths of the Dwelfmire. With pale skin that contrasts starkly against vivid red tattoos, they present an imposing figure. Notably, the higher the rank and status of a Breaker dwarf, the more extensive their tattoo coverage, with leaders often fully inked in red.\rA Controversial Legacy: Historically, the Breaker dwarves have been staunch traditionalists. They've instituted a system where many creatures find themselves bound in a form of indentured servitude. These individuals are obligated to serve until they've completed their education and repaid all debts. This practice, while ensuring a steady workforce for the Breaker dwarves, has earned them a reputation of being master manipulators and oppressors. While many view the Breaker dwarves as malevolent due to their enslavement practices, it's essential to note the internal dissent within their ranks. Many Breaker dwarves, disillusioned by the stringent rules and the oppressive reign of the Tyrant Lord, have chosen to abandon their subterranean cities. They seek simpler, more peaceful lives on the surface, hoping to distance themselves from the controversial legacy of their ancestors.\rAppearance and Identity: A Breaker dwarf's appearance is a testament to their heritage and beliefs. Their pale complexion is often offset by hair shades ranging from rich bronze to fiery red. The red tattoos adorning their bodies are not mere decorations; they are symbols of status, experience, and in many cases, allegiance to the Tyrant Lord.",
@@ -2287,8 +2287,8 @@
       "fetDamagetype": "Piercing"
     },
     {
-      "lineage": "human",
-      "option": "dwarf",
+      "lineage": "Human",
+      "option": "Dwarf",
       "name": "Flamebeard",
       "description": {
         "physical": "Flamebeard Dwarves are a fiery and enigmatic subrace, born deep within the volcanic regions of the Dwelfmire. Their molten environment has forged them into a unique people, with skin often tinged with an ashen hue and hair resembling living flames. As they age, some Flamebeards even display molten veins glowing beneath their skin. They are known for their affinity with heat and fire, and their ability to craft weapons infused with elemental energy is legendary. Flamebeards possess a fiery temperament to match their environment, but their passion and loyalty make them invaluable allies in times of need.",
@@ -2309,8 +2309,8 @@
       "fetDuration": "1 minute"
     },
     {
-      "lineage": "human",
-      "option": "dwarf",
+      "lineage": "Human",
+      "option": "Dwarf",
       "name": "Hill",
       "description": {
         "physical": "Hill Dwarves are proud surface-dwellers with sun-bronzed skin and soot-streaked hands. Spending much of their time under the open sky, they are known for their dark, sun-kissed skin and thick black hair, often tied back or braided. Hill Dwarves are practical and hardworking people, skilled in engineering, stone-cutting, and brewing. Despite spending less time underground, they retain a strong connection to their Dwarven heritage and bring their unyielding determination to all aspects of their lives.",
@@ -2330,8 +2330,8 @@
       "fetAction": "Passive"
     },
     {
-      "lineage": "human",
-      "option": "dwarf",
+      "lineage": "Human",
+      "option": "Dwarf",
       "name": "Mountain",
       "description": {
         "physical": "Mountain Dwarves are the traditionalists of their kind, born and raised in the massive peaks and deep caverns beneath the surface. With light skin tones and hair ranging from blonde to rich browns, Mountain Dwarves are natural warriors and master craftsmen. They are deeply tied to their subterranean homes, where they mine precious gems and metals and create artifacts of unmatched durability. Mountain Dwarves have a reputation for being stoic, disciplined, and fiercely loyal to their clans. Their skills in forging and their resistance to toxins make them valuable allies and formidable foes.",
@@ -2351,9 +2351,9 @@
       "fetAction": "Special"
     },
     {
-      "lineage": "human",
-      "option": "elf",
-      "name": "breaker",
+      "lineage": "Human",
+      "option": "Elf",
+      "name": "Breaker",
       "description": {
         "physical": "Long ago, the ancestors of the Breaker Elves sought refuge in the underground realms to escape a cataclysmic event on the surface. Over the centuries, their physiology adapted to the darkness, resulting in the evolution of their distinctive skin tone and hair. Born in the depths and bred for endurance, Breaker Elves are not delicate or free. They were shaped by centuries of indentured servitude beneath the breaker dwarves, pressed into labor, pit fighting, and enforcement. Over time, their bodies adapted, becoming bulkier than surface kin, their skin bears hues of mauve, clay red, and bruised pinks, blending with rusted stone and torchlight. Their hair, always blood-red, is braided or shorn tight for utility, not beauty. Their eyes are adapted to see in the infrared spectrum, allowing them to perceive temperature differences in their environment, which can be especially handy in detecting living beings or working machines",
         "environment": "[TBD]",
@@ -2375,9 +2375,9 @@
       "fetCondition": "Pinned, Prone"
     },
     {
-      "lineage": "human",
-      "option": "elf",
-      "name": "duskwither",
+      "lineage": "Human",
+      "option": "Elf",
+      "name": "Duskwither",
       "description": {
         "physical": "Duskwither Elves thrive where others falter, in deep caves, shadowed forests, and forgotten fungal groves. Their bodies, often pale or patterned with living lichen, are shaped by symbiosis with the shadowy world around them. Some grow bioluminescent spores along their shoulders. Others have spider-silk white hair and eyes that shimmer in dim light. They walk quietly, feel vibrations beneath their bare feet, and hear the whispers of the spore networks like ancient radio signals. Among themselves, they speak in soft tones or not at all, often communicating through motion, spores, or shared silences. Outsiders find them eerie, but those who earn their trust discover a community bound by empathy, instinct, and ancestral memory.",
         "environment": "[TBD]",
@@ -2398,9 +2398,9 @@
       "fetCondition": "Coughing"
     },
     {
-      "lineage": "human",
-      "option": "elf",
-      "name": "forest",
+      "lineage": "Human",
+      "option": "Elf",
+      "name": "Forest",
       "description": {
         "physical": "Forest Elves consider themselves the truest connection to the original elven lineage, living harmoniously with nature and the Feywild. Their homes are often hidden deep within vast forests, where trees not only provide shelter but act as allies, moving to protect their elven caretakers. Forest Elves are graceful and serene, their songs and rituals strengthening the bond between the natural world and their kind. They are often seen as guardians of nature, defending their homes and wildlife from outside threats with a fierceness that belies their delicate appearance.",
         "environment": "[TBD]",
@@ -2420,9 +2420,9 @@
       "fetRange": "Medium"
     },
     {
-      "lineage": "human",
-      "option": "elf",
-      "name": "noble",
+      "lineage": "Human",
+      "option": "Elf",
+      "name": "Noble",
       "description": {
         "physical": "Also known as High Elves, Noble Elves pride themselves on their mastery of magic and their long-standing heritage as rulers and scholars. They once formed grand kingdoms in the Feywild, their courts steeped in arcane tradition and timeless beauty. Though many remain in the Feywild, some Noble Elves have returned to the global material plane, eager to reclaim their dominance over mortal kingdoms. Noble Elves are graceful and regal, often exuding an air of superiority, but their intellect and magical prowess make them valuable allies.",
         "environment": "[TBD]",
@@ -2441,9 +2441,9 @@
       "fetAction": "Resource"
     },
     {
-      "lineage": "human",
-      "option": "elf",
-      "name": "shadow",
+      "lineage": "Human",
+      "option": "Elf",
+      "name": "Shadow",
       "description": {
         "physical": "Shadow Elves are enigmatic beings born in the Eclipse, a shadowy realm that lies between worlds. Their smoky, ethereal appearance reflects the nature of their homeland, where light and darkness intertwine. These elves are natural wanderers between dimensions, often acting as guides, spies, or guardians of planar boundaries. Their connection to shadow and their ability to move unseen make them mysterious figures in the eyes of other species groups. Despite their otherworldly demeanor, Shadow Elves are deeply thoughtful and often wrestle with the duality of their existence.",
         "environment": "[TBD]",
@@ -2464,8 +2464,8 @@
       "fetCondition": "Invisible"
     },
     {
-      "lineage": "human",
-      "option": "elf",
+      "lineage": "Human",
+      "option": "Elf",
       "name": "Undine",
       "description": {
         "physical": "Water Elves are amphibious beings who have adapted to life near and in the water. With gills that allow them to breathe both air and water, they are natural swimmers and divers. These elves often form close-knit communities with aquatic races like merfolk, living in harmony with the seas and rivers they call home. Known for their calm and fluid personalities, Water Elves often carry magical water from their homelands, using it to protect and heal. Their connection to the tides and their mastery of water magic make them invaluable in maritime endeavors.",
@@ -2487,9 +2487,9 @@
       "fetDamagetype": "Healing"
     },
     {
-      "lineage": "human",
-      "option": "gnome",
-      "name": "hearthless",
+      "lineage": "Human",
+      "option": "Gnome",
+      "name": "Hearthless",
       "description": {
         "physical": "Hearthless Gnomes are wanderers who no longer seek belonging. Once part of the vibrant Feywild, something in them faded long ago. Now, they drift from place to place, setting up pockets of comfort in ruined homes, dead forests, and forgotten tunnels. They are soft-spoken and strangely serene, often tending to others without emotion or judgment. They don't protect because it’s right. They do it because it’s what they do. Their presence quiets the mind, dulls Fear, and warms the bones, even if nothing behind their eyes reflects it. Wherever they stop feels like home… but only while they're there.",
         "environment": "[TBD]",
@@ -2508,9 +2508,9 @@
       "fetAction": "Passive"
     },
     {
-      "lineage": "human",
-      "option": "gnome",
-      "name": "tinker",
+      "lineage": "Human",
+      "option": "Gnome",
+      "name": "Tinker",
       "description": {
         "physical": "The banishment from the fey never disturbed their work. They continue with experiments that have helped and hurt creatures all throughout the world. Their homelands are often sprawling cities of moving parts, practically living traps.",
         "environment": "[TBD]",
@@ -2529,9 +2529,9 @@
       "fetAction": "Resource"
     },
     {
-      "lineage": "human",
-      "option": "orc",
-      "name": "desert",
+      "lineage": "Human",
+      "option": "Orc",
+      "name": "Desert",
       "description": {
         "physical": "These desert orcs used stone moving magics and hard work to create stone dome structures in which they would live as large packs within. However there was constant fighting and the leader of the tribe would need to fight everyone to calm them down, thus how leadership was attained. Desert Orcs prefer to fight in large numbers with several creatures attacking at once",
         "environment": "[TBD]",
@@ -2550,9 +2550,9 @@
       "fetAction": "Passive"
     },
     {
-      "lineage": "human",
-      "option": "orc",
-      "name": "jungle",
+      "lineage": "Human",
+      "option": "Orc",
+      "name": "Jungle",
       "description": {
         "physical": "The Green Jungle Orc is the most prevalent Orc option throughout the world. These tribes originally roamed and controlled the Orclands, being the first to develop a written language. Starting with knotted threads, their language evolved into scarification and tattoos, used for tracking time, marking landmarks, and agricultural purposes.\nDue to their diet of superfoods, Jungle Orcs grew to impressive sizes and developed the ability to shrug off pain and maintain limitless reserves of energy. These traits allowed them to build an empire based on strength, stamina, and strategic thinking. They are fierce warriors and skilled strategists who once controlled vast portions of the Orclands.",
         "environment": "[TBD]",
@@ -2571,9 +2571,9 @@
       "fetAction": "Special"
     },
     {
-      "lineage": "human",
-      "option": "orc",
-      "name": "maldios",
+      "lineage": "Human",
+      "option": "Orc",
+      "name": "Maldios",
       "description": {
         "physical": "The orcs are not untouched by the corruption of the Vozian flame. In truth, they may have been its first victims. Orc legends whisper that the first orc born became Maldios, a war-driven soul who descended into the burning depths of Ordealis and thrived. There, among the rivers of blood and sandstorms of ash, he rose not just as a survivor, but as a conqueror. Now known as a greater demon of war, Maldios stands over twenty feet tall, his wings scorched and leathery, his armor built from the bones of Rotalisks; terrifying creatures that devour demons. Maldios is wrath embodied, a being of perfect violence and control.\nThose orcs who carry Maldios’ blood or have been tainted by his legacy are unmistakable. Their skin burns a bright infernal orange, and their eyes glisten with an internal fire that never dims. They are not savages however, they are tacticians bred in flame. Every movement is calculated. Every reaction is deadly. They do not hesitate. They strike back.",
         "environment": "[TBD]",
@@ -2594,8 +2594,8 @@
       "fetDamagetype": "Vozian"
     },
     {
-      "lineage": "human",
-      "option": "orc",
+      "lineage": "Human",
+      "option": "Orc",
       "name": "Highstone",
       "description": {
         "physical": "In the mountains of the Orclands, the pale orcs reign supreme. They possess a mastery of stone and metal that rivals even the dwarves. These rare orcs are not often seen outside of their mountain temples and little is known about their culture or society. They are known for their impressive architectural feats and their skill in working with stone and metal is said to be unmatched. When these orcs leave their lands they are bound magically to secrecy by powerful tattoos.",
@@ -2616,9 +2616,9 @@
       "images": "assets/species/mountain-orc"
     },
     {
-      "lineage": "human",
-      "option": "orc",
-      "name": "oceanic",
+      "lineage": "Human",
+      "option": "Orc",
+      "name": "Oceanic",
       "description": {
         "physical": "Oceanic Orcs are a rugged seafaring culture born in the archipelagos and reef-spined coastlines of the world. Their skin ranges from deep slate to sea-glass green, often mottled with barnacle-like textures or salt-etched markings. Their long limbs, powerful lungs, and strong backs make them natural divers, pearl harvesters, reef scouts, and wave-splitters.\rThough often mistaken for solitary wanderers, Oceanic Orcs live by a deep code of tidal kinship. Family is fluid but sacred, and every crewmember is a sibling once the salt has bonded them. Their lives are shaped by the rhythm of waves, storm seasons, and the calls of massive sea beasts. They hunt leviathans, ride ocean currents, and sing old songs to calm the waters.\rOceanic Orcs are known for their wave-bound adaptability, moving with purpose both above and below water, and for forging gear from coral, whale bone, or shipwreck iron",
         "environment": "[TBD]",
@@ -2638,8 +2638,8 @@
       "fetCheck": "Agility, Strength"
     },
     {
-      "lineage": "human",
-      "option": "human",
+      "lineage": "Human",
+      "option": "Human",
       "name": "Kleinkind",
       "description": {
         "physical": "Small in stature but grand in spirit, the Kleinkind are a species as cozy as a well-worn quilt and as surprising as a jack-in-the-box. Often referred to as \"Halflings\" by outsiders, these delightful people weave a narrative claiming they were the first intelligent beings to grace the planet. Whether this is true or just a tale spun over a warm mug of cider, the Kleinkind hold their belief with pride (and no small amount of charm).\nThe Kleinkind hallmark is their love of community and comfort. Their villages are havens of merriment, where doors are always open, feasts are abundant, and every stranger is a friend waiting to be made. Their lives are painted with warmth and laughter, their hearths glowing as brightly as their spirits. But not all Kleinkind are content to stay within the snug borders of their idyllic enclaves. Some feel the pull of the road, a wanderlust that drives them to become Barnstormers—restless travelers who bring joy, stories, and just a touch of chaos wherever they go.\nPhysically, Kleinkind are marvels of density. Standing no taller than 2 feet, they are far heavier than their size suggests, with compact musculature that makes them unexpectedly sturdy. A 1-foot Kleinkind can weigh up to 60 pounds, leading to many a startled adventurer who underestimated their strength. Despite their heft, they move with surprising nimbleness, like a stone rolling downhill—steady and unstoppable.",
@@ -2661,8 +2661,8 @@
       "fetCondition": "Charmed, Confused"
     },
     {
-      "lineage": "human",
-      "option": "human",
+      "lineage": "Human",
+      "option": "Human",
       "name": "Primarch",
       "description": {
         "physical": "Primarchs, often referred to as \"True Humans\" by some cultures, represent a rare and enigmatic strain of humanity that embodies the full spectrum of human potential and ambition. They are distinguished by their commanding presence and potent influence, often occupying positions of power where their natural authority can sway the will of others.\nFeared and revered in equal measure, their very existence shapes the course of history, with their actions often heralding significant change and leaving an enduring legacy in their wake. Despite their rarity, Primarchs reflect the diversity inherent to humanity, encompassing a vast array of cultural, philosophical, and moral leanings.",
@@ -2686,8 +2686,8 @@
       "fetCondition": "Prone"
     },
     {
-      "lineage": "jotun",
-      "option": "halfblood",
+      "lineage": "Jotun",
+      "option": "Halfblood",
       "name": "Muśkila",
       "description": {
         "physical": "In the ethereal depths of ancient woodlands reside the Muśkila, a gentle giant-kin, whispering secrets with the wind. Lavender skin blending with the mystical forest hues, they become one with nature, guardians to all woodland beings, providing refuge in their lush beards to tiny creatures seeking sanctuary. Although their appearance is formidable, their eyes gleam with kindness and mischief. The Muśkila, with their innate ability to vanish into the leafy embrace of their surroundings, safeguard the ancient, unspoken pact between the realms of Fey and mortal, all while maintaining a playful twinkle in their mystical endeavors.",
@@ -2710,8 +2710,8 @@
       "fetCondition": "Invisible"
     },
     {
-      "lineage": "jotun",
-      "option": "halfblood",
+      "lineage": "Jotun",
+      "option": "Halfblood",
       "name": "Visala",
       "description": {
         "physical": "High upon the towering peaks, where the air is thin and the stone speaks in echoes of ancient battles, the Visala stand unyielded. Giants of formidable strength and stoic resolve, their society thrives upon the unrelenting pursuit of physical prowess, etching tales of their feats into the very stone they tread upon. Their eyes, intense and unyielding, tell stories of challenges met and adversaries conquered. Yet, beneath the robust exteriors and amidst the roars of their challenges, whispers of a prophecy stir, entwining their fate with threads of heroism and downfall.",
@@ -2731,9 +2731,9 @@
       "fetAction": "Action"
     },
     {
-      "lineage": "realmsplit",
-      "option": "ensuri",
-      "name": "air",
+      "lineage": "Realmsplit",
+      "option": "Ensuri",
+      "name": "Air",
       "description": {
         "physical": "The Air Ensuri are ethereal wanderers, drifting wherever the winds of fate carry them. With their airy conversations and light-hearted demeanor, they are the quintessential free spirits. Drawn to the mystical and powerful, they often find themselves in the company of dragons and dragonborn, believing that the wind is the breath of Khalas. Their culture is rich with music and dance that mimic the movements of the wind, and their nomadic tribes are known for their storytelling and vibrant festivals. They prefer light, airy foods such as soufflés, whipped cream, and fresh fruits, embodying their connection to the sky and freedom.",
         "environment": "[TBD]",
@@ -2757,9 +2757,9 @@
       "fetCondition": "Prone"
     },
     {
-      "lineage": "realmsplit",
-      "option": "ensuri",
-      "name": "fire",
+      "lineage": "Realmsplit",
+      "option": "Ensuri",
+      "name": "Fire",
       "description": {
         "physical": "The Fire Ensuri are passionate and fierce, with a fiery temperament to match their scorching abilities. Hailing from the Crumbling Void, they live alongside powerful fire elementals and are led by an immortal fire giant. Their culture is one of strength and defiance, celebrating fire in all its forms through grand festivals and rituals. They are known for their stunning heat dances and pyrotechnic displays. Their diet consists of spicy, grilled, and roasted foods, including charred meats and curries, reflecting their burning intensity and zest for life.",
         "environment": "[TBD]",
@@ -2780,9 +2780,9 @@
       "fetDamagetype": "Fire"
     },
     {
-      "lineage": "realmsplit",
-      "option": "ensuri",
-      "name": "frost",
+      "lineage": "Realmsplit",
+      "option": "Ensuri",
+      "name": "Frost",
       "description": {
         "physical": "The Frost Ensuri are as cold as the ice they command, yet their hearts are warm and protective. They inhabit the frozen tundras, creating magnificent ice castles and sculptures. Their culture is steeped in tales of bravery and endurance, celebrating the harsh beauty of winter. They are master craftsmen of ice, creating both weapons and art from their frozen domain. Their diet consists of chilled and frozen foods like ice cream and hearty winter stews, reflecting their icy surroundings and the comfort of warmth in cold times.",
         "environment": "[TBD]",
@@ -2802,9 +2802,9 @@
       "fetDuration": "1 minute"
     },
     {
-      "lineage": "realmsplit",
-      "option": "ensuri",
-      "name": "lightning",
+      "lineage": "Realmsplit",
+      "option": "Ensuri",
+      "name": "Lightning",
       "description": {
         "physical": "The Lightning Ensuri are electrifying in both presence and personality. Known for their quick wit and agility, they are always the life of the party. Their culture is dynamic and fast-paced, with a love for jazz music and dance, embodying the spirit of the Roaring Twenties. They are skilled inventors and tinkerers, often creating gadgets powered by their own electricity. Their diet is full of energizing foods like citrus fruits and caffeine-rich beverages, reflecting their vibrant and energetic nature.",
         "environment": "[TBD]",
@@ -2825,9 +2825,9 @@
       "fetDamagetype": "Lighting"
     },
     {
-      "lineage": "realmsplit",
-      "option": "ensuri",
-      "name": "smoke",
+      "lineage": "Realmsplit",
+      "option": "Ensuri",
+      "name": "Smoke",
       "description": {
         "physical": "The Smoke Ensuri are enigmatic and elusive, masters of shadows and illusions. Their pitch-black skin emits a perpetual smoke, allowing them to vanish and reappear at will. They are deeply connected to the Umbral Eclipse, drawing their power from the darkness. Their culture is one of mystery and subtlety, with rituals and traditions shrouded in secrecy. They are skilled in espionage and stealth, often serving as spies or assassins. Their diet includes smoked and grilled foods, echoing the smoky ambiance of hidden speakeasies during Prohibition.",
         "environment": "[TBD]",
@@ -2847,9 +2847,9 @@
       "fetCondition": "Blind"
     },
     {
-      "lineage": "realmsplit",
-      "option": "ensuri",
-      "name": "stone",
+      "lineage": "Realmsplit",
+      "option": "Ensuri",
+      "name": "Stone",
       "description": {
         "physical": "The Stone Ensuri are the epitome of strength and stability. With skin like stone, gems, or crystals, they are rugged and resilient, embodying the essence of the earth. They are hardworking, loyal, and deeply connected to the land. Their culture values craftsmanship and endurance, often reflected in their elaborate stone carvings and architecture. Their communities are built into mountains and caves, creating breathtaking underground cities. They consume hearty, mineral-rich foods like root vegetables and hearty stews, reminiscent of the sustenance required by miners and laborers, symbolizing their grounded nature.",
         "environment": "[TBD]",
@@ -2868,9 +2868,9 @@
       "fetAction": "Passive"
     },
     {
-      "lineage": "realmsplit",
-      "option": "ensuri",
-      "name": "toxic",
+      "lineage": "Realmsplit",
+      "option": "Ensuri",
+      "name": "Toxic",
       "description": {
         "physical": "Often misunderstood and feared, the Toxic Ensuri thrive in the shadows of society. Their toxic clouds are both their defense and their curse, driving them to live in swamps and sewers. Despite this, they have a rich culture of resilience and survival. They are adept at alchemy and herbalism, creating potent remedies and poisons. Their homes are often hidden and fortified, making use of natural camouflage. Their diet includes strong-flavored and fermented foods, symbolizing their ability to thrive in harsh conditions and turn adversity into strength.",
         "environment": "[TBD]",
@@ -2889,9 +2889,9 @@
       "fetAction": "Passive"
     },
     {
-      "lineage": "realmsplit",
-      "option": "ensuri",
-      "name": "water",
+      "lineage": "Realmsplit",
+      "option": "Ensuri",
+      "name": "Water",
       "description": {
         "physical": "The Water Ensuri are fluid and adaptable, with a serene and calming presence. Their semi-translucent skin shimmers like the surface of a clear lake. They live in harmony with the aquatic world, often residing in underwater cities made of coral and glass. Their culture revolves around the ebb and flow of the tides, with ceremonies and traditions tied to the lunar cycles. They enjoy seafood and freshwater plants, with meals that are light and refreshing, such as ceviche and sushi, mirroring the coastal cuisine and their connection to the ocean's tranquility.",
         "environment": "[TBD]",
@@ -2912,9 +2912,9 @@
       "fetDamagetype": "Fluid"
     },
     {
-      "lineage": "realmsplit",
-      "option": "helborn",
-      "name": "abyssal",
+      "lineage": "Realmsplit",
+      "option": "Helborn",
+      "name": "Abyssal",
       "description": {
         "physical": "The Abyssal Helborn is a creature of darkness and otherworldly power. Its skin glows with the ethereal hues of twilight, and its body is adorned with sharp and asymmetrical horns. They are feared and shunned by society due to their otherworldly origins, but they possess a culture that is rich and mysterious. They are known to be powerful and formidable, but also quite reclusive, choosing to keep to themselves and their own kind.\rThey believe in the power of the abyss and are said to possess the ability to ensnare the souls of those they grapple with, drawing them into the abyss. Often viewed as loners, they can also be part of a tight-knit community. They are very protective of their own kind and will fiercely defend them if threatened. Some are quite wise and knowledgeable, possessing ancient secrets not shared with outsiders. They have a strong sense of pride and honor, with unwavering loyalty to their own.\rPhysical Traits:\rHorn Type: Similar to moose antlers but sharper.\rPhysical Description: Much larger than others, with skin that looks like the night sky.",
         "environment": "[TBD]",
@@ -2936,9 +2936,9 @@
       "fetDuration": "Permanent"
     },
     {
-      "lineage": "realmsplit",
-      "option": "helborn",
-      "name": "desolate",
+      "lineage": "Realmsplit",
+      "option": "Helborn",
+      "name": "Desolate",
       "description": {
         "physical": "The Desolate are shaped by silence. Born from the layer of the Ordealis known as the Fields of Desolation, their souls were forged in endless stillness beneath pale, unmoving skies. In that realm, there are no voices, no comfort, no reprieve. Only time, wind, and the long erosion of self. Those who carry its mark often grow into quiet observers, hardened by the absence of connection. They are drawn to company but struggle to feel part of it. This contradiction defines their lives.\nTheir skin resembles cracked stone and dusted ash, and small jagged horns grow like Broken earth from their brow. Desolate Helborn form large families or communal groups to push back against the isolation burned into their souls. Within these circles, they are deeply loyal and fiercely protective. They are not cold. They are simply waiting to feel warm again.",
         "environment": "[TBD]",
@@ -2958,9 +2958,9 @@
       "fetCheck": "Survival"
     },
     {
-      "lineage": "realmsplit",
-      "option": "helborn",
-      "name": "echo horn",
+      "lineage": "Realmsplit",
+      "option": "Helborn",
+      "name": "Echo Horn",
       "description": {
         "physical": "Echo Horn Helborn are born from the Discordant Symphony, a realm in the Ordealis where sound itself is sacred and volatile. In that layer, harmony is law and dissonance is punishment. Souls are tested not through silence, but through overwhelming noise, choruses of memory, shrieking regret, and the sharp, perfect pitch of divine truth. Those who survive do not forget the music. It echoes in their bones.\rEcho Horns carry that resonance with them. Their horns spiral like clefs or tuning forks, and their skin bears flowing patterns like staves or vibrating waveforms. They speak rhythmically without meaning to. Their voices can calm a crowd or shatter glass, depending on the cadence. Some choose to live as wandering musicians or diplomats. Others isolate themselves to avoid their own destructive potential.",
         "environment": "[TBD]",
@@ -2982,9 +2982,9 @@
       "fetCondition": "Confused"
     },
     {
-      "lineage": "realmsplit",
-      "option": "helborn",
-      "name": "ice reaver",
+      "lineage": "Realmsplit",
+      "option": "Helborn",
+      "name": "Ice Reaver",
       "description": {
         "physical": "Icereavers are shaped in the Silent Void, a frozen layer of the Ordealis where even the soul’s voice can be entombed in ice. In this realm, trials take the form of stillness and solitude. Time does not pass in warmth but in breath that crystallizes and falls. Emotion becomes a liability. Speech invites shattering. The Helborn who emerge from this place do so cloaked in frost and silence.\rTheir presence chills the air around them. Their crystalline horns glint like frozen spears, and their eyes reflect the cold eternity they carry inside. They speak rarely, and when they do, their words cut with clarity. Icereavers are often drawn to sentinel roles, guardianship, or quiet vengeance. Their culture values restraint and endurance, and many live far from cities, surrounded by snow or quiet stone.",
         "environment": "[TBD]",
@@ -3005,9 +3005,9 @@
       "fetCondition": "Slowed, Pinned"
     },
     {
-      "lineage": "realmsplit",
-      "option": "helborn",
-      "name": "ink shadow",
+      "lineage": "Realmsplit",
+      "option": "Helborn",
+      "name": "Ink Shadow",
       "description": {
         "physical": "The Inkshadow are the offspring of the Library of Demons, a realm where knowledge is hoarded like gold and memory becomes obsession. The trials of Inkshadow are not physical. They are cerebral, built to seduce with curiosity until the soul forgets itself in pursuit of answers. Helborn from this layer are born with memories that do not belong to them. They dream in languages they have never heard and often carry the weight of questions with no answers.\nTheir skin is marked with living ink, shifting slightly with mood or memory. Their horns are smooth and curved, lined with etched script that pulses softly when near magic. Inkshadows are drawn to language, secrets, and forbidden texts. Many isolate themselves, fearing their addiction to information. Others live without books entirely, reciting their knowledge aloud to forget it more quickly. They are teachers, wanderers, and sometimes dangerous archivists.",
         "environment": "[TBD]",
@@ -3026,9 +3026,9 @@
       "fetAction": "Passive"
     },
     {
-      "lineage": "realmsplit",
-      "option": "helborn",
-      "name": "mistfire",
+      "lineage": "Realmsplit",
+      "option": "Helborn",
+      "name": "Mistfire",
       "description": {
         "physical": "Mistfire Helborn are shaped by the River of Forgotten Souls, a drifting layer of the Ordealis where memory unravels and identity dissolves like breath on cold glass. This realm carries whispers that once belonged to names now lost, and the souls that pass through it often forget who they were before they reach the other side. Those who carry its mark into the waking world are elusive by nature, difficult to pin down and harder to remember.\rTheir horns appear as drifting trails of smoke or pale fog, and their bodies shimmer with soft edges like a figure seen through frosted glass. Mistfire Helborn speaks softly and often says little, but their presence lingers long after they are gone. Some become couriers or spies, others serve as caretakers of the dying, guiding final moments into peace. They are calm, unreadable, and difficult to truly know.",
         "environment": "[TBD]",
@@ -3049,9 +3049,9 @@
       "fetCondition": "Invisible, Intangible"
     },
     {
-      "lineage": "realmsplit",
-      "option": "helborn",
-      "name": "moraltus",
+      "lineage": "Realmsplit",
+      "option": "Helborn",
+      "name": "Moraltus",
       "description": {
         "physical": "The Moraltus are Helborn touched not by the wild layers of the Ordealis, but by its highest order. They descend from the Temple of Asmodeus, a bastion of law and control seated deep in the infernal planes. Within this temple, contracts are sacred and morality is measured in structure rather than emotion. Moraltus Helborn are shaped by a force that values order above all else, and their presence reflects this unnatural balance.\rTheir skin glows faintly, like polished marble warmed from within, and their horns spiral upward with an almost architectural grace. They walk with quiet confidence and often serve as leaders, judges, or mediators. While others Fear the demonic within, the Moraltus embrace the discipline it provides, using it as a framework to build lives of precision and resolve. Their culture emphasizes honor, loyalty, and a rigid sense of duty.",
         "environment": "[TBD]",
@@ -3071,9 +3071,9 @@
       "fetRange": "Reach"
     },
     {
-      "lineage": "realmsplit",
-      "option": "helborn",
-      "name": "rustfiend",
+      "lineage": "Realmsplit",
+      "option": "Helborn",
+      "name": "Rustfiend",
       "description": {
         "physical": "The Rustfiend are born of the Iron Dominion, a brutal layer of the Ordealis where pain is function and identity is replaced with utility. In this realm, souls are tested through work, repetition, and the stripping of will. The Rustfiend emerged from this place fused with its lessons. Their flesh is touched by cursed metal, and their horns curve like wrought iron left too long in rain.\rThey speak in short sentences, favor precision over flair, and often find peace in structure or labor. Many are drawn to machines, forges, and the work of the hands. They are not emotionless, but their feelings have learned to move beneath the surface, waiting for something worth igniting them. A Rustfiend is slow to trust, but unshakable once they do.",
         "environment": "[TBD]",
@@ -3094,9 +3094,9 @@
       "fetDuration": "1 minute"
     },
     {
-      "lineage": "realmsplit",
-      "option": "helborn",
-      "name": "soulshade",
+      "lineage": "Realmsplit",
+      "option": "Helborn",
+      "name": "Soulshade",
       "description": {
         "physical": "The Soulshade Helborn are born from the Clockwork Abyss, a layer of the Ordealis where time fractures and spirits drift between ticking gears and frozen echoes. In that place, the soul is tested not by pain or power, but by memory. Voices of the dead linger like dust in a machine, whispering regrets and forgotten truths. The Soulshade emerged from these echoes touched by the unseen, their bodies thinned by spirit interaction, their eyes dimmed by all they've seen.\rThey are quiet, perceptive, and strangely calming. Others speak of how time slows around them. They rarely lie but rarely speak the whole truth either. Soulshades are natural mediums, drawing spirits not through ritual, but by proximity. Many work as guides, interpreters, or grief-bearers. Some become obsessed with the dead, while others see themselves as their protectors. Their skin is faint and cool, and their horns curl like smoke caught in windless rooms.",
         "environment": "[TBD]",
@@ -3118,9 +3118,9 @@
       "fetCondition": "Invisible"
     },
     {
-      "lineage": "realmsplit",
-      "option": "helborn",
-      "name": "vozian",
+      "lineage": "Realmsplit",
+      "option": "Helborn",
+      "name": "Vozian",
       "description": {
         "physical": "Vozian Helborn were not born in the Ordealis. They were born in the blood-soaked aftermath of VoZo’s descent. When the blood of that primordial god spilled across the prime material, it did not merely corrupt. It reshaped. Where it touched mortals, some fell. Others rose twisted and new. These became the Vozian Helborn, creatures not of twisted souls, but of poisoned creation.\rTheir skin appears faded and drained of color, and their eyes hold the lifeless glint of something that remembers too much. Their horns are fractured, reptilian, and scatter across their bodies like bone plating. They do not speak of pain, but it follows them. While elves embraced the magic of VoZo with purpose, humans soaked in it became something unstable and dangerous. Villains, martyrs, and monsters alike may trace their roots to this event.",
         "environment": "[TBD]",
@@ -3140,9 +3140,9 @@
       "fetCheck": "Luck"
     },
     {
-      "lineage": "realmsplit",
-      "option": "helborn",
-      "name": "warshade",
+      "lineage": "Realmsplit",
+      "option": "Helborn",
+      "name": "Warshade",
       "description": {
         "physical": "The Warshade are forged in the Fields of Torment, a realm in the Ordealis where conflict never ends. Souls here are pitted against each other in endless cycles of trial and bloodshed, forced to fight not for purpose but for survival. From this place come the Helborn who embody pain refined into skill, rage tempered by discipline, and fury harnessed into clarity.\rTheir horns are thick and notched like Broken weapons, and their skin carries the hues of charred stone and blood-washed iron. Warshades speak plainly and hold few illusions. Their trust must be earned through battle or sacrifice. Many serve as bodyguards, champions, or ruthless tacticians. Some try to escape the violence in their blood, but most accept it and find meaning through it.",
         "environment": "[TBD]",
@@ -3161,8 +3161,8 @@
       "fetAction": "Action"
     },
     {
-      "lineage": "realmsplit",
-      "option": "seraphim",
+      "lineage": "Realmsplit",
+      "option": "Seraphim",
       "name": "Chronal Wardens (Chronus)",
       "description": {
         "physical": "Chronal Wardens are temporal sentinels, angels born not of time, but from the precise tension between what was and what could be. They serve Chronus, the god of Time, Progress, Reality, Mass, and Magic. These angels do not dream. They remember. Their forms shimmer with the static of moments too quick to name. Faces blur between expressions, hands move a fraction too fast, and their wings pulse like frozen lightning. They are the archivists of reality’s shape, correcting timelines not with blades, but with presence. A look, a word, a step too soon. They undo what should not have happened.\rChronal Wardens do not interfere with fate. They preserve the edge between fate and chaos. When they appear, it is rarely to fight, but always to intervene. Where they pass, time bends, and those near them feel the weight of every mistake they never made.",
@@ -3185,8 +3185,8 @@
       "sub-fet-effect": "You cannot gain altitude using your wings. When you fall, you descend slowly and take no fall damage. You cannot carry Medium or larger creatures or 1 or more Hefty items while drifting."
     },
     {
-      "lineage": "realmsplit",
-      "option": "seraphim",
+      "lineage": "Realmsplit",
+      "option": "Seraphim",
       "name": "Emissary (Zuinmuir)",
       "description": {
         "physical": "The Emissary of Zuinmuir is not a destroyer. It is a collector. It moves without sound, a shadow in the light, a whisper in a sealed tomb. Where it walks, warmth fades. Clocks slow. Breath turns cold. It does not force Death. It simply arrives when the soul can no longer resist its own weight. Zuinmuir is not the god of endings, but the river that carries all things beyond. The Emissary is its hand. Its wings are vast structures of polished bone and marrow, folding like cathedral gates and echoing with the memory of prayers long since spoken. It wears no expression, and it offers no comfort. But in its presence, all lies are stripped away.",
@@ -3211,8 +3211,8 @@
       "fetCondition": "Fear"
     },
     {
-      "lineage": "realmsplit",
-      "option": "seraphim",
+      "lineage": "Realmsplit",
+      "option": "Seraphim",
       "name": "Empyreans (Exembar)",
       "description": {
         "physical": "Empyreans do not appear. They arrive. They do not shine. They are simply felt. Serving Exembar, god of Balance, Order, Matter, Ideals, and Ambition, these angels are the divine balance of warmth and clarity. Their wings are unseen, but those near them feel them as comfort, like standing beside a hearth or beneath a peaceful sky. Their purpose is not to dominate or destroy. It is to restore, to guide, and to rebalance what has been bent. An Empyrean does not speak loudly, but when they touch you, the truth comes forward. They do not heal because they pity. They heal because the world must continue.",
@@ -3236,8 +3236,8 @@
       "fetDamagetype": "Healing"
     },
     {
-      "lineage": "realmsplit",
-      "option": "seraphim",
+      "lineage": "Realmsplit",
+      "option": "Seraphim",
       "name": "Librarians (Signessen)",
       "description": {
         "physical": "Librarians are the angels of Signessen, the god of Understanding, Intelligence, Reason, and Skills. Each carries within them a living index of reality’s secrets. Their wings rustle like turning pages, each feather marked with an unreadable script. They guide scholars, protect lost knowledge, and retrieve what should never have been forgotten.\rLibrarians do not hoard what they know. They lend it. A glance from one can stir understanding in a stranger. A word whispered from their lips may unlock memories someone never knew they had. Their presence feels like opening the right book at the exact right time.",
@@ -3261,8 +3261,8 @@
       "fetCondition": "Stunned"
     },
     {
-      "lineage": "realmsplit",
-      "option": "seraphim",
+      "lineage": "Realmsplit",
+      "option": "Seraphim",
       "name": "Resonance (Dumda)",
       "description": {
         "physical": "Resonance angels are the echoes of Dumda’s will, formed from layered vibration and boundless tone. They do not walk. They hum. Their presence bends the air, their wings shimmer as distortions in reality. They are not messengers. They are the message. Where they move, silence gives way to harmony, and disharmony is shattered. Dumda is the god of Sound, Frequency, Connection, Bonds, and Music. Sound is their language, but also their weapon. The voice of a Resonance carries the weight of order, not through volume but through clarity. One perfect note can bring down deception, draw truth to the surface, or reduce confusion to stillness.",
@@ -3286,8 +3286,8 @@
       "fetCheck": "Observation"
     },
     {
-      "lineage": "realmsplit",
-      "option": "seraphim",
+      "lineage": "Realmsplit",
+      "option": "Seraphim",
       "name": "Shackleborn (Brakkus)",
       "description": {
         "physical": "Shackleborn are not forged in glory, but in judgment. They are the hands of Brakkus, the god who does not speak of freedom but of order. He is the god of Power, Control, Domination, Ability, and Leadership. His angels descend in silence, their limbs wrapped in celestial chains, their eyes fixed on those who would disrupt the natural weight of consequence.\rBrakkus is not cruel, but he is exacting. He does not punish emotion or rebellion, only the failure to bear the burden of choice. The Shackleborn exist to remind the world that justice does not kneel. Their presence is a sentence. Their wings do not lift them skyward, instead they drag behind like relics from an older war, whispering the names of those already judged. Each Shackleborn carries a portion of divine restraint, etched into their form. To see one is to know that something has gone too far. To hear their chains is to know it has been noticed.",
@@ -3313,8 +3313,8 @@
       "fetCondition": "Pinned"
     },
     {
-      "lineage": "realmsplit",
-      "option": "seraphim",
+      "lineage": "Realmsplit",
+      "option": "Seraphim",
       "name": "Silent Guardians (Jesha)",
       "description": {
         "physical": "The Silent Guardians serve Jesha, the god of Silence, Wisdom, Ignorance, and Prophecy. In the halls of Jesha's realm, there is no voice, no footfall, no sound at all. The Guardians move like living shadows, wings vast and dark, cloaking the world around them in oppressive silence. They do not speak. They do not warn. They arrive when the balance of noise and chaos has tipped too far. To witness a Silent Guardian is to feel the weight of destiny turning without a sound. Their silence is not absence, but order. Their wings pull the world inward and leave nothing but breath, heartbeat, and knowing.",
@@ -3338,7 +3338,7 @@
       "fetCondition": "Deaf"
     },
     {
-      "lineage": "realmsplit",
+      "lineage": "Realmsplit",
       "option": "Gargoyle",
       "name": "Celestial (Marble)",
       "description": {
@@ -3363,7 +3363,7 @@
       "sub-fet-effect": "You have a fly speed equal to your movement speed while you carry 1 or fewer Hefty items and have no major conditions. You can carry 1 Small or smaller creature without penalty. You cannot carry a Medium or larger creature."
     },
     {
-      "lineage": "realmsplit",
+      "lineage": "Realmsplit",
       "option": "Gargoyle",
       "name": "Infernal (Lavastone)",
       "description": {
@@ -3386,7 +3386,7 @@
       "sub-fet-effect": "You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty."
     },
     {
-      "lineage": "realmsplit",
+      "lineage": "Realmsplit",
       "option": "Gargoyle",
       "name": "Nemuri (Mind Stone)",
       "description": {
@@ -3410,7 +3410,7 @@
       "sub-fet-effect": "You have a fly speed equal to your movement speed while you carry 1 or fewer Hefty items and have no major conditions. You can carry 1 Small or smaller creature without penalty. You cannot carry a Medium or larger creature."
     },
     {
-      "lineage": "realmsplit",
+      "lineage": "Realmsplit",
       "option": "Gargoyle",
       "name": "Stone (Greystone)",
       "description": {
@@ -3437,7 +3437,7 @@
       "fetCondition": "Slowed, Constrained"
     },
     {
-      "lineage": "strigoi",
+      "lineage": "Strigoi",
       "option": "Undead",
       "name": "Înviere",
       "description": {
@@ -3462,7 +3462,7 @@
       "fetCondition": "Death"
     },
     {
-      "lineage": "strigoi",
+      "lineage": "Strigoi",
       "option": "Vampire",
       "name": "Avuţie",
       "description": {
@@ -3490,7 +3490,7 @@
       "fetCondition": "Broken, Concussion, Charmed"
     },
     {
-      "lineage": "strigoi",
+      "lineage": "Strigoi",
       "option": "Vampire",
       "name": "Tărie",
       "description": {
@@ -3513,7 +3513,7 @@
       "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions"
     },
     {
-      "lineage": "strigoi",
+      "lineage": "Strigoi",
       "option": "Vampire",
       "name": "Tristeţe",
       "description": {
@@ -3539,8 +3539,8 @@
       "fetCheck": "Survival"
     },
     {
-      "lineage": "symbiotes",
-      "option": "gloomspawn",
+      "lineage": "Symbiotes",
+      "option": "Gloomspawn",
       "name": "Devourer",
       "description": {
         "physical": "Devourers embody the hunger at the heart of the Gloomspawn. They consume their hosts entirely, leaving little more than husks behind, then wear the shell of flesh as long as it will last. Their appetite is endless, and they burn through bodies as though they were mere fuel. In battle they are terrifying, reshaping themselves into jagged weapons and erupting into carnage with animal fury. Among mortals they are called the Blood Ooze, a name whispered with fear in villages and fortresses alike. Their forms glow in violent hues of red, orange, and yellow, most often clothed in the deep crimson of fresh blood. Devourers are relentless predators who see all living things as vessels waiting to be emptied.",
@@ -3562,8 +3562,8 @@
       "fetDamagetype": "Piercing"
     },
     {
-      "lineage": "symbiotes",
-      "option": "gloomspawn",
+      "lineage": "Symbiotes",
+      "option": "Gloomspawn",
       "name": "Hollowhost",
       "description": {
         "physical": "Hollowhosts take on familiar shapes in order to be welcomed, wearing the guise of humanoids to soothe suspicion. Their feeding is subtle, for they sustain themselves on energy taken gently in the night, often leaving their hosts unaware of what has occurred. Unlike the Devourer, the Hollowhost does not seek to destroy. They prefer to linger and nourish themselves over time, moving from one dwelling to another like a passing shadow. They are known for their ability to vanish from sight, slipping silently through windows and doors, unseen but ever present. Their substance glimmers with soft colors of pale pink, white, and gray, a palette that mirrors the light of dusk and dawn. Hollowhosts are regarded with both fear and awe, for they appear as caring companions even as they feed in secret.",
@@ -3586,8 +3586,8 @@
       "fetCheck": "Stealth"
     },
     {
-      "lineage": "symbiotes",
-      "option": "gloomspawn",
+      "lineage": "Symbiotes",
+      "option": "Gloomspawn",
       "name": "Nightvein",
       "description": {
         "physical": "Nightveins are parasitic, yet unlike their kin, they rarely kill their hosts. Instead, they bond deeply and preserve the life within, often forging relationships that blur the line between dependence and companionship. A Nightvein may join with a beast as readily as a humanoid, shaping itself to fit the rhythms and instincts of its host. They are wanderers and seekers of knowledge, traveling far through the senses of those they inhabit. Nightveins are curious, often fascinated by culture, art, and history, collecting memories as if they were treasures. Their substance ripples with cool tones of blue, violet, and black, flowing like veins of shadow across the body they share.",
@@ -3607,9 +3607,9 @@
       "fetAction": "Off-Action"
     },
     {
-      "lineage": "symbiotes",
-      "option": "eternal worm",
-      "name": "eternal worm",
+      "lineage": "Symbiotes",
+      "option": "Eternal Worm",
+      "name": "Eternal Worm",
       "description": {
         "physical": "Eternal Worms are a wise and ancient species of symbiote that have lived for centuries within various hosts. They are found in the sacred groves and ancient ruins where the barriers between the planes are thin. They have the ability to transfer their memories and experiences to their host, allowing them to benefit from a wealth of knowledge and skills, and even the ability to access ancient and forgotten magic.",
         "environment": "[TBD]",

@@ -4,7 +4,7 @@
     /* bleed to edges of .spell-row-detail padding (0.1rem top, 1rem right, 1.65rem left) */
     width: calc(100% + 1rem + 1.65rem);
     margin: -0.1rem -1rem .85rem -1.65rem;
-    aspect-ratio: 4/3;
+    aspect-ratio: 16/9;
     object-fit: cover;
     object-position: center top;
     background: var(--dark-2, #1a1a1a);

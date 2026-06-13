@@ -1,0 +1,218 @@
+/* The Seven — moderation dashboard (built on home.css palette) */
+
+.mod-header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: calc(10px + var(--safe-t)) 14px 10px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+}
+
+.mod-back {
+    flex-shrink: 0;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.mod-title {
+    flex: 1;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: var(--gold);
+}
+
+.mod-header-spacer { flex-shrink: 0; width: 40px; }
+
+.mod-main {
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 16px 14px calc(32px + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* ── GATE ───────────────────────────────────────────────────────── */
+
+#gate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 48px 16px;
+    text-align: center;
+}
+
+#gate h1 {
+    font-size: 20px;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+}
+
+#gate p {
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 320px;
+}
+
+#gate input[type="password"] {
+    width: 220px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--text);
+    font-size: 15px;
+    text-align: center;
+    font-family: inherit;
+}
+
+.mod-divider {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 4px 0;
+}
+
+.mod-err {
+    font-size: 12px;
+    color: #e06060;
+}
+
+/* ── DASHBOARD SECTIONS ─────────────────────────────────────────── */
+
+.mod-section {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+}
+
+.mod-section h2 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+.mod-hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+.mod-empty {
+    color: var(--muted);
+    font-size: 13px;
+    font-style: italic;
+}
+
+.mod-status {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* ── CARDS ──────────────────────────────────────────────────────── */
+
+.mod-card {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.mod-card:last-child { margin-bottom: 0; }
+
+.mod-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.mod-reason {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 13px;
+}
+
+.mod-time {
+    color: var(--muted);
+    font-size: 11px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.mod-note {
+    color: var(--cream);
+    font-size: 12px;
+    font-style: italic;
+}
+
+.mod-msg-snapshot {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+}
+
+.mod-msg-author {
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 2px;
+}
+
+.mod-msg-text {
+    color: var(--text);
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.mod-meta {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.mod-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+/* ── BUTTONS ────────────────────────────────────────────────────── */
+
+.mod-btn {
+    padding: 7px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.mod-btn:hover    { background: var(--panel); }
+.mod-btn:disabled { opacity: 0.5; cursor: default; }
+
+.mod-btn--danger { border-color: rgba(224, 96, 96, 0.4); color: #e06060; }
+.mod-btn--danger:hover { background: rgba(224, 96, 96, 0.1); }
+
+.mod-btn--warn { border-color: var(--gold-glow); color: var(--gold); }
+.mod-btn--warn:hover { background: var(--gold-dim); }

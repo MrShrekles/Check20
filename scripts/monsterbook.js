@@ -284,10 +284,20 @@ function parseLinks(text) {
     );
 }
 
+function sanitizeForRoll20(str) {
+    return (str || '').replace(/\[\[(.*?)\]\]/g, '($1)').replace(/@\{([^|}]+)[^}]*\}/g, '$1');
+}
+
 function buildMonsterPacket(m) {
     const meleeAtk  = m.melee  || m.melee_attack  || {};
     const rangedAtk = m.ranged || m.ranged_attack  || {};
-    const f0 = (Array.isArray(m.features) && m.features.length) ? m.features[0] : {};
+    // If flat feature fields are set, use them as primary and keep all of m.features as extras.
+    // Otherwise fall back to features[0] as primary and slice it off.
+    const hasLegacy = !!(m.feature_name || m.feature_effect);
+    const f0 = (!hasLegacy && Array.isArray(m.features) && m.features.length) ? m.features[0] : {};
+    const extraFeatures = Array.isArray(m.features)
+        ? (hasLegacy ? m.features : m.features.slice(1))
+        : [];
     return {
         name:           m.name            || "Unknown Monster",
         size:           m.size            || "",
@@ -310,17 +320,17 @@ function buildMonsterPacket(m) {
             name:   m.feature_name   || f0.name   || "",
             action: m.feature_type   || f0.type   || "Action",
             range:  m.feature_range  || f0.range  || "Melee",
-            effect: m.feature_effect || f0.effect || "",
+            effect: sanitizeForRoll20(m.feature_effect || f0.effect || ""),
             damage: m.feature_damage || f0.damage || "",
         },
-        features: Array.isArray(m.features) ? m.features.slice(1).map(f => ({
+        features: extraFeatures.map(f => ({
             name:   f.name   || "",
             action: f.type   || "Action",
             range:  f.range  || "Melee",
-            effect: f.effect || "",
+            effect: sanitizeForRoll20(f.effect || ""),
             damage: f.damage || "",
-        })) : [],
-        spells:          Array.isArray(m.spells) ? m.spells : [],
+        })),
+        spells: Array.isArray(m.spells) ? m.spells : [],
         mana_max: m.check_mental != null ? m.check_mental * 2 : 0,
     };
 }

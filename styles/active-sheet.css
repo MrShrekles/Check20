@@ -61,7 +61,8 @@ textarea {
 
 /* Reset main.css interference — active-sheet is a standalone app */
 body[data-page-title="Active-Sheet"] {
-    padding-left: 0 !important;
+    margin: 0;
+    padding: 0 !important;
     background: var(--bg);
     color: var(--text);
     overflow-x: hidden;
@@ -1512,33 +1513,27 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 .feat-tab-row {
     display: flex;
-    gap: 6px;
-    margin-bottom: 12px;
-    padding: 0 8px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 8px;
 }
 
 .feat-tab {
     flex: 1;
-    min-height: 36px;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 10px;
+    min-height: 40px;
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
     color: var(--muted);
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 700;
     font-family: inherit;
     cursor: pointer;
     touch-action: manipulation;
-    transition: color 0.12s, background 0.12s, border-color 0.12s;
+    transition: color 0.12s, border-color 0.12s;
+    margin-bottom: -1px;
 }
 
-.feat-tab.is-active {
-    background: var(--accent-dim);
-    border-color: var(--accent);
-    color: var(--accent);
-}
+.feat-tab.is-active { color: var(--accent); border-bottom-color: var(--accent); }
 
 .feat-tab-content { display: none; }
 .feat-tab-content.is-active { display: block; }
@@ -2829,34 +2824,30 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 .ref-tab-row {
     display: flex;
-    gap: 6px;
-    margin-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 8px;
 }
 
 .ref-tab {
     flex: 1;
-    min-height: 34px;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 10px;
+    min-height: 40px;
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
     color: var(--muted);
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 700;
     font-family: inherit;
     cursor: pointer;
     touch-action: manipulation;
+    transition: color 0.12s, border-color 0.12s;
+    margin-bottom: -1px;
 }
 
-.ref-tab.is-active {
-    background: var(--accent-dim);
-    border-color: var(--accent);
-    color: var(--accent);
-}
+.ref-tab.is-active { color: var(--accent); border-bottom-color: var(--accent); }
 
 .ref-tab-content { display: none; }
-.ref-tab-content.is-active { display: block; }
+.ref-tab-content.is-active { display: block; padding: 8px 10px 0; }
 
 /* Quick roll */
 .ref-quick-roll {
@@ -4131,6 +4122,29 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 .chat-text { line-height: 1.4; }
 
+.chat-text--clamped {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.chat-text--clamped.is-expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+}
+.chat-show-more {
+    display: block;
+    margin-top: 2px;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    cursor: pointer;
+}
+
 .chat-emoji-block {
     display: flex;
     flex-direction: column;
@@ -4721,13 +4735,11 @@ body[data-page-title="Active-Sheet"] #site-header {
     font-size: 16px;
     cursor: pointer;
     touch-action: manipulation;
-    opacity: 0;
-    transition: opacity 0.15s;
+    opacity: 0.6;
 }
-.chat-msg-wrap:hover .reaction-add-btn,
-.chat-msg-wrap:focus-within .reaction-add-btn { opacity: 0.6; }
 .reaction-add-btn:hover,
-.reaction-add-btn:focus { opacity: 1 !important; }
+.reaction-add-btn:focus,
+.reaction-add-btn:active { opacity: 1; }
 .reaction-picker {
     display: flex;
     flex-wrap: wrap;
@@ -4751,6 +4763,68 @@ body[data-page-title="Active-Sheet"] #site-header {
     transition: transform 0.1s;
 }
 .reaction-pick-btn:active { transform: scale(1.25); }
+
+/* ── REPORT BUTTON ───────────────────────────────────────────────── */
+
+.chat-report-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px dashed var(--line);
+    background: transparent;
+    font-size: 13px;
+    cursor: pointer;
+    touch-action: manipulation;
+    opacity: 0.6;
+    padding: 0;
+    line-height: 1;
+}
+.chat-report-btn:hover,
+.chat-report-btn:focus,
+.chat-report-btn:active { opacity: 1; }
+.chat-report-btn:disabled { opacity: 1; cursor: default; }
+.report-reason-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 6px 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    max-width: 100%;
+}
+.report-reason-picker[hidden] { display: none; }
+.report-reason-pick-btn {
+    font-size: 12px;
+    font-weight: 700;
+    font-family: inherit;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--line);
+    color: var(--text);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 999px;
+    touch-action: manipulation;
+}
+.report-reason-pick-btn:active { transform: scale(0.96); }
+
+/* ── BAN/MUTE NOTICE ─────────────────────────────────────────────── */
+
+.chat-ban-notice {
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    color: #e06060;
+    background: rgba(255,107,107,0.08);
+    border: 1px solid rgba(255,107,107,0.3);
+    border-radius: 10px;
+    padding: 6px 10px;
+    margin: 0 0 6px;
+}
+.chat-ban-notice[hidden] { display: none; }
 
 /* ── ROLL DRAWER — CHECK CHIPS ──────────────────────────────────── */
 
@@ -4967,30 +5041,27 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 .equip-tab-row {
     display: flex;
-    gap: 5px;
+    border-bottom: 1px solid var(--line);
     margin-bottom: 8px;
 }
 
 .equip-tab {
     flex: 1;
-    min-height: 30px;
-    border-radius: 8px;
-    border: 1px solid var(--line);
+    min-height: 36px;
     background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
     color: var(--muted);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
     font-family: inherit;
     cursor: pointer;
     touch-action: manipulation;
-    transition: background 0.1s, color 0.1s;
+    transition: color 0.12s, border-color 0.12s;
+    margin-bottom: -1px;
 }
 
-.equip-tab.is-active {
-    background: var(--panel-2);
-    color: var(--cream);
-    border-color: rgba(70, 100, 100, 0.50);
-}
+.equip-tab.is-active { color: var(--accent); border-bottom-color: var(--accent); }
 
 .equip-cat-badge {
     font-size: 9px;

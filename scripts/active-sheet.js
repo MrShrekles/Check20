@@ -2339,6 +2339,7 @@ function listenToSharedChat(code) {
 }
 
 async function broadcastChatEntry(entry) {
+    if (entry.type !== 'msg' && !arcRateLimitOk()) { console.warn('[ARC] rate-limited, not broadcasting:', entry.type); return; }
     const arc  = window.__arc;
     const room = localStorage.getItem('arc-room');
     if (!arc?.db || !arc?.uid || !room) return;
@@ -2411,7 +2412,7 @@ function renderSharedChat() {
             li.className = 'chat-entry--msg';
             li.innerHTML = emojiOnly
                 ? `${badge}<span class="chat-time">${m.time || ''}</span><div class="chat-emoji-block"><span class="chat-text chat-emoji-big">${parseInline(m.text)}</span>${EMOJI_REACTIONS_HTML}</div>`
-                : `${badge}<span class="chat-time">${m.time || ''}</span><span class="chat-text">${parseInline(m.text)}</span>`;
+                : `${badge}<span class="chat-time">${m.time || ''}</span>${renderChatText(m.text)}`;
         }
 
         // Append reaction bar to all substantive message types
@@ -2468,6 +2469,31 @@ document.addEventListener('arc:firebase-ready', () => {
                 lastReaction: { chatMsgId: detail.chatMsgId, anim: detail.anim, by: arc.uid, at: arc.serverTimestamp() },
             });
         } catch(e) { console.error('[ARC] emoji-react write failed:', e); }
+    });
+
+    // Message reporting — write a denormalized snapshot for The Seven to review
+    document.addEventListener('chat-report', async ({ detail }) => {
+        const { chatMsgId, reason, reasonNote } = detail;
+        const msg = sharedChatMsgs.find(m => m.id === chatMsgId);
+        if (!msg) return;
+        try {
+            await arc.setDoc(arc.doc(arc.db, 'reports', crypto.randomUUID()), {
+                status:        'open',
+                reason,
+                reasonNote:    reasonNote || null,
+                chatRoom:      room,
+                chatMsgId,
+                chatMsgText:   msg.text ?? null,
+                chatMsgAuthor: msg.author ?? null,
+                chatMsgUid:    msg.uid ?? null,
+                chatMsgType:   msg.type ?? null,
+                reportedBy:    arc.uid,
+                reportedAt:    arc.serverTimestamp(),
+                resolvedBy:    null,
+                resolvedAt:    null,
+                resolutionNote: null,
+            });
+        } catch(e) { console.error('[ARC] report failed:', e); }
     });
 
     // Show session section in settings
@@ -2716,18 +2742,24 @@ async function syncToRoom() {
     const room = localStorage.getItem('arc-room');
     if (!arc?.db || !arc?.uid || !room) return;
 
-    const c = state.char      || {};
-    const r = state.resources || {};
+    const c = state.char        || {};
+    const r = state.resources   || {};
+    const p = state.progression || {};
     try {
         await arc.setDoc(arc.doc(arc.db, 'rooms', room, 'players', arc.uid), {
-            name:      c.name            || 'Player',
-            armor:     r.armor?.current  ?? 0,
-            woundsCur: r.hp?.current     ?? 0,
-            woundsMax: r.hp?.max         ?? 0,
-            mnCur:     r.MN?.current     ?? 0,
-            mnMax:     r.MN?.max         ?? 0,
-            gold:      c.wealth          ?? c.gold ?? 0,
-            updatedAt: arc.serverTimestamp(),
+            name:       c.name            || 'Player',
+            armor:      r.armor?.current  ?? 0,
+            woundsCur:  r.hp?.current     ?? 0,
+            woundsMax:  r.hp?.max         ?? 0,
+            mnCur:      r.MN?.current     ?? 0,
+            mnMax:      r.MN?.max         ?? 0,
+            gold:       c.wealth          ?? c.gold ?? 0,
+            xp:         p.xp              ?? 0,
+            species:    c.species         || '',
+            classKey:   c.classKey        || '',
+            pathName:   c.pathName        || '',
+            talentName: c.talentName      || '',
+            updatedAt:  arc.serverTimestamp(),
         }, { merge: true });
     } catch(e) { console.error('[ARC] room sync failed:', e); }
 }
@@ -3289,6 +3321,7 @@ function bindDrawer() {
     document.getElementById('chat-msg-input')?.addEventListener('keydown', e => {
         if (e.key === 'Enter') sendChatMsg();
     });
+    arcInitBanNotice('chat-input-row');
 
     // Emoji picker
     const emojiBtn = document.getElementById('emoji-btn');
@@ -3319,10 +3352,14 @@ function bindDrawer() {
     }
 }
 
-function sendChatMsg() {
+async function sendChatMsg() {
     const input = document.getElementById('chat-msg-input');
     const text = input?.value.trim();
     if (!text) return;
+    if (!arcCanSendChat()) return;
+    const room = localStorage.getItem('arc-room');
+    if (!(await arcAutomodGate(text, room, state.char.name || ''))) { input.value = ''; return; }
+    if (!arcRateLimitOk()) { alert('You are sending messages too fast — wait a few seconds and try again.'); return; }
     pushChat(text, 'msg');
     if (input) input.value = '';
 }

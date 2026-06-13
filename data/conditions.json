@@ -129,6 +129,6 @@
     "name": "Death",
     "category": "Major",
     "effect": "Character dies and cannot interact with the living world.",
-    "duration": "As an action before then of your next turn an ally can make a Mental check to return you to injuries. Otherwise Only resurrection magic can remove this condition."
+    "duration": "As an action before then of your next turn an ally can touch you to make a Mental check to return you to injuries. Otherwise Only resurrection magic can remove this condition."
   }
 ]

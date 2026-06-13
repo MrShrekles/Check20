@@ -42,14 +42,42 @@ function parseInline(text) {
     return text
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/~~(.+?)~~/g, '<del>$1</del>')
         .replace(/\*(.+?)\*/g, '<em>$1</em>')
         .replace(/_(.+?)_/g, '<em>$1</em>')
         .replace(/`(.+?)`/g, '<code class="chat-code">$1</code>');
 }
 
+const CHAT_TEXT_CLAMP_LENGTH = 240; // chars; above this, clamp + offer "Show more"
+
+// Renders a chat message's text span, clamping long messages with a "Show more" toggle.
+function renderChatText(text) {
+    const html = parseInline(text);
+    if (!text || text.length <= CHAT_TEXT_CLAMP_LENGTH) {
+        return `<span class="chat-text">${html}</span>`;
+    }
+    return `<span class="chat-text chat-text--clamped">${html}</span><button class="chat-show-more" type="button">Show more</button>`;
+}
+
+document.addEventListener('click', e => {
+    const btn = e.target.closest('.chat-show-more');
+    if (!btn) return;
+    const span = btn.previousElementSibling;
+    if (!span?.classList.contains('chat-text--clamped')) return;
+    const expanded = span.classList.toggle('is-expanded');
+    btn.textContent = expanded ? 'Show less' : 'Show more';
+});
+
 // ── PERSISTENT REACTIONS ──────────────────────────────────────────────────────
 
 const REACTION_EMOJIS = ['👍','❤️','😂','😮','💀','🔥','⚔️','🎲'];
+
+const REPORT_REASONS = [
+    { key: 'harassment', label: 'Harassment' },
+    { key: 'spam',       label: 'Spam' },
+    { key: 'minors',     label: 'Inappropriate for minors' },
+    { key: 'other',      label: 'Other' },
+];
 
 function buildReactionBar(m, myUid) {
     if (!m?.id) return '';
@@ -63,15 +91,223 @@ function buildReactionBar(m, myUid) {
     const picker = REACTION_EMOJIS.map(e =>
         `<button class="reaction-pick-btn" data-emoji="${e}" type="button">${e}</button>`
     ).join('');
-    return `<div class="chat-reactions" data-msg-id="${m.id}"><div class="reaction-chips">${chips}<button class="reaction-add-btn" type="button" title="Add reaction">＋</button></div><div class="reaction-picker" hidden>${picker}</div></div>`;
+
+    const canReport   = myUid && m.uid !== myUid;
+    const reportBtn   = canReport ? `<button class="chat-report-btn" data-msg-id="${m.id}" type="button" title="Report message">🚩</button>` : '';
+    const reportPicker = canReport
+        ? `<div class="report-reason-picker" hidden>${REPORT_REASONS.map(r =>
+            `<button class="report-reason-pick-btn" data-reason="${r.key}" type="button">${r.label}</button>`
+          ).join('')}</div>`
+        : '';
+
+    return `<div class="chat-reactions" data-msg-id="${m.id}"><div class="reaction-chips">${chips}<button class="reaction-add-btn" type="button" title="Add reaction">＋</button>${reportBtn}</div><div class="reaction-picker" hidden>${picker}</div>${reportPicker}</div>`;
 }
 
-// Close open reaction pickers when clicking outside
+// Close open reaction/report pickers when clicking outside
 document.addEventListener('click', e => {
     if (!e.target.closest('.chat-reactions')) {
-        document.querySelectorAll('.reaction-picker:not([hidden])').forEach(p => { p.hidden = true; });
+        document.querySelectorAll('.reaction-picker:not([hidden]), .report-reason-picker:not([hidden])').forEach(p => { p.hidden = true; });
     }
 });
+
+// Report button — toggle reason picker; reason pick — broadcast a chat-report event
+document.addEventListener('click', e => {
+    const reportBtn = e.target.closest('.chat-report-btn');
+    if (reportBtn) {
+        e.stopPropagation();
+        const picker = reportBtn.closest('.chat-reactions')?.querySelector('.report-reason-picker');
+        if (picker) {
+            document.querySelectorAll('.reaction-picker:not([hidden]), .report-reason-picker:not([hidden])').forEach(p => { if (p !== picker) p.hidden = true; });
+            picker.hidden = !picker.hidden;
+        }
+        return;
+    }
+    const reasonBtn = e.target.closest('.report-reason-pick-btn');
+    if (reasonBtn) {
+        const bar = reasonBtn.closest('.chat-reactions');
+        const picker = reasonBtn.closest('.report-reason-picker');
+        const chatMsgId = bar?.dataset.msgId;
+        const reason = reasonBtn.dataset.reason;
+        let reasonNote = null;
+        if (reason === 'other') {
+            reasonNote = window.prompt('Briefly describe the issue (optional):') || '';
+        }
+        if (chatMsgId) {
+            document.dispatchEvent(new CustomEvent('chat-report', { detail: { chatMsgId, reason, reasonNote } }));
+        }
+        if (picker) picker.hidden = true;
+        const flagBtn = bar?.querySelector('.chat-report-btn');
+        if (flagBtn) {
+            const orig = flagBtn.textContent;
+            flagBtn.textContent = '✓';
+            flagBtn.disabled = true;
+            setTimeout(() => { flagBtn.textContent = orig; flagBtn.disabled = false; }, 2000);
+        }
+    }
+});
+
+// ── MODERATION: BAN/MUTE GATE ──────────────────────────────────────────────────
+
+let _arcBanStatus = null;
+
+document.addEventListener('arc:firebase-ready', ({ detail }) => {
+    const arc = window.__arc;
+    if (!arc?.db || !detail?.uid) return;
+    arc.onSnapshot(arc.doc(arc.db, 'bans', detail.uid), snap => {
+        _arcBanStatus = snap.exists() ? snap.data() : null;
+        document.dispatchEvent(new CustomEvent('arc:ban-status-changed', { detail: _arcBanStatus }));
+    }, err => console.error('[ARC] ban status:', err));
+});
+
+// True if the current device is free to send chat messages
+function arcCanSendChat() {
+    if (!_arcBanStatus) return true;
+    return typeof _arcBanStatus.expiresAt === 'number' && _arcBanStatus.expiresAt < Date.now();
+}
+
+function arcBanMessage() {
+    if (arcCanSendChat()) return '';
+    const { status, expiresAt, createdBy } = _arcBanStatus;
+    if (typeof expiresAt !== 'number') {
+        return status === 'banned'
+            ? (createdBy === 'auto-mod' ? 'You have been permanently banned for violating community guidelines.' : 'You have been banned from chat by The Seven.')
+            : 'You have been muted by The Seven.';
+    }
+    const mins = Math.ceil((expiresAt - Date.now()) / 60000);
+    const time = mins >= 60 ? `${Math.ceil(mins / 60)} hour(s)` : `${mins} minute(s)`;
+    return `You are temporarily ${status === 'banned' ? 'banned' : 'muted'} — ${time} remaining.`;
+}
+
+// Inserts a hidden notice banner before the given container, shown whenever the
+// current device is muted/banned. Call once per page during init.
+function arcInitBanNotice(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container?.parentNode) return;
+    const notice = document.createElement('div');
+    notice.className = 'chat-ban-notice';
+    notice.hidden = true;
+    container.parentNode.insertBefore(notice, container);
+
+    const update = () => {
+        if (!arcCanSendChat()) {
+            notice.textContent = arcBanMessage();
+            notice.hidden = false;
+        } else {
+            notice.hidden = true;
+        }
+    };
+    update();
+    document.addEventListener('arc:ban-status-changed', update);
+    setInterval(update, 30000);
+}
+
+// ── AUTO-MODERATION: WORD FILTER, STRIKES, TIMED BANS ────────────────────────
+
+const LEET_MAP = { '0':'o', '1':'i', '3':'e', '4':'a', '5':'s', '7':'t', '@':'a', '$':'s' };
+
+function automodNormalizeToken(tok) {
+    return tok.toLowerCase().split('').map(c => LEET_MAP[c] || c).join('')
+        .replace(/[^a-z]/g, '')
+        .replace(/(.)\1{2,}/g, '$1'); // "fuuuck" -> "fuck"
+}
+
+function automodNormalizeFull(text) {
+    return text.toLowerCase().split('').map(c => LEET_MAP[c] || c).join('')
+        .replace(/[^a-z\s]/g, '')
+        .replace(/(.)\1{2,}/g, '$1')
+        .replace(/\s+/g, ' ').trim();
+}
+
+// Returns 'severe', 'strike', or null
+function automodScan(text) {
+    const tokens = new Set(text.split(/\s+/).map(automodNormalizeToken).filter(Boolean));
+    const full   = automodNormalizeFull(text);
+    const hit = list => (list || []).some(term => term.includes(' ')
+        ? full.includes(automodNormalizeFull(term))
+        : tokens.has(automodNormalizeToken(term)));
+    if (hit(window.AUTOMOD_SEVERE)) return 'severe';
+    if (hit(window.AUTOMOD_STRIKE)) return 'strike';
+    return null;
+}
+
+const AUTOMOD_DURATIONS = [10 * 60 * 1000, 10 * 60 * 60 * 1000, null]; // strike 1,2,3 -> 10min,10hr,perma
+
+function automodAlertText(hit, status, expiresAt) {
+    if (hit === 'severe') return 'Your message contained language that is not tolerated here. You have been permanently banned.';
+    if (status === 'banned') return 'That was your 3rd strike for inappropriate language — you have been permanently banned.';
+    const mins = Math.ceil((expiresAt - Date.now()) / 60000);
+    const time = mins >= 60 ? `${Math.ceil(mins / 60)} hour(s)` : `${mins} minute(s)`;
+    return `Your message was blocked for inappropriate language (strike). You are muted for ${time}.`;
+}
+
+// Scans outgoing chat text; if it trips the filter, issues a mute/ban, logs an
+// audit-trail report, and returns false (caller must not send the message).
+async function arcAutomodGate(text, room, author) {
+    const hit = automodScan(text);
+    if (!hit) return true;
+
+    const arc = window.__arc;
+    if (!arc?.db || !arc?.uid) return true;
+    const banRef = arc.doc(arc.db, 'bans', arc.uid);
+
+    let status, reason, expiresAt;
+    if (hit === 'severe') {
+        status = 'banned'; expiresAt = null; reason = 'auto-mod: severe language';
+    } else {
+        const strikeRef = arc.doc(arc.db, 'automodStrikes', arc.uid);
+        let count = 1;
+        try {
+            const snap = await arc.getDoc(strikeRef);
+            count = (snap.exists() ? (snap.data().count || 0) : 0) + 1;
+        } catch (e) { console.error('[ARC] strike lookup:', e); }
+        const dur = AUTOMOD_DURATIONS[Math.min(count, 3) - 1];
+        expiresAt = dur ? Date.now() + dur : null;
+        status = count >= 3 ? 'banned' : 'muted';
+        reason = `auto-mod: strike ${Math.min(count, 3)}/3`;
+        try {
+            await arc.setDoc(strikeRef, { count, lastStrikeAt: arc.serverTimestamp(), lastReason: reason });
+        } catch (e) { console.error('[ARC] strike record:', e); }
+    }
+
+    try {
+        await arc.setDoc(banRef, {
+            status, reason, reportId: null,
+            createdAt: arc.serverTimestamp(), createdBy: 'auto-mod', expiresAt,
+        }, { merge: true });
+    } catch (e) { console.error('[ARC] automod ban write:', e); }
+
+    // Audit trail for The Seven (self-report, satisfies existing reports rule)
+    try {
+        await arc.setDoc(arc.doc(arc.db, 'reports', crypto.randomUUID()), {
+            status: 'open', reason: 'automod', reasonNote: reason,
+            chatRoom: room, chatMsgId: null,
+            chatMsgText: text, chatMsgAuthor: author ?? null, chatMsgUid: arc.uid, chatMsgType: 'msg',
+            reportedBy: arc.uid, reportedAt: arc.serverTimestamp(),
+            resolvedBy: null, resolvedAt: null, resolutionNote: null,
+        });
+    } catch (e) { console.error('[ARC] automod report:', e); }
+
+    _arcBanStatus = { status, reason, expiresAt, createdBy: 'auto-mod' };
+    document.dispatchEvent(new CustomEvent('arc:ban-status-changed', { detail: _arcBanStatus }));
+    alert(automodAlertText(hit, status, expiresAt));
+    return false;
+}
+
+// ── RATE LIMITING ─────────────────────────────────────────────────────────────
+
+const CHAT_RATE_LIMIT_MAX    = 20;     // max sends...
+const CHAT_RATE_LIMIT_WINDOW = 60000;  // ...per this many ms (1 minute)
+let _recentSendTimes = [];
+
+// True if a new chat-log entry (msg, roll, feature, poll, etc.) may be sent right now.
+// Records the send if allowed. In-memory only — resets on page reload.
+function arcRateLimitOk() {
+    const now = Date.now();
+    _recentSendTimes = _recentSendTimes.filter(t => now - t < CHAT_RATE_LIMIT_WINDOW);
+    if (_recentSendTimes.length >= CHAT_RATE_LIMIT_MAX) return false;
+    _recentSendTimes.push(now);
+    return true;
+}
 
 const EMOJI_REACTIONS_HTML = `
 <div class="chat-emoji-reactions">

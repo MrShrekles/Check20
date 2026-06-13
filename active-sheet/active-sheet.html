@@ -21,6 +21,7 @@
 
     <!-- page logic -->
     <script src="../scripts/notifications.js" defer></script>
+    <script src="../scripts/automod-wordlist.js" defer></script>
     <script src="../scripts/chat-cards.js" defer></script>
     <script type="module" src="../scripts/firebase.js"></script>
     <script src="../scripts/analytics.js" defer></script>
@@ -229,7 +230,13 @@
             <!-- FEATURES -->
             <section class="panel" id="panel-actions" role="region" aria-label="Features">
 
-                <!-- Resources — always at top -->
+                <!-- Tab row: Class | Equipment — at top -->
+                <div class="feat-tab-row">
+                    <button class="feat-tab is-active" data-feat-tab="class" type="button">Class</button>
+                    <button class="feat-tab"           data-feat-tab="equip" type="button">Equipment</button>
+                </div>
+
+                <!-- Resources -->
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Resources</h2>
@@ -276,12 +283,6 @@
                         </div>
                         <div id="custom-res-pills"></div>
                     </div>
-                </div>
-
-                <!-- Tab row: Class | Equipment -->
-                <div class="feat-tab-row">
-                    <button class="feat-tab is-active" data-feat-tab="class" type="button">Class</button>
-                    <button class="feat-tab"           data-feat-tab="equip" type="button">Equipment</button>
                 </div>
 
                 <!-- Class tab -->
@@ -487,27 +488,25 @@
 
             <!-- REFERENCE -->
             <section class="panel" id="panel-ref" role="region" aria-label="Reference">
-                <div class="section">
-                    <div class="ref-tab-row">
-                        <button class="ref-tab is-active" data-ref-tab="tables" type="button">Damage Tables</button>
-                        <button class="ref-tab" data-ref-tab="conditions" type="button">Conditions</button>
-                        <button class="ref-tab" data-ref-tab="actions" type="button">Actions</button>
-                    </div>
+                <div class="ref-tab-row">
+                    <button class="ref-tab is-active" data-ref-tab="tables" type="button">Damage Tables</button>
+                    <button class="ref-tab" data-ref-tab="conditions" type="button">Conditions</button>
+                    <button class="ref-tab" data-ref-tab="actions" type="button">Actions</button>
+                </div>
 
-                    <!-- Damage Tables -->
-                    <div class="ref-tab-content is-active" id="ref-tab-tables">
-                        <div class="ref-tables-grid" id="ref-tables-grid"></div>
-                    </div>
+                <!-- Damage Tables -->
+                <div class="ref-tab-content is-active" id="ref-tab-tables">
+                    <div class="ref-tables-grid" id="ref-tables-grid"></div>
+                </div>
 
-                    <!-- Conditions -->
-                    <div class="ref-tab-content" id="ref-tab-conditions">
-                        <div class="ref-conditions-list" id="ref-conditions-list"></div>
-                    </div>
+                <!-- Conditions -->
+                <div class="ref-tab-content" id="ref-tab-conditions">
+                    <div class="ref-conditions-list" id="ref-conditions-list"></div>
+                </div>
 
-                    <!-- Actions -->
-                    <div class="ref-tab-content" id="ref-tab-actions">
-                        <div class="ref-actions-list" id="ref-actions-list"></div>
-                    </div>
+                <!-- Actions -->
+                <div class="ref-tab-content" id="ref-tab-actions">
+                    <div class="ref-actions-list" id="ref-actions-list"></div>
                 </div>
             </section>
 
@@ -656,7 +655,7 @@
                     <div class="nar-tool-panel" id="player-target-panel" hidden>
                         <div class="voice-list" id="player-target-list"></div>
                     </div>
-                    <div class="chat-input-row">
+                    <div class="chat-input-row" id="chat-input-row">
                         <div class="chat-tool-btns">
                             <button class="chat-tool-btn" id="player-dice-btn" type="button" aria-label="Dice roller" title="Dice roller">🎲</button>
                             <button class="chat-tool-btn" id="emoji-btn" type="button" aria-label="Emoji">😊</button>

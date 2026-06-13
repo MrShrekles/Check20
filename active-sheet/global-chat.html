@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>ARC20 — The Speakeasy</title>
+    <link rel="icon" href="../assets/icons/check20-app.png" type="image/png" />
+    <link rel="apple-touch-icon" href="../assets/icons/check20-app.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#1b2c2c" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="ARC20" />
+    <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
+    <link rel="stylesheet" href="../styles/home.css" />
+    <link rel="stylesheet" href="../styles/global-chat.css" />
+    <script type="module" src="../scripts/firebase.js"></script>
+    <script src="../scripts/automod-wordlist.js" defer></script>
+    <script src="../scripts/chat-cards.js" defer></script>
+    <script src="../scripts/global-chat.js" defer></script>
+</head>
+
+<body class="gc-body">
+
+    <div class="gc-header">
+        <a href="home.html" class="gc-back">← Back</a>
+        <span class="gc-title">🥃 The Speakeasy</span>
+        <button id="gc-online-btn" class="gc-online-btn" type="button">
+            <span class="gc-online-dot"></span>
+            <span id="gc-online-count">0</span>
+        </button>
+    </div>
+
+    <div id="gc-online-panel" class="gc-online-panel" hidden>
+        <div class="gc-online-title">Online Now</div>
+        <ul id="gc-online-list" class="gc-online-list"></ul>
+    </div>
+
+    <main class="gc-main">
+        <ol class="chat-log" id="chat-log" aria-label="Town Square chat"></ol>
+    </main>
+
+    <div class="gc-sticky-bottom">
+        <div class="nar-tool-panel" id="gc-dice-panel" hidden>
+            <div class="dice-roller">
+                <div class="dice-top-row">
+                    <label class="dice-count-field">
+                        <span class="dice-mult-label">×</span>
+                        <input class="dice-count-input" id="gc-dice-count" type="number" inputmode="numeric" min="1" max="20" value="1" />
+                    </label>
+                    <select class="dice-type-select" id="gc-dice-type">
+                        <option value="4">d4</option>
+                        <option value="6">d6</option>
+                        <option value="8">d8</option>
+                        <option value="10">d10</option>
+                        <option value="12">d12</option>
+                        <option value="20" selected>d20</option>
+                        <option value="100">d%</option>
+                    </select>
+                    <label class="dice-bonus-field">
+                        <span class="dice-bonus-label">+</span>
+                        <input class="dice-bonus-input" id="gc-dice-bonus" type="number" inputmode="numeric" value="0" />
+                    </label>
+                    <button class="dice-roll-btn" id="btn-gc-dice-roll" type="button">Roll</button>
+                </div>
+            </div>
+        </div>
+        <div class="emoji-panel" id="emoji-panel" hidden></div>
+        <div class="chat-input-row" id="chat-input-row">
+            <div class="chat-tool-btns">
+                <button class="chat-tool-btn" id="gc-dice-btn" type="button" aria-label="Dice roller" title="Dice roller">🎲</button>
+                <button class="chat-tool-btn" id="emoji-btn" type="button" aria-label="Emoji">😊</button>
+            </div>
+            <div class="chat-msg-row">
+                <input id="chat-msg-input" type="text" placeholder="Say something to everyone…" autocomplete="off" />
+                <button class="chat-send-btn" id="btn-send-msg" type="button">Send</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -17302,7 +17302,7 @@
               "action": "Action",
               "check": "",
               "range": "",
-              "description": "A collapsed star-spirit trailing gravitational chain. On arrival, one creature within short range makes a Physical Check and is dragged 10 ft towards the Anchorborn and takes [[2d6]] piercing damage or half the damage and distance per success. When it fades, the ground within reach spiked and deals [[2]] piercing damage when entered.",
+              "description": "A collapsed star-spirit trailing gravitational chain. On arrival, one creature in short range is dragged 5 feet toward it and takes [[1d4]] impact damage. When it fades, the ground within reach becomes difficult terrain.",
               "duration": "",
               "damage": "1d4",
               "damageType": "Impact",

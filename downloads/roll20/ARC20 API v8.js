@@ -843,29 +843,33 @@ on('chat:message', function (msg) {
         setAttr('ranged-equipped', data.ranged.equipped ? '1' : '0');
     }
 
-    // Feature as a repeating AE entry
-    if (data.feature && data.feature.name) {
-        const rowId = generateRowID();
-        const prefix = `repeating_AEs_${rowId}`;
+    // Features as repeating AE entries (primary feature + extras array)
+    const allFeats = [];
+    if (data.feature && data.feature.name) allFeats.push(data.feature);
+    if (Array.isArray(data.features)) data.features.filter(f => f && f.name).forEach(f => allFeats.push(f));
 
-        createObj('attribute', { characterid: cid, name: `${prefix}_AE`,            current: 'Feature' });
-        createObj('attribute', { characterid: cid, name: `${prefix}_AETitle`,        current: 'Feature' });
-        createObj('attribute', { characterid: cid, name: `${prefix}_AEName`,         current: data.feature.name });
-        createObj('attribute', { characterid: cid, name: `${prefix}_AE-action`,      current: data.feature.action || 'Action' });
-        createObj('attribute', { characterid: cid, name: `${prefix}_AERange`,        current: data.feature.range  || 'Melee' });
-        createObj('attribute', { characterid: cid, name: `${prefix}_AEDescription`,  current: data.feature.effect || '' });
-        createObj('attribute', { characterid: cid, name: `${prefix}_AEDamage`,       current: '' });
-        createObj('attribute', { characterid: cid, name: `${prefix}_damageType`,     current: data.feature.damage || '' });
-
-        // Register row in reporder so Roll20 renders it
+    if (allFeats.length) {
         const reporderKey = '_reporder_repeating_AEs';
+        const newRowIds = allFeats.map(feat => {
+            const rowId = generateRowID();
+            const prefix = `repeating_AEs_${rowId}`;
+            createObj('attribute', { characterid: cid, name: `${prefix}_AE`,            current: 'Feature' });
+            createObj('attribute', { characterid: cid, name: `${prefix}_AETitle`,        current: 'Feature' });
+            createObj('attribute', { characterid: cid, name: `${prefix}_AEName`,         current: feat.name });
+            createObj('attribute', { characterid: cid, name: `${prefix}_AE-action`,      current: feat.action || 'Action' });
+            createObj('attribute', { characterid: cid, name: `${prefix}_AERange`,        current: feat.range  || 'Melee' });
+            createObj('attribute', { characterid: cid, name: `${prefix}_AEDescription`,  current: feat.effect || '' });
+            createObj('attribute', { characterid: cid, name: `${prefix}_AEDamage`,       current: '' });
+            createObj('attribute', { characterid: cid, name: `${prefix}_damageType`,     current: feat.damage || '' });
+            return rowId;
+        });
         const reporder = findObjs({ type: 'attribute', characterid: cid, name: reporderKey })[0];
         if (reporder) {
             const list = (reporder.get('current') || '').split(',').filter(Boolean);
-            list.push(rowId);
+            newRowIds.forEach(id => list.push(id));
             reporder.set('current', list.join(','));
         } else {
-            createObj('attribute', { characterid: cid, name: reporderKey, current: rowId });
+            createObj('attribute', { characterid: cid, name: reporderKey, current: newRowIds.join(',') });
         }
     }
 

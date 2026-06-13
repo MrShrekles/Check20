@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>ARC20 — The Seven</title>
+    <link rel="icon" href="../assets/icons/check20-app.png" type="image/png" />
+    <link rel="apple-touch-icon" href="../assets/icons/check20-app.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#1b2c2c" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="ARC20" />
+    <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
+    <link rel="stylesheet" href="../styles/home.css" />
+    <link rel="stylesheet" href="../styles/moderation.css" />
+    <script type="module" src="../scripts/firebase.js"></script>
+    <script src="../scripts/moderation.js" defer></script>
+</head>
+
+<body class="mod-body">
+
+    <div class="mod-header">
+        <a href="home.html" class="mod-back">← Back</a>
+        <span class="mod-title">♠ The Seven</span>
+        <span class="mod-header-spacer"></span>
+    </div>
+
+    <main class="mod-main">
+        <p class="mod-empty" id="mod-loading">Loading…</p>
+
+        <div id="gate" hidden>
+            <h1>Restricted Area</h1>
+            <p>This page is for ARC20's moderation team only.</p>
+            <input type="password" id="gate-pw" placeholder="Passcode" autocomplete="off" />
+            <button class="mod-btn mod-btn--warn" id="gate-btn" type="button">Enter</button>
+            <span class="mod-err" id="gate-err" hidden>Incorrect passcode.</span>
+            <div class="mod-divider">— or, if you're already one of The Seven —</div>
+            <button class="mod-btn" id="gate-google-btn" type="button">Sign in with Google</button>
+            <span class="mod-err" id="gate-google-err" hidden></span>
+        </div>
+
+        <div id="dashboard" hidden>
+            <div class="mod-section" id="link-google-section" hidden>
+                <h2>Account Recovery</h2>
+                <p class="mod-hint">Link a Google account so you can sign back in as The Seven from another device.</p>
+                <button class="mod-btn" id="btn-link-google" type="button">Link Google Account</button>
+                <span class="mod-status" id="link-google-status"></span>
+            </div>
+
+            <div class="mod-section">
+                <h2>Open Reports</h2>
+                <div id="reports-list"><p class="mod-empty">Loading…</p></div>
+            </div>
+
+            <div class="mod-section">
+                <h2>Current Bans / Mutes</h2>
+                <div id="bans-list"><p class="mod-empty">Loading…</p></div>
+            </div>
+
+            <div class="mod-section">
+                <h2>The Seven — Roster</h2>
+                <div id="roster-list"><p class="mod-empty">Loading…</p></div>
+            </div>
+
+            <div class="mod-section">
+                <h2>Auto-Mod Activity</h2>
+                <div id="strikes-list"><p class="mod-empty">Loading…</p></div>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>

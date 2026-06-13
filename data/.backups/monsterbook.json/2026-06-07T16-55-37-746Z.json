@@ -7670,51 +7670,6 @@
     "art": ""
   },
   {
-    "name": "Shatterhorn ",
-    "_group": "Chainbinder",
-    "origin": "Celestial",
-    "size": "Medium",
-    "rarity": "Epic",
-    "environment": "summon",
-    "behavior": "Neutral",
-    "description": "an elemental bull made from stone and ore plates",
-    "lore": "",
-    "motivation": "",
-    "pl": 6,
-    "check_physical": 6,
-    "check_mental": 0,
-    "walk": 30,
-    "fly": 0,
-    "swim": 0,
-    "climb": 0,
-    "feature_name": "Summon Armored",
-    "feature_type": "Special",
-    "feature_range": "Reach",
-    "feature_effect": "On Arrival, you charge in a short range in a line, dealing [[1d6]] Impact damage to the first creature struck and knocking them Prone",
-    "feature_duration": "Until end of their next turn",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "Horn Pierce",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Piercing"
-    },
-    "ranged_attack": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "spell": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "features": [],
-    "art": ""
-  },
-  {
     "name": "Lantern Saint",
     "_group": "Chainbinder",
     "origin": "Celestial",

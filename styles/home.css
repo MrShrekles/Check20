@@ -302,6 +302,23 @@ body {
 .save-btn--del  { color: #e07070; border-color: rgba(200,80,80,0.35); }
 .save-btn:active { transform: scale(0.95); }
 
+.saves-toggle-btn {
+    width: 100%;
+    min-height: 34px;
+    border-radius: 8px;
+    border: 1px dashed rgba(70, 100, 100, 0.4);
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    font-family: inherit;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.saves-toggle-btn:active { background: rgba(70, 100, 100, 0.12); }
+
 /* ── JOIN SESSION ──────────────────────────────────────────────── */
 
 .home-join-row {
