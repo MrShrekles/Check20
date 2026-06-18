@@ -515,9 +515,7 @@ function populatePathTalentSelects(className) {
 }
 
 // ── WEAPON MODAL ──────────────────────────────────────────────────────────────
-
-const DAMAGE_TYPES = ['Impact', 'Piercing', 'Slashing', 'Solar', 'Acid', 'Eclipse', 'Fire', 'Ice', 'Lightning', 'Thunder', 'Toxic', 'Fluid', 'Nature', 'Psychic', 'Vozian', 'Healing'];
-const RANGES = ['Melee', 'Reach', 'Short', 'Medium', 'Long', 'Visible'];
+// DAMAGE_TYPES / RANGES now live in chat-cards.js (shared with narrator.js).
 
 function parseWeaponData(item) {
     if (item.damage !== undefined) return item; // already structured
@@ -884,7 +882,7 @@ function bindSpellsPanel() {
     });
 
     // Favourite toggle + spell cast modal delegation
-    document.getElementById('panel-spells')?.addEventListener('click', e => {
+    document.getElementById('feat-tab-spells')?.addEventListener('click', e => {
         // Favourite star
         const favBtn = e.target.closest('[data-fav-spell]');
         if (favBtn) {
@@ -1184,7 +1182,7 @@ function rollAndShowRefTable(type, resultElId) {
         el.innerHTML = `<div class="ref-quick-res-inner">
             <span class="ref-quick-num">d6 → ${roll}</span>
             <span class="ref-quick-entry">${table.icon || ''} ${type}: <strong>${result}</strong></span>
-            <button class="ghost-btn" style="margin-top:6px" data-post-result="${type}|${roll}|${result}" type="button">→ Chat</button>
+            <button class="ghost-btn u-mt-6" data-post-result="${type}|${roll}|${result}" type="button">→ Chat</button>
         </div>`;
 
         el.querySelector('[data-post-result]')?.addEventListener('click', () => {
@@ -1231,7 +1229,7 @@ function openSpellRollModal(spell, intent) {
                 type="button" data-check-mod="${total}" data-check-label="${c.label}">
                 ${c.label} ${fmtSigned(total)}</button>`;
         }).join('')
-        : `<span style="font-size:12px;color:var(--muted)">No check available</span>`;
+        : `<span class="srm-check-chips-empty">No check available</span>`;
 
     // Stat row
     const diceMatch = (intent.effect || '').match(/\[\[(\d+d\d+[!]?(?:[+-]\d+)?)\]\]/i);
@@ -1244,7 +1242,7 @@ function openSpellRollModal(spell, intent) {
     // Description
     const descEl = document.getElementById('srm-desc');
     descEl.textContent = intent.effect || '';
-    descEl.style.display = intent.effect ? '' : 'none';
+    descEl.hidden = !intent.effect;
 
     // Roll type reset + condition pre-selection
     document.querySelectorAll('#srm-roll-seg .roll-seg-btn').forEach(b => b.classList.remove('is-sel'));
@@ -1434,11 +1432,11 @@ function buildThemeSliders(a1, a2) {
             <span class="hue-preview" id="prev-${key}" style="background:${hex}"></span>
         </div>`;
     return `
-        <div class="wm-label" style="margin-bottom:6px">Primary</div>
+        <div class="wm-label">Primary</div>
         ${row('a1', a1, sl1)}
-        <div class="wm-label" style="margin:12px 0 6px">Secondary</div>
+        <div class="wm-label u-mt-12">Secondary</div>
         ${row('a2', a2, sl2)}
-        <button id="btn-reset-theme" class="settings-action-btn" style="margin-top:14px;border-color:rgba(70,100,100,0.45);color:var(--cream);">↺ Reset to Default Theme</button>`;
+        <button id="btn-reset-theme" class="settings-action-btn settings-action-btn--reset-theme">↺ Reset to Default Theme</button>`;
 }
 
 function wireThemeSliders(getA1, getA2, onSave) {
@@ -1741,6 +1739,7 @@ function setFeatTab(target) {
     document.querySelectorAll('.feat-tab-content').forEach(c =>
         c.classList.toggle('is-active', c.id === `feat-tab-${target}`));
     if (target === 'class') renderSpeciesView();
+    if (target === 'spells') renderSpellsPanel();
     if (state.char) state.char.featTab = target;
 }
 
@@ -2051,7 +2050,7 @@ function renderOtherGains() {
             <div class="row drag-row" data-drag-idx="${i}">
                 <span class="drag-handle" title="Drag to reorder">⠿</span>
                 <span class="check-row-label">${g}</span>
-                <button class="check-adj" data-remove-gain="${i}" style="color:#ff6060" aria-label="Remove">✕</button>
+                <button class="check-adj check-adj--remove" data-remove-gain="${i}" aria-label="Remove">✕</button>
             </div>`).join('')
         : '<p class="empty-hint">Items gained during play</p>';
     const el1 = document.getElementById('other-gains-list');
@@ -2101,8 +2100,8 @@ function renderEquipment() {
             <div class="equip-info">
                 <div class="equip-row-name">${item.name} ${catLabel}</div>
                 ${item.notes ? `<div class="equip-row-notes">${item.notes}</div>` : ''}
-                ${item.flavor ? `<div class="equip-row-notes" style="color:var(--muted)">${item.flavor}</div>` : ''}
-                ${modTags ? `<div class="equip-row-notes" style="color:var(--accent)">${modTags}</div>` : ''}
+                ${item.flavor ? `<div class="equip-row-notes">${item.flavor}</div>` : ''}
+                ${modTags ? `<div class="equip-row-notes equip-row-notes--accent">${modTags}</div>` : ''}
             </div>
             <div class="equip-row-actions">
                 ${rollBtn}
@@ -2111,7 +2110,7 @@ function renderEquipment() {
                     data-desc="${esc(item.flavor || item.notes || '')}"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
                 ${isArmor ? `<button class="step-action-btn" type="button" title="Edit"
                     data-action="edit-armor" data-equip-index="${i}">✎</button>` : ''}
-                <button class="step-action-btn" type="button" style="color:#ff6060"
+                <button class="step-action-btn step-action-btn--danger" type="button"
                     data-action="del-equip" data-equip-index="${i}" aria-label="Remove">✕</button>
             </div>
         </div>`;
@@ -2143,14 +2142,14 @@ function renderInventory() {
             <div class="equip-info">
                 <div class="equip-row-name">${item.name}</div>
                 ${item.notes ? `<div class="equip-row-notes">${item.notes}</div>` : ''}
-                ${modTags ? `<div class="equip-row-notes" style="color:var(--accent)">${modTags}</div>` : ''}
+                ${modTags ? `<div class="equip-row-notes equip-row-notes--accent">${modTags}</div>` : ''}
             </div>
             <div class="equip-row-actions">
                 ${rollBtn}
                 <button class="step-action-btn" type="button" title="Send to chat"
                     data-action="chat" data-name="${esc(item.name)}"
                     data-desc="${esc(item.notes || '')}"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
-                <button class="step-action-btn" type="button" style="color:#ff6060"
+                <button class="step-action-btn step-action-btn--danger" type="button"
                     data-action="del-equip" data-equip-index="${i}" aria-label="Remove">✕</button>
             </div>
         </div>`;
@@ -2294,9 +2293,10 @@ function saveState() {
 
 // ── FIREBASE: PARTY SESSION ───────────────────────────────────────────────────
 
-let _partyUnsub = null;
-let _lootUnsub  = null;
-let _roomUnsub  = null;
+let _partyUnsub    = null;
+let _lootUnsub     = null;
+let _handoutsUnsub = null;
+let _roomUnsub     = null;
 
 let sharedChatMsgs = [];
 let _chatUnsub     = null;
@@ -2354,9 +2354,11 @@ async function broadcastChatEntry(entry) {
 }
 
 function renderSharedChat() {
-    const el = document.getElementById('chat-log');
+    const el       = document.getElementById('chat-log');
+    const scroller = document.getElementById('chat-sub-messages');
     if (!el || !localStorage.getItem('arc-room')) return;
 
+    const wasAtTop = !scroller || scroller.scrollTop <= 60;
     el.innerHTML = '';
 
     if (!sharedChatMsgs.length) {
@@ -2421,6 +2423,8 @@ function renderSharedChat() {
         }
         el.appendChild(li);
     });
+
+    if (wasAtTop && scroller) scroller.scrollTop = 0;
 }
 
 async function togglePlayerReaction(msgId, emoji) {
@@ -2444,7 +2448,8 @@ document.addEventListener('arc:firebase-ready', () => {
     const arc = window.__arc;
     const badgeEl = document.getElementById('player-room-badge');
     if (badgeEl) badgeEl.textContent = room;
-    document.getElementById('party-session-panel').hidden = false;
+    document.getElementById('journal-empty').hidden = true;
+    document.getElementById('journal-session').hidden = false;
 
     // Intercept every chat push to broadcast to Firestore + inject target if set
     const _origUnshift = state.chat.unshift.bind(state.chat);
@@ -2525,6 +2530,12 @@ document.addEventListener('arc:firebase-ready', () => {
         snap => renderPlayerLoot(snap.docs.map(d => ({ id: d.id, ...d.data() }))),
     );
 
+    // Listen to handouts
+    _handoutsUnsub = arc.onSnapshot(
+        arc.collection(arc.db, 'rooms', room, 'handouts'),
+        snap => renderPlayerHandouts(snap.docs.map(d => ({ id: d.id, ...d.data() }))),
+    );
+
     // Listen to room doc for gold + emoji reactions
     _roomUnsub = arc.onSnapshot(
         arc.doc(arc.db, 'rooms', room),
@@ -2547,6 +2558,7 @@ document.addEventListener('arc:firebase-ready', () => {
             }
 
             renderEncounterReadonly(data);
+            renderPlayerCast(data.characters || []);
         },
     );
 
@@ -2576,7 +2588,7 @@ function buildPlayerTargetPanel() {
     if (!list) return;
     const enc = _lastEncounterData?.encounter || [];
     const targets = enc.filter(e => !e.hidden && e.type !== 'player').map(e => e.name);
-    if (!targets.length) { list.innerHTML = '<p class="empty-hint" style="padding:8px">No targets yet.</p>'; return; }
+    if (!targets.length) { list.innerHTML = '<p class="empty-hint empty-hint--pad8">No targets yet.</p>'; return; }
     list.innerHTML = targets.map(t =>
         `<button class="voice-pick-btn${playerTarget === t ? ' is-active' : ''}" data-target="${t}" type="button">🎯 ${t}</button>`
     ).join('');
@@ -2593,8 +2605,10 @@ function renderEncounterReadonly(data) {
     _lastEncounterData = data;
     const listEl  = document.getElementById('player-encounter-list');
     const roundEl = document.getElementById('player-enc-round');
+    const timeEl  = document.getElementById('player-enc-time');
     const turnBar = document.getElementById('player-enc-turn-bar');
     const nameEl  = document.getElementById('player-enc-active-name');
+    const nextBtn = document.getElementById('player-next-turn-btn');
     if (!listEl) return;
 
     const enc = data.encounter || [];
@@ -2602,18 +2616,23 @@ function renderEncounterReadonly(data) {
     const turnIndex = data.encounterTurnIndex ?? 0;
 
     if (roundEl) roundEl.textContent = round;
+    if (timeEl)  timeEl.textContent  = encTime(round);
 
     if (!enc.length) {
         listEl.innerHTML = '<p class="empty-hint">No encounter in progress.</p>';
         if (turnBar) turnBar.hidden = true;
+        if (nextBtn) nextBtn.hidden = true;
         return;
     }
 
-    const sorted = [...enc].sort((a, b) => (b.initiative || 0) - (a.initiative || 0));
-    const activeIdx = turnIndex % sorted.length;
-    const active = sorted[activeIdx];
-    const activeName = active?.hidden ? '???' : (active?.name || '—');
-    const activeType = active?.type || 'enemy';
+    // Visual order keeps every individual card (incl. enemies); turn order
+    // groups all enemies into one "Enemy Turn" entry, matching the narrator's view.
+    const visualSorted = [...enc].sort((a, b) => (b.initiative || 0) - (a.initiative || 0));
+    const grouped = groupedTurnOrder(enc);
+    const activeIdx = grouped.length ? turnIndex % grouped.length : 0;
+    const active = grouped[activeIdx];
+    const activeName = active?.hidden ? '???' : (active?._isEnemyGroup ? 'Enemy Turn' : (active?.name || '—'));
+    const activeType = active?._isEnemyGroup ? 'enemy' : active?._isNpcGroup ? 'npc' : (active?.type || 'enemy');
 
     if (turnBar) {
         turnBar.hidden = false;
@@ -2621,9 +2640,16 @@ function renderEncounterReadonly(data) {
     }
     if (nameEl) nameEl.textContent = activeName;
 
-    listEl.innerHTML = sorted.map((c, i) => {
+    const myTurn = active?.type === 'player' && active.name === state.char?.name;
+    if (nextBtn) nextBtn.hidden = !myTurn;
+
+    listEl.innerHTML = visualSorted.map(c => {
         if (c.hidden) return '';
-        const isActive = i === activeIdx;
+        const isActive = active?._isEnemyGroup
+            ? (c.type !== 'player' && c.type !== 'event' && c.type !== 'npc')
+            : active?._isNpcGroup
+                ? c.type === 'npc'
+                : active?.id === c.id;
         const hp    = c.hp ?? c.maxHp ?? 0;
         const maxHp = c.maxHp || 1;
         const pct   = maxHp > 0 ? Math.max(0, Math.min(100, Math.round((hp / maxHp) * 100))) : 0;
@@ -2631,18 +2657,19 @@ function renderEncounterReadonly(data) {
         const conds = (c.conditions || []).join(' · ');
         const isPlayer = c.type === 'player';
         const isEvent  = c.type === 'event';
+        const isNpc    = c.type === 'npc';
         const isTargeted = playerTarget === c.name;
-        return `<div class="enc-card${isActive ? ' enc-card--active' : ''}${isPlayer ? ' enc-card--player' : ''}${isEvent ? ' enc-card--event' : ''}${isTargeted ? ' enc-card--targeted' : ''}" data-set-target="${c.name}" style="cursor:pointer">
+        return `<div class="enc-card${isActive ? ' enc-card--active' : ''}${isPlayer ? ' enc-card--player' : ''}${isEvent ? ' enc-card--event' : ''}${isNpc ? ' enc-card--npc' : ''}${isTargeted ? ' enc-card--targeted' : ''}${c.defeated ? ' enc-card--defeated' : ''} enc-card--clickable" data-set-target="${c.name}">
             <div class="enc-card-row">
-                <span class="enc-init-badge${isPlayer ? ' enc-init-badge--player' : ''}">${c.initiative || 0}</span>
+                <span class="enc-init-badge${isPlayer ? ' enc-init-badge--player' : ''}${isNpc ? ' enc-init-badge--npc' : ''}">${c.initiative || 0}</span>
                 <div class="enc-mon-info">
                     <span class="enc-name">${c.name}</span>
                     ${conds ? `<span class="enc-readonly-conds">${conds}</span>` : ''}
                 </div>
-                ${isTargeted ? '<span class="enc-readonly-active-tag" style="color:#ff8080">🎯</span>' : isActive ? '<span class="enc-readonly-active-tag">▶</span>' : ''}
+                ${isTargeted ? '<span class="enc-readonly-active-tag enc-readonly-active-tag--targeted">🎯</span>' : isActive ? '<span class="enc-readonly-active-tag">▶</span>' : ''}
             </div>
             ${!isEvent && maxHp > 0 ? `
-            <div class="enc-hp-controls" style="pointer-events:none;opacity:0.8">
+            <div class="enc-hp-controls enc-hp-controls--readonly">
                 <span class="enc-hp">${hp}<span class="enc-hp-max">/${maxHp}</span></span>
                 <div class="enc-hp-bar-track enc-hp-bar-inline"><div class="enc-hp-bar-fill" style="width:${pct}%;background:${barClr}"></div></div>
             </div>` : ''}
@@ -2659,6 +2686,36 @@ function renderEncounterReadonly(data) {
         });
     });
 }
+
+// Player-gated "End My Turn" — only enabled when it's this player's turn (see renderEncounterReadonly)
+document.getElementById('player-next-turn-btn')?.addEventListener('click', async () => {
+    const arc  = window.__arc;
+    const room = localStorage.getItem('arc-room');
+    if (!arc?.db || !room) return;
+
+    const data = _lastEncounterData || {};
+    const enc  = data.encounter || [];
+    const sorted = groupedTurnOrder(enc);
+    if (!sorted.length) return;
+
+    let turnIndex = (data.encounterTurnIndex ?? 0) + 1;
+    let round     = data.encounterRound || 1;
+    if (turnIndex >= sorted.length) { turnIndex = 0; round++; }
+
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', room), {
+            encounterTurnIndex: turnIndex, encounterRound: round,
+        });
+    } catch(e) { console.error('[ARC] advance turn failed:', e); return; }
+
+    const next = sorted[turnIndex % sorted.length];
+    if (next && !next.hidden) {
+        broadcastChatEntry({
+            type: 'turn', name: next._isEnemyGroup ? 'Enemy Turn' : next.name,
+            round, time: chatTimestamp(),
+        });
+    }
+});
 
 function renderPlayerParty(players) {
     const el = document.getElementById('player-party-list');
@@ -2678,20 +2735,72 @@ function renderPlayerParty(players) {
     }).join('');
 }
 
+// Read-only roster of NPCs/Minions the narrator has revealed (nar.characters,
+// synced minus any entry the narrator has marked hidden).
+function renderPlayerCast(characters) {
+    const el = document.getElementById('player-cast-list');
+    if (!el) return;
+    if (!characters.length) { el.innerHTML = '<p class="empty-hint">No one else around right now.</p>'; return; }
+    el.innerHTML = characters.map(c => {
+        const conds = (c.conditions || []).map(cd => `<span class="cast-cond-tag">${condChip(cd)}</span>`).join('');
+        const hasHp = c.role === 'minion' && (c.maxHp || 0) > 0;
+        const pct   = hasHp ? Math.max(0, Math.min(100, Math.round((c.hp / c.maxHp) * 100))) : 0;
+        return `<div class="cast-card">
+            <div class="cast-card-row">
+                <span class="cast-name">${c.name}</span>
+                <span class="cast-role-badge cast-role-badge--${c.role}">${c.role}</span>
+            </div>
+            ${hasHp ? `<div class="cast-hp-row">
+                <div class="cast-hp-bar-track"><div class="cast-hp-bar-fill" style="width:${pct}%"></div></div>
+                <span class="cast-hp-val">${c.hp}/${c.maxHp}</span>
+            </div>` : ''}
+            ${conds ? `<div class="cast-cond-tags">${conds}</div>` : ''}
+        </div>`;
+    }).join('');
+}
+
+function renderPlayerHandouts(items) {
+    const el = document.getElementById('player-handouts-list');
+    if (!el) return;
+    if (!items.length) { el.innerHTML = '<p class="empty-hint">No handouts yet.</p>'; return; }
+    const sorted = [...items].sort((a, b) => (b.postedAt?.toMillis?.() || 0) - (a.postedAt?.toMillis?.() || 0));
+    el.innerHTML = sorted.map(h => `
+        <div class="handout-card">
+            <div class="handout-head">
+                <div class="handout-title">${h.title}</div>
+                <button class="handout-toggle" data-cid="handout-${h.id}" type="button">▾</button>
+            </div>
+            <div class="handout-body" id="handout-${h.id}-exp" hidden>${parseHandoutMarkdown(h.body || '')}</div>
+        </div>`).join('');
+
+    el.querySelectorAll('.handout-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const exp = document.getElementById(btn.dataset.cid + '-exp');
+            if (!exp) return;
+            exp.hidden = !exp.hidden;
+            btn.textContent = exp.hidden ? '▾' : '▴';
+        });
+    });
+}
+
 function renderPlayerLoot(items) {
     const el = document.getElementById('player-loot-list');
     if (!el) return;
     if (!items.length) { el.innerHTML = '<p class="empty-hint">No items in party inventory.</p>'; return; }
-    el.innerHTML = items.map(item => `
+    el.innerHTML = items.map(item => {
+        const cat = item.category && item.category !== 'gear'
+            ? `<span class="equip-cat-badge equip-cat-${item.category}">${item.category}</span>` : '';
+        return `
         <div class="inv-row">
             <div class="inv-name-col">
-                <span class="inv-name">${item.name}</span>
+                <span class="inv-name">${item.name}${cat}</span>
                 ${item.desc ? `<span class="inv-desc">${item.desc}</span>` : ''}
             </div>
             <span class="inv-amount">×${item.amount}</span>
             <span class="inv-bulk">${((item.bulk||0)*(item.amount||1)).toFixed(1).replace(/\.0$/,'')} bulk</span>
             <button class="inv-claim-btn" data-loot-id="${item.id}">Claim</button>
-        </div>`).join('');
+        </div>`;
+    }).join('');
 
     el.querySelectorAll('[data-loot-id]').forEach(btn => {
         btn.addEventListener('click', async () => {
@@ -2702,10 +2811,31 @@ function renderPlayerLoot(items) {
             const item = items.find(x => x.id === id);
             if (!item) return;
 
-            // 1. Add to personal inventory
-            state.equipment.push({ name: item.name, notes: item.desc || '', category: 'gear' });
+            // 1. Add to personal inventory, sorted into the right equipment category
+            const category = item.category || inferEquipCategory(item.name, item.desc);
+            let entry;
+            if (category === 'weapon') {
+                entry = {
+                    name: item.name, category: 'weapon',
+                    damage: item.damage || '', damageType: item.damageType || '',
+                    range: item.range || '', properties: item.properties || '—',
+                    check: item.check || '', attackBonus: item.attackBonus || 0, critRange: 20,
+                    notes: [item.damage, item.damageType, item.range].filter(Boolean).join(' · '),
+                    flavor: item.desc || '',
+                };
+            } else if (category === 'armor') {
+                entry = {
+                    name: item.name, category: 'armor',
+                    notes: item.notes || '', armorRating: item.armorRating || 0,
+                    flavor: item.desc || '',
+                };
+            } else {
+                entry = { name: item.name, notes: item.desc || '', category: 'gear' };
+            }
+            state.equipment.push(entry);
             saveState();
-            renderInventory();
+            if (category === 'armor') recalcArmorBonuses();
+            renderEquipment(); calcDerived();
 
             // 2. Announce in shared chat
             broadcastChatEntry({
@@ -2807,7 +2937,7 @@ function cacheEls() {
     els.panels = {
         play: document.getElementById('panel-play'),
         actions: document.getElementById('panel-actions'),
-        spells: document.getElementById('panel-spells'),
+        journal: document.getElementById('panel-journal'),
         ref: document.getElementById('panel-ref'),
         progression: document.getElementById('panel-progression'),
         chat: document.getElementById('panel-chat'),
@@ -2880,13 +3010,14 @@ function setActivePanel(key) {
     els.navBtns.forEach(b => b.classList.toggle('is-active', b.dataset.nav === key));
     // play-tab-bio sits outside panel-play in the DOM; manually sync its visibility
     const bioCont = document.getElementById('play-tab-bio');
-    if (bioCont) bioCont.style.display = (key === 'play') ? '' : 'none';
+    if (bioCont) bioCont.hidden = key !== 'play';
     if (key === 'chat') {
         renderChat();
         const notif = document.getElementById('chat-notif');
         if (notif) notif.hidden = true;
+        const scroller = document.getElementById('chat-sub-messages');
+        if (scroller) scroller.scrollTop = 0;
     }
-    if (key === 'spells') renderSpellsPanel();
     if (key === 'ref') renderRefPanel();
 }
 
@@ -3856,14 +3987,14 @@ function loyaltyLabel(n) {
     if (n <= 4) return 'Loyal';
     return 'Devoted';
 }
-function loyaltyColor(n) {
-    if (n <= -4) return '#e06060';
-    if (n <= -2) return '#e89040';
-    if (n === -1) return '#d4c44a';
-    if (n === 0) return 'var(--muted)';
-    if (n <= 2) return '#64b4dc';
-    if (n <= 4) return '#6cc87a';
-    return '#b080e0';
+function loyaltyClass(n) {
+    if (n <= -4) return 'loyalty-hostile';
+    if (n <= -2) return 'loyalty-suspicious';
+    if (n === -1) return 'loyalty-wary';
+    if (n === 0) return 'loyalty-neutral';
+    if (n <= 2) return 'loyalty-friendly';
+    if (n <= 4) return 'loyalty-loyal';
+    return 'loyalty-devoted';
 }
 
 function renderNpcList() {
@@ -3879,13 +4010,13 @@ function renderNpcList() {
                 <span class="npc-name">${npc.name}</span>
                 <div class="npc-loyalty-row">
                     <button class="loyalty-adj loyalty-adj--sm" data-npc-loyalty="${i}" data-adj="-1" type="button">−</button>
-                    <span class="npc-loyalty" style="color:${loyaltyColor(n)}">${loyaltyLabel(n)}</span>
+                    <span class="npc-loyalty ${loyaltyClass(n)}">${loyaltyLabel(n)}</span>
                     <span class="loyalty-num">${sign}${n}</span>
                     <button class="loyalty-adj loyalty-adj--sm" data-npc-loyalty="${i}" data-adj="1" type="button">+</button>
                 </div>
                 ${npc.notes ? `<span class="npc-notes">${npc.notes}</span>` : ''}
             </div>
-            <button class="step-action-btn" style="color:#ff6060" data-del-npc="${i}" type="button">✕</button>
+            <button class="step-action-btn step-action-btn--danger" data-del-npc="${i}" type="button">✕</button>
         </div>`;
     }).join('');
 
@@ -3973,7 +4104,11 @@ function bindBio() {
     function _updateNpcLoyaltyDisplay() {
         const disp = document.getElementById('npc-loyalty-display');
         const num  = document.getElementById('npc-loyalty-num');
-        if (disp) { disp.textContent = loyaltyLabel(_npcLoyalty); disp.style.color = loyaltyColor(_npcLoyalty); }
+        if (disp) {
+            disp.textContent = loyaltyLabel(_npcLoyalty);
+            disp.classList.remove('loyalty-hostile', 'loyalty-suspicious', 'loyalty-wary', 'loyalty-neutral', 'loyalty-friendly', 'loyalty-loyal', 'loyalty-devoted');
+            disp.classList.add(loyaltyClass(_npcLoyalty));
+        }
         if (num)  num.textContent = `(${_npcLoyalty > 0 ? '+' : ''}${_npcLoyalty})`;
     }
     document.getElementById('npc-loyalty-dec')?.addEventListener('click', () => { _npcLoyalty = Math.max(-5, _npcLoyalty - 1); _updateNpcLoyaltyDisplay(); });
@@ -4127,7 +4262,7 @@ function bindProgressionPanel() {
                     <div class="equip-row-name">Delete <strong>${name}</strong>?</div>
                 </div>
                 <div class="equip-row-actions">
-                    <button class="step-edit-btn step-edit-btn--save" style="color:#ff6b6b;border-color:rgba(255,107,107,.35)"
+                    <button class="step-edit-btn step-edit-btn--save step-edit-btn--danger"
                         data-action="del-equip-yes" data-equip-index="${idx}" type="button">Delete</button>
                     <button class="step-edit-btn step-edit-btn--cancel"
                         data-action="del-equip-no" type="button">Cancel</button>
@@ -4186,7 +4321,7 @@ function bindProgressionPanel() {
                     <input type="text" class="equip-edit-name" value="${esc(item.name || '')}" placeholder="Item name…" />
                 </label>
                 ${specificFields}
-                <label class="field" style="margin-top:6px">
+                <label class="field u-mt-6">
                     <span class="field-label">Description / Flavor</span>
                     <textarea class="step-edit-desc equip-edit-desc" rows="2">${esc(item.flavor || '')}</textarea>
                 </label>

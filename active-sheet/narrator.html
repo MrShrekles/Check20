@@ -14,8 +14,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="ARC20 Narrator" />
     <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
-    <link rel="stylesheet" href="../styles/active-sheet.css" />
-    <link rel="stylesheet" href="../styles/narrator.css" />
+    <link rel="stylesheet" href="styles/active-sheet.css" />
+    <link rel="stylesheet" href="styles/narrator.css" />
     <script src="../scripts/notifications.js" defer></script>
     <script src="../scripts/automod-wordlist.js" defer></script>
     <script src="../scripts/chat-cards.js" defer></script>
@@ -28,8 +28,7 @@
         <div class="app-topbar">
             <a href="home.html" class="topbar-home" aria-label="Home">⌂</a>
             <span class="topbar-name">Narrator</span>
-            <a href="../../index.html" class="topbar-settings-btn"
-                style="display:grid;place-items:center;text-decoration:none;font-size:13px" aria-label="Main Site">Site↗</a>
+            <a href="../../index.html" class="topbar-settings-btn topbar-settings-btn--link" aria-label="Main Site">Site↗</a>
             <button class="topbar-settings-btn" id="btn-settings" type="button" aria-label="Settings">⚙</button>
         </div>
 
@@ -47,7 +46,7 @@
                 <div class="chat-sub-content" id="chat-sub-messages">
                     <div class="section">
                         <ol class="nar-chat-log" id="nar-chat-log">
-                            <li class="empty-hint" style="list-style:none">Create a session to see the shared feed.</li>
+                            <li class="empty-hint">Create a session to see the shared feed.</li>
                         </ol>
                     </div>
                 </div>
@@ -64,10 +63,10 @@
                                 <span class="init-stat-label">Minutes</span>
                                 <span class="init-stat-val" id="enc-time">0.00</span>
                             </div>
-                            <div style="display:flex;gap:6px;margin-left:auto">
+                            <div class="init-actions-row">
                                 <button class="ghost-btn" id="btn-call-init" type="button" title="Ask players to roll initiative">🎲 Init</button>
                                 <button class="ghost-btn" id="btn-next-turn" type="button">Next →</button>
-                                <button class="ghost-btn" id="btn-clear-encounter" type="button" style="color:#e05555">End</button>
+                                <button class="ghost-btn ghost-btn--danger" id="btn-clear-encounter" type="button">End</button>
                             </div>
                         </div>
                         <div class="enc-turn-bar" id="enc-turn-bar" hidden>
@@ -76,7 +75,7 @@
                         <div id="encounter-list">
                             <p class="empty-hint">No one in initiative. Add combatants below.</p>
                         </div>
-                        <details class="nar-add-form" style="margin-top:12px">
+                        <details class="nar-add-form u-mt-12">
                             <summary class="nar-add-summary">+ Add to Initiative</summary>
                             <div class="nar-form">
                                 <label class="nar-form-field"><span class="nar-form-label">Type</span>
@@ -97,9 +96,9 @@
                                     </select></label>
                                 <label class="nar-form-field" id="enc-note-field" hidden><span class="nar-form-label">Note</span>
                                     <input id="enc-note-input" type="text" placeholder="What happens…" autocomplete="off" /></label>
-                                <label class="nar-form-field" id="enc-hidden-field" hidden style="flex-direction:row;align-items:center;gap:10px">
-                                    <input type="checkbox" id="enc-hidden-check" style="width:16px;height:16px;flex-shrink:0;accent-color:var(--accent)" />
-                                    <span class="nar-form-label" style="margin:0">Hidden from players</span></label>
+                                <label class="nar-form-field nar-form-field--row" id="enc-hidden-field" hidden>
+                                    <input type="checkbox" id="enc-hidden-check" class="enc-hidden-checkbox" />
+                                    <span class="nar-form-label">Hidden from players</span></label>
                                 <div class="nar-stat-row">
                                     <label class="nar-form-field" id="enc-hp-field"><span class="nar-form-label">Max HP</span>
                                         <input id="enc-hp-input" type="number" inputmode="numeric" value="10" /></label>
@@ -189,7 +188,7 @@
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Party View</h2>
-                        <div style="display:flex;gap:6px;align-items:center">
+                        <div class="section-head-actions">
                             <button class="room-code-badge" id="room-code-badge" hidden title="Tap to copy code">
                                 <span class="room-badge-name" id="room-badge-name"></span><span class="room-badge-code" id="room-badge-code"></span>
                             </button>
@@ -211,7 +210,7 @@
                         <p class="empty-hint">No saved characters found.</p>
                     </div>
 
-                    <details class="nar-add-form" style="margin-top:8px">
+                    <details class="nar-add-form u-mt-8">
                         <summary class="nar-add-summary">+ Add Player Manually</summary>
                         <div class="nar-form">
                             <label class="nar-form-field"><span class="nar-form-label">Character Name</span>
@@ -243,10 +242,10 @@
                     <div id="character-list">
                         <p class="empty-hint">No characters added.</p>
                     </div>
-                    <details class="nar-add-form" style="margin-top:8px">
+                    <details class="nar-add-form u-mt-8">
                         <summary class="nar-add-summary">+ Add Character</summary>
                         <div class="nar-form">
-                            <div class="gen-seg" role="group" id="char-role-seg" style="margin-bottom:6px">
+                            <div class="gen-seg u-mb-6" role="group" id="char-role-seg">
                                 <button class="gen-seg-btn is-sel" data-char-role="npc" type="button">NPC</button>
                                 <button class="gen-seg-btn" data-char-role="minion" type="button">Minion</button>
                             </div>
@@ -278,7 +277,7 @@
                                     <label class="nar-form-field"><span class="nar-form-label">Origin</span>
                                         <input id="char-mn-origin" type="text" placeholder="Nature, Arcane…" autocomplete="off" /></label>
                                 </div>
-                                <p class="field-hint" id="char-hp-preview" style="margin:4px 0 0">HP: 9 (PL² = 3×3)</p>
+                                <p class="field-hint field-hint--tight" id="char-hp-preview">HP: 9 (PL² = 3×3)</p>
                             </div>
                         </div>
                         <button class="done-btn" id="btn-add-character" type="button">+ Add</button>
@@ -307,11 +306,58 @@
                         <p class="empty-hint">No items in party inventory.</p>
                     </div>
 
-                    <details class="nar-add-form" style="margin-top:8px">
+                    <details class="nar-add-form u-mt-8">
                         <summary class="nar-add-summary">+ Add Item</summary>
                         <div class="nar-form">
+                            <div class="equip-type-toggle" id="inv-type-toggle">
+                                <button class="equip-type-btn is-sel" data-inv-cat="gear"   type="button">Item</button>
+                                <button class="equip-type-btn"        data-inv-cat="weapon" type="button">Weapon</button>
+                                <button class="equip-type-btn"        data-inv-cat="armor"  type="button">Armor</button>
+                            </div>
                             <label class="nar-form-field"><span class="nar-form-label">Item Name</span>
                                 <input id="inv-name" type="text" placeholder="Name…" autocomplete="off" /></label>
+
+                            <!-- Weapon-specific fields -->
+                            <div id="inv-weapon-fields" hidden>
+                                <div class="nar-stat-row">
+                                    <label class="nar-form-field"><span class="nar-form-label">Damage</span>
+                                        <input id="inv-w-damage" type="text" placeholder="1d6" autocomplete="off" /></label>
+                                    <label class="nar-form-field"><span class="nar-form-label">Damage Type</span>
+                                        <select id="inv-w-dmg-type" class="sheet-select"></select></label>
+                                </div>
+                                <div class="nar-stat-row">
+                                    <label class="nar-form-field"><span class="nar-form-label">Range</span>
+                                        <select id="inv-w-range" class="sheet-select"></select></label>
+                                    <label class="nar-form-field"><span class="nar-form-label">Properties</span>
+                                        <input id="inv-w-props" type="text" placeholder="Light, Hefty…" autocomplete="off" /></label>
+                                </div>
+                                <label class="nar-form-field"><span class="nar-form-label">Check</span>
+                                    <select id="inv-w-check" class="sheet-select">
+                                        <option value="">— any —</option>
+                                        <option>Agility</option><option>Crafting</option><option>Influence</option>
+                                        <option>Intellect</option><option>Luck</option><option>Observation</option>
+                                        <option>Spirit</option><option>Stealth</option><option>Strength</option><option>Survival</option>
+                                    </select></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Attack Bonus</span>
+                                    <div class="ae-stepper">
+                                        <button class="ae-step-btn" data-ae-step="-1" data-ae-target="inv-w-atk" type="button">−</button>
+                                        <output id="inv-w-atk" class="ae-step-val" data-val="0">0</output>
+                                        <button class="ae-step-btn" data-ae-step="1" data-ae-target="inv-w-atk" type="button">+</button>
+                                    </div></label>
+                            </div>
+
+                            <!-- Armor-specific fields -->
+                            <div id="inv-armor-fields" hidden>
+                                <label class="nar-form-field"><span class="nar-form-label">Notes</span>
+                                    <input id="inv-a-notes" type="text" placeholder="Stealth −1, Agility −1…" autocomplete="off" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Armor Rating</span>
+                                    <div class="ae-stepper">
+                                        <button class="ae-step-btn" data-ae-step="-1" data-ae-target="inv-a-rating" type="button">−</button>
+                                        <output id="inv-a-rating" class="ae-step-val" data-val="0">0</output>
+                                        <button class="ae-step-btn" data-ae-step="1" data-ae-target="inv-a-rating" type="button">+</button>
+                                    </div></label>
+                            </div>
+
                             <label class="nar-form-field"><span class="nar-form-label">Description</span>
                                 <input id="inv-desc" type="text" placeholder="Brief description…" autocomplete="off" /></label>
                             <div class="nar-stat-row">
@@ -325,35 +371,38 @@
                     </details>
                 </div>
 
+                <!-- Handouts -->
+                <div class="section party-subsection" id="nar-handouts-section" hidden>
+                    <div class="section-head">
+                        <h2 class="section-title">Handouts</h2>
+                    </div>
+                    <div id="nar-handouts-list"><p class="empty-hint">No handouts posted.</p></div>
+                    <details class="nar-add-form u-mt-8">
+                        <summary class="nar-add-summary">+ Add Handout</summary>
+                        <div class="nar-form">
+                            <label class="nar-form-field"><span class="nar-form-label">Title</span>
+                                <input id="handout-title" type="text" placeholder="Handout title…" autocomplete="off" /></label>
+                            <label class="nar-form-field"><span class="nar-form-label">Body</span>
+                                <textarea id="handout-body" rows="4" placeholder="Text shown to players…"></textarea></label>
+                        </div>
+                        <button class="done-btn" id="btn-add-handout" type="button">+ Post</button>
+                    </details>
+                </div>
+
             </section>
 
             <!-- GENERATORS -->
             <section class="panel" id="panel-generators" role="region" aria-label="Generators">
 
-                <!-- Monster -->
-                <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title">Monster</h2>
-                        <button class="ghost-btn" id="btn-gen-mon-random" type="button">Random</button>
-                    </div>
-                    <div class="gen-search-row">
-                        <input type="text" id="gen-mon-search" class="gen-search-input" placeholder="Search by name…" autocomplete="off" />
-                    </div>
-                    <div class="gen-search-results" id="gen-mon-results" hidden></div>
-                    <div id="gen-mon-list">
-                        <p class="empty-hint">No monsters added. Search or tap Random.</p>
-                    </div>
-                </div>
-
                 <!-- Loot -->
                 <div class="section">
                     <div class="section-head">
                         <h2 class="section-title">Loot</h2>
-                        <div style="display:flex;align-items:center;gap:4px">
+                        <div class="loot-pl-row">
                             <button class="step-action-btn" id="loot-pl-dec" type="button">−</button>
-                            <span id="loot-pl-val" style="font-size:13px;font-weight:800;min-width:22px;text-align:center">5</span>
+                            <span id="loot-pl-val" class="loot-pl-val">5</span>
                             <button class="step-action-btn" id="loot-pl-inc" type="button">+</button>
-                            <button class="ghost-btn" id="btn-gen-loot" type="button" style="margin-left:4px">Roll</button>
+                            <button class="ghost-btn u-ml-4" id="btn-gen-loot" type="button">Roll</button>
                         </div>
                     </div>
                     <div id="gen-loot-list">
@@ -457,6 +506,37 @@
 
             </section>
 
+            <!-- MONSTERS -->
+            <section class="panel" id="panel-monsters" role="region" aria-label="Monsters">
+
+                <!-- Encounter tools -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Encounter</h2>
+                        <button class="ghost-btn" id="btn-monsters-open-initiative" type="button">Open Initiative</button>
+                    </div>
+                    <div id="monsters-enc-summary">
+                        <p class="empty-hint">No one in initiative.</p>
+                    </div>
+                </div>
+
+                <!-- Monster Book -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Monster Book</h2>
+                        <button class="ghost-btn" id="btn-gen-mon-random" type="button">Random</button>
+                    </div>
+                    <div class="gen-search-row">
+                        <input type="text" id="gen-mon-search" class="gen-search-input" placeholder="Search by name…" autocomplete="off" />
+                    </div>
+                    <div class="gen-search-results" id="gen-mon-results" hidden></div>
+                    <div id="gen-mon-list">
+                        <p class="empty-hint">No monsters added. Search or tap Random.</p>
+                    </div>
+                </div>
+
+            </section>
+
             <!-- JOURNAL -->
             <section class="panel" id="panel-journal" role="region" aria-label="Journal">
 
@@ -466,7 +546,7 @@
                         <h2 class="section-title">Quest Log</h2>
                     </div>
                     <div id="journal-quest-list"></div>
-                    <details class="nar-add-form" style="margin-top:8px">
+                    <details class="nar-add-form u-mt-8">
                         <summary class="nar-add-summary">+ Add Quest</summary>
                         <div class="nar-form">
                             <label class="nar-form-field"><span class="nar-form-label">Quest</span>
@@ -482,7 +562,7 @@
                         <h2 class="section-title">Session Notes</h2>
                     </div>
                     <div id="journal-session-list"></div>
-                    <details class="nar-add-form" style="margin-top:8px">
+                    <details class="nar-add-form u-mt-8">
                         <summary class="nar-add-summary">+ Add Session</summary>
                         <div class="nar-form">
                             <label class="nar-form-field"><span class="nar-form-label">Session Title</span>
@@ -545,14 +625,15 @@
                 <div class="settings-section-title">Narrator</div>
                 <button class="settings-action-btn settings-action-btn--danger" id="btn-reset-nar" type="button">Reset Narrator Data</button>
                 <div class="settings-reset-confirm" id="nar-reset-confirm" hidden>
-                    <p class="settings-hint" style="color:#ff6b6b;margin:0">Clears party, minions, inventory, encounter, and generator lists. Journal and theme are kept.</p>
-                    <div class="step-edit-btns" style="margin-top:8px">
-                        <button class="step-edit-btn" style="color:#ff6b6b;border-color:rgba(255,107,107,.35)"
+                    <p class="settings-hint settings-hint--danger">Clears party, minions, inventory, encounter, and generator lists. Journal and theme are kept.</p>
+                    <div class="step-edit-btns u-mt-8">
+                        <button class="step-edit-btn step-edit-btn--danger"
                             id="btn-nar-reset-confirm" type="button">Yes, Reset</button>
                         <button class="step-edit-btn step-edit-btn--cancel" id="btn-nar-reset-cancel" type="button">Cancel</button>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -580,6 +661,15 @@
         </div>
     </dialog>
 
+    <!-- Defeat Confirmation Dialog -->
+    <dialog id="defeated-confirm-dialog" class="nar-dialog">
+        <div class="nar-dialog-inner">
+            <p class="nar-dialog-name">Has <strong id="defeated-confirm-name"></strong> been defeated?</p>
+            <button class="nar-dialog-action nar-dialog-action--danger" id="defeated-confirm-yes" type="button">Defeated</button>
+            <button class="nar-dialog-action nar-dialog-action--cancel" id="defeated-confirm-no" type="button">Not yet</button>
+        </div>
+    </dialog>
+
     <!-- Global context bar: speaking-as / target — visible on all panels -->
     <div class="global-ctx-bar" id="nar-context-bar" hidden>
         <span class="chat-ctx-chip" id="nar-voice-chip" hidden>
@@ -592,7 +682,7 @@
         </span>
     </div>
 
-    <!-- Bottom navigation (5 tabs) -->
+    <!-- Bottom navigation (6 tabs) -->
     <nav class="bottom-nav nar-nav" aria-label="Bottom navigation">
         <button class="nav-btn" data-nav="chat" data-tip="Session Chat" type="button" aria-controls="panel-chat">
             <span class="nav-icon-wrap">
@@ -608,6 +698,10 @@
         <button class="nav-btn" data-nav="generators" type="button" aria-controls="panel-generators">
             <img class="nav-icon" src="../assets/icons/worldbuilding.png" alt="" aria-hidden="true" />
             <span class="nav-label">Generators</span>
+        </button>
+        <button class="nav-btn" data-nav="monsters" type="button" aria-controls="panel-monsters">
+            <img class="nav-icon" src="../assets/icons/monster.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Monsters</span>
         </button>
         <button class="nav-btn" data-nav="journal" type="button" aria-controls="panel-journal">
             <img class="nav-icon" src="../assets/icons/wax-tablet.png" alt="" aria-hidden="true" />

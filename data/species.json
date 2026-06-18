@@ -402,7 +402,9 @@
       "fetCheck": "Spirit",
       "fetRange": "Short",
       "fetDuration": "Until the end of their next turn",
-      "fetCondition": "Prone, Fear"
+      "fetCondition": "Prone, Fear",
+      "sub-fet-effect": "Your horns give +3 Armor, restored by healing, repairs, or a Long Rest. Natural weapon (Str or Agi; Light; 1d4 Physical; Piercing/Impact).",
+      "sub-fet-name": "Heavy Horns"
     },
     {
       "lineage": "Grazer",
@@ -423,7 +425,9 @@
       "origin": "nature",
       "feature_name": "Forest Stride",
       "feature_effect": "You ignore movement penalties from natural terrain such as foliage, mud, or undergrowth. Once per round, when a melee Attack against you misses, you may move up to half your speed without Provoking.",
-      "fetAction": "Special"
+      "fetAction": "Special",
+      "sub-fet-name": "Barbed Horns",
+      "sub-fet-effect": "Your antlers grant Advantage on Grapple checks. Natural weapon (Str or Agi; Light; 1d4 Physical; Piercing/Impact)."
     },
     {
       "lineage": "Grazer",
@@ -465,9 +469,11 @@
       "region": "Prime, Ordealis",
       "origin": "vozian",
       "feature_name": "Infernal Charge",
-      "feature_effect": "Your horns are natural weapons (Str or Agi; Light; 1d4 Physical, Piercing). If you move at least 20 ft toward a target before attacking, you have advantage on your next melee Attack. On a success+, you may choose to pin the target instead of rolling on the success table.",
+      "feature_effect": "If you move at least 20 ft toward a target before attacking, you have advantage on your next melee Attack. On a success+, you may choose to pin the target instead of rolling on the success table.",
       "fetAction": "Special",
-      "fetDamage": "1d4"
+      "fetDamage": "1d4",
+      "sub-fet-effect": "Your horns give +3 Armor, restored by healing, repairs, or a Long Rest. Natural weapon (Str or Agi; Light; 1d4 Physical; Piercing/Impact).",
+      "sub-fet-name": "Heavy Horns"
     },
     {
       "lineage": "Grazer",
@@ -491,7 +497,9 @@
       "fetAction": "Action",
       "fetRange": "Short",
       "fetDuration": "1 minute",
-      "fetDamage": "1d4"
+      "fetDamage": "1d4",
+      "sub-fet-name": "Heavy Horns",
+      "sub-fet-effect": "Your horns give +3 Armor, restored by healing, repairs, or a Long Rest. Natural weapon (Str or Agi; Light; 1d4 Physical; Piercing/Impact)."
     },
     {
       "lineage": "Apex",
@@ -555,7 +563,7 @@
       "rarity": "Rare",
       "region": "Prime, Fey",
       "origin": "nature",
-      "feature_name": "Vehicle Expertise",
+      "feature_name": "Barterlord",
       "feature_effect": "Gain +1 to Influence. Gain advantage on Influence (Bartering) checks when trading goods or services.",
       "fetAction": "Passive"
     },
@@ -915,7 +923,9 @@
       "feature_effect": "Gain an additional +5 armor that can be healed or repaired. Your trunk functions as both tool and weapon. You can interact with objects, grapple creatures, or make an off-action unarmed Attack that deals [[1d4]] Impact damage.",
       "fetAction": "Off-Action",
       "fetDamage": "1d4",
-      "fetDamagetype": "Impact"
+      "fetDamagetype": "Impact",
+      "sub-fet-effect": "Your tusks give +3 Armor, restored by healing, repairs, or a Long Rest. Natural weapon (Str or Agi; Light; 1d4 Physical; Piercing/Impact).",
+      "sub-fet-name": "Heavy Tusks"
     },
     {
       "lineage": "Grazer",
@@ -1640,10 +1650,10 @@
       "option": "Kobari",
       "name": "Green",
       "description": {
-        "physical": "Green Kobari are small, low-slung creatures built for tight spaces and dense terrain. Their smooth olive scales fade to yellow along the belly, and their short, forward-curving horns help them wedge through roots, stone gaps, and collapsed tunnels. They are territorial and observant, often remaining hidden while tracking intruders. Green Kobari rely on patience and positioning rather than direct confrontation, striking only when escape routes are secured.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
+        "physical": "Green Kobari are slender, agile dragonkin with smooth olive-green scales that fade to yellow along the belly, throat, and inner limbs. Their wedge-shaped heads, narrow frames, and short forward-curving horns allow them to navigate dense vegetation, root networks, and narrow tunnels with ease. Long tails provide balance in uneven terrain, while large alert eyes constantly scan their surroundings for movement. Though physically unimposing, they possess a quiet confidence born from knowing every inch of the territory they call home.",
+        "environment": "Green Kobari thrive in dense forests, overgrown ruins, wetlands, cave entrances, and tangled root systems where concealment and familiarity provide an advantage. They prefer environments filled with natural cover and multiple escape routes, often constructing hidden burrows and interconnected pathways known only to their communities. Settlements are typically well-hidden and blend seamlessly into the surrounding landscape.",
+        "culture": "Green Kobari value caution, preparedness, and local knowledge. They are naturally territorial but not unnecessarily aggressive, preferring observation over confrontation. Communities often function as close-knit networks of scouts, foragers, and caretakers who share responsibility for maintaining hidden paths, food stores, and warning systems. Outsiders frequently mistake their reserved nature for distrust, but Green Kobari simply believe that understanding a situation should always come before acting upon it.",
+        "lore": "Among the Kobari, the Green lineage is associated with survival, patience, and mastery of one's surroundings. Legends claim their ancestors flourished in the forgotten places between civilization and wilderness, learning to endure by understanding the land rather than attempting to conquer it. Over generations, they became exceptional trackers, guides, and wardens of hidden places. While larger folk often overlook them, Green Kobari rarely overlook anything. Their communities endure not through strength or numbers, but through an unmatched ability to know when to hide, when to flee, and when to strike."
       },
       "size": "1-4",
       "lifespan": 30,
@@ -1661,10 +1671,10 @@
       "option": "Kobari",
       "name": "Red",
       "description": {
-        "physical": "Red Kobari are compact and muscular, with dense red scales that darken when heated by exertion or anger. Their horns are thick and curved, and faint heat shimmers around their jaws when agitated. Loud, aggressive, and prideful, they are quick to posture and challenge anything entering their space. Though smaller than true fire-breathers, their flames are volatile and close-range, making them dangerous in confined areas.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
+        "physical": "Red Kobari are compact, broad-bodied dragonkin with dense crimson scales that deepen toward black-red when excited, angry, or physically exerted. Their thick curved horns, powerful jaws, and muscular limbs give them a stocky, durable appearance despite their small stature. Heat constantly radiates from their bodies, and faint wisps of smoke or shimmering air often gather around their mouths when agitated. Their eyes burn with bright amber, orange, or yellow hues, reflecting their passionate and energetic nature.",
+        "environment": "Red Kobari favor volcanic foothills, rocky badlands, dry forests, and underground tunnel networks warmed by natural geothermal activity. They prefer environments where they can establish clear territory and easily defend it from rivals. Their settlements are often noisy, crowded, and built around communal gathering spaces where disputes, celebrations, and competitions frequently occur.",
+        "culture": "Red Kobari are loud, emotional, and unapologetically expressive. They value courage, confidence, and the willingness to stand one's ground. Arguments are common within their communities but rarely held for long, as most Red Kobari prefer direct confrontation over lingering resentment. Competition is deeply woven into their culture, whether through contests of strength, craftsmanship, storytelling, or simple bragging rights. Despite their aggressive reputation, they are often fiercely protective of friends, family, and community, responding to threats with immediate and overwhelming enthusiasm.",
+        "lore": "Among the Kobari, the Red lineage is associated with passion, pride, and action. Legends claim their ancestors survived in some of the harshest environments by meeting every challenge head-on rather than avoiding it. While other Kobari learned patience or subtlety, the Reds learned resilience through confrontation. Their fiery breath never developed into the devastating infernos of larger dragonkin, but their volatile flames remain surprisingly dangerous in close quarters. Many outsiders dismiss them as reckless troublemakers, yet Red Kobari communities have endured for generations through a simple philosophy: face problems directly, protect what matters, and never let fear decide your actions."
       },
       "size": "1-4",
       "lifespan": 30,
@@ -1680,33 +1690,12 @@
     {
       "lineage": "Dragon",
       "option": "Kobari",
-      "name": "White",
-      "description": {
-        "physical": "White Kobari are lean and swift, with elongated bodies and pale crystalline scales that catch and scatter light like frost. Their narrow, spiraled horns angle back along the skull, reducing drag while running or sliding across ice. Naturally cautious, they avoid unnecessary conflict, preferring hit-and-run tactics and superior positioning. When cornered, their breath freezes flesh and stone alike with startling precision.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
-      },
-      "size": "1-4",
-      "lifespan": 30,
-      "language": "Imperial, Drak",
-      "diet": "Omnivore",
-      "rarity": "Common",
-      "region": "Prime",
-      "origin": "dragon",
-      "feature_name": "Surefoot",
-      "feature_effect": "You ignore movement penalties from difficult terrain.",
-      "fetAction": "Passive"
-    },
-    {
-      "lineage": "Dragon",
-      "option": "Kobari",
       "name": "Grey",
       "description": {
-        "physical": "Grey Kobari are wiry and long-limbed, adapted for climbing, gliding, and enduring strong winds rather than sustained flight. Their dark metallic scales are marked with pale streaks along the chest and throat. They are drawn to sound and vibration, often mimicking distant thunder, machinery, or music. During storms they become unusually active, leaping and calling as if responding to the sky itself.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
+        "physical": "Grey Kobari are lean, long-limbed dragonkin with weathered scales ranging from charcoal and slate to muted bronze. Their narrow faces, elongated necks, and oversized ears give them an almost perpetually curious appearance. A mane of coarse feathers or hair often runs from the crown to the tail tip, rippling constantly in even the slightest breeze. Their lightweight frames are built for climbing, gliding, and balancing on precarious surfaces, while broad tails help them navigate cliffs, rooftops, and high places.",
+        "environment": "Grey Kobari thrive in elevated environments where wind is a constant companion. They are commonly found among cliffs, mountain villages, ruined towers, bridges, and sprawling city rooftops. Many deliberately build homes in places that others consider inconvenient or uncomfortable, valuing open skies and strong currents over security or luxury.",
+        "culture": "Grey Kobari are curious, social, and endlessly fascinated by sound. They collect songs, stories, accents, and strange noises much like others collect treasures. Conversations often wander between subjects as quickly as the wind changes direction. Their communities tend to be informal and cooperative, with reputation earned through creativity, knowledge, and storytelling rather than strength or authority.",
+        "lore": "Grey Kobari are often called Stormcallers or Windlisteners by other dragonkin. Ancient tales claim they descended from dragons that nested among the highest peaks, where they spent generations listening to the voices hidden within storms. Whether true or not, Grey Kobari possess an unusual sensitivity to vibration and sound, often detecting approaching storms, travelers, or danger long before others. During thunderous weather they become energetic and playful, gathering on rooftops and cliffsides to sing, shout, and answer the sky's call."
       },
       "size": "1-4",
       "lifespan": 30,
@@ -1750,10 +1739,10 @@
       "option": "Kobari",
       "name": "Yellow",
       "description": {
-        "physical": "Yellow Kobari are thick-bodied and resilient, with dark scales that fade into a sickly yellow along the underside. Short, jagged horns and dorsal spines constantly seep corrosive venom, leaving etched stone and scarred terrain in their wake. These Kobari are domineering and territorial, often asserting control without direct combat. Other creatures learn quickly to recognize and avoid the signs of their presence.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
+        "physical": "Yellow Kobari are stocky, broad-bodied dragonkin with dark scales that fade into pale yellow or sickly chartreuse along the belly, throat, and limbs. Their jagged horns, dorsal spines, claws, and teeth constantly seep trace amounts of corrosive venom, staining the surrounding terrain and leaving permanent scars on stone, wood, and metal. Bright yellow or green eyes give them an intense, predatory stare, while their heavy builds and low center of gravity make them surprisingly difficult to dislodge or intimidate.",
+        "environment": "Yellow Kobari favor harsh environments where few creatures willingly settle for long. Toxic marshes, sulfur fields, badlands, ruined settlements, and venom-choked caves are common habitats. Their territories are often easy to identify by etched stone, dead vegetation, and strange chemical odors lingering in the air. They rarely build large settlements, instead establishing defensible territories that naturally discourage intrusion.",
+        "culture": "Yellow Kobari value control, self-sufficiency, and reputation. Unlike the fiery aggression of Red Kobari, they prefer to establish dominance through presence alone. Most conflicts are won before they begin, with rivals choosing to leave rather than challenge an established Yellow Kobari. Their communities tend to be pragmatic and hierarchical, with leadership earned through experience, resilience, and the ability to secure territory. They are not needlessly violent, but they rarely tolerate interference once boundaries have been established.",
+        "lore": "Among the Kobari, the Yellow lineage is associated with endurance, territory, and quiet intimidation. Ancient stories claim their ancestors adapted to survive in poisonous and hostile regions that other creatures abandoned, gradually developing their corrosive secretions as both defense and warning. Over time, they learned that fear and reputation could be more effective than open warfare. Many travelers tell stories of turning back after discovering scorched stone, melted roots, or venom-scarred tunnels, never once seeing the Kobari responsible. To a Yellow Kobari, the greatest victory is not defeating an enemy, but convincing them never to challenge you in the first place."
       },
       "size": "1-4",
       "lifespan": 30,
@@ -1776,10 +1765,10 @@
       "option": "Kobari",
       "name": "Teal",
       "description": {
-        "physical": "Teal Kobari are lean, restless, and constantly in motion. Their dark blue-black scales contrast sharply with bright underbellies, and their backward-arching horns resemble frozen lightning strikes. They are volatile and easily overstimulated, reacting to threats with sudden bursts of speed and crackling energy. Teal Kobari are unpredictable even to their own kind, often abandoning a fight as quickly as they begin one.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
+        "physical": "Teal Kobari are slender, long-limbed dragonkin built for speed rather than strength. Their dark blue, charcoal, or black scales contrast sharply with bright teal or pale underbellies, while backward-swept horns resemble jagged lightning frozen in place. Static energy constantly dances across their scales, causing small sparks to snap from their claws, horns, and tails during moments of excitement or stress. Their movements are quick, twitchy, and difficult to predict, often shifting direction without warning.",
+        "environment": "Teal Kobari favor windswept cliffs, storm-battered coastlines, mountain ridges, and elevated ruins where lightning and harsh weather are common. They dislike confinement and rarely remain in one place for long, often maintaining multiple temporary shelters rather than permanent homes. Many are drawn to places where storms gather, treating thunder and lightning as both comfort and entertainment.",
+        "culture": "Teal Kobari struggle with routine, hierarchy, and prolonged stillness. Their communities tend to be chaotic but surprisingly functional, built around short-term goals rather than long-term planning. Ideas spread quickly, leadership changes often, and disagreements are usually settled through action rather than debate. Despite their volatility, they are intensely curious and inventive, frequently experimenting with tools, machines, and unusual solutions simply to see what happens.",
+        "lore": "Among the Kobari, the Teal lineage is associated with storms, change, and restless energy. Legends claim their ancestors spent generations nesting within thundercloud-wrapped peaks where constant exposure to lightning altered both body and temperament. As a result, Teal Kobari rarely remain tied to a single place, profession, or purpose for long. They are explorers, tinkerers, wanderers, and troublemakers, forever chasing the next horizon, the next idea, or the next storm rolling across the sky."
       },
       "size": "1-4",
       "lifespan": 30,
@@ -1820,10 +1809,10 @@
       "option": "Kobari",
       "name": "Grim",
       "description": {
-        "physical": "Grim Kobari appear half-formed, their compact bodies constantly shedding wisps of living vapor from vents along the neck, shoulders, and spine. Their limbs are short and grounded, built for slow, deliberate movement rather than speed. They linger near grave sites, ruined thresholds, and other liminal places where the air feels heavy and memories cling to stone. Quiet and watchful, Grim Kobari rarely act unless a boundary is crossed. When they do, their presence carries an oppressive emotional weight, as if old grief and forgotten moments press in from all sides. They are not cruel or predatory, but they do not tolerate disrespect toward the spaces they haunt.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
+        "physical": "Grim Kobari are small, gaunt dragonkin whose pale gray, charcoal, or bone-white scales appear faded by age. Thin streams of spectral vapor constantly seep from vents along their neck, shoulders, and spine, drifting around them like slow-moving fog. Their eyes glow softly through the haze, and their movements are unnervingly deliberate, as if every step is carefully considered. Many perch motionless for hours atop gravestones, ruins, or weathered monuments, easily mistaken for statues until they suddenly shift.",
+        "environment": "Grim Kobari are most commonly found in graveyards, mausoleums, ancient battlefields, abandoned shrines, and forgotten ruins. They are drawn to places marked by loss, memory, and transition rather than death itself. They prefer quiet locations where the boundary between past and present feels thin, often establishing dens beneath cemeteries or within collapsed foundations.",
+        "culture": "Grim Kobari value remembrance above all else. They are collectors of stories, names, and histories that others have forgotten. While distant and difficult to approach, they often act as caretakers of neglected memorials and sacred sites. They dislike needless destruction, vandalism, and those who treat the dead with contempt. Among themselves, conversations are slow and reflective, often revolving around events that occurred decades or centuries ago.",
+        "lore": "Legends claim the first Grim Kobari emerged from dragonkin that lingered too long among the dead, slowly absorbing the memories and emotions left behind in forgotten places. Whether true or not, they possess an uncanny connection to lingering echoes of the past. Grim Kobari are often mistaken for omens of death, but this is a misunderstanding. They do not bring death, nor do they serve it. Instead, they stand watch over what remains afterward, ensuring that memories, promises, and histories are not completely erased by time."
       },
       "size": "1-4",
       "lifespan": 30,
@@ -1843,10 +1832,10 @@
       "option": "Kobari",
       "name": "Black",
       "description": {
-        "physical": "Black Kobari are quiet, ground-hugging creatures with matte, light-absorbing scales that resemble damp stone or rich soil rather than polished hide. Fine fungal filaments grow along the ridges of their neck, jaw, and spine, releasing faint spores when disturbed. Their eyes are large and reflective, adapted for darkness, and they move with careful, deliberate precision. Black Kobari are natural seekers, drawn to hidden things, buried truths, and places where life quietly persists in the dark. They are patient observers rather than actors, often watching long before revealing themselves.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
+        "physical": "Black Kobari are small, low-slung dragonkin with matte scales that absorb light rather than reflect it, giving them the appearance of damp stone, fertile soil, or deep cave rock. Their bodies are compact and agile, built for crawling through tunnels, roots, and narrow spaces. Fine fungal growths emerge along the neck, jawline, and spine, releasing faint clouds of spores when disturbed. Oversized reflective eyes grant exceptional vision in darkness, while their long tails and careful posture help them navigate uneven terrain with remarkable balance.",
+        "environment": "Black Kobari thrive beneath the world rather than upon it. They are most commonly found in caves, fungal forests, ancient ruins, root networks, and forgotten underground passages where moisture and darkness are abundant. They are naturally drawn to places that have been abandoned, buried, or overlooked, often making homes in locations others have long forgotten.",
+        "culture": "Black Kobari value patience, observation, and discovery. They are rarely aggressive and prefer to learn before acting, spending long periods quietly watching their surroundings. Stories, secrets, and hidden knowledge are highly prized within their communities. Many serve as scouts, archivists, foragers, and guides, sharing information carefully rather than freely. While reserved around strangers, they are deeply loyal once trust is earned and often maintain friendships that last for generations.",
+        "lore": "Among Kobari, the Black lineage is associated with hidden truths and quiet persistence. Legends claim the first Black Kobari emerged in the deep places beneath the world, where life survives without sunlight and forgotten things are preserved by stone and time. They developed a natural affinity for uncovering what others overlook, whether lost history, hidden pathways, or buried knowledge. Many cultures regard them as mysterious wanderers, but Black Kobari see themselves simply as seekers, following faint trails of curiosity wherever they lead. Their presence is often discovered only after they have already learned everything worth knowing."
       },
       "size": "1-4",
       "lifespan": 30,
@@ -1866,10 +1855,10 @@
       "option": "Kobari",
       "name": "Purple",
       "description": {
-        "physical": "Purple Kobari are larger than most of their kin, with scales that subtly shift in hue depending on mood and nearby energy. Curious to a fault, they frequently invade personal space, touching, sniffing, or circling unfamiliar beings. Their playful demeanor often masks a sharp intellect and strong magical sensitivity. Offense is rarely intended, though chaos often follows them regardless.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
+        "physical": "Purple Kobari are among the tallest and most expressive of their kind, with sleek scales that shimmer between shades of violet, indigo, and magenta depending on their mood and surroundings. Their horns are often reduced or swept back, giving them a streamlined appearance, while their large eyes constantly dart about in search of something interesting. Fine patterns across their scales seem to shift subtly when exposed to magical energy, making them appear almost alive with color.",
+        "environment": "Purple Kobari can be found almost anywhere intelligent creatures gather. They are especially common near trade routes, universities, magical academies, markets, and planar crossroads. Rather than seeking isolation, they actively pursue places filled with new ideas, unfamiliar cultures, and strange phenomena. A Purple Kobari left alone for too long will usually wander off in search of stimulation.",
+        "culture": "Curiosity defines nearly every aspect of Purple Kobari life. Personal boundaries, social conventions, and warnings are often viewed as suggestions rather than rules. They learn by touching, questioning, experimenting, and occasionally causing minor disasters. Despite their reputation as troublemakers, they are highly social and genuinely fascinated by other people. Purple Kobari communities are vibrant collections of storytellers, inventors, merchants, scholars, and eccentrics who thrive on constant interaction and the exchange of ideas.",
+        "lore": "Purple Kobari are believed to descend from dragonkin touched by astral currents and wandering planar energies. Their unusual sensitivity to magic allows them to instinctively notice disturbances, enchanted objects, and hidden phenomena that others overlook. This gift comes with a restless mind that constantly seeks novelty and understanding. Among other Kobari they are often viewed as equal parts genius and nuisance, forever uncovering something important moments after causing a problem no one else would have thought to create."
       },
       "size": "1-4",
       "lifespan": 30,
@@ -1889,10 +1878,10 @@
       "option": "Kobari",
       "name": "Mosaic",
       "description": {
-        "physical": "Mosaic Kobari are broad and powerfully built, their scales forming fractured patterns of red, orange, and violet. Short, heavy horns crown their heads, and their presence radiates heat and pressure. Intensely loyal to Vozian-aligned creatures, they react violently to perceived betrayal or insult. Once bonded, however, their loyalty is absolute and enduring.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
+        "physical": "Mosaic Kobari are stocky, broad-shouldered dragonkin covered in fractured patterns of red, orange, violet, and black scales that resemble shattered stained glass. Their thick horns curl or sweep backward in heavy arcs, while glowing seams of color often run between scale plates like cooling magma. Compact but powerful, they possess dense musculature and remarkable endurance. Even at rest, they carry an intense presence that makes them seem larger than they truly are.",
+        "environment": "Mosaic Kobari thrive in harsh lands shaped by conflict, volcanic activity, or strong communal traditions. They favor fortified settlements, rugged highlands, badlands, and frontier regions where survival depends on cooperation and strength. Their homes are often built to last generations, with family holdings and communal spaces carrying great cultural significance.",
+        "culture": "Few creatures value loyalty as deeply as Mosaic Kobari. Family, tribe, and sworn bonds form the foundation of their identity. Trust is difficult to earn but nearly impossible to break once established. Insults, betrayals, and broken promises are remembered for years, while acts of loyalty are celebrated and repaid many times over. Their communities are passionate and loud, filled with strong emotions, fierce arguments, and unwavering support for those considered part of the group.",
+        "lore": "Mosaic Kobari trace their lineage to ancient dragonkin touched by both draconic and Vozian influences, inheriting powerful emotions and an instinctive understanding of loyalty and belonging. Legends claim their fractured scale patterns represent countless ancestral bonds fused together across generations. Among the Kobari, they are often viewed as protectors and avengers, quick to defend allies and equally quick to punish those who betray them. To a Mosaic Kobari, loyalty is not merely a virtue. It is the measure by which all relationships are judged."
       },
       "size": "1-4",
       "lifespan": 30,
@@ -1906,53 +1895,9 @@
       "fetAction": "Passive",
       "fetRange": "Short",
       "fetDuration": "Until next attack",
-      "fetDamage": 1
-    },
-    {
-      "lineage": "Dragon",
-      "option": "Kobari",
-      "name": "Spiked",
-      "description": {
-        "physical": "Spiked Kobari are bulky and aggressive, their bodies covered in thorned, muted scales that serve as both armor and weapon. Their mouths are filled with barbed teeth, and their primary defense is a violent expulsion of hardened spikes rather than elemental breath. Driven by instinct and hunger, they patrol rigid territories and respond to intrusion with overwhelming force.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
-      },
-      "size": "1-4",
-      "lifespan": 30,
-      "language": "Imperial, Drak",
-      "diet": "Omnivore",
-      "rarity": "Common",
-      "region": "Prime",
-      "origin": "dragon",
-      "feature_name": "Reflex Bristle",
-      "feature_effect": "When an ally within short range takes damage, gain +1 damage on your next attack.",
-      "fetAction": "Passive",
-      "fetRange": "Melee",
       "fetDamage": 1,
-      "fetDamagetype": "Piercing"
-    },
-    {
-      "lineage": "Dragon",
-      "option": "Kobari",
-      "name": "Rust",
-      "description": {
-        "physical": "Rust Kobari are heavily built for their size, with dull metallic scales and thick bladed tails capable of crushing armor. Their horns are curved and worn, bearing scars from repeated territorial conflicts. Despite their fearsome appearance, they possess a strong sense of order and often act as self-appointed wardens of their domain. When balance is threatened, they respond decisively.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
-      },
-      "size": "1-4",
-      "lifespan": 30,
-      "language": "Imperial, Drak",
-      "diet": "Omnivore",
-      "rarity": "Common",
-      "region": "Prime",
-      "origin": "dragon",
-      "feature_name": "Heavy Hide",
-      "feature_effect": "At the start of combat, gain +5 armor.",
-      "fetAction": "Passive",
-      "fetDuration": "Start of combat"
+      "sub-fet-effect": "Your horns give +3 Armor, restored by healing, repairs, or a Long Rest. Natural weapon (Str or Agi; Light; 1d4 Physical; Piercing/Impact).",
+      "sub-fet-name": "Heavy Horns"
     },
     {
       "lineage": "Dragon",
@@ -2953,7 +2898,9 @@
       "fetAction": "Special",
       "fetCheck": "Survival, Observation, Spirit",
       "fetRange": "Melee",
-      "fetDuration": "Permanent"
+      "fetDuration": "Permanent",
+      "sub-fet-effect": "Your antlers grant Advantage on Grapple checks. Natural weapon (Str or Agi; Light; 1d4 Physical; Piercing/Impact).",
+      "sub-fet-name": "Barbed Horns"
     },
     {
       "lineage": "Realmsplit",
@@ -2973,14 +2920,14 @@
       "region": "global, ordealis",
       "origin": "vozian",
       "feature_name": "Endure",
-      "feature_effect": "Once per day, When you would gain a Cognition condition, you may use an Off-Action to make a Survival check. On a success, the condition is prevented.",
+      "feature_effect": "Once per day, When you would gain a non-major condition, you may use an Off-Action to make a Survival check. On a success, the condition is prevented.",
       "fetAction": "Off-Action",
       "fetCheck": "Survival"
     },
     {
       "lineage": "Realmsplit",
       "option": "Helborn",
-      "name": "Echo Horn",
+      "name": "Echo",
       "description": {
         "physical": "Echo Horn Helborn are born from the Discordant Symphony, a realm in the Ordealis where sound itself is sacred and volatile. In that layer, harmony is law and dissonance is punishment. Souls are tested not through silence, but through overwhelming noise, choruses of memory, shrieking regret, and the sharp, perfect pitch of divine truth. Those who survive do not forget the music. It echoes in their bones.\rEcho Horns carry that resonance with them. Their horns spiral like clefs or tuning forks, and their skin bears flowing patterns like staves or vibrating waveforms. They speak rhythmically without meaning to. Their voices can calm a crowd or shatter glass, depending on the cadence. Some choose to live as wandering musicians or diplomats. Others isolate themselves to avoid their own destructive potential.",
         "environment": "[TBD]",
@@ -2995,16 +2942,18 @@
       "region": "global, ordealis",
       "origin": "vozian",
       "feature_name": "Sonic Resonance",
-      "feature_effect": "As an action, you may manipulate surrounding sound waves. Choose one: either project your voice clearly to a creature within long range regardless of obstacles, or emit a sharp burst that forces a creature within Short range to make a Physical check or become Confused until the end of their next turn.",
+      "feature_effect": "As a half-action, you may manipulate surrounding sound waves. Choose one: either project your voice clearly to a creature within long range regardless of obstacles, or emit a sharp burst that forces a creature within Short range to make a Physical check or become Confused until the end of their next turn.",
       "fetAction": "Action",
       "fetCheck": "Survival",
       "fetDuration": "Until the end of their next turn",
-      "fetCondition": "Confused"
+      "fetCondition": "Confused",
+      "sub-fet-effect": "Your horns give +3 Armor, restored by healing, repairs, or a Long Rest. Natural weapon (Str or Agi; Light; 1d4 Physical; Piercing/Impact).",
+      "sub-fet-name": "Heavy Horns"
     },
     {
       "lineage": "Realmsplit",
       "option": "Helborn",
-      "name": "Ice Reaver",
+      "name": "IceReaver",
       "description": {
         "physical": "Icereavers are shaped in the Silent Void, a frozen layer of the Ordealis where even the soul’s voice can be entombed in ice. In this realm, trials take the form of stillness and solitude. Time does not pass in warmth but in breath that crystallizes and falls. Emotion becomes a liability. Speech invites shattering. The Helborn who emerge from this place do so cloaked in frost and silence.\rTheir presence chills the air around them. Their crystalline horns glint like frozen spears, and their eyes reflect the cold eternity they carry inside. They speak rarely, and when they do, their words cut with clarity. Icereavers are often drawn to sentinel roles, guardianship, or quiet vengeance. Their culture values restraint and endurance, and many live far from cities, surrounded by snow or quiet stone.",
         "environment": "[TBD]",
@@ -3019,15 +2968,17 @@
       "region": "global, ordealis",
       "origin": "vozian",
       "feature_name": "Frost Touch",
-      "feature_effect": "As an action, you may place your hand on a creature within reach and impose or remove the Slowed or Pinned condition until the end of their next turn..",
+      "feature_effect": "As an action, you may place your hand on a creature within reach and impose or remove the Slowed or Pinned condition until the end of their next turn.",
       "fetAction": "Action",
       "fetDuration": "Until the end of their next turn",
-      "fetCondition": "Slowed, Pinned"
+      "fetCondition": "Slowed, Pinned",
+      "sub-fet-effect": "Your horns give +3 Armor, restored by healing, repairs, or a Long Rest. Natural weapon (Str or Agi; Light; 1d4 Physical; Piercing/Impact).",
+      "sub-fet-name": "Heavy Horns"
     },
     {
       "lineage": "Realmsplit",
       "option": "Helborn",
-      "name": "Ink Shadow",
+      "name": "Shadowspill",
       "description": {
         "physical": "The Inkshadow are the offspring of the Library of Demons, a realm where knowledge is hoarded like gold and memory becomes obsession. The trials of Inkshadow are not physical. They are cerebral, built to seduce with curiosity until the soul forgets itself in pursuit of answers. Helborn from this layer are born with memories that do not belong to them. They dream in languages they have never heard and often carry the weight of questions with no answers.\nTheir skin is marked with living ink, shifting slightly with mood or memory. Their horns are smooth and curved, lined with etched script that pulses softly when near magic. Inkshadows are drawn to language, secrets, and forbidden texts. Many isolate themselves, fearing their addiction to information. Others live without books entirely, reciting their knowledge aloud to forget it more quickly. They are teachers, wanderers, and sometimes dangerous archivists.",
         "environment": "[TBD]",
@@ -3085,10 +3036,12 @@
       "rarity": "Common",
       "region": "global, ordealis",
       "origin": "vozian",
-      "feature_name": "Serene Command",
+      "feature_name": "Stillmind",
       "feature_effect": "As an Action, you may touch a creature within reach and remove one Cognition condition affecting them",
       "fetAction": "Action",
-      "fetRange": "Reach"
+      "fetRange": "Reach",
+      "sub-fet-name": "Heavy Horns",
+      "sub-fet-effect": "Your horns give +3 Armor, restored by healing, repairs, or a Long Rest. Natural weapon (Str or Agi; Light; 1d4 Physical; Piercing/Impact)."
     },
     {
       "lineage": "Realmsplit",
@@ -3108,10 +3061,12 @@
       "region": "global, ordealis",
       "origin": "vozian",
       "feature_name": "Iron Embrace",
-      "feature_effect": "As an action, you may summon the will of the Iron Dominion. Your body hardens with cursed metal, you gain armor equal to a rolled Strength check. This armor lasts for 1 minute. You may use this ability once per rest.",
+      "feature_effect": "As an action, you may summon the will of the Iron Dominion. Your body hardens with cursed metal, you gain armor equal to your Strength check. This armor lasts for 1 minute. You may use this ability once per rest.",
       "fetAction": "Action",
       "fetCheck": "Strength",
-      "fetDuration": "1 minute"
+      "fetDuration": "1 minute",
+      "sub-fet-name": "Rustplating",
+      "sub-fet-effect": "You have +5 armor"
     },
     {
       "lineage": "Realmsplit",
@@ -3157,7 +3112,9 @@
       "feature_name": "Skin of Hate",
       "feature_effect": "When a spell targets you directly, you may make a Luck check as an Off-Action. On a success, reflect half the damage or primary effect of the spell back at the caster.",
       "fetAction": "Off-Action",
-      "fetCheck": "Luck"
+      "fetCheck": "Luck",
+      "sub-fet-effect": "Your horns give +3 Armor, restored by healing, repairs, or a Long Rest. Natural weapon (Str or Agi; Light; 1d4 Physical; Piercing/Impact).",
+      "sub-fet-name": "Heavy Horns"
     },
     {
       "lineage": "Realmsplit",
@@ -3178,7 +3135,9 @@
       "origin": "vozian",
       "feature_name": "War Fury",
       "feature_effect": "When you take the attack action, you may make one additional melee attack at disadvantage. You may use this ability once per turn.",
-      "fetAction": "Action"
+      "fetAction": "Action",
+      "sub-fet-effect": "Your horns give +3 Armor, restored by healing, repairs, or a Long Rest. Natural weapon (Str or Agi; Light; 1d4 Physical; Piercing/Impact).",
+      "sub-fet-name": "Heavy Horns"
     },
     {
       "lineage": "Realmsplit",
@@ -3253,7 +3212,8 @@
       "fetCheck": "Spirit",
       "fetDuration": "Until the end of their next turn",
       "fetDamage": 10,
-      "fetDamagetype": "Healing"
+      "fetDamagetype": "Healing",
+      "images": "assets/species/Empyreans.jpg"
     },
     {
       "lineage": "Realmsplit",
@@ -3355,12 +3315,13 @@
       "fetCheck": "Survival",
       "sub-fet-name": "Heavy Wings",
       "sub-fet-effect": "You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty.",
-      "fetCondition": "Deaf"
+      "fetCondition": "Deaf",
+      "images": "assets/species/Silent Guardians.jpg"
     },
     {
       "lineage": "Realmsplit",
       "option": "Gargoyle",
-      "name": "Celestial (Marble)",
+      "name": "Palestone",
       "description": {
         "physical": "The Celestial Gargoyles are a symbol of divine power and protection. Their ancestors were chosen by the angels to guard the great temples of the world, a duty they carry out with unwavering dedication. Their skin is as smooth and polished as marble, and their golden eyes and hair shine with a heavenly light. They are capable of sustained flight, a gift bestowed upon them by the angels to aid in their sacred duty. They are also capable of releasing a burst of radiant energy, a manifestation of their divine power that can harm those who threaten the peace of their temples. They are a rare and revered species, seen as a beacon of hope and a symbol of divine protection.",
         "environment": "[TBD]",
@@ -3385,7 +3346,7 @@
     {
       "lineage": "Realmsplit",
       "option": "Gargoyle",
-      "name": "Infernal (Lavastone)",
+      "name": "Infernalstone",
       "description": {
         "physical": "Born from the fiery depths of the underworld, the Infernal Gargoyles are a testament to the power of dark rituals and ancient magic. Their ancestors were created by demonic forces, designed to be the ultimate weapon against their enemies. Their skin is as coarse and rugged as lava stone, and their eyes glow with an infernal light that strikes Fear into the hearts of their foes. \n\nThey are known for their intimidating presence, often using their terrifying appearance to their advantage in battle. Despite their heavy build, they are capable of short flights, a skill they use to surprise their enemies and gain the upper hand in combat. Their bodies are naturally armored, providing them with a level of protection that few can match. They are a rare and formidable species, feared and respected in equal measure.",
         "environment": "[TBD]",
@@ -3408,7 +3369,7 @@
     {
       "lineage": "Realmsplit",
       "option": "Gargoyle",
-      "name": "Nemuri (Mind Stone)",
+      "name": "Mindstone",
       "description": {
         "physical": "The Nemuri Gargoyles are a unique and mysterious species, born from the stone of the Nemuri sea. Their bodies glow with a strange luminescence, a reflection of their connection to dreams and memories. They are capable of flight, a skill they use to traverse the Nemuri plane and explore the mysteries of the universe. They are also capable of releasing a burst of radiant energy, a manifestation of their Nemuri power that can harm those who threaten their peace. They are a rare and enigmatic species, seen as the keepers of dreams and the guardians of the Nemuri plane.",
         "environment": "[TBD]",
@@ -3432,7 +3393,7 @@
     {
       "lineage": "Realmsplit",
       "option": "Gargoyle",
-      "name": "Stone (Greystone)",
+      "name": "Greystone",
       "description": {
         "physical": "The Greystone Gargoyles are the embodiment of ancient tradition and natural power. They are the descendants of the original gargoyle bloodline, born from the very stone of the earth. Their skin is as hard and unyielding as granite, and their bodies are built for endurance and strength. Despite their heavy build, they are capable of flight, a skill they use to patrol their territories and protect their kin. They have the unique ability to regenerate their bodies, healing wounds and injuries at a remarkable rate when they remain still. They are a rare and respected species, seen as the guardians of ancient traditions and the protectors of their kind.",
         "environment": "[TBD]",
@@ -3530,7 +3491,8 @@
       "feature_effect": "You have a fly speed equal to half your movement speed. You can carry up to 2 willing Medium creatures or 1 willing Large creature without penalty. While on the ground, your wings function as an additional pair of arms capable of manipulating objects, wielding weapons, or performing tasks. You cannot use your wings to manipulate objects while flying.",
       "fetAction": "Passive",
       "sub-fet-name": "Undying Disease",
-      "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions"
+      "sub-fet-effect": "While in sunlight you have the Exhausted condition and take [[1]] solar damage every round. As an off-action, heal for [[1]] if you have no major conditions",
+      "images": "assets/species/Tărie"
     },
     {
       "lineage": "Strigoi",
@@ -3563,33 +3525,36 @@
       "option": "Gloomspawn",
       "name": "Devourer",
       "description": {
-        "physical": "Devourers embody the hunger at the heart of the Gloomspawn. They consume their hosts entirely, leaving little more than husks behind, then wear the shell of flesh as long as it will last. Their appetite is endless, and they burn through bodies as though they were mere fuel. In battle they are terrifying, reshaping themselves into jagged weapons and erupting into carnage with animal fury. Among mortals they are called the Blood Ooze, a name whispered with fear in villages and fortresses alike. Their forms glow in violent hues of red, orange, and yellow, most often clothed in the deep crimson of fresh blood. Devourers are relentless predators who see all living things as vessels waiting to be emptied.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
+        "physical": "Devourers are towering masses of living biomass wrapped around stolen flesh and bone. Their bodies constantly shift, forming claws, blades, spikes, and tendrils as needed. Crimson flesh and glowing veins pulse beneath semi-translucent skin, while fragments of consumed hosts occasionally remain visible before being fully absorbed.",
+        "environment": "Devourers are found wherever prey is plentiful. Battlefields, trade roads, isolated settlements, and wilderness regions all serve as hunting grounds. They rarely establish permanent lairs, instead moving from feeding ground to feeding ground as local populations dwindle.",
+        "culture": "Devourers are driven by insatiable hunger. Unlike other Gloomspawn, they completely consume their hosts, wearing the remains until the body can no longer function. They are cunning hunters capable of deception and patience, but every action ultimately serves the need to feed. A Devourer rarely forms lasting attachments and views most creatures as future sustenance.",
+        "lore": "Known among mortals as the Blood Ooze, Devourers embody the endless hunger at the heart of the Gloomspawn. They are feared not simply because they kill, but because they replace. Entire communities have unknowingly sheltered a Devourer wearing the flesh of a friend, family member, or trusted leader. No matter how much they consume, the hunger remains. Every feast is temporary. Every body is fuel."
       },
-      "size": "host size",
+      "size": "3-8",
       "lifespan": 60,
       "language": "Imperial, Night",
-      "diet": "host life essence",
+      "diet": "Carnivore",
       "rarity": "Legendary",
       "region": "Eclipse, Prime, Ordealis",
       "origin": "chaos",
       "feature_name": "Red Feast",
-      "feature_effect": "You possess a volatile bite that deals [[1d6]] Piercing damage. If this bite reduces a creature to 0 Wounds, you immediately consume its essence, healing [[1d6]] and removing one Corpus Condition.",
+      "feature_effect": "Feed on a Small or larger living creature once per day or gain Confused condition until you feed. Your bite deals [[1d6]] Piercing. If your bite reduces a creature to 0 Wounds, heal 1d6 and remove a non-Major Condition.",
       "fetAction": "Special",
       "fetDamage": "1d6",
-      "fetDamagetype": "Piercing"
+      "fetDamagetype": "Piercing",
+      "sub-fet-name": "Shapeless",
+      "sub-fet-effect": "You are immune to the Broken condition. As a Half-Action, you may increase or decrease your size by 1 ft or create a simple melee weapon that does not hold its shape unless held by you",
+      "fetCondition": "Confused"
     },
     {
       "lineage": "Symbiotes",
       "option": "Gloomspawn",
       "name": "Hollowhost",
       "description": {
-        "physical": "Hollowhosts take on familiar shapes in order to be welcomed, wearing the guise of humanoids to soothe suspicion. Their feeding is subtle, for they sustain themselves on energy taken gently in the night, often leaving their hosts unaware of what has occurred. Unlike the Devourer, the Hollowhost does not seek to destroy. They prefer to linger and nourish themselves over time, moving from one dwelling to another like a passing shadow. They are known for their ability to vanish from sight, slipping silently through windows and doors, unseen but ever present. Their substance glimmers with soft colors of pale pink, white, and gray, a palette that mirrors the light of dusk and dawn. Hollowhosts are regarded with both fear and awe, for they appear as caring companions even as they feed in secret.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
+        "physical": "Hollowhosts possess no permanent form of their own. Instead, they reshape themselves into convincing humanoid disguises, most often resembling their current host, a recently consumed victim, or a carefully crafted identity. Their true bodies are pale masses of mutable biomass capable of mimicking flesh, hair, eyes, and clothing with unsettling accuracy. Only moments of stress, injury, or feeding reveal glimpses of their true nature beneath the disguise.",
+        "environment": "Hollowhosts thrive wherever people gather. Villages, cities, trade routes, noble courts, and remote settlements all provide opportunities to blend in and disappear among the population. They rarely remain in one place forever, eventually moving on once a host is exhausted or their identity becomes difficult to maintain.",
+        "culture": "Hollowhosts are patient predators that embed themselves within communities rather than hunting openly. They attach themselves to a host and feed gradually over weeks, months, or even years, siphoning vitality while maintaining the victim's health just enough to avoid suspicion. Most prefer stable environments where they can establish relationships and routines. Unlike Devourers, they avoid unnecessary violence and often abandon a host once it has been fully depleted, seeking a new life rather than a new meal.",
+        "lore": "Hollowhosts embody the subtle hunger of the Gloomspawn. Rather than consuming a victim outright, they slowly drain their hosts until nothing remains to take. Once depleted, the host often wastes away from mysterious illness, exhaustion, or unexplained decline while the Hollowhost quietly adopts a new identity elsewhere. Countless legends tell of travelers who never seem to age, neighbors who appear unchanged across generations, or loved ones who slowly become strangers before vanishing entirely. Because they can wear familiar faces so perfectly, Hollowhosts are among the most feared Gloomspawn, not for the speed of their hunger, but for how long they can hide it."
       },
       "size": "host size",
       "lifespan": 90,
@@ -3599,21 +3564,24 @@
       "region": "Eclipse, Prime",
       "origin": "life",
       "feature_name": "Drain",
-      "feature_effect": "As an Off-Action, you may touch a creature to siphon their essence without making a check, dealing [[1d4]] Psychic damage and healing for half the amount dealt. If the target is unaware of your presence, the damage is doubled. Make a Stealth check to remain undetected after the drain.",
-      "fetAction": "Off-Action",
+      "feature_effect": "As an action become invisible until the end of your next turn.",
+      "fetAction": "Action",
       "fetDamage": "1d4",
       "fetDamagetype": "Psychic",
-      "fetCheck": "Stealth"
+      "fetCheck": "Stealth",
+      "sub-fet-effect": "You are immune to the Broken condition. As a Half-Action, you may increase or decrease your size by 1 ft or create a simple melee weapon that does not hold its shape unless held by you",
+      "sub-fet-name": "Shapeless",
+      "fetCondition": "Invisible"
     },
     {
       "lineage": "Symbiotes",
       "option": "Gloomspawn",
       "name": "Nightvein",
       "description": {
-        "physical": "Nightveins are parasitic, yet unlike their kin, they rarely kill their hosts. Instead, they bond deeply and preserve the life within, often forging relationships that blur the line between dependence and companionship. A Nightvein may join with a beast as readily as a humanoid, shaping itself to fit the rhythms and instincts of its host. They are wanderers and seekers of knowledge, traveling far through the senses of those they inhabit. Nightveins are curious, often fascinated by culture, art, and history, collecting memories as if they were treasures. Their substance ripples with cool tones of blue, violet, and black, flowing like veins of shadow across the body they share.",
-        "environment": "[TBD]",
-        "culture": "[TBD]",
-        "lore": "[TBD]"
+        "physical": "Nightveins are among the most recognizable Gloomspawn, appearing as masses of dark living biomass wrapped around a host body like a second skin. Their true form resembles flowing veins, tendrils, and organic armor in shades of deep blue, violet, and black. Rather than concealing themselves completely, many Nightveins remain partially visible, emerging across the host's limbs, torso, or face as elegant patterns of living shadow. Over time, the bond between host and Nightvein often becomes so seamless that the two appear to function as a single creature.",
+        "environment": "Nightveins can be found nearly anywhere living creatures thrive. They commonly attach themselves to travelers, scholars, explorers, artists, and wandering beasts whose lifestyles expose them to new experiences. While they have no permanent settlements of their own, stories of Nightveins are most common along trade routes, ancient ruins, and distant frontiers where unusual companions are more readily accepted.",
+        "culture": "Unlike most Gloomspawn, Nightveins seek partnership rather than consumption. They survive by drawing only the smallest amount of energy necessary from their hosts, carefully avoiding discomfort or harm. Many develop genuine affection for those they bond with and may remain with a single host for decades. Curious by nature, Nightveins are fascinated by art, history, culture, and personal experiences. They often encourage exploration and adventure, experiencing the world through the lives they share rather than through conquest or predation.",
+        "lore": "Nightveins are considered the gentlest expression of Gloomspawn hunger. Rather than consuming hosts, they form true symbiotic bonds, preserving and strengthening the life they inhabit. Many scholars believe Nightveins possess an innate desire to learn, collecting memories, emotions, and experiences as others might collect treasures. While some cultures distrust them for their parasitic origins, countless tales tell of Nightveins serving as loyal companions, trusted advisors, and lifelong partners. Among the Gloomspawn, they are often regarded as strange idealists, creatures who discovered that cooperation can sustain them just as effectively as hunger."
       },
       "size": "host size",
       "lifespan": 90,
@@ -3622,9 +3590,11 @@
       "rarity": "Legendary",
       "region": "Eclipse, Prime",
       "origin": "life",
-      "feature_name": "Weaponry",
-      "feature_effect": "As an off-action, you can create a melee weapon of your choice from your substance. Of thrown the weapon immediately dissolves after hitting an object and does not hold its shape unless held by you. You may also shift your body slightly larger or smaller as an Off-Action",
-      "fetAction": "Off-Action"
+      "feature_name": "Symbiote",
+      "feature_effect": "You do not consume your host, instead forming a symbiotic bond. While hosted, your host controls movement. You may take your turn immediately after your host. Whenever your host makes a melee weapon attack, you may make one melee weapon attack as an Off-Action.",
+      "fetAction": "Passive",
+      "sub-fet-effect": "You are immune to the Broken condition. As a Half-Action, you may increase or decrease your size by 1 ft or create a simple melee weapon that does not hold its shape unless held by you",
+      "sub-fet-name": "Shapeless"
     },
     {
       "lineage": "Symbiotes",
@@ -3944,6 +3914,34 @@
       "fetAction": "Off-Action",
       "fetDamage": "1d4",
       "fetDamagetype": "Impact"
+    },
+    {
+      "lineage": "Realmsplit",
+      "option": "Ensuri",
+      "name": "Acid",
+      "description": {
+        "physical": "Acid Ensuri stand between 5 and 7 feet tall, with lean, wiry frames and sharp, angular features. Their skin ranges from deep charcoal to pale gray, often carrying faint hues of toxic green, yellow, or chartreuse. Their eyes tend to be bright and unsettling, and many possess naturally acidic saliva, blood, or sweat. Scars are common, as their own biology can be as dangerous to them as it is to others.",
+        "environment": "Acid Ensuri thrive in places most creatures avoid. Toxic swamps, chemical runoff basins, sulfur vents, abandoned industrial zones, and polluted coastlines are common settlements. Their bodies are resistant to corrosive substances that would harm others, allowing them to exploit regions rich in resources but hostile to most life.",
+        "culture": "Outcasts by both reputation and circumstance, Acid Ensuri have developed a culture that values self-reliance and resilience above all else. Hospitality is rare, trust is earned slowly, and weakness is often seen as a liability. While outsiders frequently view them as cruel or unpleasant, Acid Ensuri communities are tightly knit and fiercely protective of their own. Many take pride in their status as outsiders, seeing acceptance by wider society as neither necessary nor desirable.",
+        "lore": "The origins of the Acid Ensuri are debated. Some claim they were created through generations of exposure to toxic magical waste, while others believe they descend from ancient creatures touched by elemental acid. Whatever the truth, their corrosive nature has made coexistence difficult. Rejected by neighboring civilizations and forced into inhospitable lands, the Acid Ensuri endured where others could not. Over time, they transformed exile into identity, becoming a people who no longer seek a place in the world, but instead carve one out through stubborn survival."
+      },
+      "size": "5-7",
+      "lifespan": 80,
+      "language": "Imperial",
+      "diet": "Omnivore",
+      "rarity": "Rare",
+      "region": "",
+      "origin": "elemental",
+      "feature_name": "Corrosive Blood",
+      "feature_effect": "When you take damage, deal 2 acid damage to any creatures within reach range. ",
+      "fetAction": "Special",
+      "fetCondition": "",
+      "sub-fet-name": "Acid Immunity",
+      "sub-fet-effect": "Immune to acid damage",
+      "fetRange": "Reach",
+      "fetDamage": "2",
+      "fetDamagetype": "Acid",
+      "fetDuration": "Instant"
     }
   ]
 }

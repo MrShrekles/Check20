@@ -564,7 +564,8 @@ function refreshStats() {
     if (countEl) {
         const left = pointsLeft();
         countEl.textContent = left;
-        countEl.style.color = left < 0 ? '#ff6060' : left === 0 ? '#60e090' : 'var(--text)';
+        countEl.classList.remove('points-count--over', 'points-count--exact', 'points-count--remaining');
+        countEl.classList.add(left < 0 ? 'points-count--over' : left === 0 ? 'points-count--exact' : 'points-count--remaining');
     }
     // Update class-specific pool display
     const lim = classLimits();
@@ -600,7 +601,7 @@ function renderReview() {
         ${wiz.talentName ? `<div class="review-row"><span class="review-lbl">Talent</span><strong>${wiz.talentName}</strong></div>` : ''}
         ${s ? `<div class="review-row"><span class="review-lbl">Species</span><strong>${titleCase(s.name)}</strong> <span class="review-sub">${s.lineage}</span></div>` : ''}
         <div class="review-row"><span class="review-lbl">Stats</span><span class="review-stats">${statsLine || '—'}</span></div>
-        <div class="review-row"><span class="review-lbl">Points</span><span style="color:${pointsLeft() < 0 ? '#ff6060' : 'var(--muted)'}">
+        <div class="review-row"><span class="review-lbl">Points</span><span class="review-points${pointsLeft() < 0 ? ' review-points--over' : ''}">
             ${pointsSpent()} / ${classLimits().total} used${pointsLeft() > 0 ? ` (${pointsLeft()} unspent)` : ''}
         </span></div>
         ${wiz.wealth     ? `<div class="review-row"><span class="review-lbl">Wealth</span><strong>${wiz.wealth} gp</strong></div>` : ''}

@@ -14,7 +14,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="ARC20" />
     <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
-    <link rel="stylesheet" href="../styles/home.css" />
+    <link rel="stylesheet" href="styles/home.css" />
     <script type="module" src="../scripts/firebase.js"></script>
     <script src="../scripts/home.js" defer></script>
 </head>
@@ -59,11 +59,11 @@
         <div class="home-divider"></div>
 
         <div class="home-actions">
-            <a href="global-chat.html" class="home-btn home-btn--narrator" style="display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none">
+            <a href="global-chat.html" class="home-btn home-btn--narrator home-btn--link">
                 🥃 The Speakeasy
             </a>
-            <a href="narrator.html" class="home-btn home-btn--narrator" style="display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none">
-                <img src="../assets/icons/reference.png" style="width:22px;height:22px;object-fit:contain" alt="" />
+            <a href="narrator.html" class="home-btn home-btn--narrator home-btn--link">
+                <img src="../assets/icons/reference.png" class="home-btn-icon" alt="" />
                 Narrator Mode
             </a>
         </div>
@@ -78,7 +78,7 @@
             <div id="home-active-session" hidden>
                 <div class="home-session-banner">
                     <span>Active: <strong id="home-session-code"></strong></span>
-                    <button id="btn-leave-session" class="home-btn home-btn--ghost" type="button" style="color:#e05555">Leave</button>
+                    <button id="btn-leave-session" class="home-btn home-btn--ghost home-btn--leave" type="button">Leave</button>
                 </div>
                 <button id="btn-rejoin-session" class="home-btn home-btn--primary" type="button">▶ Rejoin Session</button>
             </div>
@@ -87,18 +87,17 @@
             <div id="home-join-form-wrap">
                 <div class="home-join-row">
                     <input id="join-code-input" class="home-join-input" type="text"
-                        placeholder="Room code…" maxlength="6" autocomplete="off"
-                        style="text-transform:uppercase" />
+                        placeholder="Room code…" maxlength="6" autocomplete="off" />
                     <button id="btn-join-session" class="home-btn home-btn--primary" type="button" disabled>Join</button>
                 </div>
                 <button id="btn-create-room" class="home-btn" type="button" disabled>+ Create Room</button>
 
                 <!-- Are you sure confirm (shown before creating when already in a room) -->
-                <div id="home-create-confirm" hidden style="margin-top:10px;padding:12px;background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.3);border-radius:10px">
-                    <p style="font-size:13px;color:#e06060;margin:0 0 10px">You're already in room <strong id="confirm-room-code"></strong>. Creating a new room means you'll need a new code. Are you sure?</p>
-                    <div style="display:flex;gap:8px">
-                        <button id="btn-create-confirm-yes" class="home-btn home-btn--primary" type="button" style="flex:1;background:#e06060;border-color:#e06060">Yes, New Room</button>
-                        <button id="btn-create-confirm-no" class="home-btn home-btn--ghost" type="button" style="flex:1">Cancel</button>
+                <div id="home-create-confirm" class="home-confirm-box" hidden>
+                    <p class="home-confirm-text">You're already in room <strong id="confirm-room-code"></strong>. Creating a new room means you'll need a new code. Are you sure?</p>
+                    <div class="home-confirm-actions">
+                        <button id="btn-create-confirm-yes" class="home-btn home-btn--primary home-btn--confirm-danger" type="button">Yes, New Room</button>
+                        <button id="btn-create-confirm-no" class="home-btn home-btn--ghost" type="button">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -107,7 +106,7 @@
         </div>
 
         <div class="home-actions">
-            <a href="../../index.html" class="home-btn home-btn--ghost" style="display:flex;align-items:center;justify-content:center;text-decoration:none">
+            <a href="../../index.html" class="home-btn home-btn--ghost home-btn--link">
                 ← Main Website
             </a>
         </div>

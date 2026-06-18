@@ -152,6 +152,8 @@ function createNpcCard(npc) {
     <p><strong>Signature Item:</strong> ${npc.item}</p>
     <p><strong>Motivation:</strong> ${npc.motivation}</p>
     <div class="button-row">
+        <button class="gc-seed npc-seed-quest">→ Quest</button>
+        <button class="gc-pin npc-pin" title="Pin to Session Board">📌</button>
         <button class="copy-npc">Copy</button>
         <button class="delete-monster">Remove</button>
     </div>
@@ -171,6 +173,28 @@ function createNpcCard(npc) {
         localStorage.setItem("check20-npc-cards", JSON.stringify(savedNpcs));
     });
 
+
+    div.querySelector(".npc-seed-quest").addEventListener("click", () => {
+        document.dispatchEvent(new CustomEvent("worldgen:seed-quest", { detail: { giver: npc.name } }));
+    });
+
+    const pinBtn = div.querySelector(".npc-pin");
+    pinBtn.addEventListener("click", () => {
+        document.dispatchEvent(new CustomEvent("worldgen:pin", { detail: {
+            type: "npc",
+            data: {
+                name: npc.name,
+                speciesName: npc.speciesName,
+                features: npc.features,
+                affinity: npc.affinity,
+                religion: npc.religion,
+                item: npc.item,
+                motivation: npc.motivation,
+            },
+        }}));
+        pinBtn.textContent = "✓";
+        pinBtn.disabled = true;
+    });
 
     // Copy button
     div.querySelector(".copy-npc").addEventListener("click", () => {
@@ -217,20 +241,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.getElementById("generate-npc").addEventListener("click", () => {
-        const npc = new NPC();
-        const card = createNpcCard(npc);
-        outputEl.prepend(card);
-
-        savedNpcs.push({
-            name: npc.name,
-            speciesName: npc.speciesName,
-            features: npc.features,
-            affinity: npc.affinity,
-            religion: npc.religion,
-            item: npc.item,
-            motivation: npc.motivation
-        });
-
+        const count = parseInt(document.getElementById("batch-npc")?.value || "1", 10);
+        for (let i = 0; i < count; i++) {
+            const npc = new NPC();
+            const card = createNpcCard(npc);
+            outputEl.prepend(card);
+            savedNpcs.push({
+                name: npc.name,
+                speciesName: npc.speciesName,
+                features: npc.features,
+                affinity: npc.affinity,
+                religion: npc.religion,
+                item: npc.item,
+                motivation: npc.motivation,
+            });
+        }
         localStorage.setItem("check20-npc-cards", JSON.stringify(savedNpcs));
     });
 

@@ -83,6 +83,7 @@
   align-self: start;
   background: var(--dark-2);
   border: 1px solid rgba(255,255,255,.07);
+  border-left: 3px solid var(--row-accent, transparent);
   border-radius: var(--border-radius);
   overflow: hidden;
   transition: background .15s ease, border-color .15s ease;

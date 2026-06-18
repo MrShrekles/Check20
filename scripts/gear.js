@@ -1,5 +1,12 @@
 // ─── Gear Page — Weapons / Armor / Items / Enchanted ─────────────────────────
 
+const WEAPON_CATEGORY_COLORS = {
+    melee:   '#8c2020',
+    ranged:  '#205080',
+    firearm: '#604010',
+    magic:   '#5020a0',
+};
+
 const WEAPON_ICONS = {
     melee:   '/assets/icons/sword.svg',
     ranged:  '/assets/icons/bow-arrow.svg',
@@ -275,10 +282,13 @@ function buildWeaponRow(w, term) {
             ${w.description ? `<p class="gear-desc">${highlightText(w.description, term)}</p>` : ''}
         </div>`;
 
-    return makeRow(headHTML, detailHTML, btn => {
+    const row = makeRow(headHTML, detailHTML, btn => {
         const text = `**${w.name}** (${w.category})\nDamage: ${w.damage || '—'} ${w.damageType || ''} · Range: ${w.range || '—'}\nProperties: ${w.properties || '—'}\n${w.description || ''}`.trim();
         navigator.clipboard.writeText(text).then(() => flashButton(btn, 'Copied!'));
     });
+    const catAccent = WEAPON_CATEGORY_COLORS[w.category];
+    if (catAccent) row.style.setProperty('--row-accent', catAccent);
+    return row;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

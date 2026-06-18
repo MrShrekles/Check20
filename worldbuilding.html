@@ -15,6 +15,7 @@
     <script src="scripts/almanac.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/panelLayout.js" defer></script>
     <!-- generators — load order matters: npcGenerator defines rarityWeight, hexgen uses hexRarityWeight -->
     <script src="scripts/npcGenerator.js"></script>
     <script src="scripts/businessGenerator.js"></script>
@@ -29,19 +30,63 @@
 
     <main>
 
-        <!-- ── ROW 1: NPC + HEX ──────────────────────────────────── -->
-        <div class="gen-grid">
+        <!-- ── SESSION BOARD ─────────────────────────────────────── -->
+        <details class="gen-panel" id="session-board">
+            <summary class="gen-panel-summary">Session Board <span class="board-count" id="board-count"></span></summary>
+            <div class="gen-controls">
+                <button id="clear-board">Clear Board</button>
+            </div>
+            <p class="board-empty" id="board-empty">Pin any card with 📌 to keep it here between sessions.</p>
+            <div class="flex-container gen-output" id="board-output"></div>
+        </details>
 
-            <details class="gen-panel" open>
+        <!-- ── QUICK ROLL ─────────────────────────────────────────── -->
+        <div class="quickroll-strip">
+            <span class="qr-label">Quick Roll</span>
+            <button class="qr-btn" data-target="generate-npc">NPC</button>
+            <button class="qr-btn" data-target="draw-question">Question</button>
+            <button class="qr-btn" data-target="generate-quest">Quest</button>
+            <button class="qr-btn" data-target="generate-loot">Loot</button>
+            <button class="qr-btn" data-target="generate-item">Item</button>
+            <button class="qr-btn" data-target="generate-trap">Trap</button>
+            <button class="qr-btn" data-target="roll-hex-btn">Hex</button>
+        </div>
+
+        <!-- ── GENERATOR WORKSPACE ───────────────────────────────── -->
+        <div id="gen-workspace">
+
+            <!-- Character Questions -->
+            <details class="gen-panel" id="panel-questions" open>
+                <summary class="gen-panel-summary">Character Questions</summary>
+                <div class="gen-controls">
+                    <button class="button" id="draw-question">Draw Question</button>
+                    <select class="batch-pick" id="batch-question" title="How many to draw">
+                        <option value="1">×1</option>
+                        <option value="3">×3</option>
+                        <option value="5">×5</option>
+                    </select>
+                    <button id="clear-questions">Clear</button>
+                </div>
+                <div class="flex-container gen-output" id="question-output"></div>
+            </details>
+
+            <!-- NPC Generator -->
+            <details class="gen-panel" id="panel-npc" open>
                 <summary class="gen-panel-summary">NPC Generator</summary>
                 <div class="gen-controls">
                     <button class="button" id="generate-npc">Generate NPC</button>
+                    <select class="batch-pick" id="batch-npc" title="How many to generate">
+                        <option value="1">×1</option>
+                        <option value="3">×3</option>
+                        <option value="5">×5</option>
+                    </select>
                     <button id="clear-npcs">Clear</button>
                 </div>
                 <div class="flex-container gen-output" id="npc-output"></div>
             </details>
 
-            <details class="gen-panel" open>
+            <!-- Hex Generator -->
+            <details class="gen-panel" id="panel-hex" open>
                 <summary class="gen-panel-summary">Hex Generator</summary>
                 <div class="hexgen-controls gen-controls">
                     <select id="terrain-pick">
@@ -59,13 +104,8 @@
                 <div id="hex-history" class="gen-output"></div>
             </details>
 
-        </div>
-
-        <!-- ── ROW 2: CAROUSELS ─────────────────────────────────── -->
-        <div class="gen-grid">
-
-            <!-- Quests & Encounters carousel -->
-            <details class="gen-panel" open>
+            <!-- Quests & Encounters -->
+            <details class="gen-panel" id="panel-quests" open>
                 <summary class="gen-panel-summary">Quests &amp; Encounters</summary>
                 <div class="carousel-tabs">
                     <button class="carousel-tab is-active" onclick="switchCarouselTab(this,'cpane-quest')">Quest</button>
@@ -87,6 +127,11 @@
                             <option value="deliver">Deliver</option>
                         </select>
                         <button class="button" id="generate-quest">Generate Quest</button>
+                        <select class="batch-pick" id="batch-quest" title="How many to generate">
+                            <option value="1">×1</option>
+                            <option value="3">×3</option>
+                            <option value="5">×5</option>
+                        </select>
                         <button id="clear-quests">Clear</button>
                     </div>
                     <div class="flex-container gen-output" id="quest-output"></div>
@@ -117,8 +162,8 @@
                 </div>
             </details>
 
-            <!-- Commerce & Crafts carousel -->
-            <details class="gen-panel" open>
+            <!-- Commerce & Crafts -->
+            <details class="gen-panel" id="panel-commerce" open>
                 <summary class="gen-panel-summary">Commerce &amp; Crafts</summary>
                 <div class="carousel-tabs">
                     <button class="carousel-tab is-active" onclick="switchCarouselTab(this,'cpane-enchanted')">Enchanted</button>
@@ -175,11 +220,8 @@
                 </div>
             </details>
 
-        </div>
-
-        <!-- ── ROW 3: LOOT ──────────────────────────────────────────── -->
-        <div class="gen-grid">
-            <details class="gen-panel" open>
+            <!-- Loot Generator -->
+            <details class="gen-panel" id="panel-loot" open>
                 <summary class="gen-panel-summary">Loot Generator</summary>
                 <div class="gen-controls">
                     <label style="display:flex;align-items:center;gap:6px;font-size:.9em">
@@ -189,11 +231,17 @@
                         <button class="button" id="loot-pl-inc" style="padding:0 10px">+</button>
                     </label>
                     <button class="button" id="generate-loot">Roll Loot</button>
+                    <select class="batch-pick" id="batch-loot" title="How many to roll">
+                        <option value="1">×1</option>
+                        <option value="3">×3</option>
+                        <option value="5">×5</option>
+                    </select>
                     <button id="clear-loot">Clear</button>
                 </div>
                 <div class="flex-container gen-output" id="loot-output"></div>
             </details>
-        </div>
+
+        </div><!-- /gen-workspace -->
 
         <!-- ── HEX REFERENCE TABLES ──────────────────────────────── -->
         <details>

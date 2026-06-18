@@ -1,3 +1,19 @@
+// ─── Origin accent colors ─────────────────────────────────────────────────────
+const SPELL_ORIGIN_COLORS = {
+    arcane:    '#5020a0',
+    basic:     '#505050',
+    celestial: '#a08020',
+    chaos:     '#8c2020',
+    chrono:    '#208080',
+    crystal:   '#3080b0',
+    dragon:    '#802020',
+    elemental: '#308060',
+    life:      '#507030',
+    nature:    '#406030',
+    tech:      '#205080',
+    vozian:    '#702040',
+};
+
 // ─── Spell Builder ───────────────────────────────────────────────────────────
 
 function getIntentCost(intent) {
@@ -313,6 +329,8 @@ function renderSpells() {
       // ── Row shell ──
       const row = document.createElement('div');
       row.className = 'spell-row';
+      const originAccent = SPELL_ORIGIN_COLORS[(spell.origin || '').toLowerCase()];
+      if (originAccent) row.style.setProperty('--row-accent', originAccent);
 
       // ── Collapsed header ──
       const head = document.createElement('div');

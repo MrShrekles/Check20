@@ -19,8 +19,9 @@ let presenceDocs = [];
 function renderChatLog() {
     const el = document.getElementById('chat-log');
     if (!el) return;
-    const myUid = window.__arc?.uid;
-    const wasAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 20;
+    const myUid    = window.__arc?.uid;
+    const scroller = el.closest('.gc-main') || el.parentElement;
+    const wasAtTop = !scroller || scroller.scrollTop <= 60;
 
     el.innerHTML = '';
 
@@ -64,7 +65,7 @@ function renderChatLog() {
         el.appendChild(li);
     });
 
-    if (wasAtBottom) el.scrollTop = el.scrollHeight;
+    if (wasAtTop && scroller) scroller.scrollTop = 0;
 }
 
 function listenToChat() {
@@ -75,7 +76,7 @@ function listenToChat() {
         arc.limit(80)
     );
     arc.onSnapshot(q, snap => {
-        chatMsgs = snap.docs.map(d => ({ id: d.id, ...d.data() })).reverse();
+        chatMsgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         renderChatLog();
     }, err => console.error('[ARC] global chat:', err));
 }
@@ -250,6 +251,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const panel = document.getElementById('gc-online-panel');
         if (panel) panel.hidden = !panel.hidden;
     });
+
+    // Info / Feedback dialog
+    const infoDialog = document.getElementById('gc-info-dialog');
+    document.getElementById('gc-info-btn')?.addEventListener('click', () => infoDialog?.showModal());
+    document.getElementById('gc-info-close')?.addEventListener('click', () => infoDialog?.close());
+    infoDialog?.addEventListener('click', e => { if (e.target === infoDialog) infoDialog.close(); });
 
     // Send message
     document.getElementById('btn-send-msg')?.addEventListener('click', sendMsg);

@@ -1,0 +1,661 @@
+[
+  {
+    "term": "Bleeding",
+    "type": "condition",
+    "category": "Corpus",
+    "definition": "Cannot recover wounds or receive healing.",
+    "duration": "Lasts 1 minute"
+  },
+  {
+    "term": "Broken",
+    "type": "condition",
+    "category": "Corpus",
+    "definition": "Physical Disadvantage.",
+    "duration": "Lasts 6 weeks"
+  },
+  {
+    "term": "Concussion",
+    "type": "condition",
+    "category": "Corpus",
+    "definition": "Mental Disadvantage; Spellcasting Disadvantage.",
+    "duration": "Until a Long Rest"
+  },
+  {
+    "term": "Coughing",
+    "type": "condition",
+    "category": "Corpus",
+    "definition": "Mental Disadvantage.",
+    "duration": "Until a Press On or irritant is removed"
+  },
+  {
+    "term": "Dislocation",
+    "type": "condition",
+    "category": "Corpus",
+    "definition": "Physical Disadvantage.",
+    "duration": "Off-Action Survival Check, or until a Long Rest"
+  },
+  {
+    "term": "Pinned",
+    "type": "condition",
+    "category": "Corpus",
+    "definition": "Cannot move; restrained by an object or creature.",
+    "duration": "Off-Action Physical Check"
+  },
+  {
+    "term": "Prone",
+    "type": "condition",
+    "category": "Corpus",
+    "definition": "Disadvantage on ranged attacks; advantage for melee attacks against you.",
+    "duration": "Requires 15ft of movement to stand"
+  },
+  {
+    "term": "Slowed",
+    "type": "condition",
+    "category": "Corpus",
+    "definition": "Movement halved.",
+    "duration": "Until source is removed or until the end of your next turn"
+  },
+  {
+    "term": "Blind",
+    "type": "condition",
+    "category": "Cognition",
+    "definition": "Disadvantage on attack checks; attacks against you have advantage.",
+    "duration": "Off-Action removal unless permanent"
+  },
+  {
+    "term": "Charmed",
+    "type": "condition",
+    "category": "Cognition",
+    "definition": "Mental Disadvantage; cannot attack the source of the charm.",
+    "duration": "Ends based on the charm's source"
+  },
+  {
+    "term": "Confused",
+    "type": "condition",
+    "category": "Cognition",
+    "definition": "Mental Disadvantage; attacks against you have +1.",
+    "duration": "Until end of next turn"
+  },
+  {
+    "term": "Deaf",
+    "type": "condition",
+    "category": "Cognition",
+    "definition": "Stealth Disadvantage; Provoke Disadvantage.",
+    "duration": "Until end of next turn"
+  },
+  {
+    "term": "Fear",
+    "type": "condition",
+    "category": "Cognition",
+    "definition": "Must dash away or hide until the end of your next turn. Cannot be triggered by the same source twice.",
+    "duration": "Ends if you cannot see the source until the start of your next turn"
+  },
+  {
+    "term": "Intangible",
+    "type": "condition",
+    "category": "Special",
+    "definition": "Immune to physical damage. Cannot attack non-intangible creatures. Cannot move through inorganic material. Half Movement.",
+    "duration": "Ends after the effect's duration or through magical disruption"
+  },
+  {
+    "term": "Invisible",
+    "type": "condition",
+    "category": "Special",
+    "definition": "Cannot be targeted by Provoke; checks against you have disadvantage.",
+    "duration": "Ends after making an aggressive action or when revealed by powder or oil"
+  },
+  {
+    "term": "Constrained",
+    "type": "condition",
+    "category": "Major",
+    "definition": "Cannot make attack actions; attacks against you have advantage.",
+    "duration": "Off-Action removal if possible; escape from restraints"
+  },
+  {
+    "term": "Death",
+    "type": "condition",
+    "category": "Major",
+    "definition": "Character dies and cannot interact with the living world.",
+    "duration": "An ally may touch you before the end of their next turn and make a Mental check to return you to Injured. Otherwise only resurrection magic can remove this condition."
+  },
+  {
+    "term": "Exhaustion",
+    "type": "condition",
+    "category": "Major",
+    "definition": "-3 on all checks; movement halved.",
+    "duration": "Persists until a Long Rest, magical recovery, or specific intervention"
+  },
+  {
+    "term": "Exhausted",
+    "type": "condition",
+    "category": "Major",
+    "definition": "-3 on all checks; movement halved.",
+    "duration": "Persists until a Long Rest, magical recovery, or specific intervention"
+  },
+  {
+    "term": "Exposed",
+    "type": "condition",
+    "category": "Major",
+    "definition": "Take double damage.",
+    "duration": "Until end of next turn"
+  },
+  {
+    "term": "Injured",
+    "type": "condition",
+    "category": "Major",
+    "definition": "At 0 wounds, any further damage causes immediate Death.",
+    "duration": "Healing removes the condition. Excess damage does not carry over unless the Narrator determines instant death."
+  },
+  {
+    "term": "Stunned",
+    "type": "condition",
+    "category": "Major",
+    "definition": "-3 on all checks; movement halved.",
+    "duration": "Until end of next turn or Press On"
+  },
+  {
+    "term": "Unconscious",
+    "type": "condition",
+    "category": "Major",
+    "definition": "Unable to act; vulnerable to critical hits and Finishers.",
+    "duration": "Ends after a set duration, damage taken, or Off-Action ally assistance"
+  },
+  {
+    "term": "Agility",
+    "type": "check",
+    "category": "Physical",
+    "definition": "Precision, reflexes, and physical coordination. Each point increases Wounds. Movement: base 30ft, +5ft per 2 points."
+  },
+  {
+    "term": "Crafting",
+    "type": "check",
+    "category": "Physical",
+    "definition": "Transform raw materials into tools, weapons, or art. Covers repair and tinkering."
+  },
+  {
+    "term": "Stealth",
+    "type": "check",
+    "category": "Physical",
+    "definition": "Move quietly and remain unnoticed — hiding, blending into crowds, or shadowing targets without detection."
+  },
+  {
+    "term": "Strength",
+    "type": "check",
+    "category": "Physical",
+    "definition": "Raw physical power and resilience. Each point increases Wounds."
+  },
+  {
+    "term": "Survival",
+    "type": "check",
+    "category": "Physical",
+    "definition": "Primal instinct for navigating danger and enduring harsh environments. Governs breath-holding: 3 rounds + Survival."
+  },
+  {
+    "term": "Influence",
+    "type": "check",
+    "category": "Mental",
+    "definition": "Persuasion, emotional intelligence, and performance. Used to sway opinions, deceive, negotiate, and command."
+  },
+  {
+    "term": "Intellect",
+    "type": "check",
+    "category": "Mental",
+    "definition": "Comprehension of magic, research, and knowledge. Covers arcana, history, nature, science, and occult."
+  },
+  {
+    "term": "Luck",
+    "type": "check",
+    "category": "Mental",
+    "definition": "The unseen hand of fate. Governs probability, fortunate timing, and chance-based outcomes."
+  },
+  {
+    "term": "Observation",
+    "type": "check",
+    "category": "Mental",
+    "definition": "Perceiving surroundings and reading people. Low-light vision: base 30ft, +5ft per 2 points."
+  },
+  {
+    "term": "Spirit",
+    "type": "check",
+    "category": "Mental",
+    "definition": "A mystical link to the unseen. Every 2 points grants 1 Max Mana."
+  },
+  {
+    "term": "Wounds",
+    "type": "resource",
+    "category": "Character",
+    "definition": "Your total hit capacity. Equal to Agility + Strength (minimum 1). Reaching 0 applies the Injured condition."
+  },
+  {
+    "term": "Armor",
+    "type": "resource",
+    "category": "Character",
+    "definition": "Absorbs damage before wounds. Repaired via Crafting on Press On, or restored to at least half on Long Rest."
+  },
+  {
+    "term": "Mana",
+    "type": "resource",
+    "category": "Character",
+    "definition": "Magical energy used to cast spells. Every 2 Spirit grants 1 Max Mana. Restored on Press On and Long Rest."
+  },
+  {
+    "term": "Class Resource",
+    "type": "resource",
+    "category": "Character",
+    "definition": "A limited per-class pool that powers special abilities. Replenished by Press On or Long Rest."
+  },
+  {
+    "term": "Bolster",
+    "type": "resource",
+    "category": "Character",
+    "definition": "A class resource charge used to amplify effects. Spending it triggers stronger outcomes in certain abilities."
+  },
+  {
+    "term": "Bulk",
+    "type": "resource",
+    "category": "Character",
+    "definition": "Measures the weight and encumbrance of carried items. Exceeding your Strength in Bulk causes Pinned; exceeding 2x Strength adds Exhaustion."
+  },
+  {
+    "term": "Loyalty",
+    "type": "resource",
+    "category": "Social",
+    "definition": "A scale from -5 (Hostile) to +5 (Devoted) tracking trust with NPCs and factions. Starts at 0 (Neutral). Shifts through meaningful actions, gifts, and betrayals."
+  },
+  {
+    "term": "Advantage",
+    "type": "mechanic",
+    "category": "Rolls",
+    "definition": "Roll a d20+4 and a d20, take the higher result."
+  },
+  {
+    "term": "Disadvantage",
+    "type": "mechanic",
+    "category": "Rolls",
+    "definition": "Roll a d20-4 and a d20, take the lower result."
+  },
+  {
+    "term": "Locked Out",
+    "type": "mechanic",
+    "category": "Rolls",
+    "definition": "Having double Disadvantage on a roll means you cannot perform that action at all."
+  },
+  {
+    "term": "Opposed Check",
+    "type": "mechanic",
+    "category": "Rolls",
+    "definition": "Two characters each roll and add their relevant checks; the higher total wins."
+  },
+  {
+    "term": "Group Check",
+    "type": "mechanic",
+    "category": "Rolls",
+    "definition": "The whole party attempts the same action. Total successes needed equal the number of participants."
+  },
+  {
+    "term": "Critical Success",
+    "type": "mechanic",
+    "category": "Rolls",
+    "definition": "An extreme high roll. In combat: double damage, a bonus damage table roll, or instantly finishing a weakened foe. Outside combat: perfect timing or bonus information."
+  },
+  {
+    "term": "Critical Failure",
+    "type": "mechanic",
+    "category": "Rolls",
+    "definition": "An extreme low roll. In combat: half damage, a weapon slip, or a new complication. Spells may backfire or fizzle."
+  },
+  {
+    "term": "Stress Push",
+    "type": "mechanic",
+    "category": "Rolls",
+    "definition": "Non-Action: take 4 stress damage to gain +3 on a low roll."
+  },
+  {
+    "term": "Progression",
+    "type": "mechanic",
+    "category": "Character",
+    "definition": "At each Path Progression Step, gain one of: +1 to any check (max 15), +1 Mana, or +1 Class Resource."
+  },
+  {
+    "term": "Provoke",
+    "type": "mechanic",
+    "category": "Combat",
+    "definition": "Triggered when a creature misses an attack or willingly moves out of melee range without Disengaging. Grants the target a counterattack."
+  },
+  {
+    "term": "Initiative",
+    "type": "mechanic",
+    "category": "Combat",
+    "definition": "Determines turn order in combat. Roll a d20 + Agility; highest goes first."
+  },
+  {
+    "term": "Morale Check",
+    "type": "mechanic",
+    "category": "Combat",
+    "definition": "A check made by enemies and NPCs when threatened. A failed check may cause them to flee combat."
+  },
+  {
+    "term": "Called Shot",
+    "type": "mechanic",
+    "category": "Combat",
+    "definition": "Declare before attacking, then accept -10 to hit. On success, inflict a specific condition instead of normal damage."
+  },
+  {
+    "term": "Finisher",
+    "type": "mechanic",
+    "category": "Combat",
+    "definition": "Instantly eliminate a helpless, sleeping, or completely unaware foe without full combat. Cannot be used on an active or aware opponent."
+  },
+  {
+    "term": "Cover",
+    "type": "mechanic",
+    "category": "Combat",
+    "definition": "Half cover: Disadvantage to hit the target. Full cover: target cannot be targeted at all."
+  },
+  {
+    "term": "Surprise Turn",
+    "type": "mechanic",
+    "category": "Combat",
+    "definition": "When attacking from stealth, gain one extra action on the first turn. Reveals your position unless an ability says otherwise."
+  },
+  {
+    "term": "Knockback",
+    "type": "mechanic",
+    "category": "Combat",
+    "definition": "A damage result that pushes the target a set distance (10ft or 20ft depending on the source)."
+  },
+  {
+    "term": "Cleave",
+    "type": "mechanic",
+    "category": "Combat",
+    "definition": "A damage result that causes your attack to also strike creatures adjacent to your original target."
+  },
+  {
+    "term": "Feint",
+    "type": "mechanic",
+    "category": "Combat",
+    "definition": "A damage result that lets you take a Stance, repositioning your combat advantage."
+  },
+  {
+    "term": "Disarm",
+    "type": "mechanic",
+    "category": "Combat",
+    "definition": "Knock a weapon from a creature's hand. As a Half-Action: make an opposed Strength or Agility check. Also a possible damage result from Slashing and Thunder attacks."
+  },
+  {
+    "term": "Siphon",
+    "type": "mechanic",
+    "category": "Combat",
+    "definition": "A damage result: deal half the rolled damage and restore that amount to yourself as wounds."
+  },
+  {
+    "term": "Raise upon Death",
+    "type": "mechanic",
+    "category": "Combat",
+    "definition": "A damage result: a slain creature rises under the attacker's control or as an undead."
+  },
+  {
+    "term": "Evil Banishment",
+    "type": "mechanic",
+    "category": "Combat",
+    "definition": "A damage result: force evil or undead creatures to be banished or driven back from the area."
+  },
+  {
+    "term": "Action",
+    "type": "action",
+    "category": "Action Economy",
+    "definition": "The primary activity on your turn — attacking, casting a spell, etc. Generally one per turn."
+  },
+  {
+    "term": "Half-Action",
+    "type": "action",
+    "category": "Action Economy",
+    "definition": "A smaller action. Two Half-Actions can replace one full Action."
+  },
+  {
+    "term": "Off-Action",
+    "type": "action",
+    "category": "Action Economy",
+    "definition": "A quick reaction usable on or off your turn without spending your main action."
+  },
+  {
+    "term": "Free-Action",
+    "type": "action",
+    "category": "Action Economy",
+    "definition": "Minor tasks or brief communication that do not consume any part of your action economy."
+  },
+  {
+    "term": "Attack",
+    "type": "action",
+    "category": "Action",
+    "definition": "Make a melee or ranged attack against a creature or object within range."
+  },
+  {
+    "term": "Unarmed Strike",
+    "type": "action",
+    "category": "Action",
+    "definition": "Deals 1 BPorS damage. Can be taken as an Off-Action."
+  },
+  {
+    "term": "Dash",
+    "type": "action",
+    "category": "Action",
+    "definition": "Use your action to double your movement distance for the turn."
+  },
+  {
+    "term": "Grab or Hold",
+    "type": "action",
+    "category": "Action",
+    "definition": "Make an opposed Strength check to impose the Pinned condition on a creature."
+  },
+  {
+    "term": "Cast a Spell",
+    "type": "action",
+    "category": "Action",
+    "definition": "Requires sound, movement, and a spellcasting check (usually Spirit). Costs Mana."
+  },
+  {
+    "term": "Administer a Potion",
+    "type": "action",
+    "category": "Action",
+    "definition": "Give a potion to a downed ally as a full action. Drinking a potion yourself is a Half-Action."
+  },
+  {
+    "term": "Disengage",
+    "type": "action",
+    "category": "Half-Action",
+    "definition": "Move out of a creature's melee range without triggering Provoke."
+  },
+  {
+    "term": "Help",
+    "type": "action",
+    "category": "Half-Action",
+    "definition": "Give a nearby creature +1 to their next check."
+  },
+  {
+    "term": "Stances",
+    "type": "action",
+    "category": "Half-Action",
+    "definition": "Choose a combat stance lasting until your next turn: Advantage Stance (advantage on next attack), Disadvantage Stance (enemies attacking you or nearby allies suffer disadvantage), Offensive Stance (use Off-Action to Provoke), or Reaction Stance (react to failed attacks against you)."
+  },
+  {
+    "term": "Reaction",
+    "type": "action",
+    "category": "Off-Action",
+    "definition": "A special action taken out of turn, such as an opportunity attack or a response to a trigger."
+  },
+  {
+    "term": "Block",
+    "type": "action",
+    "category": "Off-Action",
+    "definition": "Reduce incoming melee damage by half using a shield."
+  },
+  {
+    "term": "Disrupt",
+    "type": "action",
+    "category": "Off-Action",
+    "definition": "Impose Disadvantage on an enemy's attack with a successful check."
+  },
+  {
+    "term": "Demoralize",
+    "type": "action",
+    "category": "Off-Action",
+    "definition": "Force enemies to make a Morale Check using an Influence (Intimidate) roll."
+  },
+  {
+    "term": "Drink Something",
+    "type": "action",
+    "category": "Off-Action",
+    "definition": "Drink or hand off a potion as an Off-Action."
+  },
+  {
+    "term": "Press On",
+    "type": "action",
+    "category": "Rest",
+    "definition": "After combat: regain 1 class resource and 1 Mana, repair armor (1d6 + Crafting), heal (1d6 + Survival), and remove all conditions lasting 1 minute or less. Usable twice per day, not consecutively."
+  },
+  {
+    "term": "Long Rest",
+    "type": "action",
+    "category": "Rest",
+    "definition": "10 hours of uninterrupted downtime. Fully restores wounds, class resources, and Mana. Repairs armor to at least half. Removes conditions lasting one day or less."
+  },
+  {
+    "term": "Melee Range",
+    "type": "range",
+    "category": "Range",
+    "definition": "5ft or touching."
+  },
+  {
+    "term": "Reach Range",
+    "type": "range",
+    "category": "Range",
+    "definition": "10ft."
+  },
+  {
+    "term": "Short Range",
+    "type": "range",
+    "category": "Range",
+    "definition": "Within 50ft."
+  },
+  {
+    "term": "Medium Range",
+    "type": "range",
+    "category": "Range",
+    "definition": "50-200ft."
+  },
+  {
+    "term": "Long Range",
+    "type": "range",
+    "category": "Range",
+    "definition": "200-1000ft."
+  },
+  {
+    "term": "Visible Range",
+    "type": "range",
+    "category": "Range",
+    "definition": "Within line of sight."
+  },
+  {
+    "term": "Difficult Terrain",
+    "type": "movement",
+    "category": "Movement",
+    "definition": "Requires twice as much movement; every 5ft costs 10ft."
+  },
+  {
+    "term": "Falling",
+    "type": "movement",
+    "category": "Movement",
+    "definition": "Take 5 bludgeoning damage per 10ft fallen. A fall that brings you to Injured causes the Death condition instead."
+  },
+  {
+    "term": "Burrowing",
+    "type": "movement",
+    "category": "Movement",
+    "definition": "While underground, immune to sight-based spells and non-piercing weapons. Requires a way to breathe."
+  },
+  {
+    "term": "Teleport",
+    "type": "movement",
+    "category": "Movement",
+    "definition": "Move to another unoccupied space without provoking. Only available to certain creatures or abilities."
+  },
+  {
+    "term": "Tiny",
+    "type": "size",
+    "category": "Size",
+    "definition": "Less than 1ft. Examples: insects, pixies, rings."
+  },
+  {
+    "term": "Small",
+    "type": "size",
+    "category": "Size",
+    "definition": "1-4ft. Examples: gnomes, goblins, Klienkin."
+  },
+  {
+    "term": "Medium",
+    "type": "size",
+    "category": "Size",
+    "definition": "5-7ft. Examples: humans, beastfolk."
+  },
+  {
+    "term": "Large",
+    "type": "size",
+    "category": "Size",
+    "definition": "8-15ft. Examples: ogres, dire bears, golem enforcers."
+  },
+  {
+    "term": "Giant",
+    "type": "size",
+    "category": "Size",
+    "definition": "15-25ft. Examples: clockwork titans."
+  },
+  {
+    "term": "Monolithic",
+    "type": "size",
+    "category": "Size",
+    "definition": "25-100ft. Examples: war zeppelins, cathedral domes."
+  },
+  {
+    "term": "Environmental",
+    "type": "size",
+    "category": "Size",
+    "definition": "Over 100ft. Examples: floating citadels, mountain elementals."
+  },
+  {
+    "term": "Narrator",
+    "type": "setting",
+    "category": "Roles",
+    "definition": "The game master in Check20. Creates the world, controls NPCs, runs scenes, and responds to player actions."
+  },
+  {
+    "term": "Shek",
+    "type": "setting",
+    "category": "World",
+    "definition": "The world in which Check20 takes place — a 1920s-inspired high-fantasy setting blending magic with industrialization."
+  },
+  {
+    "term": "Fern-Tuft",
+    "type": "setting",
+    "category": "World",
+    "definition": "The in-world unit of distance, abbreviated ft. Slightly smaller than a foot. Use \"ferns\" at the table for short."
+  },
+  {
+    "term": "Path",
+    "type": "setting",
+    "category": "Character",
+    "definition": "A character's chosen specialization within their Class. Defines the step-by-step progression of abilities."
+  },
+  {
+    "term": "Talent",
+    "type": "setting",
+    "category": "Character",
+    "definition": "A further specialization within a Path, fine-tuning a character's role and unique capabilities."
+  },
+  {
+    "term": "Downtime",
+    "type": "setting",
+    "category": "Gameplay",
+    "definition": "Time between adventures used for training, business, recovery, and personal projects. Especially important for Merchant characters."
+  }
+]

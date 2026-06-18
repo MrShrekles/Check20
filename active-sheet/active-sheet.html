@@ -15,7 +15,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="ARC20" />
     <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
-    <link rel="stylesheet" href="../styles/active-sheet.css" />
+    <link rel="stylesheet" href="styles/active-sheet.css" />
 
     <script src="../scripts/tooltips.js" defer></script>
 
@@ -33,7 +33,7 @@
         <div class="app-topbar">
             <a href="home.html" class="topbar-home" aria-label="Character Home">⌂</a>
             <span class="topbar-name" id="topbar-name"></span>
-            <a href="../../index.html" class="topbar-settings-btn" aria-label="Main Site" style="display:grid;place-items:center;text-decoration:none;font-size:13px">Site↗</a>
+            <a href="../../index.html" class="topbar-settings-btn topbar-settings-btn--link" aria-label="Main Site">Site↗</a>
             <button class="topbar-settings-btn" id="btn-settings" type="button" aria-label="Settings">⚙</button>
         </div>
 
@@ -180,7 +180,7 @@
                     </div>
 
                     <!-- Long Rest -->
-                    <div class="recovery-block" style="margin-top:8px" id="long-rest-block">
+                    <div class="recovery-block u-mt-8" id="long-rest-block">
                         <div class="recovery-head">
                             <span class="recovery-name lr-name">Long Rest</span>
                             <div class="recovery-checks" id="long-rest-checks">
@@ -203,7 +203,7 @@
                         <span class="initiative-agi-hint">Agi <span id="initiative-agi-val">+0</span></span>
                     </div>
                     <div class="initiative-row">
-                        <label class="field" style="flex:1;margin:0">
+                        <label class="field">
                             <span class="field-label">Bonus</span>
                             <input id="initiative-bonus" type="number" inputmode="numeric"
                                 step="1" value="0" />
@@ -232,8 +232,9 @@
 
                 <!-- Tab row: Class | Equipment — at top -->
                 <div class="feat-tab-row">
-                    <button class="feat-tab is-active" data-feat-tab="class" type="button">Class</button>
-                    <button class="feat-tab"           data-feat-tab="equip" type="button">Equipment</button>
+                    <button class="feat-tab is-active" data-feat-tab="class"  type="button">Class</button>
+                    <button class="feat-tab"           data-feat-tab="equip"  type="button">Equipment</button>
+                    <button class="feat-tab"           data-feat-tab="spells" type="button">Spells</button>
                 </div>
 
                 <!-- Resources -->
@@ -243,14 +244,14 @@
                         <button class="gear-btn" data-editor="res-editor" type="button" aria-label="Edit resources" title="Edit mana & class resources">⚙</button>
                     </div>
                     <div class="section-editor" id="res-editor">
-                        <p class="field-hint" style="margin-bottom:8px">Mana max is calculated automatically from your class features.</p>
+                        <p class="field-hint u-mb-8">Mana max is calculated automatically from your class features.</p>
                         <div class="editor-grid">
                             <label class="field"><span class="field-label">Label</span><input id="class-res-label-input" type="text" placeholder="Resource" autocomplete="off" /></label>
                             <label class="field"><span class="field-label">Max</span><input id="class-res-max-input" type="number" inputmode="numeric" min="0" /></label>
                         </div>
                         <button class="done-btn" data-save="classres" type="button">✓ Done</button>
                         <hr class="res-divider" />
-                        <p class="field-hint" style="margin:0 0 6px">Add custom resource:</p>
+                        <p class="field-hint u-mt-0 u-mb-6">Add custom resource:</p>
                         <div class="editor-grid">
                             <label class="field"><span class="field-label">Label</span><input id="custom-res-label-input" type="text" placeholder="Rage, Ki…" autocomplete="off" /></label>
                             <label class="field"><span class="field-label">Max</span><input id="custom-res-max-input" type="number" inputmode="numeric" min="0" /></label>
@@ -350,6 +351,28 @@
                     </div>
                 </div>
 
+                <!-- Spells tab -->
+                <div class="feat-tab-content" id="feat-tab-spells">
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Spells</h2>
+                            <div class="spell-mn-display">
+                                <span class="spell-mn-label">MN</span>
+                                <span class="spell-mn-current" id="spell-mn-current">0</span>
+                                <span class="spell-mn-sep">/</span>
+                                <span class="spell-mn-max" id="spell-mn-max">0</span>
+                            </div>
+                        </div>
+                        <div class="spell-search-bar">
+                            <input class="spell-search-input" id="spell-search" type="search"
+                                placeholder="Search spells…" autocomplete="off" />
+                        </div>
+                        <div class="spell-filters" id="spell-filters"></div>
+                        <div class="spell-list" id="spell-list">
+                            <p class="empty-hint">Loading spells…</p>
+                        </div>
+                    </div>
+                </div>
 
             </section>
 
@@ -410,7 +433,7 @@
                             <div class="field">
                                 <span class="field-label">Additional Equipment</span>
                                 <textarea id="char-additional-equip" rows="3" placeholder="Starting equipment…"></textarea>
-                                <button type="button" id="btn-roll-additional-equip" class="ghost-btn" style="margin-top:4px;font-size:11px;width:100%">🎲 Roll Equipment</button>
+                                <button type="button" id="btn-roll-additional-equip" class="ghost-btn ghost-btn--block">🎲 Roll Equipment</button>
                             </div>
                             <div class="bio-edit-btns">
                                 <button class="primary-btn" id="btn-save-bio" type="button">Save</button>
@@ -462,29 +485,6 @@
                 </div><!-- /play-tab-bio -->
 
             </section><!-- /panel-play -->
-
-            <!-- SPELLS -->
-            <section class="panel" id="panel-spells" role="region" aria-label="Spells">
-                <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title">Spells</h2>
-                        <div class="spell-mn-display">
-                            <span class="spell-mn-label">MN</span>
-                            <span class="spell-mn-current" id="spell-mn-current">0</span>
-                            <span class="spell-mn-sep">/</span>
-                            <span class="spell-mn-max" id="spell-mn-max">0</span>
-                        </div>
-                    </div>
-                    <div class="spell-search-bar">
-                        <input class="spell-search-input" id="spell-search" type="search"
-                            placeholder="Search spells…" autocomplete="off" />
-                    </div>
-                    <div class="spell-filters" id="spell-filters"></div>
-                    <div class="spell-list" id="spell-list">
-                        <p class="empty-hint">Loading spells…</p>
-                    </div>
-                </div>
-            </section>
 
             <!-- REFERENCE -->
             <section class="panel" id="panel-ref" role="region" aria-label="Reference">
@@ -579,17 +579,6 @@
 
                 <!-- Messages sub-panel -->
                 <div class="chat-sub-content" id="chat-sub-messages">
-                    <!-- Party sub-tab — shown only when in a room -->
-                    <div id="party-session-panel" hidden>
-                        <div class="section" style="margin-bottom:8px">
-                            <div class="section-head">
-                                <h2 class="section-title">Party</h2>
-                                <span class="party-room-code" id="player-room-badge"></span>
-                            </div>
-                            <div id="player-party-list"><p class="empty-hint">Connecting to session…</p></div>
-                        </div>
-                    </div>
-
                     <div class="section">
                         <div class="section-head">
                             <h2 class="section-title" id="chat-panel-title">Session Chat</h2>
@@ -612,10 +601,15 @@
                                 <span class="init-stat-label">Round</span>
                                 <span class="init-stat-val" id="player-enc-round">—</span>
                             </div>
+                            <div class="init-stat">
+                                <span class="init-stat-label">Minutes</span>
+                                <span class="init-stat-val" id="player-enc-time">0.00</span>
+                            </div>
                         </div>
                         <div class="enc-turn-bar" id="player-enc-turn-bar" hidden>
                             <span id="player-enc-active-name">—</span>'s turn
                         </div>
+                        <button class="done-btn" id="player-next-turn-btn" type="button" hidden>End My Turn</button>
                         <div id="player-encounter-list">
                             <p class="empty-hint">No encounter in progress.</p>
                         </div>
@@ -668,6 +662,48 @@
                     </div>
                 </div>
 
+            </section>
+
+            <!-- JOURNAL -->
+            <section class="panel" id="panel-journal" role="region" aria-label="Journal">
+                <div id="journal-empty" class="section">
+                    <p class="empty-hint">Join a session (Settings → Join Session) to see your party, handouts, and shared inventory here.</p>
+                </div>
+
+                <div id="journal-session" hidden>
+                    <!-- Party roster -->
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Party</h2>
+                            <span class="party-room-code" id="player-room-badge"></span>
+                        </div>
+                        <div id="player-party-list"><p class="empty-hint">Connecting to session…</p></div>
+                    </div>
+
+                    <!-- NPCs / Minions the narrator has revealed -->
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Cast</h2>
+                        </div>
+                        <div id="player-cast-list"><p class="empty-hint">No one else around right now.</p></div>
+                    </div>
+
+                    <!-- Handouts -->
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Handouts</h2>
+                        </div>
+                        <div id="player-handouts-list"><p class="empty-hint">No handouts yet.</p></div>
+                    </div>
+
+                    <!-- Claimable party inventory -->
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Party Inventory</h2>
+                        </div>
+                        <div id="player-loot-list"><p class="empty-hint">No items in party inventory.</p></div>
+                    </div>
+                </div>
             </section>
 
         </section>
@@ -755,7 +791,7 @@
                         <div class="ae-row">
                             <label class="field"><span class="field-label">Damage</span>
                                 <input id="ae-w-damage" type="text" list="ae-damage-list"
-                                    placeholder="1d6" autocomplete="off" class="ae-search-input" style="margin:0" />
+                                    placeholder="1d6" autocomplete="off" class="ae-search-input" />
                                 <datalist id="ae-damage-list">
                                     <option value="1d4"/>
                                     <option value="1d6"/>
@@ -892,11 +928,10 @@
             </div>
 
             <!-- Description / flavor -->
-            <label class="wm-edit-field wm-edit-field--wide" style="margin-bottom:10px">
+            <label class="wm-edit-field wm-edit-field--wide u-mb-10">
                 <span class="wm-stat-label">Description</span>
                 <textarea id="wm-flavor-input" class="wm-edit-input" rows="2"
-                    placeholder="Magic properties, flavor…"
-                    style="resize:vertical;width:100%;box-sizing:border-box"></textarea>
+                    placeholder="Magic properties, flavor…"></textarea>
             </label>
 
             <!-- Check chips (for rolling — updated by check stat select) -->
@@ -957,14 +992,15 @@
                 <button class="settings-action-btn" id="btn-export-settings" type="button">Export Save File</button>
                 <button class="settings-action-btn settings-action-btn--danger" id="btn-reset-char" type="button">Reset Character</button>
                 <div class="settings-reset-confirm" id="reset-confirm" hidden>
-                    <p class="settings-hint" style="color:#ff6b6b;margin:0">All progress will be lost. Are you sure?</p>
-                    <div class="step-edit-btns" style="margin-top:8px">
-                        <button class="step-edit-btn" style="color:#ff6b6b;border-color:rgba(255,107,107,.35)"
+                    <p class="settings-hint settings-hint--danger">All progress will be lost. Are you sure?</p>
+                    <div class="step-edit-btns u-mt-8">
+                        <button class="step-edit-btn step-edit-btn--danger"
                             id="btn-reset-confirm" type="button">Yes, Reset</button>
                         <button class="step-edit-btn step-edit-btn--cancel" id="btn-reset-cancel" type="button">Cancel</button>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -997,7 +1033,7 @@
             </div>
 
             <!-- Description -->
-            <div class="wm-desc-edit" id="srm-desc" style="margin-bottom:10px"></div>
+            <div class="wm-desc-edit u-mb-10" id="srm-desc"></div>
 
             <!-- Roll type -->
             <div class="roll-seg" id="srm-roll-seg" role="group" aria-label="Roll type">
@@ -1007,10 +1043,10 @@
             </div>
 
             <!-- Check bonus -->
-            <label class="field" style="margin-top:10px">
+            <label class="field u-mt-10">
                 <span class="field-label">Check Bonus</span>
                 <input id="srm-bonus" type="number" inputmode="numeric" step="1" value="0"
-                    style="width:100%;box-sizing:border-box" />
+                    class="u-input-full" />
             </label>
 
             <!-- Low mana warning -->
@@ -1068,7 +1104,7 @@
             <!-- Bonus -->
             <details class="wm-advanced">
                 <summary>Bonus</summary>
-                <div class="wm-advanced-grid" style="grid-template-columns:1fr">
+                <div class="wm-advanced-grid wm-advanced-grid--single">
                     <label class="field"><span class="field-label">Modifier Bonus</span><input id="frm-bonus" type="number" value="0" /></label>
                 </div>
             </details>
@@ -1141,9 +1177,9 @@
             <img class="nav-icon" src="../assets/icons/features.png" alt="" aria-hidden="true" />
             <span class="nav-label">Features</span>
         </button>
-        <button class="nav-btn" data-nav="spells" data-tip="Spells" type="button" aria-controls="panel-spells">
-            <img class="nav-icon" src="../assets/icons/spells.png" alt="" aria-hidden="true" />
-            <span class="nav-label">Spells</span>
+        <button class="nav-btn" data-nav="journal" data-tip="Journal" type="button" aria-controls="panel-journal">
+            <img class="nav-icon" src="../assets/icons/wax-tablet.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Journal</span>
         </button>
         <button class="nav-btn" data-nav="ref" data-tip="Reference Tables" type="button" aria-controls="panel-ref">
             <img class="nav-icon" src="../assets/icons/reference.png" alt="" aria-hidden="true" />

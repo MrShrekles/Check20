@@ -3,6 +3,21 @@
    Expandable-row (codex UI) rendering for species
    ========================= */
 
+const SPECIES_LINEAGE_COLORS = {
+    apex:       '#7a3090',
+    chitnari:   '#507030',
+    corebound:  '#8c6020',
+    dragon:     '#802020',
+    goblijjin:  '#405020',
+    grazer:     '#507a30',
+    human:      '#605040',
+    jotun:      '#304080',
+    realmsplit: '#502060',
+    shifter:    '#406060',
+    strigoi:    '#601010',
+    symbiotes:  '#208050',
+};
+
 function escapeHTML(s) {
     return String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 }
@@ -95,6 +110,8 @@ function renderSpeciesRow(s) {
     const row = document.createElement('div');
     row.className = 'spell-row';
     row.dataset.slug = s.slug;
+    const accentColor = SPECIES_LINEAGE_COLORS[(s.lineageKey || '').toLowerCase()];
+    if (accentColor) row.style.setProperty('--row-accent', accentColor);
 
     const displayName = s.name.replace(/\s*\([^)]*\)/g, '').trim();
     const rarityClass = `rarity-${(s.rarityKey || '').replace(/\s+/g, '-')}`;

@@ -152,19 +152,39 @@ function showJoinStatus(msg, type) {
     }
 })();
 
-document.addEventListener('arc:firebase-ready', () => {
+function syncSessionSection() {
     const room = localStorage.getItem('arc-room');
+    const activeEl   = document.getElementById('home-active-session');
+    const joinWrapEl = document.getElementById('home-join-form-wrap');
+    if (!activeEl || !joinWrapEl) return;
 
     if (room) {
-        document.getElementById('home-active-session').hidden    = false;
-        document.getElementById('home-join-form-wrap').hidden    = true;
+        activeEl.hidden    = false;
+        joinWrapEl.hidden  = true;
         document.getElementById('home-session-code').textContent = room;
     } else {
+        activeEl.hidden   = true;
+        joinWrapEl.hidden = false;
         const joinBtn   = document.getElementById('btn-join-session');
         const createBtn = document.getElementById('btn-create-room');
-        if (joinBtn)   joinBtn.disabled   = false;
-        if (createBtn) createBtn.disabled = false;
+        if (joinBtn)   joinBtn.disabled   = !window.__arc?.uid;
+        if (createBtn) createBtn.disabled = !window.__arc?.uid;
     }
+}
+
+document.addEventListener('arc:firebase-ready', syncSessionSection);
+
+// Mobile PWAs (iOS/Android WebView) restore this page from the back-forward
+// cache on "Back" without re-running scripts or repainting — state can go
+// stale and static content can fail to repaint until a full reload.
+// Resync state and force a reflow to fix both.
+window.addEventListener('pageshow', e => {
+    if (!e.persisted) return;
+    renderAll();
+    syncSessionSection();
+    document.body.style.display = 'none';
+    void document.body.offsetHeight;
+    document.body.style.display = '';
 });
 
 function genRoomCode() {

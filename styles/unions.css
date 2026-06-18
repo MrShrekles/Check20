@@ -1,0 +1,254 @@
+/* ══════════════════════════════════════════════════════════════════
+   UNIONS CODEX — styles/unions.css
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Sticky toolbar ── */
+.unions-sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--dark-1, #0d0d0d);
+    border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+.unions-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    padding: .6rem var(--padding, 1rem);
+}
+
+.unions-toolbar input[type="search"] {
+    flex: 1;
+    min-width: 160px;
+    max-width: 320px;
+}
+
+.unions-toolbar select {
+    font-size: .8rem;
+}
+
+.unions-actions {
+    display: flex;
+    gap: .3rem;
+}
+
+.unions-actions button {
+    font-size: .75rem;
+    padding: 3px 10px;
+}
+
+.unions-count {
+    font-size: .75rem;
+    color: var(--text-muted, #888);
+    white-space: nowrap;
+}
+
+.unions-no-results {
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-muted, #888);
+    display: none;
+}
+
+/* ── Color accent left-border on every union row ── */
+.spell-row {
+    border-left: 3px solid var(--row-accent, transparent);
+}
+
+/* ── Tags in row head ── */
+.union-tag-opposition {
+    font-size: var(--codex-tag-size, 0.65rem);
+    padding: 2px 7px;
+    border-radius: 3px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    color: rgba(255,255,255,.55);
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    white-space: nowrap;
+}
+
+.union-tag-opposition::before {
+    content: '↔ ';
+    opacity: .5;
+}
+
+.union-tag-factions {
+    font-size: var(--codex-tag-size, 0.65rem);
+    padding: 2px 7px;
+    border-radius: 3px;
+    background: rgba(180,140,40,.12);
+    border: 1px solid rgba(180,140,40,.25);
+    color: var(--gold, #c8922a);
+    white-space: nowrap;
+}
+
+.union-tag-faction {
+    font-size: var(--codex-tag-size, 0.65rem);
+    padding: 2px 7px;
+    border-radius: 3px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    color: rgba(255,255,255,.45);
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+
+/* ── Expanded row detail ── */
+.union-tagline {
+    font-size: var(--codex-tag-size, .65rem);
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: var(--text-muted, #888);
+    margin: 0 0 .5rem;
+    font-style: italic;
+}
+
+.union-desc {
+    font-size: var(--codex-effect-size, .85rem);
+    line-height: var(--codex-lh, 1.55);
+    color: var(--text-cream, #e8dfc8);
+    margin: 0 0 .5rem;
+}
+
+.union-location {
+    font-size: var(--codex-meta-size, .73rem);
+    color: var(--text-muted, #888);
+    margin: 0 0 .9rem;
+}
+
+.union-location strong {
+    color: var(--gold-2, #a87820);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    font-size: .68rem;
+    margin-right: .2rem;
+}
+
+/* ── Roll widgets ── */
+.union-roll-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .6rem;
+    margin-bottom: .9rem;
+}
+
+@media (max-width: 480px) {
+    .union-roll-cols { grid-template-columns: 1fr; }
+}
+
+.union-roll-block {
+    background: var(--dark-2, #1a1a1a);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: var(--border-radius, 4px);
+    padding: .5rem .65rem;
+}
+
+.union-roll-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: .3rem;
+}
+
+.union-roll-btn {
+    font-size: .68rem;
+    padding: 2px 8px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    color: var(--text-cream, #e8dfc8);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background .12s;
+}
+
+.union-roll-btn:hover {
+    background: rgba(255,255,255,.12);
+}
+
+.union-roll-result {
+    font-size: var(--codex-meta-size, .73rem);
+    color: var(--text-cream, #e8dfc8);
+    line-height: 1.45;
+    min-height: 1.2rem;
+}
+
+.union-roll-result.rolled {
+    color: var(--gold, #c8922a);
+}
+
+/* ── Keyed list sections ── */
+.union-section {
+    margin-bottom: .85rem;
+}
+
+.union-section-label {
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--gold-2, #a87820);
+    margin: 0 0 .3rem;
+    padding-bottom: .2rem;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.union-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.union-list-item {
+    display: block;
+    font-size: var(--codex-meta-size, .73rem);
+    line-height: 1.5;
+    padding: .3rem 0;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+}
+
+.union-list-item:last-child { border-bottom: none; }
+
+.union-item-name {
+    display: inline;
+    font-weight: 700;
+    color: var(--text-cream, #e8dfc8);
+}
+
+.union-item-name::after {
+    content: ' — ';
+    font-weight: 400;
+    color: rgba(255,255,255,.25);
+}
+
+.union-item-desc {
+    display: inline;
+    color: var(--text-muted, #999);
+}
+
+/* ── Factions sub-section ── */
+.union-factions-section {
+    margin-top: 1rem;
+    padding-top: .6rem;
+    border-top: 1px solid rgba(255,255,255,.07);
+}
+
+.union-factions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: .4rem;
+}
+
+.union-faction-row {
+    margin-left: .5rem;
+}
+
+.union-faction-desc {
+    font-size: var(--codex-effect-size, .85rem);
+    color: var(--text-cream, #e8dfc8);
+    line-height: var(--codex-lh, 1.55);
+    margin: 0;
+}

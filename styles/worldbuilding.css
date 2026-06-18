@@ -4,28 +4,88 @@
    ══════════════════════════════════════════════════════════════ */
 
 /* ── Page layout ───────────────────────────────────────────── */
+
+/* Session board sits above workspace, full width */
+#session-board {
+    margin-bottom: 10px;
+}
+
+/* Workspace: 2-col grid, panels are direct children */
+#gen-workspace {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: start;
+}
+
+/* Panel slot wraps each gen-panel — this is the grid item */
+.panel-slot { min-width: 0; }
+.panel-slot.panel-full { grid-column: 1 / -1; }
+
+/* Drag states */
+.panel-slot.is-dragging { opacity: .35; }
+.panel-slot.drag-over .gen-panel {
+    outline: 2px dashed var(--gold);
+    outline-offset: 2px;
+}
+
+/* Drag handle injected into each summary */
+.panel-drag-handle {
+    cursor: grab;
+    color: #3a3a3a;
+    font-size: 1.1em;
+    letter-spacing: -1px;
+    margin-right: 6px;
+    flex-shrink: 0;
+    user-select: none;
+    line-height: 1;
+    transition: color .12s;
+}
+.panel-drag-handle:hover { color: #666; }
+.panel-slot.is-dragging .panel-drag-handle { cursor: grabbing; }
+
+/* Size toggle button injected into each summary */
+.panel-size-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #3a3a3a;
+    font-size: .8em;
+    padding: 1px 3px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-left: 4px;
+    line-height: 1;
+    transition: color .12s;
+}
+.panel-size-toggle:hover { color: var(--cream); }
+
+/* Keep the summary title text growing to fill space */
+.gen-panel-summary { gap: 0; }
+
+@media (max-width: 750px) {
+    #gen-workspace { grid-template-columns: 1fr; }
+    .panel-slot.panel-full { grid-column: 1; }
+
+    /* Single-column outputs on mobile */
+    .flex-container.gen-output,
+    #hex-history {
+        grid-template-columns: 1fr !important;
+    }
+
+    #hex-history > .journey-wrap { grid-column: span 1 !important; }
+    .gen-output { max-height: 500px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* Legacy gen-grid kept for any other pages that reference it */
 .gen-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
     margin-bottom: 10px;
 }
-
-@media (max-width: 750px) {
-    .gen-grid { grid-template-columns: 1fr; }
-
-    /* Single-column outputs on mobile — no overflow */
-    .flex-container.gen-output,
-    #hex-history {
-        grid-template-columns: 1fr !important;
-    }
-
-    /* Journey can't span 2 when there's only 1 column */
-    #hex-history > .journey-wrap { grid-column: span 1 !important; }
-
-    /* Allow hex output to scroll vertically on mobile */
-    .gen-output { max-height: 500px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-}
+.gen-grid--full { grid-template-columns: 1fr; }
 
 /* ── Generator panel ───────────────────────────────────────── */
 .gen-panel {
@@ -206,6 +266,10 @@
 .gen-card--loot .gc-divider    { background: #1e351e; }
 .gen-card--loot .gc-key        { color: #5c9e5c; }
 .gen-card--loot .gc-val        { color: var(--white); }
+.gen-card--question            { background: #0d1218; border-top: 3px solid #7aafcc; }
+.gen-card--question .gc-badge  { background: #162230; color: #7aafcc; }
+.gen-card--question .gc-title  { color: var(--white); font-size: 1.05rem; font-style: italic; line-height: 1.45; }
+
 .gc-key--enchanted             { color: #cc99ff !important; }
 .gc-key--legendary             { color: #f0c060 !important; }
 .gc-key--consumable            { color: #7dbfdf !important; }
@@ -218,6 +282,119 @@
 .gc-tag--rare     { background: #0e1a30;         color: #5588cc; }
 .gc-tag--epic     { background: #1a0e2e;         color: #aa55cc; }
 .gc-tag--legendary{ background: #2a1500;         color: #cc8822; }
+
+/* ── Full-width grid variant (board, single panels) ───────── */
+.gen-grid--full { grid-template-columns: 1fr; }
+
+/* ── Quick Roll strip ──────────────────────────────────────── */
+.quickroll-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 10px;
+    background: var(--theme-1);
+    border: 1px solid var(--theme-2);
+    border-radius: var(--border-radius);
+    margin-bottom: 10px;
+}
+.qr-label {
+    font-size: .7em;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: var(--gold);
+    font-weight: bold;
+    margin-right: 2px;
+    white-space: nowrap;
+}
+.qr-btn {
+    padding: 4px 11px;
+    background: var(--dark-3);
+    color: var(--cream);
+    border: 1px solid var(--theme-2);
+    border-radius: var(--border-radius);
+    font-size: .78em;
+    font-family: inherit;
+    cursor: pointer;
+    letter-spacing: .02em;
+    transition: background .12s, color .12s, border-color .12s;
+}
+.qr-btn:hover  { background: var(--theme-2); color: var(--white); }
+.qr-btn:active { background: var(--gold); color: #111; border-color: var(--gold); }
+
+/* ── Session Board ─────────────────────────────────────────── */
+.board-count {
+    font-size: .75em;
+    color: var(--cream);
+    font-weight: normal;
+    opacity: .6;
+    margin-left: 5px;
+}
+.board-empty {
+    font-size: .82em;
+    color: var(--cream);
+    opacity: .45;
+    margin: 4px 0 2px;
+    font-style: italic;
+}
+
+/* ── Card action row (pin + seed + delete) ─────────────────── */
+.gc-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    align-self: flex-end;
+}
+.gc-actions .gc-delete { margin-top: 0; }
+
+.gc-pin {
+    background: transparent;
+    color: #4a4a4a;
+    border: none;
+    cursor: pointer;
+    font-size: .78rem;
+    padding: 2px 3px;
+    border-radius: 3px;
+    line-height: 1;
+    transition: color .12s;
+}
+.gc-pin:hover    { color: var(--gold); }
+.gc-pin:disabled { color: var(--gold); opacity: .55; cursor: default; }
+
+.gc-seed {
+    background: transparent;
+    color: #555;
+    border: 1px solid #2e2e2e;
+    cursor: pointer;
+    font-size: .7rem;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-family: inherit;
+    letter-spacing: .02em;
+    transition: color .12s, border-color .12s;
+}
+.gc-seed:hover { color: var(--cream); border-color: #555; }
+
+/* ── Batch count select ────────────────────────────────────── */
+.batch-pick {
+    background: var(--dark-3);
+    color: var(--gold);
+    border: 1px solid var(--theme-2);
+    border-radius: var(--border-radius);
+    padding: 4px 5px;
+    font-size: .8em;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+/* ── NPC board card theme ──────────────────────────────────── */
+.gen-card--npc            { background: #1a1208; border-top: 3px solid #c08040; }
+.gen-card--npc .gc-badge  { background: #2a1e0c; color: #e0a060; }
+.gen-card--npc .gc-title  { color: var(--white); font-size: 1.05rem; }
+.gen-card--npc .gc-key    { color: #c08040; }
+.gen-card--npc .gc-val    { color: var(--white); }
+.gen-card--npc .gc-divider{ background: #3d2c14; }
 
 /* ── Misc shared ───────────────────────────────────────────── */
 .npc-label {

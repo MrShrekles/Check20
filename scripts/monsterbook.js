@@ -166,9 +166,22 @@ function renderBook() {
     out.appendChild(grid);
 }
 
+function groupAccentColor(group) {
+    if (!group) return null;
+    let hash = 0;
+    for (let i = 0; i < group.length; i++) {
+        hash = ((hash << 5) - hash) + group.charCodeAt(i);
+        hash |= 0;
+    }
+    const hue = Math.abs(hash) % 360;
+    return `hsl(${hue}, 55%, 30%)`;
+}
+
 function createBookRow(m) {
     const row = document.createElement("div");
     row.className = "spell-row";
+    const accent = groupAccentColor(m._group);
+    if (accent) row.style.setProperty('--row-accent', accent);
 
     // ── Collapsed head ──
     const moveParts = [];

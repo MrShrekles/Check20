@@ -15,6 +15,43 @@ function condChip(name) {
     return icon ? `${icon} ${name}` : name;
 }
 
+// Elapsed encounter time (minutes) from the round number — shared by narrator's
+// encounter tracker and the player's read-only Initiative panel.
+function encTime(round) {
+    return ((round - 1) * 10 / 60).toFixed(2);
+}
+
+// Groups all type==='enemy' encounter entries into a single "Enemy Turn" pseudo-entry
+// for turn-order display — shared by narrator's encounter tracker and the player's
+// read-only Initiative panel so both compute the same active-turn index.
+function groupedTurnOrder(encounter) {
+    const enemies = encounter.filter(c => !c.type || c.type === 'enemy');
+    const npcs    = encounter.filter(c => c.type === 'npc');
+    const others  = encounter.filter(c => c.type && c.type !== 'enemy' && c.type !== 'npc');
+    const result  = [...others].sort((a, b) => b.initiative - a.initiative);
+
+    function insertGroup(group) {
+        const insertAt = result.findIndex(c => c.initiative <= group.initiative);
+        if (insertAt === -1) result.push(group);
+        else result.splice(insertAt, 0, group);
+    }
+
+    if (enemies.length) {
+        const initiative = Math.max(0, ...enemies.map(e => e.initiative || 0));
+        insertGroup({ _isEnemyGroup: true, initiative, id: '_enemy_group_', name: 'Enemy Turn', enemies });
+    }
+    if (npcs.length) {
+        const initiative = Math.max(0, ...npcs.map(e => e.initiative || 0));
+        insertGroup({ _isNpcGroup: true, initiative, id: '_npc_group_', name: 'NPC Turn', enemies: npcs });
+    }
+    return result;
+}
+
+// Weapon damage types / ranges — shared by the player's "Add Equipment" drawer
+// and the narrator's "Add Item" (party inventory) form.
+const DAMAGE_TYPES = ['Impact', 'Piercing', 'Slashing', 'Solar', 'Acid', 'Eclipse', 'Fire', 'Ice', 'Lightning', 'Thunder', 'Toxic', 'Fluid', 'Nature', 'Psychic', 'Vozian', 'Healing'];
+const RANGES = ['Melee', 'Reach', 'Short', 'Medium', 'Long', 'Visible'];
+
 const EMOJI_SET = [
     '👍','👎','❤️','🔥','🎉','😂','😮','😢',
     '⚔️','🛡️','🎲','💀','✨','💥','🩸','🏹',
@@ -46,6 +83,112 @@ function parseInline(text) {
         .replace(/\*(.+?)\*/g, '<em>$1</em>')
         .replace(/_(.+?)_/g, '<em>$1</em>')
         .replace(/`(.+?)`/g, '<code class="chat-code">$1</code>');
+}
+
+// Block-level markdown for Handouts: headers, lists, paragraphs.
+// Line-based (not block-based) so headings/lists don't need surrounding blank
+// lines — natural typing like "# Title\nSome text" or "Bring:\n- Rope" still
+// renders the heading/list correctly. Inline formatting (bold/italic/etc.)
+// within each line is handled by parseInline().
+function parseHandoutMarkdown(text) {
+    if (!text) return '';
+
+    const parts = [];
+    let list = null;  // { type: 'ul'|'ol', items: [] }
+    let para = [];
+
+    const flushPara = () => {
+        if (para.length) {
+            parts.push(`<p class="handout-p">${para.map(parseInline).join('<br>')}</p>`);
+            para = [];
+        }
+    };
+    const flushList = () => {
+        if (list) {
+            parts.push(`<${list.type} class="handout-list">${list.items.map(i => `<li>${parseInline(i)}</li>`).join('')}</${list.type}>`);
+            list = null;
+        }
+    };
+
+    // Split a "| a | b |" row into trimmed cells, tolerating missing outer pipes.
+    const splitRow = line => {
+        let s = line.trim();
+        if (s.startsWith('|')) s = s.slice(1);
+        if (s.endsWith('|')) s = s.slice(0, -1);
+        return s.split('|').map(c => c.trim());
+    };
+    // GFM separator row, e.g. "| --- | :---: |" — also accepts em-dashes (Notion paste).
+    // Requires a literal "|" so a standalone "---" divider isn't mistaken for one.
+    const isSeparatorRow = line => {
+        if (!line.includes('|')) return false;
+        const cells = splitRow(line);
+        return cells.length > 0 && cells.every(c => /^:?[-—]+:?$/.test(c));
+    };
+    const cellAlign = c => {
+        const l = c.startsWith(':'), r = c.endsWith(':');
+        return l && r ? 'center' : r ? 'right' : l ? 'left' : '';
+    };
+
+    const lines = text.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) { flushPara(); flushList(); continue; }
+
+        // Table: a "| ... |" row followed by a separator row.
+        if (line.includes('|') && i + 1 < lines.length && isSeparatorRow(lines[i + 1])) {
+            flushPara(); flushList();
+            const headCells = splitRow(line);
+            const aligns    = splitRow(lines[i + 1]).map(cellAlign);
+            const bodyRows  = [];
+            let j = i + 2;
+            while (j < lines.length && lines[j].trim().includes('|')) {
+                bodyRows.push(splitRow(lines[j]));
+                j++;
+            }
+            const cellStyle = idx => aligns[idx] ? ` style="text-align:${aligns[idx]}"` : '';
+            const thead = headCells.map((c, idx) => `<th${cellStyle(idx)}>${parseInline(c)}</th>`).join('');
+            const tbody = bodyRows.map(cells => `<tr>${cells.map((c, idx) => `<td${cellStyle(idx)}>${parseInline(c)}</td>`).join('')}</tr>`).join('');
+            parts.push(`<div class="handout-table-wrap"><table class="handout-table"><thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody></table></div>`);
+            i = j - 1;
+            continue;
+        }
+
+        // Horizontal rule: 3+ of the same -, *, or _ (optionally space-separated).
+        if (/^(?:-{3,}|\*{3,}|_{3,})$/.test(line.replace(/\s+/g, ''))) {
+            flushPara(); flushList();
+            parts.push('<hr class="handout-hr">');
+            continue;
+        }
+
+        const heading = line.match(/^(#{1,3})\s+(.*)$/);
+        if (heading) {
+            flushPara(); flushList();
+            const level = heading[1].length + 2; // # -> h3 ... ### -> h5
+            parts.push(`<h${level} class="handout-heading">${parseInline(heading[2])}</h${level}>`);
+            continue;
+        }
+
+        const bullet = line.match(/^[-*]\s+(.*)$/);
+        if (bullet) {
+            flushPara();
+            if (!list || list.type !== 'ul') { flushList(); list = { type: 'ul', items: [] }; }
+            list.items.push(bullet[1]);
+            continue;
+        }
+
+        const numbered = line.match(/^\d+\.\s+(.*)$/);
+        if (numbered) {
+            flushPara();
+            if (!list || list.type !== 'ol') { flushList(); list = { type: 'ol', items: [] }; }
+            list.items.push(numbered[1]);
+            continue;
+        }
+
+        flushList();
+        para.push(line);
+    }
+    flushPara(); flushList();
+    return parts.join('');
 }
 
 const CHAT_TEXT_CLAMP_LENGTH = 240; // chars; above this, clamp + offer "Show more"

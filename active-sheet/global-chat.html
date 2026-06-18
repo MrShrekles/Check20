@@ -14,8 +14,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="ARC20" />
     <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
-    <link rel="stylesheet" href="../styles/home.css" />
-    <link rel="stylesheet" href="../styles/global-chat.css" />
+    <link rel="stylesheet" href="styles/home.css" />
+    <link rel="stylesheet" href="styles/global-chat.css" />
     <script type="module" src="../scripts/firebase.js"></script>
     <script src="../scripts/automod-wordlist.js" defer></script>
     <script src="../scripts/chat-cards.js" defer></script>
@@ -27,6 +27,7 @@
     <div class="gc-header">
         <a href="home.html" class="gc-back">← Back</a>
         <span class="gc-title">🥃 The Speakeasy</span>
+        <button id="gc-info-btn" class="gc-info-btn" type="button" aria-label="Info &amp; Feedback">ℹ</button>
         <button id="gc-online-btn" class="gc-online-btn" type="button">
             <span class="gc-online-dot"></span>
             <span id="gc-online-count">0</span>
@@ -39,6 +40,10 @@
     </div>
 
     <main class="gc-main">
+        <div class="gc-pin">
+            <span class="gc-pin-icon">📌</span>
+            <span class="gc-pin-text">Welcome to the Speakeasy</span>
+        </div>
         <ol class="chat-log" id="chat-log" aria-label="Town Square chat"></ol>
     </main>
 
@@ -79,6 +84,26 @@
             </div>
         </div>
     </div>
+
+    <!-- Info / Feedback dialog -->
+    <dialog id="gc-info-dialog" class="gc-dialog">
+        <div class="gc-dialog-inner">
+            <div class="gc-dialog-head">
+                <span class="gc-dialog-title">ARC20 Info</span>
+                <button id="gc-info-close" class="gc-dialog-close" type="button" aria-label="Close">✕</button>
+            </div>
+            <details class="gc-dialog-bugs" open>
+                <summary>Known Issues</summary>
+                <ul class="gc-dialog-bugs-list">
+                    <li>No known issues at this time.</li>
+                </ul>
+            </details>
+            <button class="gc-dialog-send-btn" type="button"
+                onclick="window.location.href='mailto:mrshrekles@gmail.com?subject=ARC20%20Feedback&body=Describe%20your%20suggestion%20or%20bug%20below%3A%0A%0A'">
+                Send Feedback ✉
+            </button>
+        </div>
+    </dialog>
 
 </body>
 

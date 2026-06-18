@@ -6,7 +6,7 @@ let narTarget     = null;
 
 // ── PANELS ────────────────────────────────────────────────────────────────────
 
-const PANEL_IDS = ['chat', 'party', 'generators', 'journal', 'ref'];
+const PANEL_IDS = ['chat', 'party', 'generators', 'monsters', 'journal', 'ref'];
 
 function setActivePanel(key) {
     // On desktop (≥1100px) chat is always pinned to the left column — don't clear the right panel
@@ -22,11 +22,15 @@ function setActivePanel(key) {
     document.querySelectorAll('.nav-btn[data-nav]').forEach(btn => {
         btn.classList.toggle('is-active', btn.dataset.nav === key);
     });
-    if (key === 'generators') { ensureMonsters(); ensureWorld(); ensureQuest(); ensureCommerce(); ensureHex(); ensureGods(); ensureLoot(); }
+    if (key === 'generators') { ensureWorld(); ensureQuest(); ensureCommerce(); ensureHex(); ensureGods(); ensureLoot(); }
     if (key === 'party')      { ensureMonsters(); }
+    if (key === 'monsters')   { ensureMonsters(); renderMonstersEncSummary(); }
     if (key === 'chat') {
         const notif = document.getElementById('chat-notif');
         if (notif) notif.hidden = true;
+        // scroll to newest (top) when opening chat
+        const scroller = document.getElementById('chat-sub-messages');
+        if (scroller) scroller.scrollTop = 0;
     }
 }
 
@@ -253,7 +257,7 @@ function openPlayerEdit(id, name, source) {
     const nameEl    = document.getElementById('player-edit-name');
     const removeBtn = document.getElementById('btn-ped-remove');
     if (nameEl)    nameEl.textContent  = name;
-    if (removeBtn) removeBtn.style.display = source === 'manual' ? '' : 'none';
+    if (removeBtn) removeBtn.hidden = source !== 'manual';
     document.getElementById('player-edit-dialog')?.showModal();
 }
 
@@ -346,7 +350,7 @@ function buildMinionCardHtml(m) {
 
     const row = (hasAbilities) => `<div class="minion-row">
         <div class="minion-info">
-            <div style="display:flex;align-items:center;gap:5px">
+            <div class="name-badge-row">
                 <span class="minion-name">${m.name}</span>${roleBadge}
             </div>
             ${m.origin ? `<span class="minion-origin">${m.origin}</span>` : ''}
@@ -360,7 +364,8 @@ function buildMinionCardHtml(m) {
         </div>
         <div class="minion-ctrl-btns">
             <button class="step-action-btn" data-mn-action="init" data-mn-id="${m.id}" title="Add to initiative"><img src="../assets/icons/weapon.png" class="btn-icon" alt="initiative"></button>
-            <button class="step-action-btn" style="color:#ff6060" data-mn-action="remove" data-mn-id="${m.id}">✕</button>
+            <button class="step-action-btn" data-mn-action="hide" data-mn-id="${m.id}" title="${m.hidden ? 'Hidden from players — click to reveal' : 'Visible to players — click to hide'}">${m.hidden ? '🙈' : '👁'}</button>
+            <button class="step-action-btn step-action-btn--danger" data-mn-action="remove" data-mn-id="${m.id}">✕</button>
         </div>
     </div>
     <div class="minion-hp-bar-track"><div class="minion-hp-bar-fill" style="width:${pct}%;background:${barClr}"></div></div>`;
@@ -397,7 +402,7 @@ function buildNpcCardHtml(n) {
     return `<details class="npc-card">
         <summary class="npc-card-head">
             <div class="enc-mon-info">
-                <div style="display:flex;align-items:center;gap:5px">
+                <div class="name-badge-row">
                     <span class="enc-name">${n.name}</span>
                     <span class="char-role-badge char-role-badge--npc">npc</span>
                 </div>
@@ -406,7 +411,8 @@ function buildNpcCardHtml(n) {
             <div class="enc-card-ctrl">
                 <button class="step-action-btn" data-char-chat="${n.id}" title="Send to chat"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
                 <button class="step-action-btn" data-char-init="${n.id}" title="Add to initiative"><img src="../assets/icons/weapon.png" class="btn-icon" alt="initiative"></button>
-                <button class="step-action-btn" style="color:#ff6060" data-char-remove="${n.id}">✕</button>
+                <button class="step-action-btn" data-char-hide="${n.id}" title="${n.hidden ? 'Hidden from players — click to reveal' : 'Visible to players — click to hide'}">${n.hidden ? '🙈' : '👁'}</button>
+                <button class="step-action-btn step-action-btn--danger" data-char-remove="${n.id}">✕</button>
             </div>
         </summary>
         <div class="npc-card-body">
@@ -455,8 +461,17 @@ function renderCharacters() {
             if (!n) return;
             const hp  = parseInt(n.hp, 10) || 10;
             const ini = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
-            nar.encounter.push({ id: crypto.randomUUID(), name: n.name, type: 'enemy', hp, maxHp: hp, initiative: ini });
+            nar.encounter.push({ id: crypto.randomUUID(), name: n.name, type: 'npc', hp, maxHp: hp, initiative: ini });
             saveNar(); renderEncounter(); openInitiative();
+        });
+    });
+    el.querySelectorAll('[data-char-hide]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const n = nar.characters.find(x => x.id === btn.dataset.charHide);
+            if (!n) return;
+            n.hidden = !n.hidden;
+            saveNar(); renderCharacters();
         });
     });
     el.querySelectorAll('[data-char-cond]').forEach(btn => {
@@ -490,11 +505,12 @@ function renderCharacters() {
             if (!m && action !== 'remove') return;
             if (action === 'init') {
                 const ini = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
-                nar.encounter.push({ id: crypto.randomUUID(), name: m.name, type: 'enemy', hp: m.hp, maxHp: m.maxHp, initiative: ini });
+                nar.encounter.push({ id: crypto.randomUUID(), name: m.name, type: 'npc', hp: m.hp, maxHp: m.maxHp, initiative: ini });
                 saveNar(); renderEncounter(); openInitiative(); return;
             }
             if (action === 'dec')    m.hp = Math.max(0, m.hp - 1);
             if (action === 'inc')    m.hp = Math.min(m.maxHp, m.hp + 1);
+            if (action === 'hide')   m.hidden = !m.hidden;
             if (action === 'remove') nar.characters = nar.characters.filter(x => x.id !== id);
             saveNar(); renderCharacters();
         });
@@ -529,6 +545,8 @@ function renderCharacters() {
             if (entry) { postToSharedChat(entry); setActivePanel('chat'); }
         });
     });
+
+    syncCharacters();
 }
 
 document.getElementById('char-role-seg')?.querySelectorAll('[data-char-role]').forEach(btn => {
@@ -601,9 +619,11 @@ function renderInventory() {
 
     el.innerHTML = items.map(item => {
         const bulkTotal = ((item.bulk || 0) * (item.amount || 1)).toFixed(1).replace(/\.0$/, '');
+        const cat = item.category && item.category !== 'gear'
+            ? `<span class="equip-cat-badge equip-cat-${item.category}">${item.category}</span>` : '';
         return `<div class="inv-row">
             <div class="inv-name-col">
-                <span class="inv-name">${item.name}</span>
+                <span class="inv-name">${item.name}${cat}</span>
                 ${item.desc ? `<span class="inv-desc">${item.desc}</span>` : ''}
             </div>
             <span class="inv-amount">×${item.amount}</span>
@@ -650,6 +670,58 @@ async function claimLootItem(id) {
     } catch(e) { console.error('[ARC] claimLoot failed:', e); }
 }
 
+// "+ Add Item" type toggle (Item / Weapon / Armor)
+let invCategory = 'gear';
+
+function setInvCategory(cat) {
+    invCategory = cat;
+    document.querySelectorAll('#inv-type-toggle [data-inv-cat]').forEach(b =>
+        b.classList.toggle('is-sel', b.dataset.invCat === cat));
+    document.getElementById('inv-weapon-fields').hidden = cat !== 'weapon';
+    document.getElementById('inv-armor-fields').hidden  = cat !== 'armor';
+}
+
+document.getElementById('inv-type-toggle')?.addEventListener('click', e => {
+    const btn = e.target.closest('[data-inv-cat]');
+    if (btn) setInvCategory(btn.dataset.invCat);
+});
+
+// Populate weapon damage-type / range selects from the shared lists
+(() => {
+    const dtSel = document.getElementById('inv-w-dmg-type');
+    if (dtSel && !dtSel.options.length) {
+        dtSel.innerHTML = `<option value="">—</option>` +
+            DAMAGE_TYPES.map(t => `<option>${t}</option>`).join('');
+    }
+    const rangeSel = document.getElementById('inv-w-range');
+    if (rangeSel && !rangeSel.options.length) {
+        rangeSel.innerHTML = RANGES.map(r => `<option>${r}</option>`).join('');
+    }
+})();
+
+// Steppers (Attack Bonus / Armor Rating)
+document.querySelectorAll('#inv-weapon-fields .ae-step-btn, #inv-armor-fields .ae-step-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const out = document.getElementById(btn.dataset.aeTarget);
+        if (!out) return;
+        const next = parseInt(out.dataset.val || '0', 10) + parseInt(btn.dataset.aeStep, 10);
+        out.dataset.val = next;
+        out.textContent = next;
+    });
+});
+
+function resetInvForm() {
+    setInvCategory('gear');
+    ['inv-w-damage', 'inv-w-dmg-type', 'inv-w-range', 'inv-w-props', 'inv-w-check', 'inv-a-notes'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+    ['inv-w-atk', 'inv-a-rating'].forEach(id => {
+        const out = document.getElementById(id);
+        if (out) { out.dataset.val = '0'; out.textContent = '0'; }
+    });
+}
+
 document.getElementById('btn-add-inventory')?.addEventListener('click', async function() {
     const name = document.getElementById('inv-name')?.value.trim();
     if (!name) return;
@@ -657,18 +729,35 @@ document.getElementById('btn-add-inventory')?.addEventListener('click', async fu
     const amount = parseInt(document.getElementById('inv-amount')?.value || '1', 10);
     const bulk   = parseFloat(document.getElementById('inv-bulk')?.value || '1');
 
+    const entry = { name, desc, amount, bulk, category: invCategory };
+    if (invCategory === 'weapon') {
+        Object.assign(entry, {
+            damage:      document.getElementById('inv-w-damage')?.value.trim()  || '',
+            damageType:  document.getElementById('inv-w-dmg-type')?.value       || '',
+            range:       document.getElementById('inv-w-range')?.value          || '',
+            properties:  document.getElementById('inv-w-props')?.value.trim()   || '',
+            check:       document.getElementById('inv-w-check')?.value          || '',
+            attackBonus: parseInt(document.getElementById('inv-w-atk')?.dataset.val || '0', 10),
+        });
+    } else if (invCategory === 'armor') {
+        Object.assign(entry, {
+            notes:       document.getElementById('inv-a-notes')?.value.trim() || '',
+            armorRating: parseInt(document.getElementById('inv-a-rating')?.dataset.val || '0', 10),
+        });
+    }
+
     if (currentRoomCode) {
         const arc = window.__arc;
         if (arc?.db) {
             try {
                 const id = crypto.randomUUID();
                 await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', id), {
-                    name, desc, amount, bulk, addedAt: arc.serverTimestamp(),
+                    ...entry, addedAt: arc.serverTimestamp(),
                 });
             } catch(e) { console.error('[ARC] addLoot failed:', e); }
         }
     } else {
-        nar.inventory.push({ id: crypto.randomUUID(), name, desc, amount, bulk });
+        nar.inventory.push({ id: crypto.randomUUID(), ...entry });
         saveNar(); renderInventory();
     }
 
@@ -676,8 +765,114 @@ document.getElementById('btn-add-inventory')?.addEventListener('click', async fu
     document.getElementById('inv-desc').value   = '';
     document.getElementById('inv-amount').value = '1';
     document.getElementById('inv-bulk').value   = '1';
+    resetInvForm();
 
     closeForm(this);
+});
+
+// ── HANDOUTS ──────────────────────────────────────────────────────────────────
+
+function renderNarHandouts() {
+    const el = document.getElementById('nar-handouts-list');
+    if (!el) return;
+
+    if (!fbHandouts.length) {
+        el.innerHTML = '<p class="empty-hint">No handouts posted.</p>';
+        return;
+    }
+
+    const sorted = [...fbHandouts].sort((a, b) => (b.postedAt?.toMillis?.() || 0) - (a.postedAt?.toMillis?.() || 0));
+    el.innerHTML = sorted.map(h => `
+        <div class="handout-card">
+            <div class="handout-head">
+                <div class="handout-title">${h.title}</div>
+                <button class="handout-toggle" data-cid="handout-${h.id}" type="button">▾</button>
+                <button class="handout-edit" data-handout-edit="${h.id}" type="button">✎</button>
+                <button class="gen-mon-remove" data-handout-remove="${h.id}">✕</button>
+            </div>
+            <div class="handout-body" id="handout-${h.id}-exp" hidden>${parseHandoutMarkdown(h.body || '')}</div>
+        </div>`).join('');
+
+    el.querySelectorAll('.handout-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const exp = document.getElementById(btn.dataset.cid + '-exp');
+            if (!exp) return;
+            exp.hidden = !exp.hidden;
+            btn.textContent = exp.hidden ? '▾' : '▴';
+        });
+    });
+
+    el.querySelectorAll('[data-handout-edit]').forEach(btn => {
+        btn.addEventListener('click', () => startEditHandout(btn.dataset.handoutEdit));
+    });
+
+    el.querySelectorAll('[data-handout-remove]').forEach(btn => {
+        btn.addEventListener('click', () => removeHandout(btn.dataset.handoutRemove));
+    });
+}
+
+async function removeHandout(id) {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    try {
+        await arc.deleteDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'handouts', id));
+    } catch(e) { console.error('[ARC] removeHandout failed:', e); }
+}
+
+let editingHandoutId = null;
+
+function startEditHandout(id) {
+    const h = fbHandouts.find(x => x.id === id);
+    if (!h) return;
+
+    editingHandoutId = id;
+
+    const titleEl = document.getElementById('handout-title');
+    const bodyEl  = document.getElementById('handout-body');
+    const addBtn  = document.getElementById('btn-add-handout');
+    const details = addBtn?.closest('details');
+
+    if (titleEl) titleEl.value = h.title || '';
+    if (bodyEl)  bodyEl.value  = h.body  || '';
+    if (addBtn)  addBtn.textContent = '✓ Save Changes';
+    if (details) details.open = true;
+}
+
+document.getElementById('btn-add-handout')?.addEventListener('click', async function() {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+
+    const title = document.getElementById('handout-title')?.value.trim();
+    const body  = document.getElementById('handout-body')?.value.trim() || '';
+    if (!title) return;
+
+    try {
+        if (editingHandoutId) {
+            await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'handouts', editingHandoutId), { title, body });
+        } else {
+            await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'handouts', crypto.randomUUID()), {
+                title, body, postedAt: arc.serverTimestamp(),
+            });
+        }
+    } catch(e) { console.error('[ARC] addHandout failed:', e); }
+
+    editingHandoutId = null;
+    this.textContent = '+ Post';
+    document.getElementById('handout-title').value = '';
+    document.getElementById('handout-body').value  = '';
+
+    closeForm(this);
+});
+
+// Reset edit state if the form is closed (e.g. via summary click) without saving
+document.getElementById('btn-add-handout')?.closest('details')?.addEventListener('toggle', function() {
+    if (!this.open && editingHandoutId) {
+        editingHandoutId = null;
+        const addBtn = document.getElementById('btn-add-handout');
+        if (addBtn) addBtn.textContent = '+ Post';
+        document.getElementById('handout-title').value = '';
+        document.getElementById('handout-body').value  = '';
+    }
 });
 
 // ── INITIATIVE ────────────────────────────────────────────────────────────────
@@ -694,23 +889,7 @@ function sortedEncounter() {
     return [...nar.encounter].sort((a, b) => b.initiative - a.initiative);
 }
 
-function groupedTurnOrder() {
-    const enemies = nar.encounter.filter(c => !c.type || c.type === 'enemy');
-    const others  = nar.encounter.filter(c =>  c.type && c.type !== 'enemy');
-    const sortedOthers = [...others].sort((a, b) => b.initiative - a.initiative);
-    if (!enemies.length) return sortedOthers;
-    const groupInit = Math.max(0, ...enemies.map(e => e.initiative || 0));
-    const group = { _isEnemyGroup: true, initiative: groupInit, id: '_enemy_group_', name: 'Enemy Turn', enemies };
-    const insertAt = sortedOthers.findIndex(c => c.initiative <= groupInit);
-    const result = [...sortedOthers];
-    if (insertAt === -1) result.push(group);
-    else result.splice(insertAt, 0, group);
-    return result;
-}
-
-function encTime(round) {
-    return ((round - 1) * 10 / 60).toFixed(2);
-}
+// groupedTurnOrder(encounter) now lives in chat-cards.js (shared with active-sheet.js).
 
 const QUICK_CONDITIONS = ['Bleeding','Broken','Stunned','Prone','Exposed','Injured','Concussion','Exhaustion'];
 
@@ -740,9 +919,9 @@ function renderEnemyMonster(e, label) {
         `<button class="enc-cond-pick${conds.includes(cd) ? ' is-on' : ''}" data-enc-action="toggle-cond" data-enc-id="${e.id}" data-cond="${cd}">${condChip(cd)}</button>`
     ).join('');
 
-    return `<details class="enc-enemy-row">
+    return `<details class="enc-enemy-row${e.defeated ? ' enc-enemy-row--defeated' : ''}">
         <summary class="enc-enemy-summary">
-            <div class="enc-card-row" style="padding-bottom:2px">
+            <div class="enc-card-row enc-card-row--tight">
                 <span class="enc-init-mini">${e.initiative}</span>
                 <div class="enc-mon-info">
                     <span class="enc-name">${label}</span>
@@ -751,7 +930,7 @@ function renderEnemyMonster(e, label) {
                 <div class="enc-card-ctrl">
                     ${mon ? `<button class="step-action-btn enc-link-btn" data-enc-action="link-mon" data-enc-name="${e.name}">↗</button>` : ''}
                     <button class="step-action-btn enc-reroll-btn" data-enc-action="reroll" data-enc-id="${e.id}">↺</button>
-                    <button class="step-action-btn" style="color:#ff6060" data-enc-action="remove" data-enc-id="${e.id}">✕</button>
+                    <button class="step-action-btn step-action-btn--danger" data-enc-action="remove" data-enc-id="${e.id}">✕</button>
                 </div>
             </div>
             <div class="enc-hp-controls">
@@ -774,6 +953,32 @@ function renderEnemyMonster(e, label) {
     </details>`;
 }
 
+// Shared renderer for the "Enemy Turn" / "NPC Turn" pseudo-entries produced by groupedTurnOrder()
+function renderEncounterGroupCard(group, isActive, kind) {
+    const nameCounts = {};
+    const nameIndex  = {};
+    group.enemies.forEach(e => { nameCounts[e.name] = (nameCounts[e.name] || 0) + 1; });
+    const rows = group.enemies.map(e => {
+        let label = e.name;
+        if (nameCounts[e.name] > 1) {
+            nameIndex[e.name] = (nameIndex[e.name] || 0) + 1;
+            label = `${e.name} ${nameIndex[e.name]}`;
+        }
+        return renderEnemyMonster(e, label);
+    }).join('');
+    const label = kind === 'npc' ? 'NPC TURN' : 'ENEMY TURN';
+    const count = group.enemies.length;
+    const noun  = kind === 'npc' ? (count === 1 ? 'character' : 'characters') : (count === 1 ? 'monster' : 'monsters');
+    return `<div class="enc-card enc-enemy-group${isActive ? ' enc-card--active' : ''}">
+        <div class="enc-group-header enc-group-header--${kind}">
+            <span class="enc-init-badge enc-init-badge--${kind}">${group.initiative}</span>
+            <span class="enc-group-label">${label}</span>
+            <span class="enc-group-count">${count} ${noun}</span>
+        </div>
+        ${rows}
+    </div>`;
+}
+
 function syncEncounter() {
     const arc = window.__arc;
     if (!arc?.db || !currentRoomCode) return;
@@ -784,9 +989,25 @@ function syncEncounter() {
             initiative: e.initiative || 0,
             hidden: e.hidden || false,
             conditions: e.conditions || [],
+            defeated: e.defeated || false,
         })),
         encounterRound: nar.round,
         encounterTurnIndex: nar.turnIndex,
+    };
+    arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), payload).catch(() => {});
+}
+
+// Read-only "Cast" summary of NPCs/Minions, synced so players can see who's
+// around even outside combat. Hidden entries (GM secrets) are omitted entirely.
+function syncCharacters() {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    const payload = {
+        characters: nar.characters.filter(c => !c.hidden).map(c => ({
+            id: c.id, name: c.name, role: c.role,
+            hp: c.hp ?? null, maxHp: c.maxHp ?? null,
+            conditions: c.conditions || [],
+        })),
     };
     arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), payload).catch(() => {});
 }
@@ -799,20 +1020,21 @@ function renderEncounter() {
     const activeEl = document.getElementById('enc-active-name');
     if (!listEl) return;
 
-    const sorted = groupedTurnOrder();
+    const sorted = groupedTurnOrder(nar.encounter);
 
     if (!sorted.length) {
         listEl.innerHTML = '<p class="empty-hint">No one in initiative. Add combatants below.</p>';
         if (turnBar) turnBar.hidden = true;
         if (roundEl) roundEl.textContent = nar.round;
         if (timeEl)  timeEl.textContent  = encTime(nar.round);
+        renderMonstersEncSummary();
         return;
     }
 
     const activeTurn = nar.turnIndex % sorted.length;
     const active     = sorted[activeTurn];
     const activeName = active?.hidden ? '???' : (active?._isEnemyGroup ? 'Enemy Turn' : (active?.name || '—'));
-    const activeType = active?._isEnemyGroup ? 'enemy' : (active?.type || 'enemy');
+    const activeType = active?._isEnemyGroup ? 'enemy' : active?._isNpcGroup ? 'npc' : (active?.type || 'enemy');
     if (turnBar) {
         turnBar.hidden = false;
         turnBar.className = `enc-turn-bar enc-turn-bar--${activeType}`;
@@ -824,28 +1046,9 @@ function renderEncounter() {
     listEl.innerHTML = sorted.map((c, i) => {
         const isActive = i === activeTurn;
 
-        // ── Enemy Group ─────────────────────────────────────────────
-        if (c._isEnemyGroup) {
-            const nameCounts = {};
-            const nameIndex  = {};
-            c.enemies.forEach(e => { nameCounts[e.name] = (nameCounts[e.name] || 0) + 1; });
-            const rows = c.enemies.map(e => {
-                let label = e.name;
-                if (nameCounts[e.name] > 1) {
-                    nameIndex[e.name] = (nameIndex[e.name] || 0) + 1;
-                    label = `${e.name} ${nameIndex[e.name]}`;
-                }
-                return renderEnemyMonster(e, label);
-            }).join('');
-            return `<div class="enc-card enc-enemy-group${isActive ? ' enc-card--active' : ''}">
-                <div class="enc-group-header">
-                    <span class="enc-init-badge enc-init-badge--enemy">${c.initiative}</span>
-                    <span class="enc-group-label">ENEMY TURN</span>
-                    <span class="enc-group-count">${c.enemies.length} ${c.enemies.length === 1 ? 'monster' : 'monsters'}</span>
-                </div>
-                ${rows}
-            </div>`;
-        }
+        // ── Enemy / NPC Group ──────────────────────────────────────────
+        if (c._isEnemyGroup) return renderEncounterGroupCard(c, isActive, 'enemy');
+        if (c._isNpcGroup)   return renderEncounterGroupCard(c, isActive, 'npc');
 
         const type = c.type || 'enemy';
 
@@ -869,15 +1072,15 @@ function renderEncounter() {
                     <span class="enc-init-badge enc-init-badge--player">${c.initiative}</span>
                     <div class="enc-mon-info">
                         <span class="enc-name">${c.name}</span>
-                        ${fbP ? `<span class="enc-mon-checks" style="color:#888">HP<strong style="color:#50a0dc">${hpCur ?? '?'}</strong>/${hpMax ?? '?'} MN<strong style="color:#50a0dc">${mnCur ?? '?'}</strong></span>` : ''}
+                        ${fbP ? `<span class="enc-mon-checks enc-mon-checks--player">HP<strong>${hpCur ?? '?'}</strong>/${hpMax ?? '?'} MN<strong>${mnCur ?? '?'}</strong></span>` : ''}
                     </div>
                     <div class="enc-card-ctrl">
                         <button class="step-action-btn enc-target-btn${narTarget === c.name ? ' is-on' : ''}" data-enc-action="set-target" data-enc-name="${c.name}" title="Set target">🎯</button>
-                        <button class="step-action-btn" style="color:#ff6060" data-enc-action="remove" data-enc-id="${c.id}">✕</button>
+                        <button class="step-action-btn step-action-btn--danger" data-enc-action="remove" data-enc-id="${c.id}">✕</button>
                     </div>
                 </div>
                 ${hpPct !== null ? `<div class="enc-hp-controls">
-                    <span class="enc-hp" style="color:#50a0dc">${hpCur}<span class="enc-hp-max">/${hpMax}</span></span>
+                    <span class="enc-hp enc-hp--player">${hpCur}<span class="enc-hp-max">/${hpMax}</span></span>
                     <div class="enc-hp-bar-track enc-hp-bar-inline"><div class="enc-hp-bar-fill" style="width:${hpPct}%;background:${barClr}"></div></div>
                 </div>` : ''}
                 <input class="enc-note-input" type="text" placeholder="Note…" value="${(c.note||'').replace(/"/g,'&quot;')}" data-enc-note="${c.id}" />
@@ -893,13 +1096,13 @@ function renderEncounter() {
         if (type === 'event') {
             const sub = EVENT_SUBTYPES[c.subType] || EVENT_SUBTYPES.custom;
             const display = c.hidden
-                ? `<span class="enc-type-badge" style="background:rgba(100,100,100,0.25);color:#888">🔒 Hidden</span><span class="enc-name" style="color:var(--muted)">???</span>`
+                ? `<span class="enc-type-badge enc-type-badge--hidden">🔒 Hidden</span><span class="enc-name enc-name--hidden">???</span>`
                 : `<span class="enc-type-badge" style="background:${sub.color}22;color:${sub.color}">${sub.label}</span><span class="enc-name">${c.name}</span>`;
             return `<div class="enc-card enc-card--event${isActive ? ' enc-card--active' : ''}">
                 <div class="enc-card-row">
                     <span class="enc-init-badge">${c.initiative}</span>
                     ${display}
-                    <button class="step-action-btn" style="color:#ff6060;margin-left:auto" data-enc-action="remove" data-enc-id="${c.id}">✕</button>
+                    <button class="step-action-btn step-action-btn--danger u-ml-auto" data-enc-action="remove" data-enc-id="${c.id}">✕</button>
                 </div>
                 ${c.note && !c.hidden ? `<div class="enc-event-note">${c.note}</div>` : ''}
                 ${c.hidden ? `<div class="enc-event-note enc-event-note--hidden">🔒 ${c.name}${c.note ? ' — ' + c.note : ''}</div>` : ''}
@@ -948,7 +1151,7 @@ function renderEncounter() {
                 const name = btn.dataset.encName;
                 if (!nar.genMonsters.includes(name)) { nar.genMonsters.push(name); saveNar(); }
                 pendingMonsterFocus = name;
-                setActivePanel('generators');
+                setActivePanel('monsters');
                 if (monstersLoaded) renderGenMonsterList();
                 return;
             }
@@ -956,16 +1159,79 @@ function renderEncounter() {
                 if (c) { c.initiative = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6); saveNar(); renderEncounter(); }
                 return;
             }
-            if (action === 'dec')    c.hp = Math.max(0, (c.hp ?? c.maxHp) - 1);
-            if (action === 'dec5')   c.hp = Math.max(0, (c.hp ?? c.maxHp) - 5);
-            if (action === 'inc')    c.hp = Math.min(c.maxHp, (c.hp ?? c.maxHp) + 1);
+            const prevHp = c?.hp ?? c?.maxHp;
+            if (action === 'dec')    c.hp = Math.max(0, prevHp - 1);
+            if (action === 'dec5')   c.hp = Math.max(0, prevHp - 5);
+            if (action === 'inc') {
+                c.hp = Math.min(c.maxHp, prevHp + 1);
+                if (c.hp > 0) c.defeated = false;
+            }
             if (action === 'remove') nar.encounter = nar.encounter.filter(x => x.id !== id);
             saveNar(); renderEncounter();
+            if ((action === 'dec' || action === 'dec5') && prevHp > 0 && c.hp === 0 && !c.defeated) {
+                openDefeatedConfirm(c);
+            }
         });
     });
 
     syncEncounter();
+    renderMonstersEncSummary();
 }
+
+// Live "Encounter" summary shown on the Monsters tab
+function renderMonstersEncSummary() {
+    const el = document.getElementById('monsters-enc-summary');
+    if (!el) return;
+
+    const sorted = groupedTurnOrder(nar.encounter);
+    if (!sorted.length) {
+        el.innerHTML = '<p class="empty-hint">No one in initiative.</p>';
+        return;
+    }
+
+    const activeTurn = nar.turnIndex % sorted.length;
+    el.innerHTML = sorted.map((c, i) => {
+        const isActive = i === activeTurn;
+        const mark = isActive ? '▶ ' : '';
+        if (c._isEnemyGroup || c._isNpcGroup) {
+            const count = c.enemies.length;
+            const noun  = c._isNpcGroup ? (count === 1 ? 'character' : 'characters') : (count === 1 ? 'monster' : 'monsters');
+            return `<div class="monsters-enc-row${isActive ? ' is-active' : ''}">
+                <span class="monsters-enc-name">${mark}${c.name}</span>
+                <span class="monsters-enc-hp">${count} ${noun}</span>
+            </div>`;
+        }
+        const hpText = (c.hp ?? null) !== null && (c.maxHp ?? null) !== null ? `${c.hp}/${c.maxHp}` : '';
+        return `<div class="monsters-enc-row${isActive ? ' is-active' : ''}">
+            <span class="monsters-enc-name">${mark}${c.hidden ? '???' : c.name}</span>
+            <span class="monsters-enc-hp">${hpText}</span>
+        </div>`;
+    }).join('');
+}
+
+// Defeat confirmation — prompted when an encounter entry's HP drops to 0
+function openDefeatedConfirm(c) {
+    const dlg = document.getElementById('defeated-confirm-dialog');
+    if (!dlg) return;
+    document.getElementById('defeated-confirm-name').textContent = c.name;
+    dlg.dataset.encId = c.id;
+    dlg.showModal();
+}
+
+document.getElementById('defeated-confirm-yes')?.addEventListener('click', () => {
+    const dlg = document.getElementById('defeated-confirm-dialog');
+    const c = nar.encounter.find(x => x.id === dlg.dataset.encId);
+    if (c) {
+        c.defeated = true;
+        saveNar(); renderEncounter();
+        postToSharedChat({ type: 'system', text: `${c.name} has been defeated!`, time: chatTimestamp() });
+    }
+    dlg.close();
+});
+
+document.getElementById('defeated-confirm-no')?.addEventListener('click', () => {
+    document.getElementById('defeated-confirm-dialog')?.close();
+});
 
 // Type select: show/hide relevant fields
 document.getElementById('enc-type-select')?.addEventListener('change', function () {
@@ -1003,7 +1269,7 @@ document.getElementById('btn-add-creature')?.addEventListener('click', function(
 });
 
 document.getElementById('btn-next-turn')?.addEventListener('click', () => {
-    const sorted = groupedTurnOrder();
+    const sorted = groupedTurnOrder(nar.encounter);
     if (!sorted.length) return;
     nar.turnIndex++;
     if (nar.turnIndex >= sorted.length) { nar.turnIndex = 0; nar.round++; }
@@ -1049,13 +1315,14 @@ async function endSession() {
     // Clean up narrator side
     if (partyUnsubscribe)  { partyUnsubscribe();  partyUnsubscribe  = null; }
     if (lootUnsubscribe)   { lootUnsubscribe();   lootUnsubscribe   = null; }
+    if (handoutsUnsubscribe) { handoutsUnsubscribe(); handoutsUnsubscribe = null; }
     if (roomUnsubscribe)   { roomUnsubscribe();   roomUnsubscribe   = null; }
     if (chatUnsubscribe)   { chatUnsubscribe();   chatUnsubscribe   = null; }
 
 
     currentRoomCode = null;
     localStorage.removeItem('arc-narrator-room');
-    fbPlayers = []; fbLoot = []; fbGold = 0; fbSharedChat = [];
+    fbPlayers = []; fbLoot = []; fbGold = 0; fbSharedChat = []; fbHandouts = [];
     updateChatInputState();
 
     // Reset UI
@@ -1063,12 +1330,14 @@ async function endSession() {
     const privacyBtn = document.getElementById('btn-privacy-mode');
     const goldRow    = document.getElementById('party-gold-row');
     const invite     = document.getElementById('btn-invite');
+    const handoutsSection = document.getElementById('nar-handouts-section');
     if (badge)      { badge.hidden = true; setBadgeContent('', ''); }
     if (privacyBtn) privacyBtn.hidden = true;
     if (goldRow)    goldRow.hidden = true;
     if (invite)     invite.textContent = 'Invite';
+    if (handoutsSection) handoutsSection.hidden = true;
 
-    renderParty(); renderInventory(); renderNarChat();
+    renderParty(); renderInventory(); renderNarHandouts(); renderNarChat();
 }
 
 // ── JOURNAL ───────────────────────────────────────────────────────────────────
@@ -1310,7 +1579,7 @@ function renderGenMonsterList() {
         : '';
     const workingNames = nar.genMonsters.filter(n => !nar.monFavorites.includes(n));
     const workingHeader = (nar.monFavorites.length && workingNames.length)
-        ? `<div class="gen-mon-section-label" style="margin-top:8px">Working List</div>`
+        ? `<div class="gen-mon-section-label u-mt-8">Working List</div>`
         : '';
 
     const allNames = [...nar.monFavorites, ...workingNames];
@@ -1994,22 +2263,22 @@ function renderGenLootList() {
 
     el.innerHTML = nar.genLoot.map((r, i) => `
         <div class="gen-quest-card">
-            <div class="gen-npc-row" style="margin-bottom:4px">
-                <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">PL ${r.pl} · ${r.tier}</span>
-                <button class="gen-mon-remove" data-loot-remove="${r.id}" style="margin-left:auto">✕</button>
+            <div class="gen-npc-row u-mb-4">
+                <span class="gen-mini-label">PL ${r.pl} · ${r.tier}</span>
+                <button class="gen-mon-remove u-ml-auto" data-loot-remove="${r.id}">✕</button>
             </div>
-            <div class="gen-npc-row" style="margin-bottom:6px">
+            <div class="gen-npc-row u-mb-6">
                 <span class="gen-npc-label">Gold</span>
-                <span style="font-weight:800;color:var(--accent)">⬡ ${r.gold} GP</span>
+                <span class="gen-loot-gold">⬡ ${r.gold} GP</span>
             </div>
             <div class="gen-quest-rows">
                 ${r.items.map(it => `
-                <div class="gen-npc-row" style="align-items:flex-start;gap:6px">
-                    <span class="gen-npc-label" style="color:${CAT_COLOR[it.cat]||'#888'};flex-shrink:0">${CAT_LABEL[it.cat]||it.cat}</span>
-                    <span style="display:flex;flex-direction:column;gap:1px">
-                        <span style="font-weight:700">${it.name}</span>
-                        ${it.desc ? `<span style="font-size:10px;color:var(--muted)">${it.desc}</span>` : ''}
-                        ${it.meta ? `<span style="font-size:10px;color:var(--muted);opacity:.6">${it.meta}</span>` : ''}
+                <div class="gen-npc-row gen-npc-row--item">
+                    <span class="gen-npc-label" style="color:${CAT_COLOR[it.cat]||'#888'}">${CAT_LABEL[it.cat]||it.cat}</span>
+                    <span class="gen-loot-item-info">
+                        <span class="gen-loot-item-name">${it.name}</span>
+                        ${it.desc ? `<span class="gen-loot-item-desc">${it.desc}</span>` : ''}
+                        ${it.meta ? `<span class="gen-loot-item-meta">${it.meta}</span>` : ''}
                     </span>
                 </div>`).join('')}
             </div>
@@ -2632,8 +2901,8 @@ function renderGenHexList() {
             ['Species', spStr],
         ];
         return `<div class="gen-quest-card">
-            <div class="gen-npc-row" style="margin-bottom:4px">
-                <span style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Hex ${nar.genHexes.length - i}</span>
+            <div class="gen-npc-row u-mb-4">
+                <span class="gen-mini-label">Hex ${nar.genHexes.length - i}</span>
             </div>
             <div class="gen-quest-rows">${rows.map(([label, val]) => `
                 <div class="gen-npc-row">
@@ -2785,13 +3054,16 @@ async function postToSharedChat(entry) {
 }
 
 function renderNarChat() {
-    const el = document.getElementById('nar-chat-log');
+    const el       = document.getElementById('nar-chat-log');
+    const scroller = document.getElementById('chat-sub-messages');
     if (!el) return;
+    const wasAtTop = !scroller || scroller.scrollTop <= 60;
     if (!fbSharedChat.length) {
-        el.innerHTML = '<li class="empty-hint" style="list-style:none">No messages yet.</li>';
+        el.innerHTML = '<li class="empty-hint">No messages yet.</li>';
         return;
     }
     el.innerHTML = fbSharedChat.map(m => buildSharedChatCard(m)).join('');
+    if (wasAtTop && scroller) scroller.scrollTop = 0;
 }
 
 function rollNarDamageTable(damageType, count) {
@@ -2967,7 +3239,7 @@ async function sendNarChatMsg() {
     if (!arcRateLimitOk()) { alert('You are sending messages too fast — wait a few seconds and try again.'); return; }
     if (!currentRoomCode) {
         const el = document.getElementById('nar-chat-log');
-        if (el) el.innerHTML = '<li class="empty-hint" style="list-style:none;color:#e05555">No active session — create one from the Party tab.</li>';
+        if (el) el.innerHTML = '<li class="empty-hint empty-hint--danger">No active session — create one from the Party tab.</li>';
         return;
     }
     postToSharedChat({ type: 'msg', text, time: chatTimestamp() });
@@ -3114,11 +3386,11 @@ function openSettings() {
                 <span class="hue-preview" id="prev-${key}" style="background:${hex}"></span>
             </div>`;
         container.innerHTML = `
-            <div class="wm-label" style="margin-bottom:6px">Primary</div>
+            <div class="wm-label">Primary</div>
             ${sliderRow('a1', a1, sl1)}
-            <div class="wm-label" style="margin:12px 0 6px">Secondary</div>
+            <div class="wm-label u-mt-12">Secondary</div>
             ${sliderRow('a2', a2, sl2)}
-            <button id="btn-reset-theme" class="settings-action-btn" style="margin-top:14px;border-color:rgba(70,100,100,0.45);color:var(--cream);">↺ Reset to Default Theme</button>`;
+            <button id="btn-reset-theme" class="settings-action-btn settings-action-btn--reset-theme">↺ Reset to Default Theme</button>`;
 
         function updateNarColor(key) {
             const h = parseInt(document.getElementById(`hue-${key}`)?.value || '210', 10);
@@ -3279,9 +3551,11 @@ let fbPlayers        = [];
 let fbLoot           = [];
 let fbGold           = 0;
 let fbSharedChat     = [];
+let fbHandouts       = [];
 let currentRoomCode   = localStorage.getItem('arc-narrator-room') || null;
 let partyUnsubscribe  = null;
 let lootUnsubscribe   = null;
+let handoutsUnsubscribe = null;
 let roomUnsubscribe   = null;
 let chatUnsubscribe   = null;
 
@@ -3313,6 +3587,7 @@ async function createRoom(name = '', welcomeMsg = '') {
         showRoomBadge(code, name);
         listenToPlayers(code);
         listenToLoot(code);
+        listenToHandouts(code);
         listenToRoomDoc(code);
         listenToSharedChat(code);
         ArcNotify.requestPermission().then(() => ArcNotify.registerPushToken(code));
@@ -3329,6 +3604,7 @@ async function restoreRoom(code) {
             showRoomBadge(code, snap.data().name || '');
             listenToPlayers(code);
             listenToLoot(code);
+            listenToHandouts(code);
             listenToRoomDoc(code);
             listenToSharedChat(code);
             ArcNotify.requestPermission().then(() => ArcNotify.registerPushToken(code));
@@ -3359,6 +3635,16 @@ function listenToLoot(code) {
     );
 }
 
+function listenToHandouts(code) {
+    if (handoutsUnsubscribe) handoutsUnsubscribe();
+    const arc = window.__arc;
+    handoutsUnsubscribe = arc.onSnapshot(
+        arc.collection(arc.db, 'rooms', code, 'handouts'),
+        snap => { fbHandouts = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderNarHandouts(); },
+        err => console.error('[ARC] handouts listener error:', err)
+    );
+}
+
 function listenToRoomDoc(code) {
     if (roomUnsubscribe) roomUnsubscribe();
     const arc = window.__arc;
@@ -3369,6 +3655,14 @@ function listenToRoomDoc(code) {
             fbGold = data.gold ?? 0;
             const valEl = document.getElementById('party-gold-val');
             if (valEl) valEl.textContent = fbGold;
+
+            // Adopt turn/round advances pushed by a player's "End My Turn" action
+            if (typeof data.encounterTurnIndex === 'number' && typeof data.encounterRound === 'number'
+                && (data.encounterTurnIndex !== nar.turnIndex || data.encounterRound !== nar.round)) {
+                nar.turnIndex = data.encounterTurnIndex;
+                nar.round     = data.encounterRound;
+                saveNar(); renderEncounter();
+            }
 
             // Keep badge in sync if campaign name ever changes
             const badge = document.getElementById('room-code-badge');
@@ -3411,6 +3705,7 @@ function showRoomBadge(code, name) {
     const privacyBtn = document.getElementById('btn-privacy-mode');
     const inviteBtn  = document.getElementById('btn-invite');
     const goldRow    = document.getElementById('party-gold-row');
+    const handoutsSection = document.getElementById('nar-handouts-section');
     if (badge) {
         setBadgeContent(code, name);
         badge.title  = `Room code: ${code} — tap to copy`;
@@ -3419,6 +3714,7 @@ function showRoomBadge(code, name) {
     if (privacyBtn) privacyBtn.hidden = false;
     if (inviteBtn)  inviteBtn.textContent = 'New Room';
     if (goldRow)    goldRow.hidden = false;
+    if (handoutsSection) handoutsSection.hidden = false;
     const chatInput = document.getElementById('nar-chat-input');
     if (chatInput) chatInput.placeholder = 'Message the party…';
 }
@@ -3624,6 +3920,8 @@ function openInitiative() {
     setNarChatSubTab('initiative');
 }
 
+document.getElementById('btn-monsters-open-initiative')?.addEventListener('click', openInitiative);
+
 // ── SPEAKING AS + TARGET ──────────────────────────────────────────────────────
 
 function updateNarContextBar() {
@@ -3668,7 +3966,7 @@ function buildNarTargetPanel() {
     if (!list) return;
     const targets = nar.encounter.filter(e => !e.hidden).map(e => e.name);
     nar.partyManual.forEach(p => { if (!targets.includes(p.name)) targets.push(p.name); });
-    if (!targets.length) { list.innerHTML = '<p class="empty-hint" style="padding:8px">No combatants yet.</p>'; return; }
+    if (!targets.length) { list.innerHTML = '<p class="empty-hint empty-hint--pad8">No combatants yet.</p>'; return; }
     list.innerHTML = targets.map(t =>
         `<button class="voice-pick-btn${narTarget === t ? ' is-active' : ''}" data-target="${t}" type="button">🎯 ${t}</button>`
     ).join('');

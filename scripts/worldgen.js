@@ -1,6 +1,5 @@
-// worldgen.js — Quest, Enchanted Item, and Door/Lock/Trap generators
-// Data lives in data/quest.json, data/enchanted.json, data/traps.json
-// Edit those files in the Forge to add/change/remove table entries.
+// worldgen.js — Quest, Enchanted Item, Door/Lock/Trap, Loot, Character Questions
+// Data lives in data/ JSON files. Edit those in the Forge to add/change/remove entries.
 
 (function () {
     'use strict';
@@ -11,6 +10,8 @@
         enchanted:'worldgen-enchanted-history',
         trap:     'worldgen-trap-history',
         loot:     'worldgen-loot-history',
+        question: 'worldgen-question-history',
+        board:    'worldgen-board',
     };
 
     // ── Card builder ───────────────────────────────────────────────────────────
@@ -31,13 +32,185 @@
                 </div>`).join('')}
             ${tagsHTML}
             <button class="gc-delete" aria-label="Remove">✕</button>`;
-        card.querySelector('.gc-delete').addEventListener('click', () => {
-            card.remove();
-            // remove from storage by rebuilding without this card
-            // (simplest: just don't re-save on delete — storage auto-expires on clear)
-        });
+        card.querySelector('.gc-delete').addEventListener('click', () => card.remove());
         return card;
     }
+
+    // ── Enhance card with pin + optional seed button ────────────────────────────
+    // pinData: { type, data }
+    // seedConfig: { label, handler } — adds a seed action button before pin
+    function enhanceCard(card, pinData, seedConfig) {
+        const del = card.querySelector('.gc-delete');
+        if (!del) return;
+
+        const actions = document.createElement('div');
+        actions.className = 'gc-actions';
+
+        if (seedConfig) {
+            const seedBtn = document.createElement('button');
+            seedBtn.className = 'gc-seed';
+            seedBtn.textContent = seedConfig.label;
+            seedBtn.addEventListener('click', seedConfig.handler);
+            actions.appendChild(seedBtn);
+        }
+
+        const pinBtn = document.createElement('button');
+        pinBtn.className = 'gc-pin';
+        pinBtn.title = 'Pin to Session Board';
+        pinBtn.textContent = '📌';
+        pinBtn.addEventListener('click', () => {
+            pinToBoard(pinData.type, pinData.data);
+            pinBtn.textContent = '✓';
+            pinBtn.disabled = true;
+        });
+        actions.appendChild(pinBtn);
+
+        const freshDel = del.cloneNode(true);
+        freshDel.addEventListener('click', () => card.remove());
+        actions.appendChild(freshDel);
+
+        del.replaceWith(actions);
+    }
+
+    // ── Session Board ──────────────────────────────────────────────────────────
+    let pendingQuestGiver = null;
+
+    function pinToBoard(type, data) {
+        const entry = { type, data, id: Date.now() + Math.random() };
+        try {
+            const arr = JSON.parse(localStorage.getItem(STORE.board) || '[]');
+            arr.unshift(entry);
+            if (arr.length > 24) arr.length = 24;
+            localStorage.setItem(STORE.board, JSON.stringify(arr));
+        } catch (_) {}
+        const board = document.getElementById('session-board');
+        if (board) board.open = true;
+        _addToBoardUI(entry, true);
+        updateBoardCount();
+    }
+
+    function makeBoardCard(entry) {
+        const { type, data, id } = entry;
+        let card;
+        if (type === 'loot') {
+            card = buildLootCard(data);
+        } else if (type === 'question') {
+            card = buildQuestionCard(data.text);
+        } else if (type === 'npc') {
+            card = buildCard('npc', data.speciesName || 'NPC', data.name, [
+                { key: 'Affinity',   val: data.affinity   || '—' },
+                { key: 'Item',       val: data.item        || '—' },
+                { key: 'Motivation', val: data.motivation  || '—' },
+            ]);
+        } else {
+            card = buildCard(data.theme, data.header, data.title, data.rows, data.tags);
+        }
+
+        const existingDel = card.querySelector('.gc-delete');
+        if (existingDel) {
+            const unpinBtn = document.createElement('button');
+            unpinBtn.className = 'gc-delete';
+            unpinBtn.textContent = 'Unpin';
+            unpinBtn.addEventListener('click', () => {
+                card.remove();
+                _unpinFromBoard(id);
+                updateBoardCount();
+                const out = document.getElementById('board-output');
+                if (out && !out.children.length) {
+                    const empty = document.getElementById('board-empty');
+                    if (empty) empty.hidden = false;
+                }
+            });
+            existingDel.replaceWith(unpinBtn);
+        }
+        return card;
+    }
+
+    function _addToBoardUI(entry, prepend = true) {
+        const out = document.getElementById('board-output');
+        if (!out) return;
+        const empty = document.getElementById('board-empty');
+        if (empty) empty.hidden = true;
+        const card = makeBoardCard(entry);
+        if (prepend) out.prepend(card);
+        else out.appendChild(card);
+    }
+
+    function _unpinFromBoard(id) {
+        try {
+            let arr = JSON.parse(localStorage.getItem(STORE.board) || '[]');
+            arr = arr.filter(i => i.id !== id);
+            localStorage.setItem(STORE.board, JSON.stringify(arr));
+        } catch (_) {}
+    }
+
+    function updateBoardCount() {
+        const out = document.getElementById('board-output');
+        const count = out ? out.children.length : 0;
+        const el = document.getElementById('board-count');
+        if (el) el.textContent = count ? `(${count})` : '';
+    }
+
+    function loadBoard() {
+        try {
+            const arr = JSON.parse(localStorage.getItem(STORE.board) || '[]');
+            if (!arr.length) return;
+            const empty = document.getElementById('board-empty');
+            if (empty) empty.hidden = true;
+            const board = document.getElementById('session-board');
+            if (board) board.open = true;
+            arr.forEach(entry => _addToBoardUI(entry, false));
+        } catch (_) {}
+        updateBoardCount();
+    }
+
+    function bindBoard() {
+        document.getElementById('clear-board')?.addEventListener('click', () => {
+            const out = document.getElementById('board-output');
+            if (out) out.innerHTML = '';
+            const empty = document.getElementById('board-empty');
+            if (empty) empty.hidden = false;
+            try { localStorage.removeItem(STORE.board); } catch (_) {}
+            updateBoardCount();
+        });
+    }
+
+    // ── Quick Roll strip ───────────────────────────────────────────────────────
+    function bindQuickRoll() {
+        document.querySelectorAll('.qr-btn[data-target]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = document.getElementById(btn.dataset.target);
+                if (!target) return;
+                const panel = target.closest('details.gen-panel');
+                if (panel) panel.open = true;
+                target.click();
+                if (panel) {
+                    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+                }
+            });
+        });
+    }
+
+    // ── Seed event listeners (fired by npcGenerator.js) ───────────────────────
+    document.addEventListener('worldgen:pin', ({ detail }) => {
+        pinToBoard(detail.type, detail.data);
+    });
+
+    document.addEventListener('worldgen:seed-quest', ({ detail }) => {
+        pendingQuestGiver = detail.giver;
+        // open the Quests & Encounters panel and switch to Quest tab
+        const cpane = document.getElementById('cpane-quest');
+        if (cpane) {
+            const genPanel = cpane.closest('details.gen-panel');
+            if (genPanel) genPanel.open = true;
+            genPanel?.querySelectorAll('.carousel-pane').forEach(p => p.classList.remove('is-active'));
+            genPanel?.querySelectorAll('.carousel-tab').forEach(b => b.classList.remove('is-active'));
+            cpane.classList.add('is-active');
+            genPanel?.querySelector('.carousel-tab')?.classList.add('is-active');
+        }
+        document.getElementById('generate-quest')?.click();
+        setTimeout(() => cpane?.closest('details.gen-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+    });
 
     // ── Persistence helpers ────────────────────────────────────────────────────
     function saveCard(storeKey, data) {
@@ -49,13 +222,25 @@
         } catch(_) {}
     }
 
-    function loadSaved(storeKey, outputId) {
+    const npcSeedConfig = () => ({
+        label: '→ NPC',
+        handler: () => {
+            document.getElementById('generate-npc')?.click();
+            setTimeout(() => document.getElementById('npc-output')?.closest('details.gen-panel')
+                ?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+        },
+    });
+
+    function loadSaved(storeKey, outputId, getSeedConfig) {
         try {
             const out = document.getElementById(outputId);
             if (!out) return;
             const arr = JSON.parse(localStorage.getItem(storeKey) || '[]');
-            // append in order (already newest-first)
-            arr.forEach(d => out.appendChild(buildCard(d.theme, d.header, d.title, d.rows, d.tags)));
+            arr.forEach(d => {
+                const card = buildCard(d.theme, d.header, d.title, d.rows, d.tags);
+                enhanceCard(card, { type: 'card', data: d }, getSeedConfig ? getSeedConfig(d) : null);
+                out.appendChild(card);
+            });
         } catch(_) {}
     }
 
@@ -71,7 +256,6 @@
     const byType  = (arr, t)  => arr.filter(e => e.type === t);
     const pickTxt = (arr, t)  => { const f = byType(arr, t); return f.length ? wbPick(f).text : '—'; };
 
-    // Weighted random PL — lower PLs more common
     function randomPL() {
         const pool = [
             1,1,1,1, 2,2,2,2, 3,3,3, 4,4,4, 5,5,5,
@@ -85,6 +269,7 @@
     let enchantData = [];
     let trapData    = [];
     let lootData    = null;
+    let wbData      = null;
 
     Promise.all([
         fetch('data/quest.json').then(r => r.json()),
@@ -96,7 +281,9 @@
         fetch('data/armor.json').then(r => r.json()),
         fetch('data/enchanted.json').then(r => r.json()),
         fetch('data/medicine.json').then(r => r.json()),
-    ]).then(([q, e, t, lootCfg, items, weapons, armor, enchanted, medicine]) => {
+        fetch('data/worldbuilding.json').then(r => r.json()),
+    ]).then(([q, e, t, lootCfg, items, weapons, armor, enchanted, medicine, wb]) => {
+        wbData      = wb;
         questData   = q;
         enchantData = e;
         trapData    = t;
@@ -125,14 +312,17 @@
                 itemTypes:   e.filter(x => x.type === 'itemType').map(x => x.text),
             },
         };
-        // Restore saved history for each generator
-        loadSaved(STORE.quest,    'quest-output');
+        loadSaved(STORE.quest,    'quest-output',  () => npcSeedConfig());
         loadSaved(STORE.enchanted,'item-output');
         loadSaved(STORE.trap,     'trap-output');
         bindGenerators();
         bindLootGenerator();
-        // loadSavedLoot after bindLootGenerator defines buildLootCard
+        bindQuestionGenerator();
         loadSavedLoot('loot-output');
+        loadSavedQuestions('question-output');
+        loadBoard();
+        bindBoard();
+        bindQuickRoll();
     }).catch(err => console.error('worldgen: data load failed', err));
 
     // ── GENERATORS ────────────────────────────────────────────────────────────
@@ -145,25 +335,30 @@
         };
 
         document.getElementById('generate-quest')?.addEventListener('click', () => {
-            const pick   = document.getElementById('quest-type-pick')?.value || 'any';
-            const type   = pick === 'any' ? wbPick(Object.values(QUEST_TYPE_LABELS)) : QUEST_TYPE_LABELS[pick];
-            const target = pickTxt(questData, 'target');
-            const data   = {
-                theme: 'quest',
-                header: type,
-                title:  `${type}: ${target.charAt(0).toUpperCase() + target.slice(1)}`,
-                rows: [
-                    { key:'Giver',  val: pickTxt(questData, 'giver') },
-                    { key:'Goal',   val: `Acquire / handle ${target}` },
-                    { key:'Twist',  val: pickTxt(questData, 'twist'),  muted: true },
-                    { key:'Reward', val: pickTxt(questData, 'reward') },
-                ],
-                tags: [],
-            };
-            saveCard(STORE.quest, data);
-            document.getElementById('quest-output')?.prepend(
-                buildCard(data.theme, data.header, data.title, data.rows, data.tags)
-            );
+            const count = parseInt(document.getElementById('batch-quest')?.value || '1', 10);
+            for (let i = 0; i < count; i++) {
+                const pick   = document.getElementById('quest-type-pick')?.value || 'any';
+                const type   = pick === 'any' ? wbPick(Object.values(QUEST_TYPE_LABELS)) : QUEST_TYPE_LABELS[pick];
+                const target = pickTxt(questData, 'target');
+                const giver  = (i === 0 && pendingQuestGiver) ? pendingQuestGiver : pickTxt(questData, 'giver');
+                if (i === 0) pendingQuestGiver = null;
+                const data = {
+                    theme: 'quest',
+                    header: type,
+                    title:  `${type}: ${target.charAt(0).toUpperCase() + target.slice(1)}`,
+                    rows: [
+                        { key:'Giver',  val: giver },
+                        { key:'Goal',   val: `Acquire / handle ${target}` },
+                        { key:'Twist',  val: pickTxt(questData, 'twist'),  muted: true },
+                        { key:'Reward', val: pickTxt(questData, 'reward') },
+                    ],
+                    tags: [],
+                };
+                saveCard(STORE.quest, data);
+                const card = buildCard(data.theme, data.header, data.title, data.rows, data.tags);
+                enhanceCard(card, { type: 'card', data }, npcSeedConfig());
+                document.getElementById('quest-output')?.prepend(card);
+            }
         });
         bindClear('clear-quests', 'quest-output', STORE.quest);
 
@@ -201,9 +396,9 @@
                 ],
             };
             saveCard(STORE.enchanted, data);
-            document.getElementById('item-output')?.prepend(
-                buildCard(data.theme, data.header, data.title, data.rows, data.tags)
-            );
+            const card = buildCard(data.theme, data.header, data.title, data.rows, data.tags);
+            enhanceCard(card, { type: 'card', data });
+            document.getElementById('item-output')?.prepend(card);
         });
         bindClear('clear-items', 'item-output', STORE.enchanted);
 
@@ -231,9 +426,9 @@
                 tags: [],
             };
             saveCard(STORE.trap, data);
-            document.getElementById('trap-output')?.prepend(
-                buildCard(data.theme, data.header, data.title, data.rows, data.tags)
-            );
+            const card = buildCard(data.theme, data.header, data.title, data.rows, data.tags);
+            enhanceCard(card, { type: 'card', data });
+            document.getElementById('trap-output')?.prepend(card);
         });
         bindClear('clear-traps', 'trap-output', STORE.trap);
 
@@ -335,9 +530,14 @@
 
         document.getElementById('generate-loot')?.addEventListener('click', () => {
             if (!lootData) return;
-            const result = rollLoot(currentPl);
-            saveCard(STORE.loot, result);
-            document.getElementById('loot-output')?.prepend(buildLootCard(result));
+            const count = parseInt(document.getElementById('batch-loot')?.value || '1', 10);
+            for (let i = 0; i < count; i++) {
+                const result = rollLoot(currentPl);
+                saveCard(STORE.loot, result);
+                const card = buildLootCard(result);
+                enhanceCard(card, { type: 'loot', data: result });
+                document.getElementById('loot-output')?.prepend(card);
+            }
         });
 
         bindClear('clear-loot', 'loot-output', STORE.loot);
@@ -348,7 +548,72 @@
             const out = document.getElementById(outputId);
             if (!out) return;
             const arr = JSON.parse(localStorage.getItem(STORE.loot) || '[]');
-            arr.forEach(d => out.appendChild(buildLootCard(d)));
+            arr.forEach(d => {
+                const card = buildLootCard(d);
+                enhanceCard(card, { type: 'loot', data: d });
+                out.appendChild(card);
+            });
+        } catch(_) {}
+    }
+
+    // ── Character Question Generator ───────────────────────────────────────────
+
+    function resolveQuestion(template) {
+        const pick = arr => arr && arr.length ? arr[Math.floor(Math.random() * arr.length)] : '???';
+        return template
+            .replace(/\{person\}/g,     () => pick(wbData.people))
+            .replace(/\{location\}/g,   () => pick(wbData.locations))
+            .replace(/\{object\}/g,     () => pick(wbData.objects))
+            .replace(/\{conflict\}/g,   () => pick(wbData.conflicts))
+            .replace(/\{motivation\}/g, () => pick(wbData.motivations));
+    }
+
+    function buildQuestionCard(text) {
+        const card = document.createElement('div');
+        card.className = 'gen-card gen-card--question';
+        card.innerHTML = `
+            <div class="gc-header"><span class="gc-badge">Character Question</span></div>
+            <div class="gc-title">${text}</div>
+            <button class="gc-delete" aria-label="Remove">✕</button>`;
+        card.querySelector('.gc-delete').addEventListener('click', () => card.remove());
+        return card;
+    }
+
+    function bindQuestionGenerator() {
+        document.getElementById('draw-question')?.addEventListener('click', () => {
+            if (!wbData?.questionTemplates?.length) return;
+            const count     = parseInt(document.getElementById('batch-question')?.value || '1', 10);
+            const templates = wbData.questionTemplates;
+            for (let i = 0; i < count; i++) {
+                const template = templates[Math.floor(Math.random() * templates.length)];
+                const text     = resolveQuestion(template);
+                try {
+                    const arr = JSON.parse(localStorage.getItem(STORE.question) || '[]');
+                    arr.unshift(text);
+                    if (arr.length > 30) arr.length = 30;
+                    localStorage.setItem(STORE.question, JSON.stringify(arr));
+                } catch(_) {}
+                const card = buildQuestionCard(text);
+                enhanceCard(card, { type: 'question', data: { text } }, npcSeedConfig());
+                document.getElementById('question-output')?.prepend(card);
+            }
+        });
+        document.getElementById('clear-questions')?.addEventListener('click', () => {
+            document.getElementById('question-output').innerHTML = '';
+            try { localStorage.removeItem(STORE.question); } catch(_) {}
+        });
+    }
+
+    function loadSavedQuestions(outputId) {
+        try {
+            const out = document.getElementById(outputId);
+            if (!out) return;
+            const arr = JSON.parse(localStorage.getItem(STORE.question) || '[]');
+            arr.forEach(text => {
+                const card = buildQuestionCard(text);
+                enhanceCard(card, { type: 'question', data: { text } }, npcSeedConfig());
+                out.appendChild(card);
+            });
         } catch(_) {}
     }
 
