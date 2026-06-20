@@ -1,4 +1,4 @@
-/* Home screen — character management */
+/* Home screen - character management */
 
 const ACTIVE_KEY   = 'arc-active-sheet';
 const SAVES_KEY    = 'arc-saves';
@@ -175,7 +175,7 @@ function syncSessionSection() {
 document.addEventListener('arc:firebase-ready', syncSessionSection);
 
 // Mobile PWAs (iOS/Android WebView) restore this page from the back-forward
-// cache on "Back" without re-running scripts or repainting — state can go
+// cache on "Back" without re-running scripts or repainting - state can go
 // stale and static content can fail to repaint until a full reload.
 // Resync state and force a reflow to fix both.
 window.addEventListener('pageshow', e => {
@@ -193,7 +193,7 @@ function genRoomCode() {
 
 async function doCreateRoom() {
     const arc = window.__arc;
-    if (!arc?.db || !arc?.uid) { showJoinStatus('Still connecting — try again.', 'error'); return; }
+    if (!arc?.db || !arc?.uid) { showJoinStatus('Still connecting - try again.', 'error'); return; }
 
     showJoinStatus('Creating room…', 'info');
     const code = genRoomCode();
@@ -329,7 +329,7 @@ document.getElementById('btn-join-session')?.addEventListener('click', async () 
     if (code.length !== 6) { showJoinStatus('Enter the 6-character room code.', 'error'); return; }
 
     const arc = window.__arc;
-    if (!arc?.db || !arc?.uid) { showJoinStatus('Still connecting — try again.', 'error'); return; }
+    if (!arc?.db || !arc?.uid) { showJoinStatus('Still connecting - try again.', 'error'); return; }
 
     showJoinStatus('Checking room…', 'info');
     try {
@@ -397,7 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'active-sheet.html';
     });
 
-    // New character — prompt to save if active exists
+    // New character - prompt to save if active exists
     document.getElementById('btn-new')?.addEventListener('click', () => {
         const data = getActive();
         if (data?.char?.name) {
@@ -432,13 +432,13 @@ document.addEventListener('DOMContentLoaded', () => {
         e.target.value = '';
     });
 
-    // Saves list — show all / show fewer toggle
+    // Saves list - show all / show fewer toggle
     document.getElementById('saves-show-more')?.addEventListener('click', () => {
         showAllSaves = !showAllSaves;
         renderSaves();
     });
 
-    // Saves list — load or delete
+    // Saves list - load or delete
     document.getElementById('saves-list')?.addEventListener('click', e => {
         const loadBtn = e.target.closest('[data-load]');
         if (loadBtn) {

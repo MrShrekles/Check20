@@ -1,7 +1,7 @@
 // ── Loot Editor ───────────────────────────────────────────────────────────────
 // loot.json is now a config-only file: just tiers with pool weights and rarities.
 // Items are drawn at runtime from items.json, weapons.json, armor.json,
-// enchanted.json, and medicine.json — no static lists here.
+// enchanted.json, and medicine.json - no static lists here.
 
 const LOOT_POOLS = ['item', 'medicine', 'weapon', 'armor', 'enchanted'];
 const LOOT_POOL_CFG = {
@@ -104,7 +104,7 @@ function renderLootEditor() {
 
     const legend = LOOT_POOLS.map(p => {
         const cfg = LOOT_POOL_CFG[p];
-        return `<span class="loot-legend-item"><span style="color:${cfg.color}">${cfg.icon} ${cfg.label}</span> <span style="opacity:.45;font-size:10px">— ${cfg.desc}</span></span>`;
+        return `<span class="loot-legend-item"><span style="color:${cfg.color}">${cfg.icon} ${cfg.label}</span> <span style="opacity:.45;font-size:10px">- ${cfg.desc}</span></span>`;
     }).join('');
 
     return `<div class="loot-editor">

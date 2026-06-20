@@ -120,7 +120,7 @@ function renderSpellEffects(idx) {
     const effects = state.data[idx].effects || [];
     el.innerHTML = effects.length
         ? effects.map((e, ei) => renderSpellEffectRow(idx, ei, e)).join('')
-        : '<div class="extra-features-empty">No intent levels — add one below</div>';
+        : '<div class="extra-features-empty">No intent levels - add one below</div>';
 }
 
 // ── REGISTER ──────────────────────────────────────────────────────────────────
@@ -189,7 +189,7 @@ registerEditor('spell', {
             <div class="extra-features-list" id="spell-effects-${idx}">
                 ${effects.length
                     ? effects.map((e, ei) => renderSpellEffectRow(idx, ei, e)).join('')
-                    : '<div class="extra-features-empty">No intent levels — add one below</div>'}
+                    : '<div class="extra-features-empty">No intent levels - add one below</div>'}
             </div>
         </div>`;
     },

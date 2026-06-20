@@ -1,0 +1,637 @@
+{
+  "progression_items": [
+
+    {
+      "name": "Red Lizard",
+      "slug": "red_lizard",
+      "type": "Weapon",
+      "origin": "Elemental",
+      "color": "#308060",
+      "desc": "Forged from shed scales of a fire lizard elder and quenched in volcanic spring water, this enhancement slowly awakens the fire sleeping within any blade. The item was not made - it was summoned. A weapon bonded to the Red Lizard becomes something alive with heat.",
+      "itemFeature": {
+        "name": "Red Lizard Binding",
+        "action": "Special",
+        "desc": "Apply this enhancement to any weapon. The weapon's damage type changes to Fire, replacing its original type. Scales appear along the grip and the blade runs hot to the touch."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Fire Conversion",    "action": "Passive",     "check": "",          "range": "",       "description": "The weapon's base damage type becomes Fire, replacing its original damage type." },
+        { "step": 2,  "name": "Burning Edge",        "action": "Passive",     "check": "",          "range": "",       "description": "Increase the weapon's base damage by +2." },
+        { "step": 3,  "name": "Lizard Stance",       "action": "Half-Action", "check": "",          "range": "",       "description": "When you attack with this weapon, you may enter a Lizard Stance as a half-action." },
+        { "step": 4,  "name": "Heat Ward",           "action": "Passive",     "check": "",          "range": "",       "description": "While in Lizard Stance, the next condition applied to you is prevented. Resets when you re-enter the stance." },
+        { "step": 5,  "name": "Ember Surge",         "action": "Passive",     "check": "",          "range": "",       "description": "When you enter Lizard Stance, gain +2 healing and repair 1 armor." },
+        { "step": 6,  "name": "Scaled Sprint",       "action": "Passive",     "check": "",          "range": "",       "description": "Increase base movement speed by +10 while wielding this weapon." },
+        { "step": 7,  "name": "Heat Sense",          "action": "Action",      "check": "Survival",  "range": "Medium", "description": "Once per day, sense all living creatures within medium range by their body heat. Creatures behind half cover are still detected. Full cover and creatures without body heat are undetectable." },
+        { "step": 8,  "name": "Lizard Scales",       "action": "Passive",     "check": "",          "range": "",       "description": "The weapon provides +10 armor to the wielder as lizard scales spread across their skin." },
+        { "step": 9,  "name": "Triple Bolt",         "action": "Passive",     "check": "",          "range": "",       "description": "When you use Fire Bolt, fire 3 bolts instead of one at targets of your choice." },
+        { "step": 10, "name": "Red Lizard Ascendant","action": "Passive",     "check": "",          "range": "",       "description": "Gain an additional half-action per turn." }
+      ]
+    },
+
+    {
+      "name": "Void Mirror",
+      "slug": "void_mirror",
+      "type": "Weapon",
+      "origin": "Arcane",
+      "color": "#5020a0",
+      "desc": "A weapon coated in a substance that looks like dark glass - perfectly still, perfectly cold, and utterly wrong. It absorbs the arcane residue of spells that pass near it and learns to throw that energy back. In the hands of the right bearer, it becomes a living argument against magic.",
+      "itemFeature": {
+        "name": "Void Mirror Binding",
+        "action": "Special",
+        "desc": "Apply this enhancement to any weapon. The weapon's surface becomes a dark mirror. It hums faintly near active spellcasters."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Arcane Absorption",  "action": "Passive",    "check": "",         "range": "",      "description": "When a spell hits you, gain 1 temporary Mana that lasts until the end of your next turn." },
+        { "step": 2,  "name": "Void Damage",        "action": "Passive",    "check": "",         "range": "",      "description": "The weapon's damage type becomes Arcane." },
+        { "step": 3,  "name": "Drain Edge",         "action": "Passive",    "check": "",         "range": "",      "description": "On hit, the target loses 1 Mana if they have any. You gain that Mana." },
+        { "step": 4,  "name": "Reflection",         "action": "Reaction",   "check": "Spirit",   "range": "Self",  "description": "Once per day, as a reaction, reflect a spell that targets only you back at its caster with the same effect." },
+        { "step": 5,  "name": "Mirror's Edge",      "action": "Passive",    "check": "",         "range": "",      "description": "Increase the weapon's base damage by +3." },
+        { "step": 6,  "name": "Arcane Sight",       "action": "Passive",    "check": "",         "range": "Short", "description": "You can see magical auras, invisible creatures, and active enchantments within short range." },
+        { "step": 7,  "name": "Void Pulse",         "action": "Action",     "check": "Intellect","range": "Reach", "description": "Once per combat, release stored arcane energy as a pulse dealing Arcane damage equal to all Mana spent this combat to all creatures in reach range." },
+        { "step": 8,  "name": "Anti-Magic Shell",   "action": "Passive",    "check": "",         "range": "",      "description": "The weapon provides +10 armor against all spell damage." },
+        { "step": 9,  "name": "Arcane Dominion",    "action": "Passive",    "check": "Intellect","range": "",      "description": "When you hit a spellcaster, they make an Intellect check (15+) or lose their next action." },
+        { "step": 10, "name": "Mirror Mastery",     "action": "Passive",    "check": "",         "range": "",      "description": "Gain an additional Off-Action per turn." }
+      ]
+    },
+
+    {
+      "name": "The Faithful",
+      "slug": "the_faithful",
+      "type": "Weapon",
+      "origin": "Basic",
+      "color": "#505050",
+      "desc": "There is nothing remarkable about this weapon. That is the point. Basic magic is the oldest kind - the kind that builds through use, through trust, through ten thousand repetitions of the same honest strike. The Faithful does not dazzle. It simply never fails.",
+      "itemFeature": {
+        "name": "Faithful Binding",
+        "action": "Special",
+        "desc": "Apply this enhancement to any weapon. The weapon feels immediately familiar in your hand, as if you have carried it for years. It is bound to you alone."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Unbreakable",       "action": "Passive",    "check": "",         "range": "",     "description": "This weapon cannot be disarmed, sundered, or destroyed by any means." },
+        { "step": 2,  "name": "True Strike",       "action": "Passive",    "check": "",         "range": "",     "description": "Increase the weapon's base damage by +2." },
+        { "step": 3,  "name": "Earned Recovery",   "action": "Passive",    "check": "",         "range": "",     "description": "On a Success+ with this weapon, heal 1 wound." },
+        { "step": 4,  "name": "Second Chance",     "action": "Passive",    "check": "",         "range": "",     "description": "Once per day, reroll a failed attack with this weapon and take the higher result." },
+        { "step": 5,  "name": "Steady Hand",       "action": "Passive",    "check": "",         "range": "",     "description": "While wielding this weapon, gain +2 to all checks." },
+        { "step": 6,  "name": "Guardian's Return", "action": "Passive",    "check": "",         "range": "",     "description": "Once per long rest, the next attack that would hit you misses instead." },
+        { "step": 7,  "name": "Immovable",         "action": "Passive",    "check": "",         "range": "",     "description": "When you would be knocked prone or forcibly moved, resist it as a free action once per round." },
+        { "step": 8,  "name": "Grounded Stride",   "action": "Passive",    "check": "",         "range": "",     "description": "Increase base movement speed by +10." },
+        { "step": 9,  "name": "Certain Victory",   "action": "Passive",    "check": "",         "range": "",     "description": "Once per day, an attack with this weapon automatically succeeds as a Success+ without rolling." },
+        { "step": 10, "name": "Veteran's Right",   "action": "Passive",    "check": "",         "range": "",     "description": "Gain an additional action on your first turn of combat." }
+      ]
+    },
+
+    {
+      "name": "Saint's Verdict",
+      "slug": "saints_verdict",
+      "type": "Weapon",
+      "origin": "Celestial",
+      "color": "#a08020",
+      "desc": "A weapon that has passed through the hands of someone a divine power deemed worthy - and found them wanting - leaving behind a residue of celestial judgment. It is not holy because it was blessed. It is holy because it has seen what righteous violence looks like and remembers.",
+      "itemFeature": {
+        "name": "Divine Sanction",
+        "action": "Special",
+        "desc": "Apply this enhancement to any weapon. A faint warm light rests on the blade. Creatures of clear malicious alignment may feel uneasy holding it."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Radiant Blade",      "action": "Passive",    "check": "",          "range": "",       "description": "The weapon's damage type becomes Radiant." },
+        { "step": 2,  "name": "Divine Edge",        "action": "Passive",    "check": "",          "range": "",       "description": "Deal +2 damage against undead and fiends." },
+        { "step": 3,  "name": "Laying On Arms",     "action": "Action",     "check": "Spirit",    "range": "Reach",  "description": "Once per day, touch an ally within reach to restore [[1d6]] wounds." },
+        { "step": 4,  "name": "Inspiration",        "action": "Passive",    "check": "",          "range": "Reach",  "description": "When you reduce an enemy to 0 wounds, all allies within reach gain +1 to their next check." },
+        { "step": 5,  "name": "Increase damage",    "action": "Passive",    "check": "",          "range": "",       "description": "Increase the weapon's base damage by +2." },
+        { "step": 6,  "name": "Sacred Plating",     "action": "Passive",    "check": "",          "range": "",       "description": "The weapon provides +10 armor to the wielder." },
+        { "step": 7,  "name": "Judged",             "action": "Action",     "check": "Spirit",    "range": "Short",  "description": "Once per day, mark a creature as Judged. Your attacks against the Judged target deal +[[1d6]] Radiant damage until the end of combat." },
+        { "step": 8,  "name": "Angelic Aura",       "action": "Passive",    "check": "Spirit",    "range": "Melee",  "description": "Creatures that attack you in melee must make a Spirit check (15+) or become Frightened for 1 round." },
+        { "step": 9,  "name": "Absolution",         "action": "Passive",    "check": "",          "range": "Short",  "description": "When you hit with this weapon, remove 1 condition from an ally within short range." },
+        { "step": 10, "name": "Celestial Strike",   "action": "Action",     "check": "Spirit",    "range": "Short",  "description": "Once per long rest, call down divine light dealing [[3d6]] Radiant damage to all enemies within short range. Allies in range are unaffected." }
+      ]
+    },
+
+    {
+      "name": "Pandemonium Shard",
+      "slug": "pandemonium_shard",
+      "type": "Weapon",
+      "origin": "Chaos",
+      "color": "#8c3020",
+      "desc": "A fragment of something that should not exist - a splinter of pure chaotic potential locked into the shape of a weapon. Every strike is different. Every outcome is unpredictable. The Pandemonium Shard does not care about intent. It only cares about happening.",
+      "itemFeature": {
+        "name": "Chaos Binding",
+        "action": "Special",
+        "desc": "Apply this enhancement to any weapon. The weapon crackles with unstable energy. Its appearance shifts slightly each day - different color, different texture, same weight."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Chaotic Damage",    "action": "Passive",    "check": "Luck",     "range": "",      "description": "Each attack, roll 1d6 to determine damage type: 1=Fire, 2=Ice, 3=Lightning, 4=Psychic, 5=Arcane, 6=Vozian." },
+        { "step": 2,  "name": "Critical Cascade",  "action": "Passive",    "check": "",         "range": "",      "description": "Once per turn, when you roll a critical success on an attack, immediately make a bonus attack." },
+        { "step": 3,  "name": "Volatile Momentum", "action": "Passive",    "check": "",         "range": "",      "description": "When you miss an attack with this weapon, gain advantage on your next attack." },
+        { "step": 4,  "name": "Chaos Field",       "action": "Passive",    "check": "Luck",     "range": "Reach", "description": "At the start of each of your turns, roll a d6. On 4+, enemies within reach have disadvantage on attacks until the start of your next turn." },
+        { "step": 5,  "name": "Wild Surge",        "action": "Passive",    "check": "",         "range": "",      "description": "Increase the weapon's base damage by +2." },
+        { "step": 6,  "name": "Reactive Chaos",    "action": "Passive",    "check": "",         "range": "",      "description": "When you take damage, the attacker takes 2 damage of the same random type from step 1 (roll separately)." },
+        { "step": 7,  "name": "Mayhem",            "action": "Action",     "check": "Luck",     "range": "Reach", "description": "Once per day, create a chaos burst. All creatures in reach range make a Luck check (15+) or take [[2d6]] damage of a randomly rolled type." },
+        { "step": 8,  "name": "Unstable Armor",    "action": "Passive",    "check": "",         "range": "",      "description": "+10 armor, but the armor type changes randomly at the start of each combat (your narrator decides to what)." },
+        { "step": 9,  "name": "Chain Reaction",    "action": "Passive",    "check": "",         "range": "",      "description": "When you reduce a creature to 0 wounds, gain an extra half-action this turn." },
+        { "step": 10, "name": "Ascendant Chaos",   "action": "Passive",    "check": "",         "range": "",      "description": "Once per day, your turn doubles in length - take 2 full actions on a single turn." }
+      ]
+    },
+
+    {
+      "name": "Timecutter",
+      "slug": "timecutter",
+      "type": "Weapon",
+      "origin": "Chrono",
+      "color": "#208080",
+      "desc": "A weapon that vibrates slightly out of sync with the present moment. Strikes land a fraction of a second before they are thrown. Blocks happen before the attack exists. The Timecutter does not change the past - it simply makes the present optional.",
+      "itemFeature": {
+        "name": "Temporal Binding",
+        "action": "Special",
+        "desc": "Apply this enhancement to any weapon. The weapon flickers at its edges, as if the light around it cannot agree on what moment it occupies."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Phase Strike",      "action": "Passive",    "check": "",         "range": "",      "description": "Your attacks with this weapon cannot be blocked, parried, or countered by reactions." },
+        { "step": 2,  "name": "Chrono Damage",     "action": "Passive",    "check": "",         "range": "",      "description": "The weapon's damage type becomes Chrono (treated as Impact for resistance purposes)." },
+        { "step": 3,  "name": "Undo",              "action": "Passive",    "check": "",         "range": "",      "description": "Once per day, after missing with this weapon, undo that attack roll and reroll it." },
+        { "step": 4,  "name": "Time Sense",        "action": "Passive",    "check": "",         "range": "",      "description": "You cannot be surprised. You always act in the first initiative slot if you choose to delay." },
+        { "step": 5,  "name": "Temporal Delay",    "action": "Off-Action", "check": "Intellect","range": "Self",  "description": "Once per combat, delay a single incoming attack by 1 round. The attack resolves at the start of your next turn instead." },
+        { "step": 6,  "name": "Slipstream",        "action": "Passive",    "check": "",         "range": "",      "description": "+10 movement speed while wielding this weapon." },
+        { "step": 7,  "name": "Chrono Blade",      "action": "Action",     "check": "",         "range": "",      "description": "Once per day, make two attacks simultaneously - one lands now, one lands at the end of your next turn. Both rolls are made now." },
+        { "step": 8,  "name": "Time Shell",        "action": "Passive",    "check": "",         "range": "",      "description": "The weapon provides +10 armor to the wielder." },
+        { "step": 9,  "name": "Time Anchor",       "action": "Off-Action", "check": "",         "range": "Self",  "description": "Once per day at the start of combat, mark your wounds and position. At any point during that combat, return to that exact state as an off-action." },
+        { "step": 10, "name": "One More Moment",   "action": "Passive",    "check": "",         "range": "",      "description": "Once per long rest, take an additional full turn immediately after combat would otherwise end." }
+      ]
+    },
+
+    {
+      "name": "Resonance Spine",
+      "slug": "resonance_spine",
+      "type": "Weapon",
+      "origin": "Crystal",
+      "color": "#3080b0",
+      "desc": "Crystal does not grow in straight lines. It grows in the path of least resistance, following fault lines, heat gradients, and old wounds. Bound to a weapon, it follows the path of violence - spreading along the blade, up the grip, and eventually across the wielder. It is beautiful. It is sharp. It is listening.",
+      "itemFeature": {
+        "name": "Crystal Spine Binding",
+        "action": "Special",
+        "desc": "Apply this enhancement to any weapon. Thin crystal growth appears along the blade's edge. The weapon chimes softly when swung."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Crystal Edge",       "action": "Passive",    "check": "",          "range": "",      "description": "The weapon's damage type becomes Crystal. On hit, ignore up to 5 points of the target's armor." },
+        { "step": 2,  "name": "Resonance",          "action": "Passive",    "check": "",          "range": "",      "description": "When you hit the same target twice in one turn, deal +[[1d4]] additional crystal damage on the second hit." },
+        { "step": 3,  "name": "Crystal Shards",     "action": "Off-Action", "check": "",          "range": "Melee", "description": "Once per combat, shatter a crystal spike dealing [[1d6]] piercing damage to all creatures in melee range." },
+        { "step": 4,  "name": "Crystal Shell",      "action": "Passive",    "check": "",          "range": "",      "description": "Crystal plates spread across your forearm. Gain +5 armor." },
+        { "step": 5,  "name": "Shard Growth",       "action": "Passive",    "check": "",          "range": "",      "description": "Increase the weapon's base damage by +3." },
+        { "step": 6,  "name": "Amplify",            "action": "Passive",    "check": "",          "range": "Melee", "description": "Once per day, your next hit resonates. All creatures adjacent to the target take half that hit's damage." },
+        { "step": 7,  "name": "Crystal Sight",      "action": "Passive",    "check": "",          "range": "Short", "description": "You see through illusions and can detect invisible creatures within short range as outlines." },
+        { "step": 8,  "name": "Full Lattice",       "action": "Passive",    "check": "",          "range": "",      "description": "Crystal fully encases your weapon arm. Gain +10 armor." },
+        { "step": 9,  "name": "Resonant Burst",     "action": "Action",     "check": "Observation","range": "Reach","description": "Once per day, emit a resonant pulse dealing [[2d6]] crystal piercing damage to all creatures in reach range." },
+        { "step": 10, "name": "Crystallization",    "action": "Passive",    "check": "",          "range": "",      "description": "Once per long rest, enter full crystal form for 1 minute. Become immune to all conditions." }
+      ]
+    },
+
+    {
+      "name": "Dragonscale Mantle",
+      "slug": "dragonscale_mantle",
+      "type": "Armor",
+      "origin": "Dragon",
+      "color": "#802020",
+      "desc": "Dragon scales do not die when the dragon does. They remember. Bound into armor, they begin teaching the wearer what it means to be a thing that cannot be killed easily - starting with fire, ending with flight.",
+      "itemFeature": {
+        "name": "Drake Binding",
+        "action": "Special",
+        "desc": "Apply this enhancement to any armor. Scales begin spreading across the surface. They are warm to the touch and impossible to remove."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Fire Resistance",    "action": "Passive",    "check": "",         "range": "",      "description": "Gain resistance to fire damage - take half from all fire sources." },
+        { "step": 2,  "name": "Scale Growth",       "action": "Passive",    "check": "",         "range": "",      "description": "The armor gains +5 armor as the scales thicken." },
+        { "step": 3,  "name": "Draconic Presence",  "action": "Action",     "check": "Influence","range": "Short", "description": "Once per encounter, creatures within short range make a Spirit check (15+) or have disadvantage on attacks against you until the end of your next turn." },
+        { "step": 4,  "name": "Drake Plating",      "action": "Passive",    "check": "",         "range": "",      "description": "Gain an additional +10 armor." },
+        { "step": 5,  "name": "Tail Swipe",         "action": "Off-Action", "check": "Agility",  "range": "Melee", "description": "Once per combat, knock a creature within melee range prone." },
+        { "step": 6,  "name": "Wing Burst",         "action": "Action",     "check": "",         "range": "Short", "description": "Once per day, launch yourself up to short range without provoking opportunity attacks." },
+        { "step": 7,  "name": "Dragonfire",         "action": "Action",     "check": "Survival", "range": "Short", "description": "Once per day, breathe fire in a short cone dealing [[3d6]] fire damage. Targets make a Survival check (15+) for half." },
+        { "step": 8,  "name": "Draconic Fortitude", "action": "Passive",    "check": "Strength", "range": "",      "description": "Once per combat, when you would take the Injured condition, make a Strength check (15+) to ignore it." },
+        { "step": 9,  "name": "Drake Mastery",      "action": "Passive",    "check": "",         "range": "",      "description": "Gain advantage on all checks to resist being moved, knocked prone, or receiving conditions." },
+        { "step": 10, "name": "Ascendant Drake",    "action": "Action",     "check": "",         "range": "",      "description": "Once per long rest, transform into a Lesser Drake for 1 minute. Gain 40ft fly speed, +20 armor, and attacks deal an additional [[2d6]] fire damage." }
+      ]
+    },
+
+    {
+      "name": "The Surgeon's Last Cut",
+      "slug": "surgeons_last_cut",
+      "type": "Weapon",
+      "origin": "Life",
+      "color": "#507030",
+      "desc": "A weapon from a healer who ran out of options. Life magic is not gentle - it is imperative, driving, relentless. It does not prefer death or birth. It simply insists on continuation. This weapon learned that lesson from someone who used it to save more lives than it ended.",
+      "itemFeature": {
+        "name": "Life Binding",
+        "action": "Special",
+        "desc": "Apply this enhancement to any weapon. The blade weeps a faint clear fluid. Wounds it opens close faster than they should."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Life Drain",         "action": "Passive",    "check": "",         "range": "",     "description": "On each hit with this weapon, heal 1 wound." },
+        { "step": 2,  "name": "Vital Siphon",       "action": "Passive",    "check": "",         "range": "",     "description": "On a critical hit, heal [[1d4]] wounds and remove 1 condition from yourself." },
+        { "step": 3,  "name": "Kill to Heal",       "action": "Passive",    "check": "",         "range": "",     "description": "When you reduce a creature to 0 wounds, heal [[1d6]] wounds." },
+        { "step": 4,  "name": "Life's Edge",        "action": "Passive",    "check": "",         "range": "",     "description": "Increase the weapon's base damage by +2." },
+        { "step": 5,  "name": "Vital Shield",       "action": "Passive",    "check": "",         "range": "",     "description": "Reduce incoming damage by 1 for each 5 wounds you currently have remaining." },
+        { "step": 6,  "name": "Vital Point",        "action": "Passive",    "check": "",         "range": "",     "description": "Once per combat, an attack with this weapon bypasses all armor." },
+        { "step": 7,  "name": "Life Aura",          "action": "Passive",    "check": "",         "range": "",     "description": "The weapon provides +10 armor as a life-sustaining field around the wielder." },
+        { "step": 8,  "name": "Transfuse",          "action": "Action",     "check": "Spirit",   "range": "Reach","description": "Once per day, transfer up to [[2d6]] of your current wounds as healing to a willing ally within reach." },
+        { "step": 9,  "name": "Forced Recovery",    "action": "Passive",    "check": "",         "range": "",     "description": "When you drop to 0 wounds, immediately heal [[1d6]] wounds. This can only trigger once per encounter." },
+        { "step": 10, "name": "Eternal Spring",     "action": "Passive",    "check": "",         "range": "",     "description": "Regenerate 1 wound at the start of each of your turns while wielding this weapon." }
+      ]
+    },
+
+    {
+      "name": "Thornheart",
+      "slug": "thornheart",
+      "type": "Armor",
+      "origin": "Nature",
+      "color": "#406030",
+      "desc": "Nature does not rush. It encroaches. It finds every gap, fills every silence, and eventually covers everything in green. Thornheart begins as a single vine on a clasp. It finishes as something that cannot be clearly separated from its wearer.",
+      "itemFeature": {
+        "name": "Nature Binding",
+        "action": "Special",
+        "desc": "Apply this enhancement to any armor. Vines begin growing across the surface. They tighten when the wearer is threatened and loosen at rest."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Thorn Aura",        "action": "Passive",    "check": "",          "range": "Melee", "description": "Creatures that hit you in melee take 1 piercing damage from the thorns." },
+        { "step": 2,  "name": "Vine Grip",         "action": "Passive",    "check": "",          "range": "",      "description": "You have advantage on grapple checks. You cannot be disarmed while the vines hold your weapon." },
+        { "step": 3,  "name": "Bark Layer",        "action": "Passive",    "check": "",          "range": "",      "description": "Bark hardens over the armor. Gain +5 armor." },
+        { "step": 4,  "name": "Root Walk",         "action": "Passive",    "check": "",          "range": "",      "description": "Moving through difficult terrain costs no extra movement." },
+        { "step": 5,  "name": "Full Growth",       "action": "Passive",    "check": "",          "range": "",      "description": "Nature's growth fully covers you. Gain +10 armor." },
+        { "step": 6,  "name": "Entangle",          "action": "Action",     "check": "Survival",  "range": "Reach", "description": "Once per combat, vines erupt from the ground in reach range. All creatures in range make an Agility check (15+) or become Pinned until the start of your next turn." },
+        { "step": 7,  "name": "Photosynthesis",    "action": "Passive",    "check": "",          "range": "",      "description": "During downtime spent in sunlight, heal all wounds and repair all armor." },
+        { "step": 8,  "name": "Nature's Fury",     "action": "Passive",    "check": "",          "range": "",      "description": "On a critical hit, your weapon sprouts thorns dealing +[[1d6]] piercing damage. The target also bleeds for [[1d4]] damage per round until treated." },
+        { "step": 9,  "name": "Command Verdance",  "action": "Action",     "check": "Spirit",    "range": "Short", "description": "Once per day, summon [[1d4]] PL3 plant creatures to fight alongside you for 1 hour." },
+        { "step": 10, "name": "World Tree Bond",   "action": "Passive",    "check": "",          "range": "",      "description": "You cannot be reduced below 1 wound more than once per encounter, regardless of damage dealt." }
+      ]
+    },
+
+    {
+      "name": "Overclock Unit",
+      "slug": "overclock_unit",
+      "type": "Armor",
+      "origin": "Tech",
+      "color": "#205080",
+      "desc": "A mechanical augmentation system that begins as a reinforced chestplate and ends as a fully integrated second nervous system. Overclock does not enhance the person - it replaces their limitations one component at a time, until the question of where the armor ends and the wearer begins stops being meaningful.",
+      "itemFeature": {
+        "name": "Tech Integration",
+        "action": "Special",
+        "desc": "Apply this enhancement to any armor. Mechanical components begin integrating. Servos and joints begin self-calibrating to the wearer's movement patterns."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "System Boot",       "action": "Passive",    "check": "",          "range": "",      "description": "Gain +2 to Initiative rolls. You cannot be surprised." },
+        { "step": 2,  "name": "Overclock I",       "action": "Passive",    "check": "",          "range": "",      "description": "Once per day, take an additional half-action on your turn." },
+        { "step": 3,  "name": "Defense Matrix",    "action": "Passive",    "check": "",          "range": "",      "description": "The armor gains +5 armor as plating layers are added." },
+        { "step": 4,  "name": "Target Assist",     "action": "Passive",    "check": "",          "range": "",      "description": "Once per combat, gain advantage on one attack roll." },
+        { "step": 5,  "name": "System Upgrade",    "action": "Passive",    "check": "",          "range": "",      "description": "Gain +10 armor and +2 to all physical checks." },
+        { "step": 6,  "name": "Jet Boost",         "action": "Passive",    "check": "",          "range": "Short", "description": "Once per turn, launch yourself up to short range in any direction as part of your movement. This does not provoke." },
+        { "step": 7,  "name": "EMP Strike",        "action": "Action",     "check": "Intellect", "range": "Reach", "description": "Once per day, shut down one Tech or Construct creature within reach for 1 round. They lose their next turn." },
+        { "step": 8,  "name": "Adaptive Shield",   "action": "Off-Action", "check": "",          "range": "Self",  "description": "Once per combat, reduce all damage you take this round by half." },
+        { "step": 9,  "name": "Full Overclock",    "action": "Action",     "check": "",          "range": "",      "description": "Once per day, enter Overclock Mode for 1 minute. Gain an extra action per turn and +10 to all checks." },
+        { "step": 10, "name": "Singularity",       "action": "Passive",    "check": "",          "range": "",      "description": "At the end of each combat, your systems self-repair [[1d6]] armor automatically." }
+      ]
+    },
+
+    {
+      "name": "The Screaming Void",
+      "slug": "screaming_void",
+      "type": "Weapon",
+      "origin": "Vozian",
+      "color": "#702040",
+      "desc": "Something from outside the known planes left a mark on this weapon, and it never fully healed. The Screaming Void is not evil. It is simply from somewhere that has different rules about what counts as a person, what counts as a wound, and what happens to things when they are destroyed here.",
+      "itemFeature": {
+        "name": "Void Bonding",
+        "action": "Special",
+        "desc": "Apply this enhancement to any weapon. The weapon becomes semi-transparent, showing a dark churning void within its shape. It occasionally makes sounds that have no source."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Void Strike",       "action": "Passive",    "check": "Intellect", "range": "",      "description": "The weapon's damage type becomes Vozian. On hit, the target makes an Intellect check (15+) or has disadvantage on their next roll." },
+        { "step": 2,  "name": "Void Whispers",     "action": "Passive",    "check": "",          "range": "",      "description": "When you hit a creature, you hear a fragment of their thoughts. The narrator reveals one thing on their mind." },
+        { "step": 3,  "name": "Creeping Void",     "action": "Passive",    "check": "",          "range": "",      "description": "Increase the weapon's base damage by +2." },
+        { "step": 4,  "name": "Phase",             "action": "Action",     "check": "",          "range": "Self",  "description": "Once per day, become incorporeal for 1 round. You cannot be hit by physical attacks and can move through solid objects." },
+        { "step": 5,  "name": "Soul Leach",        "action": "Passive",    "check": "",          "range": "",      "description": "When you deal Vozian damage, gain 1 Mana." },
+        { "step": 6,  "name": "Void Shell",        "action": "Passive",    "check": "",          "range": "",      "description": "The weapon emits a void aura. Gain +10 armor against psychic and Vozian damage." },
+        { "step": 7,  "name": "Void Sight",        "action": "Passive",    "check": "",          "range": "Medium","description": "See invisible creatures and see clearly through magical darkness within medium range." },
+        { "step": 8,  "name": "Void Pulse",        "action": "Action",     "check": "Intellect", "range": "Short", "description": "Once per day, emit a void wave. All creatures in short range make an Intellect check (15+) or take [[2d6]] Vozian damage and gain the Confused condition." },
+        { "step": 9,  "name": "Hungering Void",    "action": "Passive",    "check": "",          "range": "",      "description": "When you reduce a creature to 0 wounds, their soul is consumed. They cannot be resurrected or raised as undead this session." },
+        { "step": 10, "name": "Become the Void",   "action": "Action",     "check": "",          "range": "",      "description": "Once per long rest, enter Void Form for 1 minute. Become immune to all conditions, pass through solid objects, and all attacks deal +[[2d6]] Vozian damage." }
+      ]
+    },
+
+    {
+      "name": "Soul Lantern",
+      "slug": "soul_lantern",
+      "type": "Gear",
+      "origin": "Celestial",
+      "color": "#7a6010",
+      "inspired": "Shepherd (Support)",
+      "desc": "A lantern cast in Mournesteel that burns with a light no wind can touch. It was made to hold things - light, warmth, and under the right conditions, the fraying edges of a dying soul. The Shepherd carries it so others don't have to be afraid of the dark.",
+      "itemFeature": {
+        "name": "Soul Lantern Binding",
+        "action": "Special",
+        "desc": "The lantern becomes your spellcasting focus. Choose one check - that check is used for any lantern-based abilities. It sheds soft light in short range."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Soul Light",         "action": "Passive",    "check": "",           "range": "Short",  "description": "Invisible creatures within the lantern's light become visible as faint outlines." },
+        { "step": 2,  "name": "Blinding Flash",     "action": "Off-Action", "check": "",           "range": "Short",  "description": "Once per combat, emit a flash. The next attack against an ally within short range has disadvantage." },
+        { "step": 3,  "name": "Spectral Ward",      "action": "Action",     "check": "",           "range": "Short",  "description": "Once per day, create a protective aura. Allies within short range gain +5 armor until the start of your next turn." },
+        { "step": 4,  "name": "Soul Binding",       "action": "Passive",    "check": "Spirit",     "range": "Reach",  "description": "Creatures you damage with a lantern-based ability must make a Spirit check (15+) or have disadvantage on attacks against your allies until the end of their next turn." },
+        { "step": 5,  "name": "Extended Reach",     "action": "Passive",    "check": "",           "range": "",       "description": "Lantern-based abilities now function at medium range. Light increases to medium range." },
+        { "step": 6,  "name": "Ethereal Chains",    "action": "Half-Action","check": "Spirit",     "range": "Short",  "description": "Once per combat, launch chains of light. A creature within short range makes a Spirit check (15+) or gains the Pinned condition for 1 round." },
+        { "step": 7,  "name": "Soul Anchor",        "action": "Passive",    "check": "",           "range": "Short",  "description": "Allies within short range of the lantern cannot be moved against their will." },
+        { "step": 8,  "name": "Lantern's Grace",    "action": "Passive",    "check": "",           "range": "",       "description": "Gain +10 armor as the lantern wraps its light around you like a second skin." },
+        { "step": 9,  "name": "Revenant Light",     "action": "Action",     "check": "Spirit",     "range": "Reach",  "description": "Once per day, touch a downed ally. They regain [[1d6]] wounds and stand. This cannot revive a creature that has taken the Death condition." },
+        { "step": 10, "name": "Final Light",        "action": "Action",     "check": "",           "range": "Short",  "description": "Once per long rest, release the lantern's stored light. All allies in short range are fully healed and remove all conditions. All enemies in short range are Blinded for 1 round." }
+      ]
+    },
+
+    {
+      "name": "Tactician's Pin",
+      "slug": "tacticians_pin",
+      "type": "Gear",
+      "origin": "Basic",
+      "color": "#505040",
+      "inspired": "Tactician (Support)",
+      "desc": "A plain metal pin, the kind an officer wears. It does not glow, spark, or whisper. It simply makes the people around you better at what they do. The Tactician's Pin is basic magic at its most honest - authority made tangible.",
+      "itemFeature": {
+        "name": "Tactical Authority",
+        "action": "Special",
+        "desc": "You have a pool of Inspiration equal to your Influence check. Regain 1 on Press On, all on Long Rest. Many abilities below spend Inspiration."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Exploit Weakness",   "action": "Off-Action", "check": "",           "range": "Short",  "description": "Spend 1 Inspiration: when you hit with a weapon attack, deal +5 additional damage." },
+        { "step": 2,  "name": "Tactical Evasion",   "action": "Off-Action", "check": "Agility",    "range": "Self",   "description": "Spend 1 Inspiration when an attack is hitting you. Make an Agility check (15+) to reduce the damage by half." },
+        { "step": 3,  "name": "Assault",            "action": "Passive",    "check": "",           "range": "",       "description": "After successfully hitting an enemy, your next attack against them this turn has advantage." },
+        { "step": 4,  "name": "Cloaked Medic",      "action": "Passive",    "check": "",           "range": "Reach",  "description": "When you heal an ally, they gain the Invisible condition until the end of their next turn." },
+        { "step": 5,  "name": "Exploit Weakness II","action": "Passive",    "check": "",           "range": "",       "description": "Exploit Weakness no longer costs Inspiration." },
+        { "step": 6,  "name": "Commanding Shout",   "action": "Action",     "check": "Influence",  "range": "Short",  "description": "Spend 1 Inspiration: choose one ally within short range. That ally may move up to their movement or make one attack as a reaction." },
+        { "step": 7,  "name": "Coordinated Strike", "action": "Passive",    "check": "",           "range": "",       "description": "When you and an ally both attack the same creature on the same turn, both gain +2 damage on those attacks." },
+        { "step": 8,  "name": "Field Commander",    "action": "Passive",    "check": "",           "range": "Short",  "description": "Allies within short range gain +2 armor from your tactical positioning." },
+        { "step": 9,  "name": "Inspiration Surge",  "action": "Passive",    "check": "",           "range": "",       "description": "Your Inspiration pool increases by 3." },
+        { "step": 10, "name": "Supreme Maneuver",   "action": "Action",     "check": "Influence",  "range": "Short",  "description": "Once per long rest, spend 3 Inspiration. All allies in short range immediately take a full action - move and attack - in any order." }
+      ]
+    },
+
+    {
+      "name": "The Pactmark",
+      "slug": "the_pactmark",
+      "type": "Gear",
+      "origin": "Vozian",
+      "color": "#501838",
+      "inspired": "Warlock (Mage)",
+      "desc": "Not a deal. A brand. The Pactmark burns itself into a creature and does not leave - not until its purpose is done or its bearer is dead. The Warlock does not ask permission. They simply decide who matters.",
+      "itemFeature": {
+        "name": "Pactmark Binding",
+        "action": "Special",
+        "desc": "Influence becomes your spellcasting check for Vozian magic. You have 3 Mana that can only be used for Vozian origin spells. Regain all Mana on Long Rest, 1 on Press On."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Pactmark I",         "action": "Off-Action", "check": "Influence",  "range": "Reach",  "description": "Mark one creature within reach. For 1 minute, the marked creature takes +3 damage from all sources." },
+        { "step": 2,  "name": "Void Conduit",       "action": "Passive",    "check": "",           "range": "",       "description": "When a marked creature takes damage, you may choose to heal 1 wound." },
+        { "step": 3,  "name": "Pactmark II",        "action": "Passive",    "check": "",           "range": "",       "description": "You may now have 2 creatures marked simultaneously." },
+        { "step": 4,  "name": "Brand of Fear",      "action": "Passive",    "check": "Spirit",     "range": "",       "description": "Marked creatures make a Spirit check (15+) at the start of each turn or have disadvantage on attacks that don't target you." },
+        { "step": 5,  "name": "Pactmark III",       "action": "Passive",    "check": "",           "range": "",       "description": "Marked creatures have disadvantage on all checks to resist your abilities." },
+        { "step": 6,  "name": "Void Leash",         "action": "Passive",    "check": "",           "range": "Short",  "description": "Marked creatures cannot teleport, become invisible, or leave your short range without making a Spirit check (15+) first." },
+        { "step": 7,  "name": "Pactmark IV",        "action": "Passive",    "check": "",           "range": "",       "description": "When a marked creature dies, you regain 1 Mana and deal [[1d6]] Vozian damage to all other marked creatures." },
+        { "step": 8,  "name": "Void Armor",         "action": "Passive",    "check": "",           "range": "",       "description": "The Pactmark bleeds protective void energy. Gain +10 armor against attacks from marked creatures." },
+        { "step": 9,  "name": "Pactmark V",         "action": "Passive",    "check": "",           "range": "",       "description": "You may now mark up to 3 creatures. Marks last until the end of combat or until the creature dies." },
+        { "step": 10, "name": "Absolute Pact",      "action": "Action",     "check": "Influence",  "range": "Short",  "description": "Once per long rest, brand a creature with an unbreakable mark. Until the end of the session, they take +5 damage from all sources and cannot willingly move away from you." }
+      ]
+    },
+
+    {
+      "name": "Hexbane",
+      "slug": "hexbane",
+      "type": "Weapon",
+      "origin": "Arcane",
+      "color": "#282870",
+      "inspired": "Witch Hunter (Professional)",
+      "desc": "The runes on this blade were not carved for beauty. They were carved because someone needed to kill something that could not otherwise be killed - something that hid behind wards and counterspells and the comfortable assumption that magic protects its wielder. It does not. Not from this.",
+      "itemFeature": {
+        "name": "Witch Hunter's Arsenal",
+        "action": "Special",
+        "desc": "Apply to any weapon. Gain +3 damage against spellcasters and magically enhanced creatures. Suppression runes appear along the blade."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Arcane Sense",       "action": "Passive",    "check": "",           "range": "Short",  "description": "You always know when magic is active within short range. Illusions and magical disguises cannot fool you." },
+        { "step": 2,  "name": "Spell Disruptor",    "action": "Passive",    "check": "",           "range": "Short",  "description": "Spells cast within short range of you have a −2 to their spellcasting check." },
+        { "step": 3,  "name": "Hex Break",          "action": "Passive",    "check": "Spirit",     "range": "",       "description": "On hit, the target makes a Spirit check (15+) or loses 1 Mana and their next spell costs 1 additional Mana." },
+        { "step": 4,  "name": "Intangible Hunter",  "action": "Passive",    "check": "",           "range": "",       "description": "You can attack incorporeal and intangible creatures, dealing full damage. They cannot pass through you." },
+        { "step": 5,  "name": "Banishing Strike",   "action": "Action",     "check": "Spirit",     "range": "",       "description": "Once per day, on a hit make a Spirit check. On a success, the target is Banished to a harmless demi-plane for 1 round, then returns to the same location." },
+        { "step": 6,  "name": "Ward",               "action": "Passive",    "check": "",           "range": "",       "description": "+10 armor against all magical damage and spell effects." },
+        { "step": 7,  "name": "Null Zone",          "action": "Action",     "check": "",           "range": "Reach",  "description": "Once per day, create a 10ft zone around you for 1 round. No spells can be cast or maintained inside it." },
+        { "step": 8,  "name": "Rune Lock",          "action": "Passive",    "check": "Intellect",  "range": "",       "description": "On a critical hit against a spellcaster, they make an Intellect check (15+) or cannot cast spells until the end of their next turn." },
+        { "step": 9,  "name": "Hunter's Mark",      "action": "Off-Action", "check": "",           "range": "Short",  "description": "Once per combat, mark a spellcaster. Your attacks against the marked target deal double damage." },
+        { "step": 10, "name": "Silence",            "action": "Action",     "check": "Spirit",     "range": "Reach",  "description": "Once per long rest, on a successful Spirit check against a creature within reach, silence them permanently until dispelled. They cannot speak or use verbal spell components." }
+      ]
+    },
+
+    {
+      "name": "Reaper's Shroud",
+      "slug": "reapers_shroud",
+      "type": "Armor",
+      "origin": "Celestial",
+      "color": "#384050",
+      "inspired": "Reaper (Professional)",
+      "desc": "Not all celestial power is warm light and choir voices. Death has angels too - patient ones, precise ones, the kind that arrive without warning and leave the same way. The Reaper's Shroud does not protect you from death. It makes you look enough like it that death gets confused.",
+      "itemFeature": {
+        "name": "Shroud Binding",
+        "action": "Special",
+        "desc": "Apply to any armor. The armor becomes dark and difficult to perceive in dim light. On your first turn in combat, gain advantage on all attacks."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Reaper's Breath",    "action": "Passive",    "check": "",           "range": "",       "description": "On your first turn in combat or when attacking a creature unaware of you, gain +[[2d6]] damage on that attack." },
+        { "step": 2,  "name": "Death's Armor",      "action": "Off-Action", "check": "Agility",    "range": "Self",   "description": "When an attack is hitting you, make an Agility check (15+) to reduce damage by half." },
+        { "step": 3,  "name": "Vanish",             "action": "Passive",    "check": "Stealth",    "range": "",       "description": "When you get a Success+ on a Stealth check, gain the Invisible condition until the start of your next turn or until you attack." },
+        { "step": 4,  "name": "Precision Strike",   "action": "Passive",    "check": "",           "range": "",       "description": "Called shots cost only −5 to hit instead of −10 while wearing this armor." },
+        { "step": 5,  "name": "Soul Siphon",        "action": "Off-Action", "check": "",           "range": "Reach",  "description": "Once per combat, drain life from an enemy you hit. Heal [[1d6]] wounds and the target gains a condition of your choice." },
+        { "step": 6,  "name": "Shadow Step",        "action": "Off-Action", "check": "Stealth",    "range": "Short",  "description": "Once per combat, teleport to any unoccupied space in short range that is in dim light or darkness. Does not provoke." },
+        { "step": 7,  "name": "Harbinger",          "action": "Passive",    "check": "",           "range": "",       "description": "+10 armor. Gain advantage on checks to detect hidden creatures, hear whispered conversations, or sense danger." },
+        { "step": 8,  "name": "Inevitable",         "action": "Passive",    "check": "",           "range": "",       "description": "You cannot be slowed, pinned, or have your movement reduced while wearing this armor." },
+        { "step": 9,  "name": "Death's Favor",      "action": "Passive",    "check": "Luck",       "range": "",       "description": "Once per combat, when you would take the Death condition, make a Luck check (15+). On a success, drop to 1 wound instead." },
+        { "step": 10, "name": "The Last Harvest",   "action": "Action",     "check": "Stealth",    "range": "Medium", "description": "Once per long rest, vanish completely. At any point this combat, reappear anywhere in medium range and make one automatic critical hit on a target of your choice." }
+      ]
+    },
+
+    {
+      "name": "Lucky Coin",
+      "slug": "lucky_coin",
+      "type": "Gear",
+      "origin": "Chaos",
+      "color": "#806030",
+      "inspired": "Gambler (Merchant)",
+      "desc": "Heads you win. Tails you lose. The Lucky Coin has been both so many times it has stopped caring. Luck is not a passive force - it is a resource, and the Gambler knows how to spend it faster than it can refill. The trick is knowing when to walk away.",
+      "itemFeature": {
+        "name": "Gambler's Luck",
+        "action": "Special",
+        "desc": "Luck becomes your spellcasting check for Chaos origin magic. You have 3 Mana. Regain 1 on Press On, all on Long Rest."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "House Rules",        "action": "Passive",    "check": "Luck",       "range": "",       "description": "Once per day, reroll any single die roll - yours or an enemy's within short range - and take the new result." },
+        { "step": 2,  "name": "Lucky Strike",       "action": "Passive",    "check": "Luck",       "range": "",       "description": "Once per combat, before rolling, call it. If you roll 15+, deal +[[1d6]] bonus damage. If you roll below 15, the attack misses automatically." },
+        { "step": 3,  "name": "Hedged Bet",         "action": "Passive",    "check": "",           "range": "",       "description": "When you roll a Fail result, gain 1 Luck Token. Spend any number of tokens before rolling to add +1 per token to the result." },
+        { "step": 4,  "name": "Push Your Luck",     "action": "Passive",    "check": "",           "range": "",       "description": "When you roll a Success+, you may choose to reroll and try for a higher result. Whatever you roll second is your final result." },
+        { "step": 5,  "name": "Risk Dividend",      "action": "Passive",    "check": "Luck",       "range": "",       "description": "When you cast a spell with your last Mana, roll a d6. On a 5 or 6, regain 1 Mana." },
+        { "step": 6,  "name": "Favorable Odds",     "action": "Action",     "check": "Luck",       "range": "",       "description": "Once per combat, flip a coin (roll d2). Odd: gain advantage on all rolls until the end of your next turn. Even: disadvantage until the end of your next turn." },
+        { "step": 7,  "name": "Big Win",            "action": "Passive",    "check": "",           "range": "",       "description": "Whenever you roll the maximum value on any die, gain 1 Luck Token immediately." },
+        { "step": 8,  "name": "Snake Eyes",         "action": "Off-Action", "check": "Luck",       "range": "Short",  "description": "Once per day, force one creature within short range to reroll a Success and take the worse result." },
+        { "step": 9,  "name": "Fortune's Armor",    "action": "Passive",    "check": "Luck",       "range": "",       "description": "+10 armor. Roll a d6 each time you take a hit. On a 6, the attack misses entirely." },
+        { "step": 10, "name": "Jackpot",            "action": "Action",     "check": "",           "range": "",       "description": "Once per long rest, go all in. For 1 minute, gain advantage on all rolls AND all attacks deal maximum damage. At the end of the minute, roll a d6. On a 1, you immediately take the Exhausted condition." }
+      ]
+    },
+
+    {
+      "name": "Iron Protocol",
+      "slug": "iron_protocol",
+      "type": "Armor",
+      "origin": "Tech",
+      "color": "#1a3060",
+      "inspired": "Centurion / Ironclad (Tank)",
+      "desc": "Military-grade arcane-tech plating that integrates a tactical command system directly into the wearer's awareness. The Centurion does not fight alone. They fight in formation - and the Iron Protocol ensures the formation never breaks.",
+      "itemFeature": {
+        "name": "Protocol Integration",
+        "action": "Special",
+        "desc": "Apply to any armor. Tactical displays activate in your peripheral vision. Allies within short range always know your position and cannot be surprised while you are conscious."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "System Lock",        "action": "Action",     "check": "Strength",   "range": "Reach",  "description": "Once per combat, lock down a creature in reach. They make a Strength check (15+) or cannot move until the start of your next turn." },
+        { "step": 2,  "name": "Tactical Uplink",    "action": "Passive",    "check": "",           "range": "Short",  "description": "Once per day, give all allies within short range +1 to their next check as a free action." },
+        { "step": 3,  "name": "Plating Upgrade",    "action": "Passive",    "check": "",           "range": "",       "description": "Gain +5 armor." },
+        { "step": 4,  "name": "Suppression Field",  "action": "Passive",    "check": "",           "range": "Reach",  "description": "Enemies in reach have disadvantage on ranged attacks against your allies." },
+        { "step": 5,  "name": "Iron Wall",          "action": "Reaction",   "check": "",           "range": "Reach",  "description": "Once per combat, when an ally in reach would take damage, you take half of it instead." },
+        { "step": 6,  "name": "Protocol Override",  "action": "Action",     "check": "",           "range": "Reach",  "description": "Once per day, negate one condition applied to you or an ally in reach." },
+        { "step": 7,  "name": "Full Fortification", "action": "Passive",    "check": "",           "range": "",       "description": "Gain +10 armor. You cannot be moved against your will while standing." },
+        { "step": 8,  "name": "Command Presence",   "action": "Passive",    "check": "Spirit",     "range": "Short",  "description": "Enemies in short range make a Spirit check (15+) at the start of their turn or cannot target allies while you are present and conscious." },
+        { "step": 9,  "name": "Sentinel Protocol",  "action": "Reaction",   "check": "",           "range": "Short",  "description": "Once per combat, when an ally in short range would drop to 0 wounds, they drop to 1 instead. You take 5 damage." },
+        { "step": 10, "name": "Fortress Mode",      "action": "Action",     "check": "",           "range": "",       "description": "Once per long rest, enter Fortress Mode for 1 minute. You cannot move but gain immunity to all conditions, +20 armor, and all allies within short range gain +10 armor." }
+      ]
+    },
+
+    {
+      "name": "Plague Sigil",
+      "slug": "plague_sigil",
+      "type": "Weapon",
+      "origin": "Life",
+      "color": "#385028",
+      "inspired": "Plaguebringer (Tank)",
+      "desc": "Life magic is not always healing. Sometimes it is the wet, patient spread of something that has decided to grow where it was not invited. The Plaguebringer does not deal damage. They deal consequences - consequences that compound, worsen, and eventually become inescapable.",
+      "itemFeature": {
+        "name": "Plague Sigil Binding",
+        "action": "Special",
+        "desc": "Apply to any weapon. The weapon weeps a faint dark fluid. Creatures hit by it feel unwell even when the wound has healed."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Infectious Strike",  "action": "Passive",    "check": "Survival",   "range": "",       "description": "On hit, the target makes a Survival check (15+) or gains 1 Plague Point. At 3 Plague Points, they gain the Weakened condition for 1 round." },
+        { "step": 2,  "name": "Damage type",        "action": "Passive",    "check": "",           "range": "",       "description": "The weapon's damage type becomes Life (toxic)." },
+        { "step": 3,  "name": "Spread",             "action": "Passive",    "check": "Survival",   "range": "Melee",  "description": "When a creature with Plague Points hits you in melee, adjacent creatures make a Survival check (15+) or gain 1 Plague Point." },
+        { "step": 4,  "name": "Plague Burst",       "action": "Action",     "check": "Survival",   "range": "Reach",  "description": "Once per combat, trigger all Plague Points on a creature. They take [[1d6]] toxic damage per Plague Point. Plague Points reset to 0." },
+        { "step": 5,  "name": "Damage increase",    "action": "Passive",    "check": "",           "range": "",       "description": "Increase the weapon's base damage by +2." },
+        { "step": 6,  "name": "Rot Aura",           "action": "Passive",    "check": "Survival",   "range": "Reach",  "description": "Creatures that start their turn within reach make a Survival check (15+) or gain 1 Plague Point." },
+        { "step": 7,  "name": "Plague Immunity",    "action": "Passive",    "check": "",           "range": "",       "description": "+10 armor. You are immune to all diseases, poisons, and toxic damage." },
+        { "step": 8,  "name": "Chosen of Decay",    "action": "Passive",    "check": "",           "range": "",       "description": "Creatures with 3+ Plague Points have disadvantage on all checks and attacks while the points persist." },
+        { "step": 9,  "name": "Plague Lord",        "action": "Action",     "check": "Survival",   "range": "Short",  "description": "Once per day, spread Plague Points from one creature to all enemies within short range of them. Each affected creature gains Plague Points equal to the original creature's count." },
+        { "step": 10, "name": "Final Infection",    "action": "Passive",    "check": "",           "range": "",       "description": "When a creature with 5+ Plague Points dies, they explode in a cloud of plague. All creatures within reach gain 3 Plague Points. You heal [[1d6]] wounds." }
+      ]
+    },
+
+    {
+      "name": "The Dreamlace",
+      "slug": "the_dreamlace",
+      "type": "Gear",
+      "origin": "Chaos",
+      "color": "#5a1880",
+      "inspired": "Dreamweaver (Support) / Chimeric Monk (Professional)",
+      "desc": "Woven from material that does not quite exist in the waking world, the Dreamlace blurs the line between what is real and what a creature thinks is real. The Dreamweaver does not deceive. They simply remind you that the dream you are already living is one of many options.",
+      "itemFeature": {
+        "name": "Dreamlace Binding",
+        "action": "Special",
+        "desc": "Apply to any worn item. Reality around you becomes faintly uncertain. Creatures that try to remember your exact location find their recollection slightly wrong."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Dream Veil",         "action": "Off-Action", "check": "Spirit",     "range": "Short",  "description": "Once per combat, impose disadvantage on a creature's next roll. They make a Spirit check (15+) to resist." },
+        { "step": 2,  "name": "Sleep Touch",        "action": "Action",     "check": "Spirit",     "range": "Reach",  "description": "Once per day outside of combat, touch a creature to put them to sleep. They make an Intellect check (15+) or fall unconscious for 1 hour. Damage wakes them." },
+        { "step": 3,  "name": "Mirage",             "action": "Off-Action", "check": "",           "range": "Self",   "description": "Once per combat, create a flickering double of yourself. The next attack targeting you has a 50% chance of hitting the double instead (roll d2)." },
+        { "step": 4,  "name": "Waking Nightmare",   "action": "Action",     "check": "Spirit",     "range": "Short",  "description": "Once per day, force a creature within short range to make a Spirit check (15+) or become Frightened for 1 round." },
+        { "step": 5,  "name": "Psychic Damage",     "action": "Passive",    "check": "",           "range": "",       "description": "Any damage you deal becomes Psychic damage in addition to its original type." },
+        { "step": 6,  "name": "Phase Blur",         "action": "Passive",    "check": "Stealth",    "range": "",       "description": "Gain advantage on Stealth checks as you partially phase between the waking world and the dream." },
+        { "step": 7,  "name": "Dream Anchor",       "action": "Action",     "check": "Spirit",     "range": "Short",  "description": "Once per combat, cause a creature to relive their last action - they repeat whatever they did on their previous turn, even if tactically meaningless." },
+        { "step": 8,  "name": "Veil of Unreality",  "action": "Passive",    "check": "",           "range": "",       "description": "+10 armor as reality bends around you. Ranged attacks have disadvantage against you." },
+        { "step": 9,  "name": "Mass Confusion",     "action": "Action",     "check": "Spirit",     "range": "Short",  "description": "Once per day, all enemies in short range make a Spirit check (15+) or cannot distinguish friend from foe for 1 round." },
+        { "step": 10, "name": "The Endless Dream",  "action": "Action",     "check": "Spirit",     "range": "Medium", "description": "Once per long rest, pull all creatures in medium range into a shared dreamscape for 1 minute. All enemies make a Spirit check (15+) or fall unconscious. Any damage wakes them." }
+      ]
+    },
+
+    {
+      "name": "Strider's Grace",
+      "slug": "striders_grace",
+      "type": "Armor",
+      "origin": "Chrono",
+      "color": "#186858",
+      "inspired": "Strider (Professional) / Pugilist (Tank)",
+      "desc": "Speed is not the same thing as haste. The Strider moves at exactly the right moment, the right speed, in the right direction - and arrives before the question of whether they should be there has been fully formed. Strider's Grace is not armor that protects you. It is armor that ensures you are never where the attack lands.",
+      "itemFeature": {
+        "name": "Grace Binding",
+        "action": "Special",
+        "desc": "Apply to any armor. The armor becomes lighter without losing protection. Your footsteps make no sound."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Fleet-Footed",       "action": "Passive",    "check": "",           "range": "",       "description": "+10 movement speed." },
+        { "step": 2,  "name": "Free Disengage",     "action": "Passive",    "check": "",           "range": "",       "description": "You can Disengage as a free action once per turn." },
+        { "step": 3,  "name": "Momentum",           "action": "Passive",    "check": "",           "range": "",       "description": "If you move at least 10ft before attacking, gain +2 damage on that attack." },
+        { "step": 4,  "name": "Blur",               "action": "Passive",    "check": "",           "range": "",       "description": "Ranged attacks against you have disadvantage." },
+        { "step": 5,  "name": "Light Plating",      "action": "Passive",    "check": "",           "range": "",       "description": "+5 armor (lighter reinforcement that doesn't slow you)." },
+        { "step": 6,  "name": "Slip Through",       "action": "Passive",    "check": "",           "range": "",       "description": "You can move through spaces occupied by other creatures freely." },
+        { "step": 7,  "name": "Ghost Step",         "action": "Passive",    "check": "",           "range": "",       "description": "Once per day, your movement this turn does not provoke attacks of opportunity." },
+        { "step": 8,  "name": "Acrobatic",          "action": "Passive",    "check": "",           "range": "",       "description": "You cannot be knocked prone while moving. Standing from prone costs 0 movement." },
+        { "step": 9,  "name": "Swift",              "action": "Passive",    "check": "",           "range": "",       "description": "+10 movement speed again (total +20) and +10 armor." },
+        { "step": 10, "name": "Untouchable",        "action": "Action",     "check": "",           "range": "",       "description": "Once per long rest, enter a state of perfect evasion for 1 minute. All attacks against you have disadvantage and you may move through any obstacle or creature freely." }
+      ]
+    },
+
+    {
+      "name": "Gunslinger's Compact",
+      "slug": "gunslingers_compact",
+      "type": "Weapon",
+      "origin": "Basic",
+      "color": "#604828",
+      "inspired": "Gunslinger (Professional)",
+      "desc": "A gunslinger does not have a philosophy. They have a compact - an understanding with their weapon that it will fire when needed, hit what they intend, and never be the reason a shot goes wrong. The rest is just practice.",
+      "itemFeature": {
+        "name": "Gunslinger's Compact",
+        "action": "Special",
+        "desc": "Apply to any ranged weapon or firearm. The weapon becomes an extension of instinct. You cannot be surprised while holding it."
+      },
+      "points": 10,
+      "steps": [
+        { "step": 1,  "name": "Quick Draw",         "action": "Passive",    "check": "",           "range": "",       "description": "You always act in the first initiative position if you choose. You cannot be surprised while wielding this weapon." },
+        { "step": 2,  "name": "Trick Shot",         "action": "Passive",    "check": "",           "range": "",       "description": "Once per combat, declare a condition before firing. On a hit, inflict that condition instead of normal damage." },
+        { "step": 3,  "name": "Fan the Hammer",     "action": "Action",     "check": "",           "range": "",       "description": "Once per combat, fire twice in one attack action at the same or different targets." },
+        { "step": 4,  "name": "Dead Eye",           "action": "Passive",    "check": "",           "range": "",       "description": "Ignore half cover. Ranged penalty from long range is reduced by half." },
+        { "step": 5,  "name": "Damage increase",    "action": "Passive",    "check": "",           "range": "",       "description": "Increase the weapon's base damage by +2." },
+        { "step": 6,  "name": "Light Trigger",      "action": "Passive",    "check": "",           "range": "",       "description": "Called shots with this weapon cost only −5 to hit instead of −10." },
+        { "step": 7,  "name": "Bullet Time",        "action": "Reaction",   "check": "Agility",    "range": "",       "description": "Once per day, when you are targeted by an attack, make one shot against the attacker before their attack resolves." },
+        { "step": 8,  "name": "Signature Shot",     "action": "Action",     "check": "",           "range": "",       "description": "Once per day, fire with such precision that the hit automatically deals maximum damage." },
+        { "step": 9,  "name": "Ignore Cover",       "action": "Passive",    "check": "",           "range": "",       "description": "Your shots ignore half cover entirely. Full cover still blocks line of sight, but gaps - cracks, edges, joints - are enough." },
+        { "step": 10, "name": "Last Round",         "action": "Passive",    "check": "",           "range": "",       "description": "Once per combat, fire the last round in the weapon (or declare this is the last shot). It automatically hits and deals triple damage. The weapon must be reloaded after." }
+      ]
+    }
+
+  ]
+}

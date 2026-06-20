@@ -1,4 +1,4 @@
-/* ===== Monster Page — Red Theme ===== */
+/* ===== Monster Page - Red Theme ===== */
 body[data-page-title="Monsters"] {
     /* replace teal slate with blood-red slate */
     --theme-1:  #2a0f0f;
@@ -62,7 +62,7 @@ body[data-page-title="Monsters"] .monster-card:hover {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   MONSTER CODEX — Codex View rows inside bookOutput
+   MONSTER CODEX - Codex View rows inside bookOutput
    ═══════════════════════════════════════════════════════════ */
 
 #bookOutput {

@@ -8,7 +8,7 @@ const PRICE_ROUND_TO = 10;     // round prices to nearest 10
 
 let DATA = null;
 
-// load data once — transform flat array into category-keyed object
+// load data once - transform flat array into category-keyed object
 fetch("data/medicine.json").then(r => r.json()).then(j => {
     DATA = {};
     for (const item of j) {

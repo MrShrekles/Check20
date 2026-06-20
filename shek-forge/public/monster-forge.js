@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   MONSTER FORGE — unified editor for monsterbase + monstermod + monsterbook
+   MONSTER FORGE - unified editor for monsterbase + monstermod + monsterbook
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── Domain values ─────────────────────────────────────────── */
@@ -42,7 +42,7 @@ async function init() {
         MF.book  = bk.data || [];
     } catch(e) {
         console.error('[MonsterForge] Load failed:', e);
-        toast('Failed to load data — is the Forge server running?', 'error');
+        toast('Failed to load data - is the Forge server running?', 'error');
         return;
     }
     populateFilters();
@@ -112,7 +112,7 @@ function populateComposeSelects() {
     const baseEl = document.getElementById('composeBase');
     const modEl  = document.getElementById('composeMod');
     if (!baseEl || !modEl) return;
-    baseEl.innerHTML = MF.bases.map((b,i)=>`<option value="${i}">${esc(b.name)}${b.baseType ? ' — '+esc(b.baseType) : ''}</option>`).join('');
+    baseEl.innerHTML = MF.bases.map((b,i)=>`<option value="${i}">${esc(b.name)}${b.baseType ? ' - '+esc(b.baseType) : ''}</option>`).join('');
     modEl.innerHTML  = MF.mods.map((m,i)=>`<option value="${i}">${esc(m.name)} (${esc(m.environment || m.origin || '?')})</option>`).join('');
 }
 
@@ -189,7 +189,7 @@ function renderEditorRow(entry, type, idx) {
     const head = `
     <div class="spell-row-head" onclick="toggleRow('${id}')">
         <span class="spell-row-arrow">${isOpen ? '▼' : '▶'}</span>
-        <span class="spell-row-name">${esc(entry.name || '—')}</span>
+        <span class="spell-row-name">${esc(entry.name || '-')}</span>
         <div class="spell-row-tags">${nameTags.join('')}</div>
         <span class="forge-type-pill forge-type-${type}">${type.toUpperCase()}</span>
     </div>`;
@@ -414,7 +414,7 @@ function renderAttackRow(entry, idx, key, type, isOverride) {
 
 /* ── Feature list helpers ──────────────────────────────────── */
 function renderFeaturesInner(features, idx, type) {
-    if (!features.length) return `<div class="fd-feat-empty">No features yet — click Add Feature</div>`;
+    if (!features.length) return `<div class="fd-feat-empty">No features yet - click Add Feature</div>`;
     return features.map((f, fi) => renderFeatureRow(f, fi, idx, type)).join('');
 }
 
@@ -484,7 +484,7 @@ function renderBookRow(entry, idx) {
     const head = `
     <div class="spell-row-head" onclick="toggleRow('${id}')">
         <span class="spell-row-arrow">${isOpen?'▼':'▶'}</span>
-        <span class="spell-row-name">${esc(entry.name||'—')}</span>
+        <span class="spell-row-name">${esc(entry.name||'-')}</span>
         <div class="spell-row-tags">
             ${entry._group  ? `<span class="mb-tag mb-tag-group">${esc(entry._group)}</span>` : ''}
             ${entry.origin  ? `<span class="mb-tag mb-tag-origin">${esc(entry.origin)}</span>` : ''}
@@ -712,7 +712,7 @@ function doCompose() {
             ${composed.lairType ? `<span>Lair: ${esc(composed.lairType)}</span>` : ''}
         </div>
         ${attacks.length ? `<div class="mf-preview-attacks">
-            ${attacks.map(([l,a])=>`<div><strong>${l}:</strong> ${esc(a.name)} — ${esc(a.damage||'')} ${esc(a.type||'')}</div>`).join('')}
+            ${attacks.map(([l,a])=>`<div><strong>${l}:</strong> ${esc(a.name)} - ${esc(a.damage||'')} ${esc(a.type||'')}</div>`).join('')}
         </div>` : ''}
         ${composed.features.length ? `<div class="mf-preview-features">
             ${composed.features.map(f=>`<div class="mf-preview-feature"><strong>${esc(f.name)}</strong>${f.type?` <em style="opacity:0.5;font-size:0.78em">(${esc(f.type)})</em>`:''}: ${esc(f.effect||'')}</div>`).join('')}
@@ -738,7 +738,7 @@ function composeMonster(base, mod) {
     for (const k of Object.keys(movement)) if (movement[k] <= 0) delete movement[k];
 
     const moveParts = Object.entries(movement).map(([k,v])=>`${cap(k)}: ${v} ft`);
-    const moveText  = moveParts.join(', ') || '—';
+    const moveText  = moveParts.join(', ') || '-';
 
     const melee  = mod.melee  !== undefined ? mod.melee  : (base.melee  || null);
     const ranged = mod.ranged !== undefined ? mod.ranged : (base.ranged || null);
@@ -805,7 +805,7 @@ async function addComposedToBook(baseIdx, modIdx) {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   DATA MUTATIONS — Base
+   DATA MUTATIONS - Base
    ══════════════════════════════════════════════════════════════ */
 function setBase(idx, path, val) {
     setNested(MF.bases[idx], path, val);
@@ -1042,14 +1042,14 @@ function cap(s) { return s ? String(s).charAt(0).toUpperCase() + String(s).slice
 
 function buildSelect(opts, current) {
     const cur = String(current ?? '');
-    return opts.map(o => `<option value="${esc(o)}"${o === cur ? ' selected' : ''}>${o || '—'}</option>`).join('');
+    return opts.map(o => `<option value="${esc(o)}"${o === cur ? ' selected' : ''}>${o || '-'}</option>`).join('');
 }
 
 function buildSelectInsensitive(opts, current) {
     const cur = String(current ?? '').toLowerCase().replace(/[\s_-]/g, '');
     return opts.map(o => {
         const norm = o.toLowerCase().replace(/[\s_-]/g, '');
-        return `<option value="${esc(o)}"${norm === cur ? ' selected' : ''}>${o || '—'}</option>`;
+        return `<option value="${esc(o)}"${norm === cur ? ' selected' : ''}>${o || '-'}</option>`;
     }).join('');
 }
 

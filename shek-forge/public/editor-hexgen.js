@@ -11,7 +11,7 @@ function hexGroupTotal(group, subgroup) {
 }
 
 function hexPct(weight, total) {
-    return total > 0 ? ((weight / total) * 100).toFixed(1) + '%' : '—';
+    return total > 0 ? ((weight / total) * 100).toFixed(1) + '%' : '-';
 }
 
 function updateHexField(idx, field, value) {

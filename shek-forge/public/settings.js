@@ -49,11 +49,11 @@ function applyForgeSettings(s) {
     document.body.classList.toggle('forge-compact', !!s.compact);
     syncToggle('compactToggle', !!s.compact);
 
-    // Print / B&W — strips all color to grayscale
+    // Print / B&W - strips all color to grayscale
     document.body.classList.toggle('forge-print', !!s.print);
     syncToggle('printToggle', !!s.print);
 
-    // Invert — flips dark UI to light
+    // Invert - flips dark UI to light
     document.body.classList.toggle('forge-invert', !!s.invert);
     syncToggle('invertToggle', !!s.invert);
 

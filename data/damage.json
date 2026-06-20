@@ -8,7 +8,7 @@
     },
     "Piercing": {
       "icon": "🎯", "category": "Physical",
-      "desc": "Sharp and precise — penetrates armor and targets vital points.",
+      "desc": "Sharp and precise - penetrates armor and targets vital points.",
       "entries": ["+1 Damage", "+2 Damage", "+3 Damage", "+4 Damage", "+5 Damage", "Pinned"]
     },
     "Slashing": {
@@ -28,17 +28,17 @@
     },
     "Fire": {
       "icon": "🔥", "category": "Elemental",
-      "desc": "Intense heat burns everything — fireballs, lava, infernos.",
+      "desc": "Intense heat burns everything - fireballs, lava, infernos.",
       "entries": ["+1 Damage", "+2 Damage", "+3 Damage", "Exposed", "Blind", "Coughing"]
     },
     "Fluid": {
       "icon": "💧", "category": "Elemental",
-      "desc": "Water, blood, oil — can overwhelm and suffocate.",
+      "desc": "Water, blood, oil - can overwhelm and suffocate.",
       "entries": ["Blind", "Coughing", "Deaf", "Broken", "Concussion", "Prone"]
     },
     "Ice": {
       "icon": "❄️", "category": "Elemental",
-      "desc": "Biting cold freezes and numbs — can encase enemies in frost.",
+      "desc": "Biting cold freezes and numbs - can encase enemies in frost.",
       "entries": ["+1 Damage", "+2 Damage", "Constrained", "Dislocation", "Slowed (End Next)", "Pinned"]
     },
     "Lightning": {
@@ -58,12 +58,12 @@
     },
     "Toxic": {
       "icon": "☣️", "category": "Elemental",
-      "desc": "Poison and radiation corrupt from within — slow and insidious.",
+      "desc": "Poison and radiation corrupt from within - slow and insidious.",
       "entries": ["+1 Damage", "+2 Damage", "Blind", "Confused", "Coughing", "Fear"]
     },
     "Nature": {
       "icon": "🌿", "category": "Realm",
-      "desc": "Primal forces — vines, insects, relentless wind and rain.",
+      "desc": "Primal forces - vines, insects, relentless wind and rain.",
       "entries": ["+1 Damage", "Constrained", "Confused", "Coughing", "Disease (Verdant Fever)", "Pinned"]
     },
     "Psychic": {
@@ -73,12 +73,12 @@
     },
     "Vozian": {
       "icon": "☠️", "category": "Realm",
-      "desc": "Born from decay and chaos — spreads rot and corrupting disorder.",
+      "desc": "Born from decay and chaos - spreads rot and corrupting disorder.",
       "entries": ["Siphon (Half Damage)", "Blind", "Coughing", "Disease (Infernal Skritches)", "Intangible (1 round)", "Double Damage"]
     },
     "Elemental": {
       "icon": "🔮", "category": "Elemental",
-      "desc": "Mixed elemental energy — roll twice on a random elemental table.",
+      "desc": "Mixed elemental energy - roll twice on a random elemental table.",
       "entries": ["+1 Damage", "+2 Damage", "Blind", "Exposed", "Confused", "Stunned"]
     },
     "Healing": {

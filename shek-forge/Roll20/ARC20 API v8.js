@@ -807,7 +807,7 @@ on('chat:message', function (msg) {
     if (data.behavior)    setAttr('behavior',    data.behavior);
     if (data.motivation)  setAttr('motivation',  data.motivation);
 
-    // Combat stats — derive Threat, actions, Mana from PL (sheet workers don't fire via API)
+    // Combat stats - derive Threat, actions, Mana from PL (sheet workers don't fire via API)
     const pl = data.pl ?? 1;
     const ThreatMax    = Math.floor(pl / 2);
     const numAttacks     = Math.max(1, Math.floor(pl / 4));
@@ -875,7 +875,7 @@ on('chat:message', function (msg) {
         }
     }
 
-    // Monster spells — one repeating row per intent level per spell
+    // Monster spells - one repeating row per intent level per spell
     if (Array.isArray(data.spells) && data.spells.length) {
         const reporderKey = '_reporder_repeating_mspells';
         const rowIds = [];

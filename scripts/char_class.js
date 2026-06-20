@@ -1,4 +1,4 @@
-// char_class.js — Path/Talent wired like class-loader, but to sheet targets.
+// char_class.js - Path/Talent wired like class-loader, but to sheet targets.
 
 document.addEventListener('DOMContentLoaded', async () => {
     const [baseClasses, optClasses] = await fetchClassData();

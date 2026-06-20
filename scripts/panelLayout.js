@@ -1,4 +1,4 @@
-// panelLayout.js — drag-to-reorder + width toggle for worldbuilding generator panels
+// panelLayout.js - drag-to-reorder + width toggle for worldbuilding generator panels
 // Operates on #gen-workspace > details.gen-panel children.
 
 (function () {
@@ -36,7 +36,7 @@
                 handle.addEventListener('mousedown', () => { dragEnabled = true; });
                 handle.addEventListener('touchstart', () => { dragEnabled = true; }, { passive: true });
 
-                // Size toggle button — inserted before the ::after chevron
+                // Size toggle button - inserted before the ::after chevron
                 const sizeBtn = document.createElement('button');
                 sizeBtn.className = 'panel-size-toggle';
                 sizeBtn.type = 'button';

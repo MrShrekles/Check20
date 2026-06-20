@@ -1850,7 +1850,7 @@ body.privacy-mode .prow-name {
     display: none !important;
 }
 
-/* ── DESKTOP LAYOUT — narrator-specific additions ─────────────────────
+/* ── DESKTOP LAYOUT - narrator-specific additions ─────────────────────
  * Core 2-column layout (nav+chat left, panels right) is inherited from
  * active-sheet.css since narrator.html also loads it.
  * This block handles narrator-only elements.
@@ -1875,7 +1875,7 @@ body.privacy-mode .prow-name {
 }
 
 /* ── 2-PANEL RIGHT SIDE ≥ 1440px ─────────────────────────────────────
- * Party pinned left, active panel on right — both visible at once.
+ * Party pinned left, active panel on right - both visible at once.
  * ─────────────────────────────────────────────────────────────────── */
 @media (min-width: 1440px) {
     .panel-stack:has(#panel-generators.is-active),

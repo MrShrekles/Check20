@@ -51,7 +51,7 @@ function initSidebar() {
     // Title
     if (sidebarTitle) sidebarTitle.textContent = config.title;
 
-    // Tab groups — show only the one for this mode
+    // Tab groups - show only the one for this mode
     document.querySelectorAll(".tab-group").forEach(g => { g.hidden = true; });
     const group = document.getElementById(config.tabGroup);
     if (group) group.hidden = false;
@@ -461,7 +461,7 @@ function initTablesRollers() {
     "Recipe book for different sodas, a portable soda dispenser",
     "Rope, grappling hook, and lockpicks in a compact pouch",
     "Ruined Spellbook, magical focus, and a pouch of magical reagents",
-    "Scale, a ledger, and a set of merchant's tools — Additional 50 gp",
+    "Scale, a ledger, and a set of merchant's tools - Additional 50 gp",
     "Several bottles of milk and a large canvas sack for carrying dairy products",
     "Thieves' Tools concealed in a hidden wrist compartment, a grappling hook, and lockpicks disguised as cufflinks",
   ];

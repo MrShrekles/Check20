@@ -3,7 +3,7 @@
     const $ = s => document.querySelector(s);
     const COLLATE = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
-    // Canonical realm buckets — maps any location string → canonical realm label
+    // Canonical realm buckets - maps any location string → canonical realm label
     const REALM_MAP = {
         'universal': 'Universal',
         'prime': 'Prime', 'all': 'Prime',
@@ -234,7 +234,7 @@
 
         art.insertAdjacentHTML('beforeend', `
     <div class="row meta">
-      Rank: ${g.rank ?? '—'} &bull; ${g.realms.join(', ') || '—'} &bull;
+      Rank: ${g.rank ?? '-'} &bull; ${g.realms.join(', ') || '-'} &bull;
       ${g.lineages.map(L => {
             const target = byName.get(String(L).toLowerCase());
             const href = target ? `#${target.slug}` : '';
@@ -323,7 +323,7 @@
             if (orphans.length) {
                 const orphanHead = document.createElement('div');
                 orphanHead.className = 'tree-orphan-head';
-                orphanHead.textContent = '— Other / Unknown Lineage —';
+                orphanHead.textContent = '- Other / Unknown Lineage -';
                 container.appendChild(orphanHead);
                 container.appendChild(buildTreeBranch(orphans, poolSlugs, placed, 0));
             }
@@ -350,7 +350,7 @@
             node.style.cssText = rankStyle(g.rank);
             node.innerHTML = `
         <a class="tree-name" href="#${g.slug}" data-goto="${g.slug}">${g.name}</a>
-        <span class="tree-rank">Rank ${g.rank ?? '—'}</span>
+        <span class="tree-rank">Rank ${g.rank ?? '-'}</span>
         ${g.origins.map(o => `<span class="origin-tag ${originKey(o)}">${o}</span>`).join('')}
       `;
             li.appendChild(node);

@@ -19,7 +19,7 @@
 
     <form id="character-sheet">
 
-        <!-- ==================== PAGE 1 — Combat Reference ==================== -->
+        <!-- ==================== PAGE 1 - Combat Reference ==================== -->
         <div class="char-page" id="page1">
             <div class="page-banner">
                 <span class="banner-sys">ARC20</span>
@@ -202,7 +202,7 @@
                     <div id="path-details" class="feature-list"></div>
                     <div id="talent-details" class="feature-list"></div>
 
-                    <!-- Resources — always needed at the table -->
+                    <!-- Resources - always needed at the table -->
                     <div class="section section--resources">
                         <table class="resources-table">
                             <thead>
@@ -215,13 +215,13 @@
                             <tbody>
                                 <tr>
                                     <td>Class Resource</td>
-                                    <td><input type="number" id="class-resource" name="class-resource" class="circle-input" placeholder="—" inputmode="numeric" min="0"></td>
-                                    <td><input type="number" id="class-resource_max" name="class-resource_max" class="circle-input" placeholder="—" inputmode="numeric" min="0"></td>
+                                    <td><input type="number" id="class-resource" name="class-resource" class="circle-input" placeholder="-" inputmode="numeric" min="0"></td>
+                                    <td><input type="number" id="class-resource_max" name="class-resource_max" class="circle-input" placeholder="-" inputmode="numeric" min="0"></td>
                                 </tr>
                                 <tr>
                                     <td>Mana</td>
-                                    <td><input type="number" id="spell-points" name="spell-points" class="circle-input" placeholder="—" inputmode="numeric" min="0"></td>
-                                    <td><input type="number" id="spell-points_max" name="spell-points_max" class="circle-input" placeholder="—" inputmode="numeric" min="0"></td>
+                                    <td><input type="number" id="spell-points" name="spell-points" class="circle-input" placeholder="-" inputmode="numeric" min="0"></td>
+                                    <td><input type="number" id="spell-points_max" name="spell-points_max" class="circle-input" placeholder="-" inputmode="numeric" min="0"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -239,36 +239,36 @@
                         <div class="conditions-checklist">
                             <div class="cond-col">
                                 <span class="cond-cat">Corpus</span>
-                                <label><input type="checkbox" name="cond-bleeding"> Bleeding <span class="cond-desc">— no healing</span></label>
-                                <label><input type="checkbox" name="cond-broken"> Broken <span class="cond-desc">— Phys Dis</span></label>
-                                <label><input type="checkbox" name="cond-concussion"> Concussion <span class="cond-desc">— Men+Cast Dis</span></label>
-                                <label><input type="checkbox" name="cond-coughing"> Coughing <span class="cond-desc">— Men Dis</span></label>
-                                <label><input type="checkbox" name="cond-dislocation"> Dislocation <span class="cond-desc">— Phys Dis</span></label>
-                                <label><input type="checkbox" name="cond-slowed"> Slowed <span class="cond-desc">— ½ Move</span></label>
-                                <label><input type="checkbox" name="cond-pinned"> Pinned <span class="cond-desc">— no move</span></label>
-                                <label><input type="checkbox" name="cond-prone"> Prone <span class="cond-desc">— Rng Dis</span></label>
+                                <label><input type="checkbox" name="cond-bleeding"> Bleeding <span class="cond-desc">- no healing</span></label>
+                                <label><input type="checkbox" name="cond-broken"> Broken <span class="cond-desc">- Phys Dis</span></label>
+                                <label><input type="checkbox" name="cond-concussion"> Concussion <span class="cond-desc">- Men+Cast Dis</span></label>
+                                <label><input type="checkbox" name="cond-coughing"> Coughing <span class="cond-desc">- Men Dis</span></label>
+                                <label><input type="checkbox" name="cond-dislocation"> Dislocation <span class="cond-desc">- Phys Dis</span></label>
+                                <label><input type="checkbox" name="cond-slowed"> Slowed <span class="cond-desc">- ½ Move</span></label>
+                                <label><input type="checkbox" name="cond-pinned"> Pinned <span class="cond-desc">- no move</span></label>
+                                <label><input type="checkbox" name="cond-prone"> Prone <span class="cond-desc">- Rng Dis</span></label>
                             </div>
                             <div class="cond-col">
                                 <span class="cond-cat">Cognition</span>
-                                <label><input type="checkbox" name="cond-blind"> Blind <span class="cond-desc">— Atk Dis</span></label>
-                                <label><input type="checkbox" name="cond-charmed"> Charmed <span class="cond-desc">— Men Dis</span></label>
-                                <label><input type="checkbox" name="cond-confused"> Confused <span class="cond-desc">— Men Dis</span></label>
-                                <label><input type="checkbox" name="cond-deaf"> Deaf <span class="cond-desc">— Cast Dis</span></label>
-                                <label><input type="checkbox" name="cond-fear"> Fear <span class="cond-desc">— Dash/Hide</span></label>
+                                <label><input type="checkbox" name="cond-blind"> Blind <span class="cond-desc">- Atk Dis</span></label>
+                                <label><input type="checkbox" name="cond-charmed"> Charmed <span class="cond-desc">- Men Dis</span></label>
+                                <label><input type="checkbox" name="cond-confused"> Confused <span class="cond-desc">- Men Dis</span></label>
+                                <label><input type="checkbox" name="cond-deaf"> Deaf <span class="cond-desc">- Cast Dis</span></label>
+                                <label><input type="checkbox" name="cond-fear"> Fear <span class="cond-desc">- Dash/Hide</span></label>
                             </div>
                             <div class="cond-col">
                                 <span class="cond-cat">Special</span>
-                                <label><input type="checkbox" name="cond-intangible"> Intangible <span class="cond-desc">— no Phys Atk</span></label>
-                                <label><input type="checkbox" name="cond-invisible"> Invisible <span class="cond-desc">— no OA</span></label>
-                                <label><input type="checkbox" name="cond-unconscious"> Unconscious <span class="cond-desc">— no Act</span></label>
+                                <label><input type="checkbox" name="cond-intangible"> Intangible <span class="cond-desc">- no Phys Atk</span></label>
+                                <label><input type="checkbox" name="cond-invisible"> Invisible <span class="cond-desc">- no OA</span></label>
+                                <label><input type="checkbox" name="cond-unconscious"> Unconscious <span class="cond-desc">- no Act</span></label>
                             </div>
                             <div class="cond-col">
                                 <span class="cond-cat">Major</span>
-                                <label><input type="checkbox" name="cond-stunned"> Stunned <span class="cond-desc">— All Dis</span></label>
-                                <label><input type="checkbox" name="cond-exhaustion"> Exhaustion <span class="cond-desc">— All Dis</span></label>
-                                <label><input type="checkbox" name="cond-constrained"> Constrained <span class="cond-desc">— no Atk</span></label>
-                                <label><input type="checkbox" name="cond-exposed"> Exposed <span class="cond-desc">— ×2 Dmg</span></label>
-                                <label><input type="checkbox" name="cond-injured"> Injured <span class="cond-desc">— 0 HP = Death</span></label>
+                                <label><input type="checkbox" name="cond-stunned"> Stunned <span class="cond-desc">- All Dis</span></label>
+                                <label><input type="checkbox" name="cond-exhaustion"> Exhaustion <span class="cond-desc">- All Dis</span></label>
+                                <label><input type="checkbox" name="cond-constrained"> Constrained <span class="cond-desc">- no Atk</span></label>
+                                <label><input type="checkbox" name="cond-exposed"> Exposed <span class="cond-desc">- ×2 Dmg</span></label>
+                                <label><input type="checkbox" name="cond-injured"> Injured <span class="cond-desc">- 0 HP = Death</span></label>
                             </div>
                         </div>
                     </div>
@@ -286,7 +286,7 @@
 
         </div>
 
-        <!-- ==================== PAGE 2 — Setup & Inventory ==================== -->
+        <!-- ==================== PAGE 2 - Setup & Inventory ==================== -->
         <div class="char-page" id="page2">
             <div class="page-banner">
                 <span class="banner-sys">ARC20</span>
@@ -365,7 +365,7 @@
                     </div>
                 </div>
 
-                <!-- RIGHT: gear — items section stretches to fill column height -->
+                <!-- RIGHT: gear - items section stretches to fill column height -->
                 <div class="column">
                     <h2>Inventory</h2>
 
@@ -405,7 +405,7 @@
                         </tbody>
                     </table>
 
-                    <!-- Items — flex-fills remaining column space -->
+                    <!-- Items - flex-fills remaining column space -->
                     <div class="items-section">
                         <h4>Items</h4>
                         <table class="gear-table">
@@ -445,7 +445,7 @@
 
             </div>
 
-            <!-- NPC TRACKER — full-width below both columns -->
+            <!-- NPC TRACKER - full-width below both columns -->
             <div class="section section--npcs">
                 <h2>NPC Tracker</h2>
                 <table class="npc-table">
@@ -480,7 +480,7 @@
 
         </div>
 
-        <!-- ==================== PAGE 3 — Progression ==================== -->
+        <!-- ==================== PAGE 3 - Progression ==================== -->
         <div class="char-page" id="page-progression">
             <div class="page-banner">
                 <span class="banner-sys">ARC20</span>
@@ -967,9 +967,9 @@
                         <li><strong>5–9:</strong> Fail: Provoke</li>
                         <li><strong>10–14:</strong> Fail: Provoke @Dis</li>
                         <li><strong>15–19:</strong> Success</li>
-                        <li><strong>20–24:</strong> Success + — 1 roll</li>
-                        <li><strong>25–29:</strong> Success ++ — 2 rolls</li>
-                        <li><strong>30–34:</strong> Success +++ — 3 rolls</li>
+                        <li><strong>20–24:</strong> Success + - 1 roll</li>
+                        <li><strong>25–29:</strong> Success ++ - 2 rolls</li>
+                        <li><strong>30–34:</strong> Success +++ - 3 rolls</li>
                     </ul>
                 </div>
 

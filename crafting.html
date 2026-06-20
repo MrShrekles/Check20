@@ -4,548 +4,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crafting</title>
+    <title>Crafting | Armored Noir - Check20</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/spells.css">
+    <link rel="stylesheet" href="styles/crafting.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
     <script src="scripts/main.js" defer></script>
+    <script src="scripts/codex-ui.js"></script>
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/crafting.js" defer></script>
 </head>
 
-<body data-page-title="Crafting"> 
-        <div id="header-placeholder"></div>
+<body data-page-title="Crafting">
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
 
     <main>
-        <!-- Crafting Section -->
-        <section id="crafting">
-            <h2>Weapon & Armor Crafting</h2>
-            <p>In the world of Shek, crafting armor and weapons requires a Forge Workbench, materials (purchased
-                or
-                scavenged), and skilled hands. Existing mundane items can also be repurposed into new items,
-                such as
-                converting heavy armor into medium armor or reshaping medium armor into a weapon.</p>
-
-            <h3>Forge Workbench</h3>
-            <p>A Forge Workbench is essential for crafting and includes a main station where the crafter makes
-                their
-                Crafting check. Up to three allies can assist the main crafter using different workstations,
-                each
-                contributing with their skills.</p>
-            <div class="flex-container">
-                <div class="flex-item">
-                    <h4>🔥 Forge</h4>
-                    <p>Requires a <strong>Strength</strong> or <strong>Survival</strong> check.</p>
-                </div>
-                <div class="flex-item">
-                    <h4>⚒️ Anvil</h4>
-                    <p>Requires a <strong>Strength</strong> or <strong>Agility</strong> check.</p>
-                </div>
-                <div class="flex-item">
-                    <h4>🧵 Tailoring Station</h4>
-                    <p>For adding intricate details, using an <strong>Intellect</strong> or
-                        <strong>Influence</strong> check.
-                    </p>
+        <!-- ── Toolbar ── -->
+        <div class="craft-toolbar">
+            <button id="craft-expand-all">Expand all</button>
+            <button id="craft-collapse-all">Collapse all</button>
+            <div class="codex-size-wrap">
+                <span>Size</span>
+                <div class="codex-size-btns" id="codex-size-btns">
+                    <button class="codex-size-btn" data-size="small">S</button>
+                    <button class="codex-size-btn active" data-size="medium">M</button>
+                    <button class="codex-size-btn" data-size="large">L</button>
                 </div>
             </div>
+        </div>
 
-            <h3>Crafting Process</h3>
-            <p>Crafting armor or weapons is a collaborative process requiring time, effort, and teamwork:</p>
-            <ul>
-                <li><strong>Crafting Time:</strong> A long downtime or long rest in a safe place with a Forge
-                    Workbench.</li>
-                <li><strong>Making Checks:</strong> The main crafter and allies at workstations each make their
-                    respective checks. The total number of successes determines the item’s quality.</li>
-            </ul>
+        <div class="spell-grid craft-grid" id="craft-sections">
 
-            <div class="two-column">
-                <div class="column">
-                    <h4>Determining Quality by Successes</h4>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Quality</th>
-                                <th>Successes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Poor Quality</td>
-                                <td>3 or fewer</td>
-                            </tr>
-                            <tr>
-                                <td>Good Quality</td>
-                                <td>4 to 6</td>
-                            </tr>
-                            <tr>
-                                <td>Great Quality</td>
-                                <td>7 to 10</td>
-                            </tr>
-                            <tr>
-                                <td>Legendary Quality</td>
-                                <td>10 or more (requires a Legendary Workbench)</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- ══ WEAPON & ARMOR CRAFTING ══ -->
+            <div class="spell-row craft-section open" style="--row-accent:#a06020">
+                <div class="spell-row-head craft-section-head">
+                    <span class="spell-row-arrow">▼</span>
+                    <span class="spell-row-name">Weapon &amp; Armor Crafting</span>
+                    <span class="craft-tag">Forge Workbench</span>
                 </div>
-                <div class="column">
-                    <h4>Item Quality Effects</h4>
-                    <p>The total successes achieved during crafting directly determine the item's bonuses, value, and
-                        glyph
-                        slots for enchantments.</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Quality</th>
-                                <th>Weapon Bonus</th>
-                                <th>Armor Bonus</th>
-                                <th>Value (gp)</th>
-                                <th>Glyph Slots</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Poor Quality</td>
-                                <td>-5</td>
-                                <td>-5</td>
-                                <td>0</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Good Quality</td>
-                                <td>+1</td>
-                                <td>+5</td>
-                                <td>35</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>Great Quality</td>
-                                <td>+3</td>
-                                <td>+10</td>
-                                <td>1,200</td>
-                                <td>2</td>
-                            </tr>
-                            <tr>
-                                <td>Legendary Quality</td>
-                                <td>+9</td>
-                                <td>+35</td>
-                                <td>60,000</td>
-                                <td>8</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                <div class="spell-row-detail craft-section-body">
+                    <p>Crafting armor and weapons requires a Forge Workbench, materials (purchased or scavenged), and skilled hands. Existing mundane items can also be repurposed - converting heavy armor into medium armor or reshaping medium armor into a weapon.</p>
 
-        </section>
-        <!-- Firearms & Ammunition Section -->
-        <section id="firearms-ammunition">
-            <h2>Firearms & Ammunition</h2>
-            <p>Crafting firearms and ammunition requires a Precision Workbench and specialized materials
-                suited
-                for ranged weaponry. Similar to crafting armor and melee weapons, this process involves
-                workstations and various skill checks, allowing multiple party members to assist in creating
-                reliable and high-quality firearms or ammunition.</p>
-
-            <h3>Precision Workbench</h3>
-            <p>The Precision Workbench is essential for crafting firearms and ammunition. It includes a main
-                station for the crafter to make their Crafting check, with up to three allies assisting at
-                other
-                specialized workstations. Each station focuses on different aspects of firearm and
-                ammunition
-                crafting.</p>
-
-            <div class="flex-container">
-                <div class="flex-item">
-                    <h4>🔧 Assembly Station</h4>
-                    <p>For assembling firearm parts; requires a <strong>Strength</strong> or
-                        <strong>Crafting</strong> check.
-                    </p>
-                </div>
-                <div class="flex-item">
-                    <h4>🎯 Calibration Station</h4>
-                    <p>For fine-tuning accuracy and stability; requires an <strong>Intellect</strong> or
-                        <strong>Observation</strong> check.
-                    </p>
-                </div>
-                <div class="flex-item">
-                    <h4>💥 Munitions Station</h4>
-                    <p>For crafting ammunition or cartridges; requires a <strong>Luck</strong> or
-                        <strong>Intellect</strong> check.
-                    </p>
-                </div>
-            </div>
-
-            <h3>Crafting Process</h3>
-            <ul>
-                <li><strong>Crafting Time:</strong> Crafting firearms requires downtime or a long rest in a
-                    safe
-                    place with access to a Precision Workbench.</li>
-                <li><strong>Making Checks:</strong> The main crafter and assisting allies each make their
-                    respective checks. The total number of successes across all checks determines the
-                    quality of
-                    the crafted item or the amount of ammunition produced.</li>
-            </ul>
-
-            <div class="two-column">
-                <div class="column">
-                    <h4>Determining Quality or Ammunition Amounts by Successes</h4>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Quality</th>
-                                <th>Successes</th>
-                                <th>Ammunition Produced</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Poor Quality</td>
-                                <td>3 or fewer</td>
-                                <td>5 ammunition</td>
-                            </tr>
-                            <tr>
-                                <td>Good Quality</td>
-                                <td>4 to 6</td>
-                                <td>10 ammunition</td>
-                            </tr>
-                            <tr>
-                                <td>Great Quality</td>
-                                <td>7 to 10</td>
-                                <td>20 ammunition</td>
-                            </tr>
-                            <tr>
-                                <td>Legendary Quality</td>
-                                <td>10 or more (requires Legendary Precision Workbench)</td>
-                                <td>30 ammunition</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="column">
-                    <h4>Firearm Quality Effects</h4>
-                    <p>The item's quality directly affects weapon bonuses, durability, and special features.</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Quality</th>
-                                <th>Check Bonus</th>
-                                <th>Damage Bonus</th>
-                                <th>Value (gp)</th>
-                                <th>Glyphs</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Poor Quality</td>
-                                <td>-5</td>
-                                <td>-5</td>
-                                <td>0</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Good Quality</td>
-                                <td>+1</td>
-                                <td>+5</td>
-                                <td>35</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>Great Quality</td>
-                                <td>+3</td>
-                                <td>+10</td>
-                                <td>1,200</td>
-                                <td>2</td>
-                            </tr>
-                            <tr>
-                                <td>Legendary Quality</td>
-                                <td>+9</td>
-                                <td>+35</td>
-                                <td>60,000</td>
-                                <td>8</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- Unique Workbenches Section -->
-        <section id="unique-workbenches">
-            <h2>Unique Workbenches</h2>
-            <p>Each unique workbench provides specialized features for crafting weapons and armor, enhancing
-                items with unique qualities that reflect their origin and theme.</p>
-
-            <div class="flex-container">
-                <div class="flex-item">
-                    <h3>🌘 Eclipse Workbench</h3>
-                    <p>Items created on the Eclipse Workbench channel dark energy, adding fearsome and
-                        stealthy
-                        qualities.</p>
-                    <ul>
-                        <li><strong>Necrotic Edge:</strong> Deals +1d4 necrotic damage on a hit.</li>
-                        <li><strong>Soul Siphon:</strong> Restores 1 HP for every 5 damage dealt to a living
-                            target.</li>
-                        <li><strong>Shadow Shroud:</strong> Grants +2 to Stealth checks while in darkness or
-                            dim
-                            light.</li>
-                        <li><strong>Wraith’s Aura:</strong> once per long rest, create a fear aura around
-                            the
-                            wearer
-                            for 1 minute, causing enemies within 10 feet to make a Spirit check or be
-                            frightened.</li>
-                    </ul>
-                </div>
-                <div class="flex-item">
-                    <h3>🍃 Fey Workbench</h3>
-                    <p>Items from the Fey Workbench are imbued with the power of nature and the trickery of
-                        the
-                        fey, providing agility and life-based enhancements.</p>
-                    <ul>
-                        <li><strong>Thorned Strike:</strong> Adds +1d4 poison damage on a hit.</li>
-                        <li><strong>Blooming Edge:</strong> On a critical hit, allies within 5 feet heal 1d4
-                            HP
-                            as flowers bloom magically.</li>
-                        <li><strong>Vine’s Embrace:</strong> Wearer gains +2 to grapple checks as magical
-                            vines
-                            aid in restraining opponents.</li>
-                        <li><strong>Barkskin:</strong> Reduces physical damage by 2 points, mimicking the
-                            resilience of tree bark.</li>
-                    </ul>
-                </div>
-                <div class="flex-item">
-                    <h3>💤 Dreamsea Workbench</h3>
-                    <p>The Dreamsea Workbench bestows items with ethereal, illusion-based qualities,
-                        granting
-                        abilities that confuse or mislead.</p>
-                    <ul>
-                        <li><strong>Memory Strike:</strong> Hit targets must make a Spirit check or suffer
-                            short-term amnesia, forgetting the last 10 seconds.</li>
-                        <li><strong>Nightmare Infusion:</strong> Deals +1d4 psychic damage on a hit.</li>
-                        <li><strong>Veil of Dreams:</strong> Attackers have disadvantage on attack rolls if
-                            they
-                            fail an Observation check.</li>
-                        <li><strong>Enigmatic Aura:</strong> Grants +2 to saves against charm effects, as a
-                            dreamy aura protects the wearer’s mind.</li>
-                    </ul>
-                </div>
-                <div class="flex-item">
-                    <h3>🔥 Ordealis Workbench</h3>
-                    <p>The Ordealis Workbench infuses items with infernal fire and aggression, adding
-                        destructive and intimidating effects.</p>
-                    <ul>
-                        <li><strong>Infernal Flame:</strong> Deals +1d6 fire damage on a hit.</li>
-                        <li><strong>Hellbound Edge:</strong> When below half health, the weapon gains +2 to
-                            hit
-                            as the user’s fury enhances their aim.</li>
-                        <li><strong>Molten Core:</strong> Absorbs one fire-based attack per encounter,
-                            negating
-                            its damage.</li>
-                        <li><strong>Aura of Fear:</strong> Enemies within 5 feet must make a Spirit check or
-                            be
-                            frightened for 1 round.</li>
-                    </ul>
-                </div>
-                <div class="flex-item">
-                    <h3>🌟 Holy Workbench</h3>
-                    <p>Items crafted on the Holy Workbench are blessed with radiant power and protective
-                        qualities, enhancing the wearer’s ability to resist dark forces.</p>
-                    <ul>
-                        <li><strong>Radiant Smite:</strong> Deals +1d6 radiant damage against undead and
-                            fiends.
-                        </li>
-                        <li><strong>Blessed Blade:</strong> Each hit has a 10% chance to remove a minor
-                            curse on
-                            the target.</li>
-                        <li><strong>Sanctuary Aura:</strong> Enemies must succeed on a Spirit check to
-                            attack
-                            the wearer, or they feel compelled to target other creatures.</li>
-                        <li><strong>Healing Touch:</strong> once per long rest, heal 1d6 HP by touching a
-                            holy
-                            symbol
-                            on the armor.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- glyphs -->
-        <details>
-            <summary>
-                Glyphs
-            </summary>
-            <!-- Glyphs Section -->
-            <section id="glyphs">
-                <h2>Glyphs</h2>
-                <p>Glyphs are powerful symbols infused with magic, capable of granting weapons, armor, and even
-                    characters with remarkable abilities and enhancements. Through glyphs, a simple piece of
-                    gear
-                    can become a legendary artifact, and a character may access abilities that significantly
-                    alter
-                    their role and capabilities within the game.</p>
-
-                <h3>Crafting and Application</h3>
-                <ul>
-                    <li><strong>Implementation:</strong> Crafting and applying glyphs require specific materials
-                        and
-                        a suitable crafting station, such as an enchanting table or magical lab. The rarity of
-                        materials and quality of the station can affect the outcome.</li>
-                    <li><strong>Crafting Process:</strong> Crafters must perform Crafting, Intellect, Spirit, or
-                        other related checks. The complexity of the glyph determines the number of successes
-                        required.</li>
-                    <li><strong>Application Process:</strong> Applying a glyph involves a similar check to
-                        integrate
-                        the glyph's magical essence fully. Each step takes one hour, with more complex glyphs
-                        requiring additional time.</li>
-                    <li><strong>Risk of Failure:</strong> Failed crafting or application checks can damage or
-                        destroy the item, with consequences scaling based on the severity of the failure.</li>
-                </ul>
-
-                <h3>Glyph Tiers</h3>
-
-                <div class="flex-container">
-                    <div class="flex-item">
-                        <h4>✨ Basic Glyphs</h4>
-                        <p>Enhance damage, armor, or checks, ideal for incremental improvements to gear.</p>
-                        <p><strong>Requirements:</strong> 1 check to craft, 1 to apply; each step takes an hour
-                            and
-                            can be done with minimal equipment.</p>
-                        <ul>
-                            <li><strong>Glyph of Fortification:</strong> Increases armor by +2.</li>
-                            <li><strong>Glyph of Sharpness:</strong> Adds +1 to damage rolls on bladed weapons.
-                            </li>
-                        </ul>
+                    <h3>Forge Workbench</h3>
+                    <p>A Forge Workbench includes a main station where the crafter makes their Crafting check. Up to three allies can assist using different workstations.</p>
+                    <div class="craft-stations">
+                        <div class="craft-station">
+                            <span class="craft-station-icon">🔥</span>
+                            <strong>Forge</strong>
+                            <span>Strength or Survival check</span>
+                        </div>
+                        <div class="craft-station">
+                            <span class="craft-station-icon">⚒️</span>
+                            <strong>Anvil</strong>
+                            <span>Strength or Agility check</span>
+                        </div>
+                        <div class="craft-station">
+                            <span class="craft-station-icon">🧵</span>
+                            <strong>Tailoring Station</strong>
+                            <span>Intellect or Influence check</span>
+                        </div>
                     </div>
-                    <div class="flex-item">
-                        <h4>⚔️ Advanced Glyphs</h4>
-                        <p>Introduce new mechanics like special attacks, defensive maneuvers, or unique effects.
-                        </p>
-                        <p><strong>Requirements:</strong> 2 checks to craft and apply; requires a proper
-                            workstation
-                            and additional materials or assistance.</p>
-                        <ul>
-                            <li><strong>Glyph of Rebounding:</strong> Reflects half of damage back to the
-                                attacker
-                                as an off-action (reaction).</li>
-                            <li><strong>Glyph of Swiftness:</strong> Increases movement speed by +20ft when
-                                applied
-                                to footwear.</li>
-                            <li><strong>Glyph of Silence:</strong> Silences weapons or armor, ideal for stealthy
-                                characters.</li>
-                        </ul>
-                    </div>
-                    <div class="flex-item">
-                        <h4>🌟 Legendary Glyphs</h4>
-                        <p>Provide progression systems and grant game-changing abilities or major character
-                            transformations.</p>
-                        <p><strong>Requirements:</strong> 3 checks to craft and apply; requires a powerful
-                            workstation and a team effort.</p>
-                        <ul>
-                            <li><strong>Glyph of Transformation:</strong> Allows the character to shift into a
-                                specific creature, gaining its abilities temporarily.</li>
-                            <li><strong>Glyph of Time Manipulation:</strong> once per long rest, take 2 actions
-                                on
-                                your
-                                turn.</li>
-                            <li><strong>Glyph of Elemental Mastery:</strong> Grants control over a specific
-                                element
-                                for strategic advantages.</li>
-                        </ul>
+
+                    <h3>Crafting Process</h3>
+                    <ul>
+                        <li><strong>Crafting Time:</strong> A long downtime or long rest in a safe place with a Forge Workbench.</li>
+                        <li><strong>Making Checks:</strong> The main crafter and allies each make their respective checks. The total successes determine the item's quality.</li>
+                    </ul>
+
+                    <div class="two-column">
+                        <div class="column">
+                            <h4>Quality by Successes</h4>
+                            <table>
+                                <thead><tr><th>Quality</th><th>Successes</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Poor Quality</td><td>3 or fewer</td></tr>
+                                    <tr><td>Good Quality</td><td>4–6</td></tr>
+                                    <tr><td>Great Quality</td><td>7–10</td></tr>
+                                    <tr><td>Legendary Quality</td><td>10+ (Legendary Workbench)</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="column">
+                            <h4>Item Quality Effects</h4>
+                            <table>
+                                <thead><tr><th>Quality</th><th>Weapon</th><th>Armor</th><th>Value</th><th>Glyphs</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Poor</td><td>−5</td><td>−5</td><td>0gp</td><td>0</td></tr>
+                                    <tr><td>Good</td><td>+1</td><td>+5</td><td>35gp</td><td>1</td></tr>
+                                    <tr><td>Great</td><td>+3</td><td>+10</td><td>1,200gp</td><td>2</td></tr>
+                                    <tr><td>Legendary</td><td>+9</td><td>+35</td><td>60,000gp</td><td>8</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <h3>Glyphcrafting Failure</h3>
-                <p>When a failure occurs, the magical energies manifest as a complication. The crafter must
-                    resolve
-                    the issue by rolling on the Complication Table and taking specific actions to mitigate the
-                    effects.</p>
+            <!-- ══ FIREARMS & AMMUNITION ══ -->
+            <div class="spell-row craft-section open" style="--row-accent:#405060">
+                <div class="spell-row-head craft-section-head">
+                    <span class="spell-row-arrow">▼</span>
+                    <span class="spell-row-name">Firearms &amp; Ammunition</span>
+                    <span class="craft-tag">Precision Workbench</span>
+                </div>
+                <div class="spell-row-detail craft-section-body">
+                    <p>Crafting firearms and ammunition requires a Precision Workbench and specialized materials. Similar to armor crafting, this involves workstations and various skill checks.</p>
 
-                <h4>1d10 - Complication Table</h4>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Roll</th>
-                            <th>Complication</th>
-                            <th>Resolution</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><strong>Magical Surge:</strong> Energy overflows, risking damage to nearby
-                                magical
-                                items.</td>
-                            <td>Perform a quick Intellect check to contain the surge.</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><strong>Elemental Anomaly:</strong> An elemental creature spawns from mishandled
-                                energies.</td>
-                            <td>Combat or negotiation may be required to dispel it.</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td><strong>Arcane Feedback:</strong> Crafter suffers a backlash of minor health or
-                                mana
-                                loss.</td>
-                            <td>Perform a quick Spirit check to shield yourself.</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td><strong>Material Corruption:</strong> Materials degrade, potentially ruining
-                                them.
-                            </td>
-                            <td>A Crafting check can salvage some or all materials.</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td><strong>Unstable Rift:</strong> A small portal opens, drawing in nearby objects.
-                            </td>
-                            <td>Close it with a combined Intellect and Spirit effort.</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td><strong>Glyph Melding Error:</strong> Glyphs merge unpredictably, altering
-                                effects.
-                            </td>
-                            <td>Solve a puzzle representing the glyph's structure to correct the melding.</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td><strong>Energetic Overload:</strong> The workstation overloads, risking an
-                                explosion.</td>
-                            <td>Distribute the energy with Strength and Agility checks.</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td><strong>Phantom Echoes:</strong> Ghostly entities mimic party members, causing
-                                confusion.</td>
-                            <td>Use Insight and Perception checks to identify the real from the phantom.</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td><strong>Temporal Distortion:</strong> Time slows or speeds up in the crafting
-                                area.
-                            </td>
-                            <td>Navigate anomalies to stabilize the glyph.</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td><strong>Magical Infestation:</strong> Mana-eating insects swarm, depleting
-                                magical
-                                resources.</td>
-                            <td>Repel or capture the insects to complete the glyph.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
+                    <h3>Precision Workbench</h3>
+                    <div class="craft-stations">
+                        <div class="craft-station">
+                            <span class="craft-station-icon">🔧</span>
+                            <strong>Assembly Station</strong>
+                            <span>Strength or Crafting check</span>
+                        </div>
+                        <div class="craft-station">
+                            <span class="craft-station-icon">🎯</span>
+                            <strong>Calibration Station</strong>
+                            <span>Intellect or Observation check</span>
+                        </div>
+                        <div class="craft-station">
+                            <span class="craft-station-icon">💥</span>
+                            <strong>Munitions Station</strong>
+                            <span>Luck or Intellect check</span>
+                        </div>
+                    </div>
 
-        </details>
+                    <h3>Crafting Process</h3>
+                    <ul>
+                        <li><strong>Crafting Time:</strong> Requires downtime or a long rest with access to a Precision Workbench.</li>
+                        <li><strong>Making Checks:</strong> Total successes determine the item quality or amount of ammunition produced.</li>
+                    </ul>
 
+                    <div class="two-column">
+                        <div class="column">
+                            <h4>Quality or Ammo by Successes</h4>
+                            <table>
+                                <thead><tr><th>Quality</th><th>Successes</th><th>Ammo</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Poor</td><td>3 or fewer</td><td>5</td></tr>
+                                    <tr><td>Good</td><td>4–6</td><td>10</td></tr>
+                                    <tr><td>Great</td><td>7–10</td><td>20</td></tr>
+                                    <tr><td>Legendary</td><td>10+ (Legendary Bench)</td><td>30</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="column">
+                            <h4>Firearm Quality Effects</h4>
+                            <table>
+                                <thead><tr><th>Quality</th><th>Check</th><th>Damage</th><th>Value</th><th>Glyphs</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Poor</td><td>−5</td><td>−5</td><td>0gp</td><td>0</td></tr>
+                                    <tr><td>Good</td><td>+1</td><td>+5</td><td>35gp</td><td>1</td></tr>
+                                    <tr><td>Great</td><td>+3</td><td>+10</td><td>1,200gp</td><td>2</td></tr>
+                                    <tr><td>Legendary</td><td>+9</td><td>+35</td><td>60,000gp</td><td>8</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══ UNIQUE WORKBENCHES - group header ══ -->
+            <div class="spell-group-header craft-group-header">Unique Workbenches</div>
+
+            <!-- Eclipse Workbench -->
+            <div class="spell-row craft-workbench open" style="--row-accent:#3a1a5a">
+                <div class="spell-row-head craft-section-head">
+                    <span class="spell-row-arrow">▼</span>
+                    <span class="craft-wb-icon">🌘</span>
+                    <span class="spell-row-name">Eclipse Workbench</span>
+                    <span class="craft-tag">Shadow · Necrotic</span>
+                </div>
+                <div class="spell-row-detail craft-section-body">
+                    <p>Items created on the Eclipse Workbench channel dark energy, adding fearsome and stealthy qualities.</p>
+                    <div class="craft-features">
+                        <div class="craft-feature"><strong>Necrotic Edge</strong><span>Deals +1d4 necrotic damage on a hit.</span></div>
+                        <div class="craft-feature"><strong>Soul Siphon</strong><span>Restores 1 HP for every 5 damage dealt to a living target.</span></div>
+                        <div class="craft-feature"><strong>Shadow Shroud</strong><span>Grants +2 to Stealth checks while in darkness or dim light.</span></div>
+                        <div class="craft-feature"><strong>Wraith's Aura</strong><span>Once per long rest, create a fear aura for 1 minute. Enemies within 10ft make a Spirit check or become frightened.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fey Workbench -->
+            <div class="spell-row craft-workbench open" style="--row-accent:#2a5a20">
+                <div class="spell-row-head craft-section-head">
+                    <span class="spell-row-arrow">▼</span>
+                    <span class="craft-wb-icon">🍃</span>
+                    <span class="spell-row-name">Fey Workbench</span>
+                    <span class="craft-tag">Nature · Life</span>
+                </div>
+                <div class="spell-row-detail craft-section-body">
+                    <p>Items from the Fey Workbench are imbued with the power of nature and the trickery of the fey, providing agility and life-based enhancements.</p>
+                    <div class="craft-features">
+                        <div class="craft-feature"><strong>Thorned Strike</strong><span>Adds +1d4 poison damage on a hit.</span></div>
+                        <div class="craft-feature"><strong>Blooming Edge</strong><span>On a critical hit, allies within 5ft heal 1d4 HP as flowers bloom magically.</span></div>
+                        <div class="craft-feature"><strong>Vine's Embrace</strong><span>Wearer gains +2 to grapple checks as magical vines aid in restraining opponents.</span></div>
+                        <div class="craft-feature"><strong>Barkskin</strong><span>Reduces physical damage by 2 points, mimicking the resilience of tree bark.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dreamsea Workbench -->
+            <div class="spell-row craft-workbench open" style="--row-accent:#1a3070">
+                <div class="spell-row-head craft-section-head">
+                    <span class="spell-row-arrow">▼</span>
+                    <span class="craft-wb-icon">💤</span>
+                    <span class="spell-row-name">Dreamsea Workbench</span>
+                    <span class="craft-tag">Illusion · Psychic</span>
+                </div>
+                <div class="spell-row-detail craft-section-body">
+                    <p>The Dreamsea Workbench bestows items with ethereal, illusion-based qualities, granting abilities that confuse or mislead.</p>
+                    <div class="craft-features">
+                        <div class="craft-feature"><strong>Memory Strike</strong><span>Hit targets must make a Spirit check or suffer short-term amnesia, forgetting the last 10 seconds.</span></div>
+                        <div class="craft-feature"><strong>Nightmare Infusion</strong><span>Deals +1d4 psychic damage on a hit.</span></div>
+                        <div class="craft-feature"><strong>Veil of Dreams</strong><span>Attackers have disadvantage on attack rolls if they fail an Observation check.</span></div>
+                        <div class="craft-feature"><strong>Enigmatic Aura</strong><span>Grants +2 to saves against charm effects, as a dreamy aura protects the wearer's mind.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ordealis Workbench -->
+            <div class="spell-row craft-workbench open" style="--row-accent:#8c2010">
+                <div class="spell-row-head craft-section-head">
+                    <span class="spell-row-arrow">▼</span>
+                    <span class="craft-wb-icon">🔥</span>
+                    <span class="spell-row-name">Ordealis Workbench</span>
+                    <span class="craft-tag">Fire · Infernal</span>
+                </div>
+                <div class="spell-row-detail craft-section-body">
+                    <p>The Ordealis Workbench infuses items with infernal fire and aggression, adding destructive and intimidating effects.</p>
+                    <div class="craft-features">
+                        <div class="craft-feature"><strong>Infernal Flame</strong><span>Deals +1d6 fire damage on a hit.</span></div>
+                        <div class="craft-feature"><strong>Hellbound Edge</strong><span>When below half health, the weapon gains +2 to hit as the user's fury enhances their aim.</span></div>
+                        <div class="craft-feature"><strong>Molten Core</strong><span>Absorbs one fire-based attack per encounter, negating its damage.</span></div>
+                        <div class="craft-feature"><strong>Aura of Fear</strong><span>Enemies within 5ft must make a Spirit check or be frightened for 1 round.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Holy Workbench -->
+            <div class="spell-row craft-workbench open" style="--row-accent:#906010">
+                <div class="spell-row-head craft-section-head">
+                    <span class="spell-row-arrow">▼</span>
+                    <span class="craft-wb-icon">🌟</span>
+                    <span class="spell-row-name">Holy Workbench</span>
+                    <span class="craft-tag">Radiant · Divine</span>
+                </div>
+                <div class="spell-row-detail craft-section-body">
+                    <p>Items crafted on the Holy Workbench are blessed with radiant power and protective qualities, enhancing the wearer's ability to resist dark forces.</p>
+                    <div class="craft-features">
+                        <div class="craft-feature"><strong>Radiant Smite</strong><span>Deals +1d6 radiant damage against undead and fiends.</span></div>
+                        <div class="craft-feature"><strong>Blessed Blade</strong><span>Each hit has a 10% chance to remove a minor curse on the target.</span></div>
+                        <div class="craft-feature"><strong>Sanctuary Aura</strong><span>Enemies must succeed on a Spirit check to attack the wearer, or feel compelled to target other creatures.</span></div>
+                        <div class="craft-feature"><strong>Healing Touch</strong><span>Once per long rest, heal 1d6 HP by touching a holy symbol on the armor.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══ GLYPHS - group header ══ -->
+            <div class="spell-group-header craft-group-header">Glyphs</div>
+
+            <!-- Glyph intro row -->
+            <div class="spell-row craft-section open" style="--row-accent:#706010">
+                <div class="spell-row-head craft-section-head">
+                    <span class="spell-row-arrow">▼</span>
+                    <span class="spell-row-name">Glyphs - Overview</span>
+                    <span class="craft-tag">Enchantment</span>
+                </div>
+                <div class="spell-row-detail craft-section-body">
+                    <p>Glyphs are powerful symbols infused with magic, capable of granting weapons, armor, and even characters with remarkable abilities. Through glyphs, a simple piece of gear can become a legendary artifact.</p>
+
+                    <h3>Crafting &amp; Application</h3>
+                    <ul>
+                        <li><strong>Implementation:</strong> Crafting and applying glyphs require specific materials and a suitable station such as an enchanting table or magical lab.</li>
+                        <li><strong>Crafting Process:</strong> Crafters must perform Crafting, Intellect, Spirit, or other related checks. The complexity of the glyph determines the number of successes required.</li>
+                        <li><strong>Application Process:</strong> Applying a glyph involves a similar check to integrate the glyph's magical essence fully. Each step takes one hour.</li>
+                        <li><strong>Risk of Failure:</strong> Failed checks can damage or destroy the item, with consequences scaling based on the severity of the failure.</li>
+                    </ul>
+
+                    <h3>Glyphcrafting Failure - 1d10</h3>
+                    <table>
+                        <thead><tr><th>Roll</th><th>Complication</th><th>Resolution</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td><strong>Magical Surge:</strong> Energy overflows, risking damage to nearby magical items.</td><td>Intellect check to contain the surge.</td></tr>
+                            <tr><td>2</td><td><strong>Elemental Anomaly:</strong> An elemental creature spawns from mishandled energies.</td><td>Combat or negotiation required.</td></tr>
+                            <tr><td>3</td><td><strong>Arcane Feedback:</strong> Crafter suffers a backlash of minor health or mana loss.</td><td>Spirit check to shield yourself.</td></tr>
+                            <tr><td>4</td><td><strong>Material Corruption:</strong> Materials degrade, potentially ruining them.</td><td>Crafting check can salvage some materials.</td></tr>
+                            <tr><td>5</td><td><strong>Unstable Rift:</strong> A small portal opens, drawing in nearby objects.</td><td>Combined Intellect and Spirit effort to close it.</td></tr>
+                            <tr><td>6</td><td><strong>Glyph Melding Error:</strong> Glyphs merge unpredictably, altering effects.</td><td>Solve a puzzle representing the glyph's structure.</td></tr>
+                            <tr><td>7</td><td><strong>Energetic Overload:</strong> The workstation overloads, risking an explosion.</td><td>Distribute the energy with Strength and Agility checks.</td></tr>
+                            <tr><td>8</td><td><strong>Phantom Echoes:</strong> Ghostly entities mimic party members.</td><td>Insight and Perception checks to identify the real.</td></tr>
+                            <tr><td>9</td><td><strong>Temporal Distortion:</strong> Time slows or speeds up in the crafting area.</td><td>Navigate anomalies to stabilize the glyph.</td></tr>
+                            <tr><td>10</td><td><strong>Magical Infestation:</strong> Mana-eating insects swarm, depleting magical resources.</td><td>Repel or capture the insects to complete the glyph.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Basic Glyphs -->
+            <div class="spell-row craft-workbench open" style="--row-accent:#484848">
+                <div class="spell-row-head craft-section-head">
+                    <span class="spell-row-arrow">▼</span>
+                    <span class="craft-wb-icon">✨</span>
+                    <span class="spell-row-name">Basic Glyphs</span>
+                    <span class="craft-tag">1 check · 1 hour</span>
+                </div>
+                <div class="spell-row-detail craft-section-body">
+                    <p>Enhance damage, armor, or checks - ideal for incremental improvements to gear. Requires 1 check to craft and 1 to apply; can be done with minimal equipment.</p>
+                    <div class="craft-features">
+                        <div class="craft-feature"><strong>Glyph of Fortification</strong><span>Increases armor by +2.</span></div>
+                        <div class="craft-feature"><strong>Glyph of Sharpness</strong><span>Adds +1 to damage rolls on bladed weapons.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Glyphs -->
+            <div class="spell-row craft-workbench open" style="--row-accent:#204060">
+                <div class="spell-row-head craft-section-head">
+                    <span class="spell-row-arrow">▼</span>
+                    <span class="craft-wb-icon">⚔️</span>
+                    <span class="spell-row-name">Advanced Glyphs</span>
+                    <span class="craft-tag">2 checks · Workstation</span>
+                </div>
+                <div class="spell-row-detail craft-section-body">
+                    <p>Introduce new mechanics like special attacks, defensive maneuvers, or unique effects. Requires 2 checks to craft and apply; requires a proper workstation and additional materials or assistance.</p>
+                    <div class="craft-features">
+                        <div class="craft-feature"><strong>Glyph of Rebounding</strong><span>Reflects half of damage back to the attacker as an off-action (reaction).</span></div>
+                        <div class="craft-feature"><strong>Glyph of Swiftness</strong><span>Increases movement speed by +20ft when applied to footwear.</span></div>
+                        <div class="craft-feature"><strong>Glyph of Silence</strong><span>Silences weapons or armor, ideal for stealthy characters.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legendary Glyphs -->
+            <div class="spell-row craft-workbench open" style="--row-accent:#806010">
+                <div class="spell-row-head craft-section-head">
+                    <span class="spell-row-arrow">▼</span>
+                    <span class="craft-wb-icon">🌟</span>
+                    <span class="spell-row-name">Legendary Glyphs</span>
+                    <span class="craft-tag">3 checks · Team effort</span>
+                </div>
+                <div class="spell-row-detail craft-section-body">
+                    <p>Provide progression systems and grant game-changing abilities or major character transformations. Requires 3 checks to craft and apply; requires a powerful workstation and a team effort.</p>
+                    <div class="craft-features">
+                        <div class="craft-feature"><strong>Glyph of Transformation</strong><span>Allows the character to shift into a specific creature, gaining its abilities temporarily.</span></div>
+                        <div class="craft-feature"><strong>Glyph of Time Manipulation</strong><span>Once per long rest, take 2 actions on your turn.</span></div>
+                        <div class="craft-feature"><strong>Glyph of Elemental Mastery</strong><span>Grants control over a specific element for strategic advantages.</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /#craft-sections -->
     </main>
-
-
-    <div id="sidebar-placeholder"></div>
 </body>
-
 </html>

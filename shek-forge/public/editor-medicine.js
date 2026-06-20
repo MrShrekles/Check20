@@ -51,7 +51,7 @@ function renderMedicineTable() {
                         placeholder="Effect name…">
                     <input class="te-row-input te-input--wide" value="${escAttr(e.value || '')}"
                         onchange="updateMedField(${e._i},'value',this.value)" oninput="markUnsaved()"
-                        placeholder="Description — use [[wound:P]], {maker} etc.">
+                        placeholder="Description - use [[wound:P]], {maker} etc.">
                     <button class="te-remove" onclick="removeMedEntry(${e._i})">×</button>
                 </div>`).join('');
         } else if (long) {
@@ -60,7 +60,7 @@ function renderMedicineTable() {
                 <div class="te-row">
                     <input class="te-row-input" data-cat="${cat}" value="${escAttr(e.value || '')}"
                         onchange="updateMedField(${e._i},'value',this.value)" oninput="markUnsaved()"
-                        placeholder="Template — use {flavor}, {maker}, {place}…">
+                        placeholder="Template - use {flavor}, {maker}, {place}…">
                     <button class="te-remove" onclick="removeMedEntry(${e._i})">×</button>
                 </div>`).join('');
         } else {

@@ -1,4 +1,4 @@
-// ─── Shared Codex UI — size buttons for expandable-row pages ─────────────────
+// ─── Shared Codex UI - size buttons for expandable-row pages ─────────────────
 // Usage: call initCodexSize() in DOMContentLoaded on any page that has
 //   #codex-size-btns and loads spells.css (which owns the --codex-* variables).
 
@@ -52,7 +52,7 @@ function handleCodexDeepLink() {
 
     if (tryExpand()) return;
 
-    // Rows render async — watch for them
+    // Rows render async - watch for them
     const observer = new MutationObserver(() => {
         if (tryExpand()) observer.disconnect();
     });
@@ -61,3 +61,24 @@ function handleCodexDeepLink() {
 }
 
 document.addEventListener('DOMContentLoaded', handleCodexDeepLink);
+
+// ─── Image helper ─────────────────────────────────────────────────────────────
+// Creates an <img> that hides itself on error instead of showing a broken icon.
+// Pass cls = 'codex-cover' for full-width 16/9 banner (species style).
+// Pass cls = 'codex-cover codex-cover--pixel' for small pixel-art items.
+function makeCodexImage(src, alt, cls) {
+    const img = document.createElement('img');
+    img.className = cls || 'codex-cover';
+    img.alt = alt || '';
+    img.loading = 'lazy';
+    img.src = src || '';
+    img.onerror = () => { img.style.display = 'none'; img.onerror = null; };
+    return img;
+}
+
+// Slugify a display name to a filename-safe lowercase string.
+function codexSlug(name) {
+    return String(name || '').toLowerCase().trim()
+        .replace(/[^a-z0-9]+/g, '_')
+        .replace(/^_+|_+$/g, '');
+}

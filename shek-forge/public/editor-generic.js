@@ -1,4 +1,4 @@
-// editor-generic.js — dynamic field editor for any JSON structure
+// editor-generic.js - dynamic field editor for any JSON structure
 
 // ── ARRAY HELPERS (called from inline onclick handlers) ───────────────────────
 function genericRemoveArrayItem(idx, path, ti) {
@@ -52,7 +52,7 @@ function genericScalar(key, val, idx, path) {
     if (path === '_group') {
         const groups = [...new Set(state.data.map(e => e._group).filter(Boolean))].sort();
         const opts = ['', ...groups].map(g =>
-            `<option value="${escAttr(g)}"${val === g ? ' selected' : ''}>${escHtml(g) || '— none —'}</option>`
+            `<option value="${escAttr(g)}"${val === g ? ' selected' : ''}>${escHtml(g) || '- none -'}</option>`
         ).join('');
         const extraOpt = val && !groups.includes(val)
             ? `<option value="${escAttr(val)}" selected>${escHtml(val)}</option>` : '';
@@ -157,7 +157,7 @@ function genericArray(key, arr, idx) {
         </div>`;
     }
 
-    // Primitive array — flat editable list
+    // Primitive array - flat editable list
     const items = arr.map((item, ti) => {
         const ip = escAttr(`${key}.${ti}`);
         return `<div class="array-item">

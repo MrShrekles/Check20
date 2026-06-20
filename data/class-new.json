@@ -40,7 +40,7 @@
               "action": "Special",
               "check": "Intellect, Strength",
               "range": "",
-              "description": "After you spend a Bolster, your next successful melee attack or Arcane effect deals additional damage equal to your Strength or Intellect modifier.",
+              "description": "After you spend a Bolster, your next successful melee attack or spell deals additional damage equal to your Strength or Intellect.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -144,8 +144,8 @@
               "action": "Action",
               "check": "",
               "range": "",
-              "description": "As an action, spend 1 Bolster to become immune to conditions until the end of your turn. When this effect ends, you take [[1d6]] psychic damage.",
-              "duration": "",
+              "description": "As an action, spend 1 Bolster take [[1d6]] psychic damage and become immune to non-major conditions until the end of your next turn",
+              "duration": "Until the end of your next turn",
               "damage": "1d6",
               "damageType": "Psychic",
               "armor": "",
@@ -331,7 +331,8 @@
               "damage": "Check",
               "damageType": "Piercing",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -344,7 +345,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -435,7 +437,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": "Fear",
+              "checkType": "self"
             },
             {
               "step": 9,
@@ -443,7 +446,7 @@
               "action": "Special",
               "check": "Survival",
               "range": "Known",
-              "description": "Spend 1 month in a town to mark it as your Territory. you have advantage on Survival check in your territory. At the start of combat while in your territory gain +10 armor for 1 minute",
+              "description": "Spend 1 month in a town to mark it as your Territory. you have advantage on Survival checks in your territory. At the start of combat while in your territory gain +10 armor for 1 minute",
               "duration": "1 minute",
               "damage": "",
               "damageType": "",
@@ -500,7 +503,8 @@
               "damage": "Check",
               "damageType": "Healing",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "unneeded"
             },
             {
               "step": 2,
@@ -508,7 +512,7 @@
               "action": "Action",
               "check": "",
               "range": "Reach",
-              "description": "Illuminate yourself with divine light, radiating the brilliance of the heavens. Deal damage to creatures within range as radiant light sears their corruption.",
+              "description": "Illuminate yourself with divine light, radiating the brilliance of the heavens. Deal 1d6 solar damage to creatures within range as radiant light sears their corruption.",
               "duration": "Until the end of your next turn",
               "damage": "1d6",
               "damageType": "Solar",
@@ -617,7 +621,8 @@
               "damage": "Check",
               "damageType": "Solar",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             }
           ]
         },
@@ -742,7 +747,7 @@
               "action": "Upgrade",
               "check": "",
               "range": "",
-              "description": "When you use Overture, give allies an additional 6 damage on their attacks (9 total)",
+              "description": "When you use Overture, give allies within reach an additional +6 damage on their attacks",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -812,7 +817,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -890,7 +896,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Death"
+              "condition": "Death",
+              "checkType": "unneeded"
             },
             {
               "step": 8,
@@ -1020,7 +1027,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 6,
@@ -1158,7 +1166,7 @@
               "action": "Off-Action",
               "check": "",
               "range": "Reach",
-              "description": "As an off-action, When a creature leaves your reach without disengaging, spend 1 Bolster to reduce their movement to 0 and end their movement immediately.",
+              "description": "As an off-action, When a creature enters or leaves your reach range, spend 1 Bolster to reduce their movement to 0 and end their movement immediately.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -1171,7 +1179,7 @@
               "action": "Upgrade",
               "check": "",
               "range": "",
-              "description": "When you reduce a creature to 0 wounds, immediately gain 1 Bolster and may take 5 ft of movement towards another creature.",
+              "description": "When you reduce a creature to 0 wounds, immediately gain 1 Bolster and may take 15 ft of movement towards another creature.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -1189,7 +1197,8 @@
               "damage": "1d6",
               "damageType": "Slashing",
               "armor": "tank",
-              "condition": "Judicator"
+              "condition": "Judicator",
+              "checkType": "self"
             },
             {
               "step": 7,
@@ -1241,7 +1250,8 @@
               "damage": "",
               "damageType": "",
               "armor": "tank",
-              "condition": "Judicator"
+              "condition": "Judicator",
+              "checkType": "self"
             }
           ]
         },
@@ -1327,12 +1337,13 @@
               "action": "Upgrade",
               "check": "Intellect",
               "range": "Short",
-              "description": "As an action, create a PL5 duplicate of a creature you can see within short range that lasts for 1 minute. The duplicated creature must succeed on an Intellect check or gain the Confused condition.",
+              "description": "As an action, create a PL5 duplicate of a creature you can see within short range that lasts for 1 minute. The duplicated creature must succeed on a Mental check or gain the Confused condition.",
               "duration": "1 minute",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused"
+              "condition": "Confused",
+              "checkType": "enemy"
             },
             {
               "step": 6,
@@ -1379,12 +1390,13 @@
               "action": "Action",
               "check": "Agility",
               "range": "Short",
-              "description": "As an action, fire a beam of refracted light in a short range straight line in front of you. Creatures in the line take [[6d6]] Solar damage, making an Agility check to reduce the damage by half per success.",
+              "description": "As an action, fire a beam of refracted light in a short range straight line in front of you. Creatures in the line take [[6d6]] Solar damage, making a Physical check to reduce the damage by half per success.",
               "duration": "",
               "damage": "6d6",
               "damageType": "Solar",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 10,
@@ -1457,12 +1469,13 @@
               "action": "Upgrade",
               "check": "Survival",
               "range": "",
-              "description": "When a creature is infected with your disease, they hallucinate their worst fears and must make a Survival check or take the fear condition",
+              "description": "When a creature is infected with your disease, they hallucinate their worst fears and must make a Physical check or take the fear condition",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": "Fear",
+              "checkType": "enemy"
             },
             {
               "step": 4,
@@ -1470,12 +1483,13 @@
               "action": "Action",
               "check": "Survival",
               "range": "Reach",
-              "description": "Release a cloud of virulent pathogens that infect enemies within range. Creatures must make a Survival check or become infected with your disease",
+              "description": "Release a cloud of virulent pathogens that infect enemies within range. Creatures must make a Physical check or become infected with your disease",
               "duration": "Instant",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 5,
@@ -1496,12 +1510,13 @@
               "action": "Upgrade",
               "check": "Survival",
               "range": "Reach",
-              "description": "When a creature is infected with your disease, and they take the Death condition, they burst with a cloud of virulent pathogens within range. All creatures you choose within range must make Survival checks or contract your disease",
+              "description": "When a creature is infected with your disease, and they take the Death condition, they burst with a cloud of virulent pathogens within range. All creatures you choose within range must make Physical check or contract your disease",
               "duration": "Instant",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Death"
+              "condition": "Death",
+              "checkType": "enemy"
             },
             {
               "step": 7,
@@ -1735,7 +1750,8 @@
               "damage": "Check",
               "damageType": "Impact",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "unneeded"
             },
             {
               "step": 1,
@@ -1795,12 +1811,13 @@
               "action": "Action",
               "check": "Strength",
               "range": "Self",
-              "description": "Your body swells with power. Gain +2 Strength mod and increase your size by one category. You can still move through spaces sized for a medium creature",
+              "description": "Your body swells with power. Gain +3 Strength bonus and increase your size by one category until the end of your next turn. You can still move through spaces sized for a medium creature",
               "duration": "Until the end of your next turn",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "unneeded"
             },
             {
               "step": 6,
@@ -1847,12 +1864,13 @@
               "action": "Upgrade",
               "check": "Strength",
               "range": "",
-              "description": "When you make a melee attack, gain +1 strength mod. This bonus stacks if you hit with the same attack again before the end of your next turn. The bonus resets if you fail to hit before the duration ends.",
+              "description": "When you make a melee attack, gain +1 strength bonus until the end of your next turn. This bonus stacks if you hit with the same attack again before the end of your next turn. The bonus resets if you fail to hit before the duration ends.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "unneeded"
             },
             {
               "step": 10,
@@ -2097,12 +2115,13 @@
               "action": "Special",
               "check": "Strength",
               "range": "Short",
-              "description": "When you move at least 20 ft toward a target while mounted, your next melee attack with a reach weapon deals +[[2d6]] damage and forces the target to make a Strength check or be knocked prone.",
+              "description": "When you move at least 20 ft toward a target while mounted, your next melee attack with a reach weapon deals +[[2d6]] damage and forces the target to make a Physical check or be knocked prone.",
               "duration": "Until the end of your next turn",
               "damage": "2d6",
               "damageType": "Physical",
               "armor": "",
-              "condition": "Prone"
+              "condition": "Prone",
+              "checkType": "enemy"
             },
             {
               "step": 4,
@@ -2136,12 +2155,13 @@
               "action": "Off-Action",
               "check": "Agility",
               "range": "",
-              "description": "When hit by an attack while mounted, reduce the damage by your Agility.",
+              "description": "As an off-action, when hit by an attack while mounted, reduce the damage by half",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "unneeded"
             },
             {
               "step": 7,
@@ -2232,7 +2252,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -2305,12 +2326,13 @@
               "action": "Upgrade",
               "check": "Spirit",
               "range": "Short",
-              "description": "When you use Hel-Guard, enemies within short range must succeed on a Spirit check or gain the Fear condition.",
+              "description": "When you use Hel-Guard, enemies within short range must succeed on a Mental check or gain the Fear condition.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": "Fear",
+              "checkType": "enemy"
             },
             {
               "step": 8,
@@ -2375,7 +2397,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Invisible"
+              "condition": "Invisible",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -2578,12 +2601,13 @@
               "action": "Special",
               "check": "Survival",
               "range": "Medium",
-              "description": "You extinguish your flames until the start of your next turn and unleash them in a violent firestorm centered on you within medium range. Creatures in the area must make a Survival check, taking [[2d6]] Fire damage on a failure, or half as much damage for each success. Flammable terrain in the area ignites.",
+              "description": "You extinguish your flames until the start of your next turn and unleash them in a violent firestorm centered on you within medium range. Creatures in the area must make a Physical check, taking [[2d6]] Fire damage on a failure, or half as much damage for each success. Flammable terrain in the area ignites.",
               "duration": "",
               "damage": "2d6",
               "damageType": "Fire",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 5,
@@ -2604,12 +2628,13 @@
               "action": "Off-Action",
               "check": "Influence",
               "range": "",
-              "description": "You may ignite your flames as an off-action in a deliberately threatening display. The fire responds sharply to your posture and intent, flaring, hissing, or crackling as needed. When you do so, you have advantage on Influence checks made through intimidation or coercive presence, as long as you do not directly harm a creature with the flames.",
+              "description": "You may ignite your flames as an off-action in a deliberately threatening display. The fire responds sharply to your posture and intent, flaring, hissing, or crackling as needed. When you do so, you have advantage on Influence checks made through intimidation or coercive presence, you cannot directly harm a creature with the flames.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 7,
@@ -2713,7 +2738,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -2765,7 +2791,8 @@
               "damage": "",
               "damageType": "",
               "armor": 5,
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 7,
@@ -2778,7 +2805,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 8,
@@ -2994,12 +3022,13 @@
               "action": "Action",
               "check": "Agility",
               "range": "Reach",
-              "description": "Summon a PL3 crystal echo that mimics your movements. It lasts for 1 minute. You may have a number of echoes equal to half your Agility (rounded down).",
+              "description": "Summon a PL3 Crystal Echo that mimics your movements. It lasts for 1 minute. You may have a 3 Crystal Echos at a time",
               "duration": "1 minute",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "unneeded"
             },
             {
               "step": 1,
@@ -3020,12 +3049,13 @@
               "action": "Action",
               "check": "Strength",
               "range": "Medium",
-              "description": "Collapse all active echoes, causing each to explode in crystal shards. Each echo deals [[1d6]] thunder damage to all creatures within reach and forces a Strength check or knock Prone.",
+              "description": "Collapse all active echoes, causing each to explode in crystal shards. Each echo deals [[1d6]] thunder damage to all creatures within reach",
               "duration": "1 minute",
               "damage": "1d6",
               "damageType": "Thunder",
               "armor": "",
-              "condition": "Prone"
+              "condition": "Prone",
+              "checkType": "unneeded"
             },
             {
               "step": 3,
@@ -3168,7 +3198,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Prone"
+              "condition": "Prone",
+              "checkType": "contested"
             },
             {
               "step": 2,
@@ -3181,7 +3212,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "unneeded"
             },
             {
               "step": 3,
@@ -3246,7 +3278,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 8,
@@ -3267,12 +3300,13 @@
               "action": "Action",
               "check": "Spirit",
               "range": "Short",
-              "description": "Unleash a roar affecting all creatures within range. They must make a Spirit check or take the Fear condition with you as the source. You have advantage on attack checks against creatures with the Fear condition with you as the source",
+              "description": "Unleash a roar affecting all creatures within range. They must make a Mental check or take the Fear condition with you as the source. You have advantage on attack checks against creatures with the Fear condition with you as the source",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": "Fear",
+              "checkType": "enemy"
             },
             {
               "step": 10,
@@ -3337,7 +3371,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -3415,7 +3450,8 @@
               "damage": "1d6",
               "damageType": "Eclipse",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 9,
@@ -3571,7 +3607,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Prone"
+              "condition": "Prone",
+              "checkType": "enemy"
             },
             {
               "step": 9,
@@ -3584,7 +3621,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 10,
@@ -3778,7 +3816,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 0,
@@ -3791,7 +3830,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -3799,12 +3839,13 @@
               "action": "Action",
               "check": "Spirit",
               "range": "Short",
-              "description": "spending 3 Mana temporarily raise a creature that has taken the Death condition as a wraith. They can't speak but retain their combat abilities. PL equal to half your Spirit Check",
+              "description": "Spend 3 Mana to raise a creature with the Death condition as a temporary wraith. The wraith cannot speak, but retains its combat abilities. Its PL is [[1d6]].",
               "duration": "Until the end of your next turn",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Death"
+              "condition": "Death",
+              "checkType": "unneeded"
             },
             {
               "step": 2,
@@ -3856,7 +3897,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 6,
@@ -3869,7 +3911,8 @@
               "damage": "Check",
               "damageType": "Piercing",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 7,
@@ -3895,7 +3938,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "unneeded"
             },
             {
               "step": 9,
@@ -3960,7 +4004,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "unneeded"
             },
             {
               "step": 2,
@@ -4116,7 +4161,8 @@
               "damage": "2d6",
               "damageType": "Elemental",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -4129,7 +4175,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -4181,7 +4228,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 7,
@@ -4441,7 +4489,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -4454,7 +4503,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Slowed"
+              "condition": "Slowed",
+              "checkType": "enemy"
             },
             {
               "step": 4,
@@ -4475,12 +4525,13 @@
               "action": "Half-Action",
               "check": "Spirit",
               "range": "Short",
-              "description": "As a half-action, launch chains of light from your lantern. A creature within short range must succeed on a Spirit check or be pinned until the end of their next turn",
+              "description": "As a half-action, launch chains of light from your lantern. A creature within short range must succeed on a Mental check or be pinned until the end of their next turn",
               "duration": "Until the end of your next turn",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned"
+              "condition": "Pinned",
+              "checkType": "enemy"
             },
             {
               "step": 6,
@@ -4514,12 +4565,13 @@
               "action": "Action",
               "check": "Spirit",
               "range": "Short",
-              "description": "unleash a burst of light from your lantern. All spirits, demons, and undead within short range must make a Spirit check or be banished to their original plane of existence",
+              "description": "Unleash a burst of light from your lantern. All spirits, demons, and undead within short range must make a Spirit check or be banished to their original plane of existence",
               "duration": "Until the end of your next turn",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 9,
@@ -4657,12 +4709,13 @@
               "action": "Passive",
               "check": "Spirit",
               "range": "Short",
-              "description": "All enemies within short range are restrained by spectral hands (Spirit check to resist) and take [[2d6]] Eclipse damage",
+              "description": "All enemies within Short Range must make a Mental Check. On a failure, they become Pinned and take [[2d6]] Eclipse damage. On a success, they avoid the condition and take half damage.",
               "duration": "",
               "damage": "2d6",
               "damageType": "Eclipse",
               "armor": "",
-              "condition": ""
+              "condition": "Pinned",
+              "checkType": "enemy"
             },
             {
               "step": 8,
@@ -4696,12 +4749,13 @@
               "action": "Action",
               "check": "Spirit",
               "range": "Medium",
-              "description": "become an avatar of death until the end of your next turn. You can choose any creature within medium range to take the Death condition. Make a Spirit check with -5 per creature you choose; on a failure, your body is taken by the god of death, Zuinmuir, and you die instead",
+              "description": "Become an avatar of death until the end of your next turn. You can choose any creature within medium range to take the Death condition. Make a Spirit check with -2 per creature you choose; on a failure, your body is taken by the god of death, Zuinmuir, and you die instead",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Death"
+              "condition": "Death",
+              "checkType": "self"
             }
           ]
         },
@@ -4899,7 +4953,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "unneeded"
             },
             {
               "step": 2,
@@ -4912,7 +4967,8 @@
               "damage": "",
               "damageType": "",
               "armor": 10,
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -5042,7 +5098,8 @@
               "damage": "1d6",
               "damageType": "Slashing",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -5055,7 +5112,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -5068,7 +5126,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "unneeded"
             },
             {
               "step": 3,
@@ -5081,7 +5140,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 4,
@@ -5102,12 +5162,13 @@
               "action": "Passive",
               "check": "Spirit",
               "range": "Melee",
-              "description": "After healing or grooming a creature, you may ask one question. The target must succeed a Spirit check or be compelled to answer truthfully.",
+              "description": "After healing or grooming a creature, you may ask one question. The target must succeed a Mental check or be compelled to answer truthfully.",
               "duration": "Instant",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 6,
@@ -5198,7 +5259,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -5211,7 +5273,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -5224,7 +5287,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -5237,7 +5301,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed"
+              "condition": "Charmed",
+              "checkType": "self"
             },
             {
               "step": 4,
@@ -5276,7 +5341,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 7,
@@ -5505,12 +5571,13 @@
               "action": "Action",
               "check": "Spirit",
               "range": "",
-              "description": "touch 2 creatures and transfer up to 10 wounds from one to the other. If a creature is unwilling, you must make a contested Spirit check against them",
+              "description": "Touch 2 creatures and transfer up to 10 wounds from one to the other. If a creature is unwilling, you must make a contested Spirit check against them",
               "duration": "Instant",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "contested"
             },
             {
               "step": 1,
@@ -5562,7 +5629,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 5,
@@ -5640,7 +5708,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "contested"
             }
           ]
         }
@@ -6082,7 +6151,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 9,
@@ -6157,7 +6227,8 @@
               "damage": "1d6",
               "damageType": "Piercing",
               "armor": "",
-              "condition": "Confused"
+              "condition": "Confused",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -6300,7 +6371,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -6360,12 +6432,13 @@
               "action": "Action",
               "check": "Survival",
               "range": "Short",
-              "description": "As an action, exhale a dense cloud of toxic ash in a short range line. Creatures in the line must make a Survival check or take [[2d6]] toxic damage, or half on a success.",
+              "description": "As an action, exhale a dense cloud of toxic ash in a short range line. Creatures in the line must make a Physical check or take [[2d6]] toxic damage, or half on a success.",
               "duration": "",
               "damage": "2d6",
               "damageType": "Toxic",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 6,
@@ -6612,7 +6685,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -6854,12 +6928,13 @@
               "action": "Passive",
               "check": "Survival",
               "range": "",
-              "description": "Enemies inside your mist must make a Survival check at the start of their turn or take the Blind condition until the end of their next turn.",
+              "description": "Enemies inside your mist must make a Physical check at the start of their turn or take the Blind condition until the end of their next turn.",
               "duration": "Until the end of their next turn",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Blind"
+              "condition": "Blind",
+              "checkType": "enemy"
             },
             {
               "step": 9,
@@ -7122,7 +7197,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 5,
@@ -7278,7 +7354,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Blind, Slowed, Coughing"
+              "condition": "Blind, Slowed, Coughing",
+              "checkType": "enemy"
             },
             {
               "step": 5,
@@ -7698,7 +7775,7 @@
             {
               "step": 1,
               "name": "Demon’s Frenzy",
-              "action": "Special",
+              "action": "Passive",
               "check": "",
               "range": "",
               "description": "Tap into demonic rage, increasing your attack speed; gain an extra attack when you make an attack action but take [[1d4]] psychic damage.",
@@ -7711,20 +7788,21 @@
             {
               "step": 2,
               "name": "Angelic Grace",
-              "action": "Half-Action",
+              "action": "Half Action",
               "check": "Spirit",
               "range": "Self",
-              "description": "As a half-action, take an Angelic Stance. While in this stance, any creature targeting you with an attack must succeed on a Spirit check before they attack or they choose not to attack",
+              "description": "As a half-action, take an Angelic Stance. While in this stance, any creature targeting you with an attack must succeed on a Mental check before they attack or they choose not to attack",
               "duration": "Until the start of your next turn",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 3,
               "name": "Elemental Shift",
-              "action": "Half-Action",
+              "action": "Half Action",
               "check": "",
               "range": "",
               "description": "As a half-action, choose an elemental damage type to become immune to until the end of your next turn",
@@ -7737,10 +7815,10 @@
             {
               "step": 4,
               "name": "Dreamsea Step",
-              "action": "Half-Action",
+              "action": "Action",
               "check": "",
               "range": "Self",
-              "description": "Become intangible as you slip partway into the dreamsea",
+              "description": "As an Action, Become intangible as you slip partway into the Dreamsea until the end of your next turn",
               "duration": "Until the end of your next turn",
               "damage": "",
               "damageType": "",
@@ -7792,12 +7870,13 @@
               "action": "Action",
               "check": "Strength",
               "range": "Reach",
-              "description": "Slam the ground with the force of a giant, creating shockwaves; knock prone all creatures within short range and deal damage equal to your strength check as impact damage",
+              "description": "As an Action, slam the ground with the force of a giant, sending shockwaves through the area. All creatures within short range must make a Strength check or be knocked Prone and take [[10]] Impact damage. On a success, they remain standing and take half damage per success.",
               "duration": "",
               "damage": "Check",
               "damageType": "Impact",
               "armor": "",
-              "condition": "Prone"
+              "condition": "Prone",
+              "checkType": "enemy"
             },
             {
               "step": 9,
@@ -7842,27 +7921,29 @@
               "step": 0,
               "name": "Infernal Infusion",
               "action": "Action",
-              "check": "Intellect",
+              "check": "",
               "range": "Self",
-              "description": "Invoke a demonic essence within you, spending 5 Demonic Essence and transforming yourself into a demonic form for a limited time. In this state, you gain +2 to all attack rolls, armor equal to double your Intellect, and deal an extra [[1d4]] Vozian damage with your attacks. This transformation lasts for 1 minute. When the transformation ends, you take the Blind, Confused, and Exhausted conditions for 1 minute due to the immense strain on your body and soul",
+              "description": "Once per day as an Action, transform into a terrifying demonic form for 1 minute. While transformed, you gain +10 armor, a 30 ft. fly speed, and massive claws that deal [[3d6]] Slashing damage.\n\nWhen the transformation ends, the strain of containing infernal power overwhelms your body and soul. You gain the Blind, Confused, and Exhausted conditions for 1 minute.",
               "duration": "1 minute",
-              "damage": "1d4",
-              "damageType": "Vozian",
-              "armor": "Check",
-              "condition": "Blind, Confused"
+              "damage": "3d6",
+              "damageType": "Slashing",
+              "armor": "10",
+              "condition": "Blind, Confused",
+              "checkType": "unneeded"
             },
             {
               "step": 0,
               "name": "Demon Scholar",
               "action": "Resource",
-              "check": "Intellect, Observation",
+              "check": "Intellect",
               "range": "",
-              "description": "Your study of demonic lore and history gives you advantage on Intellect and Observation checks related to demons and other infernal entities. Gain a Class Resource of 5 Demonic Essence that recharges after a long rest or by drinking the blood of the innocent.",
+              "description": "Your extensive study of demonic lore grants you advantage on Intellect and Observation checks related to demons and other infernal entities, including their history, behavior, biology, culture, weaknesses, and known supernatural abilities.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -7870,7 +7951,7 @@
               "action": "Action",
               "check": "",
               "range": "Self",
-              "description": "The demonic essence within you makes you tough and hard to kill. Spend 1 Demonic Essence to heal for [[1d6]] or remove 1 condition",
+              "description": "The demonic essence within you makes you tough and hard to kill. Once per day as an action to heal for [[1d6]] and remove 1 condition",
               "duration": "Instant",
               "damage": "1d6",
               "damageType": "Healing",
@@ -7896,7 +7977,7 @@
               "action": "Action",
               "check": "",
               "range": "Reach",
-              "description": "You have made a pact with a lesser demon, who serves you in exchange for occasional services. Spend 1 Demonic Essence to summon this demon at PL3. They can perform simple tasks or fight for you",
+              "description": "You have made a pact with an Imp, who serves you in exchange for occasional services. Once per day as an action, summon this demon at PL5. They can perform simple tasks or fight for you and remain for 1 minute",
               "duration": "1 minute",
               "damage": "",
               "damageType": "",
@@ -7909,12 +7990,13 @@
               "action": "Action",
               "check": "Intellect, Observation",
               "range": "Short",
-              "description": "You can tap into the surface thoughts of creatures. Spend 1 Demonic Essence and make an Intellect check targeting a creature within range. On a success, you understand the basic thoughts and emotions of the creature for up to 1 minute, but they can sense you with an Observation check.",
+              "description": "You can tap into the surface thoughts of creatures. Once per day as an action, make an Intellect check targeting a creature within range. On a success, you understand the basic thoughts and emotions of the creature for up to 1 minute, but they can sense you with a Mental check",
               "duration": "Until the end of your next turn",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "contested"
             },
             {
               "step": 5,
@@ -7922,7 +8004,7 @@
               "action": "Upgrade",
               "check": "",
               "range": "",
-              "description": "Your maximum Demonic Essence is 10, you are immune to Vozian magic but take double damage and effects from Celestial Origin magic.",
+              "description": "You are immune to Vozian origin and damage but take double damage and effects from Celestial origin and solar damage",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -7932,10 +8014,10 @@
             {
               "step": 6,
               "name": "Demonic Speed",
-              "action": "Half-Action",
+              "action": "Action",
               "check": "",
               "range": "Self",
-              "description": "The demonic essence within you can make you move with supernatural speed. Spend 1 Demonic Essence to double your movement speed and gain an additional off-action",
+              "description": "The demonic essence within you can make you move with supernatural speed. Once per day as an action, double your movement speed and gain an additional off-action until the end of your next turn",
               "duration": "Until the end of your next turn",
               "damage": "",
               "damageType": "",
@@ -7948,7 +8030,7 @@
               "action": "Off-Action",
               "check": "",
               "range": "Short",
-              "description": "You can call upon the power of Hell to punish those who you choose. Spend 1 Demonic Essence to deal Vozian damage",
+              "description": "When you provoke, always do so at advantage",
               "duration": "Instant",
               "damage": "2d6",
               "damageType": "Vozian",
@@ -7961,7 +8043,7 @@
               "action": "Upgrade",
               "check": "",
               "range": "",
-              "description": "If you summon a demon with Infernal Pact, you can increase its PL by +1 per Demonic Essence used.",
+              "description": "the imp you summon is now a greater imp of PL10",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -7974,7 +8056,7 @@
               "action": "Action",
               "check": "",
               "range": "Short",
-              "description": "Spend 1 Demonic Essence and create a portal to any of the 9 layers of the Ordealis or back to the Prime Material if you are in another plane.",
+              "description": "Once per day as an action, create a portal to any of the 9 layers of the Ordealis or back to the Prime Material if you are in another plane.",
               "duration": "Until the end of your next turn",
               "damage": "",
               "damageType": "",
@@ -7987,12 +8069,12 @@
               "action": "Upgrade",
               "check": "",
               "range": "",
-              "description": "Channel the full might of your demonic claim. Spend 9 Demonic Essence. Become a greater demon for 1 minute. Gain immunity to Corpus and Cognition conditions. Your attacks deal +[[2d6]] Vozian damage.",
+              "description": "Once per day as an Action, channel the full might of your demonic heritage and transform into a Greater Demon for 1 minute. While transformed, you gain +20 armor, a 60 ft. fly speed, massive claws that deal [[3d6]] Slashing damage, immunity to all Corpus and Cognition conditions, and your attacks deal an additional [[2d6]] Vozian damage.\n\nWhen the transformation ends, the immense strain of wielding such power tears at your body and soul. You gain the Blind, Confused, Coughing, Stunned and Exhausted conditions for 1 minute",
               "duration": "Until the end of your next turn",
               "damage": "2d6",
               "damageType": "Vozian",
-              "armor": "",
-              "condition": ""
+              "armor": "20",
+              "condition": "Coughing, Blind, Confused, Coughing, Stunned"
             }
           ]
         },
@@ -8052,12 +8134,13 @@
               "action": "Special",
               "check": "Spirit",
               "range": "",
-              "description": "Once per combat, when you hit a creature with a weapon attack, you may disrupt its casting patterns. The target must succeed on a Spirit check or gain the Confused condition until the end of its next turn.",
-              "duration": "",
+              "description": "Once per combat, when you hit a creature with a weapon attack, you may disrupt its casting patterns. The target must succeed on a Mental check or gain the Confused condition until the end of its next turn.",
+              "duration": "Until the end of their next turn",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused"
+              "condition": "Confused",
+              "checkType": "enemy"
             },
             {
               "step": 4,
@@ -8096,7 +8179,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 7,
@@ -8130,12 +8214,13 @@
               "action": "Upgrade",
               "check": "Spirit",
               "range": "",
-              "description": "When you use Suppression and the creature fails its Spirit check, all attacks against that creature have advantage until the start of your next turn.",
+              "description": "When you use Suppression and the creature fails its Spirit check, all attacks against that creature have advantage until the end of your next turn.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 10,
@@ -8382,7 +8467,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 5,
@@ -8486,7 +8572,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 1,
@@ -8499,7 +8586,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 2,
@@ -8512,7 +8600,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 3,
@@ -8533,12 +8622,13 @@
               "action": "Upgrade",
               "check": "Observation",
               "range": "Short",
-              "description": "Your illusion is now a dynamic illusion that that fools sight, sound, scent, and touch for 1 minute. The illusion can interact with objects (e.g. apply minor force, support small items). \nThe Observation check to sense the illusion is now done at disadvantage",
+              "description": "Your illusion is now a dynamic illusion that fools sight, sound, scent, and touch for 1 minute. The illusion can interact with objects (e.g. apply minor force, support small items). \nThe Observation check to sense the illusion is now done at disadvantage",
               "duration": "1 minute",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 5,
@@ -8551,7 +8641,8 @@
               "damage": "1d6",
               "damageType": "Psychic",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 6,
@@ -8564,7 +8655,8 @@
               "damage": "1d6",
               "damageType": "Psychic",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 7,
@@ -8577,7 +8669,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 8,
@@ -8590,7 +8683,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed"
+              "condition": "Charmed",
+              "checkType": "self"
             },
             {
               "step": 9,
@@ -8668,7 +8762,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Invisible"
+              "condition": "Invisible",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -8759,7 +8854,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Intangible"
+              "condition": "Intangible",
+              "checkType": "self"
             },
             {
               "step": 10,
@@ -8811,7 +8907,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -8946,7 +9043,7 @@
             {
               "step": 0,
               "name": "Eclipse Dash",
-              "action": "Half-Action",
+              "action": "Half Action",
               "check": "",
               "range": "Short",
               "description": "Meld through shadows and move between them. As a half-action in dim light or darkness, teleport a short range.",
@@ -8959,7 +9056,7 @@
             {
               "step": 1,
               "name": "Solar Flare",
-              "action": "Half-Action",
+              "action": "Half Action",
               "check": "Observation",
               "range": "Reach",
               "description": "As a half-action, target a creature within range with a burst of light. They must make an Observation check or take the Blind condition",
@@ -8967,16 +9064,17 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Blind"
+              "condition": "Blind",
+              "checkType": "enemy"
             },
             {
               "step": 2,
               "name": "Hardlight",
-              "action": "Half-Action",
+              "action": "Action",
               "check": "",
               "range": "Reach",
-              "description": "Give a creature +10 armor",
-              "duration": "Until the end of your next turn",
+              "description": "As an Action, grant a creature +10 Armor for 1 minute. A creature can only benefit from this effect once at a time and cannot receive it again until the armor fades.",
+              "duration": "1 minute",
               "damage": "",
               "damageType": "",
               "armor": 10,
@@ -8988,17 +9086,18 @@
               "action": "Upgrade",
               "check": "Observation",
               "range": "",
-              "description": "When you use Solar Flare, deal solar damage if they fail their Observation Check",
+              "description": "When you use Solar Flare, deal [[1d6]] solar damage if they fail their Observation Check",
               "duration": "",
               "damage": "1d6",
               "damageType": "Solar",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 4,
               "name": "Duality Strike",
-              "action": "Half-Action",
+              "action": "Half Action",
               "check": "",
               "range": "Self",
               "description": "Your melee attacks deal either Eclipse or Solar damage. As a half-action, swap a weapon’s damage type to its normal damage, Eclipse, or Solar.",
@@ -9066,7 +9165,7 @@
               "action": "Upgrade",
               "check": "",
               "range": "Short",
-              "description": "When you use hardlight, give allies within range the +10 armor",
+              "description": "When you use hardlight, give all allies within short range +10 armor",
               "duration": "Until the end of your next turn",
               "damage": "",
               "damageType": "",
@@ -9201,7 +9300,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 8,
@@ -9214,7 +9314,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Prone"
+              "condition": "Prone",
+              "checkType": "self"
             },
             {
               "step": 9,
@@ -9227,7 +9328,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 10,
@@ -9240,7 +9342,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             }
           ]
         },
@@ -9258,7 +9361,7 @@
             {
               "step": 0,
               "name": "Witch Hunter's Arsenal",
-              "action": "Half-Action",
+              "action": "Passive",
               "check": "",
               "range": "Self",
               "description": "You gain +3 damage against spellcasters and magically enhanced creatures. Once per turn as a half-action, you may apply a poison to your weapon that adds +3 Toxic damage to your next attack",
@@ -9279,7 +9382,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused"
+              "condition": "Confused",
+              "checkType": "enemy"
             },
             {
               "step": 2,
@@ -9292,7 +9396,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned"
+              "condition": "Pinned",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -9318,7 +9423,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 5,
@@ -9396,7 +9502,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "contested"
             }
           ]
         },
@@ -9464,7 +9571,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": "Fear",
+              "checkType": "enemy"
             },
             {
               "step": 4,
@@ -9509,53 +9617,57 @@
               "step": 7,
               "name": "Bargain",
               "action": "Action",
-              "check": "",
+              "check": "Mental",
               "range": "Short",
-              "description": "As an action, Target an extraplanar or infernal creature within short range and force a Luck check, on a failure it must either accept a single clear-term bargain you propose or be unable to target you until the end of its next turn",
+              "description": "As an action, Target an extraplanar or infernal creature within short range and force a Mental check, on a failure it must either accept a single clear-term bargain you propose or be unable to target you until the end of its next turn",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 8,
               "name": "False Truth Doctrine",
               "action": "Action",
-              "check": "",
+              "check": "Mental",
               "range": "Short",
-              "description": "As an action, Target a creature within short range and speak a believable falsehood about its current situation, forcing a Luck check, on a failure the creature treats the statement as true until the end of its next turn",
+              "description": "As an action, Target a creature within short range and speak a believable falsehood about its current situation, forcing a Mental check, on a failure the creature treats the statement as true until the end of its next turn",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 9,
               "name": "Spoken Restraint",
               "action": "Action",
-              "check": "",
+              "check": "Physical",
               "range": "Short",
-              "description": "As an action, Target a creature you can see within short range and declare a binding statement, forcing a Physical or Luck check, on a failure the creature gains the Pinned condition until the end of its next turn as unseen force anchors it in place.",
+              "description": "As an action, Target a creature you can see within short range and declare a binding statement, forcing a Physical check, on a failure the creature gains the Pinned condition until the end of its next turn as unseen force anchors it in place.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned"
+              "condition": "Pinned",
+              "checkType": "enemy"
             },
             {
               "step": 10,
               "name": "Condemnation",
               "action": "Action",
-              "check": "",
+              "check": "Luck",
               "range": "Medium",
-              "description": "You gain +3 Mana. As an action spending 1sp you may target a creature within medium range and make a Luck check, on a success dealing [[1d6]] Vozian damage as your words ignite with infernal hatred.",
+              "description": "As an off-action you may target a creature within medium range and make a Luck check, on a success dealing [[2d6]] Vozian damage as your words ignite with infernal hatred.",
               "duration": "",
-              "damage": "1d6",
+              "damage": "2d6",
               "damageType": "Vozian",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             }
           ]
         }
@@ -12214,7 +12326,7 @@
               "action": "Resource",
               "check": "",
               "range": "",
-              "description": "You may spend 2 Merchant Tokens at your Union to purchase a factory or warehouse. When you do, choose the type of facility (e.g., vehicle yard, weapons shop, golem forge) and set the primary item or service it produces. This location becomes part of your trade empire. Once per in-game month, when you visit or check in, the facility provides 1d100 Ã— 10 gp and 1 Merchant Token as income, contract returns, or supply credit. You may only operate one investment of this type at a time.",
+              "description": "You may spend 2 Merchant Tokens at your Union to purchase a factory or warehouse. When you do, choose the type of facility (e.g., vehicle yard, weapons shop, golem forge) and set the primary item or service it produces. This location becomes part of your trade empire. Once per in-game month, when you visit or check in, the facility provides 1d100 Ã- 10 gp and 1 Merchant Token as income, contract returns, or supply credit. You may only operate one investment of this type at a time.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -12984,7 +13096,7 @@
               "action": "Resource",
               "check": "",
               "range": "",
-              "description": "You may spend 1 Merchant Token to establish a small archive, reading room, or research scriptorium in a settlement you've visited. Choose a focus (e.g., historical records, arcane theory, local folklore). Once per in-game month, when you visit or check in with your Archive Branch, gain [[1d100 Ã— 5]] gp in research stipends, transcription fees, or scholar donations. You also receive one of the following (choose each time): a lost page, forbidden rumor, or a minor research request (quest hook). You may operate 1 Archive Branch at a time.",
+              "description": "You may spend 1 Merchant Token to establish a small archive, reading room, or research scriptorium in a settlement you've visited. Choose a focus (e.g., historical records, arcane theory, local folklore). Once per in-game month, when you visit or check in with your Archive Branch, gain [[1d100 Ã- 5]] gp in research stipends, transcription fees, or scholar donations. You also receive one of the following (choose each time): a lost page, forbidden rumor, or a minor research request (quest hook). You may operate 1 Archive Branch at a time.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -13764,7 +13876,7 @@
               "action": "Resource",
               "check": "",
               "range": "",
-              "description": "You may spend 1 Merchant Token to establish a small smithy, workshop, or parts depot in a settlement you've visited. Choose a specialty (e.g., armor repair, bladework, mechanical fittings). Once per in-game month, when you visit or check in with your Forgefront, gain [[1d100 Ã— 5]] gp in local commissions, repair fees, or special orders. You also receive one of the following (chosen each time): A damaged item you can restore for value, A local order request (sidequest or contract), A blueprint or rare part (ingredient or story hook)\nYou may operate 1 Forgefront at a time",
+              "description": "You may spend 1 Merchant Token to establish a small smithy, workshop, or parts depot in a settlement you've visited. Choose a specialty (e.g., armor repair, bladework, mechanical fittings). Once per in-game month, when you visit or check in with your Forgefront, gain [[1d100 Ã- 5]] gp in local commissions, repair fees, or special orders. You also receive one of the following (chosen each time): A damaged item you can restore for value, A local order request (sidequest or contract), A blueprint or rare part (ingredient or story hook)\nYou may operate 1 Forgefront at a time",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -13920,7 +14032,7 @@
               "action": "Resource",
               "check": "",
               "range": "",
-              "description": "You may spend 1 Merchant Token to establish a memorial site, spirit shrine, or burial marker tied to a death you've witnessed or honored. These quiet places draw the grieving, the curious, and the cursed. Once per in-game month, when you visit or send offerings to any of your memorials, gain [[1d10 Ã— 5]] gp in gifts, mementos, or payment for services rendered in your name. You also receive a request from the dead like a haunting, dream, or message asking you to intervene, retrieve, or resolve something unfinished nearby.",
+              "description": "You may spend 1 Merchant Token to establish a memorial site, spirit shrine, or burial marker tied to a death you've witnessed or honored. These quiet places draw the grieving, the curious, and the cursed. Once per in-game month, when you visit or send offerings to any of your memorials, gain [[1d10 Ã- 5]] gp in gifts, mementos, or payment for services rendered in your name. You also receive a request from the dead like a haunting, dream, or message asking you to intervene, retrieve, or resolve something unfinished nearby.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -14076,7 +14188,7 @@
               "action": "Resource",
               "check": "",
               "range": "",
-              "description": "You may spend 1 Merchant Token to establish a sacred grove, herbal hut, or forest shrine near a settlement you've visited. This place becomes a point of power, superstition, or healing in your name. Once per in-game month, when you visit or check in with any grove, gain [[1d10 Ã— 5]] gp in herbal offerings, spiritual donations, or charm sales. You also receive a local omen, whispered secret, or wilderness lead tied to the area. Each additional grove increases the multiplier by +1 (Ã—6 for 2 groves, Ã—7 for 3, etc.)",
+              "description": "You may spend 1 Merchant Token to establish a sacred grove, herbal hut, or forest shrine near a settlement you've visited. This place becomes a point of power, superstition, or healing in your name. Once per in-game month, when you visit or check in with any grove, gain [[1d10 Ã- 5]] gp in herbal offerings, spiritual donations, or charm sales. You also receive a local omen, whispered secret, or wilderness lead tied to the area. Each additional grove increases the multiplier by +1 (Ã-6 for 2 groves, Ã-7 for 3, etc.)",
               "duration": "",
               "damage": "",
               "damageType": "",

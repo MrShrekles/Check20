@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const glossary = await resp.json();
             glossary.forEach(entry => {
                 const text = entry.duration
-                    ? `${entry.definition} — ${entry.duration}`
+                    ? `${entry.definition} - ${entry.duration}`
                     : entry.definition;
                 tooltipLibrary[entry.term] = text;
             });

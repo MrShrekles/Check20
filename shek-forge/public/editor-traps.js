@@ -56,7 +56,7 @@ function renderTrapsTable() {
             <input class="te-row-input te-input--sm" value="${escAttr(e.dmg)}"
                 onchange="updateTrapField(${e._i},'dmg',this.value)" oninput="markUnsaved()" placeholder="Damage type">
             <input class="te-row-input te-input--wide" value="${escAttr(e.effect)}"
-                onchange="updateTrapField(${e._i},'effect',this.value)" oninput="markUnsaved()" placeholder="Effect — use {dmg} and {range}">
+                onchange="updateTrapField(${e._i},'effect',this.value)" oninput="markUnsaved()" placeholder="Effect - use {dmg} and {range}">
             <button class="te-remove" onclick="removeTrapEntry(${e._i})">×</button>
         </div>`).join('');
 

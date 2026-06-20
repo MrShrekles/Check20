@@ -189,7 +189,7 @@ function createBookRow(m) {
     if (m.fly)   moveParts.push(`Fly ${m.fly}ft`);
     if (m.swim)  moveParts.push(`Swim ${m.swim}ft`);
     if (m.climb) moveParts.push(`Climb ${m.climb}ft`);
-    const moveText = moveParts.join(" · ") || "—";
+    const moveText = moveParts.join(" · ") || "-";
 
     const plHTML = m.pl != null ? `
         <span class="mb-pl-row">
@@ -225,7 +225,7 @@ function createBookRow(m) {
     const rangedAtk = m.ranged || m.ranged_attack || null;
     const spellAtk  = m.spell  || null;
     const attackLine = (atk, label) => atk?.name
-        ? `<div class="mb-attack"><strong>${label}:</strong> ${atk.name}${atk.damage ? ` — ${atk.damage}` : ""}${(atk.type || atk.damage_type) ? ` <em>${atk.type || atk.damage_type}</em>` : ""}</div>`
+        ? `<div class="mb-attack"><strong>${label}:</strong> ${atk.name}${atk.damage ? ` - ${atk.damage}` : ""}${(atk.type || atk.damage_type) ? ` <em>${atk.type || atk.damage_type}</em>` : ""}</div>`
         : "";
 
     const featList = Array.isArray(m.features) && m.features.length
@@ -241,12 +241,12 @@ function createBookRow(m) {
     }).join("") : "";
 
     const spellsHTML = Array.isArray(m.spells) && m.spells.length ? `
-        <div class="mb-section-label">Spells · MN: ${m.check_mental != null ? m.check_mental * 2 : "—"}</div>
+        <div class="mb-section-label">Spells · MN: ${m.check_mental != null ? m.check_mental * 2 : "-"}</div>
         ${m.spells.map(s => `
             <details class="mb-spell-entry">
                 <summary><span class="spell-arrow">▶</span> <strong>${s.name}</strong> <span class="mb-spell-meta">${[s.manner, s.transmission].filter(Boolean).join(" · ")}</span></summary>
                 <ul class="mb-spell-effects">
-                    ${(s.effects || []).map(e => `<li><span class="mb-intent">${e.intent}${e.cost ? ` (${e.cost} MN)` : ""}</span> — ${[e.range, e.damage ? e.damage + (e.type ? " " + e.type : "") : ""].filter(Boolean).join(" · ")}${e.effect ? ": " + parseLinks(e.effect) : ""}</li>`).join("")}
+                    ${(s.effects || []).map(e => `<li><span class="mb-intent">${e.intent}${e.cost ? ` (${e.cost} MN)` : ""}</span> - ${[e.range, e.damage ? e.damage + (e.type ? " " + e.type : "") : ""].filter(Boolean).join(" · ")}${e.effect ? ": " + parseLinks(e.effect) : ""}</li>`).join("")}
                 </ul>
             </details>`).join("")}` : "";
 
@@ -399,14 +399,14 @@ function copyMonsterForChat(m, btn) {
     const fmtAtk = (atk, label) => {
         if (!atk?.name) return;
         const dmg  = [atk.damage, atk.type || atk.damage_type].filter(Boolean).join(" ");
-        atkLines.push(`${label}: ${atk.name}${dmg ? " — " + dmg : ""}`);
+        atkLines.push(`${label}: ${atk.name}${dmg ? " - " + dmg : ""}`);
     };
     fmtAtk(meleeAtk,  "Melee");
     fmtAtk(rangedAtk, "Ranged");
     if (m.spell?.name) fmtAtk(m.spell, "Spell");
     if (atkLines.length) { lines.push(""); lines.push("**ATTACKS**"); atkLines.forEach(a => lines.push(a)); }
 
-    // Features — support both legacy fields and features array
+    // Features - support both legacy fields and features array
     const featList = Array.isArray(m.features) && m.features.length
         ? m.features
         : (m.feature_name ? [{
@@ -439,7 +439,7 @@ function copyMonsterForChat(m, btn) {
                     e.range  || null,
                     e.damage ? e.damage + (e.type ? " " + e.type : "") : null,
                 ].filter(Boolean).join(" · ");
-                lines.push(`  ${parts}${e.effect ? " — " + stripHtml(e.effect) : ""}`);
+                lines.push(`  ${parts}${e.effect ? " - " + stripHtml(e.effect) : ""}`);
             });
         });
     }
@@ -510,7 +510,7 @@ function openCardEdit(card, m) {
         : (m.feature_name ? [{ name: m.feature_name, type: m.feature_type,
                                range: m.feature_range, effect: m.feature_effect }] : []);
 
-    // Builds one editable feature row (innerHTML only — values set via JS after)
+    // Builds one editable feature row (innerHTML only - values set via JS after)
     function featRowHtml() {
         return `<li class="ce-feat-row" style="padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.07)">
             <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin-bottom:3px">
@@ -533,12 +533,12 @@ function openCardEdit(card, m) {
             <input class="ce-group"  type="text" placeholder="Group"  style="flex:1;min-width:80px">
             <input class="ce-origin" type="text" placeholder="Origin" style="flex:1;min-width:80px">
             <select class="ce-size"   style="flex:1">
-                <option value="">— Size —</option>
+                <option value="">- Size -</option>
                 <option>Tiny</option><option>Small</option><option>Medium</option>
                 <option>Large</option><option>Giant</option><option>Monolithic</option>
             </select>
             <select class="ce-rarity" style="flex:1">
-                <option value="">— Rarity —</option>
+                <option value="">- Rarity -</option>
                 <option>Common</option><option>Uncommon</option><option>Rare</option>
                 <option>Epic</option><option>Legendary</option>
             </select>
@@ -768,7 +768,7 @@ function _parseMovementText(text) {
 const _cap = s => s ? String(s).charAt(0).toUpperCase() + String(s).slice(1) : s;
 
 function addToBookFromGenerator(mon) {
-    const dash = v => (!v || v === "—") ? undefined : v;
+    const dash = v => (!v || v === "-") ? undefined : v;
 
     const moveFb = _parseMovementText(mon.movementText);
 
@@ -785,7 +785,7 @@ function addToBookFromGenerator(mon) {
                     damage:   _cap(f.damage)   || undefined,
                 };
             }
-            // Old format — parse from text: "Name (meta): effect"
+            // Old format - parse from text: "Name (meta): effect"
             const text = f.text || "";
             const colonIdx = text.indexOf(":");
             if (colonIdx > -1) {

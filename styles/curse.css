@@ -1,47 +1,308 @@
-:root {
-    /* image and colours */
-    --ordealis-img: url('../assets/images/Ordealis2.png');
-    --bg-curse: #2c1a14;
-    --bg-curse-hover: #3b1e16;
-    --text-colour: #f8e3c5;
-    --title-colour: #f79a63;
-    --border-colour: #442014;
+/* ══════════════════════════════════════════════════════════════════
+   CURSES & DISEASES CODEX - styles/curse.css
+   ══════════════════════════════════════════════════════════════════ */
 
-    /* shadows */
-    --shadow: 0 0 12px rgba(255, 80, 30, 0.2);
-    --shadow-hover: 0 0 16px rgba(255, 120, 30, 0.3);
-
-    /* timing */
-    --transition-fast: 0.2s ease;
-    --transition-slow: 0.3s ease;
+/* ── Toolbar ── */
+.curse-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem var(--padding, 1rem);
+    background: var(--dark-1, #0d0d0d);
+    border-bottom: 1px solid rgba(255,255,255,.07);
 }
 
-.flex-curse {
-    flex: 1 1 45%;
-    min-width: 350px;
-    max-width: 590px;
-    padding: var(--padding);
-    border-radius: var(--border-radius);
-    background: var(--ordealis-img) right / cover repeat var(--bg-curse);
-    border: 1px solid var(--border-colour);
-    box-shadow: var(--shadow);
-    color: var(--text-colour);
-    transition:
-        transform var(--transition-fast),
-        background-color var(--transition-slow),
-        box-shadow var(--transition-slow);
+.curse-type-tabs {
+    display: flex;
+    gap: 2px;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: var(--border-radius, 4px);
+    overflow: hidden;
 }
 
-.flex-curse h3 {
-    color: var(--title-colour);
+.curse-type-btn {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 4px 12px;
+    font-size: .75rem;
+    color: var(--text-muted, #888);
+    cursor: pointer;
+    transition: background .12s, color .12s;
+    box-shadow: none;
+    transform: none !important;
 }
 
-.flex-curse:hover {
-    background-color: var(--bg-curse-hover);
-    box-shadow: var(--shadow-hover);
+.curse-type-btn:hover { background: rgba(255,255,255,.07); color: var(--text-cream, #e8dfc8); }
+.curse-type-btn.active { background: var(--gold-1, #c8922a); color: var(--dark-1, #111); }
+
+#curse-search {
+    flex: 1;
+    min-width: 160px;
+    max-width: 280px;
+    font-size: .8rem;
 }
 
-section {
-    background: var(--ordealis-img) right bottom / auto repeat-x;
-    overflow-x: hidden;
+.curse-actions {
+    display: flex;
+    gap: .3rem;
+}
+.curse-actions button { font-size: .75rem; padding: 3px 10px; }
+
+.curse-count {
+    font-size: .75rem;
+    color: var(--text-muted, #888);
+    white-space: nowrap;
+}
+
+.curse-no-results {
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-muted, #888);
+    display: none;
+}
+
+/* ── Intro panel ── */
+.curse-intro-panel {
+    margin: .75rem var(--padding, 1rem);
+    background: var(--dark-2, #1a1a1a);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: var(--border-radius, 4px);
+}
+
+.curse-intro-panel summary {
+    padding: .5rem .75rem;
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--text-muted, #888);
+    cursor: pointer;
+    user-select: none;
+}
+
+.curse-intro-body {
+    padding: .75rem 1rem 1rem;
+    border-top: 1px solid rgba(255,255,255,.06);
+}
+
+.curse-intro-body h3 {
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--gold-2, #a87820);
+    margin: 0 0 .35rem;
+}
+
+.curse-intro-body p {
+    font-size: .83rem;
+    line-height: 1.6;
+    color: var(--text-cream, #e8dfc8);
+    margin: 0 0 .4rem;
+}
+
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+@media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ── Grid ── */
+#curse-sections {
+    padding: var(--padding, 1rem);
+    gap: .5rem var(--padding, 1rem);
+}
+
+/* ── Row detail ── */
+.curse-row-detail {
+    background: var(--dark-2, #1a1a1a);
+    padding: .9rem 1rem 1.1rem 1.4rem;
+}
+
+/* ── Subtitle in row head ── */
+.curse-subtitle {
+    font-size: var(--codex-tag-size, .65rem);
+    color: var(--text-muted, #888);
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+/* ── Source + type tags ── */
+.curse-type-tag,
+.curse-source-tag {
+    font-size: var(--codex-tag-size, .65rem);
+    padding: 2px 7px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    white-space: nowrap;
+}
+
+.curse-type-tag {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.12);
+    color: rgba(255,255,255,.6);
+}
+
+.curse-type--disease { color: #e08060; border-color: rgba(200,80,40,.4); background: rgba(200,80,40,.1); }
+.curse-type--curse   { color: #b060e0; border-color: rgba(140,40,180,.4); background: rgba(140,40,180,.1); }
+
+.curse-source-tag {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    color: rgba(255,255,255,.4);
+}
+
+/* ── Row body ── */
+.curse-desc {
+    font-size: var(--codex-effect-size, .85rem);
+    line-height: var(--codex-lh, 1.6);
+    color: var(--text-cream, #e8dfc8);
+    margin: 0 0 .75rem;
+}
+
+/* ── Infection notice ── */
+.curse-infection {
+    font-size: var(--codex-meta-size, .73rem);
+    background: rgba(255,255,255,.04);
+    border-left: 3px solid var(--row-accent, #555);
+    border-radius: 0 var(--border-radius, 4px) var(--border-radius, 4px) 0;
+    padding: .4rem .65rem;
+    margin-bottom: .75rem;
+    color: var(--text-cream, #e8dfc8);
+    line-height: 1.5;
+}
+
+.curse-infection-label {
+    font-weight: 700;
+    color: var(--gold-2, #a87820);
+    font-size: .65rem;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-right: .35rem;
+}
+
+/* ── Section blocks ── */
+.curse-section-block { margin-bottom: .85rem; }
+
+.curse-section-label {
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--gold-2, #a87820);
+    margin: 0 0 .3rem;
+    padding-bottom: .2rem;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+.curse-section-intro {
+    font-size: var(--codex-meta-size, .73rem);
+    color: var(--text-muted, #888);
+    font-style: italic;
+    margin: .2rem 0 .4rem;
+    line-height: 1.5;
+}
+
+/* ── Steps ── */
+.curse-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.curse-step {
+    display: flex;
+    gap: .5rem;
+    font-size: var(--codex-meta-size, .73rem);
+    line-height: 1.5;
+    padding: .28rem 0;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.curse-step:last-child { border-bottom: none; }
+
+.curse-step-num {
+    flex-shrink: 0;
+    width: 1.3em;
+    height: 1.3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .62rem;
+    font-weight: 700;
+    background: rgba(255,255,255,.06);
+    color: var(--text-muted, #888);
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.1);
+    margin-top: .15rem;
+}
+
+.curse-step-body { flex: 1; min-width: 0; }
+
+.curse-step-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .3rem;
+    margin-bottom: .08rem;
+}
+
+.curse-step-name {
+    font-weight: 700;
+    color: var(--text-cream, #e8dfc8);
+}
+
+.curse-action-tag {
+    font-size: .6rem;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.12);
+    color: var(--text-muted, #888);
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+
+.curse-step-note {
+    font-size: .6rem;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: rgba(180,140,40,.1);
+    border: 1px solid rgba(180,140,40,.25);
+    color: var(--gold, #c8922a);
+    letter-spacing: .2px;
+}
+
+.curse-step-desc {
+    color: var(--text-muted, #999);
+    margin: 0;
+}
+
+/* ── Unlock reward ── */
+.curse-reward {
+    margin-top: .5rem;
+    padding: .4rem .65rem;
+    background: rgba(180,140,40,.08);
+    border: 1px solid rgba(180,140,40,.2);
+    border-radius: var(--border-radius, 4px);
+    font-size: var(--codex-meta-size, .73rem);
+    color: var(--text-cream, #e8dfc8);
+    line-height: 1.5;
+}
+
+.curse-reward-label {
+    font-size: .6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--gold, #c8922a);
+    margin-right: .3rem;
 }

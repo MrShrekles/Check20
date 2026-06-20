@@ -315,7 +315,7 @@
         picker.style.display = 'flex';
         requestAnimationFrame(() => {
             positionAbove(toolbar, picker);
-            // Recalculate — picker is above toolbar which is above the field
+            // Recalculate - picker is above toolbar which is above the field
             const tbRect = toolbar.getBoundingClientRect();
             const pkRect = picker.getBoundingClientRect();
             picker.style.top  = `${tbRect.top - pkRect.height - 6}px`;

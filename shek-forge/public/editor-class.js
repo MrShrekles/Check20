@@ -1,11 +1,11 @@
-// editor-class.js — path & talent editor for class-new.json
+// editor-class.js - path & talent editor for class-new.json
 
 // ── DOMAIN VALUES ─────────────────────────────────────────────────────────────
 const CD = {
     classes:     ['tank', 'professional', 'support', 'merchant', 'mage'],
     origins:     ['', 'arcane', 'tech', 'nature', 'celestial', 'chrono', 'crystal', 'dragon', 'elemental', 'fey', 'life', 'vozian', 'chaos', 'basic'],
     actions:     ['', 'Resource', 'Action', 'Half Action', 'Off-Action', 'Passive', 'Special', 'Upgrade'],
-    checks:      ['', 'Strength', 'Agility', 'Intellect', 'Survival', 'Observation', 'Crafting', 'Spirit', 'Mental', 'Physical', 'Stealth', 'Performance', 'Provoke', 'Medicine'],
+    checks:      ['', 'Agility', 'Crafting', 'Influence', 'Intellect', 'Luck', 'Observation', 'Spirit', 'Stealth', 'Strength', 'Survival', 'Mental', 'Physical'],
     ranges:      ['', 'Self', 'Touch', 'Melee', 'Reach', 'Short', 'Medium', 'Long', 'Area', 'Known'],
     damageTypes: ['', 'Impact', 'Piercing', 'Slashing', 'Acid', 'Eclipse', 'Fire', 'Fluid', 'Ice', 'Lightning', 'Solar', 'Thunder', 'Toxic', 'Nature', 'Psychic', 'Vozian', 'Healing'],
 };
@@ -58,7 +58,7 @@ function classAddStep(entryIdx, branch) {
     const steps = entry[branch].steps;
     steps.push({
         step: steps.length,
-        name: '', action: '', check: '', range: '',
+        name: '', action: '', check: '', checkType: '', range: '',
         description: '', duration: '', damage: '', damageType: '', armor: '', condition: '',
     });
     markUnsaved();
@@ -84,7 +84,7 @@ const CD_ACTION_COLORS = {
 function renderClassStep(step, si, idx, branch, durId, condId, total) {
     const pp    = key => escAttr(`${branch}.steps.${si}.${key}`);
     const sel   = (opts, val) => opts.map(o =>
-        `<option value="${escAttr(o)}"${o === (val ?? '') ? ' selected' : ''}>${escHtml(o) || '—'}</option>`
+        `<option value="${escAttr(o)}"${o === (val ?? '') ? ' selected' : ''}>${escHtml(o) || '-'}</option>`
     ).join('');
 
     const actionColor = CD_ACTION_COLORS[step.action] || 'var(--border-bright)';
@@ -108,8 +108,11 @@ function renderClassStep(step, si, idx, branch, durId, condId, total) {
         <div class="extra-feature-body">
             <div class="field-flex">
                 <div class="field-wrap fw-sm">
-                    <label class="field-label">Action</label>
-                    <select class="field-input class-step-action"
+                    <label class="field-label" style="display:flex;align-items:center;gap:4px;">
+                        Action
+                        ${!step.action ? '<span style="color:#cc5544;font-size:.7em;">⚠</span>' : ''}
+                    </label>
+                    <select class="field-input class-step-action" style="${!step.action ? 'border-color:#cc5544;' : ''}"
                         onchange="updateField(${idx},'${pp('action')}',this.value);renderEditor()">
                         ${sel(CD.actions, step.action)}
                     </select>
@@ -119,6 +122,20 @@ function renderClassStep(step, si, idx, branch, durId, condId, total) {
                     <select class="field-input"
                         onchange="updateField(${idx},'${pp('check')}',this.value)">
                         ${sel(CD.checks, step.check)}
+                    </select>
+                </div>
+                <div class="field-wrap fw-sm" title="Who makes this check?">
+                    <label class="field-label" style="display:flex;align-items:center;gap:4px;">
+                        Who rolls
+                        ${!step.check ? '' : !step.checkType ? '<span style="color:#cc8833;font-size:.7em;">⚠</span>' : ''}
+                    </label>
+                    <select class="field-input" style="${step.checkType === 'enemy' ? 'border-color:#cc5544;color:#e08080;' : step.checkType === 'self' ? 'border-color:#55aa55;color:#80cc80;' : step.checkType === 'contested' ? 'border-color:#5599cc;color:#88ccff;' : step.checkType === 'unneeded' ? 'border-color:#666;color:#aaa;' : ''}"
+                        onchange="updateField(${idx},'${pp('checkType')}',this.value);renderEditor()">
+                        <option value=""           ${!step.checkType ? 'selected' : ''}>-</option>
+                        <option value="self"       ${step.checkType === 'self'       ? 'selected' : ''}>Ally</option>
+                        <option value="contested"  ${step.checkType === 'contested'  ? 'selected' : ''}>Contested</option>
+                        <option value="enemy"      ${step.checkType === 'enemy'      ? 'selected' : ''}>Enemy</option>
+                        <option value="unneeded"   ${step.checkType === 'unneeded'   ? 'selected' : ''}>Unneeded</option>
                     </select>
                 </div>
                 <div class="field-wrap fw-sm">
@@ -161,7 +178,7 @@ function renderClassStep(step, si, idx, branch, durId, condId, total) {
                 </div>
                 <div class="field-wrap fw-full">
                     <label class="field-label">Description</label>
-                    <textarea class="field-input" rows="3"
+                    <textarea class="field-input" rows="3" spellcheck="true"
                         onchange="updateField(${idx},'${pp('description')}',this.value)"
                         oninput="markUnsaved()">${escHtml(step.description || '')}</textarea>
                 </div>
@@ -185,24 +202,24 @@ function renderClassBranch(entry, idx, branch) {
 
     const items = steps.length
         ? steps.map((s, si) => renderClassStep(s, si, idx, branch, durId, condId, steps.length)).join('')
-        : `<div class="extra-features-empty">No steps — click + Step to add one</div>`;
+        : `<div class="extra-features-empty">No steps - click + Step to add one</div>`;
 
-    return `<div class="forge-section">
-        <div class="section-header section-header-split">
+    return `<details class="forge-section forge-section-collapsible" open>
+        <summary class="section-header section-header-split">
             <span>${label}
                 <span style="opacity:0.4;font-size:9px;letter-spacing:0;">[${steps.length} steps]</span>
             </span>
-            <button class="btn-section-add" onclick="classAddStep(${idx},'${branch}')">+ Step</button>
-        </div>
+            <button class="btn-section-add" onclick="event.preventDefault();classAddStep(${idx},'${branch}')">+ Step</button>
+        </summary>
         ${datalists}
         <div class="extra-features-list">${items}</div>
-    </div>`;
+    </details>`;
 }
 
 // ── MAIN RENDER ───────────────────────────────────────────────────────────────
 function renderClassEntry(entry, idx) {
     const sel = (opts, val) => opts.map(o =>
-        `<option value="${escAttr(o)}"${o === (val ?? '') ? ' selected' : ''}>${escHtml(o) || '—'}</option>`
+        `<option value="${escAttr(o)}"${o === (val ?? '') ? ' selected' : ''}>${escHtml(o) || '-'}</option>`
     ).join('');
 
     const identitySection = `<div class="forge-section">
@@ -232,7 +249,7 @@ function renderClassEntry(entry, idx) {
                 </div>
                 <div class="field-wrap fw-full">
                     <label class="field-label">Description</label>
-                    <textarea class="field-input" rows="3"
+                    <textarea class="field-input" rows="3" spellcheck="true"
                         onchange="updateField(${idx},'desc',this.value)"
                         oninput="markUnsaved()">${escHtml(entry.desc || '')}</textarea>
                 </div>
@@ -240,13 +257,52 @@ function renderClassEntry(entry, idx) {
         </div>
     </div>`;
 
-    return identitySection
+    return renderClassQualityCheck(entry, idx)
+        + identitySection
         + renderClassBranch(entry, idx, 'path')
-        + renderClassBranch(entry, idx, 'talent')
-        + renderClassQualityCheck(entry, idx);
+        + renderClassBranch(entry, idx, 'talent');
 }
 
 // ── QUALITY CHECKER ───────────────────────────────────────────────────────────
+
+// Detects descriptions where an enemy/target is the one rolling
+const ENEMY_FACING_RX = /\b(?:enemies|opponents?|targets?|each creature|all creatures|must make|succeed on|creatures?\s+(?:within|in|around|that)|they make|creature makes?|affected creatures?|hostile)\b/i;
+
+// The 10 standard Physical + Mental checks that map to investable stats
+const STANDARD_CHECKS = new Set([
+    'Agility','Crafting','Stealth','Strength','Survival',       // Physical
+    'Influence','Intellect','Luck','Observation','Spirit',       // Mental
+]);
+
+const CLASS_QC_AI_WORDS = [
+    'delve','tapestry','testament','seamlessly','vibrant',
+    'embark','foster','pivotal','holistic','multifaceted',
+    'leverage','utilize','game-changing','ever-evolving',
+    'landscape','ecosystem','paradigm','synergy','notably',
+    'it is worth noting',"it's worth noting",
+    'in the realm of','navigate',
+];
+
+// Heuristic grammar checks run on any prose field
+const GRAMMAR_CHECKS = [
+    { rx: /\b(\w+)\s+\1\b/i, code: 'repeat_word',  label: 'Repeated word',  detail: m => `"${m[0]}" — word repeated consecutively.` },
+    { rx: /  +/,              code: 'double_space', label: 'Double space',   detail: () => 'Contains two or more consecutive spaces.' },
+];
+
+function runGrammarChecks(text) {
+    if (!text) return [];
+    return GRAMMAR_CHECKS
+        .map(c => { const m = text.match(c.rx); return m ? { ...c, match: m } : null; })
+        .filter(Boolean);
+}
+
+const CLASS_QC_TERMS = [
+    [/\+\d+ stat\b/gi,   '+N stat',     '+N bonus',  'stat_term'],
+    [/\bskill check\b/gi,'skill check', 'check',      'skill_check_term'],
+    [/\bhit points\b/gi, 'hit points',  'wounds',     'hp_term'],
+    [/\bspell slots?\b/gi,'spell slot', 'Mana',       'slot_term'],
+    [/\bsaving throw\b/gi,'saving throw','check',     'save_term'],
+];
 
 const CLASS_QC = {
     conditions: [
@@ -256,8 +312,8 @@ const CLASS_QC = {
         'Constrained','Deafened','Death',
     ],
     checks: [
-        'Strength','Agility','Intellect','Survival','Observation','Crafting',
-        'Spirit','Mental','Physical','Stealth','Performance','Provoke','Medicine',
+        'Agility','Crafting','Influence','Intellect','Luck','Observation',
+        'Spirit','Stealth','Strength','Survival','Mental','Physical',
     ],
     // matches "for 1 minute", "until end of your next turn", etc.
     durationRx: /(?:for |lasts? |remains? for )([\w\s]+?(?:minute|round|hour|day)s?|until (?:the )?end of (?:your next turn|combat|the round|the turn)|until the start of your next turn|end of combat)/i,
@@ -353,13 +409,23 @@ function classQCAnalyze(entry) {
                 const chkRx = new RegExp(`\\b(${CLASS_QC.checks.join('|')}) check\\b`, 'i');
                 const chkM  = desc.match(chkRx);
                 if (chkM) {
-                    const isTargetSave = /\b(?:must make|succeed on|each creature|enemies|opponents?|targets?)\b/i.test(desc);
-                    const note = isTargetSave ? ' (looks like a target save — verify before applying)' : '';
+                    const isTargetSave = ENEMY_FACING_RX.test(desc);
+                    const note = isTargetSave ? ' (looks like an enemy save - verify before applying)' : '';
                     push('missing_check', 'Check in description, field empty',
                         `Detected "${chkM[1]} check"${note}.`,
                         { path: `${branch}.steps.${si}.check`, value: chkM[1], label: 'Add Check' }
                     );
                 }
+            }
+
+            // ── 3b. Check field set but checkType not tagged ─────────────────
+            if (step.check && STANDARD_CHECKS.has(step.check) && !step.checkType) {
+                const detectedEnemy = ENEMY_FACING_RX.test(desc);
+                push('untagged_check', 'Check type not set (self or enemy?)',
+                    `"${step.check}" check is filled but "Who rolls" is unset. ${detectedEnemy ? 'Description looks enemy-facing.' : 'Description looks like your own roll.'}`,
+                    { path: `${branch}.steps.${si}.checkType`, value: detectedEnemy ? 'enemy' : 'self',
+                      label: `Set: ${detectedEnemy ? 'Enemy' : 'Ally'}` }
+                );
             }
 
             // ── 4. Duration in description but field empty ───────────────────
@@ -419,12 +485,36 @@ function classQCAnalyze(entry) {
                     if (name === step.name || name.length < 4) continue;
                     const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                     if (new RegExp(`\\bwhen you (?:use (?:the )?|cast |activate )?${escaped}\\b`, 'i').test(desc)) {
-                        push('upgrade_by_ref', `References "${name}" — may be an Upgrade`,
+                        push('upgrade_by_ref', `References "${name}" - may be an Upgrade`,
                             `"When you … ${name}" found in description, action is "${step.action || '(blank)'}".`,
                             { path: `${branch}.steps.${si}.action`, value: 'Upgrade', label: 'Set → Upgrade' }
                         );
                         break;
                     }
+                }
+            }
+            // ── 8. Grammar heuristics ───────────────────────────────────────
+            for (const hit of runGrammarChecks(desc)) {
+                push(`grammar_${hit.code}`, hit.label, hit.detail(hit.match), null);
+            }
+
+            // ── 9. AI language + terminology ────────────────────────────────
+            const aiHits = CLASS_QC_AI_WORDS.filter(w => new RegExp(`\\b${w}\\b`, 'i').test(desc));
+            if (aiHits.length) {
+                push('ai_words', 'AI-sounding language detected',
+                    `Flagged: ${aiHits.map(h => `"${h}"`).join(', ')}. Rewrite without these words.`, null);
+            }
+
+            if (/[a-z,] - [a-z]/i.test(desc)) {
+                push('em_dash', 'Em dash substitute found (" - ")',
+                    'Contains " - " used as a sentence connector. Rewrite the sentence without the dash.', null);
+            }
+
+            for (const [rx, bad, good, code] of CLASS_QC_TERMS) {
+                const m = desc.match(rx);
+                if (m) {
+                    push(`term_${code}`, `Wrong term: "${bad}" should be "${good}"`,
+                        `Found "${m[0]}". Use "${good}" instead.`, null);
                 }
             }
         }
@@ -438,15 +528,26 @@ function renderClassQualityCheck(entry, idx) {
     _qcIssues = issues;
 
     const TYPE_COLOR = {
-        empty_action:       '#cc5544',
-        missing_condition:  '#cc8833',
-        missing_check:      '#cc8833',
-        missing_duration:   '#7788bb',
-        missing_damage:     '#7788bb',
-        damage_no_type:     '#cc5544',
-        type_no_damage:     '#cc5544',
-        upgrade_by_name:    '#44aacc',
-        upgrade_by_ref:     '#44aacc',
+        empty_action:        '#cc5544',
+        missing_condition:   '#cc8833',
+        missing_check:       '#cc8833',
+        missing_duration:    '#7788bb',
+        missing_damage:      '#7788bb',
+        damage_no_type:      '#cc5544',
+        type_no_damage:      '#cc5544',
+        upgrade_by_name:     '#44aacc',
+        upgrade_by_ref:      '#44aacc',
+        untagged_check:      '#cc8833',
+        // contested is valid, no QC color needed
+        ai_words:            '#9955bb',
+        em_dash:             '#9955bb',
+        grammar_repeat_word: '#3399aa',
+        grammar_double_space:'#3399aa',
+        term_stat_term:      '#cc8833',
+        term_skill_check_term:'#cc8833',
+        term_hp_term:        '#cc8833',
+        term_slot_term:      '#cc8833',
+        term_save_term:      '#cc8833',
     };
 
     const body = issues.length === 0
@@ -459,9 +560,15 @@ function renderClassQualityCheck(entry, idx) {
                        onclick="classQCApply(${idx},'${escAttr(issue.key)}')"
                    >${escHtml(issue.fix.label)}</button>`
                 : '';
-            const ignBtn = `<button class="btn btn-ghost" style="font-size:9px;padding:2px 8px;"
-                    onclick="classQCIgnore('${escAttr(issue.key)}')"
-                >Ignore</button>`;
+            const ignBtn = issue.code === 'untagged_check'
+                ? `<button class="btn btn-ghost" style="font-size:9px;padding:2px 8px;"
+                       onclick="updateField(${idx},'${escAttr(`${issue.branch}.steps.${issue.si}.checkType`)}','unneeded');classQCIgnore('${escAttr(issue.key)}')"
+                   >Unneeded</button>`
+                : issue.code === 'empty_action'
+                ? ''
+                : `<button class="btn btn-ghost" style="font-size:9px;padding:2px 8px;"
+                       onclick="classQCIgnore('${escAttr(issue.key)}')"
+                   >Ignore</button>`;
             return `<div class="class-qc-issue" style="border-left:3px solid ${typeColor};">
                 <div class="class-qc-card-hd">
                     <span class="class-qc-badge">${escHtml(branchLbl)} ${issue.si}</span>
@@ -479,14 +586,14 @@ function renderClassQualityCheck(entry, idx) {
         ? `<span class="class-qc-cnt class-qc-cnt-warn">${issues.length}</span>`
         : `<span class="class-qc-cnt class-qc-cnt-ok">✓</span>`;
 
-    return `<div class="forge-section">
-        <div class="section-header section-header-split">
-            <span>Quality Check ${badge}</span>
+    return `<details class="forge-section forge-section-qc" ${issues.length > 0 ? 'open' : ''}>
+        <summary class="section-header section-header-split forge-qc-summary">
+            <span class="forge-qc-title">Quality Check ${badge}</span>
             <button class="btn btn-ghost" style="font-size:9px;padding:1px 8px;"
-                onclick="classQCUnignoreAll('${escAttr(entry.name)}')">Reset Ignored</button>
-        </div>
+                onclick="event.preventDefault();classQCUnignoreAll('${escAttr(entry.name)}')">Reset Ignored</button>
+        </summary>
         ${body}
-    </div>`;
+    </details>`;
 }
 
 // ── REGISTER ──────────────────────────────────────────────────────────────────
@@ -525,13 +632,15 @@ registerEditor('class', {
 
     render: renderClassEntry,
 
+    qcCount: (data) => data.reduce((n, e) => n + classQCAnalyze(e).length, 0),
+
     newEntry: (group) => ({
         _group: group || 'tank',
         class:  group || 'tank',
         name:   '',
         origin: '',
         desc:   '',
-        path:   { steps: [{ step: 0, name: '', action: 'Resource', check: '', range: '', description: '', duration: '', damage: '', damageType: '', armor: '', condition: '' }] },
+        path:   { steps: [{ step: 0, name: '', action: 'Resource', check: '', checkType: '', range: '', description: '', duration: '', damage: '', damageType: '', armor: '', condition: '' }] },
         talent: { steps: [] },
     }),
 });

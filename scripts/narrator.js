@@ -1,4 +1,4 @@
-﻿/* Narrator companion — ARC20 */
+﻿/* Narrator companion - ARC20 */
 
 // ── SPEAKING AS + TARGET state (declared early to avoid TDZ) ──────────────────
 let narSpeakingAs = null;
@@ -9,7 +9,7 @@ let narTarget     = null;
 const PANEL_IDS = ['chat', 'party', 'generators', 'monsters', 'journal', 'ref'];
 
 function setActivePanel(key) {
-    // On desktop (≥1100px) chat is always pinned to the left column — don't clear the right panel
+    // On desktop (≥1100px) chat is always pinned to the left column - don't clear the right panel
     if (key === 'chat' && window.innerWidth >= 1100) {
         const notif = document.getElementById('chat-notif');
         if (notif) notif.hidden = true;
@@ -78,7 +78,7 @@ const nar = {
     genGods:         [],  // rolled god objects
     monPlOverrides:  {},  // name → overridden PL
     genLoot:         [],  // rolled loot results
-    journalNpcs:     [],  // legacy — migrated to characters on load
+    journalNpcs:     [],  // legacy - migrated to characters on load
     monFavorites:    [],  // monster names pinned in generator
     questLog:        [],  // { id, text, done }
     sessions:        [],  // { id, title, date, notes }
@@ -141,9 +141,9 @@ function renderParty() {
             id:         p.id,
             source:     'firebase',
             name:       p.name       || 'Player',
-            armor:      p.armor      ?? '—',
-            woundsCur:  p.woundsCur  ?? '—',
-            woundsMax:  p.woundsMax  ?? '—',
+            armor:      p.armor      ?? '-',
+            woundsCur:  p.woundsCur  ?? '-',
+            woundsMax:  p.woundsMax  ?? '-',
             mnCur:      p.mnCur      ?? null,
             mnMax:      p.mnMax      ?? null,
             gold:       p.gold       ?? null,
@@ -162,7 +162,7 @@ function renderParty() {
 
     if (!rows.length) {
         const hint = currentRoomCode
-            ? `Room <strong>${currentRoomCode}</strong> — waiting for players to join.`
+            ? `Room <strong>${currentRoomCode}</strong> - waiting for players to join.`
             : 'No players connected. Tap <strong>Invite</strong> to create a session.';
         el.innerHTML = `<p class="empty-hint">${hint}</p>`;
         return;
@@ -170,9 +170,9 @@ function renderParty() {
 
     el.innerHTML = rows.map((row, i) => {
         const liveDot  = row.source === 'firebase' ? '<span class="prow-live">●</span>' : '';
-        const xpVal    = row.xp    != null ? row.xp    : '—';
-        const mnVal    = row.mnMax ? `${row.mnCur}/${row.mnMax}` : '—';
-        const goldVal  = row.gold  != null ? row.gold  : '—';
+        const xpVal    = row.xp    != null ? row.xp    : '-';
+        const mnVal    = row.mnMax ? `${row.mnCur}/${row.mnMax}` : '-';
+        const goldVal  = row.gold  != null ? row.gold  : '-';
 
         const details = [
             row.species    && `<span class="prow-dl">Species</span><span>${row.species}</span>`,
@@ -295,7 +295,7 @@ function buildMinionCardHtml(m) {
         const dmg = [atk.damage, atk.damage_type || atk.type].filter(Boolean).join(' ');
         return `<div class="gen-mon-atk">
             <span class="gen-mon-atk-label">${label}</span>
-            <span>${atk.name}${dmg ? ' — ' + dmg : ''}</span>
+            <span>${atk.name}${dmg ? ' - ' + dmg : ''}</span>
             <button class="step-action-btn mn-roll-btn" type="button"
                 data-mn-mon="${mon.name}" data-atk-type="${label.toLowerCase()}">
                 <img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>
@@ -344,7 +344,7 @@ function buildMinionCardHtml(m) {
 
     const ms = mon ? effectiveStats(mon) : null;
     const checksHtml = ms
-        ? `<span class="enc-mon-checks">PL<strong>${ms.pl ?? '—'}</strong> Ph<strong>${ms.ph}</strong> Mt<strong>${ms.mt}</strong></span>`
+        ? `<span class="enc-mon-checks">PL<strong>${ms.pl ?? '-'}</strong> Ph<strong>${ms.ph}</strong> Mt<strong>${ms.mt}</strong></span>`
         : `<span class="minion-pl">PL ${m.pl ?? '?'}</span>`;
     const roleBadge = `<span class="char-role-badge char-role-badge--${m.role}">${m.role}</span>`;
 
@@ -364,7 +364,7 @@ function buildMinionCardHtml(m) {
         </div>
         <div class="minion-ctrl-btns">
             <button class="step-action-btn" data-mn-action="init" data-mn-id="${m.id}" title="Add to initiative"><img src="../assets/icons/weapon.png" class="btn-icon" alt="initiative"></button>
-            <button class="step-action-btn" data-mn-action="hide" data-mn-id="${m.id}" title="${m.hidden ? 'Hidden from players — click to reveal' : 'Visible to players — click to hide'}">${m.hidden ? '🙈' : '👁'}</button>
+            <button class="step-action-btn" data-mn-action="hide" data-mn-id="${m.id}" title="${m.hidden ? 'Hidden from players - click to reveal' : 'Visible to players - click to hide'}">${m.hidden ? '🙈' : '👁'}</button>
             <button class="step-action-btn step-action-btn--danger" data-mn-action="remove" data-mn-id="${m.id}">✕</button>
         </div>
     </div>
@@ -411,7 +411,7 @@ function buildNpcCardHtml(n) {
             <div class="enc-card-ctrl">
                 <button class="step-action-btn" data-char-chat="${n.id}" title="Send to chat"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
                 <button class="step-action-btn" data-char-init="${n.id}" title="Add to initiative"><img src="../assets/icons/weapon.png" class="btn-icon" alt="initiative"></button>
-                <button class="step-action-btn" data-char-hide="${n.id}" title="${n.hidden ? 'Hidden from players — click to reveal' : 'Visible to players — click to hide'}">${n.hidden ? '🙈' : '👁'}</button>
+                <button class="step-action-btn" data-char-hide="${n.id}" title="${n.hidden ? 'Hidden from players - click to reveal' : 'Visible to players - click to hide'}">${n.hidden ? '🙈' : '👁'}</button>
                 <button class="step-action-btn step-action-btn--danger" data-char-remove="${n.id}">✕</button>
             </div>
         </summary>
@@ -690,7 +690,7 @@ document.getElementById('inv-type-toggle')?.addEventListener('click', e => {
 (() => {
     const dtSel = document.getElementById('inv-w-dmg-type');
     if (dtSel && !dtSel.options.length) {
-        dtSel.innerHTML = `<option value="">—</option>` +
+        dtSel.innerHTML = `<option value="">-</option>` +
             DAMAGE_TYPES.map(t => `<option>${t}</option>`).join('');
     }
     const rangeSel = document.getElementById('inv-w-range');
@@ -907,8 +907,8 @@ function renderEnemyMonster(e, label) {
         if (f.name && f.name !== mon.feature_name) monFeats.push({ name: f.name, type: f.type || '' });
     });
     const peekContent = mon ? `
-        ${meleeA?.name  ? `<div class="enc-peek-atk">⚔ ${meleeA.name} — ${meleeA.damage} ${meleeA.damage_type || ''}</div>`   : ''}
-        ${rangedA?.name ? `<div class="enc-peek-atk">⊙ ${rangedA.name} — ${rangedA.damage} ${rangedA.damage_type || ''}</div>` : ''}
+        ${meleeA?.name  ? `<div class="enc-peek-atk">⚔ ${meleeA.name} - ${meleeA.damage} ${meleeA.damage_type || ''}</div>`   : ''}
+        ${rangedA?.name ? `<div class="enc-peek-atk">⊙ ${rangedA.name} - ${rangedA.damage} ${rangedA.damage_type || ''}</div>` : ''}
         ${monFeats.map(f => `<div class="enc-peek-feat"><span class="enc-peek-feat-name">${f.name}</span><span class="enc-peek-feat-type">${f.type}</span></div>`).join('')}
     ` : '';
     const conds     = e.conditions || [];
@@ -925,7 +925,7 @@ function renderEnemyMonster(e, label) {
                 <span class="enc-init-mini">${e.initiative}</span>
                 <div class="enc-mon-info">
                     <span class="enc-name">${label}</span>
-                    ${mon ? (() => { const es = effectiveStats(mon); return `<span class="enc-mon-checks">PL<strong>${es.pl ?? '—'}</strong> Ph<strong>${es.ph}</strong> Mt<strong>${es.mt}</strong>${es.mt>0?` MN<strong>${es.mt*2}</strong>`:''}</span>`; })() : ''}
+                    ${mon ? (() => { const es = effectiveStats(mon); return `<span class="enc-mon-checks">PL<strong>${es.pl ?? '-'}</strong> Ph<strong>${es.ph}</strong> Mt<strong>${es.mt}</strong>${es.mt>0?` MN<strong>${es.mt*2}</strong>`:''}</span>`; })() : ''}
                 </div>
                 <div class="enc-card-ctrl">
                     ${mon ? `<button class="step-action-btn enc-link-btn" data-enc-action="link-mon" data-enc-name="${e.name}">↗</button>` : ''}
@@ -1033,7 +1033,7 @@ function renderEncounter() {
 
     const activeTurn = nar.turnIndex % sorted.length;
     const active     = sorted[activeTurn];
-    const activeName = active?.hidden ? '???' : (active?._isEnemyGroup ? 'Enemy Turn' : (active?.name || '—'));
+    const activeName = active?.hidden ? '???' : (active?._isEnemyGroup ? 'Enemy Turn' : (active?.name || '-'));
     const activeType = active?._isEnemyGroup ? 'enemy' : active?._isNpcGroup ? 'npc' : (active?.type || 'enemy');
     if (turnBar) {
         turnBar.hidden = false;
@@ -1105,7 +1105,7 @@ function renderEncounter() {
                     <button class="step-action-btn step-action-btn--danger u-ml-auto" data-enc-action="remove" data-enc-id="${c.id}">✕</button>
                 </div>
                 ${c.note && !c.hidden ? `<div class="enc-event-note">${c.note}</div>` : ''}
-                ${c.hidden ? `<div class="enc-event-note enc-event-note--hidden">🔒 ${c.name}${c.note ? ' — ' + c.note : ''}</div>` : ''}
+                ${c.hidden ? `<div class="enc-event-note enc-event-note--hidden">🔒 ${c.name}${c.note ? ' - ' + c.note : ''}</div>` : ''}
             </div>`;
         }
 
@@ -1209,7 +1209,7 @@ function renderMonstersEncSummary() {
     }).join('');
 }
 
-// Defeat confirmation — prompted when an encounter entry's HP drops to 0
+// Defeat confirmation - prompted when an encounter entry's HP drops to 0
 function openDefeatedConfirm(c) {
     const dlg = document.getElementById('defeated-confirm-dialog');
     if (!dlg) return;
@@ -1349,7 +1349,7 @@ function migrateOldNotes() {
     }
 }
 
-function stat(val) { return val != null && val !== '' ? val : '—'; }
+function stat(val) { return val != null && val !== '' ? val : '-'; }
 
 // ── Journal: Quest Log ──
 
@@ -1519,7 +1519,7 @@ function monsterSpellEntry(m, sp, ef) {
     const damageType = ef.type || '';
     return {
         type: 'weapon-attack', monsterName: m.name, charName: m.name,
-        weaponName: `✨ ${sp.name} — ${ef.intent}`,
+        weaponName: `✨ ${sp.name} - ${ef.intent}`,
         checkLabel: 'MENTAL', checkMod, attackBonus: 0,
         rollNote: `d20(${d20})`, d20Total, rollType: 'flat',
         damageRoll: diceRolls[0] || null,
@@ -1615,7 +1615,7 @@ function renderGenMonsterList() {
             const dmg = [atk.damage, atk.damage_type || atk.type].filter(Boolean).join(' ');
             return `<div class="gen-mon-atk">
                 <span class="gen-mon-atk-label">${label}</span>
-                <span>${atk.name}${dmg ? ' — ' + dmg : ''}</span>
+                <span>${atk.name}${dmg ? ' - ' + dmg : ''}</span>
                 <button class="step-action-btn mon-chat-btn" type="button" title="Roll &amp; send"
                     data-mon-name="${m.name}" data-atk-type="${label.toLowerCase()}">
                     <img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>
@@ -1672,7 +1672,7 @@ function renderGenMonsterList() {
                     <span class="gen-mon-group">${m._group || m.origin || ''}</span>
                 </div>
                 <div class="gen-mon-stats">
-                    <span>PL <strong id="${cid}-s-pl">${stats.pl ?? '—'}</strong></span>
+                    <span>PL <strong id="${cid}-s-pl">${stats.pl ?? '-'}</strong></span>
                     <span>HP <strong id="${cid}-s-hp">${stats.hp}</strong></span>
                     <span>Ph <strong id="${cid}-s-ph">${stats.ph}</strong></span>
                     <span>Mt <strong id="${cid}-s-mt">${stats.mt}</strong></span>
@@ -2297,14 +2297,14 @@ function renderGenLootList() {
                     try {
                         for (const it of r.items) {
                             await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', crypto.randomUUID()), {
-                                name: it.text.split(' — ')[0], desc: it.text, amount: 1, bulk: 1, addedAt: arc.serverTimestamp(),
+                                name: it.text.split(' - ')[0], desc: it.text, amount: 1, bulk: 1, addedAt: arc.serverTimestamp(),
                             });
                         }
                     } catch(e) { console.error('[ARC] loot inv failed:', e); }
                 }
             } else {
                 r.items.forEach(it => {
-                    nar.inventory.push({ id: crypto.randomUUID(), name: it.text.split(' — ')[0], desc: it.text, amount: 1, bulk: 1 });
+                    nar.inventory.push({ id: crypto.randomUUID(), name: it.text.split(' - ')[0], desc: it.text, amount: 1, bulk: 1 });
                 });
                 saveNar(); renderInventory();
             }
@@ -2375,7 +2375,7 @@ function renderGenGodList() {
                     <span class="gen-mon-group">${words.slice(0, 3).join(' · ')}</span>
                 </div>
                 <div class="gen-mon-stats">
-                    <span>Rank <strong>${g.rank ?? '—'}</strong></span>
+                    <span>Rank <strong>${g.rank ?? '-'}</strong></span>
                 </div>
                 <div class="gen-mon-card-btns">
                     <button class="gen-mon-toggle" data-cid="${cid}">▾</button>
@@ -2426,7 +2426,7 @@ function renderGenGodList() {
             const words = (g.words || '').split(',').map(w => w.trim()).filter(Boolean);
             postToSharedChat({
                 type: 'feature', name: g.name,
-                tags: [`Rank ${g.rank ?? '—'}`, ...(g.location ? [g.location] : []), ...words.slice(0, 3)],
+                tags: [`Rank ${g.rank ?? '-'}`, ...(g.location ? [g.location] : []), ...words.slice(0, 3)],
                 desc: g.desc || '',
                 time: chatTimestamp(), diceRolls: [],
             });
@@ -2525,7 +2525,7 @@ function questToJournalText(q) {
 
 function dungeonToJournalText(d) {
     const trap = d.trap ? `\nTrap: ${d.trap.name} (${d.trap.dmg})\nEffect: ${d.trap.effect}` : '';
-    return `\n--- Door & Trap ---\nDoor: ${d.door}\nLock: ${d.lockName} — ${d.lockKey}\nHint: ${d.lockHint}${trap}\n`;
+    return `\n--- Door & Trap ---\nDoor: ${d.door}\nLock: ${d.lockName} - ${d.lockKey}\nHint: ${d.lockHint}${trap}\n`;
 }
 
 function hexToJournalText(h) {
@@ -2589,7 +2589,7 @@ function renderGenDungeonList() {
     renderQuestCards('gen-dungeon-list', nar.genDungeons,
         d => [
             ['Door', d.door],
-            ['Lock', `${d.lockName} — ${d.lockKey}`],
+            ['Lock', `${d.lockName} - ${d.lockKey}`],
             ['Hint', d.lockHint],
             ...(d.trap ? [['Trap', `${d.trap.name} (${d.trap.dmg})`], ['Effect', d.trap.effect]] : []),
         ],
@@ -2973,9 +2973,9 @@ function listenToSharedChat(code) {
                 if (change.type !== 'added') return;
                 const m = change.doc.data();
                 if (['system', 'turn'].includes(m.type) || m.removed || m.isNarrator) return;
-                const title = m.author ? `${m.author} — ${currentRoomCode || 'ARC20'}` : (currentRoomCode || 'ARC20');
+                const title = m.author ? `${m.author} - ${currentRoomCode || 'ARC20'}` : (currentRoomCode || 'ARC20');
                 const body  = m.type === 'roll'          ? `Rolled ${m.total ?? ''}` :
-                              m.type === 'weapon-attack' ? `${m.weaponName || 'Attack'} — ${m.total ?? ''}` :
+                              m.type === 'weapon-attack' ? `${m.weaponName || 'Attack'} - ${m.total ?? ''}` :
                               m.text ? m.text.slice(0, 80) : 'New message';
                 ArcNotify.show(title, body);
             });
@@ -2997,7 +2997,7 @@ function listenToSharedChat(code) {
     }, err => console.error('[ARC] chat listener:', err));
 }
 
-// Broadcast emoji reactions — stored on the room doc (no new security rule needed)
+// Broadcast emoji reactions - stored on the room doc (no new security rule needed)
 document.addEventListener('emoji-react', async ({ detail }) => {
     const arc = window.__arc;
     if (!arc?.db || !arc?.uid || !currentRoomCode) return;
@@ -3008,7 +3008,7 @@ document.addEventListener('emoji-react', async ({ detail }) => {
     } catch(e) { console.error('[ARC] emoji-react write failed:', e); }
 });
 
-// Message reporting — write a denormalized snapshot for The Seven to review
+// Message reporting - write a denormalized snapshot for The Seven to review
 document.addEventListener('chat-report', async ({ detail }) => {
     const arc = window.__arc;
     if (!arc?.db || !arc?.uid || !currentRoomCode) return;
@@ -3071,7 +3071,7 @@ function rollNarDamageTable(damageType, count) {
     if (!table) return;
     for (let i = 0; i < count; i++) {
         const roll   = Math.ceil(Math.random() * 6);
-        const result = table.entries[roll - 1] || '—';
+        const result = table.entries[roll - 1] || '-';
         postToSharedChat({ type: 'dmg-table', damageType, roll, result, time: chatTimestamp() });
     }
 }
@@ -3108,7 +3108,7 @@ document.getElementById('nar-chat-log')?.addEventListener('click', async e => {
         if (pollId) await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'chat', pollId), { [`votes.${arc.uid}`]: choice }).catch(() => {});
         return;
     }
-    // Remove message — marks removed:true, snapshot re-renders for everyone
+    // Remove message - marks removed:true, snapshot re-renders for everyone
     const deleteBtn = e.target.closest('.chat-delete-btn');
     if (deleteBtn && window.__arc && currentRoomCode) {
         const id = deleteBtn.dataset.chatId;
@@ -3150,10 +3150,10 @@ document.getElementById('nar-chat-log')?.addEventListener('click', async e => {
 function buildSharedChatCard(m) {
     if (m.removed) {
         const undoBtn = m.id ? `<button class="chat-undo-btn" data-chat-id="${m.id}" title="Restore message" type="button">↩ Undo</button>` : '';
-        return `<li class="chat-msg-wrap chat-msg--removed" data-chat-id="${m.id || ''}">${undoBtn}<span class="chat-removed-text">— removed —</span></li>`;
+        return `<li class="chat-msg-wrap chat-msg--removed" data-chat-id="${m.id || ''}">${undoBtn}<span class="chat-removed-text">- removed -</span></li>`;
     }
     if (m.type === 'system') {
-        return `<li class="chat-msg-wrap chat-system-msg" data-chat-id="${m.id || ''}"><span class="chat-sys-text">— ${m.text || ''} —</span></li>`;
+        return `<li class="chat-msg-wrap chat-system-msg" data-chat-id="${m.id || ''}"><span class="chat-sys-text">- ${m.text || ''} -</span></li>`;
     }
     if (m.type === 'poll') {
         const deleteBtn = m.id ? `<button class="chat-delete-btn" data-chat-id="${m.id}" title="Delete poll" type="button">✕</button>` : '';
@@ -3211,7 +3211,7 @@ async function toggleNarReaction(msgId, emoji) {
     } catch(e) { console.error('[ARC] toggleNarReaction:', e); }
 }
 
-// Typing indicator — write timestamp to room doc while narrator types
+// Typing indicator - write timestamp to room doc while narrator types
 let _typingTimer = null;
 function _writeTyping() {
     const arc = window.__arc;
@@ -3236,10 +3236,10 @@ async function sendNarChatMsg() {
     if (!text) return;
     if (!arcCanSendChat()) return;
     if (!(await arcAutomodGate(text, currentRoomCode, narSpeakingAs || 'Narrator'))) { input.value = ''; return; }
-    if (!arcRateLimitOk()) { alert('You are sending messages too fast — wait a few seconds and try again.'); return; }
+    if (!arcRateLimitOk()) { alert('You are sending messages too fast - wait a few seconds and try again.'); return; }
     if (!currentRoomCode) {
         const el = document.getElementById('nar-chat-log');
-        if (el) el.innerHTML = '<li class="empty-hint empty-hint--danger">No active session — create one from the Party tab.</li>';
+        if (el) el.innerHTML = '<li class="empty-hint empty-hint--danger">No active session - create one from the Party tab.</li>';
         return;
     }
     postToSharedChat({ type: 'msg', text, time: chatTimestamp() });
@@ -3251,7 +3251,7 @@ document.getElementById('nar-chat-input')?.addEventListener('keydown', e => {
 });
 arcInitBanNotice('chat-input-row');
 
-// Chat toolbar — emoji, dice, poll panels (one open at a time)
+// Chat toolbar - emoji, dice, poll panels (one open at a time)
 (function () {
     const dicePanel  = document.getElementById('nar-dice-panel');
     const emojiPanel = document.getElementById('nar-emoji-panel');
@@ -3515,7 +3515,7 @@ function applyPrivacyMode() {
     const btn = document.getElementById('btn-privacy-mode');
     if (btn) {
         btn.textContent = privacyMode ? '🙈' : '👁';
-        btn.title       = privacyMode ? 'Privacy mode ON — tap to show' : 'Privacy mode — hides room code for streaming';
+        btn.title       = privacyMode ? 'Privacy mode ON - tap to show' : 'Privacy mode - hides room code for streaming';
         btn.classList.toggle('privacy-btn--active', privacyMode);
     }
 }
@@ -3570,7 +3570,7 @@ function genRoomCode() {
 
 async function createRoom(name = '', welcomeMsg = '') {
     const arc = window.__arc;
-    if (!arc?.db || !arc?.uid) { alert('Still connecting — try again in a moment.'); return; }
+    if (!arc?.db || !arc?.uid) { alert('Still connecting - try again in a moment.'); return; }
 
     const code = genRoomCode();
     try {
@@ -3708,7 +3708,7 @@ function showRoomBadge(code, name) {
     const handoutsSection = document.getElementById('nar-handouts-section');
     if (badge) {
         setBadgeContent(code, name);
-        badge.title  = `Room code: ${code} — tap to copy`;
+        badge.title  = `Room code: ${code} - tap to copy`;
         badge.hidden = false;
     }
     if (privacyBtn) privacyBtn.hidden = false;
@@ -3884,7 +3884,7 @@ function bindNarRefPanel() {
     });
 })();
 
-// Generator sections — collapsible, start closed
+// Generator sections - collapsible, start closed
 (function bindGenCollapse() {
     document.querySelectorAll('#panel-generators .section').forEach(sec => {
         sec.setAttribute('data-collapse', '');
@@ -4017,7 +4017,7 @@ function buildNarTargetPanel() {
     document.getElementById('nar-voice-dismiss')?.addEventListener('click', () => { narSpeakingAs = null; updateNarContextBar(); });
     document.getElementById('nar-target-dismiss')?.addEventListener('click', () => { narTarget = null; updateNarContextBar(); });
 
-    // Close panels on outside click — but not when clicking inside the panels themselves
+    // Close panels on outside click - but not when clicking inside the panels themselves
     document.addEventListener('click', e => {
         if (e.target.closest('#nar-voice-panel, #nar-voice-btn, #nar-target-panel, #nar-target-btn')) return;
         closeSpeakTargetPanels();

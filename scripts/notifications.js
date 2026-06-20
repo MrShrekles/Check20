@@ -1,4 +1,4 @@
-// ARC20 in-page notifications (Option A — Notification API, no backend required)
+// ARC20 in-page notifications (Option A - Notification API, no backend required)
 // Option B upgrade path: registerPushToken() will handle FCM token storage + Cloudflare Worker
 
 const ArcNotify = (() => {

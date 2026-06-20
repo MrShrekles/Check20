@@ -1,4 +1,4 @@
-/* Weapons — warm/red/orange theme using root vars only */
+/* Weapons - warm/red/orange theme using root vars only */
 
 .weapons-grid {
   display: flex;
@@ -81,7 +81,7 @@
   text-transform: uppercase;
 }
 
-/* Category / property chips — warm palette */
+/* Category / property chips - warm palette */
 .melee {
   background-color: var(--warm-2);
 }

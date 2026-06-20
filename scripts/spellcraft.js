@@ -1,6 +1,6 @@
 /* =========================
    spellcraft.js
-   Interactive Spellcraft tab — card selection flow + SP cost calculator
+   Interactive Spellcraft tab - card selection flow + SP cost calculator
    ========================= */
 
 const craftState = {
@@ -234,10 +234,10 @@ function updateSummary() {
   const mannerEl = document.getElementById('sum-manner');
   const transEl = document.getElementById('sum-transmission');
   const intentEl = document.getElementById('sum-intent');
-  if (mannerEl) mannerEl.textContent = craftState.manner || '—';
-  if (transEl) transEl.textContent = craftState.transmission || '—';
+  if (mannerEl) mannerEl.textContent = craftState.manner || '-';
+  if (transEl) transEl.textContent = craftState.transmission || '-';
   if (intentEl) intentEl.textContent = craftState.intent
-    ? `${craftState.intent} (${craftState.intentSP} SP base)` : '—';
+    ? `${craftState.intent} (${craftState.intentSP} SP base)` : '-';
 }
 
 /* ══════════════════════════════════════

@@ -1,62 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enchanted & Progression Items</title>
+    <title>Enchanted &amp; Progression Items | Armored Noir - Check20</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/spells.css">
     <link rel="stylesheet" href="styles/enchanted.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
     <script src="scripts/main.js" defer></script>
+    <script src="scripts/codex-ui.js"></script>
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/enchanted-data.js" defer></script>
+    <script src="scripts/enchanted-render.js" defer></script>
+    <script src="scripts/enchanted-ui.js" defer></script>
 </head>
 
-<body data-page-title="Enchanted">
+<body data-page-title="Enchanted Items">
     <div id="header-placeholder"></div>
     <div id="sidebar-placeholder"></div>
 
     <main>
-        <section>
-            <h1>Enchanted items</h1>
-            <p>
-                You may find in your adventures and mysteries items that have been enchanted or crafted with special
-                power. Each one carries a story. What force was used to forge it? Who created it? A forgotten mage, a
-                desperate soul, or something older? And for what purpose: protection, vengeance, or something darker?
-            </p>
-            <p>
-                Unlike standard gear, these relics may evolve, whisper secrets, or alter fate itself. Some resonate with
-                specific users. Others demand sacrifice or influence your dreams. They might be remnants of fallen gods,
-                cursed inventions, or soul-bound curiosities that grow as you do. Every enchanted item is a piece of the
-                world, and the more you learn about it, the more it might learn about you.
-            </p>
+        <!-- ── Page tabs ── -->
+        <div class="enc-page-tabs" id="enc-page-tabs">
+            <button class="enc-page-tab active" data-page="enchanted">Enchanted Items</button>
+            <button class="enc-page-tab" data-page="progression">Progression Items</button>
+        </div>
 
-            <!-- put this just above #item-cards -->
-            <div id="item-controls">
-
-                <label class="sort-wrap">
-                    Sort&nbsp;
-                    <select id="sort-select">
-                        <option value="name">Name (A‑Z)</option>
-                        <option value="type">Type</option>
-                    </select>
-                </label>
-
-                <h2>Item Tags</h2>
-                <div id="check-filters"></div>
-                <div id="tag-filters"></div>
-
+        <!-- ══════════════════════════════════════════ -->
+        <!-- ENCHANTED ITEMS panel                      -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="enc-page-panel active" id="panel-enchanted">
+            <div class="enchanted-toolbar">
+                <div class="enchanted-type-tabs" id="enchanted-type-tabs">
+                    <button class="enc-tab active" data-filter="all">All</button>
+                    <button class="enc-tab" data-filter="Amulet">Amulets</button>
+                    <button class="enc-tab" data-filter="Armor">Armor</button>
+                    <button class="enc-tab" data-filter="Weapon">Weapons</button>
+                    <button class="enc-tab" data-filter="Gear">Gear</button>
+                    <button class="enc-tab" data-filter="Lantern">Lanterns</button>
+                    <button class="enc-tab" data-filter="Item">Items</button>
+                </div>
+                <input id="enchanted-search" type="search" placeholder="Search enchanted items…" autocomplete="off" spellcheck="false">
+                <div class="enchanted-check-filter" id="enchanted-check-filter"></div>
+                <div class="codex-size-wrap">
+                    <span>Size</span>
+                    <div class="codex-size-btns" id="codex-size-btns">
+                        <button class="codex-size-btn" data-size="small">S</button>
+                        <button class="codex-size-btn active" data-size="medium">M</button>
+                        <button class="codex-size-btn" data-size="large">L</button>
+                    </div>
+                </div>
+                <div class="enchanted-actions">
+                    <button id="enchanted-expand-all">Expand all</button>
+                    <button id="enchanted-collapse-all">Collapse all</button>
+                </div>
+                <span id="enchanted-count" class="enchanted-count"></span>
             </div>
 
-            <div id="item-cards" class="item-cards"></div>
-            <!-- load after the container -->
-            <script src="scripts/itemCards.js" defer></script>
+            <details class="enchanted-intro-panel">
+                <summary>About Enchanted Items</summary>
+                <div class="enchanted-intro-body">
+                    <p>You may find in your adventures and mysteries items that have been enchanted or crafted with special power. Each one carries a story - what force was used to forge it? Who created it? A forgotten mage, a desperate soul, or something older?</p>
+                    <p>Unlike standard gear, these relics may evolve, whisper secrets, or alter fate itself. Some resonate with specific users. Others demand sacrifice or influence your dreams.</p>
+                </div>
+            </details>
 
-        </section>
+            <p class="enchanted-no-results" id="enchanted-no-results">No items found.</p>
+            <div class="spell-grid" id="enchanted-sections"></div>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- PROGRESSION ITEMS panel                    -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="enc-page-panel" id="panel-progression">
+            <div class="enchanted-toolbar">
+                <input id="prog-search" type="search" placeholder="Search progression items…" autocomplete="off" spellcheck="false">
+                <select id="prog-origin-filter" class="prog-select">
+                    <option value="">All Origins</option>
+                </select>
+                <select id="prog-type-filter" class="prog-select">
+                    <option value="">All Types</option>
+                    <option value="Weapon">Weapon</option>
+                    <option value="Armor">Armor</option>
+                </select>
+                <div class="enchanted-actions">
+                    <button id="prog-expand-all">Expand all</button>
+                    <button id="prog-collapse-all">Collapse all</button>
+                </div>
+                <span id="prog-count" class="enchanted-count"></span>
+            </div>
+
+            <details class="enchanted-intro-panel">
+                <summary>About Progression Items</summary>
+                <div class="enchanted-intro-body">
+                    <p>Progression items are bound to a specific wielder and grow with them over 10 steps. Apply the enhancement to any eligible item, then unlock each step through play, milestones, or narrator approval. They are not found in shops - they are earned.</p>
+                </div>
+            </details>
+
+            <p class="enchanted-no-results" id="prog-no-results">No items found.</p>
+            <div class="spell-grid" id="prog-sections"></div>
+        </div>
     </main>
-
 </body>
-
 </html>

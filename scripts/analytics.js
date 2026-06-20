@@ -1,4 +1,4 @@
-// ARC20 Analytics — fire-and-forget event tracker
+// ARC20 Analytics - fire-and-forget event tracker
 // Writes to Firestore 'analytics' collection; never blocks UI or throws to callers.
 
 (function () {

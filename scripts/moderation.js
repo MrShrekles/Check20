@@ -1,4 +1,4 @@
-// moderation.js — "The Seven" moderation dashboard
+// moderation.js - "The Seven" moderation dashboard
 
 const MOD_PASS = 'sevenwatchthegate';
 
@@ -16,7 +16,7 @@ let roster      = [];
 let strikes     = [];
 
 function truncUid(uid) {
-    if (!uid) return '—';
+    if (!uid) return '-';
     return uid.length > 10 ? `${uid.slice(0, 6)}…${uid.slice(-4)}` : uid;
 }
 
@@ -79,7 +79,7 @@ document.getElementById('gate-btn')?.addEventListener('click', async () => {
         showDashboard({ linkedGoogle: false });
     } catch (e) {
         console.error('[MOD] self-register failed:', e);
-        err.textContent = 'Something went wrong — try again.';
+        err.textContent = 'Something went wrong - try again.';
         err.hidden = false;
     }
 });
@@ -100,7 +100,7 @@ document.getElementById('gate-google-btn')?.addEventListener('click', async () =
             arc.uid = uid;
             showDashboard(snap.data());
         } else {
-            err.textContent = "This Google account isn't registered as The Seven — use the passcode first.";
+            err.textContent = "This Google account isn't registered as The Seven - use the passcode first.";
             err.hidden = false;
         }
     } catch (e) {
@@ -123,7 +123,7 @@ document.getElementById('btn-link-google')?.addEventListener('click', async () =
     } catch (e) {
         console.error('[MOD] link failed:', e);
         status.textContent = e.code === 'auth/credential-already-in-use'
-            ? "This Google account is already linked elsewhere — use 'Sign in with Google' instead."
+            ? "This Google account is already linked elsewhere - use 'Sign in with Google' instead."
             : 'Link failed: ' + (e.message || e.code || 'unknown error');
     }
 });

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   GEAR PAGE — Weapons / Armor / Items
+   GEAR PAGE - Weapons / Armor / Items
    Inherits spell-row, spell-grid, spell-group-header from spells.css
    ═══════════════════════════════════════════════════════════ */
 
@@ -315,7 +315,7 @@
 
 .gear-item-label--upgrade { color: var(--gold); }
 
-/* ── Codex art panel — full-width top ── */
+/* ── Codex art panel - full-width top ── */
 .codex-art-wrap {
     width: 100%;
     margin-bottom: 0.75rem;

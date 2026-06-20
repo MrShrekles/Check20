@@ -410,7 +410,7 @@
         "range": "Short",
         "target": "One Creature",
         "duration": "Permanent , Until The End Of Your Next Turn",
-        "effect": "Interrupt the function of magical constructs, undead, or elementals under the control of a mage—either permanently or until the end of your next turn. If it is a minion of a powerful creature, the dispel may prevent further commands, allowing the minion to escape or fight back if it chooses.",
+        "effect": "Interrupt the function of magical constructs, undead, or elementals under the control of a mage-either permanently or until the end of your next turn. If it is a minion of a powerful creature, the dispel may prevent further commands, allowing the minion to escape or fight back if it chooses.",
         "cost": 6
       }
     ]

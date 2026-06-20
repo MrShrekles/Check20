@@ -1,4 +1,4 @@
-// ARC20 Firebase module — loads once, exposes window.__arc to all pages
+// ARC20 Firebase module - loads once, exposes window.__arc to all pages
 
 import { initializeApp }        from 'https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js';
 import {

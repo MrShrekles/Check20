@@ -1,4 +1,4 @@
-// chat-cards.js — shared chat card renderers
+// chat-cards.js - shared chat card renderers
 // Loaded by active-sheet.html and narrator.html before their respective scripts.
 
 const CONDITION_ICONS = {
@@ -15,14 +15,14 @@ function condChip(name) {
     return icon ? `${icon} ${name}` : name;
 }
 
-// Elapsed encounter time (minutes) from the round number — shared by narrator's
+// Elapsed encounter time (minutes) from the round number - shared by narrator's
 // encounter tracker and the player's read-only Initiative panel.
 function encTime(round) {
     return ((round - 1) * 10 / 60).toFixed(2);
 }
 
 // Groups all type==='enemy' encounter entries into a single "Enemy Turn" pseudo-entry
-// for turn-order display — shared by narrator's encounter tracker and the player's
+// for turn-order display - shared by narrator's encounter tracker and the player's
 // read-only Initiative panel so both compute the same active-turn index.
 function groupedTurnOrder(encounter) {
     const enemies = encounter.filter(c => !c.type || c.type === 'enemy');
@@ -47,7 +47,7 @@ function groupedTurnOrder(encounter) {
     return result;
 }
 
-// Weapon damage types / ranges — shared by the player's "Add Equipment" drawer
+// Weapon damage types / ranges - shared by the player's "Add Equipment" drawer
 // and the narrator's "Add Item" (party inventory) form.
 const DAMAGE_TYPES = ['Impact', 'Piercing', 'Slashing', 'Solar', 'Acid', 'Eclipse', 'Fire', 'Ice', 'Lightning', 'Thunder', 'Toxic', 'Fluid', 'Nature', 'Psychic', 'Vozian', 'Healing'];
 const RANGES = ['Melee', 'Reach', 'Short', 'Medium', 'Long', 'Visible'];
@@ -87,7 +87,7 @@ function parseInline(text) {
 
 // Block-level markdown for Handouts: headers, lists, paragraphs.
 // Line-based (not block-based) so headings/lists don't need surrounding blank
-// lines — natural typing like "# Title\nSome text" or "Bring:\n- Rope" still
+// lines - natural typing like "# Title\nSome text" or "Bring:\n- Rope" still
 // renders the heading/list correctly. Inline formatting (bold/italic/etc.)
 // within each line is handled by parseInline().
 function parseHandoutMarkdown(text) {
@@ -117,12 +117,12 @@ function parseHandoutMarkdown(text) {
         if (s.endsWith('|')) s = s.slice(0, -1);
         return s.split('|').map(c => c.trim());
     };
-    // GFM separator row, e.g. "| --- | :---: |" — also accepts em-dashes (Notion paste).
+    // GFM separator row, e.g. "| --- | :---: |" - also accepts em-dashes (Notion paste).
     // Requires a literal "|" so a standalone "---" divider isn't mistaken for one.
     const isSeparatorRow = line => {
         if (!line.includes('|')) return false;
         const cells = splitRow(line);
-        return cells.length > 0 && cells.every(c => /^:?[-—]+:?$/.test(c));
+        return cells.length > 0 && cells.every(c => /^:?[--]+:?$/.test(c));
     };
     const cellAlign = c => {
         const l = c.startsWith(':'), r = c.endsWith(':');
@@ -253,7 +253,7 @@ document.addEventListener('click', e => {
     }
 });
 
-// Report button — toggle reason picker; reason pick — broadcast a chat-report event
+// Report button - toggle reason picker; reason pick - broadcast a chat-report event
 document.addEventListener('click', e => {
     const reportBtn = e.target.closest('.chat-report-btn');
     if (reportBtn) {
@@ -318,7 +318,7 @@ function arcBanMessage() {
     }
     const mins = Math.ceil((expiresAt - Date.now()) / 60000);
     const time = mins >= 60 ? `${Math.ceil(mins / 60)} hour(s)` : `${mins} minute(s)`;
-    return `You are temporarily ${status === 'banned' ? 'banned' : 'muted'} — ${time} remaining.`;
+    return `You are temporarily ${status === 'banned' ? 'banned' : 'muted'} - ${time} remaining.`;
 }
 
 // Inserts a hidden notice banner before the given container, shown whenever the
@@ -377,7 +377,7 @@ const AUTOMOD_DURATIONS = [10 * 60 * 1000, 10 * 60 * 60 * 1000, null]; // strike
 
 function automodAlertText(hit, status, expiresAt) {
     if (hit === 'severe') return 'Your message contained language that is not tolerated here. You have been permanently banned.';
-    if (status === 'banned') return 'That was your 3rd strike for inappropriate language — you have been permanently banned.';
+    if (status === 'banned') return 'That was your 3rd strike for inappropriate language - you have been permanently banned.';
     const mins = Math.ceil((expiresAt - Date.now()) / 60000);
     const time = mins >= 60 ? `${Math.ceil(mins / 60)} hour(s)` : `${mins} minute(s)`;
     return `Your message was blocked for inappropriate language (strike). You are muted for ${time}.`;
@@ -443,7 +443,7 @@ const CHAT_RATE_LIMIT_WINDOW = 60000;  // ...per this many ms (1 minute)
 let _recentSendTimes = [];
 
 // True if a new chat-log entry (msg, roll, feature, poll, etc.) may be sent right now.
-// Records the send if allowed. In-memory only — resets on page reload.
+// Records the send if allowed. In-memory only - resets on page reload.
 function arcRateLimitOk() {
     const now = Date.now();
     _recentSendTimes = _recentSendTimes.filter(t => now - t < CHAT_RATE_LIMIT_WINDOW);
@@ -469,7 +469,7 @@ function authorBadge(m) {
     return `<div class="shared-author shared-author--nar">◆ ${m.monsterName || 'Narrator'}</div>`;
 }
 
-// ── REFERENCE ACTIONS — shared between player and narrator ───────────────────
+// ── REFERENCE ACTIONS - shared between player and narrator ───────────────────
 const REF_ACTIONS = [
     { group: 'Actions' },
     { name: 'Attack',           desc: 'Make a melee or ranged attack against a creature or object within range.' },
@@ -507,7 +507,7 @@ const REF_ACTIONS = [
     { name: 'Surprise Turn',  desc: 'Attacking from Stealth grants one extra action. Reveals your position unless an ability says otherwise.' },
 ];
 
-// Poll card — used by both narrator and player chat renderers
+// Poll card - used by both narrator and player chat renderers
 function renderPollCard(m, currentUid) {
     const votes  = m.votes || {};
     const myVote = currentUid ? votes[currentUid] : null;
@@ -531,7 +531,7 @@ function renderPollCard(m, currentUid) {
     </div>`;
 }
 
-// Trigger an emoji animation by chat message ID — called by Firebase reaction listener
+// Trigger an emoji animation by chat message ID - called by Firebase reaction listener
 function triggerEmojiReaction(chatMsgId, anim) {
     const li    = document.querySelector(`[data-chat-id="${chatMsgId}"]`);
     const emoji = li?.querySelector('.chat-emoji-big');
@@ -541,7 +541,7 @@ function triggerEmojiReaction(chatMsgId, anim) {
     emoji.addEventListener('animationend', () => emoji.classList.remove(cls), { once: true });
 }
 
-// Reaction buttons — delegated on document, works in both active-sheet and narrator
+// Reaction buttons - delegated on document, works in both active-sheet and narrator
 document.addEventListener('click', e => {
     const btn = e.target.closest('[data-emoji-anim]');
     if (!btn) return;
@@ -570,7 +570,7 @@ function naturalRoll(rollNote) {
     if (!nums.length) return null;
     if (rollNote.startsWith('adv')) return Math.max(...nums);
     if (rollNote.startsWith('dis')) return Math.min(...nums);
-    // "d20(14)" — the actual die result is inside the parens, not the "20" from "d20"
+    // "d20(14)" - the actual die result is inside the parens, not the "20" from "d20"
     const paren = rollNote.match(/\((\d+)\)/);
     if (paren) return parseInt(paren[1], 10);
     return nums[0];
@@ -604,7 +604,7 @@ function autoTableRolls(d20Total, damageType) {
     if (n < 2 || !damageType || !window.damageData?.[damageType]) return null;
     return Array.from({ length: n - 1 }, () => {
         const roll = Math.floor(Math.random() * 6) + 1;
-        return { roll, result: window.damageData[damageType].entries[roll - 1] || '—' };
+        return { roll, result: window.damageData[damageType].entries[roll - 1] || '-' };
     });
 }
 

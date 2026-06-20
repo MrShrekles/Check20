@@ -40,7 +40,7 @@
         "type": "Amulet",
         "Damage, Armor": "–",
         "check": "Observation",
-        "description": "A thin silver headband set with a black‑veined moonstone that only glimmers for beings able to glimpse the hidden moon—Vozian creatures, demons, goblins, and certain wolf‑cults.",
+        "description": "A thin silver headband set with a black‑veined moonstone that only glimmers for beings able to glimpse the hidden moon-Vozian creatures, demons, goblins, and certain wolf‑cults.",
         "effect": "Umbral Insight: While the unseen moon is above the horizon, attuned wearers gain +1 Observation and advantage on Survival checks made at night. As an action you may focus for 1 minute on a spot in dim light or darkness to read sinister echoes of events that occurred there within the last 24 hours",
         "upgrade": "Eclipse Augury. Once per long rest, if you can perceive the moon, enter a 10‑minute trance. For the next hour you may reroll one failed check and automatically sense illusions or shape‑shifted creatures within short range. After the hour you gain the Haunted condition until you finish a long rest.",
         "tags": [

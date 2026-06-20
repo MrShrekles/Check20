@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════
-   UNIONS CODEX — styles/unions.css
+   UNIONS CODEX - styles/unions.css
    ══════════════════════════════════════════════════════════════════ */
 
 /* ── Sticky toolbar ── */
@@ -218,7 +218,7 @@
 }
 
 .union-item-name::after {
-    content: ' — ';
+    content: ' - ';
     font-weight: 400;
     color: rgba(255,255,255,.25);
 }

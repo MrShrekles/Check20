@@ -86,7 +86,7 @@
     "rarity": "uncommon",
     "properties": "1 Hand, Light",
     "bulk": 1,
-    "description": "A sleek, stylish mini-pistol designed for high society—compact enough for a clutch, deadly enough for a threat."
+    "description": "A sleek, stylish mini-pistol designed for high society-compact enough for a clutch, deadly enough for a threat."
   },
   {
     "name": "Flintlock Pistol",
@@ -229,7 +229,7 @@
     "rarity": "common",
     "properties": "1 Hand, Light",
     "bulk": 1,
-    "description": "Faster than a revolver, lighter than a rifle. Fires as fast as you pull the trigger—clean, fast, and modern."
+    "description": "Faster than a revolver, lighter than a rifle. Fires as fast as you pull the trigger-clean, fast, and modern."
   },
   {
     "name": "Shotgun",
@@ -497,7 +497,7 @@
     "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
-    "description": "A simple, blunt weapon used to bash, break, or bruise—often improvised, always effective."
+    "description": "A simple, blunt weapon used to bash, break, or bruise-often improvised, always effective."
   },
   {
     "name": "Pirate Hook",
@@ -1467,7 +1467,7 @@
     "rarity": "Uncommon",
     "properties": "1 hand, thrown, return",
     "bulk": 1,
-    "description": "A curved, flat weapon that returns when thrown with skill—useful for distraction or strike."
+    "description": "A curved, flat weapon that returns when thrown with skill-useful for distraction or strike."
   },
   {
     "name": "Composite Bow",

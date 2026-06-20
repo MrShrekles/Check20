@@ -25,7 +25,7 @@ self.addEventListener('fetch', e => {
     const fresh  = ALWAYS_FRESH.some(s => url.pathname.endsWith(s));
 
     if (fresh) {
-        // Network-first for HTML, JS, CSS — always pick up code changes, fall back offline
+        // Network-first for HTML, JS, CSS - always pick up code changes, fall back offline
         e.respondWith(
             fetch(e.request).then(res => {
                 const clone = res.clone();
@@ -34,7 +34,7 @@ self.addEventListener('fetch', e => {
             }).catch(() => caches.match(e.request))
         );
     } else {
-        // Cache-first for data files (JSON) — fast offline, update on next reload
+        // Cache-first for data files (JSON) - fast offline, update on next reload
         e.respondWith(
             caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
                 const clone = res.clone();

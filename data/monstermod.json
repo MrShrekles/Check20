@@ -425,7 +425,7 @@
     "origin": "vozian",
     "environment": "Prime",
     "lairType": "Vozian Ruin / Corrupted Ground",
-    "motivation": "Furthering Vozian will — spreading its influence across the living world",
+    "motivation": "Furthering Vozian will - spreading its influence across the living world",
     "movementMod": {},
     "melee": null,
     "ranged": null,
@@ -481,7 +481,7 @@
     "origin": "chaos",
     "environment": "Prime",
     "lairType": "Chaos Rift / Unstable Pocket Plane",
-    "motivation": "Spreading disorder — it exists to unravel structure and reason",
+    "motivation": "Spreading disorder - it exists to unravel structure and reason",
     "movementMod": {
       "fly": 15
     },
@@ -539,7 +539,7 @@
     "origin": "elemental",
     "environment": "Prime",
     "lairType": "Elemental Rift / Planar Seam",
-    "motivation": "Anchoring its elemental essence to the material plane — it does not belong, and it knows it",
+    "motivation": "Anchoring its elemental essence to the material plane - it does not belong, and it knows it",
     "movementMod": {
       "fly": 25
     },
@@ -569,7 +569,7 @@
     "origin": "dragon",
     "environment": "Prime",
     "lairType": "Dragon Hoard / Ancient Lair",
-    "motivation": "Accumulating power and wealth — every intruder is an insult",
+    "motivation": "Accumulating power and wealth - every intruder is an insult",
     "movementMod": {
       "fly": 40
     },
@@ -599,7 +599,7 @@
     "origin": "celestial",
     "environment": "Prime",
     "lairType": "Sacred Shrine / Consecrated Ground",
-    "motivation": "Guarding holy ground — corruption cannot be permitted to touch this place",
+    "motivation": "Guarding holy ground - corruption cannot be permitted to touch this place",
     "movementMod": {
       "fly": 30
     },
@@ -629,7 +629,7 @@
     "origin": "nature",
     "environment": "Wilderness",
     "lairType": "Animal Den / Hidden Burrow",
-    "motivation": "Driven by primal hunger and territorial instinct — reason left long ago",
+    "motivation": "Driven by primal hunger and territorial instinct - reason left long ago",
     "movementMod": {
       "walk": 10
     },

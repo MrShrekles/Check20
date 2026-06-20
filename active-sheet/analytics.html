@@ -27,31 +27,31 @@
 
     <!-- Aggregate stats -->
     <div class="stat-row">
-        <div class="stat-card"><div class="num" id="stat-chars">—</div><div class="lbl">Characters Created</div></div>
-        <div class="stat-card"><div class="num" id="stat-sessions">—</div><div class="lbl">Session Opens</div></div>
-        <div class="stat-card"><div class="num" id="stat-players">—</div><div class="lbl">Unique Players</div></div>
-        <div class="stat-card"><div class="num" id="stat-today">—</div><div class="lbl">Created Today</div></div>
+        <div class="stat-card"><div class="num" id="stat-chars">-</div><div class="lbl">Characters Created</div></div>
+        <div class="stat-card"><div class="num" id="stat-sessions">-</div><div class="lbl">Session Opens</div></div>
+        <div class="stat-card"><div class="num" id="stat-players">-</div><div class="lbl">Unique Players</div></div>
+        <div class="stat-card"><div class="num" id="stat-today">-</div><div class="lbl">Created Today</div></div>
     </div>
 
     <!-- Live stats -->
     <div class="stat-row gap-24">
         <div class="stat-card stat-card--live">
-            <div class="num" id="stat-active-rooms">—</div>
+            <div class="num" id="stat-active-rooms">-</div>
             <div class="lbl"><span class="live-dot"></span>Active Rooms</div>
             <div class="sub">status=active in Firestore</div>
         </div>
         <div class="stat-card stat-card--live">
-            <div class="num" id="stat-live-players">—</div>
+            <div class="num" id="stat-live-players">-</div>
             <div class="lbl"><span class="live-dot"></span>Live Now</div>
             <div class="sub">Heartbeat &lt; 3 min ago</div>
         </div>
         <div class="stat-card stat-card--live">
-            <div class="num" id="stat-active-players">—</div>
+            <div class="num" id="stat-active-players">-</div>
             <div class="lbl">Player Sessions</div>
             <div class="sub">Total player docs in rooms</div>
         </div>
         <div class="stat-card stat-card--live">
-            <div class="num" id="stat-stale-rooms">—</div>
+            <div class="num" id="stat-stale-rooms">-</div>
             <div class="lbl">Stale Rooms</div>
             <div class="sub">Empty &gt; 1 day since last join</div>
         </div>
@@ -95,7 +95,7 @@
     <!-- Privacy notice -->
     <div class="privacy-notice">
         <strong>What this dashboard tracks:</strong> character build choices (class, species, path, talent, base stats) and session open events.
-        Player identities are anonymous Firebase UIDs — no names or accounts are linked.<br><br>
+        Player identities are anonymous Firebase UIDs - no names or accounts are linked.<br><br>
         <strong>What is NOT tracked:</strong> chat message content, character names, or personally identifiable information.
         Room player data (HP, armor, gold) lives only in active sessions and is never written to analytics.
     </div>
@@ -347,7 +347,7 @@ function renderRooms(rooms, playerDocs) {
             const code  = btn.dataset.delete;
             const hasPl = btn.closest('.room-row').querySelector('.room-status--active');
             const msg   = hasPl
-                ? `Delete room ${code}? It has active players — they will be disconnected.`
+                ? `Delete room ${code}? It has active players - they will be disconnected.`
                 : `Delete room ${code}?`;
             if (!confirm(msg)) return;
             btn.disabled = true; btn.textContent = '…';
@@ -440,10 +440,10 @@ async function loadAnalytics() {
         renderRooms(rooms, playerDocs);
     } else {
         document.getElementById('rooms-list').innerHTML = '<p class="empty-msg">Could not load rooms.</p>';
-        document.getElementById('stat-active-rooms').textContent  = '—';
-        document.getElementById('stat-active-players').textContent = '—';
-        document.getElementById('stat-live-players').textContent  = '—';
-        document.getElementById('stat-stale-rooms').textContent   = '—';
+        document.getElementById('stat-active-rooms').textContent  = '-';
+        document.getElementById('stat-active-players').textContent = '-';
+        document.getElementById('stat-live-players').textContent  = '-';
+        document.getElementById('stat-stale-rooms').textContent   = '-';
     }
 
     document.getElementById('dash-refresh').textContent =

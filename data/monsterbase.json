@@ -876,7 +876,7 @@
     "name": "Barge Captain",
     "baseType": "Demon (Ordealis)",
     "origin": "vozian",
-    "description": "A bloated, eyeless mariner who ferries the damned—but always collects a toll. When denied, it drags the living to join its drowned cargo.",
+    "description": "A bloated, eyeless mariner who ferries the damned-but always collects a toll. When denied, it drags the living to join its drowned cargo.",
     "size": "Large",
     "rarity": "Very Rare",
     "behavior": "Aggressive",

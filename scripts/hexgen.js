@@ -216,7 +216,7 @@ function buildHexCard(hex, hexNum, entryId) {
     return card;
 }
 
-// ── Build a journey (travel mode) — paginated ───
+// ── Build a journey (travel mode) - paginated ───
 function buildJourney(terrain, hexCount, savedData, entryId) {
     const hexes = savedData ? savedData.hexes : (() => {
         const h = [];

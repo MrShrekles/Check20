@@ -176,7 +176,7 @@
     "term": "Stealth",
     "type": "check",
     "category": "Physical",
-    "definition": "Move quietly and remain unnoticed — hiding, blending into crowds, or shadowing targets without detection."
+    "definition": "Move quietly and remain unnoticed - hiding, blending into crowds, or shadowing targets without detection."
   },
   {
     "term": "Strength",
@@ -404,7 +404,7 @@
     "term": "Action",
     "type": "action",
     "category": "Action Economy",
-    "definition": "The primary activity on your turn — attacking, casting a spell, etc. Generally one per turn."
+    "definition": "The primary activity on your turn - attacking, casting a spell, etc. Generally one per turn."
   },
   {
     "term": "Half-Action",
@@ -632,7 +632,7 @@
     "term": "Shek",
     "type": "setting",
     "category": "World",
-    "definition": "The world in which Check20 takes place — a 1920s-inspired high-fantasy setting blending magic with industrialization."
+    "definition": "The world in which Check20 takes place - a 1920s-inspired high-fantasy setting blending magic with industrialization."
   },
   {
     "term": "Fern-Tuft",

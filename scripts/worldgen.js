@@ -1,4 +1,4 @@
-// worldgen.js — Quest, Enchanted Item, Door/Lock/Trap, Loot, Character Questions
+// worldgen.js - Quest, Enchanted Item, Door/Lock/Trap, Loot, Character Questions
 // Data lives in data/ JSON files. Edit those in the Forge to add/change/remove entries.
 
 (function () {
@@ -38,7 +38,7 @@
 
     // ── Enhance card with pin + optional seed button ────────────────────────────
     // pinData: { type, data }
-    // seedConfig: { label, handler } — adds a seed action button before pin
+    // seedConfig: { label, handler } - adds a seed action button before pin
     function enhanceCard(card, pinData, seedConfig) {
         const del = card.querySelector('.gc-delete');
         if (!del) return;
@@ -98,9 +98,9 @@
             card = buildQuestionCard(data.text);
         } else if (type === 'npc') {
             card = buildCard('npc', data.speciesName || 'NPC', data.name, [
-                { key: 'Affinity',   val: data.affinity   || '—' },
-                { key: 'Item',       val: data.item        || '—' },
-                { key: 'Motivation', val: data.motivation  || '—' },
+                { key: 'Affinity',   val: data.affinity   || '-' },
+                { key: 'Item',       val: data.item        || '-' },
+                { key: 'Motivation', val: data.motivation  || '-' },
             ]);
         } else {
             card = buildCard(data.theme, data.header, data.title, data.rows, data.tags);
@@ -254,7 +254,7 @@
     // ── Helpers ────────────────────────────────────────────────────────────────
     const wbPick  = arr => arr[Math.floor(Math.random() * arr.length)];
     const byType  = (arr, t)  => arr.filter(e => e.type === t);
-    const pickTxt = (arr, t)  => { const f = byType(arr, t); return f.length ? wbPick(f).text : '—'; };
+    const pickTxt = (arr, t)  => { const f = byType(arr, t); return f.length ? wbPick(f).text : '-'; };
 
     function randomPL() {
         const pool = [
@@ -419,7 +419,7 @@
                 title:  `${lock.name} Lock`,
                 rows: [
                     { key:'Door',   val: door },
-                    { key:'Key',    val: `${lock.key} — ${lock.hint}` },
+                    { key:'Key',    val: `${lock.key} - ${lock.hint}` },
                     { key:'Trap',   val: desc },
                     { key:'Damage', val: `${trap.dmg} · ${pl}d6`, muted: true },
                 ],

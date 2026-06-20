@@ -67,7 +67,7 @@
     font-weight: bold;
 }
 
-/* Healing has no table — let it shrink naturally */
+/* Healing has no table - let it shrink naturally */
 .damage-card--healing {
     border-color: #a44;
 }

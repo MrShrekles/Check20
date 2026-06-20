@@ -1,4 +1,4 @@
-﻿/* Active Sheet — mobile-first gameplay runner */
+﻿/* Active Sheet - mobile-first gameplay runner */
 
 const DATA_BASE = window.location.pathname.includes('/active-sheet/') ? '../data/' : 'data/';
 
@@ -388,14 +388,14 @@ function recoverMN() {
     state.chat.unshift({
         type: 'roll', time: chatTimestamp(),
         charName: state.char.name || '',
-        label: `${stat.label} — Mana Recovery`,
+        label: `${stat.label} - Mana Recovery`,
         total: roll, rollNote: `d20(${d20})`, mod, rollType: 'flat',
         conditions: [...state.activeConditions],
         featureContext: {
             name: 'Mana Recovery',
             tags: [`${stat.label} Check`, gained > 0 ? `+${gained} MN` : 'Already full'],
             desc: gained > 0
-                ? `Recovered ${gained} Mana — now ${state.resources.MN.current}/${state.resources.MN.max}`
+                ? `Recovered ${gained} Mana - now ${state.resources.MN.current}/${state.resources.MN.max}`
                 : 'Mana already at maximum.',
             diceRolls: [],
         },
@@ -420,7 +420,7 @@ let classBaseData = [];
 let classOptData = {};
 let weaponsData = [];
 let armorData = [];
-let damageData = {};   // loaded from damage.json — keyed by damage type name
+let damageData = {};   // loaded from damage.json - keyed by damage type name
 let spellsData = [];   // loaded from spells.json
 let spellFilter = 'All';
 let spellSearch = '';
@@ -487,7 +487,7 @@ function getClassEntries(className) {
 function populateClassSelect() {
     const sel = document.getElementById('class-select');
     if (!sel) return;
-    sel.innerHTML = '<option value="">— Select Class —</option>' +
+    sel.innerHTML = '<option value="">- Select Class -</option>' +
         classBaseData.map(c =>
             `<option value="${c.name}"${c.name === state.char.classKey ? ' selected' : ''}>${c.name}</option>`
         ).join('');
@@ -500,14 +500,14 @@ function populatePathTalentSelects(className) {
 
     if (pathSel) {
         const paths = entries.filter(e => Array.isArray(e?.path?.steps) && e.path.steps.length);
-        pathSel.innerHTML = '<option value="">— Select Path —</option>' +
+        pathSel.innerHTML = '<option value="">- Select Path -</option>' +
             paths.map(e =>
                 `<option value="${e.name}"${e.name === state.char.pathName ? ' selected' : ''}>${e.name}</option>`
             ).join('');
     }
     if (talentSel) {
         const talents = entries.filter(e => Array.isArray(e?.talent?.steps) && e.talent.steps.length);
-        talentSel.innerHTML = '<option value="">— Select Talent —</option>' +
+        talentSel.innerHTML = '<option value="">- Select Talent -</option>' +
             talents.map(e =>
                 `<option value="${e.name}"${e.name === state.char.talentName ? ' selected' : ''}>${e.name}</option>`
             ).join('');
@@ -528,7 +528,7 @@ function parseWeaponData(item) {
     const check = foundChecks.join(', ');
     const isHefty = /hefty|heavy/i.test(notes);
     const isLight = /\blight\b/i.test(notes);
-    const properties = isHefty ? 'Hefty' : isLight ? 'Light' : '—';
+    const properties = isHefty ? 'Hefty' : isLight ? 'Light' : '-';
     return { ...item, damage, damageType, range, check, properties, desc: item.desc || item.notes || '' };
 }
 
@@ -539,7 +539,7 @@ function populateWmSelects() {
     const typeEl  = document.getElementById('wm-dmg-type-input');
     const rangeEl = document.getElementById('wm-range-input');
     if (typeEl && !typeEl.options.length) {
-        typeEl.innerHTML = `<option value="">—</option>` +
+        typeEl.innerHTML = `<option value="">-</option>` +
             DAMAGE_TYPES.map(t => `<option value="${t}">${t}</option>`).join('');
     }
     if (rangeEl && !rangeEl.options.length) {
@@ -551,7 +551,7 @@ function populateWmCheckSelect(selectedCheck) {
     const el = document.getElementById('wm-check-stat-input');
     if (!el) return;
     const allChecks = [...state.checks.physical, ...state.checks.mental];
-    el.innerHTML = `<option value="">— any —</option>` +
+    el.innerHTML = `<option value="">- any -</option>` +
         allChecks.map(c => `<option value="${c.label}"${c.label === selectedCheck ? ' selected' : ''}>${c.label}</option>`).join('');
 }
 
@@ -585,7 +585,7 @@ function saveWeaponToState() {
     item.damage      = document.getElementById('wm-damage-input')?.value.trim()   || '';
     item.damageType  = document.getElementById('wm-dmg-type-input')?.value        || '';
     item.range       = document.getElementById('wm-range-input')?.value           || '';
-    item.properties  = document.getElementById('wm-weight-input')?.value          || '—';
+    item.properties  = document.getElementById('wm-weight-input')?.value          || '-';
     item.check       = document.getElementById('wm-check-stat-input')?.value      || '';
     item.critRange   = parseInt(document.getElementById('wm-crit')?.value  || '20', 10);
     item.attackBonus = parseInt(document.getElementById('wm-bonus')?.value || '0',  10);
@@ -608,7 +608,7 @@ function openWeaponModal(itemIndex) {
     document.getElementById('wm-damage-input').value          = w.damage || '';
     document.getElementById('wm-dmg-type-input').value        = w.damageType || '';
     document.getElementById('wm-range-input').value           = w.range || '';
-    document.getElementById('wm-weight-input').value          = w.properties || '—';
+    document.getElementById('wm-weight-input').value          = w.properties || '-';
     document.getElementById('wm-crit').value                  = w.critRange || 20;
     document.getElementById('wm-bonus').value                 = w.attackBonus || 0;
     document.getElementById('wm-flavor-input').value          = w.flavor || '';
@@ -694,7 +694,7 @@ function pushChatWeaponAttack({ weapon, checkLabel, checkMod, attackBonus, rollN
         damage: weapon.damage,
         damageType: weapon.damageType,
         range: weapon.range,
-        properties: weapon.properties && weapon.properties !== '—' ? weapon.properties : '',
+        properties: weapon.properties && weapon.properties !== '-' ? weapon.properties : '',
         desc: weapon.flavor || '',
         rollType,
         conditions: [...(conditions || [])],
@@ -772,7 +772,7 @@ function castSpell(spell, intent, spendMana) {
     ].filter(Boolean);
 
     pushChatFeature({
-        name: `✨ ${spell.name} — ${intent.intent}`,
+        name: `✨ ${spell.name} - ${intent.intent}`,
         tags,
         desc: intent.effect || '',
     });
@@ -955,7 +955,7 @@ function openFeatureRollModal({ name, tags, desc }) {
     // Pre-select Disadvantage if an active condition penalizes this check
     applyConditionRollType('#frm-roll-seg', '#frm-check-chips');
 
-    // Hide the unused results area and send button — rolling goes straight to chat
+    // Hide the unused results area and send button - rolling goes straight to chat
     document.getElementById('frm-results').hidden = true;
     document.getElementById('frm-send').hidden = true;
     document.getElementById('frm-roll-dmg').hidden = !damageNotation;
@@ -1032,7 +1032,7 @@ function bindFeatureRollModal() {
         closeFeatureRollModal();
     });
 
-    // Roll Dmg standalone (in case there's no check — roll damage only to chat)
+    // Roll Dmg standalone (in case there's no check - roll damage only to chat)
     document.getElementById('frm-roll-dmg')?.addEventListener('click', () => {
         if (!frm.feature) return;
         const notation = document.getElementById('frm-dmg-notation')?.value?.trim();
@@ -1174,7 +1174,7 @@ function rollAndShowRefTable(type, resultElId) {
     const table = damageData[type];
     if (!table) return;
     const roll = Math.ceil(Math.random() * 6);
-    const result = table.entries[roll - 1] || '—';
+    const result = table.entries[roll - 1] || '-';
 
     const el = document.getElementById(resultElId);
     if (el) {
@@ -1215,7 +1215,7 @@ function openSpellRollModal(spell, intent) {
     const mnNow = state.resources.MN.current;
 
     // Header
-    document.getElementById('srm-name').textContent = `✨ ${spell.name} — ${intent.intent}`;
+    document.getElementById('srm-name').textContent = `✨ ${spell.name} - ${intent.intent}`;
     document.getElementById('srm-sub').textContent =
         [spell.manner, spell.transmission, spell.origin,
         cost > 0 ? `${cost} MN` : 'Free'].filter(Boolean).join(' · ');
@@ -1233,11 +1233,11 @@ function openSpellRollModal(spell, intent) {
 
     // Stat row
     const diceMatch = (intent.effect || '').match(/\[\[(\d+d\d+[!]?(?:[+-]\d+)?)\]\]/i);
-    document.getElementById('srm-damage').textContent  = diceMatch ? diceMatch[1] : '—';
-    document.getElementById('srm-dmg-type').textContent = spell.transmission || '—';
-    document.getElementById('srm-manner').textContent   = spell.manner || '—';
-    document.getElementById('srm-range').textContent    = intent.range || '—';
-    document.getElementById('srm-duration').textContent = (intent.duration || '—').trim();
+    document.getElementById('srm-damage').textContent  = diceMatch ? diceMatch[1] : '-';
+    document.getElementById('srm-dmg-type').textContent = spell.transmission || '-';
+    document.getElementById('srm-manner').textContent   = spell.manner || '-';
+    document.getElementById('srm-range').textContent    = intent.range || '-';
+    document.getElementById('srm-duration').textContent = (intent.duration || '-').trim();
 
     // Description
     const descEl = document.getElementById('srm-desc');
@@ -1259,7 +1259,7 @@ function openSpellRollModal(spell, intent) {
         warnEl.textContent = cost === 0
             ? ''
             : !canAfford
-                ? `⚠ You have ${mnNow} MN — need ${cost}`
+                ? `⚠ You have ${mnNow} MN - need ${cost}`
                 : '';
         warnEl.hidden = !(!canAfford && cost > 0);
     }
@@ -1321,7 +1321,7 @@ function srmDoRoll(spendMana) {
         mod: checkMod + bonus, rollType,
         conditions: [...state.activeConditions],
         featureContext: {
-            name: `✨ ${sfrm.spell.name} — ${sfrm.intent.intent}`,
+            name: `✨ ${sfrm.spell.name} - ${sfrm.intent.intent}`,
             tags: allTags,
             desc: sfrm.intent.effect || '',
             diceRolls,
@@ -1687,7 +1687,7 @@ function applySpeciesSelection() {
 }
 
 function syncSpeciesDisplay() {
-    const species = titleCase(state.char.species) || '—';
+    const species = titleCase(state.char.species) || '-';
     const sub     = state.char.speciesLineage || '';
     const nameEl  = document.getElementById('bio-species-name');
     const subEl   = document.getElementById('bio-species-sub');
@@ -1788,7 +1788,7 @@ function renderClassView() {
     const pathInit = pathEntry?.path?.steps?.filter(s => Number(s.step) === 0) || [];
     const talentInit = talentEntry?.talent?.steps?.filter(s => Number(s.step) === 0) || [];
 
-    // Progression non-zero steps — unlocked ones appear under their own section
+    // Progression non-zero steps - unlocked ones appear under their own section
     const pathProgSteps = pathEntry?.path?.steps?.filter(s => Number(s.step) !== 0) || [];
     const talentProgSteps = talentEntry?.talent?.steps?.filter(s => Number(s.step) !== 0) || [];
 
@@ -1806,7 +1806,7 @@ function renderClassView() {
         });
 
         // Pass 1: register unlocked steps that are clearly base features
-        // Skip anything with action="Upgrade" OR a roman-numeral suffix — those are upgrades
+        // Skip anything with action="Upgrade" OR a roman-numeral suffix - those are upgrades
         progSteps.forEach((s, i) => {
             if (!checkedArr[i]) return;
             if ((s.action || '').toLowerCase() === 'upgrade') return;
@@ -1817,7 +1817,7 @@ function renderClassView() {
             }
         });
 
-        // Pass 2: attach upgrades — caught by action="Upgrade" OR roman-numeral name suffix
+        // Pass 2: attach upgrades - caught by action="Upgrade" OR roman-numeral name suffix
         progSteps.forEach((s, i) => {
             if (!checkedArr[i]) return;
             const isUpgrade = (s.action || '').toLowerCase() === 'upgrade' || romanRx.test(s.name);
@@ -1826,7 +1826,7 @@ function renderClassView() {
             if (baseCards.has(fam)) {
                 baseCards.get(fam).upgrades.push(renderStepCard(s));
             } else {
-                // Orphan — base not found or not yet unlocked, show standalone
+                // Orphan - base not found or not yet unlocked, show standalone
                 baseCards.set(fam + '__' + i, { baseHtml: renderStepCard(s), upgrades: [] });
             }
         });
@@ -1869,9 +1869,9 @@ function renderClassView() {
             ${state.char.pathName ? `<span class="feature-badge">${state.char.pathName}</span>` : ''}
             ${state.char.talentName ? `<span class="feature-badge">${state.char.talentName}</span>` : ''}
         </div>
-        ${sectionBlock('class', `Class — ${state.char.classKey}`, classCards)}
-        ${sectionBlock('path', `Path — ${state.char.pathName}`, pathCards)}
-        ${sectionBlock('talent', `Talent — ${state.char.talentName}`, talentCards)}`;
+        ${sectionBlock('class', `Class - ${state.char.classKey}`, classCards)}
+        ${sectionBlock('path', `Path - ${state.char.pathName}`, pathCards)}
+        ${sectionBlock('talent', `Talent - ${state.char.talentName}`, talentCards)}`;
 }
 
 function esc(str) { return String(str || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
@@ -2208,15 +2208,15 @@ function pushChatFeature({ name, tags, desc, upgrades }) {
 
 // successCount / successHtml / naturalRoll / fmtSigned / diceChipsHtml /
 // expandableDesc / damageTableBtnHtml / chatTimestamp / render*Entry /
-// rollDiceNotation / autoTableRolls — all defined in chat-cards.js.
+// rollDiceNotation / autoTableRolls - all defined in chat-cards.js.
 
 function rollDamageTable(damageType) {
     const table = damageData[damageType];
     if (!table) return;
     const roll = Math.ceil(Math.random() * 6);
-    const result = table.entries[roll - 1] || '—';
+    const result = table.entries[roll - 1] || '-';
     const condEffect = CONDITION_EFFECTS[result];
-    const desc = condEffect ? `${result} — ${condEffect}` : result;
+    const desc = condEffect ? `${result} - ${condEffect}` : result;
     state.chat.unshift({
         type: 'feature', time: chatTimestamp(),
         charName: state.char.name || '',
@@ -2327,9 +2327,9 @@ function listenToSharedChat(code) {
                 if (['system', 'turn'].includes(m.type) || m.removed) return;
                 if (m.uid === window.__arc?.uid) return;
                 const room    = localStorage.getItem('arc-room');
-                const title   = m.author ? `${m.author} — ${room || 'ARC20'}` : (room || 'ARC20');
+                const title   = m.author ? `${m.author} - ${room || 'ARC20'}` : (room || 'ARC20');
                 const body    = m.type === 'roll'          ? `Rolled ${m.total ?? ''}` :
-                                m.type === 'weapon-attack' ? `${m.weaponName || 'Attack'} — ${m.total ?? ''}` :
+                                m.type === 'weapon-attack' ? `${m.weaponName || 'Attack'} - ${m.total ?? ''}` :
                                 m.text ? m.text.slice(0, 80) : 'New message';
                 ArcNotify.show(title, body);
             });
@@ -2375,7 +2375,7 @@ function renderSharedChat() {
 
         if (m.removed) {
             li.className = 'chat-msg--removed';
-            li.innerHTML = '<span class="chat-removed-text">— removed —</span>';
+            li.innerHTML = '<span class="chat-removed-text">- removed -</span>';
             el.appendChild(li);
             return;
         }
@@ -2383,7 +2383,7 @@ function renderSharedChat() {
         const isMe  = m.uid === window.__arc?.uid;
         const isNar = m.isNarrator;
 
-        // Author badge — shown for other players and narrator
+        // Author badge - shown for other players and narrator
         const badge = isNar ? authorBadge(m) : (!isMe ? `<div class="shared-author">${m.author || 'Player'}</div>` : '');
         if (isNar) {
             const isRoll = ['roll','dice','weapon-attack'].includes(m.type);
@@ -2406,7 +2406,7 @@ function renderSharedChat() {
             li.innerHTML = renderTurnEntry(m);
         } else if (m.type === 'system') {
             li.className = 'chat-system-msg';
-            li.innerHTML = `<span class="chat-sys-text">— ${parseInline(m.text)} —</span>`;
+            li.innerHTML = `<span class="chat-sys-text">- ${parseInline(m.text)} -</span>`;
         } else if (m.type === 'poll') {
             li.innerHTML = `<div class="shared-author shared-author--nar">◆ Poll</div>${renderPollCard(m, window.__arc?.uid)}`;
         } else {
@@ -2467,7 +2467,7 @@ document.addEventListener('arc:firebase-ready', () => {
     // Start shared chat listener
     listenToSharedChat(room);
 
-    // Broadcast emoji reactions — stored on room doc (reuses existing listener above)
+    // Broadcast emoji reactions - stored on room doc (reuses existing listener above)
     document.addEventListener('emoji-react', async ({ detail }) => {
         try {
             await arc.updateDoc(arc.doc(arc.db, 'rooms', room), {
@@ -2476,7 +2476,7 @@ document.addEventListener('arc:firebase-ready', () => {
         } catch(e) { console.error('[ARC] emoji-react write failed:', e); }
     });
 
-    // Message reporting — write a denormalized snapshot for The Seven to review
+    // Message reporting - write a denormalized snapshot for The Seven to review
     document.addEventListener('chat-report', async ({ detail }) => {
         const { chatMsgId, reason, reasonNote } = detail;
         const msg = sharedChatMsgs.find(m => m.id === chatMsgId);
@@ -2562,7 +2562,7 @@ document.addEventListener('arc:firebase-ready', () => {
         },
     );
 
-    // Presence heartbeat — keeps updatedAt fresh so analytics can show who's actually online
+    // Presence heartbeat - keeps updatedAt fresh so analytics can show who's actually online
     syncToRoom();
     const _heartbeat = setInterval(syncToRoom, 60000);
     window.addEventListener('beforeunload', () => clearInterval(_heartbeat));
@@ -2631,7 +2631,7 @@ function renderEncounterReadonly(data) {
     const grouped = groupedTurnOrder(enc);
     const activeIdx = grouped.length ? turnIndex % grouped.length : 0;
     const active = grouped[activeIdx];
-    const activeName = active?.hidden ? '???' : (active?._isEnemyGroup ? 'Enemy Turn' : (active?.name || '—'));
+    const activeName = active?.hidden ? '???' : (active?._isEnemyGroup ? 'Enemy Turn' : (active?.name || '-'));
     const activeType = active?._isEnemyGroup ? 'enemy' : active?._isNpcGroup ? 'npc' : (active?.type || 'enemy');
 
     if (turnBar) {
@@ -2687,7 +2687,7 @@ function renderEncounterReadonly(data) {
     });
 }
 
-// Player-gated "End My Turn" — only enabled when it's this player's turn (see renderEncounterReadonly)
+// Player-gated "End My Turn" - only enabled when it's this player's turn (see renderEncounterReadonly)
 document.getElementById('player-next-turn-btn')?.addEventListener('click', async () => {
     const arc  = window.__arc;
     const room = localStorage.getItem('arc-room');
@@ -2818,7 +2818,7 @@ function renderPlayerLoot(items) {
                 entry = {
                     name: item.name, category: 'weapon',
                     damage: item.damage || '', damageType: item.damageType || '',
-                    range: item.range || '', properties: item.properties || '—',
+                    range: item.range || '', properties: item.properties || '-',
                     check: item.check || '', attackBonus: item.attackBonus || 0, critRange: 20,
                     notes: [item.damage, item.damageType, item.range].filter(Boolean).join(' · '),
                     flavor: item.desc || '',
@@ -2963,7 +2963,7 @@ function cacheEls() {
 
     els.btnClearConditions = document.getElementById('btn-clear-conditions');
 
-    // MN-max-input removed — mana max is now auto-calculated from class features
+    // MN-max-input removed - mana max is now auto-calculated from class features
 
     els.btnSaveBio = document.getElementById('btn-save-bio');
     els.topbarName = document.getElementById('topbar-name');
@@ -2999,7 +2999,7 @@ function syncConditionsBar() {
 }
 
 function setActivePanel(key) {
-    // On desktop (≥1100px) chat is always pinned to the left column — don't clear the right panel
+    // On desktop (≥1100px) chat is always pinned to the left column - don't clear the right panel
     if (key === 'chat' && window.innerWidth >= 1100) {
         renderChat();
         const notif = document.getElementById('chat-notif');
@@ -3321,13 +3321,13 @@ function syncEditCheckInputs() {
 // ── ROLL DRAWER ───────────────────────────────────────────────────────────────
 
 function bindDrawer() {
-    // FAB removed — roll drawer only opens via feature/weapon roll chips
+    // FAB removed - roll drawer only opens via feature/weapon roll chips
 
     els.rollDrawer.addEventListener('click', e => {
         if (e.target.matches('[data-drawer-close]')) closeDrawer();
     });
 
-    // Segmented roll type — mutually exclusive
+    // Segmented roll type - mutually exclusive
     document.querySelectorAll('.roll-seg-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.roll-seg-btn').forEach(b => b.classList.remove('is-sel'));
@@ -3490,7 +3490,7 @@ async function sendChatMsg() {
     if (!arcCanSendChat()) return;
     const room = localStorage.getItem('arc-room');
     if (!(await arcAutomodGate(text, room, state.char.name || ''))) { input.value = ''; return; }
-    if (!arcRateLimitOk()) { alert('You are sending messages too fast — wait a few seconds and try again.'); return; }
+    if (!arcRateLimitOk()) { alert('You are sending messages too fast - wait a few seconds and try again.'); return; }
     pushChat(text, 'msg');
     if (input) input.value = '';
 }
@@ -3608,7 +3608,7 @@ function bindAddEquipDrawer() {
         // Populate selects from constants (idempotent)
         const dtSel = document.getElementById('ae-w-dmg-type');
         if (dtSel && !dtSel.options.length) {
-            dtSel.innerHTML = `<option value="">—</option>` +
+            dtSel.innerHTML = `<option value="">-</option>` +
                 DAMAGE_TYPES.map(t => `<option>${t}</option>`).join('');
         }
         const rangeSel = document.getElementById('ae-w-range');
@@ -3733,7 +3733,7 @@ function bindAddEquipDrawer() {
             document.getElementById('ae-w-damage').value  = r.data.damage || '';
             document.getElementById('ae-w-dmg-type').value = r.data.damageType || '';
             document.getElementById('ae-w-range').value   = r.data.range || '';
-            document.getElementById('ae-w-props').value   = r.data.properties && r.data.properties !== '—' ? r.data.properties : '';
+            document.getElementById('ae-w-props').value   = r.data.properties && r.data.properties !== '-' ? r.data.properties : '';
             document.getElementById('ae-w-check').value   = r.data.check ? r.data.check.split(',')[0].trim() : '';
         } else {
             setAeCategory('armor');
@@ -3775,7 +3775,7 @@ function bindAddEquipDrawer() {
             const damage     = document.getElementById('ae-w-damage').value;
             const damageType = document.getElementById('ae-w-dmg-type').value;
             const range      = document.getElementById('ae-w-range').value;
-            const properties = document.getElementById('ae-w-props').value || '—';
+            const properties = document.getElementById('ae-w-props').value || '-';
             const check      = document.getElementById('ae-w-check').value;
             const atkBonus   = aeStepVal('ae-w-atk');
             const desc  = document.getElementById('ae-desc')?.value.trim() || '';
@@ -3866,7 +3866,7 @@ function populateEditor(editorId) {
         const maxInput = document.getElementById('class-res-max-input');
         if (labelInput) labelInput.value = state.resources.classRes.label;
         if (maxInput) maxInput.value = state.resources.classRes.max;
-        // MN max is auto-calculated — no manual input
+        // MN max is auto-calculated - no manual input
     }
 }
 
@@ -3952,7 +3952,7 @@ function saveEditor(target) {
         state.resources.classRes.label = label;
         state.resources.classRes.max = max;
         state.resources.classRes.current = Math.min(state.resources.classRes.current, max);
-        // MN max is auto-calculated by calcManaMax() — not set manually here
+        // MN max is auto-calculated by calcManaMax() - not set manually here
         const display = document.getElementById('class-res-label-display');
         if (display) display.textContent = label;
         saveState(); syncUI();
@@ -4089,7 +4089,7 @@ function bindBio() {
         if (ta) ta.value = EQUIPMENT_LIST[Math.floor(Math.random() * EQUIPMENT_LIST.length)];
     });
 
-    // Notes — auto-save on blur
+    // Notes - auto-save on blur
     document.getElementById('char-notes')?.addEventListener('blur', () => {
         state.char.notes = document.getElementById('char-notes')?.value || '';
         saveState();
@@ -4099,7 +4099,7 @@ function bindBio() {
         saveState();
     });
 
-    // NPCs — loyalty stepper
+    // NPCs - loyalty stepper
     let _npcLoyalty = 0;
     function _updateNpcLoyaltyDisplay() {
         const disp = document.getElementById('npc-loyalty-display');
@@ -4145,7 +4145,7 @@ function bindBio() {
 }
 
 function syncBioDisplay() {
-    const txt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || '—'; };
+    const txt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || '-'; };
     txt('bio-display-name',       state.char.name);
     txt('bio-display-size',       state.char.size);
     txt('bio-display-age',        state.char.age);
@@ -4180,7 +4180,7 @@ function syncTopbar() {
 // ── PROGRESSION INTERACTIONS ──────────────────────────────────────────────────
 
 function bindXpControls() {
-    // Direct typed input — commit on blur or Enter
+    // Direct typed input - commit on blur or Enter
     const input = document.getElementById('xp-total-input');
     if (input) {
         const commit = () => {
@@ -4218,7 +4218,7 @@ function bindProgressionPanel() {
             // XP gate
             if (getXpAvailable() < 20) {
                 cb.checked = false;
-                showProgError('Not enough XP — earn more to unlock this step.');
+                showProgError('Not enough XP - earn more to unlock this step.');
                 return;
             }
             // Path: must unlock in order

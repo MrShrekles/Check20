@@ -1,5 +1,5 @@
 // ── ENCHANTED TABLE EDITOR ────────────────────────────────────────────────────
-// Shows all entries grouped by type — prefix, effect, damageType, check, itemType
+// Shows all entries grouped by type - prefix, effect, damageType, check, itemType
 // Edit/add/remove inline without selecting individual entries.
 
 // ── Global helpers (called by inline onclick) ─────────────────────────────────
@@ -97,7 +97,7 @@ function renderEnchantedTable() {
             ? `<div class="ench-row">
                     <input class="ench-row-input" data-type="${type}" value="${escAttr(e.text)}"
                         onchange="updateEnchantedText(${e._i}, this.value)"
-                        oninput="markUnsaved()" placeholder="effect text — use {type} and {check} as placeholders">
+                        oninput="markUnsaved()" placeholder="effect text - use {type} and {check} as placeholders">
                     <button class="ench-remove" onclick="removeEnchantedEntry(${e._i})" title="Remove">×</button>
                </div>`
             : `<div class="ench-chip">

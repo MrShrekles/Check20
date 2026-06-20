@@ -8,7 +8,7 @@
     "environment": "Prime",
     "behavior": "Aggressive",
     "description": "A hulking predator with iron-tough hide, known for charging through barriers and overwhelming prey with raw force.",
-    "lore": "Ironhide Brutes roam the broken badlands and deep forests of the Prime. Hunters who survive an encounter describe the sound of cracking earth beneath their charge — and the silence after.",
+    "lore": "Ironhide Brutes roam the broken badlands and deep forests of the Prime. Hunters who survive an encounter describe the sound of cracking earth beneath their charge - and the silence after.",
     "walk": 40,
     "fly": 0,
     "swim": 0,
@@ -255,7 +255,7 @@
     "environment": "Prime, Eclipse",
     "behavior": "Mindless",
     "description": "A shambling mass of decayed matter held together by necrotic energy. It spreads a choking ash-cloud wherever it walks.",
-    "lore": "Ashveils are born from mass graves left untended during Eclipse bleeds. They don't hunger for flesh — they spread rot as a reflex, a kind of contagion given legs.",
+    "lore": "Ashveils are born from mass graves left untended during Eclipse bleeds. They don't hunger for flesh - they spread rot as a reflex, a kind of contagion given legs.",
     "walk": 20,
     "fly": 0,
     "swim": 0,
@@ -1632,7 +1632,7 @@
             "range": "Short",
             "damage": "",
             "type": "",
-            "effect": "Interrupt the function of magical constructs, undead, or elementals under the control of a mage—either permanently or until the end of your next turn. If it is a minion of a powerful creature, the dispel may prevent further commands, allowing the minion to escape or fight back if it chooses."
+            "effect": "Interrupt the function of magical constructs, undead, or elementals under the control of a mage-either permanently or until the end of your next turn. If it is a minion of a powerful creature, the dispel may prevent further commands, allowing the minion to escape or fight back if it chooses."
           }
         ]
       },
@@ -3209,7 +3209,7 @@
             "area": "",
             "damage": "",
             "type": "",
-            "effect": "Interrupt the function of magical constructs, undead, or elementals under the control of a mage—either permanently or until the end of your next turn. If it is a minion of a powerful creature, the dispel may prevent further commands, allowing the minion to escape or fight back if it chooses."
+            "effect": "Interrupt the function of magical constructs, undead, or elementals under the control of a mage-either permanently or until the end of your next turn. If it is a minion of a powerful creature, the dispel may prevent further commands, allowing the minion to escape or fight back if it chooses."
           }
         ]
       },
@@ -4127,7 +4127,7 @@
             "area": "",
             "damage": "",
             "type": "",
-            "effect": "Interrupt the function of magical constructs, undead, or elementals under the control of a mage—either permanently or until the end of your next turn. If it is a minion of a powerful creature, the dispel may prevent further commands, allowing the minion to escape or fight back if it chooses."
+            "effect": "Interrupt the function of magical constructs, undead, or elementals under the control of a mage-either permanently or until the end of your next turn. If it is a minion of a powerful creature, the dispel may prevent further commands, allowing the minion to escape or fight back if it chooses."
           }
         ]
       },
@@ -5446,7 +5446,7 @@
             "area": "",
             "damage": "",
             "type": "",
-            "effect": "Interrupt the function of magical constructs, undead, or elementals under the control of a mage—either permanently or until the end of your next turn. If it is a minion of a powerful creature, the dispel may prevent further commands, allowing the minion to escape or fight back if it chooses."
+            "effect": "Interrupt the function of magical constructs, undead, or elementals under the control of a mage-either permanently or until the end of your next turn. If it is a minion of a powerful creature, the dispel may prevent further commands, allowing the minion to escape or fight back if it chooses."
           }
         ]
       },
@@ -6479,7 +6479,7 @@
             "area": "",
             "damage": "",
             "type": "",
-            "effect": "Interrupt the function of magical constructs, undead, or elementals under the control of a mage—either permanently or until the end of your next turn. If it is a minion of a powerful creature, the dispel may prevent further commands, allowing the minion to escape or fight back if it chooses."
+            "effect": "Interrupt the function of magical constructs, undead, or elementals under the control of a mage-either permanently or until the end of your next turn. If it is a minion of a powerful creature, the dispel may prevent further commands, allowing the minion to escape or fight back if it chooses."
           }
         ]
       },

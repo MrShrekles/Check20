@@ -32,6 +32,8 @@ registerEditor('species', {
         };
     },
 
+    qcCount: (data) => data.reduce((n, e) => n + spQCAnalyze(e).length, 0),
+
     newEntry: (group) => ({
         lineage:          group || '',
         option:           '',
@@ -63,6 +65,7 @@ registerEditor('species', {
         const regions   = [...new Set(state.data.map(e => e.region).filter(Boolean))].sort();
 
         return `
+        ${renderSpeciesQualityCheck(entry, idx)}
         <div class="forge-section">
             <div class="section-header">Name</div>
             <div class="section-body">
@@ -237,7 +240,7 @@ registerEditor('species', {
                         </div>
                         <div class="field-wrap full">
                             <label class="field-label">Effect</label>
-                            <textarea class="field-input" rows="4"
+                            <textarea class="field-input" rows="4" spellcheck="true"
                                 onchange="updateField(${idx},'feature_effect',this.value)"
                                 oninput="markUnsaved()">${fh('feature_effect')}</textarea>
                         </div>
@@ -256,7 +259,7 @@ registerEditor('species', {
                         </div>
                         <div class="field-wrap full">
                             <label class="field-label">Effect</label>
-                            <textarea class="field-input" rows="4"
+                            <textarea class="field-input" rows="4" spellcheck="true"
                                 onchange="updateField(${idx},'sub-fet-effect',this.value)"
                                 oninput="markUnsaved()">${escHtml(entry['sub-fet-effect'] || '')}</textarea>
                         </div>
@@ -264,7 +267,7 @@ registerEditor('species', {
                 </div>
             </div>
         </div>
-        ${renderSpeciesQualityCheck(entry, idx)}`;
+        `;
     },
 
 });
@@ -314,6 +317,25 @@ const SP_QC_CONDITIONS = [
     'Injured','Stunned','Exhaustion','Invisible','Intangible','Constrained','Deafened','Death',
 ];
 
+// AI-sounding words/phrases to flag in prose descriptions
+const SP_QC_AI_WORDS = [
+    'delve','tapestry','testament','seamlessly','vibrant',
+    'embark','foster','pivotal','holistic','multifaceted',
+    'leverage','utilize','game-changing','ever-evolving',
+    'landscape','ecosystem','paradigm','synergy','notably',
+    'it is worth noting',"it's worth noting",
+    'in the realm of','navigate',
+];
+
+// Terminology corrections: [bad, good]
+const SP_QC_TERMS = [
+    [/\+\d+ stat\b/gi, '+N stat', '+N bonus', 'stat_term'],
+    [/\bskill check\b/gi, 'skill check', 'check', 'skill_check_term'],
+    [/\bhit points\b/gi, 'hit points', 'wounds', 'hp_term'],
+    [/\bspell slots?\b/gi, 'spell slot', 'Mana', 'slot_term'],
+    [/\bsaving throw\b/gi, 'saving throw', 'check', 'save_term'],
+];
+
 function spQCAnalyze(entry) {
     const ignored  = _spQCGetIgnored();
     const issues   = [];
@@ -347,7 +369,7 @@ function spQCAnalyze(entry) {
                 const conds = SP_QC_CONDITIONS.filter(c => new RegExp(`\\b${c}\\b`, 'i').test(desc));
                 if (conds.length) {
                     push('main', 'condition_in_desc', 'Condition mentioned in effect text',
-                        `Detected: ${conds.join(', ')} — species has no condition field; verify intent.`,
+                        `Detected: ${conds.join(', ')} - species has no condition field; verify intent.`,
                         { path: 'fetCondition', value: conds.join(', '), label: `Apply: ${conds.join(', ')}` }
                     );
                 }
@@ -408,19 +430,80 @@ function spQCAnalyze(entry) {
             'Sub-feature has effect text but no name.', null);
     }
 
+    // ── Terminology corrections ──────────────────────────────────────────────
+    for (const [rx, bad, good, code] of SP_QC_TERMS) {
+        const fields = [
+            ['main', desc],
+            ['sub',  subDesc],
+        ];
+        for (const [scope, text] of fields) {
+            if (!text) continue;
+            const m = text.match(rx);
+            if (m) {
+                push(scope, `term_${code}`, `Wrong term: "${bad}" should be "${good}"`,
+                    `Found "${m[0]}" in ${scope} effect. Use "${good}" instead.`, null);
+            }
+        }
+    }
+
+    // ── Grammar heuristics ──────────────────────────────────────────────────
+    for (const [scope, text] of descFields) {
+        for (const hit of runGrammarChecks(text)) {
+            push(scope, `grammar_${hit.code}`, hit.label, hit.detail(hit.match), null);
+        }
+    }
+
+    // ── AI language detection ────────────────────────────────────────────────
+    const descFields = [
+        ['desc_physical',     String(entry.description?.physical    || '')],
+        ['desc_environment',  String(entry.description?.environment || '')],
+        ['desc_culture',      String(entry.description?.culture     || '')],
+        ['desc_lore',         String(entry.description?.lore        || '')],
+        ['main',              desc],
+        ['sub',               subDesc],
+    ];
+
+    for (const [scope, text] of descFields) {
+        if (!text) continue;
+
+        // AI word/phrase hits
+        const hits = SP_QC_AI_WORDS.filter(w => new RegExp(`\\b${w}\\b`, 'i').test(text));
+        if (hits.length) {
+            push(scope, 'ai_words', 'AI-sounding language detected',
+                `Flagged: ${hits.map(h => `"${h}"`).join(', ')}. Rewrite without these words.`, null);
+        }
+
+        // Em dash substitute: letter - letter (clause connector, not math/dice)
+        if (/[a-z,] - [a-z]/i.test(text)) {
+            push(scope, 'em_dash', 'Em dash substitute found (" - ")',
+                'Contains " - " used as a sentence connector. Rewrite the sentence without the dash.', null);
+        }
+    }
+
     return issues;
 }
 
 const SP_QC_TYPE_COLOR = {
-    no_action:        '#cc5544',
-    no_effect:        '#cc5544',
-    condition_in_desc:'#cc8833',
-    no_check:         '#cc8833',
-    damage_no_type:   '#cc5544',
-    type_no_damage:   '#cc5544',
-    dice_in_desc:     '#7788bb',
-    sub_no_effect:    '#7788bb',
-    sub_no_name:      '#7788bb',
+    no_action:           '#cc5544',
+    no_effect:           '#cc5544',
+    condition_in_desc:   '#cc8833',
+    no_check:            '#cc8833',
+    damage_no_type:      '#cc5544',
+    type_no_damage:      '#cc5544',
+    dice_in_desc:        '#7788bb',
+    sub_no_effect:       '#7788bb',
+    sub_no_name:         '#7788bb',
+    // AI + terminology
+    ai_words:            '#9955bb',
+    em_dash:             '#9955bb',
+    // Grammar
+    grammar_repeat_word: '#3399aa',
+    grammar_double_space:'#3399aa',
+    term_stat_term:      '#cc8833',
+    term_skill_check_term:'#cc8833',
+    term_hp_term:        '#cc8833',
+    term_slot_term:      '#cc8833',
+    term_save_term:      '#cc8833',
 };
 
 function renderSpeciesQualityCheck(entry, idx) {
@@ -460,14 +543,14 @@ function renderSpeciesQualityCheck(entry, idx) {
         ? `<span class="class-qc-cnt class-qc-cnt-warn">${issues.length}</span>`
         : `<span class="class-qc-cnt class-qc-cnt-ok">✓</span>`;
 
-    return `<div class="forge-section">
-        <div class="section-header section-header-split">
-            <span>Quality Check ${badge}</span>
+    return `<details class="forge-section forge-section-qc" ${issues.length > 0 ? 'open' : ''}>
+        <summary class="section-header section-header-split forge-qc-summary">
+            <span class="forge-qc-title">Quality Check ${badge}</span>
             <button class="btn btn-ghost" style="font-size:9px;padding:1px 8px;"
-                onclick="spQCUnignoreAll('${escAttr(entry.name)}')">Reset Ignored</button>
-        </div>
+                onclick="event.preventDefault();spQCUnignoreAll('${escAttr(entry.name)}')">Reset Ignored</button>
+        </summary>
         ${body}
-    </div>`;
+    </details>`;
 }
 
 // ── SPECIES COPY HELPER ───────────────────────────────────────────────────────

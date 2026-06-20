@@ -48,7 +48,7 @@
                                     <label>Description<textarea name="attr_backstory" placeholder="NPC physical description"></textarea></label>
                                     <label>Environment<input type="text" name="attr_environment" placeholder="Prime, Fey..."></label>
                                     <label>Behavior<select name="attr_behavior">
-                                            <option value="">—</option>
+                                            <option value="">-</option>
                                             <option>Aggressive</option>
                                             <option>Trickster</option>
                                             <option>Mindless</option>
@@ -1460,7 +1460,7 @@
 
                                 <script type="text/worker">
                                     // ============================================================
-                                    // PRESS ON — dynamic checkbox uses
+                                    // PRESS ON - dynamic checkbox uses
                                     // ============================================================
                                     on("change:presson_max sheet:opened", function() {
                                         getAttrs(["presson_max"], function(v) {
@@ -3672,9 +3672,9 @@
                                 <div class="vessel-name-label">Vehicle Name</div>
                                 <input type="text" name="attr_ship-name" placeholder="Vessel Name" class="vessel-name-input">
                                 <div class="vessel-reg-row">
-                                    <label>Reg. No.<input type="text" name="attr_ship-reg" placeholder="—"></label>
+                                    <label>Reg. No.<input type="text" name="attr_ship-reg" placeholder="-"></label>
                                     <span class="vessel-sep">|</span>
-                                    <label>Class<input type="text" name="attr_ship-class" placeholder="—"></label>
+                                    <label>Class<input type="text" name="attr_ship-class" placeholder="-"></label>
                                     <span class="vessel-sep">|</span>
                                     <label>Status<input type="text" name="attr_ship-status" placeholder="Active"></label>
                                 </div>
@@ -3686,11 +3686,11 @@
                                 <div class="ship-rows">
                                     <div class="ship-row">
                                         <label>Speed (overland)</label>
-                                        <input type="text" name="attr_ship-speed-overland" placeholder="—">
+                                        <input type="text" name="attr_ship-speed-overland" placeholder="-">
                                     </div>
                                     <div class="ship-row">
                                         <label>Top speed (cruise)</label>
-                                        <input type="text" name="attr_ship-speed-cruise" placeholder="—">
+                                        <input type="text" name="attr_ship-speed-cruise" placeholder="-">
                                     </div>
                                     <div class="ship-row">
                                         <label>Hull condition</label>
@@ -3708,21 +3708,21 @@
                                     </div>
                                     <div class="ship-row">
                                         <label>Cargo</label>
-                                        <input type="text" name="attr_ship-cargo-cap" placeholder="—">
+                                        <input type="text" name="attr_ship-cargo-cap" placeholder="-">
                                     </div>
                                     <div class="ship-row">
                                         <label>Fuel type</label>
-                                        <input type="text" name="attr_ship-fuel-type" placeholder="—">
+                                        <input type="text" name="attr_ship-fuel-type" placeholder="-">
                                     </div>
                                     <div class="ship-row">
                                         <label>Range (full tank)</label>
-                                        <input type="text" name="attr_ship-range" placeholder="—">
+                                        <input type="text" name="attr_ship-range" placeholder="-">
                                     </div>
                                 </div>
                             </details>
 
                             <!-- Legalese -->
-                            <p class="vessel-legalese">Issued under authority of the Transport Union, sanctioned by the Ink Lord. Khunfaris Regional Licensing — all paperwork filed in triplicate. Holder assumes all liability for vessel condition.</p>
+                            <p class="vessel-legalese">Issued under authority of the Transport Union, sanctioned by the Ink Lord. Khunfaris Regional Licensing - all paperwork filed in triplicate. Holder assumes all liability for vessel condition.</p>
 
                         </div>
 
@@ -3827,7 +3827,7 @@
 <script type="text/worker">
 
 // ============================================================
-// BULK — Inventory
+// BULK - Inventory
 // ============================================================
 on("change:repeating_inventory:bulkMod remove:repeating_inventory", function() {
     sumInventoryBulk();
@@ -3846,7 +3846,7 @@ function sumInventoryBulk() {
     });
 }
 
-// BULK — Armor
+// BULK - Armor
 on("change:repeating_armor:armorBulk remove:repeating_armor", function() {
     sumArmorBulk();
 });
@@ -4087,7 +4087,7 @@ function combinePenaltyTotals(penaltyAttr, totalAttr) {
 }
 
 // ============================================================
-// POWER LEVEL — Threat, attacks, check split (merged)
+// POWER LEVEL - Threat, attacks, check split (merged)
 // ============================================================
 on("change:PL", function() {
     getAttrs(["PL"], function(values) {
@@ -4105,7 +4105,7 @@ on("change:PL", function() {
 });
 
 // ============================================================
-// CHECK SPLIT — Physical / Mental balanced against PL
+// CHECK SPLIT - Physical / Mental balanced against PL
 // ============================================================
 function clampCheckSplit(changed) {
     getAttrs(["PL", "check_physical", "check_mental"], function(v) {
@@ -4247,7 +4247,7 @@ conditionCheckboxes.forEach(condition => {
 });
 
 // ============================================================
-// SHEET:OPENED — recalculate all repeating-section aggregates
+// SHEET:OPENED - recalculate all repeating-section aggregates
 // ============================================================
 on("sheet:opened", function() {
     sumInventoryBulk();

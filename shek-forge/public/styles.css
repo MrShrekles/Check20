@@ -105,6 +105,7 @@ body.type-armor   { --accent: var(--type-armor);   --accent-dim: #185040; --acce
 .file-name { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-secondary); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .file-item.active .file-name { color: var(--text-primary); }
 .file-count { font-size: 9px; color: var(--text-muted); background: var(--bg-panel); border: 1px solid var(--border); border-radius: 9px; padding: 1px 5px; }
+.file-qc-badge { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: #cc7733; background: rgba(200,100,40,.12); border: 1px solid rgba(200,100,40,.3); border-radius: 9px; padding: 1px 5px; letter-spacing: 0.04em; flex-shrink: 0; }
 .file-item.active .file-count { color: var(--accent-dim); border-color: var(--accent-dim); }
 .file-type-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
 .file-type-dot.dot-monster { background: var(--type-monster); }
@@ -655,7 +656,7 @@ body.forge-compact .field-editor { gap: 6px; padding: 8px; }
 /* ── PRINT / B&W MODE ── */
 body.forge-print { filter: grayscale(1) contrast(1.1); }
 
-/* ── INVERT MODE — flips dark UI to light ── */
+/* ── INVERT MODE - flips dark UI to light ── */
 body.forge-invert { filter: invert(1) hue-rotate(180deg); }
 /* Re-invert images/icons so they don't look broken */
 body.forge-invert img { filter: invert(1) hue-rotate(180deg); }
@@ -745,6 +746,46 @@ body.type-loot { --accent: #5c9e5c; --accent-dim: #1e3a1e; --accent-bright: #88c
 }
 .loot-rarity-btn.is-on { background: var(--accent-dim); color: var(--accent-bright); border-color: var(--accent); }
 .loot-rarity-btn:hover { border-color: var(--border-bright); color: var(--text-primary); }
+
+/* ── COLLAPSIBLE SECTIONS ── */
+details.forge-section { list-style: none; }
+details.forge-section > summary { cursor: pointer; user-select: none; list-style: none; }
+details.forge-section > summary::-webkit-details-marker { display: none; }
+
+/* Collapse arrow on summary */
+details.forge-section > summary.section-header::before {
+    content: '▶';
+    font-size: 7px;
+    opacity: 0.4;
+    margin-right: 6px;
+    transition: transform 0.15s;
+    display: inline-block;
+    vertical-align: middle;
+}
+details.forge-section[open] > summary.section-header::before {
+    transform: rotate(90deg);
+    opacity: 0.7;
+}
+
+/* QC section - distinct tint, sticky top in scroll area */
+details.forge-section-qc {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    margin-bottom: 12px;
+}
+details.forge-section-qc > summary.section-header {
+    background: rgba(180, 60, 20, 0.1);
+    border-bottom-color: rgba(200, 80, 40, 0.2);
+}
+details.forge-section-qc[open] > summary.section-header {
+    background: rgba(180, 60, 20, 0.15);
+}
+/* Green tint when no issues */
+details.forge-section-qc:not([open]) > summary.section-header {
+    background: rgba(74, 124, 89, 0.08);
+}
+.forge-qc-title { letter-spacing: 0.2em; }
 
 /* ── CLASS QUALITY CHECKER ── */
 .class-qc-list     { display: flex; flex-direction: column; gap: 6px; padding: 8px; }

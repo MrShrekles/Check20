@@ -1,4 +1,4 @@
-// ─── Gear Page — Weapons / Armor / Items / Enchanted ─────────────────────────
+// ─── Gear Page - Weapons / Armor / Items / Enchanted ─────────────────────────
 
 const WEAPON_CATEGORY_COLORS = {
     melee:   '#8c2020',
@@ -266,7 +266,7 @@ function buildWeaponRow(w, term) {
         <span class="spell-row-tags">
             <span class="gear-tag gear-tag--rarity gear-rarity--${rarityNorm.replace(' ', '-')}">${w.rarity || 'Common'}</span>
         </span>
-        <span class="spell-row-cost">${w.damage || '—'}${w.damageType ? ` <em class="gear-dmg-type">${w.damageType}</em>` : ''}</span>`;
+        <span class="spell-row-cost">${w.damage || '-'}${w.damageType ? ` <em class="gear-dmg-type">${w.damageType}</em>` : ''}</span>`;
 
     const stats = [
         w.range      ? `<span><strong>Range</strong> ${w.range}</span>`           : '',
@@ -283,7 +283,7 @@ function buildWeaponRow(w, term) {
         </div>`;
 
     const row = makeRow(headHTML, detailHTML, btn => {
-        const text = `**${w.name}** (${w.category})\nDamage: ${w.damage || '—'} ${w.damageType || ''} · Range: ${w.range || '—'}\nProperties: ${w.properties || '—'}\n${w.description || ''}`.trim();
+        const text = `**${w.name}** (${w.category})\nDamage: ${w.damage || '-'} ${w.damageType || ''} · Range: ${w.range || '-'}\nProperties: ${w.properties || '-'}\n${w.description || ''}`.trim();
         navigator.clipboard.writeText(text).then(() => flashButton(btn, 'Copied!'));
     });
     const catAccent = WEAPON_CATEGORY_COLORS[w.category];
@@ -355,7 +355,7 @@ function buildArmorRow(a, term) {
         <span class="spell-row-tags">
             ${a.hefty === 'yes' ? '<span class="gear-tag gear-tag--hefty">Hefty</span>' : ''}
         </span>
-        <span class="spell-row-cost">Armor ${a.armor ?? '—'}</span>`;
+        <span class="spell-row-cost">Armor ${a.armor ?? '-'}</span>`;
 
     const stats = [
         a.movePenalty  ? `<span><strong>Move Penalty</strong> ${a.movePenalty}</span>`  : '',
@@ -432,7 +432,7 @@ function buildItemRow(it, term) {
         <span class="spell-row-tags">
             <span class="gear-tag gear-tag--cat">${it.category}</span>
         </span>
-        <span class="spell-row-cost">${it.cost != null ? `$${it.cost}` : '—'}</span>`;
+        <span class="spell-row-cost">${it.cost != null ? `$${it.cost}` : '-'}</span>`;
 
     const detailHTML = `
         <div class="gear-detail-block">
@@ -441,7 +441,7 @@ function buildItemRow(it, term) {
         </div>`;
 
     return makeRow(headHTML, detailHTML, btn => {
-        const text = `**${it.name}** (${it.category})\nCost: $${it.cost || '—'}\n${it.description || ''}`.trim();
+        const text = `**${it.name}** (${it.category})\nCost: $${it.cost || '-'}\n${it.description || ''}`.trim();
         navigator.clipboard.writeText(text).then(() => flashButton(btn, 'Copied!'));
     });
 }
@@ -503,7 +503,7 @@ function buildEnchantedRow(it, term) {
         <span class="gear-row-icon-wrap gear-row-icon--emoji">${icon}</span>
         <span class="spell-row-name">${highlightText(it.name, term)}</span>
         <span class="spell-row-tags">
-            <span class="gear-tag gear-tag--type">${it.type || '—'}</span>
+            <span class="gear-tag gear-tag--type">${it.type || '-'}</span>
             ${it.check ? `<span class="gear-tag gear-tag--check">${it.check}</span>` : ''}
             ${checkTags}
         </span>`;
@@ -529,7 +529,7 @@ function buildEnchantedRow(it, term) {
         </div>`;
 
     return makeRow(headHTML, detailHTML, btn => {
-        const text = `**${it.name}** (${it.type})\n${it.description || ''}\nEffect: ${it.effect || '—'}\n${it.upgrade ? `Upgrade: ${it.upgrade}` : ''}`.trim();
+        const text = `**${it.name}** (${it.type})\n${it.description || ''}\nEffect: ${it.effect || '-'}\n${it.upgrade ? `Upgrade: ${it.upgrade}` : ''}`.trim();
         navigator.clipboard.writeText(text).then(() => flashButton(btn, 'Copied!'));
     });
 }

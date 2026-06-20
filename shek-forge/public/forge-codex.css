@@ -1,10 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════
-   FORGE CODEX — Monster Forge styles
+   FORGE CODEX - Monster Forge styles
    Copied from main.css + spells.css + monster.css, then extended
    for Forge-specific needs (editable rows, save bar, compose)
    ═══════════════════════════════════════════════════════════════ */
 
-/* ── Variables — monster red theme ───────────────────── */
+/* ── Variables - monster red theme ───────────────────── */
 :root {
   --dark:    #1a0e0e;
   --dark-2:  #210f0f;

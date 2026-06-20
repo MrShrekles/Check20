@@ -1,0 +1,443 @@
+{
+  "curses": [
+    {
+      "name": "Word Burden",
+      "subtitle": "Spellcaster's Curse",
+      "type": "curse",
+      "source": "arcane",
+      "color": "#5020a0",
+      "desc": "A Word Burden is the inevitable toll placed upon those who push the boundaries of magic too far. When a Wordspeaker draws too deeply from the arcane, their body becomes a living script, etched with the radiant glyphs of forgotten tongues. These markings hum with latent power, but at great cost - drawing magic from a body already inscribed with its weight threatens the caster's mind, stability, and very existence. While a burden at first, those who survive long enough to master their affliction can learn to channel its curse into new heights of spellcasting.",
+      "sections": [
+        {
+          "label": "Curse Progression",
+          "type": "numbered",
+          "steps": [
+            { "name": "Wordbrand", "action": "Passive", "desc": "Your body glows with arcane script, shedding light to reach range. It cannot be concealed." },
+            { "name": "Lingering Echo", "desc": "Your voice echoes after casting, revealing your magic. Creatures have advantage to track you, and you have Disadvantage on Stealth checks." },
+            { "name": "Wordbound", "desc": "Whenever a spell is cast within short range, you take 1 psychic damage." },
+            { "name": "Mana Survival", "desc": "You gain Mana equal to your Survival check. You can choose to cast spells using your Survival check." },
+            { "name": "Scripted Senses", "desc": "Gain advantage on Observation checks to detect magic, invisible creatures, and magical disturbances." },
+            { "name": "Wordbound II", "desc": "Whenever a spell is cast within short range, you no longer take damage. Instead, you may choose to heal 1 wound or repair 1 armor." },
+            { "name": "Intent Dominance", "desc": "Once per day, you can cast a Shout (6) spell intent without spending Mana." },
+            { "name": "Lingering Echo II", "desc": "Your spellcasting is now silent. Creatures have Disadvantage to track you, and you gain Advantage on Stealth checks." },
+            { "name": "Wordbrand II", "desc": "Your arcane light expands to short range. Any invisible creatures or hidden objects that start their turn in your light reveal themselves." },
+            { "name": "Word Ascendancy", "action": "Off-Action", "desc": "You and your curse become one. The words covering your body shine brilliantly, and your eyes glow with spell power. As an off-action, you gain immunity to all spell damage and spells cost 3 less Mana to cast until the end of your next turn." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Thorned Demon Curse",
+      "type": "curse",
+      "source": "infernal",
+      "color": "#8c2020",
+      "desc": "The Inscription of the Infernal is an ancient curse, wherein the Thorned Demon marks its chosen mortal with intricate thorny patterns and diabolical scripts etched into their skin. At first, the curse may seem a painful burden - the inscriptions pulsating with a burning sensation, the mere sight of them enough to instigate unease and fear in others. But with time, the bearer can tap into the potent rage dwelling within the curse, morphing pain into power.",
+      "sections": [
+        {
+          "label": "Curse Progression",
+          "type": "numbered",
+          "steps": [
+            { "name": "Thorny Agony", "desc": "Your body begins to sprout thorny inscriptions causing constant pain. You suffer Disadvantage on Intellect checks." },
+            { "name": "Dread Visage", "desc": "The demonic patterns spread, covering significant portions of your skin. You suffer Disadvantage on Influence checks as your fearsome appearance unsettles those around you." },
+            { "name": "Demon's Ire", "desc": "The inscriptions flare up in times of stress. You suffer Disadvantage on actions that don't involve direct conflict or harm." }
+          ],
+          "reward": {
+            "name": "Demon Bloodpool",
+            "desc": "You have a pool of 3 blood dice. Your dice are [[1d6]]. You can use these blood dice with narrator approval to increase attack rolls, deal extra damage, or heal wounds/armor by that amount until the end of combat."
+          }
+        },
+        {
+          "label": "Greater Progression",
+          "intro": "After completing the base curse progression, you begin to master your infernal power. You may remove the Disadvantages from earlier steps as you progress.",
+          "type": "list",
+          "steps": [
+            { "name": "Pain Empowerment", "note": "Gain 1 Bloodpool Dice", "action": "Action", "desc": "Sacrifice a blood die and gain that much Strength for 1 minute." },
+            { "name": "Thorny Defense", "note": "Gain 1 Bloodpool Dice", "action": "Action", "desc": "Sacrifice a blood die to gain that much armor for 1 minute. Creatures that attack you in melee take 1 piercing damage regardless of hit." },
+            { "name": "Raging Strike", "note": "Gain 1 Bloodpool Dice", "action": "Action", "desc": "Sacrifice a blood die to deal that much additional damage with your attacks for 1 minute." },
+            { "name": "Demon's Resilience", "note": "Gain 1 Bloodpool Dice", "action": "Action", "desc": "Sacrifice a blood die to gain +10 armor for 1 minute." },
+            { "name": "Thorny Burst", "note": "Gain 1 Bloodpool Dice", "action": "Action", "desc": "Cause your inscriptions to erupt in a barrage of thorns. All creatures within short range take damage equal to your blood dice." },
+            { "name": "Infernal Dominion", "desc": "You command fear and respect from lesser demons and creatures sensitive to infernal power." }
+          ]
+        },
+        {
+          "label": "Final Step - Thorned Ascendancy",
+          "type": "list",
+          "steps": [
+            { "name": "Thorned Demon", "desc": "Become a Thorned Demon by surrendering your soul to the Thorned Demon Prince. Gain +10 armor, 3 additional blood dice, and 3 actions per turn in combat." },
+            { "name": "Physical Immunity", "desc": "Become immune to physical damage. Blood dice are now [[1d8]]." },
+            { "name": "Regeneration", "desc": "Regain [[1d8]] wounds at the start of each turn and 1 injury every hour." },
+            { "name": "Condition Resistance", "desc": "Gain advantage on checks to resist conditions." },
+            { "name": "Death Clause", "desc": "If you take the death condition, your body is banished to the Infernal Plane. You cannot return to the Prime Material for 1 year or your body will burn to ash and your soul is devoured by the Thorned Demon Prince." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Celestial Blessings",
+      "type": "curse",
+      "source": "divine",
+      "color": "#a08020",
+      "desc": "An angel or deity has called you forth as the chosen one whether you like it or not, and you are now down a path that seems unchangeable. But not everything is blinding light. There are benefits to this \"curse.\" Progress through these blessings follows a structure similar to Path progression.",
+      "sections": [
+        {
+          "label": "Curse Progression",
+          "type": "numbered",
+          "steps": [
+            { "name": "Blessing of Light", "desc": "You can emit a soft, comforting light up to a 30ft radius. You control the intensity and can extinguish it at will." },
+            { "name": "Healing Touch", "action": "Action", "desc": "Touch a creature and restore health equal to your progress step in this curse." },
+            { "name": "Angel's Wings", "action": "Off-Action", "desc": "You sprout ethereal wings that grant you a fly speed of 30ft. You can summon and dismiss the wings as an off-action." },
+            { "name": "Divine Guidance", "action": "Reaction", "desc": "Once per day, call upon your divine patron to give you or anyone else a +3 to any check as a reaction." },
+            { "name": "Eclipse Smite", "desc": "When you hit with an attack, you can add [[1d6]] Eclipse damage. Usable a number of times per day equal to your progress step." },
+            { "name": "Divine Shield", "action": "Reaction", "desc": "As a reaction, activate a divine shield that grants immunity to the next attack. Usable once per long rest." },
+            { "name": "Angelic Form", "desc": "Once per day, transform into an angelic being: +10 armor, 120ft fly speed, and attacks deal an extra [[2d6]] radiant damage. Lasts for 1 minute." },
+            { "name": "Divine Intervention", "desc": "Once per week, you can call upon the celestial that cursed you to intervene on your behalf." },
+            { "name": "Celestial Ascendancy", "desc": "Your connection to the divine has reached its pinnacle. You have +10 armor and +10 wounds." },
+            { "name": "Deific Incarnation", "desc": "Once per month, embody your deity's aspect, gaining extraordinary powers for a short period - resurrecting the dead, controlling weather, or dealing massive radiant damage. Specifics discussed with the Narrator." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Strigoi Curse",
+      "type": "curse",
+      "source": "undead",
+      "color": "#601010",
+      "desc": "The March of Mortality is a perilous journey, one that transcends the very laws of life and death. Awakened to a form steeped in the bleak beauty of undeath, you may seem a grotesque aberration to some, a figure of morbid fascination to others. Yet, in the eerie silence of your heart, you find a cold resilience. You bear the burden of the curse not as a sentence, but as a rebirth.",
+      "sections": [
+        {
+          "label": "Curse Progression",
+          "type": "numbered",
+          "steps": [
+            { "name": "Unsettling Awakening", "desc": "Your skin becomes discolored and you lose your hair. You have −4 Influence." },
+            { "name": "Relentless Hunger", "desc": "Your cravings for life force become intense. You suffer Disadvantage on Observation and Intellect checks unless you eat living flesh. The hunger is abated for 1 hour after feeding." },
+            { "name": "Deathly Pallor", "desc": "Your undead nature makes you vulnerable to sunlight and holy symbols. You suffer Disadvantage on actions when in direct sunlight or near holy artifacts." }
+          ],
+          "reward": {
+            "name": "Undying Resilience",
+            "desc": "You are immune to poisons and diseases. You do not need to breathe, sleep, or eat. You heal 1 wound every hour and 1 injury every 3 hours. However, you cannot take long rests. At dusk, abilities requiring a long rest are renewed."
+          }
+        },
+        {
+          "label": "Greater Progression",
+          "intro": "As you embrace undeath and wield its eerie power, you may remove the Disadvantages from earlier steps.",
+          "type": "list",
+          "steps": [
+            { "name": "Unholy Embrace", "action": "Off-Action", "desc": "Gain immunity to solar damage until the end of your next turn." },
+            { "name": "Drain Vitality", "action": "Action", "desc": "Make an unarmed strike against a living creature. Deal [[1d6]] Vozian damage and heal for the same amount." },
+            { "name": "Raise the Fallen", "action": "Action", "desc": "Touch a corpse and raise it as an undead minion under your control for 1 hour. You can control a number of undead equal to your progress step." },
+            { "name": "Ghostly Form", "action": "Action", "desc": "Become incorporeal until the end of your next turn. While in this form, you can move through objects and creatures and take half damage from physical attacks." },
+            { "name": "Command the Dead", "action": "Action", "desc": "Compel an undead creature within short range to follow a simple command." }
+          ]
+        },
+        {
+          "label": "Final Step - The Deathlord Ascension",
+          "type": "list",
+          "steps": [
+            { "name": "Deathlord", "desc": "You become a Deathlord. Regain 1 wound at the start of each turn and 1 injury every hour." },
+            { "name": "Command the Undead", "desc": "You can control any undead you can see unless they are under a more powerful creature's command." },
+            { "name": "Eclipse Immunity", "desc": "You gain immunity to Eclipse damage." },
+            { "name": "Death Clause", "desc": "If you take the death condition, you fall unconscious for [[1d6]] weeks. If your head is intact by the end, you regain full wounds and injuries. You can control your limbs independently and reassemble yourself if necessary." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dark Curse",
+      "type": "curse",
+      "source": "chaos",
+      "color": "#503060",
+      "desc": "This curse, often linked to the Forsaken Mystic class path, brings random, escalating afflictions. Each step forces a roll on the table below, leading to unpredictable and often harrowing consequences. If a result is already taken: on an odd roll choose 1 step above the result; on an even roll choose 1 step below. If neither applies, on odd rolls gain −1 to all stats, on even rolls gain +1 to all stats.",
+      "sections": [
+        {
+          "label": "Progression Table",
+          "type": "table",
+          "steps": [
+            { "name": "Eternal Night", "desc": "You can only see in dim light or darkness. Bright light blinds you, causing disadvantage on Observation checks in daylight." },
+            { "name": "Shadow's Embrace", "desc": "Your shadow attacks allies during combat on a roll of 1 on a d6 when rolling initiative." },
+            { "name": "Decaying Touch", "desc": "Anything you touch withers or dies. Healing spells and potions cannot be applied by you." },
+            { "name": "Haunted", "desc": "You see terrifying apparitions, causing disadvantage on Observation checks and requiring a Spirit check each night to benefit from rest." },
+            { "name": "Unending Thirst", "desc": "You must consume twice as much water daily and suffer exhaustion faster in extreme heat." },
+            { "name": "Pain Amplification", "desc": "Take 1 additional point of damage from all sources." },
+            { "name": "Eternal Wound", "desc": "A bleeding wound deals [[1d4]] necrotic damage at the start of your turn." },
+            { "name": "Voice of Discord", "desc": "Gain disadvantage on Influence checks but advantage on Intimidate checks." },
+            { "name": "Marked by Death", "desc": "Spectral reapers attack you each long rest, with a challenge rating of 1/4 of your level." },
+            { "name": "Uncontrollable Rage", "desc": "On a d20 roll of 1–2 after a long rest, enter a barbarian-like rage for the day." },
+            { "name": "Living Nightmare", "desc": "Suffer terrifying illusions, requiring a Spirit check each combat or become frightened." },
+            { "name": "Cursed Transformation", "desc": "On full moons, transform into a beast and lose control for the night." },
+            { "name": "Spectral Chains", "desc": "Your speed is reduced by 10ft, and you cannot Dash." },
+            { "name": "Life Drain", "desc": "Age 1 year per day, dying upon reaching your race's maximum age." },
+            { "name": "Doomed Love", "desc": "Romantic partners are destined for tragedy at the GM's discretion." },
+            { "name": "Eternal Silence", "desc": "You cannot make sound, failing all checks requiring speech or noise." },
+            { "name": "Memory Decay", "desc": "Lose personal memories, suffering disadvantage on related Intellect checks." },
+            { "name": "Unending Despair", "desc": "Always considered under the \"dispirited\" condition, with disadvantage on Spirit checks." },
+            { "name": "Invisible Fiend", "desc": "An unseen entity attacks you once per long rest for [[1d8]] psychic damage." },
+            { "name": "Dark Prophecy", "desc": "Visions of disaster haunt you, requiring Observation checks to discern reality and dealing 1 psychic damage on failure." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Technomancer's Oath",
+      "type": "curse",
+      "source": "tech",
+      "color": "#205080",
+      "desc": "The allure of combining arcane magic and technological prowess has enticed you down a dangerous path. Bit by bit, your body is replaced with machinery, your consciousness intertwined with arcane energies and electronic impulses. With each step, the boundary between the physical and digital, the magical and mechanical, blurs.",
+      "sections": [
+        {
+          "label": "Curse Progression",
+          "type": "numbered",
+          "steps": [
+            { "name": "Cybernetic Symbiosis", "desc": "Your limbs begin to be replaced by arcane-imbued technology. Gain advantage on Strength or Agility checks relying on the replaced limbs. However, take double damage from Lightning damage." },
+            { "name": "Arcane Processor", "desc": "A portion of your brain is replaced by a magic-tech processor. Gain advantage on Intellect and Observation checks, but exposure to powerful magic or Lightning damage gives you the confused condition for 1 minute." },
+            { "name": "Optical Enhancement", "desc": "Your eyes are replaced with advanced optical sensors. See in dim light as bright light and in complete darkness as dim light. You can zoom to see far distances. Flash bangs and sudden bright magical lights can blind you for 1 minute." },
+            { "name": "Aetheric Heart", "desc": "Your heart is replaced with a magical-tech reactor, removing the need for food and sleep. Gain resistance to poison and disease, but anti-magic fields cause a random condition for 1 minute." },
+            { "name": "Mechano-Magical Network", "desc": "Your nervous system is upgraded, heightening reflexes and magical interaction. Remove the negative effects from the previous progression steps." }
+          ]
+        },
+        {
+          "label": "Greater Progression",
+          "intro": "As you dive deeper into technomancy, the lines blur further. You are neither fully organic nor fully mechanical, but something new.",
+          "type": "list",
+          "steps": [
+            { "name": "Integrated Arcane Arsenal", "desc": "Integrate magical weapons into your mechanized body parts. These weapons can be summoned and dismissed at will." },
+            { "name": "Spectral Firewall", "action": "Half-Action", "desc": "Create a protective arcane shield around you that prevents the next source of damage until the end of your next turn." },
+            { "name": "Digital Consciousness", "action": "Action", "desc": "Upload your consciousness into digital devices, cybernetics, constructs, or anything with a tech-magic center. If you are more powerful, you can overtake or upgrade the device." },
+            { "name": "Mananite Restoration", "desc": "Mananites circulate through your body, rapidly repairing physical damage. Heal 1 hit point every minute and 1 injury every hour." },
+            { "name": "Singularity Ascension", "desc": "Your transformation reaches its zenith as you become an entity of pure techno-magical energy. Gain the ability to control and shape arcane-tech devices in your vicinity." }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "diseases": [
+    {
+      "name": "Infernal Skritches",
+      "type": "disease",
+      "source": "infernal",
+      "color": "#8c2020",
+      "desc": "The touch of the damned leaves more than a physical scar; it marks the soul. Infernal Skritches is a potent affliction transmitted through the rending claws and gnashing teeth of true demons. This curse burns away mortal flesh, replacing it with the accursed essence of the abyss.",
+      "infection": "After an attack from a true demon (bite, claw, or scratch on exposed flesh), the character must make a Survival check. On failure, they've contracted Infernal Skritches. Effects manifest after [[1d4]] days.",
+      "sections": [
+        {
+          "label": "Disease Progression",
+          "type": "numbered",
+          "steps": [
+            { "name": "Infernal Mark", "desc": "The wound becomes hot to the touch and scabbed over, yet the victim feels no pain. Gain the ability to understand and speak Infernal and cast simple Infernal spells, but suffer a −2 penalty on Influence checks with celestial beings." },
+            { "name": "Festering Wound", "desc": "The wound festers and burns. Each time the afflicted takes damage, they gain another Infernal wound. Infernal magic becomes more potent, but they suffer disadvantage on Influence and Observation checks due to their partially demonic presence." },
+            { "name": "Demonic Transformation", "desc": "Physical traits of a demon begin to manifest, such as horns, claws, or a tail. You can speak any Vozian language, but Infernal wounds cannot be healed by non-infernal means." }
+          ],
+          "reward": {
+            "name": "Demonic Resilience",
+            "desc": "Immunity to disease, regeneration of 1 wound every 3 hours, and healing spells harm you instead of healing you."
+          }
+        },
+        {
+          "label": "Greater Progression",
+          "intro": "As the demonic essence takes hold, you can remove previous disadvantages by progressing further.",
+          "type": "list",
+          "steps": [
+            { "name": "Infernal Ascendance", "desc": "Cast any infernal spell at max level without using additional spell slots once per Press On." },
+            { "name": "Demonic Form", "action": "Action", "desc": "Transform into a true demonic form. Gain advantage on Strength and Agility checks and a flight speed equal to your movement speed." },
+            { "name": "Infernal Pact", "action": "Action", "desc": "Form contracts binding others to your will. Offer a pact to a willing creature, obligating them to perform a task for a favor or boon of your choice." },
+            { "name": "Abyssal Command", "action": "Action", "desc": "Command lesser demons within short range to follow a command to the best of their ability." },
+            { "name": "Infernal Translocation", "action": "Action", "desc": "Teleport through Vozo's hellish dimension to a location you can see within medium range." },
+            { "name": "Vozo's Whispers", "desc": "A creature within short range must make an Intellect check against yours or follow a simple command on its next turn." }
+          ]
+        },
+        {
+          "label": "Final Step - Demonic Overlord",
+          "type": "list",
+          "steps": [
+            { "name": "Summon Demons", "desc": "Summon lesser demons at will." },
+            { "name": "Infernal Mastery", "desc": "Infernal spells are cast at max level without using additional spell slots." },
+            { "name": "Magic Immunity", "desc": "Immunity to all non-celestial magics." },
+            { "name": "Death Clause", "desc": "If killed, your essence is banished to the infernal realm, where you are reborn in the infernal pits." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sanguine Fever",
+      "type": "disease",
+      "source": "vampire",
+      "color": "#700020",
+      "desc": "Blood isn't just sustenance for vampires; it's a transformative essence. The Vampiric Sanguine Fever is transmitted through the envenomed fangs of true vampires or consuming strigoi blood, and it alters the body and soul, infusing it with the eternal night of vampirism.",
+      "infection": "Following a vampire's bite or by drinking strigoi blood, the victim may contract the disease. Symptoms take time to manifest as the curse reshapes the afflicted.",
+      "sections": [
+        {
+          "label": "Disease Progression",
+          "type": "numbered",
+          "steps": [
+            { "name": "Sunlight Sensitivity", "desc": "Skin becomes pale and sensitive. Suffer a −2 penalty on physical action checks in direct sunlight but gain darkvision, seeing perfectly in the dark." },
+            { "name": "Blood Thirst", "desc": "You crave fresh blood. Drinking blood grants a temporary boost to physical stats, but abstaining imposes penalties to those stats." },
+            { "name": "Vampiric Transformation", "desc": "Canines elongate into fangs, and traits like red eyes or cold skin appear. Gain the ability to charm with a gaze, but you can only consume blood for sustenance." }
+          ],
+          "reward": {
+            "name": "Vampiric Resilience",
+            "desc": "Immunity to non-magical diseases, regeneration of 1 wound every 6 hours, but healing spells no longer affect you."
+          }
+        },
+        {
+          "label": "Greater Progression",
+          "intro": "As the vampiric essence intensifies, remove previous disadvantages and unlock the following features in any order.",
+          "type": "list",
+          "steps": [
+            { "name": "Mist Form", "action": "Action", "desc": "Transform into an ethereal mist, gaining the intangible condition." },
+            { "name": "Bat Transformation", "action": "Action", "desc": "Transform into a bat, gaining the ability to fly." },
+            { "name": "Vampiric Charm", "desc": "Strengthened charm ability, making it harder for victims to resist your hypnotic gaze." },
+            { "name": "Night's Embrace", "desc": "Drastically increased strength, speed, and agility in darkness or nighttime." },
+            { "name": "Blood Bond", "desc": "By feeding someone your blood, create a mental link with them to sense emotions and issue telepathic commands." },
+            { "name": "Coffin Sanctuary", "desc": "Designate a coffin as your sanctuary. While inside, you are nearly invulnerable and heal rapidly." }
+          ]
+        },
+        {
+          "label": "Final Step - Vampire Lord",
+          "type": "list",
+          "steps": [
+            { "name": "Command", "desc": "Command lesser vampires and nocturnal creatures." },
+            { "name": "Irresistible Charm", "desc": "Your charm becomes nearly irresistible." },
+            { "name": "Night Dominance", "desc": "Your physical prowess is unmatched in the night." },
+            { "name": "Sunlight Weakness", "desc": "Sunlight becomes your dire enemy, causing grievous harm on exposure." },
+            { "name": "Coffin Resurrection", "desc": "If killed, your spirit binds to your Coffin Sanctuary, allowing resurrection with enough time and blood." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Verdant Fever",
+      "type": "disease",
+      "source": "nature",
+      "color": "#307030",
+      "desc": "Verdant Fever is contracted through prolonged exposure to magical forests or nature damage. The disease begins to transform the victim into a plant-like creature, entwining them with the natural world.",
+      "sections": [
+        {
+          "label": "Disease Progression",
+          "type": "numbered",
+          "steps": [
+            { "name": "Green Onset", "desc": "Skin turns green and rough, impairing motor skills. You suffer −2 to Agility." },
+            { "name": "Photosynthesis Dependency", "desc": "Require sunlight and water for sustenance, interfering with concentration. Suffer disadvantage on Observation and Intellect checks unless you spend 2 hours in sunlight." },
+            { "name": "Nature Vulnerability", "desc": "Your plant-like nature makes you susceptible to fire and ice, suffering disadvantage on actions in extreme heat or cold." }
+          ],
+          "reward": {
+            "name": "Plant Adaptation",
+            "desc": "Immunity to poisons and diseases, no need to eat as long as you get 1 hour of sunlight. Heal 1 wound per hour and injuries every 3 hours, but you cannot take long rests."
+          }
+        },
+        {
+          "label": "Greater Progression",
+          "intro": "Remove previous disadvantages and unlock the following features in any order.",
+          "type": "list",
+          "steps": [
+            { "name": "Thermotolerance", "desc": "Resist extreme environments, gaining +5 Armor and +5 Wounds." },
+            { "name": "Vine Grasp", "action": "Action", "desc": "Extend roots to ensnare and drain energy from others. Deal [[1d6]] nature damage and heal for the same amount." },
+            { "name": "Floral Minions", "action": "Action", "desc": "Create a PL 2 Root minion lasting 1 hour. Control minions up to your progression step." },
+            { "name": "Barkform", "action": "Action", "desc": "Transform into a stationary tree. Gain +20 Armor but have the pinned and exhaustion conditions." },
+            { "name": "Verdant Command", "desc": "Control plant creatures weaker than you unless dominated by a powerful creature." },
+            { "name": "Seed Bomb", "action": "Action", "desc": "Launch a cluster of seeds, dealing [[1d4]] piercing damage. Sprouting seeds may create [[1d4]] seedlings acting under your command." }
+          ]
+        },
+        {
+          "label": "Final Step - Verdant Sovereign",
+          "type": "list",
+          "steps": [
+            { "name": "Regeneration", "desc": "Regain 3 wounds at the start of your turn." },
+            { "name": "Plant Dominion", "desc": "Control any plant creature you can see unless dominated by a powerful entity." },
+            { "name": "Nature Immunity", "desc": "Gain immunity to nature damage." },
+            { "name": "Seed Pod", "desc": "If you take the death condition, you become a seed pod for [[1d6]] weeks. If intact, you regenerate with full wounds and injuries." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Resonance Sickness",
+      "type": "disease",
+      "source": "vozian",
+      "color": "#502080",
+      "desc": "A rare affliction caused by exposure to high amounts of Vozian energy or interactions with Vozian creatures. This sickness disrupts the body and mind, creating a dangerous and transformative condition.",
+      "sections": [
+        {
+          "label": "Disease Progression",
+          "type": "numbered",
+          "steps": [
+            { "name": "Sonic Disruption", "desc": "A constant disorienting hum impairs cognitive abilities. Disadvantage on all mental checks (Intellect, Observation, Influence)." },
+            { "name": "Vibratory Strain", "desc": "The hum intensifies, causing slight bodily vibrations. Disadvantage on all physical checks (Agility, Crafting, Stealth, Strength, Survival)." },
+            { "name": "Energetic Vulnerability", "desc": "Sensitivity to Vozian energies makes you susceptible to their effects. Disadvantage on actions near Vozian energy or artifacts." }
+          ],
+          "reward": {
+            "name": "Vozian Adaptation",
+            "desc": "Immunity to disease, +2 to all checks, and a glowing skin effect visible to those with Vozian Sight."
+          }
+        },
+        {
+          "label": "Greater Progression",
+          "intro": "Remove previous disadvantages and unlock these features in any order.",
+          "type": "list",
+          "steps": [
+            { "name": "Infernal Conjuring", "action": "Action", "desc": "Summon minor demons from the Abyss. Control a number of demons equal to your progression step." },
+            { "name": "Soul Siphoning", "action": "Action", "desc": "Drain life from others to empower yourself. Deal [[1d6]] Vozian damage and heal for the same amount." },
+            { "name": "Pact of Deception", "desc": "Form contracts binding creatures to your will in exchange for boons." },
+            { "name": "Dreadful Presence", "action": "Action", "desc": "Intimidate enemies within short range. Failures result in a cognitive condition of your choice." },
+            { "name": "Vozo's Grasp", "desc": "Mark a creature to always know its location and gain a +5 to checks against it." },
+            { "name": "Vozian Augmentation", "desc": "Gain either Wings (30ft fly speed) or Chitinous Armor (+6 armor, regenerates 1 per minute)." }
+          ]
+        },
+        {
+          "label": "Final Step - Resonant Overlord",
+          "type": "list",
+          "steps": [
+            { "name": "Vozian Power", "desc": "+6 bonus to all physical checks and +3 to all damage." },
+            { "name": "True Name Weakness", "desc": "Control can be taken by anyone who knows your true name." },
+            { "name": "Energy Core", "desc": "If reduced to 0 wounds, become a Vozian energy core for [[1d6]] weeks. Regain consciousness and reform your body from nearby materials if the core is intact." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Yeeshnu's Plague",
+      "type": "disease",
+      "source": "plague",
+      "color": "#406020",
+      "desc": "Yeeshnu, the god of plague and pestilence, spreads its influence through disease. Yeeshnu's Plague is a horrifying affliction contracted from bites of vile creatures and spreads through filth and decay.",
+      "infection": "Following a bite from a rat or similar sewer-dwelling creature, the victim must make a Survival check. On failure, symptoms manifest after [[1d4]] days.",
+      "sections": [
+        {
+          "label": "Disease Progression",
+          "type": "numbered",
+          "steps": [
+            { "name": "Unseen Malady", "desc": "The victim cannot recover wounds or injuries from long rests. Gain a resource called plague points, adding one each day." },
+            { "name": "Chosen of Yeeshnu", "desc": "Plague points exceed total wounds, and the victim transforms into a Chosen of Yeeshnu. Gain dark spellcasting effects and secrete a repugnant pus." },
+            { "name": "Plague Spreader", "desc": "Spread the plague to others. Reaching 20 plague points makes you a vessel for Yeeshnu's will." }
+          ],
+          "reward": {
+            "name": "Blessings of Yeeshnu",
+            "desc": "Immunity to disease, start with 3 plague points, and unlock plague-based abilities."
+          }
+        },
+        {
+          "label": "Greater Progression",
+          "intro": "Remove disadvantages and unlock these abilities in any order.",
+          "type": "list",
+          "steps": [
+            { "name": "Herald of Plague", "desc": "Infect and control creatures within 5ft for 1 minute using a plague point. Successful saves grant immunity." },
+            { "name": "Pus Armor", "desc": "Spend 1 plague point to gain [[3d6]] armor for 1 minute." },
+            { "name": "Summon Plaguelings", "action": "Action", "desc": "Spend 1 plague point to summon [[2d4]] plaguelings that attack non-diseased creatures." },
+            { "name": "Plague Bolt", "action": "Action", "desc": "Cast a bolt of disease. Targets must make a Survival check or take [[1d10]] necrotic damage." },
+            { "name": "Miasma of Yeeshnu", "action": "Action", "desc": "Create a cloud of pestilence. Targets must make a Survival check or take [[1d4]] toxic damage and risk infection." },
+            { "name": "Undying Plague", "desc": "If you take the death condition, make a Survival check to remove it for 1 minute. Afterward, your body dissolves into plague, giving your soul to Yeeshnu." }
+          ]
+        },
+        {
+          "label": "Final Step - Yeeshnu's Herald",
+          "type": "list",
+          "steps": [
+            { "name": "Plague Command", "desc": "Command all lesser plague bearers and plague-ridden creatures." },
+            { "name": "Infectious Presence", "desc": "Spread the plague through your presence." },
+            { "name": "Divine Channel", "desc": "Communicate directly with Yeeshnu for missions and guidance." },
+            { "name": "Marked Target", "desc": "Draw the attention of forces of good, including clerics and paladins, who see you as a significant threat." }
+          ]
+        }
+      ]
+    }
+  ]
+}

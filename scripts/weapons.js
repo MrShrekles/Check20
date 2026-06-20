@@ -180,7 +180,7 @@ function applyFilters() {
             if (!hay.includes(q)) return false;
         }
 
-        // includes — empty set means "show all"; non-empty means "must match one"
+        // includes - empty set means "show all"; non-empty means "must match one"
         if (state.include.category.size && !state.include.category.has(w.category)) return false;
         if (state.include.type.size && !state.include.type.has(w.typeKey)) return false;
         if (state.include.rarity.size && !state.include.rarity.has(w.rarity)) return false;

@@ -132,7 +132,7 @@ function movementText(mv) {
   else if (mv.fly?.speed) parts.push(`Fly ${mv.fly.speed} ft`);
   if (mv.swim)  parts.push(`Swim ${mv.swim} ft`);
   if (mv.climb) parts.push(`Climb ${mv.climb} ft`);
-  return parts.join(" • ") || "—";
+  return parts.join(" • ") || "-";
 }
 
 function createMonsterCard(m) {

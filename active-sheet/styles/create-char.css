@@ -1,4 +1,4 @@
-/* Character Creation Wizard — themed to match the site */
+/* Character Creation Wizard - themed to match the site */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -661,6 +661,37 @@ details[open] .guide-feat-summary { background: rgba(70, 100, 100, 0.08); }
     background: rgba(47, 79, 79, 0.45);
     border-radius: 6px;
     padding: 2px 7px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Enemy-save variants */
+.guide-feat-label--enemy {
+    background: rgba(80, 40, 40, 0.6);
+    color: rgba(220, 160, 160, 0.85);
+}
+
+.guide-feat-list--enemy { opacity: 0.7; }
+
+.guide-feat-row--enemy { opacity: 0.8; }
+
+.guide-feat-check--enemy {
+    color: #e08080;
+    background: rgba(100, 40, 40, 0.4);
+}
+
+.guide-feat-save-note {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(220, 130, 130, 0.8);
+    opacity: 0.9;
+}
+
+.guide-feat-save-note--contested {
+    color: rgba(130, 190, 255, 0.85);
 }
 
 /* Stat row */

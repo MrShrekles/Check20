@@ -19,7 +19,7 @@
     align-items: start;
 }
 
-/* Panel slot wraps each gen-panel — this is the grid item */
+/* Panel slot wraps each gen-panel - this is the grid item */
 .panel-slot { min-width: 0; }
 .panel-slot.panel-full { grid-column: 1 / -1; }
 
@@ -160,7 +160,7 @@
     overflow-x: hidden;
 }
 
-/* All outputs use auto-fill grid — cards always fill the row */
+/* All outputs use auto-fill grid - cards always fill the row */
 .flex-container.gen-output,
 #hex-history {
     display: grid !important;

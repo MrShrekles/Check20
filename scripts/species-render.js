@@ -255,7 +255,7 @@ function renderOptionGroups(parent, items) {
         const grid = document.createElement('div');
         grid.className = 'lineage-grid';
 
-        // Collapsible option groups — collapsed state is in-memory only
+        // Collapsible option groups - collapsed state is in-memory only
         oh.addEventListener('click', () => {
             wrapper.classList.toggle('collapsed');
         });

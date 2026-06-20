@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Narrator — ARC20</title>
+    <title>Narrator - ARC20</title>
     <link rel="icon" href="../assets/icons/check20-app.png" type="image/png" />
     <link rel="apple-touch-icon" href="../assets/icons/check20-app.png" />
     <link rel="manifest" href="manifest.json" />
@@ -70,7 +70,7 @@
                             </div>
                         </div>
                         <div class="enc-turn-bar" id="enc-turn-bar" hidden>
-                            <span id="enc-active-name">—</span>'s turn
+                            <span id="enc-active-name">-</span>'s turn
                         </div>
                         <div id="encounter-list">
                             <p class="empty-hint">No one in initiative. Add combatants below.</p>
@@ -111,7 +111,7 @@
                     </div>
                 </div>
 
-                <!-- Toolbar — outside scroll areas, always visible at bottom of chat panel -->
+                <!-- Toolbar - outside scroll areas, always visible at bottom of chat panel -->
                 <div class="chat-sticky-bottom">
                     <!-- Dice panel (toggleable) -->
                     <div class="nar-tool-panel" id="nar-dice-panel" hidden>
@@ -192,7 +192,7 @@
                             <button class="room-code-badge" id="room-code-badge" hidden title="Tap to copy code">
                                 <span class="room-badge-name" id="room-badge-name"></span><span class="room-badge-code" id="room-badge-code"></span>
                             </button>
-                            <button class="ghost-btn privacy-btn" id="btn-privacy-mode" type="button" title="Privacy mode — hides room code for streaming" hidden>👁</button>
+                            <button class="ghost-btn privacy-btn" id="btn-privacy-mode" type="button" title="Privacy mode - hides room code for streaming" hidden>👁</button>
                             <button class="ghost-btn" id="btn-invite" type="button">Invite</button>
                         </div>
                     </div>
@@ -255,13 +255,13 @@
                             <div id="char-npc-fields">
                                 <div class="nar-stat-row">
                                     <label class="nar-form-field"><span class="nar-form-label">PL</span>
-                                        <input id="char-pl" type="number" inputmode="numeric" placeholder="—" /></label>
+                                        <input id="char-pl" type="number" inputmode="numeric" placeholder="-" /></label>
                                     <label class="nar-form-field"><span class="nar-form-label">Phys</span>
-                                        <input id="char-phys" type="number" inputmode="numeric" placeholder="—" /></label>
+                                        <input id="char-phys" type="number" inputmode="numeric" placeholder="-" /></label>
                                     <label class="nar-form-field"><span class="nar-form-label">Ment</span>
-                                        <input id="char-ment" type="number" inputmode="numeric" placeholder="—" /></label>
+                                        <input id="char-ment" type="number" inputmode="numeric" placeholder="-" /></label>
                                     <label class="nar-form-field"><span class="nar-form-label">HP</span>
-                                        <input id="char-hp-npc" type="number" inputmode="numeric" placeholder="—" /></label>
+                                        <input id="char-hp-npc" type="number" inputmode="numeric" placeholder="-" /></label>
                                 </div>
                                 <label class="nar-form-field"><span class="nar-form-label">Notes</span>
                                     <input id="char-notes" type="text" placeholder="Species, faction…" autocomplete="off" /></label>
@@ -290,7 +290,7 @@
                         <h2 class="section-title">Party Inventory</h2>
                     </div>
 
-                    <!-- Gold tracker — shown when room is active -->
+                    <!-- Gold tracker - shown when room is active -->
                     <div class="party-gold-row" id="party-gold-row" hidden>
                         <span class="party-gold-label">⬡ Gold</span>
                         <div class="party-gold-ctrl">
@@ -333,7 +333,7 @@
                                 </div>
                                 <label class="nar-form-field"><span class="nar-form-label">Check</span>
                                     <select id="inv-w-check" class="sheet-select">
-                                        <option value="">— any —</option>
+                                        <option value="">- any -</option>
                                         <option>Agility</option><option>Crafting</option><option>Influence</option>
                                         <option>Intellect</option><option>Luck</option><option>Observation</option>
                                         <option>Spirit</option><option>Stealth</option><option>Strength</option><option>Survival</option>
@@ -566,7 +566,7 @@
                         <summary class="nar-add-summary">+ Add Session</summary>
                         <div class="nar-form">
                             <label class="nar-form-field"><span class="nar-form-label">Session Title</span>
-                                <input id="jsess-title" type="text" placeholder="Session 1 — The Beginning…" autocomplete="off" /></label>
+                                <input id="jsess-title" type="text" placeholder="Session 1 - The Beginning…" autocomplete="off" /></label>
                             <label class="nar-form-field"><span class="nar-form-label">Date</span>
                                 <input id="jsess-date" type="date" /></label>
                             <label class="nar-form-field"><span class="nar-form-label">Notes</span>
@@ -670,7 +670,7 @@
         </div>
     </dialog>
 
-    <!-- Global context bar: speaking-as / target — visible on all panels -->
+    <!-- Global context bar: speaking-as / target - visible on all panels -->
     <div class="global-ctx-bar" id="nar-context-bar" hidden>
         <span class="chat-ctx-chip" id="nar-voice-chip" hidden>
             <span class="chat-ctx-label" id="nar-voice-chip-label"></span>

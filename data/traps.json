@@ -27,9 +27,9 @@
   { "type": "lock", "name": "Nature",      "key": "Grove Key",     "hint": "Sacred leaf or druid's token" },
   { "type": "lock", "name": "Vozian",      "key": "Infernal Key",  "hint": "Cursed artifact or infernal pact" },
 
-  { "type": "trap", "name": "Dart",      "dmg": "Piercing / Toxic", "effect": "{dmg} — hidden projectile fired at the trigger." },
+  { "type": "trap", "name": "Dart",      "dmg": "Piercing / Toxic", "effect": "{dmg} - hidden projectile fired at the trigger." },
   { "type": "trap", "name": "Rune",      "dmg": "Fire / Lightning",  "effect": "{dmg} in a {range} explosion when disturbed." },
-  { "type": "trap", "name": "Trap Door", "dmg": "Impact",            "effect": "{dmg} — floor drops away into a hazard below." },
+  { "type": "trap", "name": "Trap Door", "dmg": "Impact",            "effect": "{dmg} - floor drops away into a hazard below." },
   { "type": "trap", "name": "Gas",       "dmg": "Toxic / Eclipse",   "effect": "{dmg} in a {range} cloud; inflicts Coughing." },
   { "type": "trap", "name": "Net",       "dmg": "Piercing",          "effect": "Target is Pinned; {dmg} from embedded barbs." },
   { "type": "trap", "name": "Illusion",  "dmg": "Psychic",           "effect": "{dmg} psychic; inflicts Confused or Fear." },

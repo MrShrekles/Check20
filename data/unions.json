@@ -4,7 +4,7 @@
     "slug": "fabrication",
     "color": "#9c6030",
     "tagline": "A forge-born collective of smiths, machinists, crafters, and toolwrights.",
-    "desc": "Fabrication Unions build the bones of society — blades, bolts, hinges, and shields. Whether forging a sword, designing a firearm, or crafting mining tools, they value skill, consistency, and measurable results. Every item tells the maker's story.",
+    "desc": "Fabrication Unions build the bones of society - blades, bolts, hinges, and shields. Whether forging a sword, designing a firearm, or crafting mining tools, they value skill, consistency, and measurable results. Every item tells the maker's story.",
     "opposition": "Culture",
     "location": "Foundries, machine shops, rail-line forges, or hardened craft halls heavy with smoke, hammering, and the scent of oiled leather.",
     "names": ["The Ironright Union", "Blackbrace Assembly", "The Gritforge Chain", "Hammermark Unionhall"],
@@ -26,7 +26,7 @@
     "merchantFeatures": [
       {"name": "Workbench Access", "desc": "You may craft or modify a mundane weapon or tool once per rest"},
       {"name": "Blueprint Recall", "desc": "Once per scene, declare that you \"built that already\" and produce a small, simple device"},
-      {"name": "Union Tag", "desc": "Your gear is marked with certified maker's stamps — sell for +25% in towns with a Fabrication presence"},
+      {"name": "Union Tag", "desc": "Your gear is marked with certified maker's stamps - sell for +25% in towns with a Fabrication presence"},
       {"name": "Scrap Reclaim", "desc": "Break down 1 item per town to recover usable materials worth up to 25gp"}
     ],
     "infoAccess": [
@@ -41,7 +41,7 @@
     "slug": "harvest",
     "color": "#5a7a30",
     "tagline": "A collective of farmers, miners, foragers, and resource gatherers.",
-    "desc": "Harvest Unions are the lifeblood of regional supply, trading sweat for sustenance. They manage fields, forests, quarries, and fisheries — bringing raw goods to market and controlling who gets to eat, build, or burn. Where the Martial Unions guard the cities, the Harvest Unions keep the wilds habitable.",
+    "desc": "Harvest Unions are the lifeblood of regional supply, trading sweat for sustenance. They manage fields, forests, quarries, and fisheries - bringing raw goods to market and controlling who gets to eat, build, or burn. Where the Martial Unions guard the cities, the Harvest Unions keep the wilds habitable.",
     "opposition": "Politics",
     "location": "Sawmills, smokehouses, farm co-ops, quarry lodges, or smoke-stained bunkhouses lined with old tools and fresh dirt.",
     "names": ["Rootwell Cooperative", "The Ironfork Assembly", "Grainspike Union", "Ash & Ore Federation"],
@@ -54,7 +54,7 @@
     "goodsLabel": "Harvest Assets",
     "goods": [
       {"name": "Crate of Raw Goods", "desc": "1 unit of tradeable material (grain, ore, lumber, etc.)"},
-      {"name": "Forager's Bundle", "desc": "Rare herbs, pelts, or bones — sells high or aids crafting"},
+      {"name": "Forager's Bundle", "desc": "Rare herbs, pelts, or bones - sells high or aids crafting"},
       {"name": "Extraction Permit", "desc": "Legal access to restricted land for gathering"},
       {"name": "Pack Beasts", "desc": "Temporary increase to travel carry capacity or speed"},
       {"name": "Field Tools", "desc": "Reduces fatigue for physical labor or speeds up harvesting"},
@@ -64,7 +64,7 @@
       {"name": "Supply Runner", "desc": "You can source 1 unit of basic material per town"},
       {"name": "Beast Bond", "desc": "You gain a work animal (mule, ox, giant beetle) that can carry, defend, or assist"},
       {"name": "Field Broker", "desc": "Sell gathered resources at +25% value in towns with a Harvest presence"},
-      {"name": "Claim Flag", "desc": "Mark a wild zone as claimed by your Union — local poachers or rivals may face penalties or resistance"}
+      {"name": "Claim Flag", "desc": "Mark a wild zone as claimed by your Union - local poachers or rivals may face penalties or resistance"}
     ],
     "infoAccess": [
       {"name": "Resource Spot", "desc": "Discover a new viable harvest site within your current region"},
@@ -115,7 +115,7 @@
     "slug": "commerce",
     "color": "#b89010",
     "tagline": "A cartel of traders, brokers, auctioneers, and financial liaisons.",
-    "desc": "Commerce Unions do not sell things — they sell access. They regulate pricing, control trade routes, and determine who is licensed to profit. Backroom deals, storefront licenses, and bulk contracts give them subtle dominance over every coin spent.",
+    "desc": "Commerce Unions do not sell things - they sell access. They regulate pricing, control trade routes, and determine who is licensed to profit. Backroom deals, storefront licenses, and bulk contracts give them subtle dominance over every coin spent.",
     "opposition": "Scholarship",
     "location": "Trade halls, auction floors, Unionmarts, counting houses, or tiled offices packed with ledgers, trade permits, and tense conversations.",
     "names": ["The Unified Trade Ledger", "Coinwright Consortium", "The Merchant Axis", "League of Open Markets"],
@@ -152,7 +152,7 @@
     "slug": "transport",
     "color": "#2060a0",
     "tagline": "A union of pilots, freight runners, railmasters, and route controllers.",
-    "desc": "Transport Unions control how people and goods move. They secure roads, maintain schedules, and determine who gets there first — or at all. Whether by zeppelin, mule, train, or boot, if it moves through civilized space, they likely signed off on it.",
+    "desc": "Transport Unions control how people and goods move. They secure roads, maintain schedules, and determine who gets there first - or at all. Whether by zeppelin, mule, train, or boot, if it moves through civilized space, they likely signed off on it.",
     "opposition": "Stewardship",
     "location": "Freight yards, airship docks, cable car stations, rail depots, or dispatch towers, often with scattered crates, loudspeakers, and logbooks stacked to the ceiling.",
     "names": ["The Stamped Manifest League", "Steeltrail Authority", "Union of Applied Motion", "Clockturn Freight Chain"],
@@ -189,7 +189,7 @@
     "slug": "martial",
     "color": "#8c2020",
     "tagline": "A disciplined network of professional enforcers, bounty hunters, and hired blades.",
-    "desc": "Martial Unions keep cities clean, protect shipments, and ensure contracts are honored — sometimes with bullets, sometimes with bodies. They operate on rigid structure, ironclad deals, and a public image of strength. Their presence is usually loud, uniformed, and undeniable.",
+    "desc": "Martial Unions keep cities clean, protect shipments, and ensure contracts are honored - sometimes with bullets, sometimes with bodies. They operate on rigid structure, ironclad deals, and a public image of strength. Their presence is usually loud, uniformed, and undeniable.",
     "opposition": "Subversion",
     "location": "Fortified compounds, contract boards, city guard annexes, or private security towers staffed by trench-coated veterans, steel-eyed clerks, and the occasional retired war mage.",
     "names": ["Ironwright Contract Agency", "The 3rd Line Brigade", "Crowhall Security", "Brassplate Syndicate"],
@@ -226,7 +226,7 @@
     "slug": "culture",
     "color": "#7a3090",
     "tagline": "A network of performers, publishers, stylemakers, and behind-the-scenes handlers.",
-    "desc": "Culture Unions shape the public voice — through stage, page, broadcast, and spectacle. Whether they run opera houses, print tabloid gossip, or choreograph street protests, their work moves people with emotion, color, and spin.",
+    "desc": "Culture Unions shape the public voice - through stage, page, broadcast, and spectacle. Whether they run opera houses, print tabloid gossip, or choreograph street protests, their work moves people with emotion, color, and spin.",
     "opposition": "Fabrication",
     "location": "Theaters, nightclubs, printshops, cabarets, and radio stations; usually surrounded by lights, noise, and cigarette haze.",
     "names": ["The Veil & Varnish Society", "Union of the Open Stage", "Radiowave 12", "The Paperroom"],
@@ -247,7 +247,7 @@
     ],
     "merchantFeatures": [
       {"name": "Spotlight", "desc": "Gain +1 Favor in any scene where you perform or make a public display"},
-      {"name": "Whispersheet", "desc": "Once per day, seed a rumor or story into local news — true or false"},
+      {"name": "Whispersheet", "desc": "Once per day, seed a rumor or story into local news - true or false"},
       {"name": "Access Pass", "desc": "Always allowed into entertainment venues, lounges, and social hubs"},
       {"name": "Stagehand", "desc": "You gain a personal assistant NPC who specializes in distraction or flare"}
     ],
@@ -263,7 +263,7 @@
     "slug": "politics",
     "color": "#203060",
     "tagline": "A tangled web of lawmakers, administrators, clerks, and power brokers.",
-    "desc": "Politics Unions do not hold swords — they hold signatures, sealed files, and rubber stamps. Their strength lies in permits, legal delays, shifting ordinances, and the subtle rerouting of authority. They do not shout — they file.",
+    "desc": "Politics Unions do not hold swords - they hold signatures, sealed files, and rubber stamps. Their strength lies in permits, legal delays, shifting ordinances, and the subtle rerouting of authority. They do not shout - they file.",
     "opposition": "Harvest",
     "location": "Courthouses, permit offices, administrative towers, law libraries, or smoky backrooms where policy is bought more than it is made.",
     "names": ["The Charter Office", "Graychain Committee", "The Bureau of Unified Powers", "The Policy Assembly"],
@@ -271,7 +271,7 @@
       {"name": "Magistrate Kell", "desc": "Always calm, never seen without gloves, reputation spotless"},
       {"name": "Darnet Quill", "desc": "Bureaucrat turned puppeteer, \"just a clerk\" with 40 strings pulled"},
       {"name": "Silba Trask", "desc": "Young reformer with dangerous charisma and old enemies"},
-      {"name": "\"The Whisperer\"", "desc": "Nobody's seen them — just their directives, always stamped correctly"}
+      {"name": "\"The Whisperer\"", "desc": "Nobody's seen them - just their directives, always stamped correctly"}
     ],
     "goodsLabel": "Bureaucratic Assets",
     "goods": [
@@ -286,7 +286,7 @@
       {"name": "Stamp Access", "desc": "You may request one temporary permit per town for personal or party use"},
       {"name": "Soft Favor", "desc": "Gain +1 Influence with bureaucrats, city guards, or legal factions"},
       {"name": "Delay Tactic", "desc": "Once per day, stall an enemy or official action by one scene"},
-      {"name": "Board Seat", "desc": "You gain a named, if ceremonial, position — your votes shape local decisions"}
+      {"name": "Board Seat", "desc": "You gain a named, if ceremonial, position - your votes shape local decisions"}
     ],
     "infoAccess": [
       {"name": "Active Motion", "desc": "Learn what new law or Union policy is about to pass"},
@@ -300,7 +300,7 @@
     "slug": "mysticism",
     "color": "#5020a0",
     "tagline": "A formal network of artificers, wardwrights, relic brokers, and sanctioned casters.",
-    "desc": "Mysticism Unions regulate magic like electricity — powerful, dangerous, and taxable. They create wards, examine artifacts, and sell arcane access to those who can afford it. Equal parts esoteric service and magical licensing board, they do not tolerate freelance sorcery.",
+    "desc": "Mysticism Unions regulate magic like electricity - powerful, dangerous, and taxable. They create wards, examine artifacts, and sell arcane access to those who can afford it. Equal parts esoteric service and magical licensing board, they do not tolerate freelance sorcery.",
     "opposition": "Refinement",
     "location": "Marble towers, sigil-inscribed halls, warded vaults, underground sanctums, or public arcana counters with locked backrooms.",
     "names": ["The Ethermark Trust", "Union of Regulated Thaumaturges", "The Ledgered Eye", "Warranted Circle of Binding"],
@@ -320,7 +320,7 @@
       {"name": "Curse Tag", "desc": "Applies a minor affliction or hex to a target (must pass roll to resist)"}
     ],
     "merchantFeatures": [
-      {"name": "Arcane Tag", "desc": "You may mark one item as sanctioned — it cannot be legally confiscated"},
+      {"name": "Arcane Tag", "desc": "You may mark one item as sanctioned - it cannot be legally confiscated"},
       {"name": "Ley Access", "desc": "You can tap into a known ley-line or mana source once per region"},
       {"name": "Sigil Trained", "desc": "Gain +1 to checks involving magical tools or relics"},
       {"name": "Vault Key", "desc": "Once per town, you may access Union storage to retrieve a tagged item, scroll, or relic worth up to 100gp"}
@@ -411,7 +411,7 @@
     "slug": "subversion",
     "color": "#503030",
     "tagline": "A network of smugglers, fixers, counterfeiters, and blackmailers.",
-    "desc": "Subversion Unions thrive in shadows, turning secrets into power and crime into currency. Their halls are hidden speakeasies, private basements, or front businesses — places where nothing is off-limits and everything has a price.",
+    "desc": "Subversion Unions thrive in shadows, turning secrets into power and crime into currency. Their halls are hidden speakeasies, private basements, or front businesses - places where nothing is off-limits and everything has a price.",
     "opposition": "Martial",
     "location": "Backroom parlors, boarded-up offices, smoke-filled bars, and underground lounges thick with hush money and whispered deals.",
     "names": ["The Split Hand", "Velvet Signal", "The Underbranch", "Mothlight Collective"],

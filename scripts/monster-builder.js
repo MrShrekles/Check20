@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const pool = filteredBases();
         selBase.innerHTML = pool.map((b, i) => {
             const idx = DATA.base.indexOf(b);
-            return `<option value="${idx}">${b.name}${b.baseType ? " — " + b.baseType : ""}</option>`;
+            return `<option value="${idx}">${b.name}${b.baseType ? " - " + b.baseType : ""}</option>`;
         }).join("");
     }
 
@@ -283,14 +283,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return Object.entries(movement)
             .filter(([, v]) => v > 0)
             .map(([k, v]) => `${labels[k] || k}: ${v} ft`)
-            .join(", ") || "—";
+            .join(", ") || "-";
     }
 
     function buildAttacksHTML(mon) {
         const atk = (label, a) => {
-            if (!a?.name) return `<span class="atk-empty"><strong>${label}:</strong> —</span>`;
+            if (!a?.name) return `<span class="atk-empty"><strong>${label}:</strong> -</span>`;
             const dmg = [a.damage, a.type].filter(nonEmpty).join(" ");
-            return `<span><strong>${label}:</strong> ${esc(a.name)}${dmg ? ` — ${esc(dmg)}` : ""}</span>`;
+            return `<span><strong>${label}:</strong> ${esc(a.name)}${dmg ? ` - ${esc(dmg)}` : ""}</span>`;
         };
         const any = mon.melee?.name || mon.ranged?.name || mon.spell?.name;
         if (!any && !mon.melee && !mon.ranged && !mon.spell) return "";

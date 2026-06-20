@@ -66,7 +66,7 @@ function stepMovement(entryIndex, key, delta) {
     if (inp) inp.value = newVal;
 }
 
-// movement.{key} — absolute values for monsterbase
+// movement.{key} - absolute values for monsterbase
 function stepBaseMovement(idx, key, delta) {
     if (!state.data[idx].movement) state.data[idx].movement = {};
     const cur = state.data[idx].movement[key] || 0;
@@ -82,7 +82,7 @@ function setBaseMovement(idx, key, val) {
     markUnsaved();
 }
 
-// movementMod.{key} — delta values for monstermod (can be negative)
+// movementMod.{key} - delta values for monstermod (can be negative)
 function stepModMovement(idx, key, delta) {
     if (!state.data[idx].movementMod) state.data[idx].movementMod = {};
     const cur = state.data[idx].movementMod[key] || 0;
@@ -389,7 +389,7 @@ function copyForChat(idx, btn) {
         lines.push(`PL ${pl}  (PHY ${phys} / MNT ${ment})  •  MN: ${ment * 2} max`);
     }
 
-    // Movement — only non-zero
+    // Movement - only non-zero
     const moveParts = [
         { label: 'Walk',  val: entry[sch.walkKey] },
         { label: 'Fly',   val: entry.fly   },
@@ -403,9 +403,9 @@ function copyForChat(idx, btn) {
     const melee  = entry.melee_attack  || {};
     const ranged  = entry.ranged_attack || {};
     const spellAtk = entry.spell       || {};
-    if (melee.name)    atkLines.push(`Melee:  ${melee.name}${melee.damage ? ' — ' + melee.damage : ''}${melee.damage_type ? ' ' + melee.damage_type : ''}`);
-    if (ranged.name)   atkLines.push(`Ranged: ${ranged.name}${ranged.damage ? ' — ' + ranged.damage : ''}${ranged.damage_type ? ' ' + ranged.damage_type : ''}`);
-    if (spellAtk.name) atkLines.push(`Spell:  ${spellAtk.name}${spellAtk.damage ? ' — ' + spellAtk.damage : ''}${spellAtk.damage_type ? ' ' + spellAtk.damage_type : ''}`);
+    if (melee.name)    atkLines.push(`Melee:  ${melee.name}${melee.damage ? ' - ' + melee.damage : ''}${melee.damage_type ? ' ' + melee.damage_type : ''}`);
+    if (ranged.name)   atkLines.push(`Ranged: ${ranged.name}${ranged.damage ? ' - ' + ranged.damage : ''}${ranged.damage_type ? ' ' + ranged.damage_type : ''}`);
+    if (spellAtk.name) atkLines.push(`Spell:  ${spellAtk.name}${spellAtk.damage ? ' - ' + spellAtk.damage : ''}${spellAtk.damage_type ? ' ' + spellAtk.damage_type : ''}`);
     if (atkLines.length) { lines.push(''); lines.push('**ATTACKS**'); atkLines.forEach(a => lines.push(a)); }
 
     // Main feature
@@ -446,7 +446,7 @@ function copyForChat(idx, btn) {
                     e.range  || null,
                     e.damage ? e.damage + (e.type ? ' ' + e.type : '') : null,
                 ].filter(Boolean).join(' · ');
-                lines.push(`  ${parts}${e.effect ? ' — ' + e.effect : ''}`);
+                lines.push(`  ${parts}${e.effect ? ' - ' + e.effect : ''}`);
             });
         });
     }
@@ -633,7 +633,7 @@ function renderMonsterSpellsList(idx) {
     const spells = state.data[idx].spells || [];
     el.innerHTML = spells.length
         ? spells.map((s, si) => renderMonsterSpell(idx, si, s)).join('')
-        : '<div class="extra-features-empty">No spells — use search to add</div>';
+        : '<div class="extra-features-empty">No spells - use search to add</div>';
 }
 
 function removeMonsterSpell(idx, si) {
@@ -722,14 +722,14 @@ function openSpellPicker(idx) {
                 <div class="entry-row" style="cursor:pointer;padding:6px 10px;border-radius:4px${has ? ';opacity:0.4;pointer-events:none' : ''}" data-name="${escAttr(s.name)}">
                     <div class="entry-row-name">${escHtml(s.name)}${has ? ' ✓' : ''}</div>
                     <div class="entry-row-meta">${escHtml([s.manner, s.transmission, s.origin].filter(Boolean).join(' · '))}
-                        — ${(s.effects||[]).map(e=>escHtml(e.intent)).join(', ')}</div>
+                        - ${(s.effects||[]).map(e=>escHtml(e.intent)).join(', ')}</div>
                 </div>`;
             }).join('');
 
             const customRow = q ? `
                 <div class="entry-row" id="spell-custom-row" style="cursor:pointer;padding:6px 10px;border-radius:4px;border:1px dashed var(--border);opacity:0.7">
                     <div class="entry-row-name">✦ Create "${escHtml(q)}" as custom spell</div>
-                    <div class="entry-row-meta">Blank spell — fill in intent levels after adding</div>
+                    <div class="entry-row-meta">Blank spell - fill in intent levels after adding</div>
                 </div>` : '';
 
             list.innerHTML = rows + customRow;
@@ -890,7 +890,7 @@ function renderMonsterBase(entry, idx) {
             <div class="extra-features-list" id="monster-spells-${idx}">
                 ${(entry.spells?.length)
                     ? entry.spells.map((s, si) => renderMonsterSpell(idx, si, s)).join('')
-                    : '<div class="extra-features-empty">No spells — use search to add</div>'}
+                    : '<div class="extra-features-empty">No spells - use search to add</div>'}
             </div>
         </div>
 
@@ -994,7 +994,7 @@ function renderMonsterMod(entry, idx) {
             <div class="extra-features-list" id="monster-spells-${idx}">
                 ${(entry.spells?.length)
                     ? entry.spells.map((s, si) => renderMonsterSpell(idx, si, s)).join('')
-                    : '<div class="extra-features-empty">No spells — use search to add</div>'}
+                    : '<div class="extra-features-empty">No spells - use search to add</div>'}
             </div>
         </div>`;
 }
@@ -1356,7 +1356,7 @@ registerEditor('monster', {
                         const spells = entry.spells || [];
                         return spells.length
                             ? spells.map((s, si) => renderMonsterSpell(idx, si, s)).join('')
-                            : '<div class="extra-features-empty">No spells — use search to add</div>';
+                            : '<div class="extra-features-empty">No spells - use search to add</div>';
                     })()}
                 </div>
             </div>

@@ -1,4 +1,4 @@
-// global-chat.js — Town Square: app-wide chat with online presence
+// global-chat.js - Town Square: app-wide chat with online presence
 
 const GLOBAL_ROOM = '000000';
 const PRESENCE_TIMEOUT = 90 * 1000; // "online" if heartbeat within this window
@@ -40,7 +40,7 @@ function renderChatLog() {
 
         if (m.removed) {
             li.className = 'chat-msg--removed';
-            li.innerHTML = '<span class="chat-removed-text">— removed —</span>';
+            li.innerHTML = '<span class="chat-removed-text">- removed -</span>';
             el.appendChild(li);
             return;
         }
@@ -87,7 +87,7 @@ async function sendMsg() {
     if (!text) return;
     if (!arcCanSendChat()) return;
     if (!(await arcAutomodGate(text, GLOBAL_ROOM, getCharName()))) { input.value = ''; return; }
-    if (!arcRateLimitOk()) { alert('You are sending messages too fast — wait a few seconds and try again.'); return; }
+    if (!arcRateLimitOk()) { alert('You are sending messages too fast - wait a few seconds and try again.'); return; }
     const arc = window.__arc;
     if (!arc?.db || !arc?.uid) return;
     input.value = '';
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Reactions — click delegation on chat log
+    // Reactions - click delegation on chat log
     document.getElementById('chat-log')?.addEventListener('click', e => {
         const reactionAddBtn = e.target.closest('.reaction-add-btn');
         if (reactionAddBtn) {

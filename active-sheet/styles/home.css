@@ -1,8 +1,8 @@
 :root {
-    --bg:         #1e1e1e;                    /* warm dark grey — site --dark */
+    --bg:         #1e1e1e;                    /* warm dark grey - site --dark */
     --panel:      #282828;                    /* warm panel */
     --panel-2:    #323232;                    /* warm lighter panel */
-    --text:       #fffaf0;                    /* floral white — site --text-plain */
+    --text:       #fffaf0;                    /* floral white - site --text-plain */
     --muted:      rgba(217, 179, 130, 0.75); /* cream-muted */
     --line:       rgba(70, 100, 100, 0.35);  /* teal-tinted border */
     --gold:       goldenrod;

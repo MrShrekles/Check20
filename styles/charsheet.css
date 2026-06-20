@@ -1,5 +1,5 @@
 /* ============================================================
-   ARMORED NOIR — CHARACTER SHEET STYLES
+   ARMORED NOIR - CHARACTER SHEET STYLES
    ============================================================
    TABLE OF CONTENTS
    1.  Tokens (CSS custom properties)
@@ -483,7 +483,7 @@ textarea {
     margin: 0;
 }
 
-/* page 3: column flow instead of grid — fills height, no wasted row gaps */
+/* page 3: column flow instead of grid - fills height, no wasted row gaps */
 #page3 .reference-grid {
     display: block;
     column-count: 3;
@@ -772,7 +772,7 @@ textarea {
 
 
 /* ============================================================
-   16. CHARSHEET HEADER (screen only — not printed)
+   16. CHARSHEET HEADER (screen only - not printed)
    ============================================================ */
 #header-placeholder .main-header {
     background: #111;
@@ -797,7 +797,7 @@ textarea {
     cursor: default;
 }
 
-/* hide the dropdown nav — not needed on the sheet */
+/* hide the dropdown nav - not needed on the sheet */
 #header-placeholder .flex-item:has(details) {
     display: none;
 }
@@ -907,7 +907,7 @@ body.compact-print ol li {
 
 
 /* ============================================================
-   19. COMBAT FOOTER — conditions checklist + press on
+   19. COMBAT FOOTER - conditions checklist + press on
    ============================================================ */
 .section--combat-footer {
     margin-top: 8px;

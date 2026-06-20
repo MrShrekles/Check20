@@ -1,6 +1,6 @@
 // ── EDITOR REGISTRY ───────────────────────────────────────────────────────────
 // Each editor-*.js calls registerEditor() to plug in.
-// The shell never needs to change — only editors register/update.
+// The shell never needs to change - only editors register/update.
 const EDITORS = {};
 
 function registerEditor(type, impl) {
@@ -83,6 +83,7 @@ function renderFileList() {
             <div class="file-type-dot ${cfg.dotClass}" title="${f.fileType}"></div>
             <div class="file-name">${f.name}</div>
             <div class="file-count">${f.entryCount}</div>
+            ${f.qcCount > 0 ? `<div class="file-qc-badge">⚠ ${f.qcCount}</div>` : ''}
         </div>`;
     }).join('');
     const parts = state.folderPath.replace(/\\/g, '/').split('/');
@@ -117,7 +118,7 @@ async function autoUpdateTick() {
             const newMod = info ? Date.parse(info.modified) : null;
             const oldMod = state.currentFileModified ? Date.parse(state.currentFileModified) : null;
             if (newMod && oldMod && newMod > oldMod) {
-                if (!state.unsaved) { showToast(`${state.currentFile} changed — reloading`, 'info'); await openFile(state.currentFile); }
+                if (!state.unsaved) { showToast(`${state.currentFile} changed - reloading`, 'info'); await openFile(state.currentFile); }
                 else showToast(`${state.currentFile} changed on disk (unsaved edits)`, 'error');
             }
         }
@@ -157,6 +158,12 @@ async function openFile(filename) {
 
         // Let the editor refresh any autocomplete/datalist data
         editor?.onLoad?.(state.data);
+
+        // Compute QC issue count and store on the file record so the file list can show it
+        const fileRecord = state.files.find(f => f.name === filename);
+        if (fileRecord && editor?.qcCount) {
+            fileRecord.qcCount = editor.qcCount(state.data);
+        }
 
         // Apply type theme
         applyTypeTheme(state.fileType);
@@ -376,14 +383,14 @@ async function openBackups() {
 function showBackupsModal(backups) {
     const overlay = document.createElement('div'); overlay.className = 'dialog-overlay'; overlay.style.zIndex = 110;
     const box = document.createElement('div'); box.className = 'dialog-box'; box.style.maxWidth = '500px';
-    const title = document.createElement('div'); title.className = 'dialog-title'; title.textContent = `Backups — ${state.currentFile}`;
+    const title = document.createElement('div'); title.className = 'dialog-title'; title.textContent = `Backups - ${state.currentFile}`;
     const content = document.createElement('div'); content.className = 'dialog-text';
     if (!backups.length) { content.textContent = 'No backups available.'; }
     else {
         const list = document.createElement('div'); list.style.cssText = 'max-height:300px;overflow:auto;';
         for (const b of backups) {
             const row = document.createElement('div'); row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);';
-            const left = document.createElement('div'); left.style.cssText = 'font-family:Share Tech Mono,monospace;font-size:11px;color:#aaa;'; left.textContent = `${b.name} — ${new Date(b.modified).toLocaleString()}`;
+            const left = document.createElement('div'); left.style.cssText = 'font-family:Share Tech Mono,monospace;font-size:11px;color:#aaa;'; left.textContent = `${b.name} - ${new Date(b.modified).toLocaleString()}`;
             const right = document.createElement('div'); right.style.display = 'flex'; right.style.gap = '6px';
             const dl = document.createElement('a'); dl.className = 'btn btn-ghost'; dl.href = `/api/backups/download/${encodeURIComponent(state.currentFile)}/${encodeURIComponent(b.name)}`; dl.textContent = 'Download'; dl.onclick = () => setTimeout(() => overlay.remove(), 100);
             const restoreBtn = document.createElement('button'); restoreBtn.className = 'btn btn-danger'; restoreBtn.textContent = 'Restore';
@@ -442,12 +449,12 @@ function updateTitle() {
 function updateToolbar() {
     const has = !!state.currentFile;
     ['btnReload','btnBackups','btnNew'].forEach(id => { const el = document.getElementById(id); if (el) el.disabled = !has; });
-    document.getElementById('toolbarTitle').textContent = has ? state.currentFile.replace('.json','') : '—';
+    document.getElementById('toolbarTitle').textContent = has ? state.currentFile.replace('.json','') : '-';
     document.getElementById('toolbarCount').textContent = has ? `${state.data.length} ${tc().label.toLowerCase()}` : '';
 }
 function updateStatus() {
     const cfg = tc();
-    document.getElementById('sbFile').innerHTML = `${cfg.icon} <span>${state.currentFile || '—'}</span>`;
+    document.getElementById('sbFile').innerHTML = `${cfg.icon} <span>${state.currentFile || '-'}</span>`;
     document.getElementById('sbEntry').innerHTML = state.currentIndex >= 0 ? `entry <span>${state.currentIndex + 1} / ${state.data.length}</span>` : '';
     document.getElementById('sbType').innerHTML = state.currentFile ? `<span>${state.fileType}</span>` : '';
 }
@@ -463,7 +470,7 @@ function dialogCancel()  { document.getElementById('dialogOverlay').classList.ad
 // ── UTILS ─────────────────────────────────────────────────────────────────────
 function escHtml(str) { return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function escAttr(str) { return String(str ?? '').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-function buildSelect(opts, val) { return opts.map(o => `<option value="${escAttr(o)}" ${o === (val ?? '') ? 'selected' : ''}>${escHtml(o) || '—'}</option>`).join(''); }
+function buildSelect(opts, val) { return opts.map(o => `<option value="${escAttr(o)}" ${o === (val ?? '') ? 'selected' : ''}>${escHtml(o) || '-'}</option>`).join(''); }
 
 // ── KEYBOARD ──────────────────────────────────────────────────────────────────
 document.addEventListener('keydown', e => {

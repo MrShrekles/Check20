@@ -6,7 +6,7 @@ const titleCase = s => s ? s.charAt(0).toUpperCase() + s.slice(1).replace(/ \w/g
 const slugify   = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 const STORAGE_KEY  = 'arc-active-sheet';
-// Base limits — Professional class gets +5 points and max 15 per stat
+// Base limits - Professional class gets +5 points and max 15 per stat
 const BASE_POINTS = 20;
 const BASE_MAX    = 10;
 
@@ -136,13 +136,13 @@ const TRINKET_LIST = [
     "An old compass that points to something other than magnetic north",
     "A handkerchief embroidered with an unfamiliar coat of arms",
     "A piece of driftwood shaped like a sea creature",
-    "A candle that cannot be lit — emits a faint sweet smell when warm",
+    "A candle that cannot be lit - emits a faint sweet smell when warm",
     "A deck of cards where all the kings are missing",
     "A bell that makes no sound when rung",
     "A diary written in an unknown language",
     "A set of old locksmith tools with one pick inexplicably bent",
     "A whistle that only animals can hear",
-    "A locket that refuses to open — sounds like something is moving inside",
+    "A locket that refuses to open - sounds like something is moving inside",
     "A piece of chalk that writes on air",
     "A feather that falls like a stone when dropped",
     "A glove that absorbs light, making the hand invisible when worn",
@@ -155,7 +155,7 @@ const TRINKET_LIST = [
     "A coin that always lands on its edge",
     "A key that gets colder as it approaches locks",
     "A nail that never rusts",
-    "A tooth from an unknown beast — vibrates slightly in thunderstorms",
+    "A tooth from an unknown beast - vibrates slightly in thunderstorms",
     "A map with a place that no one can find",
     "A hat that always returns to its owner when lost",
     "A small box that hums a melody at night",
@@ -295,9 +295,9 @@ function renderPathStep() {
     const pathSel  = document.getElementById('wiz-path-select');
     const talSel   = document.getElementById('wiz-talent-select');
 
-    pathSel.innerHTML = '<option value="">— Select Path —</option>' +
+    pathSel.innerHTML = '<option value="">- Select Path -</option>' +
         paths.map(e => `<option value="${e.name}"${e.name === wiz.pathName ? ' selected' : ''}>${e.name}</option>`).join('');
-    talSel.innerHTML  = '<option value="">— Select Talent —</option>' +
+    talSel.innerHTML  = '<option value="">- Select Talent -</option>' +
         talents.map(e => `<option value="${e.name}"${e.name === wiz.talentName ? ' selected' : ''}>${e.name}</option>`).join('');
 
     updatePathPreview();
@@ -313,18 +313,18 @@ function updatePathPreview() {
         const pe = entries.find(e => e.name === wiz.pathName);
         const init = pe?.path?.steps?.filter(s => Number(s.step) === 0) || [];
         if (init.length) parts.push(`<div class="preview-label">Starting Path Feature</div>` +
-            init.map(s => `<div class="preview-feat"><strong>${s.name}</strong>${s.description ? ` — ${s.description}` : ''}</div>`).join(''));
+            init.map(s => `<div class="preview-feat"><strong>${s.name}</strong>${s.description ? ` - ${s.description}` : ''}</div>`).join(''));
     }
     if (wiz.talentName) {
         const te = entries.find(e => e.name === wiz.talentName);
         const init = te?.talent?.steps?.filter(s => Number(s.step) === 0) || [];
         if (init.length) parts.push(`<div class="preview-label">Starting Talent Feature</div>` +
-            init.map(s => `<div class="preview-feat"><strong>${s.name}</strong>${s.description ? ` — ${s.description}` : ''}</div>`).join(''));
+            init.map(s => `<div class="preview-feat"><strong>${s.name}</strong>${s.description ? ` - ${s.description}` : ''}</div>`).join(''));
     }
     preview.innerHTML = parts.join('');
 }
 
-// ── STEP 3: SPECIES — drill-down navigation ───────────────────────────────────
+// ── STEP 3: SPECIES - drill-down navigation ───────────────────────────────────
 
 function showSpecLevel(level) {
     ['lineage','option','species'].forEach(l =>
@@ -466,14 +466,14 @@ function renderDetailsStep() {
     if (aEl) aEl.value = wiz.age        || '';
     if (xEl) xEl.value = wiz.extraEquip || '';
 
-    // Wealth button — lock after first roll
+    // Wealth button - lock after first roll
     const rollWealthBtn = document.getElementById('roll-wealth');
     if (rollWealthBtn) {
         rollWealthBtn.disabled    = wiz.wealthRolled;
         rollWealthBtn.textContent = wiz.wealthRolled ? 'Rolled' : '🎲 Roll 1d100+50';
     }
 
-    // Size dropdown — populate from species height range or fallback to standard sizes
+    // Size dropdown - populate from species height range or fallback to standard sizes
     const sEl = document.getElementById('detail-size');
     if (sEl) {
         const sizeStr = wiz.speciesObj?.size || '';
@@ -514,6 +514,24 @@ const CHECK_KEY = {
     influence:'inf', intellect:'int', luck:'lck', observation:'obs', spirit:'spi',
 };
 
+// The 10 investable Physical + Mental checks
+const VALID_STAT_CHECKS = new Set([
+    'Agility','Crafting','Stealth','Strength','Survival',
+    'Influence','Intellect','Luck','Observation','Spirit',
+]);
+
+// Heuristic: does this description describe an enemy rolling, not you?
+const _ENEMY_SAVE_RX = /\b(?:enemies|opponents?|targets?|each creature|all creatures|must make|succeed on|creatures?\s+(?:within|in|around|that)|they make|creature makes?|affected creatures?|hostile)\b/i;
+
+function isEnemyFacingCheck(step) {
+    // Explicit tag always wins
+    if (step.checkType === 'enemy')     return true;
+    if (step.checkType === 'self')      return false;
+    if (step.checkType === 'contested') return false; // you roll it too — show in ally section
+    // Fallback: heuristic on description
+    return step.description ? _ENEMY_SAVE_RX.test(step.description) : false;
+}
+
 function renderBuildGuide() {
     const el = document.getElementById('build-guide');
     if (!el) return;
@@ -522,34 +540,50 @@ function renderBuildGuide() {
     const pathEntry   = wiz.pathName   ? entries.find(e => e.name === wiz.pathName)   : null;
     const talentEntry = wiz.talentName ? entries.find(e => e.name === wiz.talentName) : null;
 
-    const steps = [
-        ...(pathEntry?.path?.steps   || []).map(s => ({ ...s, source: wiz.pathName })),
+    const allSteps = [
+        ...(pathEntry?.path?.steps    || []).map(s => ({ ...s, source: wiz.pathName })),
         ...(talentEntry?.talent?.steps || []).map(s => ({ ...s, source: wiz.talentName })),
-    ].filter(s => s.name && s.check);
+    ].filter(s => s.name && s.check && VALID_STAT_CHECKS.has(s.check) && s.checkType !== 'unneeded');
 
-    if (!steps.length) { el.hidden = true; return; }
+    if (!allSteps.length) { el.hidden = true; return; }
+
+    const yourChecks  = allSteps.filter(s => !isEnemyFacingCheck(s));
+    const enemySaves  = allSteps.filter(s =>  isEnemyFacingCheck(s));
+
+    const rowHtml = (s, isEnemy) => {
+        const isContested = s.checkType === 'contested';
+        const checkCls = isEnemy ? 'guide-feat-check guide-feat-check--enemy' : 'guide-feat-check';
+        const checkLbl = isEnemy
+            ? `${s.check} <span class="guide-feat-save-note">enemy saves</span>`
+            : isContested
+                ? `${s.check} <span class="guide-feat-save-note guide-feat-save-note--contested">vs enemy</span>`
+                : s.check;
+        const inner = `
+            <span class="guide-feat-left">
+                <span class="guide-feat-name">${s.name}</span>
+                <span class="${checkCls}">${checkLbl}</span>
+            </span>`;
+        return s.description
+            ? `<details class="guide-feat-row guide-feat-row--expand${isEnemy ? ' guide-feat-row--enemy' : ''}">
+                <summary class="guide-feat-summary">${inner}</summary>
+                <p class="guide-feat-desc">${s.description}</p>
+               </details>`
+            : `<div class="guide-feat-row${isEnemy ? ' guide-feat-row--enemy' : ''}">${inner}</div>`;
+    };
 
     el.hidden = false;
     el.innerHTML = `
-        <div class="guide-feat-label">Abilities that use checks</div>
+        ${yourChecks.length ? `
+        <div class="guide-feat-label">Ally checks — invest in these</div>
         <div class="guide-feat-list">
-            ${steps.map(s => s.description ? `
-                <details class="guide-feat-row guide-feat-row--expand">
-                    <summary class="guide-feat-summary">
-                        <span class="guide-feat-left">
-                            <span class="guide-feat-name">${s.name}</span>
-                            <span class="guide-feat-check">${s.check}</span>
-                        </span>
-                    </summary>
-                    <p class="guide-feat-desc">${s.description}</p>
-                </details>` : `
-                <div class="guide-feat-row">
-                    <span class="guide-feat-left">
-                        <span class="guide-feat-name">${s.name}</span>
-                        <span class="guide-feat-check">${s.check}</span>
-                    </span>
-                </div>`).join('')}
-        </div>`;
+            ${yourChecks.map(s => rowHtml(s, false)).join('')}
+        </div>` : ''}
+
+        ${enemySaves.length ? `
+        <div class="guide-feat-label guide-feat-label--enemy">Enemy checks — no stat investment needed</div>
+        <div class="guide-feat-list guide-feat-list--enemy">
+            ${enemySaves.map(s => rowHtml(s, true)).join('')}
+        </div>` : ''}`;
 }
 
 function pointsSpent()  { return STAT_KEYS.reduce((n, k) => n + wiz.stats[k], 0); }
@@ -600,7 +634,7 @@ function renderReview() {
         ${wiz.pathName   ? `<div class="review-row"><span class="review-lbl">Path</span><strong>${wiz.pathName}</strong></div>` : ''}
         ${wiz.talentName ? `<div class="review-row"><span class="review-lbl">Talent</span><strong>${wiz.talentName}</strong></div>` : ''}
         ${s ? `<div class="review-row"><span class="review-lbl">Species</span><strong>${titleCase(s.name)}</strong> <span class="review-sub">${s.lineage}</span></div>` : ''}
-        <div class="review-row"><span class="review-lbl">Stats</span><span class="review-stats">${statsLine || '—'}</span></div>
+        <div class="review-row"><span class="review-lbl">Stats</span><span class="review-stats">${statsLine || '-'}</span></div>
         <div class="review-row"><span class="review-lbl">Points</span><span class="review-points${pointsLeft() < 0 ? ' review-points--over' : ''}">
             ${pointsSpent()} / ${classLimits().total} used${pointsLeft() > 0 ? ` (${pointsLeft()} unspent)` : ''}
         </span></div>
@@ -643,7 +677,7 @@ function buildAndSave() {
         equipment.push({ name, notes: '', category: inferEquipCategory(name, ''), armorRating: 0 });
     });
 
-    // Species features are stored in char.speciesFeature — no longer duplicated in otherGains
+    // Species features are stored in char.speciesFeature - no longer duplicated in otherGains
     const otherGains = [];
 
     const state = {
@@ -750,19 +784,19 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePathPreview();
     });
 
-    // Species — lineage grid
+    // Species - lineage grid
     document.getElementById('lineage-grid').addEventListener('click', e => {
         const card = e.target.closest('[data-lineage]');
         if (card) enterLineage(card.dataset.lineage);
     });
 
-    // Species — option grid
+    // Species - option grid
     document.getElementById('option-grid').addEventListener('click', e => {
         const card = e.target.closest('[data-option]');
         if (card) enterOption(card.dataset.option);
     });
 
-    // Species — back buttons
+    // Species - back buttons
     document.getElementById('spec-back-to-lineage').addEventListener('click', () => {
         showSpecLevel('lineage');
     });
@@ -772,7 +806,7 @@ document.addEventListener('DOMContentLoaded', () => {
         else showSpecLevel('lineage');
     });
 
-    // Species — species cards
+    // Species - species cards
     document.getElementById('species-grid').addEventListener('click', e => {
         const card = e.target.closest('[data-species]');
         if (!card) return;
@@ -794,7 +828,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // Starting Details — delegated roll buttons (robust against DOM timing)
+    // Starting Details - delegated roll buttons (robust against DOM timing)
     document.querySelector('.wiz-body')?.addEventListener('click', e => {
         const btn = e.target.closest('[id^="roll-"]');
         if (!btn) return;
