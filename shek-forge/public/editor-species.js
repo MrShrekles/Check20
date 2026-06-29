@@ -446,13 +446,6 @@ function spQCAnalyze(entry) {
         }
     }
 
-    // ── Grammar heuristics ──────────────────────────────────────────────────
-    for (const [scope, text] of descFields) {
-        for (const hit of runGrammarChecks(text)) {
-            push(scope, `grammar_${hit.code}`, hit.label, hit.detail(hit.match), null);
-        }
-    }
-
     // ── AI language detection ────────────────────────────────────────────────
     const descFields = [
         ['desc_physical',     String(entry.description?.physical    || '')],
@@ -462,6 +455,13 @@ function spQCAnalyze(entry) {
         ['main',              desc],
         ['sub',               subDesc],
     ];
+
+    // ── Grammar heuristics ──────────────────────────────────────────────────
+    for (const [scope, text] of descFields) {
+        for (const hit of runGrammarChecks(text)) {
+            push(scope, `grammar_${hit.code}`, hit.label, hit.detail(hit.match), null);
+        }
+    }
 
     for (const [scope, text] of descFields) {
         if (!text) continue;

@@ -338,7 +338,7 @@
     "term": "Called Shot",
     "type": "mechanic",
     "category": "Combat",
-    "definition": "When you make an attack, you may choose to suffer a -10 penalty to the attack check. If the attack succeeds, inflict a chosen non-major condition instead of dealing damage. Then per success deal the damage you would have inflicted"
+    "definition": "Declare before attacking, then accept -10 to hit. On success, inflict a specific condition instead of normal damage."
   },
   {
     "term": "Finisher",

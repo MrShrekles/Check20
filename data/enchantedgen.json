@@ -1,102 +1,428 @@
 [
-  { "type": "prefix", "text": "Ancient" },
-  { "type": "prefix", "text": "Cursed" },
-  { "type": "prefix", "text": "Blessed" },
-  { "type": "prefix", "text": "Shadow" },
-  { "type": "prefix", "text": "Blazing" },
-  { "type": "prefix", "text": "Frozen" },
-  { "type": "prefix", "text": "Singing" },
-  { "type": "prefix", "text": "Void" },
-  { "type": "prefix", "text": "Verdant" },
-  { "type": "prefix", "text": "Infernal" },
-  { "type": "prefix", "text": "Celestial" },
-  { "type": "prefix", "text": "Whispering" },
-  { "type": "prefix", "text": "Shattered" },
-  { "type": "prefix", "text": "Gilded" },
-  { "type": "prefix", "text": "Hollow" },
-
-  { "type": "effect", "text": "deals +1d6 {type} damage on hit" },
-  { "type": "effect", "text": "grants resistance to {type} damage" },
-  { "type": "effect", "text": "glows faintly when enemies are within 30ft" },
-  { "type": "effect", "text": "whispers warnings before ambushes" },
-  { "type": "effect", "text": "allows the bearer to speak one additional language" },
-  { "type": "effect", "text": "grants advantage on {check} checks once per rest" },
-  { "type": "effect", "text": "returns to the bearer's hand when thrown" },
-  { "type": "effect", "text": "absorbs the first {type} hit each day" },
-  { "type": "effect", "text": "makes the bearer nearly impossible to track" },
-  { "type": "effect", "text": "reveals invisible creatures within 10ft" },
-  { "type": "effect", "text": "grows warm in the presence of undead" },
-  { "type": "effect", "text": "leaves no footprints in any terrain" },
-  { "type": "effect", "text": "deals double damage to one specific creature type" },
-  { "type": "effect", "text": "allows the bearer to fall safely from any height" },
-  { "type": "effect", "text": "grants +1 to a chosen check permanently" },
-  { "type": "effect", "text": "lets the bearer understand any written language" },
-  { "type": "effect", "text": "causes the bearer to cast no shadow" },
-
-  { "type": "damageType", "text": "Fire" },
-  { "type": "damageType", "text": "Ice" },
-  { "type": "damageType", "text": "Lightning" },
-  { "type": "damageType", "text": "Solar" },
-  { "type": "damageType", "text": "Eclipse" },
-  { "type": "damageType", "text": "Vozian" },
-  { "type": "damageType", "text": "Nature" },
-  { "type": "damageType", "text": "Psychic" },
-  { "type": "damageType", "text": "Acid" },
-  { "type": "damageType", "text": "Thunder" },
-  { "type": "damageType", "text": "Slashing" },
-  { "type": "damageType", "text": "Impact" },
-
-  { "type": "check", "text": "Agility" },
-  { "type": "check", "text": "Strength" },
-  { "type": "check", "text": "Intellect" },
-  { "type": "check", "text": "Observation" },
-  { "type": "check", "text": "Stealth" },
-  { "type": "check", "text": "Influence" },
-  { "type": "check", "text": "Luck" },
-  { "type": "check", "text": "Spirit" },
-  { "type": "check", "text": "Crafting" },
-  { "type": "check", "text": "Survival" },
-
-  { "type": "itemType", "category": "weapon", "text": "Longsword" },
-  { "type": "itemType", "category": "weapon", "text": "Dagger" },
-  { "type": "itemType", "category": "weapon", "text": "Spear" },
-  { "type": "itemType", "category": "weapon", "text": "Bow" },
-  { "type": "itemType", "category": "weapon", "text": "Axe" },
-  { "type": "itemType", "category": "weapon", "text": "Mace" },
-  { "type": "itemType", "category": "weapon", "text": "Crossbow" },
-  { "type": "itemType", "category": "weapon", "text": "Warhammer" },
-  { "type": "itemType", "category": "weapon", "text": "Flail" },
-  { "type": "itemType", "category": "weapon", "text": "Scythe" },
-  { "type": "itemType", "category": "armor",  "text": "Chainmail" },
-  { "type": "itemType", "category": "armor",  "text": "Plate Armour" },
-  { "type": "itemType", "category": "armor",  "text": "Leather Vest" },
-  { "type": "itemType", "category": "armor",  "text": "Scale Mail" },
-  { "type": "itemType", "category": "armor",  "text": "Breastplate" },
-  { "type": "itemType", "category": "armor",  "text": "Shield" },
-  { "type": "itemType", "category": "armor",  "text": "Buckler" },
-  { "type": "itemType", "category": "ring",   "text": "Ring" },
-  { "type": "itemType", "category": "ring",   "text": "Signet Ring" },
-  { "type": "itemType", "category": "ring",   "text": "Band" },
-  { "type": "itemType", "category": "amulet", "text": "Amulet" },
-  { "type": "itemType", "category": "amulet", "text": "Pendant" },
-  { "type": "itemType", "category": "amulet", "text": "Medallion" },
-  { "type": "itemType", "category": "amulet", "text": "Talisman" },
-  { "type": "itemType", "category": "cloak",  "text": "Cloak" },
-  { "type": "itemType", "category": "cloak",  "text": "Mantle" },
-  { "type": "itemType", "category": "cloak",  "text": "Shroud" },
-  { "type": "itemType", "category": "staff",  "text": "Staff" },
-  { "type": "itemType", "category": "staff",  "text": "Rod" },
-  { "type": "itemType", "category": "staff",  "text": "Scepter" },
-  { "type": "itemType", "category": "wand",   "text": "Wand" },
-  { "type": "itemType", "category": "wand",   "text": "Baton" },
-  { "type": "itemType", "category": "boots",  "text": "Boots" },
-  { "type": "itemType", "category": "boots",  "text": "Greaves" },
-  { "type": "itemType", "category": "boots",  "text": "Sandals" },
-  { "type": "itemType", "category": "gloves", "text": "Gloves" },
-  { "type": "itemType", "category": "gloves", "text": "Gauntlets" },
-  { "type": "itemType", "category": "gloves", "text": "Bracers" },
-  { "type": "itemType", "category": "tome",   "text": "Tome" },
-  { "type": "itemType", "category": "tome",   "text": "Grimoire" },
-  { "type": "itemType", "category": "tome",   "text": "Codex" },
-  { "type": "itemType", "category": "tome",   "text": "Spellbook" }
+  {
+    "type": "prefix",
+    "text": "Ancient"
+  },
+  {
+    "type": "prefix",
+    "text": "Cursed"
+  },
+  {
+    "type": "prefix",
+    "text": "Blessed"
+  },
+  {
+    "type": "prefix",
+    "text": "Shadow"
+  },
+  {
+    "type": "prefix",
+    "text": "Blazing"
+  },
+  {
+    "type": "prefix",
+    "text": "Frozen"
+  },
+  {
+    "type": "prefix",
+    "text": "Singing"
+  },
+  {
+    "type": "prefix",
+    "text": "Void"
+  },
+  {
+    "type": "prefix",
+    "text": "Verdant"
+  },
+  {
+    "type": "prefix",
+    "text": "Infernal"
+  },
+  {
+    "type": "prefix",
+    "text": "Celestial"
+  },
+  {
+    "type": "prefix",
+    "text": "Whispering"
+  },
+  {
+    "type": "prefix",
+    "text": "Shattered"
+  },
+  {
+    "type": "prefix",
+    "text": "Gilded"
+  },
+  {
+    "type": "prefix",
+    "text": "Hollow"
+  },
+  {
+    "type": "effect",
+    "text": "deals +1d6 {type} damage on hit"
+  },
+  {
+    "type": "effect",
+    "text": "grants resistance to {type} damage"
+  },
+  {
+    "type": "effect",
+    "text": "glows faintly when enemies are within 30ft"
+  },
+  {
+    "type": "effect",
+    "text": "whispers warnings before ambushes"
+  },
+  {
+    "type": "effect",
+    "text": "allows the bearer to speak one additional language"
+  },
+  {
+    "type": "effect",
+    "text": "grants advantage on {check} checks once per rest"
+  },
+  {
+    "type": "effect",
+    "text": "returns to the bearer's hand when thrown"
+  },
+  {
+    "type": "effect",
+    "text": "absorbs the first {type} hit each day"
+  },
+  {
+    "type": "effect",
+    "text": "makes the bearer nearly impossible to track"
+  },
+  {
+    "type": "effect",
+    "text": "reveals invisible creatures within 10ft"
+  },
+  {
+    "type": "effect",
+    "text": "grows warm in the presence of undead"
+  },
+  {
+    "type": "effect",
+    "text": "leaves no footprints in any terrain"
+  },
+  {
+    "type": "effect",
+    "text": "deals double damage to one specific creature type"
+  },
+  {
+    "type": "effect",
+    "text": "allows the bearer to fall safely from any height"
+  },
+  {
+    "type": "effect",
+    "text": "grants +1 to a chosen check permanently"
+  },
+  {
+    "type": "effect",
+    "text": "lets the bearer understand any written language"
+  },
+  {
+    "type": "effect",
+    "text": "causes the bearer to cast no shadow"
+  },
+  {
+    "type": "damageType",
+    "text": "Fire"
+  },
+  {
+    "type": "damageType",
+    "text": "Ice"
+  },
+  {
+    "type": "damageType",
+    "text": "Lightning"
+  },
+  {
+    "type": "damageType",
+    "text": "Solar"
+  },
+  {
+    "type": "damageType",
+    "text": "Eclipse"
+  },
+  {
+    "type": "damageType",
+    "text": "Vozian"
+  },
+  {
+    "type": "damageType",
+    "text": "Nature"
+  },
+  {
+    "type": "damageType",
+    "text": "Psychic"
+  },
+  {
+    "type": "damageType",
+    "text": "Acid"
+  },
+  {
+    "type": "damageType",
+    "text": "Thunder"
+  },
+  {
+    "type": "damageType",
+    "text": "Slashing"
+  },
+  {
+    "type": "damageType",
+    "text": "Impact"
+  },
+  {
+    "type": "check",
+    "text": "Agility"
+  },
+  {
+    "type": "check",
+    "text": "Strength"
+  },
+  {
+    "type": "check",
+    "text": "Intellect"
+  },
+  {
+    "type": "check",
+    "text": "Observation"
+  },
+  {
+    "type": "check",
+    "text": "Stealth"
+  },
+  {
+    "type": "check",
+    "text": "Influence"
+  },
+  {
+    "type": "check",
+    "text": "Luck"
+  },
+  {
+    "type": "check",
+    "text": "Spirit"
+  },
+  {
+    "type": "check",
+    "text": "Crafting"
+  },
+  {
+    "type": "check",
+    "text": "Survival"
+  },
+  {
+    "type": "itemType",
+    "category": "weapon",
+    "text": "Longsword"
+  },
+  {
+    "type": "itemType",
+    "category": "weapon",
+    "text": "Dagger"
+  },
+  {
+    "type": "itemType",
+    "category": "weapon",
+    "text": "Spear"
+  },
+  {
+    "type": "itemType",
+    "category": "weapon",
+    "text": "Bow"
+  },
+  {
+    "type": "itemType",
+    "category": "weapon",
+    "text": "Axe"
+  },
+  {
+    "type": "itemType",
+    "category": "weapon",
+    "text": "Mace"
+  },
+  {
+    "type": "itemType",
+    "category": "weapon",
+    "text": "Crossbow"
+  },
+  {
+    "type": "itemType",
+    "category": "weapon",
+    "text": "Warhammer"
+  },
+  {
+    "type": "itemType",
+    "category": "weapon",
+    "text": "Flail"
+  },
+  {
+    "type": "itemType",
+    "category": "weapon",
+    "text": "Scythe"
+  },
+  {
+    "type": "itemType",
+    "category": "armor",
+    "text": "Chainmail"
+  },
+  {
+    "type": "itemType",
+    "category": "armor",
+    "text": "Plate Armour"
+  },
+  {
+    "type": "itemType",
+    "category": "armor",
+    "text": "Leather Vest"
+  },
+  {
+    "type": "itemType",
+    "category": "armor",
+    "text": "Scale Mail"
+  },
+  {
+    "type": "itemType",
+    "category": "armor",
+    "text": "Breastplate"
+  },
+  {
+    "type": "itemType",
+    "category": "armor",
+    "text": "Shield"
+  },
+  {
+    "type": "itemType",
+    "category": "armor",
+    "text": "Buckler"
+  },
+  {
+    "type": "itemType",
+    "category": "ring",
+    "text": "Ring"
+  },
+  {
+    "type": "itemType",
+    "category": "ring",
+    "text": "Signet Ring"
+  },
+  {
+    "type": "itemType",
+    "category": "ring",
+    "text": "Band"
+  },
+  {
+    "type": "itemType",
+    "category": "amulet",
+    "text": "Amulet"
+  },
+  {
+    "type": "itemType",
+    "category": "amulet",
+    "text": "Pendant"
+  },
+  {
+    "type": "itemType",
+    "category": "amulet",
+    "text": "Medallion"
+  },
+  {
+    "type": "itemType",
+    "category": "amulet",
+    "text": "Talisman"
+  },
+  {
+    "type": "itemType",
+    "category": "cloak",
+    "text": "Cloak"
+  },
+  {
+    "type": "itemType",
+    "category": "cloak",
+    "text": "Mantle"
+  },
+  {
+    "type": "itemType",
+    "category": "cloak",
+    "text": "Shroud"
+  },
+  {
+    "type": "itemType",
+    "category": "staff",
+    "text": "Staff"
+  },
+  {
+    "type": "itemType",
+    "category": "staff",
+    "text": "Rod"
+  },
+  {
+    "type": "itemType",
+    "category": "staff",
+    "text": "Scepter"
+  },
+  {
+    "type": "itemType",
+    "category": "wand",
+    "text": "Wand"
+  },
+  {
+    "type": "itemType",
+    "category": "wand",
+    "text": "Baton"
+  },
+  {
+    "type": "itemType",
+    "category": "boots",
+    "text": "Boots"
+  },
+  {
+    "type": "itemType",
+    "category": "boots",
+    "text": "Greaves"
+  },
+  {
+    "type": "itemType",
+    "category": "boots",
+    "text": "Sandals"
+  },
+  {
+    "type": "itemType",
+    "category": "gloves",
+    "text": "Gloves"
+  },
+  {
+    "type": "itemType",
+    "category": "gloves",
+    "text": "Gauntlets"
+  },
+  {
+    "type": "itemType",
+    "category": "gloves",
+    "text": "Bracers"
+  },
+  {
+    "type": "itemType",
+    "category": "tome",
+    "text": "Tome"
+  },
+  {
+    "type": "itemType",
+    "category": "tome",
+    "text": "Grimoire"
+  },
+  {
+    "type": "itemType",
+    "category": "tome",
+    "text": "Codex"
+  },
+  {
+    "type": "itemType",
+    "category": "tome",
+    "text": "Spellbook"
+  }
 ]

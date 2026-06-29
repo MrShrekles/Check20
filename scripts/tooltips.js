@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         allElements.forEach(element => {
+            if (element.closest('header, nav, #header-placeholder, #sidebar-placeholder')) return;
             const textNodes = Array.from(element.childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
 
             textNodes.forEach(node => {

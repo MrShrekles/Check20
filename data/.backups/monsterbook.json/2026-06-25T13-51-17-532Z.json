@@ -7758,50 +7758,5 @@
     },
     "features": [],
     "art": ""
-  },
-  {
-    "name": "Cherub of Chronus",
-    "_group": "Celestial",
-    "origin": "Celestial",
-    "size": "Small",
-    "rarity": "Legendary",
-    "environment": "Celestia",
-    "behavior": "Aggressive",
-    "description": "",
-    "lore": "",
-    "motivation": "",
-    "pl": 3,
-    "check_physical": 3,
-    "check_mental": 0,
-    "walk": 0,
-    "fly": 30,
-    "swim": 0,
-    "climb": 0,
-    "feature_name": "",
-    "feature_type": "",
-    "feature_range": "",
-    "feature_effect": "",
-    "feature_duration": "",
-    "feature_damage": "",
-    "melee_attack": {
-      "name": "Spear of Chronus",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Solar"
-    },
-    "ranged_attack": {
-      "name": "Bell of Time",
-      "equipped": true,
-      "damage": "1d6",
-      "damage_type": "Thunder"
-    },
-    "spell": {
-      "name": "",
-      "equipped": false,
-      "damage": "",
-      "damage_type": ""
-    },
-    "features": [],
-    "art": ""
   }
 ]

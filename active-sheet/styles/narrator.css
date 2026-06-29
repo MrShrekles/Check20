@@ -415,6 +415,7 @@ details.minion-card[open] .minion-chevron {
     border-radius: 20px 20px 0 0;
     border-top: 1px solid var(--line);
     background: var(--panel);
+    color: var(--text);
 }
 
 .nar-dialog::backdrop {
@@ -1392,6 +1393,29 @@ body.privacy-mode .prow-name {
     letter-spacing: 0.08em; color: var(--muted); padding: 4px 0 6px;
 }
 
+/* Edit / action buttons inside expanded card bodies */
+.char-body-actions {
+    display: flex;
+    gap: 6px;
+    padding: 6px 0 2px;
+    border-top: 1px solid var(--line);
+    margin-top: 4px;
+}
+
+.char-edit-body-btn {
+    font-size: 12px;
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.char-edit-body-btn .btn-icon {
+    width: 12px;
+    height: 12px;
+    opacity: 0.7;
+}
+
 /* NPC cards (Party page) */
 .npc-card { display: block; border-radius: 10px; background: var(--panel-2); margin-bottom: 6px; overflow: hidden; }
 .npc-card-head {
@@ -1528,8 +1552,44 @@ body.privacy-mode .prow-name {
     font-weight: 700;
     color: var(--text);
     margin-bottom: 10px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
     transition: background 0.2s, border-color 0.2s;
+}
+
+.enc-turn-next-btn {
+    font-size: 12px;
+    padding: 3px 10px;
+    border: 1px solid currentColor;
+    border-radius: 8px;
+    opacity: 0.8;
+    flex-shrink: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.enc-turn-next-btn:active { opacity: 1; background: rgba(255,255,255,0.1); }
+
+.enc-init-input-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.enc-init-input-row input {
+    flex: 1;
+    width: 0;
+}
+
+.enc-init-roll-btn {
+    flex-shrink: 0;
+    height: 32px;
+    padding: 0 10px;
+    font-size: 14px;
 }
 .enc-turn-bar--enemy  { background: rgba(224,85,85,0.12);  border: 1px solid rgba(224,85,85,0.4);  color: #e05555; }
 .enc-turn-bar--player { background: rgba(80,160,220,0.12); border: 1px solid rgba(80,160,220,0.4); color: #50a0dc; }
@@ -1848,6 +1908,176 @@ body.privacy-mode .prow-name {
 /* Hide everything after the section-head when collapsed */
 .section[data-collapse]:not(.is-open) .section-head ~ * {
     display: none !important;
+}
+
+/* ── CHARACTER EDIT DIALOG ────────────────────────────────────────────── */
+
+.nar-dialog--tall {
+    max-height: 88vh;
+    top: auto;
+}
+
+.nar-dialog--tall[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.nar-dialog-inner--scroll {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+}
+
+.nar-ced-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.nar-ced-head .nar-dialog-name {
+    margin: 0;
+    text-align: left;
+}
+
+/* ── CHARACTER PERSONAL INVENTORY ─────────────────────────────────────── */
+
+.ced-pl-apply-btn {
+    margin-left: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--accent-mid);
+    background: var(--accent-dim);
+    color: var(--accent);
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.ced-pl-apply-btn:active { background: var(--accent-mid); }
+
+.ced-inv-section {
+    margin-top: 14px;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+}
+
+.ced-inv-section-head {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+.ced-inv-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.ced-inv-item-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.ced-inv-item-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.ced-inv-item-desc {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.ced-inv-add-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.ced-inv-input {
+    flex: 1;
+    min-width: 80px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: #0f0f14;
+    color: var(--text);
+    padding: 0 10px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.ced-inv-weapon-fields {
+    margin-top: 6px;
+}
+
+.ced-inv-weapon-fields .nar-stat-row {
+    margin: 0;
+}
+
+.ced-inv-weapon-fields .nar-form-field input {
+    font-size: 13px;
+}
+
+.char-inv-row {
+    justify-content: space-between;
+}
+
+.char-inv-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.ced-inv-input--desc {
+    flex: 1.4;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* Inline inventory display inside character cards */
+
+.char-inv-section {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid var(--line);
+}
+
+.char-inv-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+.char-inv-row {
+    display: flex;
+    gap: 6px;
+    padding: 3px 0;
+    font-size: 12px;
+}
+
+.char-inv-name {
+    font-weight: 600;
+}
+
+.char-inv-desc {
+    color: var(--muted);
 }
 
 /* ── DESKTOP LAYOUT - narrator-specific additions ─────────────────────

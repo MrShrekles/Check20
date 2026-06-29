@@ -2207,9 +2207,7 @@
       "feature_name": "Dryad Core",
       "feature_effect": "You have an additional +5 armor. Your armor regenerates at a rate of 1 point per hour. When you have no armor enter a Rootform state, while in this state you have advantage on Physical Checks and disadvantage on Mental Checks. If you take the Injured condition you are no longer in Rootform state, and you cannot enter Rootform until you Press On or Long Rest.",
       "fetAction": "Passive",
-      "fetCondition": "Injured",
-      "sub-fet-effect": "When you take the death condition, your core enters self-preservation: it severs every connection to the body and locks away your memories. You retain only your name. If your core is later installed into a new frame, such as a suit of armor, the frame grows you new organs around it, and with them, a new personality. Your name is the only thread that survives the transition.",
-      "sub-fet-name": "New Core"
+      "fetCondition": "Injured"
     },
     {
       "lineage": "Corebound",
@@ -2231,9 +2229,7 @@
       "feature_name": "Vozian Core",
       "feature_effect": "Once per turn, you may burn your core. Choose one of your checks to take a –1 penalty until your next Press On or Long Rest. In exchange, you gain advantage on all checks until the end of your next turn. You may only burn your core once per turn. The first time you take the death condition, take -1 to all checks and remove the condition. You have a -1 to all checks until your next Long Rest",
       "fetAction": "Resource",
-      "fetCondition": "Death",
-      "sub-fet-effect": "When you take the death condition, your core enters self-preservation: it severs every connection to the body and locks away your memories. You retain only your name. If your core is later installed into a new frame, such as a suit of armor, the frame grows you new organs around it, and with them, a new personality. Your name is the only thread that survives the transition.",
-      "sub-fet-name": "New Core"
+      "fetCondition": "Death"
     },
     {
       "lineage": "Human",

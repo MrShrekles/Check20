@@ -11608,8 +11608,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "",
-              "checkType": "self"
+              "condition": ""
             },
             {
               "step": 1,
@@ -11674,8 +11673,7 @@
               "damage": "2d6",
               "damageType": "Psychic",
               "armor": "",
-              "condition": "Confused",
-              "checkType": "contested"
+              "condition": "Confused"
             },
             {
               "step": 6,
@@ -11701,8 +11699,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused",
-              "checkType": "enemy"
+              "condition": "Confused"
             },
             {
               "step": 8,
@@ -11741,8 +11738,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned, Confused",
-              "checkType": "enemy"
+              "condition": "Pinned, Confused"
             }
           ]
         },
@@ -12192,7 +12188,7 @@
               "action": "Resource",
               "check": "",
               "range": "",
-              "description": "Spend 2 Merchant Tokens to establish or claim a position at a school, guildhall, or institute. You do not gain GP from this investment. Instead, once per month when you check in, you gain +1 bonus to all checks that lasts for 1 week.",
+              "description": "Spend 2 Merchant Tokens to establish or claim a position at a school, guildhall, or institute. You do not gain GP from this investment. Instead, once per month when you check in, you gain +1 bonus to all checks that lasts for 1 week. Additionally gain 1 merchant token",
               "duration": "",
               "damage": "",
               "damageType": "",

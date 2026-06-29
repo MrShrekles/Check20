@@ -23,12 +23,6 @@
       {"name": "Rivet Spike", "desc": "Single-use trap or door wedge"},
       {"name": "Foldaway Shield", "desc": "Compact, deployable, gives +5 armor once per combat"}
     ],
-    "merchantFeatures": [
-      {"name": "Workbench Access", "desc": "You may craft or modify a mundane weapon or tool once per rest"},
-      {"name": "Blueprint Recall", "desc": "Once per scene, declare that you \"built that already\" and produce a small, simple device"},
-      {"name": "Union Tag", "desc": "Your gear is marked with certified maker's stamps - sell for +25% in towns with a Fabrication presence"},
-      {"name": "Scrap Reclaim", "desc": "Break down 1 item per town to recover usable materials worth up to 25gp"}
-    ],
     "infoAccess": [
       {"name": "Forge Order", "desc": "Learn what items a local faction is ordering in bulk"},
       {"name": "Break Pattern", "desc": "Identify a common flaw in a local enemy's gear or defenses"},
@@ -59,12 +53,6 @@
       {"name": "Pack Beasts", "desc": "Temporary increase to travel carry capacity or speed"},
       {"name": "Field Tools", "desc": "Reduces fatigue for physical labor or speeds up harvesting"},
       {"name": "Smuggled Harvest", "desc": "Illegal goods pulled from contested or cursed land"}
-    ],
-    "merchantFeatures": [
-      {"name": "Supply Runner", "desc": "You can source 1 unit of basic material per town"},
-      {"name": "Beast Bond", "desc": "You gain a work animal (mule, ox, giant beetle) that can carry, defend, or assist"},
-      {"name": "Field Broker", "desc": "Sell gathered resources at +25% value in towns with a Harvest presence"},
-      {"name": "Claim Flag", "desc": "Mark a wild zone as claimed by your Union - local poachers or rivals may face penalties or resistance"}
     ],
     "infoAccess": [
       {"name": "Resource Spot", "desc": "Discover a new viable harvest site within your current region"},
@@ -97,12 +85,6 @@
       {"name": "Smokecharge Pellet", "desc": "Creates a 10ft smoke cloud, obscures vision"},
       {"name": "Stability Syringe", "desc": "Once per session, ignore the next negative condition effect"}
     ],
-    "merchantFeatures": [
-      {"name": "Portable Kit", "desc": "Create an Upgrade Potion over a long rest that lasts for 1 week and can be applied to a weapon to increase its Check and Damage by +1 (once per week per weapon)"},
-      {"name": "Field Tinkering", "desc": "Once per day, modify a piece of gear for +3 to checks until a Long Rest"},
-      {"name": "Formula Access", "desc": "Brew any known alchemical item with one hour and proper materials"},
-      {"name": "No-Frag Rule", "desc": "Identify faulty or sabotaged items, traps, or brews on sight"}
-    ],
     "infoAccess": [
       {"name": "Tonic Trend", "desc": "Learn which brews, drugs, or enhancements are being widely used or banned"},
       {"name": "Upgrade Request", "desc": "Discover if any NPCs or factions are commissioning specific gear"},
@@ -133,12 +115,6 @@
       {"name": "Liquid Credit Slip", "desc": "Spend this in place of 50gp, redeemable post-session"},
       {"name": "Escrow Bond", "desc": "Secure a deal between two parties without full trust"},
       {"name": "Price Fix Ledger", "desc": "Temporarily lock the value of one item at a chosen rate"}
-    ],
-    "merchantFeatures": [
-      {"name": "Market Leverage", "desc": "Gain +1d4 to any Influence or Barter check involving trade"},
-      {"name": "Preferred Vendor", "desc": "You may buy one item per town at 25% off base value"},
-      {"name": "License Holder", "desc": "You may legally run a stall, shop, or brokerage in any town with a Commerce presence"},
-      {"name": "Fast Exchange", "desc": "Once per town, swap any item you own for one of equal value (narrator approved)"}
     ],
     "infoAccess": [
       {"name": "Market Pulse", "desc": "Learn what item or good is in demand (sells high)"},
@@ -171,12 +147,6 @@
       {"name": "Emergency Recall Key", "desc": "Summons a ride or transport to your location once"},
       {"name": "Hauler's Ledger", "desc": "Trade contacts or regional route info stored in shorthand"}
     ],
-    "merchantFeatures": [
-      {"name": "Ticket Line", "desc": "You can always secure basic travel for yourself and one ally, even in crisis"},
-      {"name": "Cargo Claim", "desc": "Once per region, reroute a crate or shipment to your location"},
-      {"name": "Road Eyes", "desc": "+1 to Navigation checks or travel planning"},
-      {"name": "Waypost Access", "desc": "You know the location of hidden, protected Union shelters along major routes"}
-    ],
     "infoAccess": [
       {"name": "Route Forecast", "desc": "Learn the fastest or safest path to a location"},
       {"name": "Disruption Log", "desc": "See if any roads, tracks, or ports are under threat or delay"},
@@ -207,12 +177,6 @@
       {"name": "Two Crows (PL6)", "desc": "Twin saboteurs, knives, smoke bombs"},
       {"name": "Dogpack (PL6)", "desc": "Three trained hounds; tracking and melee"},
       {"name": "Rifleman (PL5)", "desc": "Long rifle, trick shots, smoke bombs"}
-    ],
-    "merchantFeatures": [
-      {"name": "Hireling", "desc": "Gain a permanent PL5 mercenary"},
-      {"name": "Gearwork", "desc": "+1 to weapon and armor checks and damage"},
-      {"name": "Command Chain", "desc": "Once per day, issue a verbal command; one ally gains +1d4 to a combat roll"},
-      {"name": "Shield Contract", "desc": "Your group is flagged as under protection; guards give +1 Favor in towns with Martial presence"}
     ],
     "infoAccess": [
       {"name": "Active Bounty", "desc": "Get the name, last known location, and reward for a regional target"},
@@ -245,12 +209,6 @@
       {"name": "Agent Contract", "desc": "Grants temporary access to a loyal stagehand, hype agent, or journalist"},
       {"name": "Costuming Kit", "desc": "Grants +1d4 to a disguise, impersonation, or on-stage deception"}
     ],
-    "merchantFeatures": [
-      {"name": "Spotlight", "desc": "Gain +1 Favor in any scene where you perform or make a public display"},
-      {"name": "Whispersheet", "desc": "Once per day, seed a rumor or story into local news - true or false"},
-      {"name": "Access Pass", "desc": "Always allowed into entertainment venues, lounges, and social hubs"},
-      {"name": "Stagehand", "desc": "You gain a personal assistant NPC who specializes in distraction or flare"}
-    ],
     "infoAccess": [
       {"name": "Trending Topic", "desc": "Learn what's capturing local attention or stirring unrest"},
       {"name": "Public Sentiment", "desc": "Gain insight into a location's attitude toward a group or event"},
@@ -281,12 +239,6 @@
       {"name": "Official Seal", "desc": "When shown, gives +1d4 to Influence or legal interaction rolls"},
       {"name": "Denial Notice", "desc": "Blocks a rival's action, project, or public gathering for a day"},
       {"name": "Amendment Copy", "desc": "Allows rewriting or voiding a minor contract or law (with roll)"}
-    ],
-    "merchantFeatures": [
-      {"name": "Stamp Access", "desc": "You may request one temporary permit per town for personal or party use"},
-      {"name": "Soft Favor", "desc": "Gain +1 Influence with bureaucrats, city guards, or legal factions"},
-      {"name": "Delay Tactic", "desc": "Once per day, stall an enemy or official action by one scene"},
-      {"name": "Board Seat", "desc": "You gain a named, if ceremonial, position - your votes shape local decisions"}
     ],
     "infoAccess": [
       {"name": "Active Motion", "desc": "Learn what new law or Union policy is about to pass"},
@@ -319,12 +271,6 @@
       {"name": "Glimpse Orb", "desc": "Shows a short magical memory from a creature or item"},
       {"name": "Curse Tag", "desc": "Applies a minor affliction or hex to a target (must pass roll to resist)"}
     ],
-    "merchantFeatures": [
-      {"name": "Arcane Tag", "desc": "You may mark one item as sanctioned - it cannot be legally confiscated"},
-      {"name": "Ley Access", "desc": "You can tap into a known ley-line or mana source once per region"},
-      {"name": "Sigil Trained", "desc": "Gain +1 to checks involving magical tools or relics"},
-      {"name": "Vault Key", "desc": "Once per town, you may access Union storage to retrieve a tagged item, scroll, or relic worth up to 100gp"}
-    ],
     "infoAccess": [
       {"name": "Item Report", "desc": "Learn the origin, last use, and danger level of a magical object"},
       {"name": "Spell Echo", "desc": "Gain a ghost image of the last spell cast in an area"},
@@ -355,12 +301,6 @@
       {"name": "Draft Publication", "desc": "Grants temporary prestige (+1 Influence in intellectual circles)"},
       {"name": "Referenced Map", "desc": "Reveals a previously unknown location or access point"},
       {"name": "Scholar's Favor", "desc": "Trade this for help from an academic NPC, such as an assistant, translator, or contact"}
-    ],
-    "merchantFeatures": [
-      {"name": "Peer Review", "desc": "Once per region, submit a paper and gain a +1 to Influence or Research checks for the next 24 hours"},
-      {"name": "Institutional Trust", "desc": "You may access restricted records or archives in scholarly towns"},
-      {"name": "Footnote Pull", "desc": "You can ask one question per town and receive a vague but factual answer from local lorekeepers"},
-      {"name": "Intellect Hound", "desc": "As an off-action once per day, double an intellect check"}
     ],
     "infoAccess": [
       {"name": "Authoritative Source", "desc": "Gain insight or confirmation on a specific piece of lore or mystery"},
@@ -393,12 +333,6 @@
       {"name": "Portable Generator", "desc": "Lights a scene, powers a device, or delays collapse"},
       {"name": "Water Purity Kit", "desc": "Neutralizes a poison, toxin, or environmental hazard in a small area"}
     ],
-    "merchantFeatures": [
-      {"name": "Civic Trust", "desc": "+1 Influence with towns, utilities, and rural leaders"},
-      {"name": "Repair Access", "desc": "You can reroute, stabilize, or bypass infrastructure once per session"},
-      {"name": "Supply Chain Tag", "desc": "You may request basic goods (food, materials) at no cost once per town"},
-      {"name": "Outpost License", "desc": "You may designate one player-owned building as an official service point (grants +1 Favor with locals)"}
-    ],
     "infoAccess": [
       {"name": "Resource Strain", "desc": "Learn which settlements or neighborhoods are running low on key supplies"},
       {"name": "Infrastructure Risk", "desc": "Get early warnings on upcoming collapses, floods, or shortages"},
@@ -429,12 +363,6 @@
       {"name": "Contraband Vials", "desc": "Toxic, addictive, or mind-altering; causes chaos or control"},
       {"name": "Disguise Package", "desc": "Includes voice cover, papers, outfit; grants temporary false identity"},
       {"name": "Listener's Coin", "desc": "Once per day, lets you eavesdrop on a nearby scene as if present"}
-    ],
-    "merchantFeatures": [
-      {"name": "Hidden Pockets", "desc": "Once per day, reveal a small illegal item you already had"},
-      {"name": "Blacklist Pull", "desc": "Learn the true reputation of any NPC or faction"},
-      {"name": "False Badge", "desc": "You may impersonate a Union, office, or organization without immediate suspicion"},
-      {"name": "Deniable Deal", "desc": "If you are caught doing something illegal, pin it on a paper trail and roll Influence to walk"}
     ],
     "infoAccess": [
       {"name": "Surveillance Log", "desc": "Learn who is watching your group or your contacts"},

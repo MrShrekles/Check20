@@ -57,6 +57,9 @@ function applyForgeSettings(s) {
     document.body.classList.toggle('forge-invert', !!s.invert);
     syncToggle('invertToggle', !!s.invert);
 
+    // Contextual toolbar
+    syncToggle('contextualBarToggle', s.contextualBar !== false);
+
     // Input size
     const inputStep = INPUT_SIZE_STEPS[(s.inputSize || 3) - 1];
     document.documentElement.style.setProperty('--input-padding-v', inputStep.pv);
@@ -113,6 +116,13 @@ function togglePrintMode() {
 function toggleInvert() {
     const s = loadForgeSettings();
     s.invert = !s.invert;
+    saveForgeSettings(s);
+    applyForgeSettings(s);
+}
+
+function toggleContextualBar() {
+    const s = loadForgeSettings();
+    s.contextualBar = s.contextualBar === false ? true : false;
     saveForgeSettings(s);
     applyForgeSettings(s);
 }

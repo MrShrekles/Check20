@@ -371,14 +371,29 @@ function buildMinionCardHtml(m) {
     <div class="minion-hp-bar-track"><div class="minion-hp-bar-fill" style="width:${pct}%;background:${barClr}"></div></div>`;
 
     const hasAbilities = !!(mon && (meleeA?.name || rangedA?.name || monFeats.length || mon.spells?.length));
-    const rowHtml = row(hasAbilities);
-    if (hasAbilities) {
+    const charInv      = m.inventory || [];
+    const invHtml      = charInv.length ? `
+        <div class="char-inv-section">
+            <div class="char-inv-label">Items</div>
+            ${charInv.map(item => `<div class="char-inv-row">
+                <div class="char-inv-info">
+                    <span class="char-inv-name">${item.name}</span>
+                    ${item.damage ? `<span class="char-inv-desc">${item.damage}${item.damageType ? ' ' + item.damageType : ''}${item.range ? ' · ' + item.range : ''}</span>` : (item.desc ? `<span class="char-inv-desc">${item.desc}</span>` : '')}
+                </div>
+                ${item.damage ? `<button class="step-action-btn" data-char-inv-roll="${m.id}" data-inv-item-id="${item.id}" title="Roll attack">🎲</button>` : ''}
+            </div>`).join('')}
+        </div>` : '';
+    const isExpandable = hasAbilities || charInv.length > 0;
+    const rowHtml = row(isExpandable);
+    if (isExpandable) {
         return `<details class="minion-card">
             <summary class="minion-summary">${rowHtml}</summary>
             <div class="minion-expanded">
                 ${(meleeA?.name || rangedA?.name) ? `<div class="gen-mon-attacks">${fmtAtk(meleeA,'Melee')}${fmtAtk(rangedA,'Ranged')}</div>` : ''}
                 ${featsHtml}
                 ${spellsHtml}
+                ${invHtml}
+                <button class="ghost-btn char-edit-body-btn" data-mn-action="edit" data-mn-id="${m.id}" type="button">✎ Edit</button>
             </div>
         </details>`;
     }
@@ -399,6 +414,18 @@ function buildNpcCardHtml(n) {
     const picker = QUICK_CONDITIONS.map(cd =>
         `<button class="enc-cond-pick${nConds.includes(cd) ? ' is-on' : ''}" data-char-cond="${n.id}" data-cond="${cd}">${condChip(cd)}</button>`
     ).join('');
+    const charInv  = n.inventory || [];
+    const invHtml  = charInv.length ? `
+        <div class="char-inv-section">
+            <div class="char-inv-label">Items</div>
+            ${charInv.map(item => `<div class="char-inv-row">
+                <div class="char-inv-info">
+                    <span class="char-inv-name">${item.name}</span>
+                    ${item.damage ? `<span class="char-inv-desc">${item.damage}${item.damageType ? ' ' + item.damageType : ''}${item.range ? ' · ' + item.range : ''}</span>` : (item.desc ? `<span class="char-inv-desc">${item.desc}</span>` : '')}
+                </div>
+                ${item.damage ? `<button class="step-action-btn" data-char-inv-roll="${n.id}" data-inv-item-id="${item.id}" title="Roll attack">🎲</button>` : ''}
+            </div>`).join('')}
+        </div>` : '';
     return `<details class="npc-card">
         <summary class="npc-card-head">
             <div class="enc-mon-info">
@@ -409,7 +436,6 @@ function buildNpcCardHtml(n) {
                 ${stats ? `<span class="enc-mon-checks">${stats}</span>` : ''}
             </div>
             <div class="enc-card-ctrl">
-                <button class="step-action-btn" data-char-chat="${n.id}" title="Send to chat"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
                 <button class="step-action-btn" data-char-init="${n.id}" title="Add to initiative"><img src="../assets/icons/weapon.png" class="btn-icon" alt="initiative"></button>
                 <button class="step-action-btn" data-char-hide="${n.id}" title="${n.hidden ? 'Hidden from players - click to reveal' : 'Visible to players - click to hide'}">${n.hidden ? '🙈' : '👁'}</button>
                 <button class="step-action-btn step-action-btn--danger" data-char-remove="${n.id}">✕</button>
@@ -417,8 +443,17 @@ function buildNpcCardHtml(n) {
         </summary>
         <div class="npc-card-body">
             ${n.notes         ? `<div class="npc-det-row"><span class="npc-det-label">Notes</span><span>${n.notes}</span></div>` : ''}
-            ${n.equipment     ? `<div class="npc-det-row"><span class="npc-det-label">Equipment</span><span>${n.equipment}</span></div>` : ''}
+            ${n.equipment     ? `<div class="npc-det-row">
+                <span class="npc-det-label">Equipment</span>
+                <span>${n.equipment}</span>
+                <button class="step-action-btn" data-npc-roll-equip="${n.id}" title="Roll attack">🎲</button>
+            </div>` : ''}
             ${n.narratorNotes ? `<div class="npc-det-row"><span class="npc-det-label">Narrator</span><span class="npc-det-nar">${n.narratorNotes}</span></div>` : ''}
+            ${invHtml}
+            <div class="char-body-actions">
+                <button class="ghost-btn char-edit-body-btn" data-char-edit="${n.id}" type="button">✎ Edit</button>
+                <button class="ghost-btn char-edit-body-btn" data-char-chat="${n.id}" type="button"><img src="../assets/icons/chat.png" class="btn-icon" alt=""> Post to Chat</button>
+            </div>
             <details class="enc-cond-details">
                 <summary class="enc-cond-summary">+C${nConds.length ? ` <span class="enc-cond-count">${nConds.length}</span>` : ''}</summary>
                 ${nConds.length ? `<div class="enc-cond-tags">${condTags}</div>` : ''}
@@ -437,6 +472,29 @@ function renderCharacters() {
         c.role === 'minion' ? buildMinionCardHtml(c) : buildNpcCardHtml(c)
     ).join('');
 
+    el.querySelectorAll('[data-char-edit]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            openCharEdit(btn.dataset.charEdit);
+        });
+    });
+    el.querySelectorAll('[data-npc-roll-equip]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const n = nar.characters.find(x => x.id === btn.dataset.npcRollEquip);
+            if (!n?.equipment) return;
+            postToSharedChat(npcEquipEntry(n)); setActivePanel('chat');
+        });
+    });
+    el.querySelectorAll('[data-char-inv-roll]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const c    = nar.characters.find(x => x.id === btn.dataset.charInvRoll);
+            const item = c?.inventory?.find(x => x.id === btn.dataset.invItemId);
+            if (!item?.damage) return;
+            postToSharedChat(charItemRollEntry(c, item)); setActivePanel('chat');
+        });
+    });
     el.querySelectorAll('[data-char-remove]').forEach(btn => {
         btn.addEventListener('click', e => {
             e.stopPropagation();
@@ -503,6 +561,7 @@ function renderCharacters() {
             const action = btn.dataset.mnAction;
             const m = nar.characters.find(x => x.id === id);
             if (!m && action !== 'remove') return;
+            if (action === 'edit') { openCharEdit(id); return; }
             if (action === 'init') {
                 const ini = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
                 nar.encounter.push({ id: crypto.randomUUID(), name: m.name, type: 'npc', hp: m.hp, maxHp: m.maxHp, initiative: ini });
@@ -1285,9 +1344,274 @@ document.getElementById('btn-call-init')?.addEventListener('click', () => {
     postToSharedChat({ type: 'initiative-call', time: chatTimestamp() });
 });
 
+document.getElementById('btn-add-party-init')?.addEventListener('click', () => {
+    const existing = new Set(nar.encounter.map(e => e.name));
+    const allPlayers = [
+        ...fbPlayers.map(p => ({ name: p.name })),
+        ...nar.partyManual.map(p => ({ name: p.name })),
+    ];
+    let added = 0;
+    allPlayers.forEach(({ name }) => {
+        if (!name || existing.has(name)) return;
+        nar.encounter.push({ id: crypto.randomUUID(), name, type: 'player', initiative: Math.ceil(Math.random() * 20) });
+        existing.add(name);
+        added++;
+    });
+    if (added > 0) { saveNar(); renderEncounter(); }
+});
+
+document.getElementById('btn-enc-turn-next')?.addEventListener('click', () => {
+    document.getElementById('btn-next-turn')?.click();
+});
+
+document.getElementById('btn-enc-roll-init')?.addEventListener('click', () => {
+    const input = document.getElementById('enc-init-input');
+    if (input) input.value = Math.ceil(Math.random() * 20);
+});
+
 document.getElementById('btn-clear-encounter')?.addEventListener('click', () => {
     nar.encounter = []; nar.turnIndex = 0; nar.round = 1;
     saveNar(); renderEncounter();
+});
+
+// ── CHARACTER EDIT DIALOG ────────────────────────────────────────────────────
+
+let charEditId = null;
+
+function openCharEdit(id) {
+    const c = nar.characters.find(x => x.id === id);
+    if (!c) return;
+    charEditId = id;
+
+    const isMinion = c.role === 'minion';
+    document.getElementById('char-edit-title').textContent  = c.name;
+    document.getElementById('ced-npc-fields').hidden        = isMinion;
+    document.getElementById('ced-minion-fields').hidden     = !isMinion;
+    document.getElementById('ced-name').value               = c.name || '';
+
+    if (!isMinion) {
+        document.getElementById('ced-pl').value    = c.pl    || '';
+        document.getElementById('ced-phys').value  = c.phys  || '';
+        document.getElementById('ced-ment').value  = c.ment  || '';
+        document.getElementById('ced-hp').value    = c.hp    || '';
+        document.getElementById('ced-notes').value = c.notes || '';
+        document.getElementById('ced-equip').value = c.equipment     || '';
+        document.getElementById('ced-nar').value   = c.narratorNotes || '';
+    } else {
+        document.getElementById('ced-mn-pl').value     = c.pl     || 3;
+        document.getElementById('ced-mn-hp').value     = c.hp     || '';
+        document.getElementById('ced-mn-origin').value = c.origin || '';
+    }
+
+    renderCedInv(c);
+    populateCedEquipList();
+    populateCedItemNameList();
+    updateCedPlHint();
+    updateCedMnPlHint();
+    document.getElementById('char-edit-dialog')?.showModal();
+}
+
+function closeCharEdit() {
+    charEditId = null;
+    document.getElementById('char-edit-dialog')?.close();
+}
+
+function updateCedPlHint() {
+    const pl   = parseInt(document.getElementById('ced-pl')?.value, 10);
+    const hint = document.getElementById('ced-pl-hint');
+    if (!hint) return;
+    if (!pl || pl < 1) { hint.hidden = true; return; }
+    const hp   = pl * pl;
+    const phys = Math.ceil(pl / 2);
+    const ment = pl - phys;
+    hint.hidden = false;
+    hint.innerHTML = `HP <strong>${hp}</strong> (PL²) · Phys + Ment = <strong>${pl}</strong> (e.g. ${phys}/${ment})
+        <button class="ced-pl-apply-btn" id="btn-ced-pl-apply" type="button">Apply</button>`;
+    document.getElementById('btn-ced-pl-apply')?.addEventListener('click', () => {
+        document.getElementById('ced-phys').value = phys;
+        document.getElementById('ced-ment').value = ment;
+        document.getElementById('ced-hp').value   = hp;
+    });
+}
+
+// When Phys changes, auto-set Ment = PL - Phys (and vice versa) if PL is filled
+document.getElementById('ced-phys')?.addEventListener('input', () => {
+    const pl   = parseInt(document.getElementById('ced-pl')?.value, 10);
+    const phys = parseInt(document.getElementById('ced-phys')?.value, 10);
+    if (pl > 0 && !isNaN(phys)) document.getElementById('ced-ment').value = Math.max(0, pl - phys);
+});
+document.getElementById('ced-ment')?.addEventListener('input', () => {
+    const pl   = parseInt(document.getElementById('ced-pl')?.value, 10);
+    const ment = parseInt(document.getElementById('ced-ment')?.value, 10);
+    if (pl > 0 && !isNaN(ment)) document.getElementById('ced-phys').value = Math.max(0, pl - ment);
+});
+
+function updateCedMnPlHint() {
+    const pl   = parseInt(document.getElementById('ced-mn-pl')?.value, 10);
+    const hint = document.getElementById('ced-mn-pl-hint');
+    if (!hint) return;
+    if (!pl || pl < 1) { hint.hidden = true; return; }
+    hint.hidden = false;
+    hint.textContent = `Max HP: ${pl * pl} (PL² = ${pl}×${pl})`;
+}
+
+function populateCedItemNameList() {
+    const dl = document.getElementById('ced-inv-name-list');
+    if (!dl) return;
+    dl.innerHTML = '';
+    const seen = new Set();
+    const add  = v => { if (!v || seen.has(v)) return; seen.add(v); dl.appendChild(Object.assign(document.createElement('option'), { value: v })); };
+    if (LOOT_DATA) {
+        LOOT_DATA.weapons.forEach(w => add(w.name));
+        LOOT_DATA.armor.forEach(a => add(a.name));
+        LOOT_DATA.items.forEach(i => add(i.name));
+    }
+}
+
+function populateCedEquipList() {
+    const dl = document.getElementById('ced-equip-list');
+    if (!dl) return;
+    const seen = new Set();
+    const add  = v => {
+        if (!v || seen.has(v)) return;
+        seen.add(v);
+        dl.appendChild(Object.assign(document.createElement('option'), { value: v }));
+    };
+    dl.innerHTML = '';
+
+    const fill = () => {
+        if (LOOT_DATA) {
+            LOOT_DATA.weapons.forEach(w => add(w.name));
+            LOOT_DATA.armor.forEach(a => add(a.name));
+            LOOT_DATA.items.forEach(i => add(i.name));
+        }
+        // Also surface anything already in the session
+        nar.inventory.forEach(i => add(i.name));
+        nar.characters.forEach(c => { if (c.equipment) add(c.equipment); c.inventory?.forEach(i => add(i.name)); });
+    };
+
+    if (lootLoaded) {
+        fill();
+    } else {
+        ensureLoot().then(fill);
+    }
+}
+
+document.getElementById('ced-pl')?.addEventListener('input', updateCedPlHint);
+document.getElementById('ced-mn-pl')?.addEventListener('input', updateCedMnPlHint);
+
+function renderCedInv(c) {
+    const list  = document.getElementById('ced-inv-list');
+    if (!list) return;
+    const items = c.inventory || [];
+    if (!items.length) {
+        list.innerHTML = '<p class="empty-hint" style="font-size:12px;margin:4px 0 8px">No items yet.</p>';
+        return;
+    }
+    list.innerHTML = items.map((item, i) => {
+        const weaponMeta = item.damage
+            ? `<span class="ced-inv-item-desc">${item.damage}${item.damageType ? ' ' + item.damageType : ''}${item.range ? ' · ' + item.range : ''}</span>`
+            : '';
+        return `<div class="ced-inv-row">
+            <div class="ced-inv-item-info">
+                <span class="ced-inv-item-name">${item.name}</span>
+                ${weaponMeta}
+                ${item.desc && !weaponMeta ? `<span class="ced-inv-item-desc">${item.desc}</span>` : ''}
+            </div>
+            <button class="step-action-btn step-action-btn--danger" data-ced-rm="${i}" type="button">✕</button>
+        </div>`;
+    }).join('');
+
+    list.querySelectorAll('[data-ced-rm]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const c = nar.characters.find(x => x.id === charEditId);
+            if (!c?.inventory) return;
+            c.inventory.splice(parseInt(btn.dataset.cedRm, 10), 1);
+            saveNar(); renderCedInv(c);
+        });
+    });
+}
+
+document.getElementById('btn-char-edit-save')?.addEventListener('click', () => {
+    const c = nar.characters.find(x => x.id === charEditId);
+    if (!c) return;
+
+    c.name = document.getElementById('ced-name')?.value.trim() || c.name;
+
+    if (c.role !== 'minion') {
+        c.pl    = document.getElementById('ced-pl')?.value    || '';
+        c.phys  = document.getElementById('ced-phys')?.value  || '';
+        c.ment  = document.getElementById('ced-ment')?.value  || '';
+        c.hp    = document.getElementById('ced-hp')?.value    || '';
+        c.notes         = document.getElementById('ced-notes')?.value.trim() || '';
+        c.equipment     = document.getElementById('ced-equip')?.value.trim() || '';
+        c.narratorNotes = document.getElementById('ced-nar')?.value.trim()   || '';
+    } else {
+        const pl = Math.max(1, parseInt(document.getElementById('ced-mn-pl')?.value || c.pl || '3', 10));
+        c.pl     = pl; c.plPhys = pl; c.plMent = pl;
+        c.maxHp  = pl * pl;
+        c.hp     = Math.min(parseInt(document.getElementById('ced-mn-hp')?.value || c.hp || c.maxHp, 10), c.maxHp);
+        c.origin = document.getElementById('ced-mn-origin')?.value.trim() || '';
+    }
+
+    saveNar(); renderCharacters(); closeCharEdit();
+});
+
+document.getElementById('ced-inv-name')?.addEventListener('input', () => {
+    const name   = document.getElementById('ced-inv-name')?.value.trim();
+    const weapon = LOOT_DATA?.weapons?.find(w => w.name === name);
+    const fields = document.getElementById('ced-inv-weapon-fields');
+    if (weapon) {
+        if (fields) fields.hidden = false;
+        const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+        set('ced-inv-damage',   weapon.damage     || '');
+        set('ced-inv-dmg-type', weapon.damageType || '');
+        set('ced-inv-range',    weapon.range      || '');
+        set('ced-inv-check',    weapon.check?.split(',')[0]?.trim() || '');
+    } else {
+        if (fields) fields.hidden = !document.getElementById('ced-inv-damage')?.value;
+    }
+});
+
+document.getElementById('ced-inv-name')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('btn-ced-inv-add')?.click();
+});
+
+document.getElementById('btn-ced-inv-add')?.addEventListener('click', () => {
+    const nameEl   = document.getElementById('ced-inv-name');
+    const descEl   = document.getElementById('ced-inv-desc');
+    const name     = nameEl?.value.trim();
+    if (!name) return;
+    const c = nar.characters.find(x => x.id === charEditId);
+    if (!c) return;
+    if (!c.inventory) c.inventory = [];
+
+    const damage   = document.getElementById('ced-inv-damage')?.value.trim();
+    const item = {
+        id: crypto.randomUUID(), name,
+        desc:      descEl?.value.trim() || '',
+        category:  damage ? 'weapon' : 'gear',
+        damage:    damage || '',
+        damageType:document.getElementById('ced-inv-dmg-type')?.value.trim() || '',
+        range:     document.getElementById('ced-inv-range')?.value.trim()    || '',
+        check:     document.getElementById('ced-inv-check')?.value.trim()    || '',
+    };
+    c.inventory.push(item);
+
+    ['ced-inv-name','ced-inv-desc','ced-inv-damage','ced-inv-dmg-type','ced-inv-range','ced-inv-check'].forEach(id => {
+        const el = document.getElementById(id); if (el) el.value = '';
+    });
+    const fields = document.getElementById('ced-inv-weapon-fields');
+    if (fields) fields.hidden = true;
+
+    saveNar(); renderCedInv(c);
+});
+
+document.getElementById('btn-char-edit-cancel')?.addEventListener('click', closeCharEdit);
+document.getElementById('btn-char-edit-close')?.addEventListener('click',  closeCharEdit);
+
+document.getElementById('char-edit-dialog')?.addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeCharEdit();
 });
 
 // ── END SESSION ───────────────────────────────────────────────────────────────
@@ -1491,6 +1815,50 @@ function subPL(text, pl) {
 }
 
 // autoTableRolls is defined in chat-cards.js
+
+function npcEquipEntry(n) {
+    const weapon    = LOOT_DATA?.weapons?.find(w => w.name === n.equipment);
+    const checkMod  = parseInt(n.phys, 10) || 0;
+    const d20       = Math.ceil(Math.random() * 20);
+    const d20Total  = d20 + checkMod;
+    if (weapon?.damage) {
+        const damageType = weapon.damageType || '';
+        return {
+            type: 'weapon-attack', charName: n.name, monsterName: n.name,
+            weaponName: weapon.name,
+            checkLabel: weapon.check?.split(',')[0]?.trim() || 'Physical',
+            checkMod, attackBonus: weapon.attackBonus || 0,
+            rollNote: `d20(${d20})`, d20Total, rollType: 'flat',
+            damageRoll: rollDiceNotation(weapon.damage),
+            damageType, range: weapon.range || '',
+            tableRolls: autoTableRolls(d20Total, damageType),
+            conditions: [], time: chatTimestamp(),
+        };
+    }
+    // Non-weapon equipment — post as a feature card
+    return {
+        type: 'feature', name: n.name,
+        tags: [n.equipment], desc: '',
+        time: chatTimestamp(), diceRolls: [],
+    };
+}
+
+function charItemRollEntry(c, item) {
+    const checkMod = parseInt(c.phys, 10) || parseInt(c.plPhys, 10) || 0;
+    const d20      = Math.ceil(Math.random() * 20);
+    const d20Total = d20 + checkMod;
+    const damageType = item.damageType || '';
+    return {
+        type: 'weapon-attack', charName: c.name, monsterName: c.name,
+        weaponName: item.name,
+        checkLabel: item.check || 'Physical', checkMod, attackBonus: 0,
+        rollNote: `d20(${d20})`, d20Total, rollType: 'flat',
+        damageRoll: rollDiceNotation(item.damage),
+        damageType, range: item.range || '',
+        tableRolls: autoTableRolls(d20Total, damageType),
+        conditions: [], time: chatTimestamp(),
+    };
+}
 
 function monsterAttackEntry(m, atk, atkType) {
     const checkMod = m.check_physical || 0;

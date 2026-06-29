@@ -65,12 +65,14 @@
                             </div>
                             <div class="init-actions-row">
                                 <button class="ghost-btn" id="btn-call-init" type="button" title="Ask players to roll initiative">🎲 Init</button>
+                                <button class="ghost-btn" id="btn-add-party-init" type="button" title="Add all party members to initiative">Party +</button>
                                 <button class="ghost-btn" id="btn-next-turn" type="button">Next →</button>
                                 <button class="ghost-btn ghost-btn--danger" id="btn-clear-encounter" type="button">End</button>
                             </div>
                         </div>
                         <div class="enc-turn-bar" id="enc-turn-bar" hidden>
-                            <span id="enc-active-name">-</span>'s turn
+                            <span><span id="enc-active-name">-</span>'s turn</span>
+                            <button class="ghost-btn enc-turn-next-btn" id="btn-enc-turn-next" type="button">Next →</button>
                         </div>
                         <div id="encounter-list">
                             <p class="empty-hint">No one in initiative. Add combatants below.</p>
@@ -103,7 +105,10 @@
                                     <label class="nar-form-field" id="enc-hp-field"><span class="nar-form-label">Max HP</span>
                                         <input id="enc-hp-input" type="number" inputmode="numeric" value="10" /></label>
                                     <label class="nar-form-field"><span class="nar-form-label">Initiative</span>
-                                        <input id="enc-init-input" type="number" inputmode="numeric" value="0" /></label>
+                                        <div class="enc-init-input-row">
+                                            <input id="enc-init-input" type="number" inputmode="numeric" value="0" />
+                                            <button class="ghost-btn enc-init-roll-btn" id="btn-enc-roll-init" type="button" title="Roll initiative">🎲</button>
+                                        </div></label>
                                 </div>
                             </div>
                             <button class="done-btn" id="btn-add-creature" type="button">+ Add</button>
@@ -636,6 +641,82 @@
 
         </div>
     </div>
+
+    <!-- Character Edit Dialog -->
+    <dialog id="char-edit-dialog" class="nar-dialog nar-dialog--tall">
+        <div class="nar-dialog-inner nar-dialog-inner--scroll">
+            <div class="nar-ced-head">
+                <p class="nar-dialog-name" id="char-edit-title">Edit</p>
+                <button class="icon-btn" id="btn-char-edit-close" type="button" aria-label="Close">✕</button>
+            </div>
+
+            <div class="nar-form">
+                <label class="nar-form-field"><span class="nar-form-label">Name</span>
+                    <input id="ced-name" type="text" autocomplete="off" /></label>
+
+                <div id="ced-npc-fields">
+                    <div class="nar-stat-row">
+                        <label class="nar-form-field"><span class="nar-form-label">PL</span>
+                            <input id="ced-pl" type="number" inputmode="numeric" placeholder="–" /></label>
+                        <label class="nar-form-field"><span class="nar-form-label">Phys</span>
+                            <input id="ced-phys" type="number" inputmode="numeric" placeholder="–" /></label>
+                        <label class="nar-form-field"><span class="nar-form-label">Ment</span>
+                            <input id="ced-ment" type="number" inputmode="numeric" placeholder="–" /></label>
+                        <label class="nar-form-field"><span class="nar-form-label">HP</span>
+                            <input id="ced-hp" type="number" inputmode="numeric" placeholder="–" /></label>
+                    </div>
+                    <p class="field-hint field-hint--tight" id="ced-pl-hint" hidden></p>
+                    <label class="nar-form-field"><span class="nar-form-label">Notes</span>
+                        <input id="ced-notes" type="text" autocomplete="off" /></label>
+                    <label class="nar-form-field"><span class="nar-form-label">Equipment</span>
+                        <input id="ced-equip" type="text" autocomplete="off" list="ced-equip-list" />
+                        <datalist id="ced-equip-list"></datalist></label>
+                    <label class="nar-form-field"><span class="nar-form-label">Narrator Notes</span>
+                        <input id="ced-nar" type="text" autocomplete="off" /></label>
+                </div>
+
+                <div id="ced-minion-fields" hidden>
+                    <div class="nar-stat-row">
+                        <label class="nar-form-field"><span class="nar-form-label">PL</span>
+                            <input id="ced-mn-pl" type="number" inputmode="numeric" min="1" /></label>
+                        <label class="nar-form-field"><span class="nar-form-label">HP (now)</span>
+                            <input id="ced-mn-hp" type="number" inputmode="numeric" /></label>
+                    </div>
+                    <p class="field-hint field-hint--tight" id="ced-mn-pl-hint" hidden></p>
+                    <label class="nar-form-field"><span class="nar-form-label">Origin</span>
+                        <input id="ced-mn-origin" type="text" autocomplete="off" /></label>
+                </div>
+            </div>
+
+            <div class="ced-inv-section">
+                <div class="ced-inv-section-head">Personal Items</div>
+                <div id="ced-inv-list"></div>
+                <div class="ced-inv-add-form">
+                    <div class="ced-inv-add-row">
+                        <input id="ced-inv-name" type="text" class="ced-inv-input" placeholder="Item name…" autocomplete="off" list="ced-inv-name-list" />
+                        <datalist id="ced-inv-name-list"></datalist>
+                        <input id="ced-inv-desc" type="text" class="ced-inv-input ced-inv-input--desc" placeholder="Note (optional)" autocomplete="off" />
+                        <button class="ghost-btn" id="btn-ced-inv-add" type="button">+ Add</button>
+                    </div>
+                    <div class="ced-inv-weapon-fields" id="ced-inv-weapon-fields" hidden>
+                        <div class="nar-stat-row">
+                            <label class="nar-form-field"><span class="nar-form-label">Damage</span>
+                                <input id="ced-inv-damage" type="text" placeholder="1d6" autocomplete="off" /></label>
+                            <label class="nar-form-field"><span class="nar-form-label">Type</span>
+                                <input id="ced-inv-dmg-type" type="text" placeholder="Piercing…" autocomplete="off" /></label>
+                            <label class="nar-form-field"><span class="nar-form-label">Range</span>
+                                <input id="ced-inv-range" type="text" placeholder="Close…" autocomplete="off" /></label>
+                            <label class="nar-form-field"><span class="nar-form-label">Check</span>
+                                <input id="ced-inv-check" type="text" placeholder="Agility…" autocomplete="off" /></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="nar-dialog-action" id="btn-char-edit-save" type="button">Save Changes</button>
+            <button class="nar-dialog-action nar-dialog-action--cancel" id="btn-char-edit-cancel" type="button">Cancel</button>
+        </div>
+    </dialog>
 
     <!-- Player Edit Dialog -->
     <dialog id="player-edit-dialog" class="nar-dialog">

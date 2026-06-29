@@ -11461,8 +11461,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "",
-              "checkType": "self"
+              "condition": ""
             },
             {
               "step": 2,
@@ -11514,8 +11513,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Coughing",
-              "checkType": "enemy"
+              "condition": "Coughing"
             },
             {
               "step": 6,
@@ -11536,13 +11534,12 @@
               "action": "Upgrade",
               "check": "Influence",
               "range": "",
-              "description": "Your mutagen gives creatures unreasonable beauty, giving them advantage on Influence checks. Additionally they have claws that deal an additional [[1d6]] slashing damage",
+              "description": "Your mutagen gives creatures unreasonable beauty, giving them advantage on Influence checks. Additionally that have claws that deal an additional [[1d6]] slashing damage",
               "duration": "",
               "damage": "1d6",
               "damageType": "Slashing",
               "armor": "",
-              "condition": "",
-              "checkType": "self"
+              "condition": ""
             },
             {
               "step": 8,
@@ -11568,8 +11565,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Slowed",
-              "checkType": "enemy"
+              "condition": "Slowed"
             },
             {
               "step": 10,
@@ -11608,8 +11604,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "",
-              "checkType": "self"
+              "condition": ""
             },
             {
               "step": 1,
@@ -11674,8 +11669,7 @@
               "damage": "2d6",
               "damageType": "Psychic",
               "armor": "",
-              "condition": "Confused",
-              "checkType": "contested"
+              "condition": "Confused"
             },
             {
               "step": 6,
@@ -11701,8 +11695,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused",
-              "checkType": "enemy"
+              "condition": "Confused"
             },
             {
               "step": 8,
@@ -11741,8 +11734,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned, Confused",
-              "checkType": "enemy"
+              "condition": "Pinned, Confused"
             }
           ]
         },
@@ -12192,7 +12184,7 @@
               "action": "Resource",
               "check": "",
               "range": "",
-              "description": "Spend 2 Merchant Tokens to establish or claim a position at a school, guildhall, or institute. You do not gain GP from this investment. Instead, once per month when you check in, you gain +1 bonus to all checks that lasts for 1 week.",
+              "description": "Spend 2 Merchant Tokens to establish or claim a position at a school, guildhall, or institute. You do not gain GP from this investment. Instead, once per month when you check in, you gain +1 bonus to all checks that lasts for 1 week. Additionally gain 1 merchant token",
               "duration": "",
               "damage": "",
               "damageType": "",

@@ -287,9 +287,10 @@ const SB_SOURCES = [
   { file:"data/species.json", label:"Species",   page:"species.html",      extract: d => (d.species||[]).map(x=>({ name:x.name, sub:x.lineage||"", desc:x.description?.physical||x.description||"" })) },
   { file:"data/class-new.json",   label:"Class",     page:"class.html",        extract: d => { const a=[];for(const g of Object.values(d.classes||{}))for(const c of(Array.isArray(g)?g:[]))a.push({name:c.name,sub:c.class||"",desc:c.desc||""});return a; } },
   { file:"data/enchanted.json",   label:"Enchanted", page:"enchanted.html",    extract: d => d.map(x=>({ name:x.name, sub:x.type||"",          desc:(x.description||"")+" "+(x.effect||"") })) },
+  { file:"data/glossary.json",    label:"Glossary",  page:"glossary.html",     extract: d => d.map(x=>({ name:x.term, sub:x.type||"",          desc:x.definition||"" })) },
 ];
 
-const SB_COLORS = { Spell:"#4a90d9", Weapon:"#c0392b", Armor:"#7f8c8d", Monster:"#8e44ad", Deity:"#f39c12", Species:"#27ae60", Class:"#e67e22", Enchanted:"#1abc9c" };
+const SB_COLORS = { Spell:"#4a90d9", Weapon:"#c0392b", Armor:"#7f8c8d", Monster:"#8e44ad", Deity:"#f39c12", Species:"#27ae60", Class:"#e67e22", Enchanted:"#1abc9c", Glossary:"#8b6914" };
 
 let _sbIndex = null;
 

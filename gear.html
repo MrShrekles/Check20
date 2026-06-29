@@ -24,7 +24,6 @@
             <button class="tab-btn active" data-tab="weapons">⚔ Weapons</button>
             <button class="tab-btn" data-tab="armor">🛡 Armor</button>
             <button class="tab-btn" data-tab="items">🎒 Items</button>
-            <button class="tab-btn" data-tab="enchanted">✨ Enchanted</button>
             <div class="codex-size-wrap" style="margin-left:auto;">
                 <span>Size</span>
                 <div class="codex-size-btns" id="codex-size-btns">
@@ -40,26 +39,42 @@
 
             <!-- Properties reference panel -->
             <details class="gear-reference-panel" id="weapon-properties-ref">
-                <summary>📋 Weapon Properties Reference</summary>
-                <div class="gear-ref-grid">
-                    <div class="gear-ref-item"><strong>1 Hand</strong> - Wield in one hand; can hold something in the other.</div>
-                    <div class="gear-ref-item"><strong>2 Hand</strong> - Requires both hands. Cannot use a shield or off-hand item.</div>
-                    <div class="gear-ref-item"><strong>1 or 2 Hand</strong> - Can be used either way. 2-Hand grants no extra bonus unless stated.</div>
-                    <div class="gear-ref-item"><strong>Light</strong> - Can dual-wield. Drawing or stowing is a free action.</div>
-                    <div class="gear-ref-item"><strong>Hefty</strong> - Requires notable Strength to wield effectively; may impose penalties.</div>
-                    <div class="gear-ref-item"><strong>Reach</strong> - Attack targets up to 10 ft away; cannot attack adjacent targets.</div>
-                    <div class="gear-ref-item"><strong>Thrown</strong> - Can be thrown as a ranged attack (Short range unless noted).</div>
-                    <div class="gear-ref-item"><strong>Return</strong> - Returns to your hand after being thrown.</div>
-                    <div class="gear-ref-item"><strong>Hidden</strong> - Easily concealed. Surprise attacks from hiding have advantage.</div>
-                    <div class="gear-ref-item"><strong>1 Shot / Reload</strong> - Must spend an action to reload after firing.</div>
-                    <div class="gear-ref-item"><strong>Close Range Disadvantage</strong> - Disadvantage on attack rolls against targets at Melee range.</div>
-                    <div class="gear-ref-item"><strong>Attached</strong> - Worn or strapped to the body; does not occupy a hand slot.</div>
-                    <div class="gear-ref-item"><strong>Free Hands</strong> - Operates without occupying either hand (mounted weapon, etc.).</div>
-                    <div class="gear-ref-item"><strong>Firearm</strong> - Produces loud noise; may trigger reactions in the environment.</div>
-                    <div class="gear-ref-item"><strong>Loud</strong> - Makes significant noise when used. Stealth is broken.</div>
-                    <div class="gear-ref-item"><strong>Tech</strong> - Requires technology to operate; may need power or maintenance.</div>
-                    <div class="gear-ref-item"><strong>Surprise</strong> - Your first attack on an unaware target has advantage.</div>
-                </div>
+            <summary>📋 Weapon Properties Reference</summary>
+            <div class="gear-ref-grid">
+                <div class="gear-ref-item"><strong>1 Hand</strong> - Can be wielded in one hand, leaving the other hand free.</div>
+            
+                <div class="gear-ref-item"><strong>2 Hand</strong> - Requires both hands to use. You cannot use a shield or hold another item while wielding it.</div>
+            
+                <div class="gear-ref-item"><strong>1 or 2 Hand</strong> - Can be used with one or two hands. Using two hands provides no additional benefit unless otherwise stated.</div>
+            
+                <div class="gear-ref-item"><strong>Light</strong> - Can be used as an Off-Action.</div>
+            
+                <div class="gear-ref-item"><strong>Hefty</strong> - You can carry up to 2 Hefty items before becoming Pinned.</div>
+            
+                <div class="gear-ref-item"><strong>Reach</strong> - Can attack targets up to 10 ft away.</div>
+            
+                <div class="gear-ref-item"><strong>Thrown</strong> - Can be thrown as a ranged attack, usually at Short range.</div>
+            
+                <div class="gear-ref-item"><strong>Return</strong> - Returns to your hand immediately after being thrown.</div>
+            
+                <div class="gear-ref-item"><strong>Hidden</strong> - Easy to conceal. Creatures must succeed on an Observation check to find it on your person.</div>
+            
+                <div class="gear-ref-item"><strong>1 Shot / Reload</strong> - After firing, you must spend any action type to reload before firing again.</div>
+            
+                <div class="gear-ref-item"><strong>Close Range Disadvantage</strong> - Attack checks against targets in Melee range are made with disadvantage.</div>
+            
+                <div class="gear-ref-item"><strong>Attached</strong> - Worn or strapped to the body. Does not occupy a hand slot and cannot be disarmed.</div>
+            
+                <div class="gear-ref-item"><strong>Free Hands</strong> - Can be used without occupying either hand, such as a mounted weapon.</div>
+            
+                <div class="gear-ref-item"><strong>Firearm</strong> - Produces a loud gunshot that may attract attention or trigger environmental reactions.</div>
+            
+                <div class="gear-ref-item"><strong>Loud</strong> - Makes significant noise when used and automatically breaks stealth.</div>
+            
+                <div class="gear-ref-item"><strong>Tech</strong> - Tied to the Tech Origin and may interact with abilities or effects that target Tech items.</div>
+            
+                <div class="gear-ref-item"><strong>Surprise</strong> - Your first attack against an unaware target has advantage.</div>
+            </div>
             </details>
 
             <div class="gear-toolbar" id="weapons-toolbar">
@@ -197,45 +212,6 @@
             </div>
             <section>
                 <div class="spell-grid" id="item-grid"></div>
-            </section>
-        </div>
-
-        <!-- ═══════════ ENCHANTED TAB ═══════════ -->
-        <div id="tab-enchanted" class="tab-content">
-            <div class="gear-toolbar" id="enchanted-toolbar">
-                <button class="toolbar-toggle-btn" aria-label="Toggle filters">
-                    <span class="toolbar-toggle-left">
-                        <span class="toolbar-toggle-pip"></span>
-                        Filters
-                    </span>
-                    <span class="toolbar-toggle-chevron">▼</span>
-                </button>
-                <div class="toolbar-collapsible">
-                    <div class="gear-filter-row" id="enchanted-type-toggles">
-                        <button class="gear-tab active" data-filter="all">All</button>
-                        <button class="gear-tab" data-filter="Amulet">🔮 Amulet</button>
-                        <button class="gear-tab" data-filter="Armor">🛡 Armor</button>
-                        <button class="gear-tab" data-filter="Gear">⚙ Gear</button>
-                        <button class="gear-tab" data-filter="Item">📦 Item</button>
-                        <button class="gear-tab" data-filter="Lantern">🕯 Lantern</button>
-                        <button class="gear-tab" data-filter="Weapon">⚔ Weapon</button>
-                    </div>
-                    <div class="gear-controls-row">
-                        <div class="gear-sort-toggles" id="enchanted-sort-toggles">
-                            <span class="control-label">Sort</span>
-                            <button data-sort="name" class="active">Name</button>
-                            <button data-sort="type">Type</button>
-                        </div>
-                        <div class="gear-actions">
-                            <button class="gear-expand-all">Expand All</button>
-                            <button class="gear-collapse-all">Collapse All</button>
-                            <span class="gear-count" id="enchanted-count"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <section>
-                <div class="spell-grid" id="enchanted-grid"></div>
             </section>
         </div>
 

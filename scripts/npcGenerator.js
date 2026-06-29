@@ -10,6 +10,13 @@ Promise.all([
     speciesData = species;
 }).catch(err => console.error("❌ Error loading data:", err));
 
+const REGIONS = {
+    none:       { label: "Any Region",  nameStyles: [],                   excludeLineages: [],              lowWeight: [],              highWeight: [] },
+    ostrio:     { label: "Ostrio",      nameStyles: ["twenties","fantasy"], excludeLineages: ["Chitnari","Jotun"], lowWeight: ["Strigoi","Symbiotes"], highWeight: [] },
+    kingslands: { label: "Kingslands",  nameStyles: ["victorian"],         excludeLineages: ["Chitnari"],    lowWeight: ["Jotun","Dragon"],       highWeight: ["Strigoi","Symbiotes"] },
+    khunfaris:  { label: "Khunfaris",   nameStyles: [],                   excludeLineages: ["Strigoi"],     lowWeight: [],              highWeight: [] },
+};
+
 // Rarity-weighted selector
 const rarityWeight = (species) => {
     switch ((species.rarity || "").toLowerCase()) {
@@ -23,6 +30,19 @@ const rarityWeight = (species) => {
         default: return 5;
     }
 };
+
+function regionWeightFn(regionKey) {
+    const cfg = REGIONS[regionKey];
+    if (!cfg) return rarityWeight;
+    return (species) => {
+        if (cfg.excludeLineages.includes(species.lineage)) return 0;
+        let w = rarityWeight(species);
+        if (cfg.lowWeight.includes(species.lineage))  w *= 0.15;
+        if (cfg.highWeight.includes(species.lineage)) w *= 4;
+        return w;
+    };
+}
+
 const weightedRandom = (list, weightFn) => {
     const pool = [];
     list.forEach(item => {
@@ -91,7 +111,8 @@ function extractFeature(species) {
 
 class NPC {
     constructor() {
-        const species = weightedRandom(speciesData.species, rarityWeight);
+        const regionKey = document.getElementById("region-filter")?.value || "none";
+        const species = weightedRandom(speciesData.species, regionWeightFn(regionKey));
         this.speciesName = formatSpecies(species);
         this.features = extractFeature(species);
 
@@ -104,7 +125,17 @@ class NPC {
             if (dragon.features) this.features.push(`🐉 ${dragon.features}`);
         }
 
-        this.name = generateName();
+        const selectedStyle = document.getElementById("name-style")?.value || "auto";
+        let style;
+        if (selectedStyle !== "auto") {
+            style = selectedStyle;
+        } else if (species.namingStyle) {
+            style = species.namingStyle;
+        } else {
+            const regionStyles = REGIONS[regionKey]?.nameStyles || [];
+            style = regionStyles.length ? getRandomItem(regionStyles) : "fantasy";
+        }
+        this.name = generateName(style);
         this.affinity = `${getRandomItem(npcData.affinities)} from ${getRandomItem(npcData.habitats)}`;
         this.religion = getRandomItem(npcData.gods);
         this.item = getRandomItem(npcData.signatureItems);
@@ -112,15 +143,25 @@ class NPC {
     }
 }
 
-function generateName() {
-    const first = getRandomItem(npcData.names.start);
-    const core = getRandomItem(npcData.names.core);
-    const last = getRandomItem(npcData.names.end);
-
+function generateName(style = "fantasy") {
+    const names = npcData.names;
+    if (style === "twenties" || style === "victorian") {
+        const pool = names[style].first;
+        const genderPool = Math.random() < 0.5 ? pool.male : pool.female;
+        const first = getRandomItem(genderPool);
+        const last = getRandomItem(names[style].last);
+        return `${first} ${last}`;
+    }
+    if (style === "goblin") {
+        return getRandomItem(names.goblin.prefix) + getRandomItem(names.goblin.suffix);
+    }
+    // fantasy syllable default
+    const first = getRandomItem(names.fantasy.start);
+    const core = getRandomItem(names.fantasy.core);
+    const last = getRandomItem(names.fantasy.end);
     let middle = core;
-    if (first.endsWith(middle[0])) middle = middle.substring(1);
-    if (middle.endsWith(last[0])) middle = middle.slice(0, -1);
-
+    if (middle && first.endsWith(middle[0])) middle = middle.substring(1);
+    if (middle && middle.endsWith(last[0])) middle = middle.slice(0, -1);
     return first + middle + last;
 }
 

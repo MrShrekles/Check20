@@ -255,6 +255,7 @@ function renderWeapons() {
 
 function buildWeaponRow(w, term) {
     const rarityNorm = normalizeRarity(w.rarity);
+    const catColor = WEAPON_CATEGORY_COLORS[w.category] || 'var(--theme-2)';
     const iconSrc = WEAPON_ICONS[w.category];
     const iconHtml = iconSrc
         ? `<img src="${iconSrc}" class="gear-row-icon" title="${w.category}" alt="${w.category}">`
@@ -268,18 +269,44 @@ function buildWeaponRow(w, term) {
         </span>
         <span class="spell-row-cost">${w.damage || '-'}${w.damageType ? ` <em class="gear-dmg-type">${w.damageType}</em>` : ''}</span>`;
 
-    const stats = [
-        w.range      ? `<span><strong>Range</strong> ${w.range}</span>`           : '',
-        w.properties ? `<span><strong>Properties</strong> ${w.properties}</span>` : '',
-        w.check      ? `<span><strong>Check</strong> ${w.check}</span>`            : '',
-        w.bulk != null ? `<span><strong>Bulk</strong> ${w.bulk}</span>`            : '',
-        w.cost != null ? `<span><strong>Cost</strong> ${w.cost}¢</span>`           : '',
-    ].filter(Boolean);
+    const propChips = w.properties
+        ? w.properties.split(',').map(p => p.trim()).filter(Boolean)
+            .map(p => `<span class="wc-prop-chip">${p}</span>`).join('')
+        : '<span class="wc-prop-chip wc-prop-chip--none">—</span>';
+
+    const checkChips = w.check
+        ? w.check.split(',').map(c => c.trim()).filter(Boolean)
+            .map(c => `<span class="wc-check-chip">${c}</span>`).join('')
+        : '';
 
     const detailHTML = `
-        <div class="gear-detail-block">
-            <div class="gear-stat-row">${stats.join('')}</div>
-            ${w.description ? `<p class="gear-desc">${highlightText(w.description, term)}</p>` : ''}
+        <div class="weapon-card" style="--wc-color:${catColor}">
+            <div class="weapon-card-header">
+                <div class="weapon-card-dmg-block">
+                    <span class="wc-label">Damage</span>
+                    <span class="weapon-card-dmg">${highlightText(w.damage || '—', term)}${w.damageType ? ` <em>${w.damageType}</em>` : ''}</span>
+                </div>
+                <div class="weapon-card-quick-stats">
+                    ${w.range    ? `<div class="wc-quick-stat"><span class="wc-label">Range</span><span>${w.range}</span></div>` : ''}
+                    ${w.bulk != null ? `<div class="wc-quick-stat"><span class="wc-label">Bulk</span><span>${w.bulk}</span></div>` : ''}
+                    ${w.cost != null ? `<div class="wc-quick-stat"><span class="wc-label">Cost</span><span>${w.cost} <b class="gear-gp">gp</b></span></div>` : ''}
+                </div>
+            </div>
+            <div class="weapon-card-body">
+                <div class="weapon-card-row">
+                    <span class="wc-label">Properties</span>
+                    <div class="wc-chips">${propChips}</div>
+                </div>
+                ${checkChips ? `<div class="weapon-card-row">
+                    <span class="wc-label">Check</span>
+                    <div class="wc-chips">${checkChips}</div>
+                </div>` : ''}
+                ${w.featureName ? `<div class="weapon-card-feature">
+                    <span class="wc-feature-name">${highlightText(w.featureName, term)}</span>
+                    ${w.featureEffect ? `<p class="weapon-card-desc" style="margin-top:.25rem">${highlightText(w.featureEffect, term)}</p>` : ''}
+                </div>` : ''}
+                ${w.description ? `<p class="weapon-card-desc">${highlightText(w.description, term)}</p>` : ''}
+            </div>
         </div>`;
 
     const row = makeRow(headHTML, detailHTML, btn => {
@@ -362,7 +389,7 @@ function buildArmorRow(a, term) {
         a.checkPenalty ? `<span><strong>Penalty</strong> ${a.checkPenalty}</span>`       : '',
         a.checkBonus   ? `<span><strong>Bonus</strong> ${a.checkBonus}</span>`           : '',
         a.bulk != null ? `<span><strong>Bulk</strong> ${a.bulk}</span>`                  : '',
-        a.cost != null ? `<span><strong>Cost</strong> ${a.cost}¢</span>`                 : '',
+        a.cost != null ? `<span><strong>Cost</strong> ${a.cost} <span class="gear-gp">gp</span></span>` : '',
     ].filter(Boolean);
 
     const detailHTML = `
@@ -432,7 +459,7 @@ function buildItemRow(it, term) {
         <span class="spell-row-tags">
             <span class="gear-tag gear-tag--cat">${it.category}</span>
         </span>
-        <span class="spell-row-cost">${it.cost != null ? `$${it.cost}` : '-'}</span>`;
+        <span class="spell-row-cost">${it.cost != null ? `${it.cost} <span class="gear-gp">gp</span>` : '-'}</span>`;
 
     const detailHTML = `
         <div class="gear-detail-block">
@@ -441,7 +468,7 @@ function buildItemRow(it, term) {
         </div>`;
 
     return makeRow(headHTML, detailHTML, btn => {
-        const text = `**${it.name}** (${it.category})\nCost: $${it.cost || '-'}\n${it.description || ''}`.trim();
+        const text = `**${it.name}** (${it.category})\nCost: ${it.cost || '-'} gp\n${it.description || ''}`.trim();
         navigator.clipboard.writeText(text).then(() => flashButton(btn, 'Copied!'));
     });
 }

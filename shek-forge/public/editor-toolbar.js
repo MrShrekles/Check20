@@ -275,11 +275,16 @@
     function positionAbove(el, floater) {
         const rect  = el.getBoundingClientRect();
         const fRect = floater.getBoundingClientRect();
+        // Use clientWidth/clientHeight — these respect CSS zoom on <html>
+        const vpW   = document.documentElement.clientWidth;
+        const vpH   = document.documentElement.clientHeight;
         let top  = rect.top - fRect.height - 8;
         let left = rect.left;
-        if (top < 4) top = rect.bottom + 8;                          // flip below if no room
-        if (left + fRect.width > window.innerWidth - 8)
-            left = window.innerWidth - fRect.width - 8;
+        if (top < 4) top = rect.bottom + 8;          // flip below if no room above
+        if (top + fRect.height > vpH - 4) top = 4;   // clamp bottom
+        if (left < 4) left = 4;                       // clamp left
+        if (left + fRect.width > vpW - 8)
+            left = vpW - fRect.width - 8;
         floater.style.top  = `${top}px`;
         floater.style.left = `${left}px`;
     }
@@ -497,7 +502,10 @@
         setTimeout(() => {
             const el = document.activeElement;
 
-            if (!el || !el.classList.contains('field-input')
+            const tbDisabled = typeof loadForgeSettings === 'function'
+                && loadForgeSettings().contextualBar === false;
+
+            if (tbDisabled || !el || !el.classList.contains('field-input')
                     || el.type === 'number' || el.tagName === 'SELECT'
                     || (typeof state !== 'undefined' && state.fileType === 'species')) {
                 hideToolbar();

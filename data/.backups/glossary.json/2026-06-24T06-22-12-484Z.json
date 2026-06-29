@@ -338,7 +338,7 @@
     "term": "Called Shot",
     "type": "mechanic",
     "category": "Combat",
-    "definition": "When you make an attack, you may choose to suffer a -10 penalty to the attack check. If the attack succeeds, inflict a chosen non-major condition instead of dealing damage. Then per success deal the damage you would have inflicted"
+    "definition": "Declare before attacking, then accept -10 to hit. On success, inflict a specific condition instead of normal damage."
   },
   {
     "term": "Finisher",
@@ -434,7 +434,7 @@
     "term": "Unarmed Strike",
     "type": "action",
     "category": "Action",
-    "definition": "Action or Off-Action: Make an Agility or Strength check to deal 2 Impact damage."
+    "definition": "Deals 1 BPorS damage. Can be taken as an Off-Action."
   },
   {
     "term": "Dash",
@@ -566,7 +566,7 @@
     "term": "Falling",
     "type": "movement",
     "category": "Movement",
-    "definition": "Take 5 impact damage per 10ft fallen. A fall that brings you to Injured causes the Death condition instead."
+    "definition": "Take 5 bludgeoning damage per 10ft fallen. A fall that brings you to Injured causes the Death condition instead."
   },
   {
     "term": "Burrowing",

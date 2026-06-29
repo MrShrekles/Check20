@@ -11249,9 +11249,9 @@
       },
       {
         "class": "professional",
-        "name": "Futurist",
+        "name": "Trapper",
         "origin": "tech",
-        "desc": "The Futurist believes that flesh is merely the first draft. Driven by an endless pursuit of progress, they replace weakness with steel, chemistry, and invention. Armed with experimental technology and a body enhanced beyond natural limits, the Futurist dominates the battlefield through a hail of grenades, gadgets, and engineered superiority. Where others see danger, the Futurist sees another opportunity to improve.",
+        "desc": "As a Tricky Trapper, you specialize in setting traps and creating diversions to give your team the upper hand in combat. You are a master of deception and misdirection, always looking for ways to outsmart your opponents. With your expertise in disarming and stealing traps, you can turn the tables on your enemies in the blink of an eye.",
         "path": {
           "steps": []
         },
@@ -11259,13 +11259,25 @@
           "steps": [
             {
               "step": 0,
-              "name": "Augmented",
-              "action": "Passive",
+              "name": "Trap Types",
+              "action": "Special",
               "check": "",
-              "checkType": "",
               "range": "",
-              "description": "You have a +1 bonus to all checks.",
+              "description": "Choose trap effect: Snare (Pinned), Explosive ([[2d4]] fire), Poison ([[1d6]] + Coughing), Alarm (loud), Healing ([[2d6]]).",
               "duration": "",
+              "damage": "",
+              "damageType": "",
+              "armor": "",
+              "condition": "Coughing, Pinned"
+            },
+            {
+              "step": 0,
+              "name": "Trapper Points",
+              "action": "Action",
+              "check": "Observation",
+              "range": "Reach",
+              "description": "As an action, set a trap within reach range. The trap remains until triggered or disarmed. Traps have a range of (5 ft) trigger radius and can be spotted with an Observation check.",
+              "duration": "Permanent",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -11273,54 +11285,50 @@
             },
             {
               "step": 1,
-              "name": "Grenade Manufacture",
-              "action": "Action",
+              "name": "Quick Setup",
+              "action": "Half-Action",
               "check": "",
-              "checkType": "",
               "range": "",
-              "description": "Once per day as an action throw a grenade up to short range that explodes in a reach range area dealing [[3d6]] damage of your choice.",
+              "description": "Set traps as half-action. +5 ft trigger range.",
               "duration": "",
-              "damage": "3d6",
+              "damage": "",
               "damageType": "",
               "armor": "",
               "condition": ""
             },
             {
               "step": 2,
-              "name": "Augmented: Reinforced",
+              "name": "Snare Trap II",
               "action": "Upgrade",
               "check": "",
-              "checkType": "",
               "range": "",
-              "description": "You have +10 armor",
+              "description": "Snare Trap also causes the Bleeding condition.",
               "duration": "",
               "damage": "",
               "damageType": "",
-              "armor": "10",
-              "condition": ""
+              "armor": "",
+              "condition": "Bleeding"
             },
             {
               "step": 3,
-              "name": "Repair Protocol",
-              "action": "Action",
+              "name": "Trap Engineer",
+              "action": "Passive",
               "check": "",
-              "checkType": "",
               "range": "",
-              "description": "Once per day as an action repair +10 armor",
+              "description": "All traps gain +5 ft trigger range and +2 damage.",
               "duration": "",
               "damage": "",
               "damageType": "",
-              "armor": "10",
+              "armor": "",
               "condition": ""
             },
             {
               "step": 4,
-              "name": "Feral Protocol",
-              "action": "Special",
+              "name": "Silent Setup",
+              "action": "Passive",
               "check": "",
-              "checkType": "",
               "range": "",
-              "description": "When you use Tactical Assessment, deal an additional +5 damage to the target.",
+              "description": "Traps are hidden and trap setup cannot be seen.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -11329,12 +11337,11 @@
             },
             {
               "step": 5,
-              "name": "Augmented: Recovery",
+              "name": "Explosive Trap II",
               "action": "Upgrade",
               "check": "",
-              "checkType": "",
               "range": "",
-              "description": "When you take a long rest, repair your armor to full.",
+              "description": "Explosive Trap now hits all creatures in a 20 ft area.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -11343,12 +11350,11 @@
             },
             {
               "step": 6,
-              "name": "Augmented: Comms",
-              "action": "Action",
+              "name": "Trap Persistence",
+              "action": "Passive",
               "check": "",
-              "checkType": "",
               "range": "",
-              "description": "You can speak and understand Clunk language. Tech Origin creatures and objects respond to you as if capable of conversation, even if they normally lack intelligence.",
+              "description": "Your traps can move to a new location and set themselves. You can command your traps on your turn. Your traps have a chance to be spotted when they move.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -11357,12 +11363,11 @@
             },
             {
               "step": 7,
-              "name": "Intervention",
-              "action": "Off-Action",
+              "name": "Autonomous Traps",
+              "action": "Passive",
               "check": "",
-              "checkType": "",
-              "range": "Short",
-              "description": "Once per day as an Off-Action, when a Tech Origin spell is cast within short range, you may alter its performance. The spell gains +3 or -3 to its check and damage.",
+              "range": "",
+              "description": "Traps can move and reposition. Can be spotted while moving.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -11371,27 +11376,25 @@
             },
             {
               "step": 8,
-              "name": "Battery",
-              "action": "Passive",
+              "name": "Unparalleled Trapper",
+              "action": "Upgrade",
               "check": "",
-              "checkType": "",
               "range": "",
-              "description": "You are immune to Lightning damage. Once per day when you take lightning damage, receive healing for the amount. ",
+              "description": "(Prerequisite: Quick Setup) Set traps as an off-action.",
               "duration": "",
               "damage": "",
-              "damageType": "Healing",
+              "damageType": "",
               "armor": "",
               "condition": ""
             },
             {
               "step": 9,
-              "name": "Patent Pending",
-              "action": "Action",
+              "name": "Healing Trap II",
+              "action": "Upgrade",
               "check": "",
-              "checkType": "",
               "range": "",
-              "description": "Once per day as an action, produce an unstable prototype from spare components. It can perform one simple mechanical task before breaking apart, exploding, or becoming useless.",
-              "duration": "1 minute",
+              "description": "Healing Trap also removes one Corpus condition.",
+              "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -11399,27 +11402,12 @@
             },
             {
               "step": 10,
-              "name": "Jammer",
+              "name": "Calamity Trap",
               "action": "Action",
-              "check": "Crafting",
-              "checkType": "self",
+              "check": "",
               "range": "Short",
-              "description": "Target a firearm within short range with a crafting check, on a success the firearm is jammed and cannot be used until the end of your next turn.",
-              "duration": "Until the end of your next turn",
-              "damage": "",
-              "damageType": "",
-              "armor": "",
-              "condition": ""
-            },
-            {
-              "step": 11,
-              "name": "Crafted Response",
-              "action": "Action",
-              "check": "Crafting",
-              "checkType": "self",
-              "range": "",
-              "description": "Once per day as an action, increase the damage of a weapon by your Crafting check until the end of your next turn.",
-              "duration": "Until the end of your next turn",
+              "description": "Takes 1 hour to place. On trigger, terrain-altering battlefield effect for 1 minute (fog, quake, storm, etc.).",
+              "duration": "1 minute",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -11461,8 +11449,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "",
-              "checkType": "self"
+              "condition": ""
             },
             {
               "step": 2,
@@ -11514,8 +11501,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Coughing",
-              "checkType": "enemy"
+              "condition": "Coughing"
             },
             {
               "step": 6,
@@ -11536,13 +11522,12 @@
               "action": "Upgrade",
               "check": "Influence",
               "range": "",
-              "description": "Your mutagen gives creatures unreasonable beauty, giving them advantage on Influence checks. Additionally they have claws that deal an additional [[1d6]] slashing damage",
+              "description": "Your mutagen gives creatures unreasonable beauty, giving them advantage on Influence checks. Additionally that have claws that deal an additional [[1d6]] slashing damage",
               "duration": "",
               "damage": "1d6",
               "damageType": "Slashing",
               "armor": "",
-              "condition": "",
-              "checkType": "self"
+              "condition": ""
             },
             {
               "step": 8,
@@ -11568,8 +11553,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Slowed",
-              "checkType": "enemy"
+              "condition": "Slowed"
             },
             {
               "step": 10,
@@ -11608,8 +11592,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "",
-              "checkType": "self"
+              "condition": ""
             },
             {
               "step": 1,
@@ -11674,8 +11657,7 @@
               "damage": "2d6",
               "damageType": "Psychic",
               "armor": "",
-              "condition": "Confused",
-              "checkType": "contested"
+              "condition": "Confused"
             },
             {
               "step": 6,
@@ -11701,8 +11683,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused",
-              "checkType": "enemy"
+              "condition": "Confused"
             },
             {
               "step": 8,
@@ -11741,8 +11722,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned, Confused",
-              "checkType": "enemy"
+              "condition": "Pinned, Confused"
             }
           ]
         },
@@ -12192,7 +12172,7 @@
               "action": "Resource",
               "check": "",
               "range": "",
-              "description": "Spend 2 Merchant Tokens to establish or claim a position at a school, guildhall, or institute. You do not gain GP from this investment. Instead, once per month when you check in, you gain +1 bonus to all checks that lasts for 1 week.",
+              "description": "Spend 2 Merchant Tokens to establish or claim a position at a school, guildhall, or institute. You do not gain GP from this investment. Instead, once per month when you check in, you gain +1 bonus to all checks that lasts for 1 week. Additionally gain 1 merchant token",
               "duration": "",
               "damage": "",
               "damageType": "",

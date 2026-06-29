@@ -2010,8 +2010,7 @@
       "feature_effect": "You have advantage on Influence checks when begging, bargaining, or playing dead. If you succeed, the target creature is Charmed by you. But if you fail, you take the Fear condition until the end of your next turn.",
       "fetAction": "Passive",
       "fetCheck": "Influence",
-      "fetCondition": "Charmed, Fear",
-      "namingStyle": "goblin"
+      "fetCondition": "Charmed, Fear"
     },
     {
       "lineage": "Goblijjin",
@@ -2169,7 +2168,7 @@
       "option": "Core",
       "name": "Arcane",
       "description": {
-        "physical": "Arcane Core constructs are powered by pure magical energy, their cores brimming with arcane power. These constructs are often adorned with intricate runes and symbols etched into their bodies, marking their deep connection to magic. Designed to wield potent magical abilities, Arcane Core constructs possess heightened intellect and an unparalleled understanding of the arcane arts. They are known for their resilience, able to regenerate and repair themselves through their mastery of magical crafting. Fuel Source is Mana Crystals: These are dense stones imbued with pure magical energy, mined from regions thick with arcane power.",
+        "physical": "Arcane Core constructs are powered by pure magical energy, their cores brimming with arcane power. These constructs are often adorned with intricate runes and symbols etched into their bodies, marking their deep connection to magic. Designed to wield potent magical abilities, Arcane Core constructs possess heightened intellect and an unparalleled understanding of the arcane arts. They are known for their resilience, able to regenerate and repair themselves through their mastery of magical crafting. Fuel Source - Mana Crystals: These are dense stones imbued with pure magical energy, mined from regions thick with arcane power.",
         "environment": "[TBD]",
         "culture": "[TBD]",
         "lore": "[TBD]"
@@ -2183,9 +2182,7 @@
       "origin": "arcane",
       "feature_name": "Arcane Core",
       "feature_effect": "At the end of character creation, convert all your wounds into armor. Your armor regenerates at a rate of 1 point per hour. As an action, you may repair yourself, restoring [[2d6]] armor.\nIf your armor is ever reduced to 0, you enter a dormant state: you cannot act or respond, though your regeneration continues uninterrupted until you wake at full armor.\nWhile dormant, your core is exposed. Removing it resets your personality and erases all memories. Damaging it risks rendering you permanently inoperable.",
-      "fetAction": "Resource",
-      "sub-fet-name": "New Core",
-      "sub-fet-effect": "When you take the death condition, your core enters self-preservation: it severs every connection to the body and locks away your memories. You retain only your name. If your core is later installed into a new frame, such as a suit of armor, the frame grows you new organs around it, and with them, a new personality. Your name is the only thread that survives the transition."
+      "fetAction": "Resource"
     },
     {
       "lineage": "Corebound",
@@ -2207,9 +2204,7 @@
       "feature_name": "Dryad Core",
       "feature_effect": "You have an additional +5 armor. Your armor regenerates at a rate of 1 point per hour. When you have no armor enter a Rootform state, while in this state you have advantage on Physical Checks and disadvantage on Mental Checks. If you take the Injured condition you are no longer in Rootform state, and you cannot enter Rootform until you Press On or Long Rest.",
       "fetAction": "Passive",
-      "fetCondition": "Injured",
-      "sub-fet-effect": "When you take the death condition, your core enters self-preservation: it severs every connection to the body and locks away your memories. You retain only your name. If your core is later installed into a new frame, such as a suit of armor, the frame grows you new organs around it, and with them, a new personality. Your name is the only thread that survives the transition.",
-      "sub-fet-name": "New Core"
+      "fetCondition": "Injured"
     },
     {
       "lineage": "Corebound",
@@ -2231,9 +2226,7 @@
       "feature_name": "Vozian Core",
       "feature_effect": "Once per turn, you may burn your core. Choose one of your checks to take a –1 penalty until your next Press On or Long Rest. In exchange, you gain advantage on all checks until the end of your next turn. You may only burn your core once per turn. The first time you take the death condition, take -1 to all checks and remove the condition. You have a -1 to all checks until your next Long Rest",
       "fetAction": "Resource",
-      "fetCondition": "Death",
-      "sub-fet-effect": "When you take the death condition, your core enters self-preservation: it severs every connection to the body and locks away your memories. You retain only your name. If your core is later installed into a new frame, such as a suit of armor, the frame grows you new organs around it, and with them, a new personality. Your name is the only thread that survives the transition.",
-      "sub-fet-name": "New Core"
+      "fetCondition": "Death"
     },
     {
       "lineage": "Human",
