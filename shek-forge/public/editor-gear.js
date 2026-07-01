@@ -11,6 +11,217 @@ function duplicateWeapon(idx) {
     showToast(`Duplicated "${original.name || 'entry'}"`, 'success');
 }
 
+// ── TABLE MODE ────────────────────────────────────────────────────────────────
+let gearTableMode = false;
+let gearTableSort = { col: null, dir: 1 };
+
+const RARITY_ORDER = { '': -1, common: 0, uncommon: 1, rare: 2, 'very rare': 3, legendary: 4 };
+const GT_COLS = [
+    { label: '#',          key: null,         style: 'width:28px' },
+    { label: 'Name',       key: 'name' },
+    { label: 'Category',   key: 'category' },
+    { label: 'Range',      key: 'range' },
+    { label: 'Damage',     key: 'damage' },
+    { label: 'Type',       key: 'damageType' },
+    { label: 'Check',      key: 'check' },
+    { label: 'Cost',       key: 'cost' },
+    { label: 'Rarity',     key: 'rarity' },
+    { label: 'Properties', key: 'properties' },
+    { label: 'Bulk',       key: 'bulk',       style: 'width:52px' },
+    { label: '',           key: null,         style: 'width:56px' },
+];
+
+function sortGearTable(col) {
+    if (gearTableSort.col === col) {
+        gearTableSort.dir *= -1;
+    } else {
+        gearTableSort.col = col;
+        gearTableSort.dir = 1;
+    }
+    renderGearTable();
+}
+
+function gearTableSortedRows(entries) {
+    const { col, dir } = gearTableSort;
+    if (!col) return entries;
+    return [...entries].sort((a, b) => {
+        if (col === 'cost' || col === 'bulk') {
+            return dir * ((a[col] ?? 0) - (b[col] ?? 0));
+        }
+        if (col === 'rarity') {
+            return dir * ((RARITY_ORDER[a.rarity ?? ''] ?? -1) - (RARITY_ORDER[b.rarity ?? ''] ?? -1));
+        }
+        return dir * String(a[col] ?? '').toLowerCase().localeCompare(String(b[col] ?? '').toLowerCase());
+    });
+}
+
+function toggleGearTable() {
+    gearTableMode = !gearTableMode;
+    const btn = document.getElementById('btnGearTable');
+    if (btn) {
+        btn.textContent = gearTableMode ? '≡ Form' : '⊞ Table';
+        btn.classList.toggle('btn-gold', gearTableMode);
+        btn.classList.toggle('btn-ghost', !gearTableMode);
+    }
+    if (gearTableMode) {
+        renderGearTable();
+    } else {
+        state.currentIndex = -1;
+        renderEntryList();
+        renderEmptyEditor();
+    }
+}
+
+function renderGearTable() {
+    const sel = buildSelect;
+    const sorted = gearTableSortedRows(state.filteredData);
+    const rows = sorted.map((entry, rowNum) => {
+        const idx = state.data.indexOf(entry);
+        const e = entry;
+        return `
+        <tr data-idx="${idx}">
+            <td class="gt-row-num">${rowNum + 1}</td>
+            <td><input class="gt-input gt-input-name" type="text" value="${escAttr(e.name||'')}"
+                onchange="updateField(${idx},'name',this.value)" oninput="markUnsaved()"></td>
+            <td><select class="gt-input" onchange="updateField(${idx},'category',this.value);refreshGroups()">
+                ${sel(GD.weaponCategory, e.category)}</select></td>
+            <td><select class="gt-input" onchange="updateField(${idx},'range',this.value)">
+                ${sel(GD.range, e.range)}</select></td>
+            <td><input class="gt-input gt-input-mono" type="text" value="${escAttr(e.damage||'')}"
+                onchange="updateField(${idx},'damage',this.value)" oninput="markUnsaved()" style="width:68px"></td>
+            <td><select class="gt-input" onchange="updateField(${idx},'damageType',this.value)">
+                ${sel(GD.damageType, e.damageType)}</select></td>
+            <td><input class="gt-input gt-input-mono" type="text" value="${escAttr(e.check||'')}"
+                onchange="updateField(${idx},'check',this.value)" oninput="markUnsaved()" style="min-width:90px"></td>
+            <td><input class="gt-input gt-input-mono" type="number" min="0" value="${e.cost??0}"
+                onchange="updateField(${idx},'cost',parseFloat(this.value)||0)" oninput="markUnsaved()" style="width:58px"></td>
+            <td><select class="gt-input" onchange="updateField(${idx},'rarity',this.value)">
+                ${sel(GD.rarity, e.rarity)}</select></td>
+            <td><input class="gt-input" type="text" value="${escAttr(e.properties||'')}"
+                onchange="updateField(${idx},'properties',this.value)" oninput="markUnsaved()" style="min-width:80px"></td>
+            <td><input class="gt-input gt-input-mono" type="number" min="0" value="${e.bulk??1}"
+                onchange="updateField(${idx},'bulk',parseFloat(this.value)||1)" oninput="markUnsaved()" style="width:44px"></td>
+            <td>
+                <div class="gt-actions">
+                    <button class="gt-btn gt-btn-edit" onclick="gearTableEditForm(${idx})" title="Edit description &amp; more">✎</button>
+                    <button class="gt-btn gt-btn-del" onclick="gearTableDelete(${idx})" title="Delete">✕</button>
+                </div>
+            </td>
+        </tr>`;
+    }).join('');
+
+    const count = state.filteredData.length;
+    const groupLabel = state.currentGroup === 'All' ? 'all categories' : state.currentGroup;
+    document.getElementById('fieldEditor').innerHTML = `
+        <div class="gear-table-wrap">
+            <div class="gear-table-topbar">
+                <div>
+                    <div class="entry-title">⊞ Table — ${escHtml(state.currentFile || 'Weapons')}</div>
+                    <div class="entry-subtitle">${count} weapons · ${escHtml(groupLabel)} · ✎ to edit description &amp; full form</div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-ghost" onclick="toggleGearTable()">← Form View</button>
+                    <button class="btn btn-green" onclick="gearTableNewRow()">+ Add Row</button>
+                    <button class="btn btn-gold" onclick="saveFile()">Save All</button>
+                </div>
+            </div>
+            <div class="gear-table-scroll">
+                <table class="gear-table">
+                    <thead>
+                        <tr>${GT_COLS.map(c => {
+                            const sAttr = c.style ? ` style="${c.style}"` : '';
+                            if (!c.key) return `<th${sAttr}>${c.label}</th>`;
+                            const active = gearTableSort.col === c.key;
+                            const arrow = active ? (gearTableSort.dir === 1 ? ' ▲' : ' ▼') : '';
+                            return `<th${sAttr} class="gt-th-sort${active ? ' gt-th-active' : ''}" onclick="sortGearTable('${c.key}')" title="Sort by ${c.label}">${c.label}${arrow}</th>`;
+                        }).join('')}</tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        </div>`;
+}
+
+async function gearTableDelete(idx) {
+    const entry = state.data[idx];
+    const name = entry?.name || 'this entry';
+    const ok = await confirm2(`Delete "${name}"?`, 'Delete', 'btn-danger');
+    if (!ok) return;
+    state.data.splice(idx, 1);
+    state.currentIndex = -1;
+    state.filteredData = getVisibleData();
+    renderEntryList();
+    renderGroupSelector();
+    renderGearTable();
+    updateStatus();
+    markUnsaved();
+}
+
+function gearTableEditForm(idx) {
+    gearTableMode = false;
+    const btn = document.getElementById('btnGearTable');
+    if (btn) { btn.textContent = '⊞ Table'; btn.className = 'btn btn-ghost toolbar-extra'; }
+    selectEntry(idx);
+}
+
+function gearTableNewRow() {
+    const editor = EDITORS[state.fileType];
+    const group = state.currentGroup !== 'All' ? state.currentGroup : 'melee';
+    const entry = editor.newEntry(group);
+    state.data.push(entry);
+    state.filteredData = getVisibleData();
+    renderEntryList();
+    renderGroupSelector();
+    renderGearTable();
+    markUnsaved();
+    updateStatus();
+    setTimeout(() => {
+        const newIdx = state.data.length - 1;
+        const row = document.querySelector(`.gear-table tbody tr[data-idx="${newIdx}"]`);
+        if (row) {
+            const inp = row.querySelector('.gt-input-name');
+            if (inp) { row.scrollIntoView({ block: 'center' }); inp.focus(); inp.select(); }
+        }
+    }, 30);
+}
+
+// ── TABLE MODE HOOKS ──────────────────────────────────────────────────────────
+// Patch core app functions so the table stays in sync with group/search changes
+// and exits gracefully when a specific entry is opened in form view.
+(function () {
+    const _setGroup        = setGroup;
+    const _filterEntries   = filterEntries;
+    const _renderEditor    = renderEditor;
+    const _renderEmpty     = renderEmptyEditor;
+
+    setGroup = function (group) {
+        _setGroup(group);
+        if (gearTableMode && state.fileType === 'weapon') renderGearTable();
+    };
+
+    filterEntries = function () {
+        _filterEntries();
+        if (gearTableMode && state.fileType === 'weapon') renderGearTable();
+    };
+
+    renderEditor = function () {
+        if (gearTableMode && state.fileType === 'weapon') {
+            gearTableMode = false;
+            const btn = document.getElementById('btnGearTable');
+            if (btn) { btn.textContent = '⊞ Table'; btn.className = 'btn btn-ghost toolbar-extra'; }
+        }
+        _renderEditor();
+    };
+
+    renderEmptyEditor = function () {
+        if (gearTableMode && state.fileType === 'weapon') {
+            renderGearTable();
+            return;
+        }
+        _renderEmpty();
+    };
+})();
+
 // ── GEAR DOMAIN VALUES ────────────────────────────────────────────────────────
 const GD = {
     weaponCategory: ['', 'melee', 'ranged', 'firearm', 'magic'],
@@ -313,6 +524,12 @@ registerEditor('weapon', {
         damageType: '', cost: 0, rarity: 'common', properties: '', bulk: 1, description: '',
     }),
     render: (entry, idx) => renderWeaponForm(entry, idx),
+    onLoad() {
+        gearTableMode = false;
+        gearTableSort = { col: null, dir: 1 };
+        const btn = document.getElementById('btnGearTable');
+        if (btn) { btn.style.display = ''; btn.textContent = '⊞ Table'; btn.className = 'btn btn-ghost toolbar-extra'; }
+    },
 });
 
 // ── REGISTER: ARMOR ───────────────────────────────────────────────────────────

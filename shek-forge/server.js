@@ -90,7 +90,12 @@ function analyzeStructure(parsed) {
                 } else if (typeof val === 'object' && val !== null) {
                     const subKeys = Object.keys(val);
                     if (subKeys.every(sk => Array.isArray(val[sk]))) {
-                        for (const sub of subKeys) for (const e of val[sub]) data.push({ _group: key, _subgroup: sub, ...e });
+                        for (const sub of subKeys) {
+                            for (const e of val[sub]) {
+                                if (typeof e === 'string') data.push({ _group: key, _subgroup: sub, value: e });
+                                else data.push({ _group: key, _subgroup: sub, ...e });
+                            }
+                        }
                         groupMeta[key] = subKeys;
                     }
                 }
@@ -138,7 +143,9 @@ function reconstructStructure(structure, editedData) {
                     const { _group, _subgroup, ...rest } = entry;
                     const sub = _subgroup || subgroups[0];
                     if (!result[key][sub]) result[key][sub] = [];
-                    result[key][sub].push(rest);
+                    // Unwrap plain {value} objects back to strings
+                    const onlyValue = Object.keys(rest).join('') === 'value';
+                    result[key][sub].push(onlyValue ? rest.value : rest);
                 }
             } else {
                 const firstEntry = groupEntries[0];

@@ -8280,7 +8280,7 @@
               "action": "Upgrade",
               "check": "",
               "range": "Long",
-              "description": "You ignore the Close Range Disadvantage property. When firing within melee range, also make an unarmed strike as part of the action",
+              "description": "When you attack with a Sniper Rifle at long range, you ignore the Close Range Disadvantage property. You were never meant to fire in panic or proximity.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -8328,8 +8328,8 @@
             },
             {
               "step": 6,
-              "name": "Writ of Judgment III",
-              "action": "Upgrade",
+              "name": "Litany of Stillness",
+              "action": "Passive",
               "check": "",
               "range": "",
               "description": "If you do not move during your turn, your next Sniper Rifle attack against a Judged creature gains advantage. If you also did not move during your previous turn, add +1d4 damage to that attack.",
@@ -8384,7 +8384,7 @@
               "action": "Special",
               "check": "",
               "range": "",
-              "description": "Once per day, at the start of combat, you may declare that you will fire only once. If your first Sniper Rifle attack hits, it deals triple damage and imposes one non-major condition such as Broken, Fear, or Bleeding, chosen by you. If the attack misses, the rifle refuses to fire again for 1 minute",
+              "description": "Once per day, at the start of combat, you may declare that you will fire only once. If your first Sniper Rifle attack hits, it deals triple damage and imposes one non-major condition such as Broken, Fear, or Bleeding, chosen by you. If the attack misses, the rifle refuses to fire again for the remainder of the combat.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -10802,7 +10802,7 @@
               "action": "Upgrade",
               "check": "",
               "range": "",
-              "description": "When you attack with your Soul Blade, you can make an additional attack at disadvantage",
+              "description": "When you attack with your Soul Blade, you can make an additional attack and disadvantage",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -10880,7 +10880,7 @@
               "action": "Action",
               "check": "",
               "range": "Reach",
-              "description": "As an Action, you create a PL5 duplicate of yourself that remains until the end of your next turn",
+              "description": "As an Action, you create a duplicate of yourself that can take a turn on your next turn in combat",
               "duration": "Until the end of your next turn",
               "damage": "",
               "damageType": "",
@@ -10906,7 +10906,7 @@
               "action": "Passive",
               "check": "",
               "range": "",
-              "description": "You can always communicate telepathically with your close allies if they are in the same Realm as you",
+              "description": "You can always communicate with your close allies if they are in the same Realm as you",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -11787,15 +11787,14 @@
               "step": 2,
               "name": "High Roller",
               "action": "Passive",
-              "check": "Luck",
+              "check": "",
               "range": "",
               "description": "When making a Luck check in a gambling situation, you can reroll the check and must take the new result. Additionally, when winning a bet or gamble, you gain a temporary boost of confidence, granting you a Mana",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "",
-              "checkType": "self"
+              "condition": ""
             },
             {
               "step": 3,
@@ -11925,8 +11924,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed",
-              "checkType": "self"
+              "condition": "Charmed"
             },
             {
               "step": 1,
@@ -11939,8 +11937,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "",
-              "checkType": "self"
+              "condition": ""
             },
             {
               "step": 2,
@@ -11957,6 +11954,19 @@
             },
             {
               "step": 3,
+              "name": "Charming",
+              "action": "Action",
+              "check": "Influence",
+              "range": "",
+              "description": "Target a humanoid within short range. Make contested Influence checks. For each success, they gain the Charmed condition for 1 minute.",
+              "duration": "1 minute",
+              "damage": "",
+              "damageType": "",
+              "armor": "",
+              "condition": "Charmed"
+            },
+            {
+              "step": 4,
               "name": "Enthrall II",
               "action": "Upgrade",
               "check": "",
@@ -11969,20 +11979,6 @@
               "condition": "Confused"
             },
             {
-              "step": 4,
-              "name": "Charming",
-              "action": "Action",
-              "check": "Influence",
-              "range": "",
-              "description": "Target a humanoid within short range and make an Influence check, for each success the creature is charmed for 1 minute.",
-              "duration": "1 minute",
-              "damage": "",
-              "damageType": "",
-              "armor": "",
-              "condition": "Charmed",
-              "checkType": "self"
-            },
-            {
               "step": 5,
               "name": "Enthrall III",
               "action": "Upgrade",
@@ -11993,8 +11989,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed",
-              "checkType": "contested"
+              "condition": "Charmed"
             },
             {
               "step": 6,
@@ -12011,8 +12006,8 @@
             },
             {
               "step": 7,
-              "name": "Charming II",
-              "action": "Upgrade",
+              "name": "Velvet Blade",
+              "action": "Passive",
               "check": "",
               "range": "",
               "description": "You may now deal Psychic damage to Charmed targets without breaking the charm effect.",
@@ -12025,10 +12020,10 @@
             {
               "step": 8,
               "name": "Presence",
-              "action": "Action",
-              "check": "Mental",
+              "action": "Passive",
+              "check": "Observation",
               "range": "Short",
-              "description": "Your allure can be so potent it captivates all around you. As an action, force humanoid creatures within short range must make a Mental check or become charmed by you for 1 minute",
+              "description": "Your allure can be so potent it captivates all around you. As an action, humanoid creatures within short range must make an Observation check or become charmed by you for 1 minute",
               "duration": "1 minute",
               "damage": "",
               "damageType": "",
@@ -12037,7 +12032,20 @@
             },
             {
               "step": 9,
-              "name": "Charming III",
+              "name": "Fascination",
+              "action": "Passive",
+              "check": "",
+              "range": "Short",
+              "description": "When a target is Charmed by you, you may designate up to 3 allies to also count as the source of that charm.",
+              "duration": "",
+              "damage": "",
+              "damageType": "",
+              "armor": "",
+              "condition": "Charmed"
+            },
+            {
+              "step": 10,
+              "name": "Charming II",
               "action": "Upgrade",
               "check": "",
               "range": "",
@@ -12045,19 +12053,6 @@
               "duration": "",
               "damage": "",
               "damageType": "Psychic",
-              "armor": "",
-              "condition": "Charmed"
-            },
-            {
-              "step": 10,
-              "name": "Charming IV",
-              "action": "Upgrade",
-              "check": "",
-              "range": "Short",
-              "description": "When a target is Charmed by you, allies you choose within short range also count as the source of that charm.",
-              "duration": "",
-              "damage": "",
-              "damageType": "",
               "armor": "",
               "condition": "Charmed"
             }

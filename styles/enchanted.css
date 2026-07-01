@@ -2,40 +2,52 @@
    ENCHANTED ITEMS CODEX - styles/enchanted.css
    ══════════════════════════════════════════════════════════════════ */
 
-/* ── Page-level tabs (Enchanted / Progression) ── */
+/* ── Enchanted page theme ── */
+:root {
+    --enc-bg:       #130f1e;
+    --enc-bg-2:     #1d1530;
+    --enc-border:   #3d2166;
+    --enc-accent:   #5a3090;
+    --enc-glow:     rgba(140, 80, 255, 0.4);
+    --enc-glow-dim: rgba(140, 80, 255, 0.18);
+}
+
+/* ── Page-level tabs (folder-tab style matching gear) ── */
 .enc-page-tabs {
     display: flex;
-    gap: 0;
-    border-bottom: 1px solid rgba(255,255,255,.08);
+    gap: 4px;
+    padding: 0.75rem var(--padding, 1rem) 0;
+    border-bottom: 2px solid var(--enc-border);
     background: var(--dark-1, #0d0d0d);
-    padding: 0 var(--padding, 1rem);
 }
 
 .enc-page-tab {
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid transparent;
-    border-radius: 0;
-    padding: .6rem 1.1rem;
-    font-size: .8rem;
-    font-weight: 600;
-    color: var(--text-muted, #888);
+    padding: 0.45rem 1.2rem;
+    background: var(--dark-2, #1e1e1e);
+    color: var(--text-cream, #e8dfc8);
+    border: 1px solid var(--enc-border);
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
     cursor: pointer;
-    transition: color .15s, border-color .15s;
+    font-size: 0.88rem;
+    font-weight: bold;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background .15s, color .15s;
     box-shadow: none;
     transform: none !important;
-    letter-spacing: .03em;
 }
 
-.enc-page-tab:hover  { color: var(--text-cream, #e8dfc8); }
+.enc-page-tab:hover  { background: var(--enc-bg-2); color: var(--gold, #c8922a); }
 .enc-page-tab.active {
+    background: var(--enc-bg-2);
     color: var(--gold, #c8922a);
-    border-bottom-color: var(--gold, #c8922a);
+    border-color: var(--gold, #c8922a);
 }
 
 /* ── Panels ── */
-.enc-page-panel          { display: none; }
-.enc-page-panel.active   { display: block; }
+.enc-page-panel        { display: none; }
+.enc-page-panel.active { display: block; background: var(--enc-bg); }
 
 /* ── Progression selects ── */
 .prog-select {
@@ -213,7 +225,7 @@
     gap: .4rem;
     padding: .45rem var(--padding, 1rem);
     background: var(--dark-1, #0d0d0d);
-    border-bottom: 1px solid rgba(255,255,255,.07);
+    border-bottom: 1px solid var(--enc-border);
 }
 
 .enchanted-type-tabs {
@@ -239,7 +251,7 @@
     white-space: nowrap;
 }
 .enc-tab:hover  { background: rgba(255,255,255,.07); color: var(--text-cream, #e8dfc8); }
-.enc-tab.active { background: var(--gold-1, #c8922a); color: var(--dark-1, #111); }
+.enc-tab.active { background: var(--enc-accent); color: #fff; }
 
 #enchanted-search {
     flex: 1;
@@ -269,7 +281,7 @@
     transform: none !important;
 }
 .enc-check-chip:hover  { background: rgba(255,255,255,.1); color: var(--text-cream, #e8dfc8); }
-.enc-check-chip.active { background: var(--gold-1, #c8922a); color: var(--dark-1, #111); border-color: var(--gold-1); }
+.enc-check-chip.active { background: var(--enc-accent); color: #fff; border-color: var(--enc-accent); }
 
 .enchanted-actions {
     display: flex;
@@ -293,9 +305,10 @@
 /* ── Intro panel ── */
 .enchanted-intro-panel {
     margin: .75rem var(--padding, 1rem);
-    background: var(--dark-2, #1a1a1a);
-    border: 1px solid rgba(255,255,255,.07);
+    background: var(--enc-bg-2);
+    border: 1px solid var(--enc-border);
     border-radius: var(--border-radius, 4px);
+    overflow: hidden;
 }
 
 .enchanted-intro-panel summary {
@@ -304,14 +317,19 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .08em;
-    color: var(--text-muted, #888);
+    color: var(--text-cream, #e8dfc8);
+    background: var(--enc-bg-2);
     cursor: pointer;
     user-select: none;
+    border-radius: 0;
+    text-align: left;
 }
+
+.enchanted-intro-panel summary:hover { background: var(--enc-accent); }
 
 .enchanted-intro-body {
     padding: .6rem 1rem .8rem;
-    border-top: 1px solid rgba(255,255,255,.06);
+    border-top: 1px solid var(--enc-border);
 }
 
 .enchanted-intro-body p {
@@ -437,4 +455,47 @@
     border: 1px solid rgba(255,255,255,.08);
     color: rgba(255,255,255,.4);
     text-transform: capitalize;
+}
+
+/* ══ Enchanted page — spell-row glow overrides ══════════════════
+   Scoped to the enchanted grids so spells.css defaults don't bleed.
+   Uses purple/arcane palette instead of gear's teal.
+   ══════════════════════════════════════════════════════════════ */
+
+#enchanted-sections .spell-row,
+#prog-sections .spell-row {
+    background: var(--enc-bg-2);
+    border-color: rgba(140, 80, 255, 0.12);
+}
+
+#enchanted-sections .spell-row:hover,
+#prog-sections .spell-row:hover {
+    background: #22163a;
+    border-color: var(--enc-accent);
+    box-shadow: 0 0 10px var(--enc-glow-dim), inset 0 0 0 1px rgba(140,80,255,.08);
+}
+
+#enchanted-sections .spell-row.open,
+#prog-sections .spell-row.open {
+    background: #1a1030;
+    border-color: var(--enc-accent);
+    box-shadow: 0 0 14px var(--enc-glow), inset 0 0 0 1px rgba(140,80,255,.12);
+}
+
+#enchanted-sections .spell-row-detail,
+#prog-sections .spell-row-detail {
+    background: #130c26;
+    border-top-color: var(--enc-border);
+}
+
+#enchanted-sections .spell-row.open .spell-row-arrow,
+#prog-sections .spell-row.open .spell-row-arrow {
+    color: #9966ff;
+}
+
+/* Group headers use enchanted border color */
+#enchanted-sections .spell-group-header,
+#prog-sections .spell-group-header {
+    border-bottom-color: var(--enc-border);
+    color: var(--gold);
 }

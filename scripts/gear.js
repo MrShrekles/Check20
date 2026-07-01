@@ -53,8 +53,8 @@ function parseDamageScore(dmg) {
 
 function damageGroup(score) {
     if (score <= 0)  return 'Special';
-    if (score <= 4)  return 'Light  (avg ≤4)';
-    if (score <= 8)  return 'Standard  (avg 5–8)';
+    if (score <= 3)  return 'Light  (avg ≤3)';
+    if (score <= 8)  return 'Standard  (avg 4–8)';
     if (score <= 14) return 'Heavy  (avg 9–14)';
     return 'Powerful  (avg 15+)';
 }

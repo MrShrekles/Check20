@@ -61,8 +61,7 @@
     "cost": 500,
     "bulk": 1,
     "description": "A volatile tank-fed weapon that spews fire in arcs, lighting up trenches, hallways, or crowds with searing heat.",
-    "properties": "2 Hand, Close Range Disadvantage, Hefty",
-    "rarity": "very rare"
+    "properties": "2 Hand, Close Range Disadvantage, Hefty"
   },
   {
     "name": "Flapper's Purse Pistol",
@@ -353,7 +352,7 @@
     "damage": "1d6",
     "damageType": "Psychic",
     "cost": 1200,
-    "rarity": "very rare",
+    "rarity": "Legendary",
     "properties": "2 Hand, Light",
     "bulk": 1,
     "description": "A shimmering blade of thought and force, summoned by will and deadly to both body and mind."
@@ -366,7 +365,7 @@
     "damage": "1d6",
     "damageType": "Eclipse",
     "cost": 1200,
-    "rarity": "very rare",
+    "rarity": "Legendary",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A heavy mace with a crystal core that glows faintly, rumored to trap fragments of the souls it strikes."
@@ -379,7 +378,7 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 10,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, Light",
     "bulk": 1,
     "description": "A two-handed axe built for cleaving armor and splitting foes in brutal fashion."
@@ -398,17 +397,30 @@
     "description": "A weighted leather club used to knock targets unconscious with silent efficiency."
   },
   {
-    "name": "Iron Knuckles",
+    "name": "Brass Knuckles",
     "category": "melee",
     "check": "Agility, Strength",
     "range": "Melee",
     "damage": "1d4",
     "damageType": "Slashing",
     "cost": 5,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "2 Hand, Light",
     "bulk": 1,
     "description": "Small metal grips worn over the fingers to turn a punch into a bone-breaking impact."
+  },
+  {
+    "name": "Broadsword",
+    "category": "melee",
+    "check": "Agility, Strength",
+    "range": "Melee",
+    "damage": "1d6",
+    "damageType": "Slashing",
+    "cost": 10,
+    "rarity": "Common",
+    "properties": "1 Hand, light",
+    "bulk": 1,
+    "description": "A wide-bladed sword designed for powerful, sweeping strikes and battlefield dominance."
   },
   {
     "name": "Cane Sword",
@@ -418,8 +430,8 @@
     "damage": "1d6",
     "damageType": "Piercing",
     "cost": 30,
-    "rarity": "uncommon",
-    "properties": "1 Hand, light, hidden",
+    "rarity": "Common",
+    "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A concealed blade hidden within a gentleman’s cane, perfect for stylish duels and surprise attacks."
   },
@@ -431,20 +443,33 @@
     "damage": "1d6",
     "damageType": "Lightning",
     "cost": 50,
-    "rarity": "rare",
+    "rarity": "Uncommon",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "An electrified rod used to shock targets into submission, common among slavers and enforcers."
   },
   {
-    "name": "Baton",
+    "name": "Claymore",
+    "category": "melee",
+    "check": "Agility, Strength",
+    "range": "Reach",
+    "damage": "3d6",
+    "damageType": "Slashing",
+    "cost": 20,
+    "rarity": "Common",
+    "properties": "2 Hand",
+    "bulk": 1,
+    "description": "A massive two-handed sword favored by berserkers and knights alike for overwhelming offense."
+  },
+  {
+    "name": "Club",
     "category": "melee",
     "check": "Agility, Strength",
     "range": "Melee",
     "damage": "1d6",
     "damageType": "Impact",
     "cost": 5,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A simple, blunt weapon used to bash, break, or bruise-often improvised, always effective."
@@ -457,7 +482,7 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 15,
-    "rarity": "rare",
+    "rarity": "Common",
     "properties": "1 hand, light, attached",
     "bulk": 1,
     "description": "A wicked prosthetic with sharp edges, useful for slashing or catching a foe off guard."
@@ -470,7 +495,7 @@
     "damage": "1d4",
     "damageType": "Physical",
     "cost": 5,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, Light, Hidden",
     "bulk": 0,
     "description": "A short blade suited for quick strikes, close quarters, and silent kills."
@@ -483,7 +508,7 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 5,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A curved sailor’s knife designed for cutting ropes, gutting fish, or defending in a pinch."
@@ -496,7 +521,7 @@
     "damage": "2d4",
     "damageType": "Physical",
     "cost": 4,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "2 Hand, Light",
     "bulk": 1,
     "description": "A matched pair of light blades meant for fast, fluid combat with relentless motion."
@@ -509,10 +534,23 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 5,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A slender, fast blade designed for precision strikes and elegant duels."
+  },
+  {
+    "name": "Falchion",
+    "category": "melee",
+    "check": "Agility, Strength",
+    "range": "Melee",
+    "damage": "1d6",
+    "damageType": "Slashing",
+    "cost": 10,
+    "rarity": "Common",
+    "properties": "1 Hand, light",
+    "bulk": 1,
+    "description": "A curved, heavy-bladed sword built for slashing through armor and bone."
   },
   {
     "name": "Fang Dagger",
@@ -522,12 +560,51 @@
     "damage": "1d4+2",
     "damageType": "Piercing",
     "cost": 5,
-    "rarity": "rare",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "featureName": "Venom Fang",
     "featureEffect": "Deal an additional +2 toxic damage",
     "description": "A jagged dagger shaped like a beast’s tooth, crafted to tear more than pierce."
+  },
+  {
+    "name": "Fist Weapon",
+    "category": "melee",
+    "check": "Agility, Strength",
+    "range": "Melee",
+    "damage": "1d4",
+    "damageType": "Impact",
+    "cost": 10,
+    "rarity": "Common",
+    "properties": "Light, Free Hands, Attached",
+    "bulk": 2,
+    "description": "A brutal close-combat weapon worn over the knuckles or as reinforced gloves."
+  },
+  {
+    "name": "Flail",
+    "category": "melee",
+    "check": "Agility, Strength",
+    "range": "Melee",
+    "damage": "1d6",
+    "damageType": "Impact",
+    "cost": 5,
+    "rarity": "Common",
+    "properties": "1 Hand",
+    "bulk": 1,
+    "description": "A spiked head on a chain, swinging with chaotic force to crush and disorient."
+  },
+  {
+    "name": "Gangster's Cudgel",
+    "category": "melee",
+    "check": "Agility, Observation, Stealth, Strength",
+    "range": "Melee",
+    "damage": "1d6",
+    "damageType": "Impact",
+    "cost": 50,
+    "rarity": "Common",
+    "properties": "1 Hand, light",
+    "bulk": 1,
+    "description": "A weighted club favored by enforcers and thugs for its street-level intimidation."
   },
   {
     "name": "Gladius",
@@ -537,7 +614,7 @@
     "damage": "1d6",
     "damageType": "Piercing",
     "cost": 10,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A short Roman-style blade perfect for stabbing in tight quarters or shield formations."
@@ -550,7 +627,7 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 50,
-    "rarity": "rare",
+    "rarity": "Common",
     "properties": "1 Hand",
     "bulk": 1,
     "description": "A polearm with a long blade at the end, ideal for sweeping arcs and extended reach."
@@ -563,7 +640,7 @@
     "damage": "3d6",
     "damageType": "Slashing",
     "cost": 50,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "2 Hand, Hefty",
     "bulk": 4,
     "description": "A multi-functional polearm with axe, spear, and hook elements combined."
@@ -576,7 +653,7 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 2,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, light, Thrown",
     "bulk": 4,
     "description": "A compact throwing or chopping axe, ideal for one hand or dual wielding."
@@ -589,7 +666,7 @@
     "damage": "4d6",
     "damageType": "Slashing",
     "cost": 50,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "2 Hand, Hefty",
     "bulk": 4,
     "description": "A large chopping axe meant for brute strength and intimidation."
@@ -602,7 +679,7 @@
     "damage": "4d6",
     "damageType": "Impact",
     "cost": 150,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "2 Hand, Hefty",
     "bulk": 3,
     "description": "A thick, reinforced staff used with two hands to batter and block."
@@ -615,7 +692,7 @@
     "damage": "4d6",
     "damageType": "Piercing",
     "cost": 50,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "2 Hand, Hefty",
     "bulk": 3,
     "description": "A long spear with a weighted shaft, ideal for heavy thrusts and line-breaking charges."
@@ -628,7 +705,7 @@
     "damage": "3d6",
     "damageType": "Slashing",
     "cost": 50,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "1 Hand",
     "bulk": 3,
     "description": "A long, barbed whip that delivers heavy tearing blows rather than finesse strikes."
@@ -641,7 +718,7 @@
     "damage": "1d4",
     "damageType": "Piercing",
     "cost": 20,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "1 foot, surprise, light",
     "bulk": 1,
     "description": "A concealed blade fitted in a shoe heel, designed for hidden stabs at close range."
@@ -654,7 +731,7 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 20,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "featureName": "Hookblade",
@@ -669,7 +746,7 @@
     "damage": "1d4",
     "damageType": "Piercing",
     "cost": 5,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, Light, Hidden",
     "bulk": 1,
     "description": "A narrow, pointed tool used to puncture with precision, often aimed at vital spots."
@@ -682,7 +759,7 @@
     "damage": "1d6",
     "damageType": "Piercing",
     "cost": 3,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "1 Hand, Thrown",
     "bulk": 1,
     "description": "A balanced throwing spear used for ranged attacks or quick stabs in close combat."
@@ -695,10 +772,23 @@
     "damage": "1d4",
     "damageType": "Impact",
     "cost": 5,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 hand, light, attached",
     "bulk": 0,
     "description": "Reinforced rings or metal grips worn on the fists to maximize striking force."
+  },
+  {
+    "name": "Kukri",
+    "category": "melee",
+    "check": "Agility, Strength",
+    "range": "Melee",
+    "damage": "1d6",
+    "damageType": "Slashing",
+    "cost": 10,
+    "rarity": "Uncommon",
+    "properties": "1 Hand, light",
+    "bulk": 1,
+    "description": "A heavy, inward-curving knife used for chopping and close-quarter slashing."
   },
   {
     "name": "Lance",
@@ -708,7 +798,7 @@
     "damage": "3d6",
     "damageType": "Piercing",
     "cost": 50,
-    "rarity": "rare",
+    "rarity": "Common",
     "properties": "2 Hand",
     "bulk": 1,
     "description": "A long weapon designed for mounted charges, with devastating force behind its point."
@@ -734,7 +824,7 @@
     "damage": "1d6",
     "damageType": "Solar",
     "cost": 50,
-    "rarity": "uncommon",
+    "rarity": "Rare",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A mace combined with a lantern, used to blind or bash in low-light conditions."
@@ -747,7 +837,7 @@
     "damage": "1d4",
     "damageType": "Impact",
     "cost": 5,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, Light, Hidden",
     "bulk": 1,
     "description": "A small hammer ideal for throwing or delivering quick, focused strikes."
@@ -760,20 +850,20 @@
     "damage": "1d4",
     "damageType": "Solar",
     "cost": 5,
-    "rarity": "rare",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A light, flexible whip used for snapping attacks and keeping enemies at bay."
   },
   {
-    "name": "Flail",
+    "name": "Long Flail",
     "category": "melee",
     "check": "Agility, Luck, Observation, Strength",
     "range": "Reach",
     "damage": "1d6",
     "damageType": "Impact",
     "cost": 20,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "1 Hand, Reach",
     "bulk": 1,
     "description": "An extended flail with a long chain and spiked head for wide, swinging blows."
@@ -786,7 +876,7 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 30,
-    "rarity": "rare",
+    "rarity": "Common",
     "properties": "1 Hand, Light",
     "bulk": 2,
     "description": "A balanced, double-edged sword made for versatility in offense and defense."
@@ -799,7 +889,7 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 10,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A heavy blade built for chopping through brush or foes with equal ease."
@@ -812,7 +902,7 @@
     "damage": "1d6",
     "damageType": "Impact",
     "cost": 10,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 2,
     "description": "A massive, two-handed hammer that delivers staggering force on impact."
@@ -825,7 +915,7 @@
     "damage": "1d6",
     "damageType": "Impact",
     "cost": 15,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 2,
     "description": "A spiked ball mounted on a shaft, mixing blunt trauma with piercing pain."
@@ -838,7 +928,7 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 20,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 2,
     "description": "A short, curved sword used by sailors, built for close-quarters combat."
@@ -851,7 +941,7 @@
     "damage": "1d4",
     "damageType": "Slashing",
     "cost": 5,
-    "rarity": "rare",
+    "rarity": "Common",
     "properties": "2 Hand",
     "bulk": 3,
     "featureName": "Net",
@@ -866,7 +956,7 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 20,
-    "rarity": "rare",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "Twin sticks connected by a chain, used in rapid succession to strike and deflect."
@@ -879,7 +969,7 @@
     "damage": "1d6",
     "damageType": "Piercing",
     "cost": 20,
-    "rarity": "common",
+    "rarity": "Rare",
     "properties": "1 Hand, Light",
     "bulk": 1,
     "description": "A small mining tool repurposed as a weapon to pierce and pry."
@@ -892,10 +982,23 @@
     "damage": "3d6",
     "damageType": "Piercing",
     "cost": 50,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "2 Hand",
     "bulk": 2,
     "description": "A long spear with reach, designed to keep enemies at bay and deliver heavy thrusts."
+  },
+  {
+    "name": "Police Baton",
+    "category": "melee",
+    "check": "Agility, Strength",
+    "range": "Melee",
+    "damage": "1d6",
+    "damageType": "Impact",
+    "cost": 20,
+    "rarity": "Common",
+    "properties": "1 Hand, light",
+    "bulk": 1,
+    "description": "A simple, sturdy baton carried by officers for subduing suspects without killing."
   },
   {
     "name": "Quarterstaff",
@@ -905,10 +1008,23 @@
     "damage": "3d6",
     "damageType": "Impact",
     "cost": 10,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "2 Hand",
     "bulk": 1,
     "description": "A staff of equal ends used for defense, balance, and sweeping strikes."
+  },
+  {
+    "name": "Rapier",
+    "category": "melee",
+    "check": "Agility, Strength",
+    "range": "Melee",
+    "damage": "1d6",
+    "damageType": "Slashing",
+    "cost": 50,
+    "rarity": "Common",
+    "properties": "1 Hand, light",
+    "bulk": 1,
+    "description": "A slender sword built for thrusting with speed and precision."
   },
   {
     "name": "Razor Blade",
@@ -918,10 +1034,23 @@
     "damage": "1d4",
     "damageType": "Slashing",
     "cost": 1,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A thin, sharpened blade used for close-up slashes, easy to conceal."
+  },
+  {
+    "name": "Sabre",
+    "category": "melee",
+    "check": "Agility, Strength",
+    "range": "Melee",
+    "damage": "1d6",
+    "damageType": "Slashing",
+    "cost": 30,
+    "rarity": "Common",
+    "properties": "1 Hand, light",
+    "bulk": 1,
+    "description": "A curved sword with a single edge, used for quick, powerful cuts."
   },
   {
     "name": "Sai",
@@ -931,7 +1060,7 @@
     "damage": "1d6",
     "damageType": "Piercing",
     "cost": 30,
-    "rarity": "uncommon",
+    "rarity": "Uncommon",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A three-pronged weapon used to trap and redirect enemy attacks."
@@ -944,7 +1073,7 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 100,
-    "rarity": "common",
+    "rarity": "Rare",
     "properties": "1 Hand, light",
     "bulk": 1,
     "featureName": "Bomb Shield",
@@ -959,7 +1088,7 @@
     "damage": "4d6",
     "damageType": "Slashing",
     "cost": 250,
-    "rarity": "rare",
+    "rarity": "Very Rare",
     "properties": "1 hand, tech, hefty",
     "bulk": 2,
     "description": "A forearm-mounted weapon with jagged teeth, designed to rip and block."
@@ -972,10 +1101,23 @@
     "damage": "1d4",
     "damageType": "Slashing",
     "cost": 1,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A surgical blade used for fine, precise cuts, often repurposed for silent kills."
+  },
+  {
+    "name": "Scimitar",
+    "category": "melee",
+    "check": "Agility, Strength",
+    "range": "Melee",
+    "damage": "1d6",
+    "damageType": "Slashing",
+    "cost": 5,
+    "rarity": "Common",
+    "properties": "1 Hand, light",
+    "bulk": 1,
+    "description": "A curved blade made for slashing with sweeping strikes, often ornate in design."
   },
   {
     "name": "Shiv",
@@ -985,7 +1127,7 @@
     "damage": "1d4",
     "damageType": "Piercing",
     "cost": 1,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A crude, improvised stabbing tool used in prisons or by desperate hands."
@@ -998,7 +1140,7 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 5,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A curved farming blade turned weapon, used to hook and slash with ease."
@@ -1011,7 +1153,7 @@
     "damage": "1d4",
     "damageType": "Slashing",
     "cost": 20,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A narrow-bladed dagger designed for piercing gaps in armor with minimal effort."
@@ -1024,7 +1166,7 @@
     "damage": "1d4",
     "damageType": "Slashing",
     "cost": 15,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A folding knife with a spring-loaded blade, quick to deploy in a pinch."
@@ -1037,7 +1179,7 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 2,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 hand, light, thrown",
     "bulk": 1,
     "description": "A small, hand-held axe designed for throwing or close combat."
@@ -1050,7 +1192,7 @@
     "damage": "1d4",
     "damageType": "Physical",
     "cost": 1,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 hand, light, thrown",
     "bulk": 1,
     "description": "A balanced blade crafted for precision throws and silent takedowns."
@@ -1063,7 +1205,7 @@
     "damage": "1d6",
     "damageType": "Impact",
     "cost": 50,
-    "rarity": "rare",
+    "rarity": "Uncommon",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A concealed weapon hidden inside a cane, often used by spies or duelists."
@@ -1076,7 +1218,7 @@
     "damage": "3d6",
     "damageType": "Piercing",
     "cost": 50,
-    "rarity": "rare",
+    "rarity": "Common",
     "properties": "2 Hand",
     "bulk": 1,
     "description": "A three-pronged spear designed for catching, piercing, and pinning foes."
@@ -1089,10 +1231,36 @@
     "damage": "1d6",
     "damageType": "Impact",
     "cost": 20,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A solid baton used to subdue with blunt force, often used by guards and officers."
+  },
+  {
+    "name": "War Pick",
+    "category": "melee",
+    "check": "Agility, Strength",
+    "range": "Melee",
+    "damage": "1d6",
+    "damageType": "Slashing",
+    "cost": 30,
+    "rarity": "Common",
+    "properties": "1 Hand, light",
+    "bulk": 1,
+    "description": "A reinforced pick weapon designed to punch through armor with brute force."
+  },
+  {
+    "name": "War Scythe",
+    "category": "melee",
+    "check": "Agility, Strength",
+    "range": "Melee",
+    "damage": "1d6",
+    "damageType": "Slashing",
+    "cost": 30,
+    "rarity": "Common",
+    "properties": "1 Hand, light",
+    "bulk": 1,
+    "description": "A long, curved blade mounted on a staff, combining scythe reach with martial strength."
   },
   {
     "name": "Whip",
@@ -1102,7 +1270,7 @@
     "damage": "1d4",
     "damageType": "Slashing",
     "cost": 20,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "1 Hand, light",
     "bulk": 1,
     "description": "A flexible weapon used to lash, trip, or disarm opponents from a distance."
@@ -1115,7 +1283,7 @@
     "damage": "1d4!",
     "damageType": "Piercing",
     "cost": 30,
-    "rarity": "uncommon",
+    "rarity": "Uncommon",
     "properties": "1 Hand, light",
     "bulk": 2,
     "description": "A stealthy weapon that fires small darts using breath, often tipped with poison."
@@ -1128,7 +1296,7 @@
     "damage": "1d6",
     "damageType": "Impact",
     "cost": 20,
-    "rarity": "rare",
+    "rarity": "Uncommon",
     "properties": "1 hand, thrown",
     "bulk": 1,
     "description": "A pair of weighted cords designed to entangle a target’s legs mid-flight."
@@ -1141,7 +1309,7 @@
     "damage": "1d6",
     "damageType": "Slashing",
     "cost": 15,
-    "rarity": "very rare",
+    "rarity": "Uncommon",
     "properties": "1 hand, thrown, return",
     "bulk": 1,
     "description": "A curved, flat weapon that returns when thrown with skill-useful for distraction or strike."
@@ -1154,7 +1322,7 @@
     "damage": "2d6",
     "damageType": "Piercing",
     "cost": 150,
-    "rarity": "rare",
+    "rarity": "Common",
     "properties": "2 hand",
     "bulk": 2,
     "description": "A powerful bow made from layered materials for added tension and range."
@@ -1167,7 +1335,7 @@
     "damage": "2d6",
     "damageType": "Piercing",
     "cost": 70,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "2 hand",
     "bulk": 2,
     "description": "A mechanical bow that fires bolts with high accuracy and reload effort."
@@ -1180,7 +1348,7 @@
     "damage": "4d6",
     "damageType": "Piercing",
     "cost": 100,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "2 hand, hefty",
     "bulk": 3,
     "description": "A larger version of the crossbow, requiring strength or bracing to operate effectively."
@@ -1193,7 +1361,7 @@
     "damage": "1d6",
     "damageType": "Piercing",
     "cost": 120,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "1 hand, light",
     "bulk": 1,
     "description": "A lighter crossbow suited for quick shots and easier handling."
@@ -1206,7 +1374,7 @@
     "damage": "1d4",
     "damageType": "Piercing",
     "cost": 1,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "1 hand, light, thrown",
     "bulk": 1,
     "description": "A small, easily concealed projectile thrown by hand for speed and surprise."
@@ -1219,7 +1387,7 @@
     "damage": "1d6",
     "damageType": "Piercing",
     "cost": 5,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "2 hand, thrown",
     "bulk": 2,
     "description": "A barbed spear attached to a line, used to impale and retrieve targets."
@@ -1232,7 +1400,7 @@
     "damage": "1d6",
     "damageType": "Piercing",
     "cost": 50,
-    "rarity": "uncommon",
+    "rarity": "Common",
     "properties": "2 Hand, Close Range Disadvantage",
     "bulk": 3,
     "description": "A tall, strongbow with exceptional range, favored by skilled archers."
@@ -1245,7 +1413,7 @@
     "damage": "1d4",
     "damageType": "Impact",
     "cost": 80,
-    "rarity": "very rare",
+    "rarity": "Uncommon",
     "properties": "2 Hand, Close Range Disadvantage",
     "bulk": 3,
     "description": "A launcher designed to fire weighted nets for capturing or disabling foes."
@@ -1258,7 +1426,7 @@
     "damage": "1d4",
     "damageType": "Impact",
     "cost": 5,
-    "rarity": "common",
+    "rarity": "Common",
     "properties": "1 hand, light",
     "bulk": 1,
     "description": "A simple weapon that hurls small stones or bullets, used for speed over power."

@@ -73,23 +73,140 @@
     }
 
     // ── Session Board ──────────────────────────────────────────────────────────
+    // boardState is a tree: top-level array of entries, where an entry is either
+    // a card { id, type, data } or a folder { id, type:'folder', name, expanded, items: [card, ...] }.
+    // Folders only ever hold cards (never other folders) - merges flatten automatically.
     let pendingQuestGiver = null;
+    let boardState = [];
 
-    function pinToBoard(type, data) {
-        const entry = { type, data, id: Date.now() + Math.random() };
-        try {
-            const arr = JSON.parse(localStorage.getItem(STORE.board) || '[]');
-            arr.unshift(entry);
-            if (arr.length > 24) arr.length = 24;
-            localStorage.setItem(STORE.board, JSON.stringify(arr));
-        } catch (_) {}
-        const board = document.getElementById('session-board');
-        if (board) board.open = true;
-        _addToBoardUI(entry, true);
-        updateBoardCount();
+    function genId() {
+        return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     }
 
-    function makeBoardCard(entry) {
+    function persistBoard() {
+        try { localStorage.setItem(STORE.board, JSON.stringify(boardState)); } catch (_) {}
+    }
+
+    // Recursively locate an entry by id. Returns { list, index, entry, parentFolder } or null.
+    function findLocation(id, list = boardState, parentFolder = null) {
+        for (let i = 0; i < list.length; i++) {
+            const item = list[i];
+            if (String(item.id) === String(id)) return { list, index: i, entry: item, parentFolder };
+            if (item.type === 'folder') {
+                const found = findLocation(id, item.items, item);
+                if (found) return found;
+            }
+        }
+        return null;
+    }
+
+    function countLeaves(list) {
+        return list.reduce((sum, item) => sum + (item.type === 'folder' ? countLeaves(item.items) : 1), 0);
+    }
+
+    // Remove an entry from wherever it lives. Dissolves the parent folder if it
+    // empties out, or unwraps it back to a plain card if exactly one item remains.
+    function removeEntryById(id) {
+        const loc = findLocation(id);
+        if (!loc) return null;
+        const [removed] = loc.list.splice(loc.index, 1);
+        if (loc.parentFolder) {
+            const folder = loc.parentFolder;
+            const folderLoc = findLocation(folder.id);
+            if (folderLoc) {
+                if (folder.items.length === 0) folderLoc.list.splice(folderLoc.index, 1);
+                else if (folder.items.length === 1) folderLoc.list.splice(folderLoc.index, 1, folder.items[0]);
+            }
+        }
+        return removed;
+    }
+
+    // Drop sourceId onto targetId: groups them into a folder (or adds to an existing one).
+    function mergeEntries(targetId, sourceId) {
+        if (String(targetId) === String(sourceId)) return;
+        const sourceEntry = removeEntryById(sourceId);
+        if (!sourceEntry) return;
+        const loc = findLocation(targetId);
+        if (!loc) { boardState.unshift(sourceEntry); persistBoard(); renderBoard(); return; }
+
+        const incoming = sourceEntry.type === 'folder' ? sourceEntry.items : [sourceEntry];
+        if (loc.entry.type === 'folder') {
+            loc.entry.items.push(...incoming);
+        } else if (loc.parentFolder) {
+            // Target card already lives in a folder - join it instead of nesting folders.
+            loc.parentFolder.items.push(...incoming);
+        } else {
+            loc.list[loc.index] = { id: genId(), type: 'folder', name: 'New Folder', expanded: false, items: [loc.entry, ...incoming] };
+        }
+        persistBoard();
+        renderBoard();
+    }
+
+    function moveToEnd(sourceId) {
+        const entry = removeEntryById(sourceId);
+        if (!entry) return;
+        boardState.push(entry);
+        persistBoard();
+        renderBoard();
+    }
+
+    function ungroupFolder(folderId) {
+        const loc = findLocation(folderId);
+        if (!loc || loc.entry.type !== 'folder') return;
+        loc.list.splice(loc.index, 1, ...loc.entry.items);
+        persistBoard();
+        renderBoard();
+    }
+
+    function toggleFolder(folderId) {
+        const loc = findLocation(folderId);
+        if (!loc) return;
+        loc.entry.expanded = !loc.entry.expanded;
+        persistBoard();
+        renderBoard();
+    }
+
+    function deleteEntry(id) {
+        removeEntryById(id);
+        persistBoard();
+        renderBoard();
+    }
+
+    function pinToBoard(type, data) {
+        boardState.unshift({ id: genId(), type, data });
+        if (boardState.length > 24) boardState.length = 24;
+        persistBoard();
+        const board = document.getElementById('session-board');
+        if (board) board.open = true;
+        renderBoard();
+    }
+
+    // Shared HTML5 drag-and-drop wiring for both cards and folders.
+    function attachDragHandlers(el, entryId) {
+        el.addEventListener('dragstart', (e) => {
+            e.stopPropagation();
+            e.dataTransfer.setData('text/plain', String(entryId));
+            e.dataTransfer.effectAllowed = 'move';
+            el.classList.add('is-dragging');
+        });
+        el.addEventListener('dragend', () => el.classList.remove('is-dragging'));
+        el.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            el.classList.add('drag-over');
+        });
+        el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+        el.addEventListener('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            el.classList.remove('drag-over');
+            const sourceId = e.dataTransfer.getData('text/plain');
+            if (!sourceId) return;
+            mergeEntries(entryId, sourceId);
+        });
+    }
+
+    function makeCardEl(entry) {
         const { type, data, id } = entry;
         let card;
         if (type === 'loot') {
@@ -111,68 +228,126 @@
             const unpinBtn = document.createElement('button');
             unpinBtn.className = 'gc-delete';
             unpinBtn.textContent = 'Unpin';
-            unpinBtn.addEventListener('click', () => {
-                card.remove();
-                _unpinFromBoard(id);
-                updateBoardCount();
-                const out = document.getElementById('board-output');
-                if (out && !out.children.length) {
-                    const empty = document.getElementById('board-empty');
-                    if (empty) empty.hidden = false;
-                }
-            });
+            unpinBtn.addEventListener('click', () => deleteEntry(id));
             existingDel.replaceWith(unpinBtn);
         }
+
+        card.draggable = true;
+        card.classList.add('board-draggable');
+        card.dataset.entryId = id;
+        attachDragHandlers(card, id);
         return card;
     }
 
-    function _addToBoardUI(entry, prepend = true) {
-        const out = document.getElementById('board-output');
-        if (!out) return;
-        const empty = document.getElementById('board-empty');
-        if (empty) empty.hidden = true;
-        const card = makeBoardCard(entry);
-        if (prepend) out.prepend(card);
-        else out.appendChild(card);
+    function makeFolderEl(entry) {
+        const folder = document.createElement('div');
+        folder.className = `board-folder ${entry.expanded ? 'is-open' : 'is-closed'}`;
+        folder.draggable = true;
+        folder.dataset.entryId = entry.id;
+
+        const header = document.createElement('div');
+        header.className = 'folder-header';
+        header.innerHTML = `
+            <span class="folder-icon">📁</span>
+            <span class="folder-name" contenteditable="true" spellcheck="false">${entry.name || 'New Folder'}</span>
+            <span class="folder-count">${entry.items.length}</span>
+            <div class="folder-actions">
+                <button class="folder-toggle">${entry.expanded ? '▾ Close' : '▸ Open'}</button>
+                ${entry.expanded ? '<button class="folder-ungroup">Ungroup</button>' : ''}
+                <button class="folder-delete" title="Delete folder and contents">🗑</button>
+            </div>
+        `;
+
+        const nameEl = header.querySelector('.folder-name');
+        nameEl.draggable = false;
+        nameEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); nameEl.blur(); }
+        });
+        nameEl.addEventListener('blur', () => {
+            const loc = findLocation(entry.id);
+            if (loc) { loc.entry.name = nameEl.textContent.trim() || 'New Folder'; persistBoard(); }
+        });
+
+        header.querySelector('.folder-toggle').addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleFolder(entry.id);
+        });
+        header.querySelector('.folder-delete').addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (confirm(`Delete folder "${entry.name}" and its ${entry.items.length} card(s)?`)) {
+                const loc = findLocation(entry.id);
+                if (loc) { loc.list.splice(loc.index, 1); persistBoard(); renderBoard(); }
+            }
+        });
+        header.querySelector('.folder-ungroup')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            ungroupFolder(entry.id);
+        });
+        header.addEventListener('click', () => {
+            if (!entry.expanded) toggleFolder(entry.id);
+        });
+
+        folder.appendChild(header);
+
+        if (entry.expanded) {
+            const body = document.createElement('div');
+            body.className = 'folder-body';
+            entry.items.forEach(item => body.appendChild(makeCardEl(item)));
+            folder.appendChild(body);
+        }
+
+        attachDragHandlers(folder, entry.id);
+        return folder;
     }
 
-    function _unpinFromBoard(id) {
-        try {
-            let arr = JSON.parse(localStorage.getItem(STORE.board) || '[]');
-            arr = arr.filter(i => i.id !== id);
-            localStorage.setItem(STORE.board, JSON.stringify(arr));
-        } catch (_) {}
+    function renderBoard() {
+        const out = document.getElementById('board-output');
+        if (!out) return;
+        out.innerHTML = '';
+        const empty = document.getElementById('board-empty');
+        if (!boardState.length) {
+            if (empty) empty.hidden = false;
+            updateBoardCount();
+            return;
+        }
+        if (empty) empty.hidden = true;
+        boardState.forEach(entry => out.appendChild(entry.type === 'folder' ? makeFolderEl(entry) : makeCardEl(entry)));
+        updateBoardCount();
     }
 
     function updateBoardCount() {
-        const out = document.getElementById('board-output');
-        const count = out ? out.children.length : 0;
         const el = document.getElementById('board-count');
+        const count = countLeaves(boardState);
         if (el) el.textContent = count ? `(${count})` : '';
     }
 
     function loadBoard() {
         try {
-            const arr = JSON.parse(localStorage.getItem(STORE.board) || '[]');
-            if (!arr.length) return;
-            const empty = document.getElementById('board-empty');
-            if (empty) empty.hidden = true;
+            boardState = JSON.parse(localStorage.getItem(STORE.board) || '[]');
+        } catch (_) { boardState = []; }
+        if (boardState.length) {
             const board = document.getElementById('session-board');
             if (board) board.open = true;
-            arr.forEach(entry => _addToBoardUI(entry, false));
-        } catch (_) {}
-        updateBoardCount();
+        }
+        renderBoard();
     }
 
     function bindBoard() {
         document.getElementById('clear-board')?.addEventListener('click', () => {
-            const out = document.getElementById('board-output');
-            if (out) out.innerHTML = '';
-            const empty = document.getElementById('board-empty');
-            if (empty) empty.hidden = false;
-            try { localStorage.removeItem(STORE.board); } catch (_) {}
-            updateBoardCount();
+            boardState = [];
+            persistBoard();
+            renderBoard();
         });
+        // Dropping on empty board background (not on a card/folder) just reorders to the end.
+        const out = document.getElementById('board-output');
+        if (out) {
+            out.addEventListener('dragover', (e) => e.preventDefault());
+            out.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const sourceId = e.dataTransfer.getData('text/plain');
+                if (sourceId) moveToEnd(sourceId);
+            });
+        }
     }
 
     // ── Quick Roll strip ───────────────────────────────────────────────────────

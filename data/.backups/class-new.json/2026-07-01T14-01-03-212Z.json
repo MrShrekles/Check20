@@ -11787,15 +11787,14 @@
               "step": 2,
               "name": "High Roller",
               "action": "Passive",
-              "check": "Luck",
+              "check": "",
               "range": "",
               "description": "When making a Luck check in a gambling situation, you can reroll the check and must take the new result. Additionally, when winning a bet or gamble, you gain a temporary boost of confidence, granting you a Mana",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "",
-              "checkType": "self"
+              "condition": ""
             },
             {
               "step": 3,
@@ -11925,8 +11924,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed",
-              "checkType": "self"
+              "condition": "Charmed"
             },
             {
               "step": 1,
@@ -11939,8 +11937,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "",
-              "checkType": "self"
+              "condition": ""
             },
             {
               "step": 2,
@@ -11957,6 +11954,19 @@
             },
             {
               "step": 3,
+              "name": "Charming",
+              "action": "Action",
+              "check": "Influence",
+              "range": "",
+              "description": "Target a humanoid within short range. Make contested Influence checks. For each success, they gain the Charmed condition for 1 minute.",
+              "duration": "1 minute",
+              "damage": "",
+              "damageType": "",
+              "armor": "",
+              "condition": "Charmed"
+            },
+            {
+              "step": 4,
               "name": "Enthrall II",
               "action": "Upgrade",
               "check": "",
@@ -11969,20 +11979,6 @@
               "condition": "Confused"
             },
             {
-              "step": 4,
-              "name": "Charming",
-              "action": "Action",
-              "check": "Influence",
-              "range": "",
-              "description": "Target a humanoid within short range and make an Influence check, for each success the creature is charmed for 1 minute.",
-              "duration": "1 minute",
-              "damage": "",
-              "damageType": "",
-              "armor": "",
-              "condition": "Charmed",
-              "checkType": "self"
-            },
-            {
               "step": 5,
               "name": "Enthrall III",
               "action": "Upgrade",
@@ -11993,8 +11989,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed",
-              "checkType": "contested"
+              "condition": "Charmed"
             },
             {
               "step": 6,
@@ -12011,8 +12006,8 @@
             },
             {
               "step": 7,
-              "name": "Charming II",
-              "action": "Upgrade",
+              "name": "Velvet Blade",
+              "action": "Passive",
               "check": "",
               "range": "",
               "description": "You may now deal Psychic damage to Charmed targets without breaking the charm effect.",
@@ -12025,10 +12020,10 @@
             {
               "step": 8,
               "name": "Presence",
-              "action": "Action",
-              "check": "Mental",
+              "action": "Passive",
+              "check": "Observation",
               "range": "Short",
-              "description": "Your allure can be so potent it captivates all around you. As an action, force humanoid creatures within short range must make a Mental check or become charmed by you for 1 minute",
+              "description": "Your allure can be so potent it captivates all around you. As an action, humanoid creatures within short range must make an Observation check or become charmed by you for 1 minute",
               "duration": "1 minute",
               "damage": "",
               "damageType": "",
@@ -12037,7 +12032,20 @@
             },
             {
               "step": 9,
-              "name": "Charming III",
+              "name": "Fascination",
+              "action": "Passive",
+              "check": "",
+              "range": "Short",
+              "description": "When a target is Charmed by you, you may designate up to 3 allies to also count as the source of that charm.",
+              "duration": "",
+              "damage": "",
+              "damageType": "",
+              "armor": "",
+              "condition": "Charmed"
+            },
+            {
+              "step": 10,
+              "name": "Charming II",
               "action": "Upgrade",
               "check": "",
               "range": "",
@@ -12045,19 +12053,6 @@
               "duration": "",
               "damage": "",
               "damageType": "Psychic",
-              "armor": "",
-              "condition": "Charmed"
-            },
-            {
-              "step": 10,
-              "name": "Charming IV",
-              "action": "Upgrade",
-              "check": "",
-              "range": "Short",
-              "description": "When a target is Charmed by you, allies you choose within short range also count as the source of that charm.",
-              "duration": "",
-              "damage": "",
-              "damageType": "",
               "armor": "",
               "condition": "Charmed"
             }

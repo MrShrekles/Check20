@@ -10,6 +10,10 @@ Promise.all([
     speciesData = species;
 }).catch(err => console.error("❌ Error loading data:", err));
 
+// All name styles "Auto" can roll from when no region/species override applies.
+// "fantasy" stays the original 6-letter syllable generator.
+const ALL_NAME_STYLES = ["fantasy", "twenties", "victorian", "goblin"];
+
 const REGIONS = {
     none:       { label: "Any Region",  nameStyles: [],                   excludeLineages: [],              lowWeight: [],              highWeight: [] },
     ostrio:     { label: "Ostrio",      nameStyles: ["twenties","fantasy"], excludeLineages: ["Chitnari","Jotun"], lowWeight: ["Strigoi","Symbiotes"], highWeight: [] },
@@ -133,7 +137,8 @@ class NPC {
             style = species.namingStyle;
         } else {
             const regionStyles = REGIONS[regionKey]?.nameStyles || [];
-            style = regionStyles.length ? getRandomItem(regionStyles) : "fantasy";
+            // No region/species override: roll across every naming style, not just fantasy.
+            style = getRandomItem(regionStyles.length ? regionStyles : ALL_NAME_STYLES);
         }
         this.name = generateName(style);
         this.affinity = `${getRandomItem(npcData.affinities)} from ${getRandomItem(npcData.habitats)}`;
@@ -144,24 +149,20 @@ class NPC {
 }
 
 function generateName(style = "fantasy") {
-    const names = npcData.names;
+    const n = npcData.names;
     if (style === "twenties" || style === "victorian") {
-        const pool = names[style].first;
-        const genderPool = Math.random() < 0.5 ? pool.male : pool.female;
-        const first = getRandomItem(genderPool);
-        const last = getRandomItem(names[style].last);
-        return `${first} ${last}`;
+        return `${getRandomItem(n[`${style}-first`])} ${getRandomItem(n[`${style}-last`])}`;
     }
     if (style === "goblin") {
-        return getRandomItem(names.goblin.prefix) + getRandomItem(names.goblin.suffix);
+        return getRandomItem(n["goblin-prefix"]) + getRandomItem(n["goblin-suffix"]);
     }
-    // fantasy syllable default
-    const first = getRandomItem(names.fantasy.start);
-    const core = getRandomItem(names.fantasy.core);
-    const last = getRandomItem(names.fantasy.end);
+    // fantasy syllable gen
+    const first = getRandomItem(n["fantasy-start"]);
+    const core  = getRandomItem(n["fantasy-core"]);
+    const last  = getRandomItem(n["fantasy-end"]);
     let middle = core;
     if (middle && first.endsWith(middle[0])) middle = middle.substring(1);
-    if (middle && middle.endsWith(last[0])) middle = middle.slice(0, -1);
+    if (middle && middle.endsWith(last[0]))  middle = middle.slice(0, -1);
     return first + middle + last;
 }
 

@@ -156,6 +156,9 @@ async function openFile(filename) {
         const info = state.files.find(f => f.name === filename);
         state.currentFileModified = info ? info.modified : null;
 
+        // Reset type-specific toolbar buttons before letting the new editor show its own
+        document.querySelectorAll('.toolbar-extra').forEach(el => el.style.display = 'none');
+
         // Let the editor refresh any autocomplete/datalist data
         editor?.onLoad?.(state.data);
 
