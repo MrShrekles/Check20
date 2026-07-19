@@ -21,6 +21,7 @@
     <div class="titlebar-sep"></div>
 
     <div class="titlebar-right">
+      <button class="btn btn-ghost" id="btnAlerts" style="font-size:10px;padding:3px 9px;" onclick="openAlertsPage()" title="Show every quality-check issue and duplicate across all files">⚠ Alerts</button>
       <div class="file-type-badge" id="fileTypeBadge"></div>
       <div class="status-dot" id="statusDot"></div>
       <div class="status-text" id="statusText">LOADING</div>
@@ -50,6 +51,7 @@
           <div class="sidebar-label" id="entryPanelLabel">Entries</div>
           <div class="group-select" id="groupSelect"></div>
           <input class="search-input" type="text" placeholder="Search..." id="searchInput" oninput="filterEntries()">
+          <button class="btn btn-ghost" style="font-size:9px;padding:2px 7px;" onclick="openGlobalSearch()" title="Search across all files (Ctrl+Shift+F)">⌕ All Files</button>
         </div>
         <div class="entry-scroll" id="entryList">
           <div class="empty-state" style="padding:20px 0;">
@@ -65,9 +67,11 @@
         <div class="toolbar-sep"></div>
         <div class="toolbar-count" id="toolbarCount"></div>
         <div class="toolbar-right">
+          <button class="btn btn-ghost" onclick="performUndo()" id="btnUndo" title="Undo (Ctrl+Z)" disabled>↶</button>
+          <button class="btn btn-ghost" onclick="performRedo()" id="btnRedo" title="Redo (Ctrl+Shift+Z)" disabled>↷</button>
           <button class="btn btn-ghost" onclick="reloadFile()" id="btnReload" disabled>↺ Reload</button>
           <button class="btn btn-ghost" onclick="openBackups()" id="btnBackups" disabled>Backups</button>
-          <button class="btn btn-ghost toolbar-extra" id="btnGearTable" style="display:none" onclick="toggleGearTable()">⊞ Table</button>
+          <button class="btn btn-ghost toolbar-extra" id="btnTableMode" style="display:none" onclick="tmToggle(state.fileType)">⊞ Table</button>
           <button class="btn btn-green" onclick="newEntry()" id="btnNew" disabled>+ New</button>
         </div>
       </div>
@@ -85,10 +89,12 @@
   <div class="statusbar">
     <div class="status-item" id="sbFile">⚙ <span>-</span></div>
     <div class="status-item" id="sbEntry"></div>
+    <div class="status-item" id="sbQC" style="cursor:pointer;" onclick="openAlertsPage()" title="Open Alerts (all issues, all files)"></div>
     <div class="status-right">
       <div class="status-item" id="sbType"></div>
-      <div class="status-item">Forge <span>v1.0</span></div>
-      <div class="status-item">localhost:<span>3000</span></div>
+      <div class="status-item" id="sbAlertsAll" style="cursor:pointer;" onclick="openAlertsPage()" title="Open Alerts (all issues, all files)"></div>
+      <div class="status-item" id="sbVersion">Forge <span>v1.0</span></div>
+      <div class="status-item" id="sbHost">localhost:<span>3000</span></div>
     </div>
   </div>
 
@@ -173,6 +179,8 @@
 
   <!-- Core shell - always loaded -->
   <script src="app.js"></script>
+  <!-- Shared quality-check helpers used by several editor-*.js modules -->
+  <script src="editor-qc-shared.js"></script>
   <!-- Editor modules - each registers into window.EDITORS -->
   <script src="editor-monster.js"></script>
   <script src="editor-gear.js"></script>
@@ -188,6 +196,7 @@
   <script src="editor-loot.js"></script>
   <script src="editor-glossary.js"></script>
   <script src="editor-generic.js"></script>
+  <script src="editor-tablemode.js"></script>
   <script src="editor-toolbar.js"></script>
   <script src="settings.js"></script>
 </body>

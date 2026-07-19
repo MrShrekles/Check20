@@ -337,6 +337,7 @@ function classQCIgnore(key) {
     localStorage.setItem('classQC_v1', JSON.stringify([...s]));
     renderEditor();
     renderEntryList();
+    updateStatus();
 }
 
 function classQCUnignoreAll(entryName) {
@@ -347,6 +348,7 @@ function classQCUnignoreAll(entryName) {
     localStorage.setItem('classQC_v1', JSON.stringify([...s]));
     renderEditor();
     renderEntryList();
+    updateStatus();
 }
 
 function classQCApply(entryIdx, issueKey) {
@@ -402,6 +404,16 @@ function classQCAnalyze(entry) {
                     `Detected: ${newConds.join(', ')}`,
                     { path: `${branch}.steps.${si}.condition`, value: merged, label: 'Add to Field' }
                 );
+            }
+
+            // ── 2b. Condition field references a term not in glossary.json ───
+            const glossConditions = qcGetGlossaryTermsSync().conditions;
+            if (step.condition && glossConditions.size) {
+                const unknown = step.condition.split(',').map(c => c.trim()).filter(c => c && !glossConditions.has(c.toLowerCase()));
+                if (unknown.length) {
+                    push('unknown_condition', 'Condition not found in glossary.json',
+                        `"${unknown.join(', ')}" doesn't match any condition term in glossary.json - check spelling.`, null);
+                }
             }
 
             // ── 3. Check name in description but field empty ─────────────────
@@ -530,6 +542,7 @@ function renderClassQualityCheck(entry, idx) {
     const TYPE_COLOR = {
         empty_action:        '#cc5544',
         missing_condition:   '#cc8833',
+        unknown_condition:   '#cc5544',
         missing_check:       '#cc8833',
         missing_duration:    '#7788bb',
         missing_damage:      '#7788bb',

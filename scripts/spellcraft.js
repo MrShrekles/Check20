@@ -1,20 +1,20 @@
 /* =========================
    spellcraft.js
-   Interactive Spellcraft tab - card selection flow + SP cost calculator
+   Interactive Spellcraft tab - card selection flow + MN cost calculator
    ========================= */
 
 const craftState = {
   manner: null,
   transmission: null,
   intent: null,
-  intentSP: 0,
+  intentMN: 0,
   range: null,
   duration: null,
   target: null,
 };
 
-/* ── SP modifier tables ── */
-const RANGE_SP = {
+/* ── MN modifier tables ── */
+const RANGE_MN = {
   'Self': 0,
   'Touch': 0,
   'Reach': 0,
@@ -26,7 +26,7 @@ const RANGE_SP = {
   'Known': 3,
 };
 
-const DURATION_SP = {
+const DURATION_MN = {
   'Instant': 0,
   'End of Next Turn': 0,
   '1 Minute': 1,
@@ -37,7 +37,7 @@ const DURATION_SP = {
   'Permanent': 0, // minimum enforced separately
 };
 
-const TARGET_SP = {
+const TARGET_MN = {
   'Creature': 0,
   'Object': 0,
   'Area': 2,
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCraftCards();
   initToggles();
   initCraftBuilder();
-  updateSPDisplay();
+  updateMNDisplay();
 });
 
 /* ══════════════════════════════════════
@@ -77,10 +77,10 @@ function initCraftCards() {
     card.addEventListener('click', () => {
       selectCraftCard('intent-cards', card);
       craftState.intent = card.dataset.value;
-      craftState.intentSP = parseInt(card.dataset.sp);
+      craftState.intentMN = parseInt(card.dataset.mn);
       unlockStep('step-details');
       updateSummary();
-      updateSPDisplay();
+      updateMNDisplay();
       refreshDurationAvailability();
       setTimeout(() => {
         document.getElementById('step-details')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -105,49 +105,49 @@ function unlockStep(stepId) {
    TOGGLE PILLS
 ══════════════════════════════════════ */
 function initToggles() {
-  document.querySelectorAll('#toggle-range .sp-toggle').forEach(btn => {
+  document.querySelectorAll('#toggle-range .MN-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
       selectToggle('#toggle-range', btn);
       craftState.range = btn.dataset.value;
       if (craftState.target === 'Area') updateAreaNote();
-      updateSPDisplay();
+      updateMNDisplay();
     });
   });
 
-  document.querySelectorAll('#toggle-duration .sp-toggle').forEach(btn => {
+  document.querySelectorAll('#toggle-duration .MN-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
       if (btn.classList.contains('toggle-locked')) return;
       selectToggle('#toggle-duration', btn);
       craftState.duration = btn.dataset.value;
-      updateSPDisplay();
+      updateMNDisplay();
     });
   });
 
-  document.querySelectorAll('#toggle-target .sp-toggle').forEach(btn => {
+  document.querySelectorAll('#toggle-target .MN-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
       selectToggle('#toggle-target', btn);
       craftState.target = btn.dataset.value;
       updateAreaNote();
-      updateSPDisplay();
+      updateMNDisplay();
     });
   });
 }
 
 function selectToggle(groupSelector, selectedBtn) {
-  document.querySelectorAll(`${groupSelector} .sp-toggle`).forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`${groupSelector} .MN-toggle`).forEach(b => b.classList.remove('active'));
   selectedBtn.classList.add('active');
 }
 
 function refreshDurationAvailability() {
-  const permBtn = document.querySelector('#toggle-duration .sp-toggle[data-value="Permanent"]');
+  const permBtn = document.querySelector('#toggle-duration .MN-toggle[data-value="Permanent"]');
   if (!permBtn) return;
-  const locked = (craftState.intentSP || 0) < 12;
+  const locked = (craftState.intentMN || 0) < 12;
   permBtn.classList.toggle('toggle-locked', locked);
-  permBtn.title = locked ? 'Requires Storm (12 SP) or Cataclysm as base intent' : '';
+  permBtn.title = locked ? 'Requires Storm (12 MN) or Cataclysm as base intent' : '';
   if (locked && craftState.duration === 'Permanent') {
     craftState.duration = null;
-    document.querySelectorAll('#toggle-duration .sp-toggle').forEach(b => b.classList.remove('active'));
-    updateSPDisplay();
+    document.querySelectorAll('#toggle-duration .MN-toggle').forEach(b => b.classList.remove('active'));
+    updateMNDisplay();
   }
 }
 
@@ -163,13 +163,13 @@ function updateAreaNote() {
 }
 
 /* ══════════════════════════════════════
-   SP CALCULATION
+   MN CALCULATION
 ══════════════════════════════════════ */
-function calcTotalSP() {
-  const base = craftState.intentSP || 0;
-  const rangeMod = craftState.range ? (RANGE_SP[craftState.range] ?? 0) : 0;
-  const durMod = craftState.duration ? (DURATION_SP[craftState.duration] ?? 0) : 0;
-  const targetMod = craftState.target ? (TARGET_SP[craftState.target] ?? 0) : 0;
+function calcTotalMN() {
+  const base = craftState.intentMN || 0;
+  const rangeMod = craftState.range ? (RANGE_MN[craftState.range] ?? 0) : 0;
+  const durMod = craftState.duration ? (DURATION_MN[craftState.duration] ?? 0) : 0;
+  const targetMod = craftState.target ? (TARGET_MN[craftState.target] ?? 0) : 0;
 
   let total = base + rangeMod + durMod + targetMod;
   if (craftState.duration === 'Permanent') total = Math.max(total, 12);
@@ -177,39 +177,39 @@ function calcTotalSP() {
   return { total, base, rangeMod, durMod, targetMod };
 }
 
-function intentLabelForSP(sp) {
-  if (sp <= 0) return 'Light Whisper';
-  if (sp <= 1) return 'Whisper';
-  if (sp <= 3) return 'Surge';
-  if (sp <= 6) return 'Shout';
-  if (sp <= 9) return 'Roar';
-  if (sp <= 12) return 'Storm';
+function intentLabelForMN(mn) {
+  if (mn <= 0) return 'Light Whisper';
+  if (mn <= 1) return 'Whisper';
+  if (mn <= 3) return 'Surge';
+  if (mn <= 6) return 'Shout';
+  if (mn <= 9) return 'Roar';
+  if (mn <= 12) return 'Storm';
   return 'Cataclysm';
 }
 
-function spTierClass(sp) {
-  if (sp <= 0) return 'tier-0';
-  if (sp <= 1) return 'tier-1';
-  if (sp <= 3) return 'tier-3';
-  if (sp <= 6) return 'tier-6';
-  if (sp <= 9) return 'tier-9';
-  if (sp <= 12) return 'tier-12';
+function mnTierClass(mn) {
+  if (mn <= 0) return 'tier-0';
+  if (mn <= 1) return 'tier-1';
+  if (mn <= 3) return 'tier-3';
+  if (mn <= 6) return 'tier-6';
+  if (mn <= 9) return 'tier-9';
+  if (mn <= 12) return 'tier-12';
   return 'tier-24';
 }
 
-function updateSPDisplay() {
-  const { total, base, rangeMod, durMod, targetMod } = calcTotalSP();
+function updateMNDisplay() {
+  const { total, base, rangeMod, durMod, targetMod } = calcTotalMN();
 
-  const totalEl = document.getElementById('sp-total');
-  const breakEl = document.getElementById('sp-breakdown');
-  const labelEl = document.getElementById('sp-intent-label');
+  const totalEl = document.getElementById('MN-total');
+  const breakEl = document.getElementById('MN-breakdown');
+  const labelEl = document.getElementById('MN-intent-label');
   const damageEl = document.getElementById('sum-damage');
 
   if (totalEl) {
     totalEl.textContent = total;
-    totalEl.className = 'sp-total-number ' + spTierClass(total);
+    totalEl.className = 'MN-total-number ' + mnTierClass(total);
   }
-  if (labelEl) labelEl.textContent = intentLabelForSP(total);
+  if (labelEl) labelEl.textContent = intentLabelForMN(total);
 
   if (breakEl) {
     const parts = [`${base} base`];
@@ -237,7 +237,7 @@ function updateSummary() {
   if (mannerEl) mannerEl.textContent = craftState.manner || '-';
   if (transEl) transEl.textContent = craftState.transmission || '-';
   if (intentEl) intentEl.textContent = craftState.intent
-    ? `${craftState.intent} (${craftState.intentSP} SP base)` : '-';
+    ? `${craftState.intent} (${craftState.intentMN} MN base)` : '-';
 }
 
 /* ══════════════════════════════════════
@@ -255,7 +255,7 @@ function buildCraftSpell() {
     return;
   }
 
-  const { total } = calcTotalSP();
+  const { total } = calcTotalMN();
   const name = document.getElementById('builder-name')?.value.trim()
     || `${craftState.manner} ${craftState.transmission}`;
   const range = craftState.range || '';
@@ -263,7 +263,7 @@ function buildCraftSpell() {
   const target = craftState.target || '';
   const area = (craftState.target === 'Area' && craftState.range) ? craftState.range : '';
   const effect = document.getElementById('builder-effect')?.value.trim() || '';
-  const displayIntent = intentLabelForSP(total);
+  const displayIntent = intentLabelForMN(total);
 
   let infoHTML = '<ul class="spell-info">';
   if (range) infoHTML += `<li><strong>Range: </strong>${range}</li>`;
@@ -288,7 +288,7 @@ function buildCraftSpell() {
         <span class="transmission">${craftState.transmission}</span>
       </div>
       <details class="spell-effect" open>
-        <summary class="spell-features">${displayIntent} <span class="sp-cost">${total} SP</span></summary>
+        <summary class="spell-features">${displayIntent} <span class="MN-cost">${total} MN</span></summary>
         ${infoHTML}
         <p>${effect || '<em>No effect description provided.</em>'}</p>
       </details>
@@ -308,13 +308,13 @@ function clearCraftBuilder() {
     const el = document.getElementById(id);
     if (el) { el.classList.add('craft-step--locked'); el.classList.remove('craft-step--revealed'); }
   });
-  document.querySelectorAll('.sp-toggle').forEach(b => b.classList.remove('active'));
-  Object.assign(craftState, { manner: null, transmission: null, intent: null, intentSP: 0, range: null, duration: null, target: null });
+  document.querySelectorAll('.MN-toggle').forEach(b => b.classList.remove('active'));
+  Object.assign(craftState, { manner: null, transmission: null, intent: null, intentMN: 0, range: null, duration: null, target: null });
   ['builder-name', 'builder-effect'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   const preview = document.getElementById('builder-preview');
   if (preview) preview.innerHTML = `<div class="preview-placeholder"><p>Your spell preview will appear here.</p></div>`;
   const areaNote = document.getElementById('area-range-note');
   if (areaNote) areaNote.style.display = 'none';
   updateSummary();
-  updateSPDisplay();
+  updateMNDisplay();
 }

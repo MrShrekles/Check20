@@ -27,7 +27,7 @@
     /* user-adjustable input sizing */
     --input-padding-v: 4px;
     --input-padding-h: 8px;
-    --textarea-min-height: 56px;
+    --textarea-min-height: 90px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -38,6 +38,7 @@ body {
     font-family: 'Atkinson Hyperlegible', sans-serif;
     font-size: 15px;
     height: 100vh;
+    height: 100dvh; /* accounts for mobile browsers' dynamic address bar; vh above is the fallback */
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -828,8 +829,28 @@ details.forge-section-qc:not([open]) > summary.section-header {
 .gt-th-sort { cursor: pointer; user-select: none; transition: color 0.1s; }
 .gt-th-sort:hover { color: var(--text-primary); background: var(--bg-hover); }
 .gt-th-active { color: var(--text-primary) !important; }
+.gt-effect-count { display: inline-block; min-width: 20px; padding: 1px 6px; background: var(--bg-hover); border-radius: 10px; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-muted); text-align: center; }
 
-/* ── RESPONSIVE: narrow window ── */
+/* ── RESPONSIVE: touch devices (no hover capability) ──────────────────────── */
+/* Delete controls that only appear on :hover are invisible on touch - make
+   them always visible (at reduced opacity) instead of relying on hover-reveal.
+   Also bump the smallest icon-only tap targets closer to a usable touch size. */
+@media (hover: none) {
+    .tag-item-delete,
+    .array-item-delete { opacity: 0.6; }
+    .step-btn { min-width: 34px; }
+    .entry-badge, .file-qc-badge { padding-top: 3px; padding-bottom: 3px; }
+}
+
+/* ── RESPONSIVE: tablet / narrow window ──────────────────────────────────── */
+@media (max-width: 900px) {
+    .sidebar { width: 190px; }
+    .header-actions { flex-wrap: wrap; justify-content: flex-end; }
+    .toolbar { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .toolbar-right { flex-wrap: nowrap; }
+    .statusbar { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
 @media (max-width: 680px) {
     .sidebar { width: 180px; }
     .movement-stepper .field-input { font-size: 15px; padding: 6px 2px; }
@@ -837,5 +858,25 @@ details.forge-section-qc:not([open]) > summary.section-header {
     .movement-row { gap: 10px; }
     .section-pair { flex-direction: column; }
     .fields-scroll { padding: 10px 12px 24px; }
+}
+
+/* ── RESPONSIVE: phone ──────────────────────────────────────────────────── */
+@media (max-width: 560px) {
+    .sidebar { width: 150px; }
+    .titlebar { padding: 0 8px; gap: 8px; }
+    .titlebar-brand { display: none; }         /* keep the path visible, drop the decorative wordmark */
+    .codex-nav-label { display: none; }
+    .codex-nav-btn { padding: 3px 6px; }
+    .titlebar-right { gap: 6px; }
+    #btnAlerts { padding: 3px 6px !important; }
+    #sbVersion, #sbHost { display: none; }
+    .status-right { gap: 8px; }
+    .field-editor-header { padding: 10px 12px 10px; flex-wrap: wrap; }
+    .entry-title { font-size: 15px; }
+    .fields-scroll { padding: 8px 10px 20px; }
+    .field-grid .field-wrap,
+    .field-flex .field-wrap { flex-basis: 100px; }
+    .gear-table-topbar { flex-wrap: wrap; padding: 10px 12px; }
+    .dialog-box { padding: 14px 16px; }
 }
 

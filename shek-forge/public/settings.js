@@ -37,8 +37,8 @@ function applyForgeSettings(s) {
 
     // Zoom html, compensate body so nothing is clipped at any scale
     document.documentElement.style.zoom = scale;
-    document.body.style.height = (100 / scale) + 'vh';
-    document.body.style.width  = (100 / scale) + 'vw';
+    document.body.style.height = (100 / scale) + 'dvh';
+    document.body.style.width  = (100 / scale) + 'dvw';
 
     // Font size buttons
     document.querySelectorAll('.font-size-btn').forEach(btn => {

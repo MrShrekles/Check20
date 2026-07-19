@@ -2560,7 +2560,7 @@
       "region": "Global, Multiplanar",
       "origin": "vozian",
       "feature_name": "Infernal Skin",
-      "feature_effect": "As an Off-Action when being hit with a melee attack, you may unleash the stored heat beneath your skin. The creature that hit you takes [[1d4]] Vozian damage. If they are celestial or holy in some way, they instead take [[1d6]] and have disadvantage on their next attack.",
+      "feature_effect": "As an Off-Action when being hit with a melee attack, you may unleash the stored heat beneath your skin. The creature that hit you takes [[1d4]] Vozian damage. If they are celestial origin, they instead take [[1d6]] and have disadvantage on their next attack.",
       "fetAction": "Off-Action",
       "fetDamage": "1d4",
       "fetDamagetype": "Vozian"

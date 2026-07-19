@@ -4,35 +4,17 @@
 
 // ── Global helpers (called by inline onclick) ─────────────────────────────────
 
-function updateEnchantedText(idx, value) {
-    if (!state.data[idx]) return;
-    state.data[idx].text = value;
-    markUnsaved();
-}
+function updateEnchantedText(idx, value) { teSetField(idx, 'text', value); }
 
-function removeEnchantedEntry(idx) {
-    state.data.splice(idx, 1);
-    state.filteredData = getVisibleData();
-    renderEntryList();
-    renderEditor();
-    markUnsaved();
-}
+function removeEnchantedEntry(idx) { teRemoveEntry(idx); }
 
 function addEnchantedEntry(type, category) {
     const entry = { type, text: '' };
     if (category) entry.category = category;
-    state.data.push(entry);
-    state.filteredData = getVisibleData();
-    renderEntryList();
-    renderEditor();
-    markUnsaved();
-    // Focus the new input after render
-    setTimeout(() => {
-        const inputs = document.querySelectorAll(
-            category ? `.ench-chip-input[data-cat="${category}"]` : `.ench-chip-input[data-type="${type}"], .ench-row-input[data-type="${type}"]`
-        );
-        if (inputs.length) inputs[inputs.length - 1].focus();
-    }, 50);
+    const sel = category
+        ? `.ench-chip-input[data-cat="${category}"]`
+        : `.ench-chip-input[data-type="${type}"], .ench-row-input[data-type="${type}"]`;
+    teAddEntry(entry, sel);
 }
 
 function addEnchantedCategory() {
@@ -144,6 +126,8 @@ registerEditor('enchanted', {
     },
 
     newEntry: (group) => ({ type: group || 'prefix', text: '' }),
+
+    qcCount: (data) => qcCountBlankEntries(data, ['type', 'category']),
 
     // Show full table regardless of which entry is selected
     render: () => renderEnchantedTable(),

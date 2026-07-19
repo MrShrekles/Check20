@@ -468,9 +468,22 @@
     });
 
     // ── MONSTER PICKER ────────────────────────────────────────────────────────
+    // Always resolves against the real bestiary (monsterbook.json) rather than
+    // whatever file happens to be open, so a link inserted while editing
+    // spells.json (say) still points at a real monster.
     function getMonsterNames() {
-        if (typeof state === 'undefined' || !Array.isArray(state.data)) return [];
-        return [...new Set(state.data.map(m => m.name).filter(Boolean))].sort();
+        if (typeof qcGetMonsterNamesSync === 'function') {
+            const names = qcGetMonsterNamesSync();
+            if (names.length) return names;
+        }
+        if (typeof state !== 'undefined' && Array.isArray(state.data) && state.fileType === 'monster') {
+            return [...new Set(state.data.map(m => m.name).filter(Boolean))].sort();
+        }
+        return [];
+    }
+
+    if (typeof qcGetMonsterNames === 'function') {
+        qcGetMonsterNames().then(() => { if (picker.style.display === 'flex') renderMonsterList(mpSearch.value); });
     }
 
     function renderMonsterList(query) {

@@ -1,15 +1,8 @@
 // ── TRAPS TABLE EDITOR ────────────────────────────────────────────────────────
 
-function updateTrapField(idx, field, value) {
-    if (state.data[idx]) state.data[idx][field] = value;
-    markUnsaved();
-}
+function updateTrapField(idx, field, value) { teSetField(idx, field, value); }
 
-function removeTrapEntry(idx) {
-    state.data.splice(idx, 1);
-    state.filteredData = getVisibleData();
-    renderEntryList(); renderEditor(); markUnsaved();
-}
+function removeTrapEntry(idx) { teRemoveEntry(idx); }
 
 function addTrapEntry(type) {
     const templates = {
@@ -17,13 +10,7 @@ function addTrapEntry(type) {
         lock: { type: 'lock', name: '', key: '', hint: '' },
         trap: { type: 'trap', name: '', dmg: '', effect: '' },
     };
-    state.data.push(templates[type] || { type, text: '' });
-    state.filteredData = getVisibleData();
-    renderEntryList(); renderEditor(); markUnsaved();
-    setTimeout(() => {
-        const inputs = document.querySelectorAll(`.te-chip-input[data-type="${type}"], .te-row-input[data-type="${type}"]`);
-        if (inputs.length) inputs[inputs.length - 1].focus();
-    }, 50);
+    teAddEntry(templates[type] || { type, text: '' }, `.te-chip-input[data-type="${type}"], .te-row-input[data-type="${type}"]`);
 }
 
 function renderTrapsTable() {
@@ -121,6 +108,7 @@ registerEditor('traps', {
         if (t === 'trap') return { type: 'trap', name: '', dmg: '', effect: '' };
         return { type: 'door', text: '' };
     },
+    qcCount: (data) => qcCountBlankEntries(data),
     render: () => renderTrapsTable(),
     headerActions: () => `<span style="font-size:11px;color:#cc3333;opacity:.7">Editing all ${state.data.length} entries</span>`,
 });

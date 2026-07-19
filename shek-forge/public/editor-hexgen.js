@@ -16,8 +16,7 @@ function hexPct(weight, total) {
 
 function updateHexField(idx, field, value) {
     if (!state.data[idx]) return;
-    state.data[idx][field] = value;
-    markUnsaved();
+    teSetField(idx, field, value);
     // refresh percentage labels for this group without full re-render
     const group = state.data[idx]._group;
     const sub   = state.data[idx]._subgroup || null;
@@ -29,11 +28,7 @@ function updateHexField(idx, field, value) {
     });
 }
 
-function removeHexEntry(idx) {
-    state.data.splice(idx, 1);
-    state.filteredData = getVisibleData();
-    renderEntryList(); renderEditor(); markUnsaved();
-}
+function removeHexEntry(idx) { teRemoveEntry(idx); }
 
 function addHexEntry(group, subgroup) {
     const templates = {
@@ -42,9 +37,7 @@ function addHexEntry(group, subgroup) {
         populations:      { _group: group, name: '', tier: 0, weight: 1 },
         powerLevels:      { _group: group, pl: 1, weight: 1 },
     };
-    state.data.push(templates[group] || { _group: group, name: '', weight: 1 });
-    state.filteredData = getVisibleData();
-    renderEntryList(); renderEditor(); markUnsaved();
+    teAddEntry(templates[group] || { _group: group, name: '', weight: 1 });
 }
 
 // ── Row builders ──────────────────────────────────────────────────────────────
@@ -236,6 +229,8 @@ registerEditor('hexgen', {
         `<span style="font-size:11px;color:#c87830;opacity:.7">Editing all ${state.data.length} entries</span>`,
 
     render: () => renderHexgenTable(),
+
+    qcCount: (data) => qcCountBlankEntries(data),
 
     newEntry: (group) => {
         switch (group) {

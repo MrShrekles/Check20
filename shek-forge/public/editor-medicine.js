@@ -1,27 +1,14 @@
 // ── MEDICINE TABLE EDITOR ─────────────────────────────────────────────────────
 
-function updateMedField(idx, field, value) {
-    if (state.data[idx]) state.data[idx][field] = value;
-    markUnsaved();
-}
+function updateMedField(idx, field, value) { teSetField(idx, field, value); }
 
-function removeMedEntry(idx) {
-    state.data.splice(idx, 1);
-    state.filteredData = getVisibleData();
-    renderEntryList(); renderEditor(); markUnsaved();
-}
+function removeMedEntry(idx) { teRemoveEntry(idx); }
 
 function addMedEntry(category) {
     const entry = category === 'effects'
         ? { category, name: '', value: '' }
         : { category, value: '' };
-    state.data.push(entry);
-    state.filteredData = getVisibleData();
-    renderEntryList(); renderEditor(); markUnsaved();
-    setTimeout(() => {
-        const inputs = document.querySelectorAll(`.te-chip-input[data-cat="${category}"], .te-row-input[data-cat="${category}"]`);
-        if (inputs.length) inputs[inputs.length - 1].focus();
-    }, 50);
+    teAddEntry(entry, `.te-chip-input[data-cat="${category}"], .te-row-input[data-cat="${category}"]`);
 }
 
 function renderMedicineTable() {
@@ -107,6 +94,7 @@ registerEditor('medicine', {
     newEntry: (group) => group === 'effects'
         ? { category: group || 'prefix', name: '', value: '' }
         : { category: group || 'prefix', value: '' },
+    qcCount: (data) => qcCountBlankEntries(data),
     render: () => renderMedicineTable(),
     headerActions: () => `<span style="font-size:11px;color:#44bb88;opacity:.7">Editing all ${state.data.length} entries</span>`,
 });

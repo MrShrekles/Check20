@@ -909,3 +909,132 @@ on('chat:message', function (msg) {
 
     sendChat('Monster Forge', `/w gm ✅ "${data.name}" imported as a Minion. Find it in the Journal.`);
 });
+
+// ── CONDITION TOOLTIPS ────────────────────────────────────────────────────
+// A token's tooltip is the union of two sources:
+//   1. The linked character's condition checkboxes (attr_bleeding, attr_prone, etc.)
+//   2. Per-TOKEN conditions stored in script state, keyed by token id.
+// Source 2 exists because many NPC tokens (e.g. a pack of goblins) all
+// `represents` the same shared stat-block character — toggling a checkbox on
+// that one shared sheet would wrongly affect every copy. Per-token state
+// sidesteps that, and also works on tokens with no linked character at all.
+const CONDITION_ATTRS = [
+    'bleeding', 'broken', 'concussion', 'coughing', 'dislocation', 'slowed',
+    'pinned', 'prone', 'blind', 'charmed', 'confused', 'deaf', 'fear',
+    'intangible', 'invisible', 'exhaustion', 'stunned', 'constrained',
+    'unconscious', 'exposed', 'injured', 'death'
+];
+
+function tokenConditionState() {
+    state.ARC20 = state.ARC20 || {};
+    state.ARC20.tokenConditions = state.ARC20.tokenConditions || {};
+    return state.ARC20.tokenConditions;
+}
+
+function getTokenConditions(tokenId) {
+    return tokenConditionState()[tokenId] || [];
+}
+
+function setTokenConditions(tokenId, list) {
+    tokenConditionState()[tokenId] = list;
+}
+
+function sheetConditions(characterId) {
+    if (!characterId) return [];
+    return CONDITION_ATTRS.filter(name => {
+        const attr = findObjs({ type: 'attribute', characterid: characterId, name })[0];
+        return attr && attr.get('current') == 1;
+    });
+}
+
+function refreshTokenTooltip(token) {
+    const combined = new Set([
+        ...sheetConditions(token.get('represents')),
+        ...getTokenConditions(token.id)
+    ]);
+    const text = Array.from(combined)
+        .map(name => name.charAt(0).toUpperCase() + name.slice(1))
+        .join(', ');
+    token.set({ tooltip: text, show_tooltip: !!text });
+}
+
+function refreshTokensForCharacter(characterId) {
+    if (!characterId) return;
+    findObjs({ _type: 'graphic', represents: characterId }).forEach(refreshTokenTooltip);
+}
+
+on('change:attribute', attr => {
+    if (CONDITION_ATTRS.includes(attr.get('name'))) {
+        refreshTokensForCharacter(attr.get('_characterid'));
+    }
+});
+
+on('add:attribute', attr => {
+    if (CONDITION_ATTRS.includes(attr.get('name'))) {
+        refreshTokensForCharacter(attr.get('_characterid'));
+    }
+});
+
+on('add:graphic', refreshTokenTooltip);
+
+on('destroy:graphic', token => {
+    delete tokenConditionState()[token.id];
+});
+
+on('chat:message', msg => {
+    if (msg.type !== 'api' || msg.content !== '!refreshconditions') return;
+    if (!msg.selected || !msg.selected.length) {
+        sendChat('API', '/w gm Select one or more tokens to refresh their condition tooltips.');
+        return;
+    }
+    msg.selected.forEach(sel => {
+        const token = getObj('graphic', sel._id);
+        if (token) refreshTokenTooltip(token);
+    });
+    sendChat('API', '/w gm Condition tooltips refreshed.');
+});
+
+// !condition <ConditionName> <on|off|toggle> — applies to all selected tokens.
+// Stored per-token, so it's safe to use on multiple tokens sharing one NPC
+// stat block, or on tokens with no linked character at all.
+on('chat:message', msg => {
+    if (msg.type !== 'api' || !msg.content.startsWith('!condition ')) return;
+
+    const parts = msg.content.replace('!condition ', '').trim().split(/\s+/);
+    const mode = (parts.length > 1 ? parts.pop() : 'toggle').toLowerCase();
+    const conditionName = parts.join(' ').toLowerCase();
+
+    if (!CONDITION_ATTRS.includes(conditionName)) {
+        sendChat('API', `/w gm Unknown condition "${parts.join(' ')}". Valid: ${CONDITION_ATTRS.join(', ')}`);
+        return;
+    }
+    if (!['on', 'off', 'toggle'].includes(mode)) {
+        sendChat('API', '/w gm Usage: !condition <Name> <on|off|toggle>');
+        return;
+    }
+    if (!msg.selected || !msg.selected.length) {
+        sendChat('API', '/w gm Select one or more tokens to apply the condition to.');
+        return;
+    }
+
+    const label = conditionName.charAt(0).toUpperCase() + conditionName.slice(1);
+
+    msg.selected.forEach(sel => {
+        const token = getObj('graphic', sel._id);
+        if (!token) return;
+
+        const current = getTokenConditions(token.id);
+        const currentlyOn = current.includes(conditionName);
+        const nextOn = mode === 'on' ? true : mode === 'off' ? false : !currentlyOn;
+
+        const next = nextOn
+            ? Array.from(new Set([...current, conditionName]))
+            : current.filter(name => name !== conditionName);
+        setTokenConditions(token.id, next);
+
+        refreshTokenTooltip(token);
+
+        const tokenName = token.get('name') || 'Token';
+        sendChat('API', `&{template:shek} {{name=${tokenName}}} {{Condition=${nextOn ? `Gained ${label}` : `Recovered from ${label}`}}}`);
+    });
+});

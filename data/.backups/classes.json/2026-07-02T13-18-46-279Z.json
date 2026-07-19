@@ -1,0 +1,158 @@
+{
+  "classes": [
+    {
+      "name": "Tank",
+      "description": "As a Tank, your character embodies the very essence of strength, resilience, and unyielding fortitude. You are the shield that safeguards your allies, the bulwark that stands firm in the face of the enemy onslaught. With every swing of your weapon, you command the battlefield, drawing the attention of foes and absorbing their blows that would otherwise kill your companions and many other creatures as well. Your unmatched stamina and formidable armor make you a veritable living fortress, capable of withstanding onslaughts that would obliterate the less hardy. However, the Tank's might in combat comes with a trade-off. In situations that require finesse, diplomacy, or arcane knowledge, you may find yourself akin to a fish out of water. While your strength and endurance are beyond question, tasks that involve subtlety, stealth, or intricate problem-solving might present a challenge. It's in these moments that you'll need to rely on your allies, just as they depend on your unwavering protection in battle. As a Tank, your role is not to master every situation, but to provide a rock-solid foundation from which your group can confront any danger. Always remember, true strength comes not just from physical power, but from knowing your limits and trusting in your comrades.",
+      "features": [
+        {
+          "name": "Heavy",
+          "description": [
+            "Gain +10 Wounds, suffer no penalties from wearing armor, and may carry 3 hefty items before becoming Pinned."
+          ]
+        },
+        {
+          "name": "Bolster",
+          "description": "Gain +1 Bolster at the start of your turn in combat. Spend 1 Bolster to heal [[1d4]] and remove 1 condition as a Half-Action, or gain [[1d4]] to an attack check and damage roll."
+        }
+      ],
+      "equipment": [
+        {
+          "name": "Heavy Armor",
+          "description": "Hefty; Armor: 20; Bulk: 4"
+        },
+        {
+          "name": "Morningstar",
+          "description": "1d6 Impact; Agility, Strength; Melee; 1 hand, Light; Bulk: 2"
+        },
+        {
+          "name": "Great Sword",
+          "description": "3d6 Slashing; Agility, Strength; Reach; 2 Hand, Hefty; Bulk: 3"
+        },
+        {
+          "name": "Siege Crossbow",
+          "description": "2d6 Piercing; Strength; Medium; 2 hand, Hefty, Tech, Reload; Bulk: 2"
+        }
+      ]
+    },
+    {
+      "name": "Professional",
+      "description": "The Professional is a seasoned individual, having faced the tumultuous tides of time and emerging as a beacon of resilience and expertise. Whether they've survived the brutal trenches of war or navigated the intricate politics of the big city, their experiences have crafted them into unparalleled specialists in their fields. They are the ex-military tacticians employing strategies in the boardroom, the seasoned detectives with an uncanny ability to read a crime scene, or the old-time engineers who've seen the rise of the modern age. Their scars, both visible and hidden, are a testament to their enduring spirit, their stories etched in every line on their face.",
+      "features": [
+        {
+          "name": "Professional Knowledge",
+          "description": "At character creation, gain an additional 5 points towards your checks to a maximum of 15 for any check, reflecting your wealth of experience."
+        },
+        {
+          "name": "Tactical Assessment",
+          "description": "As an off-action targeting a creature within short range, gain advantage on checks against them until the end of your next turn, using your experience discerning a target's vulnerabilities and strengths."
+        }
+      ],
+      "equipment": [
+        {
+          "name": "Scout's Armor",
+          "description": "Armor: 8; Bulk: 2; Stealth +1, Magic -1"
+        },
+        {
+          "name": "Light Shield",
+          "description": "Armor: 3; Bulk: 2"
+        },
+        {
+          "name": "Semi-Automatic Pistol",
+          "description": "3d4! Piercing; Agility, Intellect, Luck, Observation; Medium; 1 Hand, Light; Bulk: 1"
+        },
+        {
+          "name": "Hookblade",
+          "description": "1d6 Slashing; Agility, Observation, Stealth, Strength; Melee; 1 Hand, Light; Bulk: 1"
+        }
+      ]
+    },
+    {
+      "name": "Support",
+      "description": "As the quintessential support specialist, this class is the embodiment of both the moral compass guiding their allies toward righteous victories and the sinner's wingman, offering redemption and support in their quest for atonement. This character thrives in the role of empowering and protecting their comrades, utilizing a keen understanding of both the battlefield and the human spirit.",
+      "features": [
+        {
+          "name": "Inspiration",
+          "description": "You have 5 Inspirations. Recover 1 on a Press On or all on a Long Rest. As an action, you may spend 1 Inspiration, or as a half-action or off-action spend 2 Inspirations, to touch a creature and choose an effect. You can heal +10 wounds, repair 4 armor, remove one condition, grant advantage to the next check, or reduce a curse or disease by 1. Permanent afflictions cannot be removed in this way."
+        },
+        {
+          "name": "Unhindered Movement",
+          "description": "Needing the ability to get to those you care for, your movement does not provoke, and you can also fall from a Short Range without taking damage."
+        }
+      ],
+      "equipment": [
+        {
+          "name": "Traveler's Cloak",
+          "description": "Armor: 7; Bulk: 1; Survival +1, Observation +1"
+        },
+        {
+          "name": "Lantern Mace",
+          "description": "1d6 Solar; Agility, Strength; Melee; 1 hand, Light; Bulk: 1"
+        },
+        {
+          "name": "Pistol",
+          "description": "2d4! Piercing; Agility, Intellect, Luck, Observation; Medium; 1 Hand, Light; Bulk: 2"
+        }
+      ]
+    },
+    {
+      "name": "Merchant",
+      "description": "A shrewd and resourceful individual who knows how to make a profit no matter the circumstances. The Merchant is a master of trade and commerce, always looking for new opportunities to expand their business and increase their wealth. They are not content to simply rely on combat and adventuring to earn a living. Instead, they think beyond these traditional means and use their wits and cunning to get ahead. Whether it's looking for valuable items to sell or stealing from a dragon's hoard to further a political campaign, the Merchant of Adventure is always one step ahead.",
+      "features": [
+        {
+          "name": "Merchant Token",
+          "description": "You have 3 Merchant Tokens (coin, tattoo, ring, or similar). Regain 1 on a long rest. You may spend tokens on the following: duplicate a consumable (potion, scroll, or single-use item) that lasts 1 day; restore a once per day feature; restore +3 Mana; or imbue a spell of 3 cost or higher with permanence at the moment of casting, lasting until dispelled or destroyed."
+        },
+        {
+          "name": "Investment",
+          "description": "You may invest a Merchant Token into up to 3 businesses of your choice, agreed upon between you and your Narrator. On each long rest, make an Influence check per active investment, per success, regain 1 Merchant Token to maximum and gain 1 Loyalty point with that business or faction."
+        },
+        {
+          "name": "Appraisal",
+          "description": "As an action, quickly assess item values, identify if they're magical and their Origin(s). Or with a Spirit check determine if they are cursed and how much the item would sell for"
+        }
+      ],
+      "equipment": [
+        {
+          "name": "Light Armor",
+          "description": "Armor: 5; Bulk: 1; Stealth +1, Agility +1"
+        },
+        {
+          "name": "Cane Sword",
+          "description": "1d6 Piercing; Agility, Strength; Melee; 1 hand, Light; Bulk: 1"
+        },
+        {
+          "name": "Revolver",
+          "description": "3d4! Piercing; Agility, Intellect, Luck, Observation; Medium; 1 Hand; Bulk: 1"
+        }
+      ]
+    },
+    {
+      "name": "Mage",
+      "description": "As a mage, you are a weaver of magic and a master of mysterious forces. Your power is formidable, but it's also unpredictable, and you'll need a creative mind to control it. Unlike other classes, your spellcasting doesn't rely on a pre-set list of spells. Instead, you combine magic words to create your own unique spells. This path is not without its risks and challenges. Your magic can have both positive and negative outcomes, and it's crucial to learn how to manage these ups and downs. One of the crucial aspects of being a mage is the practice of recording and sharing your knowledge. Whether you pass on your wisdom through spellbooks or spiritual knowledge transfer, your experiences and discoveries become a legacy for future characters you play because they all share your soul.",
+      "features": [
+        {
+          "name": "Archmage",
+          "description": "You have surpassed the limits of conventional spellcasting. Your spells require no spoken words or gestures. Once per day, cast a spell costing 3 SP or less as an Off-Action."
+        },
+        {
+          "name": "Spellburn",
+          "description": "Your magic leaves a mark. Your damaging spells deal +2 damage"
+        }
+      ],
+      "equipment": [
+        {
+          "name": "Arcane Robes",
+          "description": "Armor: 15; Bulk: 2; Move Penalty: -10"
+        },
+        {
+          "name": "Fire Wand",
+          "description": "1d6 Fire damage; Check: Spellcasting; Short; 1 hand; Bulk: 1;"
+        },
+        {
+          "name": "Shortsword",
+          "description": "1d6 Slashing; Agility, Strength; Melee; 1 hand, Light; Bulk: 1"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,635 @@
+/* ============================================================
+   ARC20 PLAYER SHEET — THEME
+   Light values live on :root (Roll20 default/light mode).
+   Dark overrides apply under body.sheet-darkmode.
+   ============================================================ */
+:root {
+    --bg-1: #f4f1e8;
+    --bg-2: #ffffff;
+    --bg-3: #d8d2c0;
+    --theme-1: #dbe8e6;
+    --theme-2: #2f4f4f;
+    --theme-3: #3f6363;
+    --warm-1: #f0e0d0;
+    --warm-2: #c98a53;
+    --warm-3: #5f2d19;
+    --gold-1: #fff3cf;
+    --gold-2: #af8000;
+    --gold-3: #7a5c00;
+    --text-plain: #262421;
+    --text-cream: #4a4030;
+    --text-gold: #7a5c00;
+    --text-inverse: #fffaf0;
+    --danger: #a3312a;
+    --danger-bg: #f6dedd;
+    --ok: #2f6f4f;
+    --radius: 5px;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    --font-head: Cambria, Cochin, Georgia, 'Times New Roman', serif;
+    --font-body: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body.sheet-darkmode {
+    --bg-1: #0a0a0a;
+    --bg-2: #1e1e1e;
+    --bg-3: #3a3a3a;
+    --theme-1: #1b2c2c;
+    --theme-2: #2f4f4f;
+    --theme-3: #4c6e6e;
+    --warm-1: #5f2d19;
+    --warm-2: #8b4a2f;
+    --warm-3: #d9b382;
+    --gold-1: #664900;
+    --gold-2: #af8000;
+    --gold-3: #ffd700;
+    --text-plain: #fffaf0;
+    --text-cream: #f0e5c5;
+    --text-gold: #ffd700;
+    --text-inverse: #fffaf0;
+    --danger: #e0736c;
+    --danger-bg: #3a1414;
+    --ok: #7fbf9f;
+    --shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+.charsheet,
+.charsheet * {
+    box-sizing: border-box;
+}
+
+.charsheet {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--text-plain);
+    background: var(--bg-1);
+    max-width: 760px;
+}
+
+.charsheet input[type="text"],
+.charsheet input[type="number"],
+.charsheet select,
+.charsheet textarea {
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--text-plain);
+    background: var(--bg-2);
+    border: 1px solid var(--bg-3);
+    border-radius: 3px;
+    padding: 2px 4px;
+}
+
+.charsheet textarea {
+    width: 100%;
+    resize: vertical;
+}
+
+.charsheet label {
+    font-size: 11px;
+    color: var(--theme-3);
+    font-weight: 600;
+}
+
+.charsheet h1,
+.charsheet h2,
+.charsheet h3,
+.charsheet h4 {
+    font-family: var(--font-head);
+    color: var(--text-gold);
+    margin: 0 0 4px;
+}
+
+#c20logo {
+    display: block;
+    max-width: 140px;
+    margin: 0 auto 6px;
+}
+
+/* ============================================================
+   TAB NAVIGATION (radio-driven)
+   ============================================================ */
+.sheet-tabs input[name="attr_tab"] {
+    display: none;
+}
+
+.sheet-tabs nav.tabs {
+    display: flex;
+    gap: 2px;
+    border-bottom: 2px solid var(--theme-2);
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+
+.sheet-tabs nav.tabs label.tab {
+    flex: 1 1 auto;
+    text-align: center;
+    padding: 6px 4px;
+    background: var(--theme-1);
+    color: var(--theme-3);
+    border: 1px solid var(--theme-2);
+    border-bottom: none;
+    border-top-left-radius: var(--radius);
+    border-top-right-radius: var(--radius);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.sheet-tabs .content > .tab-page {
+    display: none;
+    animation: arc20-fade .12s ease-in;
+}
+
+@keyframes arc20-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#tab-combat:checked ~ .content #combat-content,
+#tab-inventory:checked ~ .content #inventory-content,
+#tab-progression:checked ~ .content #progression-content,
+#tab-conditions:checked ~ .content #conditions-content,
+#tab-reference:checked ~ .content #reference-content {
+    display: block;
+}
+
+#tab-combat:checked ~ nav.tabs label[for="tab-combat"],
+#tab-inventory:checked ~ nav.tabs label[for="tab-inventory"],
+#tab-progression:checked ~ nav.tabs label[for="tab-progression"],
+#tab-conditions:checked ~ nav.tabs label[for="tab-conditions"],
+#tab-reference:checked ~ nav.tabs label[for="tab-reference"] {
+    background: var(--theme-2);
+    color: var(--text-inverse);
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.two-col {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.two-col > .col {
+    flex: 1 1 50%;
+    min-width: 0;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin-bottom: 4px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 8px;
+}
+
+/* ============================================================
+   COLLAPSIBLE SECTIONS
+   ============================================================ */
+.charsheet details.section {
+    border: 1px solid var(--theme-2);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    box-shadow: var(--shadow);
+    margin-bottom: 6px;
+}
+
+.charsheet details.section > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 5px 8px;
+    background: var(--theme-1);
+    color: var(--theme-3);
+    font-weight: 700;
+    font-size: 12px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.charsheet details.section > summary::-webkit-details-marker {
+    display: none;
+}
+
+.charsheet details.section > summary::after {
+    content: "▸";
+    transition: transform .1s;
+}
+
+.charsheet details.section[open] > summary::after {
+    transform: rotate(90deg);
+}
+
+.charsheet details.section > summary::marker {
+    content: "";
+}
+
+.section-body {
+    padding: 6px 8px;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.charsheet button,
+.charsheet button.roll,
+.charsheet button.croll {
+    font-family: var(--font-body);
+    background: var(--theme-2);
+    color: var(--text-inverse);
+    border: 1px solid var(--theme-3);
+    border-radius: 3px;
+    padding: 3px 7px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.charsheet button:hover {
+    background: var(--theme-3);
+}
+
+.charsheet button.gold {
+    background: var(--gold-2);
+    border-color: var(--gold-3);
+    color: #211a00;
+}
+
+.charsheet button.wide {
+    width: 100%;
+}
+
+.roll-mode-toggle {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--theme-2);
+    border-radius: var(--radius);
+    overflow: hidden;
+    width: fit-content;
+}
+
+.roll-mode-toggle input[type="radio"] {
+    display: none;
+}
+
+.roll-mode-toggle label {
+    padding: 3px 10px;
+    background: var(--bg-2);
+    color: var(--theme-3);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+    border-right: 1px solid var(--theme-2);
+}
+
+.roll-mode-toggle label:last-child {
+    border-right: none;
+}
+
+#rollmode_normal:checked ~ .roll-mode-toggle label[for="rollmode_normal"],
+#rollmode_adv:checked ~ .roll-mode-toggle label[for="rollmode_adv"],
+#rollmode_dis:checked ~ .roll-mode-toggle label[for="rollmode_dis"] {
+    background: var(--theme-2);
+    color: var(--text-inverse);
+}
+
+/* ============================================================
+   TABLES — health / checks / resources
+   ============================================================ */
+.charsheet table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.charsheet table.stat-table td,
+.charsheet table.stat-table th {
+    padding: 3px 4px;
+    border-bottom: 1px solid var(--bg-3);
+    text-align: center;
+    font-size: 11px;
+}
+
+.charsheet table.stat-table th {
+    color: var(--theme-3);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 10px;
+}
+
+.charsheet table.stat-table td:first-child {
+    text-align: left;
+}
+
+.charsheet table.stat-table input {
+    width: 42px;
+    text-align: center;
+}
+
+.formula-hint {
+    display: block;
+    font-size: 9px;
+    color: var(--theme-3);
+    font-weight: 400;
+}
+
+.check-btn {
+    width: 100%;
+    text-align: left;
+}
+
+/* ============================================================
+   CONDITIONS CHECKLIST
+   ============================================================ */
+.cond-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px 12px;
+}
+
+.cond-cat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--warm-2);
+    font-weight: 700;
+    margin: 4px 0 2px;
+    grid-column: 1 / -1;
+    border-bottom: 1px solid var(--bg-3);
+}
+
+.cond-item {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-plain);
+}
+
+.cond-item .cond-desc {
+    color: var(--theme-3);
+    font-size: 10px;
+}
+
+.active-conditions-box {
+    margin-top: 6px;
+    padding: 4px 6px;
+    background: var(--danger-bg);
+    border: 1px solid var(--danger);
+    border-radius: var(--radius);
+    color: var(--danger);
+    font-size: 11px;
+    min-height: 16px;
+}
+
+/* ============================================================
+   REPEATING SECTIONS — weapons / armor / items / npc / features
+   ============================================================ */
+.charsheet fieldset {
+    border: none;
+    padding: 0;
+    margin: 0 0 4px;
+}
+
+.rep-row {
+    border: 1px solid var(--bg-3);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    margin-bottom: 4px;
+}
+
+.rep-row > summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    padding: 4px 6px;
+}
+
+.rep-row > summary::-webkit-details-marker {
+    display: none;
+}
+
+.rep-row > summary::marker {
+    content: "";
+}
+
+.rep-row summary input[type="text"] {
+    flex: 1 1 auto;
+    font-weight: 700;
+}
+
+.rep-row .rep-body {
+    padding: 4px 8px 6px;
+    border-top: 1px solid var(--bg-3);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+}
+
+.rep-row .rep-body .form-row {
+    flex: 1 1 120px;
+}
+
+.rep-row .rep-body textarea {
+    flex: 1 1 100%;
+}
+
+.repcontrol_add,
+.repcontrol_del {
+    border: 1px solid var(--theme-2) !important;
+}
+
+/* simple flat tables (armor / items / npc) */
+table.flat-table td,
+table.flat-table th {
+    border: 1px solid var(--bg-3);
+    padding: 3px 5px;
+    font-size: 11px;
+}
+
+table.flat-table th {
+    background: var(--theme-1);
+    color: var(--theme-3);
+}
+
+/* ============================================================
+   REFERENCE TAB — conditions table + damage grid + quick ref cards
+   ============================================================ */
+.ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 8px;
+}
+
+.ref-table th,
+.ref-table td {
+    border: 1px solid var(--bg-3);
+    padding: 4px 6px;
+    font-size: 11px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.ref-table th {
+    background: var(--theme-1);
+    color: var(--theme-3);
+}
+
+.ref-table tr.category-row td {
+    background: var(--warm-1);
+    color: var(--warm-3);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 10px;
+}
+
+.damage-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+}
+
+.damage-box {
+    border: 1px solid var(--bg-3);
+    border-radius: var(--radius);
+    padding: 4px 6px;
+    background: var(--bg-2);
+}
+
+.damage-box h4 {
+    margin: 0 0 3px;
+    font-size: 11px;
+    color: var(--text-gold);
+    border-bottom: 1px solid var(--bg-3);
+}
+
+.damage-box ol {
+    margin: 0;
+    padding-left: 16px;
+    font-size: 10px;
+    color: var(--text-plain);
+}
+
+.ref-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.ref-card {
+    border: 1px solid var(--bg-3);
+    border-radius: var(--radius);
+    padding: 5px 7px;
+    background: var(--bg-2);
+}
+
+.ref-card h4 {
+    margin: 0 0 3px;
+    font-size: 11px;
+    color: var(--text-gold);
+}
+
+.ref-card ul {
+    margin: 0;
+    padding-left: 14px;
+    font-size: 10.5px;
+}
+
+.ref-card li {
+    margin-bottom: 2px;
+}
+
+/* ============================================================
+   ROLL TEMPLATE — &{template:arc20}
+   ============================================================ */
+.sheet-rolltemplate-arc20 .sheet-container {
+    font-family: var(--font-head);
+    color: var(--text-inverse);
+    background: #1e1e1e;
+    border: 2px solid #2f4f4f;
+    border-radius: 6px;
+    padding: 3px;
+}
+
+.sheet-rolltemplate-arc20 .sheet-header {
+    background: #2f4f4f;
+    color: #ffd700;
+    font-size: 1.15em;
+    text-align: center;
+    padding: 3px;
+    border-radius: 4px 4px 0 0;
+}
+
+.sheet-rolltemplate-arc20 .sheet-content {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 6px;
+    padding: 4px;
+    align-items: center;
+}
+
+.sheet-rolltemplate-arc20 .sheet-key {
+    color: #d9b382;
+    font-weight: 700;
+    text-align: right;
+    font-size: 0.95em;
+}
+
+.sheet-rolltemplate-arc20 .sheet-value {
+    background: #2a3a3a;
+    color: #f0e5c5;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+.sheet-rolltemplate-arc20 .sheet-desc {
+    grid-column: span 2;
+    background: #2a3a3a;
+    color: #e0cda7;
+    padding: 3px 5px;
+    border-radius: 4px;
+    font-style: italic;
+}
+
+.sheet-rolltemplate-arc20 .sheet-cond {
+    grid-column: span 2;
+    background: #3a1414;
+    color: #e08a84;
+    padding: 3px 5px;
+    border-radius: 4px;
+    font-style: italic;
+}
+
+.sheet-rolltemplate-arc20 .inlinerollresult {
+    background: transparent;
+    border: none;
+    font-weight: 700;
+}
+
+.sheet-rolltemplate-arc20 .inlinerollresult.fullcrit {
+    color: #7fe07f;
+}
+
+.sheet-rolltemplate-arc20 .inlinerollresult.fullfail {
+    color: #e0736c;
+}
+
+/* ============================================================
+   PRINT / NO-PRINT (n/a in Roll20 but harmless if pasted elsewhere)
+   ============================================================ */
+.no-sheet {
+    display: none;
+}

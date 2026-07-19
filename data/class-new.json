@@ -19,7 +19,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -38,14 +39,15 @@
               "step": 2,
               "name": "Rage-Driven",
               "action": "Special",
-              "check": "Intellect, Strength",
+              "check": "Intellect",
               "range": "",
               "description": "After you spend a Bolster, your next successful melee attack or spell deals additional damage equal to your Strength or Intellect.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -53,7 +55,7 @@
               "action": "Special",
               "check": "",
               "range": "Reach",
-              "description": "At the end of your turn, you may teleport up to reach range. This movement does not provoke",
+              "description": "At the end of your turn, you may teleport up to reach range. This movement does not Provoke",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -773,7 +775,7 @@
               "action": "Upgrade",
               "check": "",
               "range": "Medium",
-              "description": "Unleash a 'crescendo' by conducting an explosive symphony of elemental energy that pulses outward in rhythmic waves. Each wave deals elemental damage and disrupts nearby enemies' abilities to act (inflicts the Deafened or Confused condition). At the end of the duration, take the Exhaustion and Stunned conditions",
+              "description": "Unleash a 'crescendo' by conducting an explosive symphony of elemental energy that pulses outward in rhythmic waves. Each wave deals elemental damage and disrupts nearby enemies' abilities to act (inflicts the Deaf or Confused condition). At the end of the duration, take the Exhaustion and Stunned conditions",
               "duration": "Until the end of your next turn",
               "damage": "Check",
               "damageType": "Elemental",
@@ -8385,7 +8387,7 @@
               "check": "",
               "range": "",
               "description": "Once per day, at the start of combat, you may declare that you will fire only once. If your first Sniper Rifle attack hits, it deals triple damage and imposes one non-major condition such as Broken, Fear, or Bleeding, chosen by you. If the attack misses, the rifle refuses to fire again for 1 minute",
-              "duration": "",
+              "duration": "1 minute",
               "damage": "",
               "damageType": "",
               "armor": "",
@@ -8722,7 +8724,7 @@
         "class": "professional",
         "name": "Reaper",
         "origin": "celestial",
-        "desc": "",
+        "desc": "The night is heavy with rain. You crouch atop the roof across from a corrupt banker's home, watching through the glass as he swirls fine brandy by the fire. The window sits nearly open. You slip through it and drop into the room without a sound.\nYour blade finds his throat before he knows you were ever there. You notice the other creature in the room, but your work is already done, and you are already gone.\nThey turn. They see the blood pooling across the floor. They scream.\nYou are the angel of death.",
         "path": {
           "steps": [
             {
@@ -12111,7 +12113,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -12150,7 +12153,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 6,
@@ -12241,7 +12245,8 @@
               "damage": "",
               "damageType": "",
               "armor": 5,
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -12286,27 +12291,29 @@
               "step": 4,
               "name": "Binding",
               "action": "Upgrade",
-              "check": "",
+              "check": "Influence",
               "range": "",
               "description": "When you see a demon or Vozian creature, you may make a contested Influence check. On a success, you bind the creature with the Charm condition. While charmed this way, it has Disadvantage on attacks against your allies and will obey simple, non-harmful tasks for 1 minute. You may only have one creature bound in this way at a time.",
               "duration": "1 minute",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed"
+              "condition": "Charmed",
+              "checkType": "contested"
             },
             {
               "step": 5,
               "name": "Redmark III",
               "action": "Upgrade",
-              "check": "",
+              "check": "Influence",
               "range": "",
               "description": "Your Redmark remains for 1 hour, and you always know the general direction and location of your Redmarked target. You have Advantage on Observation, Influence, and Spirit checks against them. When you make an Influence check against them, they gain the Fear condition",
               "duration": "1 hour",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": "Fear",
+              "checkType": "self"
             },
             {
               "step": 6,
@@ -12351,14 +12358,15 @@
               "step": 9,
               "name": "Redmark V",
               "action": "Upgrade",
-              "check": "Influence",
+              "check": "Physical",
               "range": "",
-              "description": "Your Redmarks remain for 1 week, and you may now Redmark up to 4 creatures at once. For each Redmarked creature gain +1 Influence. When you cause the fear condition, all your Redmarked creatures must make a Survival check or take the Fear condition as well",
+              "description": "Your Redmarks remain for 1 week, and you may now Redmark up to 4 creatures at once. For each Redmarked creature gain +1 Influence. When you cause the fear condition, all your Redmarked creatures must make a Physical check or take the Fear condition as well",
               "duration": "1 week",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": "Fear",
+              "checkType": "enemy"
             },
             {
               "step": 10,
@@ -12388,7 +12396,7 @@
           "steps": [
             {
               "step": 0,
-              "name": "Bloom",
+              "name": "Dread",
               "action": "Action",
               "check": "",
               "range": "Short",
@@ -12410,7 +12418,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -12440,11 +12449,11 @@
             },
             {
               "step": 9,
-              "name": "Bloomling",
+              "name": "Dreadspawn",
               "action": "Action",
               "check": "",
               "range": "Reach",
-              "description": "You summon a PL 3 Dreadspawn, a lesser fear-echo shaped from draconic presence. It manifests at the site of your Dread Bloom and attacks as part of the same action.",
+              "description": "You summon a PL 3 Dreadspawn, a lesser fear-echo shaped from draconic presence. It manifests at the site of your Dread and attacks as part of the same action.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -12453,16 +12462,17 @@
             },
             {
               "step": 4,
-              "name": "Bloom II",
+              "name": "Dread II",
               "action": "Upgrade",
-              "check": "Survival",
+              "check": "Physical",
               "range": "",
-              "description": "Creatures hit with Bloom must make a Survival check or take the Fear condition",
+              "description": "Creatures hit with Dread must make a Physical check or take the Fear condition",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": "Fear",
+              "checkType": "enemy"
             },
             {
               "step": 5,
@@ -12479,16 +12489,17 @@
             },
             {
               "step": 6,
-              "name": "Bloom III",
+              "name": "Dread III",
               "action": "Upgrade",
-              "check": "survival",
+              "check": "Physical",
               "range": "",
-              "description": "Creatures hit with Bloom and fail the survival check also take the Exposed condition",
+              "description": "Creatures hit with Dread and fail the Physical check also take the Exposed condition",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Exposed"
+              "condition": "Exposed",
+              "checkType": "enemy"
             },
             {
               "step": 7,
@@ -12505,24 +12516,25 @@
             },
             {
               "step": 8,
-              "name": "Bloom IV",
+              "name": "Dread IV",
               "action": "Upgrade",
               "check": "Survival",
               "range": "",
-              "description": "Your Bloom deals damage equal to your Survival check",
+              "description": "Dread deals damage equal to your Survival check",
               "duration": "",
               "damage": "Check",
               "damageType": "Toxic",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 10,
-              "name": "Bloomling II",
+              "name": "Dreadspawn II",
               "action": "Upgrade",
               "check": "",
               "range": "",
-              "description": "You may summon three Dreadspawn at once, or instead manifest a single PL 10 Dreadlord, a towering avatar of stolen dragon fear.",
+              "description": "You may summon three Dreadspawn at once, or instead manifest a single PL 9 Dreadwing, a towering avatar of dragon fear.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -12735,20 +12747,22 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 3,
               "name": "Arbiter",
-              "action": "Special",
+              "action": "Off-Action",
               "check": "Crafting",
               "range": "",
-              "description": "Once per day when an ally within short range survives a hit that would have reduced them to 0 Wounds, the scales tip in your favor. Regain 1 Merchant Token as Exembar acknowledges the balance preserved.",
+              "description": "Once per day as an off-action when an ally within short range takes damage that would reduce them to 0 Wounds, prevent the damage.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 4,
@@ -12778,16 +12792,17 @@
             },
             {
               "step": 6,
-              "name": "Vehicle II",
-              "action": "Upgrade",
+              "name": "Vehicle",
+              "action": "Action",
               "check": "Crafting",
               "range": "",
-              "description": "During a long rest, make a Crafting check to consecrate and construct a blessed war platform or celestial carriage. Its PL is 3 per success up to a maximum of PL 9. It carries up to 6 passengers, handles any terrain, and allies inside gain +3 armor from its divine plating.",
+              "description": "During a long rest, make a Crafting check to consecrate and construct a blessed war platform or celestial carriage. Its PL is 3 per success up to a maximum of PL 9. It carries up to 6 passengers, handles any terrain, and allies inside gain +10 armor from its divine plating.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 7,
@@ -12813,7 +12828,8 @@
               "damage": "3d6",
               "damageType": "Impact",
               "armor": "",
-              "condition": "Confused"
+              "condition": "Confused",
+              "checkType": "enemy"
             },
             {
               "step": 9,
@@ -12821,12 +12837,13 @@
               "action": "Upgrade",
               "check": "Crafting",
               "range": "",
-              "description": "You may now have 2 Envoys active simultaneously. When an Envoy is destroyed it releases a burst of radiant energy, all enemies within reach take [[2d6]] radiant damage and must make a Mental check or become Confused until the end of their next turn.",
+              "description": "You may now have 2 Envoys active simultaneously. When an Envoy is destroyed it releases a burst of radiant energy, all enemies within reach take [[2d6]] solar damage and must make a Mental check or become Confused until the end of their next turn.",
               "duration": "",
               "damage": "2d6",
               "damageType": "Solar",
               "armor": "",
-              "condition": "Confused"
+              "condition": "Confused",
+              "checkType": "enemy"
             },
             {
               "step": 10,
@@ -12834,7 +12851,7 @@
               "action": "Resource",
               "check": "",
               "range": "",
-              "description": "Once per day, declare that the scales have tipped too far. All allies within short range have their armor fully repaired and their weapons deal +2 damage until the end of combat. All enemies within short range take -2 to all Physical and Mental checks as cosmic weight presses down on them.",
+              "description": "Once per day, declare that the scales have tipped too far. All allies within short range have their armor fully repaired and their weapons deal +2 damage until the end of combat. All enemies within short range take -2 to all checks as cosmic weight presses down on them.",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -13110,12 +13127,13 @@
               "action": "Action",
               "check": "Survival",
               "range": "",
-              "description": "As an action, send a flurry of razor-sharp loose pages at a creature within short range. Deal [[1d6]] slashing damage and force a Survival check. On failure, the target gains the Bleeding condition.",
+              "description": "As an action, send a flurry of razor-sharp loose pages at a creature within short range. Deal [[1d6]] slashing damage and they must make a Physical check. On failure, the target gains the Bleeding condition.",
               "duration": "",
               "damage": "1d6",
               "damageType": "Slashing",
               "armor": "",
-              "condition": "Bleeding"
+              "condition": "Bleeding",
+              "checkType": "enemy"
             },
             {
               "step": 8,
@@ -13381,40 +13399,43 @@
               "step": 4,
               "name": "Main Dish: Garlic Powder",
               "action": "Upgrade",
-              "check": "Survival",
+              "check": "Physical",
               "range": "",
-              "description": "When you use Main Dish on an enemy, they must pass a Survival check or gain the Coughing condition.",
+              "description": "When you use Main Dish on an enemy, they must pass a Physical check or gain the Coughing condition.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Coughing"
+              "condition": "Coughing",
+              "checkType": "enemy"
             },
             {
               "step": 5,
               "name": "Main Dish: Greasy",
               "action": "Upgrade",
-              "check": "Agility",
+              "check": "Physical",
               "range": "",
-              "description": "When you use Main Dish, enemy targets must pass an Agility check or become Prone.",
+              "description": "When you use Main Dish, enemy targets must pass an Physical check or become Prone.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Prone"
+              "condition": "Prone",
+              "checkType": "enemy"
             },
             {
               "step": 6,
               "name": "Main Dish: Brain Freeze",
               "action": "Upgrade",
-              "check": "Survival",
+              "check": "Physical",
               "range": "",
-              "description": "When you use Main Dish, the target must pass a Survival check or become Slowed until the end of their next turn.",
+              "description": "When you use Main Dish, the target must pass a Physical check or become Slowed until the end of their next turn.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Slowed"
+              "condition": "Slowed",
+              "checkType": "enemy"
             },
             {
               "step": 7,
@@ -13427,7 +13448,7 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "Invisible"
             },
             {
               "step": 8,
@@ -13492,7 +13513,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Broken"
+              "condition": "Broken",
+              "checkType": "enemy"
             },
             {
               "step": 1,
@@ -13505,7 +13527,8 @@
               "damage": "1d6",
               "damageType": "Psychic",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 2,
@@ -13531,7 +13554,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused, Pinned"
+              "condition": "Confused, Pinned",
+              "checkType": "enemy"
             },
             {
               "step": 4,
@@ -13643,12 +13667,13 @@
               "action": "Action",
               "check": "Influence",
               "range": "Reach",
-              "description": "Set up a portable venue (stage, lounge, cart, etc.) that lasts for 1 hour. This stage must be set in a populated area, you must be at the venue the entire time, and you may only have one active at a time. Once during this time, you may perform or engage the crowd. Make an Influence check:\n- 1 success: Gain [[2d20]] gp from tips, wagers, or business.\n- 2+ successes: Attract a notable NPC or faction interest.",
+              "description": "As an action spending 1 Merchant Token, Set up a portable venue (stage, lounge, cart, etc.) that lasts for 1 hour. This stage must be set in a populated area, you must be at the venue the entire time, and you may only have one active at a time. Once during this time, you may perform or engage the crowd. Make an Influence check:\n- 1 success: Gain [[2d20]] gp from tips, wagers, or business.\n- 2+ successes: Attract a notable NPC or faction interest.",
               "duration": "1 hour",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -13708,12 +13733,13 @@
               "action": "Upgrade",
               "check": "Influence",
               "range": "",
-              "description": "When you make the Influence Check, gain a Merchant Token on 3+ successes.",
+              "description": "When you make the Influence Check, regain a Merchant Token on 3+ successes.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 6,
@@ -13734,12 +13760,13 @@
               "action": "Action",
               "check": "Influence",
               "range": "Short",
-              "description": "you can make a grand entrance that captures everyone's attention. Make an Influence Check. For every success, you can impose a Cognition condition of your choice on one enemy within short range. This could be distracting them, disorienting them, or even causing them to underestimate you.",
+              "description": "The first time you enter a location, Make an Influence Check. For every success, you can impose a Cognition condition of your choice on one enemy within short range.",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 8,
@@ -13747,7 +13774,7 @@
               "action": "Special",
               "check": "",
               "range": "",
-              "description": "After you fail a check, spend a Merchant Token to immediately reroll it with a +10 bonus",
+              "description": "After you fail a check, spend a Merchant Token to immediately reroll it with a +5 bonus",
               "duration": "",
               "damage": "",
               "damageType": "",
@@ -13960,7 +13987,8 @@
               "damage": "1d4",
               "damageType": "Impact",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -14012,7 +14040,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": "Fear",
+              "checkType": "enemy"
             },
             {
               "step": 5,
@@ -14038,7 +14067,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 7,
@@ -14116,7 +14146,8 @@
               "damage": "1d6",
               "damageType": "Piercing",
               "armor": 5,
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 1,
@@ -14124,12 +14155,13 @@
               "action": "Upgrade",
               "check": "Strength",
               "range": "",
-              "description": "When Briar Charm is used on an enemy, they must also pass a Strength check or become Pinned",
+              "description": "When Briar Charm is used on an enemy, they must also pass a Physical check or become Pinned",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned"
+              "condition": "Pinned",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -14137,12 +14169,13 @@
               "action": "Upgrade",
               "check": "Influence",
               "range": "",
-              "description": "When Briar Charm is used on an ally, they gain advantage on Intimidation checks and melee attackers have disadvantage on their first melee attack against the ally",
+              "description": "When Briar Charm is used on an ally, they gain advantage on Influence checks and melee attackers have disadvantage on their first melee attack against the ally",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -14150,12 +14183,13 @@
               "action": "Upgrade",
               "check": "Survival",
               "range": "",
-              "description": "When Briar Charm is used on an enemy, they must pass a Survival check or gain the Coughing condition",
+              "description": "When Briar Charm is used on an enemy, they must pass a Physical check or gain the Coughing condition",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Coughing"
+              "condition": "Coughing",
+              "checkType": "enemy"
             },
             {
               "step": 4,
@@ -14181,7 +14215,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Corpus"
+              "condition": "Corpus",
+              "checkType": "self"
             },
             {
               "step": 6,
@@ -14194,7 +14229,8 @@
               "damage": "1d6",
               "damageType": "Toxic",
               "armor": "",
-              "condition": "Pinned, Coughing"
+              "condition": "Pinned, Coughing",
+              "checkType": "enemy"
             },
             {
               "step": 7,
@@ -14207,7 +14243,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Invisible"
+              "condition": "Invisible",
+              "checkType": "self"
             },
             {
               "step": 8,
@@ -14282,7 +14319,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -14451,7 +14489,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -14477,7 +14516,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned, Slowed"
+              "condition": "Pinned, Slowed",
+              "checkType": "self"
             },
             {
               "step": 5,
@@ -14550,7 +14590,7 @@
               "action": "Action",
               "check": "",
               "range": "Reach",
-              "description": "As an action, once per long rest, call on the memory of a primordial beast. Name which beast you invoke: the Phoenix erupts in a 10-foot ring of fire around you dealing [[2d6]] fire damage to all enemies in reach and granting you flight speed equal to your movement for 1 minute; the Dragon Turtle sends a shockwave through the ground in a short range line knocking all creatures Prone and Pinned until the end of their next turn; the Storm Whale releases a concussive burst pushing all enemies within short range back 15 feet and giving you and all allies within short range the Invisible condition until the end of your next turn. You may only invoke each beast once per long rest.",
+              "description": "As an action, once per long rest, call on the memory of a primordial beast. Name which beast you invoke: the Phoenix erupts in a 10-foot ring of fire around you dealing [[2d6]] fire damage to all enemies in reach and granting you flight speed equal to your movement for 1 minute; the Dragon Turtle sends a shockwave through the ground in a short range line knocking all creatures Prone and Pinned until the end of their next turn; the Storm Whale releases a concussive burst pushing all enemies within short range back 15 feet and giving you and all allies within short range the Invisible  condition until the end of your next turn. You may only invoke each beast once per long rest.",
               "duration": "1 minute",
               "damage": "2d6",
               "damageType": "Fire",
@@ -14688,7 +14728,8 @@
               "damage": "1d6",
               "damageType": "Impact",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 9,
@@ -14740,7 +14781,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -14753,7 +14795,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -14761,12 +14804,13 @@
               "action": "Action",
               "check": "Influence",
               "range": "Reach",
-              "description": "As an action Make an Influence check against a creature within reach range. On a success, suggest a minor belief or idea. They believe it was their own thought and act on it naturally. The idea cannot compel self-harm or suicidal action.",
+              "description": "As an action, make an Influence check against a creature within reach. On a success, plant a minor belief or idea in their mind. The target believes it was their own thought and acts on it naturally. The idea cannot compel the target to harm themselves",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 3,
@@ -14805,7 +14849,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 6,
@@ -14818,7 +14863,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 7,
@@ -14870,7 +14916,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             }
           ]
         }
@@ -14961,7 +15008,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Confused"
+              "condition": "Confused",
+              "checkType": "enemy"
             },
             {
               "step": 6,
@@ -15207,7 +15255,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -15233,7 +15282,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -15363,7 +15413,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -15519,7 +15570,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -15561,7 +15613,7 @@
               "condition": ""
             },
             {
-              "step": 7,
+              "step": 4,
               "name": "Solar Walk",
               "action": "Action",
               "check": "",
@@ -15574,7 +15626,7 @@
               "condition": "Intangible"
             },
             {
-              "step": 4,
+              "step": 5,
               "name": "Radiance II",
               "action": "Upgrade",
               "check": "",
@@ -15587,7 +15639,7 @@
               "condition": ""
             },
             {
-              "step": 8,
+              "step": 6,
               "name": "Solar Walk II",
               "action": "Upgrade",
               "check": "",
@@ -15600,7 +15652,7 @@
               "condition": "Intangible"
             },
             {
-              "step": 5,
+              "step": 7,
               "name": "Radiance III",
               "action": "Upgrade",
               "check": "",
@@ -15613,7 +15665,7 @@
               "condition": ""
             },
             {
-              "step": 9,
+              "step": 8,
               "name": "Solar Walk III",
               "action": "Upgrade",
               "check": "",
@@ -15626,7 +15678,21 @@
               "condition": "Intangible, Invisible"
             },
             {
-              "step": 6,
+              "step": 9,
+              "name": "Clarion Call",
+              "action": "Action",
+              "check": "",
+              "range": "",
+              "description": "You can cast the Clarion Call spell once per day without the use of Mana",
+              "duration": "",
+              "damage": "",
+              "damageType": "",
+              "armor": "",
+              "condition": "",
+              "checkType": ""
+            },
+            {
+              "step": 10,
               "name": "Radiance IV",
               "action": "Upgrade",
               "check": "",
@@ -15637,19 +15703,6 @@
               "damageType": "",
               "armor": "",
               "condition": "Cognition"
-            },
-            {
-              "step": 10,
-              "name": "Clarion Call",
-              "action": "Action",
-              "check": "Spirit",
-              "range": "",
-              "description": "You can cast the Clarion Call spell once per day without the use of Mana",
-              "duration": "",
-              "damage": "",
-              "damageType": "",
-              "armor": "",
-              "condition": ""
             }
           ]
         },
@@ -15675,7 +15728,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned"
+              "condition": "Pinned",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -15688,7 +15742,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Broken"
+              "condition": "Broken",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -15831,7 +15886,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -15844,7 +15900,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -15987,7 +16044,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -16013,7 +16071,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Slowed"
+              "condition": "Slowed",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -16143,7 +16202,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -16169,7 +16229,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Charmed"
+              "condition": "Charmed",
+              "checkType": "enemy"
             },
             {
               "step": 3,
@@ -16299,7 +16360,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -16403,7 +16465,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Blind, Coughing"
+              "condition": "Blind, Coughing",
+              "checkType": "enemy"
             },
             {
               "step": 9,
@@ -16455,7 +16518,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -16481,7 +16545,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Death"
+              "condition": "Death",
+              "checkType": "self"
             },
             {
               "step": 3,
@@ -16546,7 +16611,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 8,
@@ -16710,7 +16776,7 @@
               "action": "Action",
               "check": "",
               "range": "",
-              "description": "As an action once per day, turn a short-range area into vibrant terrain for 1 minute. It becomes difficult terrain to enemies and grants +1 Mana per round to allies within. It also contains drinkable water and ambient food.",
+              "description": "As an action once per day, turn a short-range area into verdant terrain for 1 minute. It becomes difficult terrain to enemies and grants +1 Mana per round to allies within. It also contains drinkable water and ambient food.",
               "duration": "1 minute",
               "damage": "",
               "damageType": "",
@@ -16767,7 +16833,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -16786,14 +16853,15 @@
               "step": 2,
               "name": "Disruptor",
               "action": "Special",
-              "check": "Crafting",
+              "check": "",
               "range": "Short",
               "description": "Once per day, as an action, create a stationary object that suppresses magical traps and ongoing magical effects within short range for 1 hour. Suppressed effects resume when the duration ends or the object is removed.",
               "duration": "1 hour",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": ""
             },
             {
               "step": 3,
@@ -16806,7 +16874,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 4,
@@ -16819,7 +16888,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 5,
@@ -16832,7 +16902,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 6,
@@ -16884,7 +16955,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 10,
@@ -16923,7 +16995,8 @@
               "damage": "",
               "damageType": "",
               "armor": 10,
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 1,
@@ -17040,7 +17113,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 10,
@@ -17277,7 +17351,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Prone"
+              "condition": "Prone",
+              "checkType": "enemy"
             },
             {
               "step": 4,
@@ -17446,7 +17521,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": "Fear",
+              "checkType": "enemy"
             },
             {
               "step": 5,
@@ -17478,14 +17554,15 @@
               "step": 7,
               "name": "Lattice Engine",
               "action": "Action",
-              "check": "Survival",
+              "check": "Physical",
               "range": "",
-              "description": "A geometric construct of interlocking rings and chain-gears built from the bones of a defeated chaos god. On arrival, one creature in reach must pass a Survival check or gain the Stunned condition. When it fades, deal [[1d6]] solar damage to all creatures in reach.",
+              "description": "A geometric construct of interlocking rings and chain-gears built from the bones of a defeated chaos god. On arrival, one creature in reach must pass a Physical check or gain the Stunned condition. When it fades, deal [[1d6]] solar damage to all creatures in reach.",
               "duration": "",
               "damage": "1d6",
               "damageType": "Eclipse",
               "armor": "",
-              "condition": "Stunned"
+              "condition": "Stunned",
+              "checkType": "enemy"
             },
             {
               "step": 8,
@@ -17504,14 +17581,15 @@
               "step": 9,
               "name": "Shacklecrow ",
               "action": "Action",
-              "check": "Strength",
+              "check": "Physical",
               "range": "",
-              "description": "You may summon the Shacklecrow, a rotten scarecrow lashed with burial wrappings and stitched from bird bones and funerary twine. Its skull clicks sideways as it snaps a binding gesture toward one enemy in reach. The target must pass a Strength check or become Pinned until the end of their next turn",
+              "description": "You may summon the Shacklecrow, a rotten scarecrow lashed with burial wrappings and stitched from bird bones and funerary twine. Its skull clicks sideways as it snaps a binding gesture toward one enemy in reach. The target must pass a Physical check or become Pinned until the end of their next turn",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Pinned"
+              "condition": "Pinned",
+              "checkType": "enemy"
             },
             {
               "step": 10,
@@ -17875,7 +17953,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Intangible, Slowed"
+              "condition": "Intangible, Slowed",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -17961,12 +18040,13 @@
               "action": "Action",
               "check": "Mental",
               "range": "",
-              "description": "You bind a ghost to a creature by touching them or leaving an item behind. Until the end of your next turn, the ghost whispers false memories or private thoughts to that target, imposing -2 to Mental checks checks to the target",
+              "description": "You bind a ghost to a creature by touching them or leaving an item behind. Until the end of your next turn, the ghost whispers false memories or private thoughts to that target, imposing -2 to Mental checks to the target",
               "duration": "",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 9,
@@ -18018,7 +18098,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Prone, Charmed"
+              "condition": "Prone, Charmed",
+              "checkType": "enemy"
             },
             {
               "step": 1,
@@ -18031,7 +18112,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 2,
@@ -18239,7 +18321,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "self"
             },
             {
               "step": 6,
@@ -18336,14 +18419,15 @@
               "step": 1,
               "name": "Bloom: Temporal Spores",
               "action": "Upgrade",
-              "check": "Survival",
+              "check": "Physical",
               "range": "Short",
-              "description": "Once per turn when an enemy within reach takes damage, the celium releases spores that slow their personal timeline. They must pass a Survival check or gain the Slowed condition.",
+              "description": "Once per turn when an enemy within reach takes damage, the celium releases spores that slow their personal timeline. They must pass a Physical check or gain the Slowed condition.",
               "duration": "Until the end of your next turn",
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Slowed"
+              "condition": "Slowed",
+              "checkType": "enemy"
             },
             {
               "step": 2,
@@ -18362,14 +18446,15 @@
               "step": 3,
               "name": "Bloom: Bloom",
               "action": "Upgrade",
-              "check": "Survival",
+              "check": "Physical",
               "range": "",
-              "description": "As an action, Release a pulse of temporal spores in short range. Enemies take [[1d6]] toxic damage and must pass a Survival check or gain the Slowed condition. Allies caught in the bloom may reroll one check before the end of their next turn.",
+              "description": "As an action, Release a pulse of temporal spores in short range. Enemies take [[1d6]] toxic damage and must pass a Physical check or gain the Slowed condition. Allies caught in the bloom may reroll one check before the end of their next turn.",
               "duration": "Until the end of your next turn",
               "damage": "1d6",
               "damageType": "Toxic",
               "armor": "",
-              "condition": "Coughing, Slowed"
+              "condition": "Coughing, Slowed",
+              "checkType": "enemy"
             },
             {
               "step": 4,
@@ -18453,14 +18538,15 @@
               "step": 10,
               "name": "Sporelings",
               "action": "Action",
-              "check": "Survival",
+              "check": "Physical",
               "range": "",
-              "description": "Once per day, release a swarm of chrono-sporelings into short range. They are PL2, last 1 minute, cling to targets dealing [[1d4]] toxic damage each round, and count as difficult terrain. Creatures that end their turn in the swarm must pass a Survival check or age rapidly, gaining the Slowed condition.",
+              "description": "Once per day, release a swarm of chrono-sporelings into short range. They are PL2, last 1 minute, cling to targets dealing [[1d4]] toxic damage each round, and count as difficult terrain. Creatures that end their turn in the swarm must pass a Physical check or age rapidly, gaining the Slowed condition.",
               "duration": "1 minute",
               "damage": "1d4",
               "damageType": "Toxic",
               "armor": "",
-              "condition": "Slowed"
+              "condition": "Slowed",
+              "checkType": "enemy"
             }
           ]
         }
@@ -18531,14 +18617,15 @@
               "step": 4,
               "name": "Dragonbound: Breath",
               "action": "Upgrade",
-              "check": "Agility",
+              "check": "Physical",
               "range": "",
-              "description": "Once per day, exhale a breath weapon in a short range cone dealing [[2d6]] damage of your chosen type. Creatures in the area may make an Agility check to halve the damage.",
+              "description": "Once per day, exhale a breath weapon in a short range cone dealing [[2d6]] damage of your chosen type. Creatures in the area may make an Physical check to halve the damage.",
               "duration": "",
               "damage": "2d6",
               "damageType": "",
               "armor": "",
-              "condition": ""
+              "condition": "",
+              "checkType": "enemy"
             },
             {
               "step": 5,
@@ -18557,14 +18644,15 @@
               "step": 6,
               "name": "Dragonbound: Vent",
               "action": "Upgrade",
-              "check": "Survival",
+              "check": "Physical",
               "range": "Short",
-              "description": "Once per day when you are Injured, the spirit vents pressure. All creatures within short range must pass a Survival check or take [[1d4]] damage of your chosen type and gain the Slowed condition.",
+              "description": "Once per day when you are Injured, the spirit vents pressure. All creatures within short range must pass a Physical checkor take [[1d4]] damage of your chosen type and gain the Slowed condition.",
               "duration": "",
               "damage": "1d4",
               "damageType": "Elemental",
               "armor": "",
-              "condition": "Slowed, Injured"
+              "condition": "Slowed, Injured",
+              "checkType": "enemy"
             },
             {
               "step": 7,
@@ -18590,7 +18678,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Fear"
+              "condition": "Fear",
+              "checkType": "self"
             },
             {
               "step": 9,
@@ -18707,7 +18796,8 @@
               "damage": "1d6",
               "damageType": "Psychic",
               "armor": "",
-              "condition": "Slowed"
+              "condition": "Slowed",
+              "checkType": "enemy"
             },
             {
               "step": 6,
@@ -18746,7 +18836,8 @@
               "damage": "",
               "damageType": "",
               "armor": "",
-              "condition": "Invisible"
+              "condition": "Invisible",
+              "checkType": "self"
             },
             {
               "step": 9,

@@ -16,6 +16,17 @@ const RARITY_OPTIONS = ['common', 'uncommon', 'rare', 'very rare', 'legendary', 
 
 function escL(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+// ── QUALITY CHECK ─────────────────────────────────────────────────────────────
+function lootFindIssues(data) {
+    const out = [];
+    data.forEach((e, i) => {
+        if (e._group !== 'tiers') return;
+        if (Number(e.min) > Number(e.max)) out.push({ index: i, message: 'PL min is greater than PL max' });
+        if (!(e.pools || []).length) out.push({ index: i, message: 'No pools set - this tier will never drop anything' });
+    });
+    return out;
+}
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function lootTiers()       { return state.data.filter(e => e._group === 'tiers'); }
@@ -57,7 +68,13 @@ function renderLootEditor() {
             return `<button class="loot-rarity-btn${on ? ' is-on' : ''}" data-si="${si}" data-rarity="${r}">${r}</button>`;
         }).join('');
 
+        const warnings = lootFindIssues(state.data).filter(w => w.index === si).map(w => w.message);
+        const warnHtml = warnings.length
+            ? `<div style="padding:4px 8px;font-size:10px;color:#dd7755;background:rgba(200,80,40,.1);border-radius:3px;margin-bottom:6px;">⚠ ${warnings.map(escL).join(' · ')}</div>`
+            : '';
+
         return `<div class="loot-tier-card" data-si="${si}">
+            ${warnHtml}
             <div class="loot-tier-head">
                 <div class="loot-tier-label-wrap">
                     <label class="loot-mini-label">Label</label>
@@ -212,6 +229,7 @@ registerEditor('loot', {
     }),
     groupKey:  () => '_group',
     newEntry:  () => ({ _group: 'tiers', label: 'New Tier', min: 1, max: 5, rolls: 1, bonus: 0.3, goldMin: 1, goldMax: 5, rarities: ['common'], pools: ['item', 'medicine'] }),
+    qcCount: (data) => lootFindIssues(data).length,
     render:      () => renderLootEditor(),
     afterRender: () => lootAfterRender(),
     headerActions: () => `<span style="opacity:.45;font-size:11px">Items drawn live from items.json · weapons.json · armor.json · enchanted.json · medicine.json</span>`,

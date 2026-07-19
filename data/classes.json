@@ -12,7 +12,7 @@
         },
         {
           "name": "Bolster",
-          "description": "Gain +1 Bolster at the start of your turn in combat. Spend 1 Bolster to heal [[1d4]] and remove 1 condition as a Half-Action, or gain [[1d4]] to an attack check and damage roll."
+          "description": "Gain +1 Bolster at the start of your turn in combat. Spend 1 Bolster to heal [[1d4]] and remove 1 condition as a Half-Action, or gain [[1d4]] to an attack check and damage roll as part of an attack."
         }
       ],
       "equipment": [
@@ -21,16 +21,16 @@
           "description": "Hefty; Armor: 20; Bulk: 4"
         },
         {
-          "name": "Morningstar",
-          "description": "1d6 Impact; Agility, Strength; Melee; 1 hand, Light; Bulk: 2"
+          "name": "Shiv",
+          "description": "1d4 Piercing; Agility, Strength; Melee; 1 hand, Light; Bulk: 1"
         },
         {
-          "name": "Great Sword",
-          "description": "3d6 Slashing; Agility, Strength; Reach; 2 Hand, Hefty; Bulk: 3"
+          "name": "Heavy Sword",
+          "description": "4d6 Slashing; Agility, Strength; 2 Hand, Hefty; Bulk: 3"
         },
         {
-          "name": "Siege Crossbow",
-          "description": "2d6 Piercing; Strength; Medium; 2 hand, Hefty, Tech, Reload; Bulk: 2"
+          "name": "Heavy Crossbow",
+          "description": "4d6 Piercing; Strength; Medium; 2 hand, Hefty; Bulk: 2"
         }
       ]
     },
@@ -57,12 +57,12 @@
           "description": "Armor: 3; Bulk: 2"
         },
         {
-          "name": "Semi-Automatic Pistol",
-          "description": "3d4! Piercing; Agility, Intellect, Luck, Observation; Medium; 1 Hand, Light; Bulk: 1"
+          "name": "Pistol",
+          "description": "1d4! Piercing; Agility, Luck, Observation; Medium; 1 Hand, Light; Bulk: 1"
         },
         {
           "name": "Hookblade",
-          "description": "1d6 Slashing; Agility, Observation, Stealth, Strength; Melee; 1 Hand, Light; Bulk: 1"
+          "description": "1d6 Slashing; Agility, Observation, Stealth, Strength; Melee; 1 Hand, Light; Bulk: 1;\nWhen you hit with a success+ you can choose to grapple the target instead of rolling on the success table"
         }
       ]
     },
@@ -90,7 +90,7 @@
         },
         {
           "name": "Pistol",
-          "description": "2d4! Piercing; Agility, Intellect, Luck, Observation; Medium; 1 Hand, Light; Bulk: 2"
+          "description": "1d4! Piercing; Agility, Luck, Observation; Medium; 1 Hand, Light; Bulk: 2"
         }
       ]
     },
@@ -118,11 +118,11 @@
         },
         {
           "name": "Cane Sword",
-          "description": "1d6 Piercing; Agility, Strength; Melee; 1 hand, Light; Bulk: 1"
+          "description": "1d6 Piercing; Agility, Strength; Melee; 1 hand, hidden, Light; Bulk: 1"
         },
         {
           "name": "Revolver",
-          "description": "3d4! Piercing; Agility, Intellect, Luck, Observation; Medium; 1 Hand; Bulk: 1"
+          "description": "1d4! Piercing; Agility, Luck, Observation; Medium; 1 Hand; Bulk: 1"
         }
       ]
     },
@@ -149,8 +149,8 @@
           "description": "1d6 Fire damage; Check: Spellcasting; Short; 1 hand; Bulk: 1;"
         },
         {
-          "name": "Shortsword",
-          "description": "1d6 Slashing; Agility, Strength; Melee; 1 hand, Light; Bulk: 1"
+          "name": "Townsword",
+          "description": "1d6 Slashing; Agility, Strength; Melee; 1 hand, Light; Bulk: 2"
         }
       ]
     }

@@ -1,30 +1,17 @@
 // ── WORLDBUILDING TABLE EDITOR ────────────────────────────────────────────────
 // worldbuilding.json flattens to { _group, _subgroup?, value } entries
 
-function updateWBEntry(idx, value) {
-    if (state.data[idx]) state.data[idx].value = value;
-    markUnsaved();
-}
+function updateWBEntry(idx, value) { teSetField(idx, 'value', value); }
 
-function removeWBEntry(idx) {
-    state.data.splice(idx, 1);
-    state.filteredData = getVisibleData();
-    renderEntryList(); renderEditor(); markUnsaved();
-}
+function removeWBEntry(idx) { teRemoveEntry(idx); }
 
 function addWBEntry(group, subgroup) {
     const entry = { _group: group, value: '' };
     if (subgroup) entry._subgroup = subgroup;
-    state.data.push(entry);
-    state.filteredData = getVisibleData();
-    renderEntryList(); renderEditor(); markUnsaved();
-    setTimeout(() => {
-        const sel = subgroup
-            ? `.te-chip-input[data-group="${group}"][data-sub="${subgroup}"]`
-            : `.te-chip-input[data-group="${group}"], .te-row-input[data-group="${group}"]`;
-        const inputs = document.querySelectorAll(sel);
-        if (inputs.length) inputs[inputs.length - 1].focus();
-    }, 50);
+    const sel = subgroup
+        ? `.te-chip-input[data-group="${group}"][data-sub="${subgroup}"]`
+        : `.te-chip-input[data-group="${group}"], .te-row-input[data-group="${group}"]`;
+    teAddEntry(entry, sel);
 }
 
 function renderWBTable() {
@@ -135,6 +122,7 @@ registerEditor('worldbuilding', {
         badges: [{ label: e._group, color: '#33aaaa' }],
     }),
     newEntry: (group) => ({ _group: group || 'affinities', value: '' }),
+    qcCount: (data) => qcCountBlankEntries(data),
     render: () => renderWBTable(),
     headerActions: () => `<span style="font-size:11px;color:#33aaaa;opacity:.7">Editing all ${state.data.length} entries</span>`,
 });

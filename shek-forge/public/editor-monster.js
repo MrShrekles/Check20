@@ -1,3 +1,50 @@
+// ── QUALITY CHECK ────────────────────────────────────────────────────────────
+// Prose fields (description/lore/feature effects/spell effects) get the
+// shared AI-wording/grammar/broken-link checks; attack blocks get a
+// cross-file check against the real weapons.json pool.
+function monsterQCFields(entry) {
+    const sch = getMonsterSchema();
+    const fields = [];
+    if ('description' in entry) fields.push({ label: 'Description', get: e => e.description });
+    if ('lore' in entry) fields.push({ label: 'Lore', get: e => e.lore });
+    if (sch.featureEffectKey && entry[sch.featureEffectKey] !== undefined)
+        fields.push({ label: 'Main Feature Effect', get: e => e[sch.featureEffectKey] });
+    (entry.features || []).forEach((f, fi) =>
+        fields.push({ label: `Feature: ${f.name || fi + 1}`, get: e => (e.features || [])[fi]?.effect }));
+    (entry.spells || []).forEach((s, si) =>
+        (s.effects || []).forEach((eff, ei) =>
+            fields.push({ label: `Spell ${s.name || si + 1} (${eff.intent || ei + 1})`, get: e => (e.spells || [])[si]?.effects?.[ei]?.effect })));
+    return fields;
+}
+
+function monsterWeaponRefIssues(entry, entryLabel) {
+    const ignored = qcGetIgnored('monster');
+    const issues = [];
+    const checks = [
+        ['melee_attack', state.weapons.melee, 'Melee'],
+        ['ranged_attack', state.weapons.ranged, 'Ranged'],
+        ['melee', state.weapons.melee, 'Melee'],
+        ['ranged', state.weapons.ranged, 'Ranged'],
+    ];
+    for (const [key, pool, label] of checks) {
+        const name = entry[key] && entry[key].name;
+        if (name && pool && pool.length && !pool.some(w => w.name === name)) {
+            const k = `${entryLabel}::${key}::unknown_weapon`;
+            if (!ignored.has(k)) issues.push({
+                key: k, fieldLabel: `${label} Attack`, code: 'unknown_weapon',
+                label: 'Weapon not found in weapons.json',
+                detail: `"${name}" doesn't match any entry in weapons.json — check spelling or add it there.`,
+            });
+        }
+    }
+    return issues;
+}
+
+function monsterQCAnalyze(entry) {
+    const entryLabel = entry.name || '(unnamed)';
+    return [...qcAnalyzeProse(entry, 'monster', entryLabel, monsterQCFields(entry)), ...monsterWeaponRefIssues(entry, entryLabel)];
+}
+
 // ── DUPLICATE ─────────────────────────────────────────────────────────────────
 function duplicateMonster(idx) {
     const original = state.data[idx];
@@ -795,6 +842,8 @@ function renderMonsterBase(entry, idx) {
         .map(g => `<option value="${escAttr(g)}">`).join('');
 
     return `
+        ${qcRenderPanel(monsterQCAnalyze(entry), 'monster', entry.name || '(unnamed)')}
+
         <div class="forge-section">
             <div class="section-header">Name</div>
             <div class="section-body">
@@ -911,6 +960,8 @@ function renderMonsterMod(entry, idx) {
     const mod = entry.movementMod || {};
 
     return `
+        ${qcRenderPanel(monsterQCAnalyze(entry), 'monster', entry.name || '(unnamed)')}
+
         <div class="forge-section">
             <div class="section-header">Name</div>
             <div class="section-body">
@@ -999,6 +1050,126 @@ function renderMonsterMod(entry, idx) {
         </div>`;
 }
 
+// ── MONSTER TABLE ─────────────────────────────────────────────────────────────
+const GT_MONSTER_COLS = [
+    { label: '#',        key: null,             style: 'width:28px' },
+    { label: 'Name',     key: 'name' },
+    { label: 'Group',    key: '_group' },
+    { label: 'Size',     key: 'size' },
+    { label: 'Rarity',   key: 'rarity' },
+    { label: 'Behavior', key: 'behavior' },
+    { label: 'Origin',   key: 'origin' },
+    { label: 'Walk',     key: 'walk',           style: 'width:52px' },
+    { label: 'PL',       key: 'pl',             style: 'width:40px' },
+    { label: 'Phys',     key: 'check_physical', style: 'width:48px' },
+    { label: 'Ment',     key: 'check_mental',   style: 'width:48px' },
+    { label: '',         key: null,             style: 'width:56px' },
+];
+
+function renderMonsterTable() {
+    const sch = getMonsterSchema();
+    if (sch !== M_SCHEMA.monsterbook) {
+        document.getElementById('fieldEditor').innerHTML = `
+            <div class="gear-table-wrap">
+                <div class="gear-table-topbar">
+                    <div>
+                        <div class="entry-title">⊞ Table — ${escHtml(state.currentFile || 'Monsters')}</div>
+                        <div class="entry-subtitle">Table view is only available for monsterbook files</div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-ghost" onclick="tmToggle('monster')">← Form View</button>
+                    </div>
+                </div>
+            </div>`;
+        return;
+    }
+
+    const type = 'monster';
+    const sel = buildSelect;
+    const groups = [...new Set(state.data.map(m => m._group).filter(Boolean))].sort();
+    const sorted = tmSortedRows(type, state.filteredData, ['walk', 'pl', 'check_physical', 'check_mental'], ['rarity']);
+
+    const rows = sorted.map((e, rowNum) => {
+        const idx = state.data.indexOf(e);
+        return `
+        <tr data-idx="${idx}">
+            <td class="gt-row-num">${rowNum + 1}</td>
+            <td><input class="gt-input gt-input-name" type="text" value="${escAttr(e.name||'')}"
+                onchange="updateField(${idx},'name',this.value)" oninput="markUnsaved()"></td>
+            <td><input class="gt-input" type="text" list="gt-monster-groups" value="${escAttr(e._group||'')}"
+                onchange="updateField(${idx},'_group',this.value);refreshGroups()" oninput="markUnsaved()" style="min-width:90px"></td>
+            <td><select class="gt-input" onchange="updateField(${idx},'size',this.value)">
+                ${sel(MD.size, e.size)}</select></td>
+            <td><select class="gt-input" onchange="updateField(${idx},'rarity',this.value)">
+                ${sel(MD.rarity, e.rarity)}</select></td>
+            <td><select class="gt-input" onchange="updateField(${idx},'behavior',this.value)">
+                ${sel(MD.behavior, e.behavior)}</select></td>
+            <td><select class="gt-input" onchange="updateField(${idx},'origin',this.value)">
+                ${sel(MD.origin, e.origin)}</select></td>
+            <td><input class="gt-input gt-input-mono" type="number" min="0" value="${e.walk??0}"
+                onchange="updateField(${idx},'walk',+this.value)" oninput="markUnsaved()" style="width:44px"></td>
+            <td><input class="gt-input gt-input-mono" type="number" min="0" value="${e.pl??0}"
+                onchange="updateField(${idx},'pl',+this.value)" oninput="markUnsaved()" style="width:36px"></td>
+            <td><input class="gt-input gt-input-mono" type="number" min="0" value="${e.check_physical??0}"
+                onchange="updateField(${idx},'check_physical',+this.value)" oninput="markUnsaved()" style="width:40px"></td>
+            <td><input class="gt-input gt-input-mono" type="number" min="0" value="${e.check_mental??0}"
+                onchange="updateField(${idx},'check_mental',+this.value)" oninput="markUnsaved()" style="width:40px"></td>
+            <td>
+                <div class="gt-actions">
+                    <button class="gt-btn gt-btn-edit" onclick="tmEditForm('monster',${idx})" title="Edit full form">✎</button>
+                    <button class="gt-btn gt-btn-del" onclick="tmDeleteRow('monster',${idx})" title="Delete">✕</button>
+                </div>
+            </td>
+        </tr>`;
+    }).join('');
+
+    const count = state.filteredData.length;
+    const groupLabel = state.currentGroup === 'All' ? 'all groups' : state.currentGroup;
+    document.getElementById('fieldEditor').innerHTML = `
+        <div class="gear-table-wrap">
+            <datalist id="gt-monster-groups">${groups.map(g => `<option value="${escAttr(g)}">`).join('')}</datalist>
+            <div class="gear-table-topbar">
+                <div>
+                    <div class="entry-title">⊞ Table — ${escHtml(state.currentFile || 'Monsters')}</div>
+                    <div class="entry-subtitle">${count} monsters · ${escHtml(groupLabel)} · ✎ to edit full form</div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-ghost" onclick="tmToggle('monster')">← Form View</button>
+                    <button class="btn btn-green" onclick="monsterTableNewRow()">+ Add Row</button>
+                    <button class="btn btn-gold" onclick="saveFile()">Save All</button>
+                </div>
+            </div>
+            <div class="gear-table-scroll">
+                <table class="gear-table">
+                    <thead><tr>${tmThHtml(type, GT_MONSTER_COLS)}</tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        </div>`;
+}
+
+function monsterTableNewRow() {
+    if (getMonsterSchema() !== M_SCHEMA.monsterbook) return;
+    const editor = EDITORS['monster'];
+    const group = state.currentGroup !== 'All' ? state.currentGroup : '';
+    const entry = editor.newEntry(group);
+    state.data.push(entry);
+    state.filteredData = getVisibleData();
+    renderEntryList();
+    renderGroupSelector();
+    renderMonsterTable();
+    markUnsaved();
+    updateStatus();
+    setTimeout(() => {
+        const newIdx = state.data.length - 1;
+        const row = document.querySelector(`.gear-table tbody tr[data-idx="${newIdx}"]`);
+        if (row) {
+            const inp = row.querySelector('.gt-input-name');
+            if (inp) { row.scrollIntoView({ block: 'center' }); inp.focus(); inp.select(); }
+        }
+    }, 30);
+}
+
 // ── REGISTER ──────────────────────────────────────────────────────────────────
 registerEditor('monster', {
 
@@ -1016,12 +1187,14 @@ registerEditor('monster', {
         const sch = getMonsterSchema();
         const group = entry[sch.groupKey] || '';
         const rarityColor = { Common:'#888', Uncommon:'#55aa55', Rare:'#5588cc', Epic:'#aa55cc', Legendary:'#cc8822' };
+        const issueCount = monsterQCAnalyze(entry).length;
         return {
             name: entry.name || '(unnamed)',
             meta: [entry.size, entry.origin].filter(Boolean).join(' · '),
             badges: [
                 showGroup && group ? { label: group, color: '#7a7a7a' } : null,
                 entry.rarity ? { label: entry.rarity, color: rarityColor[entry.rarity] || '#888' } : null,
+                issueCount > 0 ? { label: `⚠ ${issueCount}`, color: '#cc7733' } : null,
             ].filter(Boolean),
         };
     },
@@ -1048,12 +1221,16 @@ registerEditor('monster', {
         });
         const spellNames = Object.keys(spellAttackPool).sort();
         spellDL.innerHTML = spellNames.map(n => `<option value="${escAttr(n)}">`).join('');
+        tmRegister('monster', renderMonsterTable);
+        tmOnLoad('monster');
     },
 
     headerActions: (entry, idx) =>
         `<button class="btn btn-ghost" onclick="copyForChat(${idx}, this)">✦ Chat</button>
          <button class="btn btn-roll20" onclick="copyForRoll20(${idx}, this)">⬡ Roll20</button>
          <button class="btn btn-ghost" onclick="duplicateMonster(${idx})" title="Duplicate this monster">⧉ Duplicate</button>`,
+
+    qcCount: (data) => data.reduce((n, e) => n + monsterQCAnalyze(e).length, 0),
 
     newEntry: (group) => {
         const sch = getMonsterSchema();
@@ -1196,6 +1373,8 @@ registerEditor('monster', {
             </div>` : '';
 
         return `
+            ${qcRenderPanel(monsterQCAnalyze(entry), 'monster', entry.name || '(unnamed)')}
+
             <div class="forge-section">
                 <div class="section-header">Name</div>
                 <div class="section-body">

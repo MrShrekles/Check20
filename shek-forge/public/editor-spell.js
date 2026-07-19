@@ -29,6 +29,15 @@ const SD = {
 
 const INTENT_COSTS_S = { 'light whisper': 0, 'whisper': 1, 'surge': 3, 'shout': 6, 'roar': 9, 'storm': 12, 'cataclysm': 24 };
 
+// ── QUALITY CHECK ─────────────────────────────────────────────────────────────
+function spellQCFields(entry) {
+    return (entry.effects || []).map((e, ei) =>
+        ({ label: e.intent || `Effect ${ei + 1}`, get: en => (en.effects || [])[ei]?.effect }));
+}
+function spellQCAnalyze(entry) {
+    return qcAnalyzeProse(entry, 'spell', entry.name || '(unnamed)', spellQCFields(entry));
+}
+
 // ── EFFECT CRUD ───────────────────────────────────────────────────────────────
 function addSpellEffect(idx) {
     if (!state.data[idx].effects) state.data[idx].effects = [];
@@ -123,6 +132,91 @@ function renderSpellEffects(idx) {
         : '<div class="extra-features-empty">No intent levels - add one below</div>';
 }
 
+// ── SPELL TABLE ───────────────────────────────────────────────────────────────
+const GT_SPELL_COLS = [
+    { label: '#',            key: null,         style: 'width:28px' },
+    { label: 'Name',         key: 'name' },
+    { label: 'Origin',       key: 'origin' },
+    { label: 'Manner',       key: 'manner' },
+    { label: 'Transmission', key: 'transmission' },
+    { label: 'Effects',      key: null,         style: 'width:60px' },
+    { label: '',             key: null,         style: 'width:56px' },
+];
+
+function renderSpellTable() {
+    const type = 'spell';
+    const sel = buildSelect;
+    const sorted = tmSortedRows(type, state.filteredData, [], []);
+
+    const rows = sorted.map((e, rowNum) => {
+        const idx = state.data.indexOf(e);
+        const effectCount = (e.effects || []).length;
+        return `
+        <tr data-idx="${idx}">
+            <td class="gt-row-num">${rowNum + 1}</td>
+            <td><input class="gt-input gt-input-name" type="text" value="${escAttr(e.name||'')}"
+                onchange="updateField(${idx},'name',this.value)" oninput="markUnsaved()"></td>
+            <td><select class="gt-input" onchange="updateField(${idx},'origin',this.value);refreshGroups()">
+                ${sel(SD.origins, e.origin)}</select></td>
+            <td><select class="gt-input" onchange="updateField(${idx},'manner',this.value)">
+                ${sel(SD.manners, e.manner)}</select></td>
+            <td><select class="gt-input" onchange="updateField(${idx},'transmission',this.value)">
+                ${sel(SD.transmissions, e.transmission)}</select></td>
+            <td><span class="gt-effect-count">${effectCount}</span></td>
+            <td>
+                <div class="gt-actions">
+                    <button class="gt-btn gt-btn-edit" onclick="tmEditForm('spell',${idx})" title="Edit effects &amp; full form">✎</button>
+                    <button class="gt-btn gt-btn-del" onclick="tmDeleteRow('spell',${idx})" title="Delete">✕</button>
+                </div>
+            </td>
+        </tr>`;
+    }).join('');
+
+    const count = state.filteredData.length;
+    const groupLabel = state.currentGroup === 'All' ? 'all origins' : state.currentGroup;
+    document.getElementById('fieldEditor').innerHTML = `
+        <div class="gear-table-wrap">
+            <div class="gear-table-topbar">
+                <div>
+                    <div class="entry-title">⊞ Table — ${escHtml(state.currentFile || 'Spells')}</div>
+                    <div class="entry-subtitle">${count} spells · ${escHtml(groupLabel)} · ✎ to edit effects &amp; full form</div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-ghost" onclick="tmToggle('spell')">← Form View</button>
+                    <button class="btn btn-green" onclick="spellTableNewRow()">+ Add Row</button>
+                    <button class="btn btn-gold" onclick="saveFile()">Save All</button>
+                </div>
+            </div>
+            <div class="gear-table-scroll">
+                <table class="gear-table">
+                    <thead><tr>${tmThHtml(type, GT_SPELL_COLS)}</tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        </div>`;
+}
+
+function spellTableNewRow() {
+    const editor = EDITORS['spell'];
+    const group = state.currentGroup !== 'All' ? state.currentGroup : '';
+    const entry = editor.newEntry(group);
+    state.data.push(entry);
+    state.filteredData = getVisibleData();
+    renderEntryList();
+    renderGroupSelector();
+    renderSpellTable();
+    markUnsaved();
+    updateStatus();
+    setTimeout(() => {
+        const newIdx = state.data.length - 1;
+        const row = document.querySelector(`.gear-table tbody tr[data-idx="${newIdx}"]`);
+        if (row) {
+            const inp = row.querySelector('.gt-input-name');
+            if (inp) { row.scrollIntoView({ block: 'center' }); inp.focus(); inp.select(); }
+        }
+    }, 30);
+}
+
 // ── REGISTER ──────────────────────────────────────────────────────────────────
 registerEditor('spell', {
 
@@ -130,11 +224,17 @@ registerEditor('spell', {
 
     entryTitle: (e) => e.name || '(unnamed spell)',
 
-    entryRow: (entry, showGroup) => ({
-        name:   entry.name || '(unnamed)',
-        meta:   [entry.manner, entry.transmission].filter(Boolean).join(' · '),
-        badges: entry.origin ? [{ label: entry.origin, color: ORIGIN_COLORS[entry.origin] || '#7ecfff' }] : [],
-    }),
+    entryRow: (entry, showGroup) => {
+        const issueCount = spellQCAnalyze(entry).length;
+        return {
+            name:   entry.name || '(unnamed)',
+            meta:   [entry.manner, entry.transmission].filter(Boolean).join(' · '),
+            badges: [
+                entry.origin ? { label: entry.origin, color: ORIGIN_COLORS[entry.origin] || '#7ecfff' } : null,
+                issueCount > 0 ? { label: `⚠ ${issueCount}`, color: '#cc7733' } : null,
+            ].filter(Boolean),
+        };
+    },
 
     newEntry: (group) => ({
         name:         '',
@@ -145,11 +245,15 @@ registerEditor('spell', {
         effects:      [{ intent: 'Whisper', range: 'Short', target: 'Creature', area: '', duration: 'Instant', effect: '' }],
     }),
 
+    qcCount: (data) => data.reduce((n, e) => n + spellQCAnalyze(e).length, 0),
+
     render: (entry, idx) => {
         const fa = (k) => escAttr(entry[k] ?? '');
         const effects = entry.effects || [];
 
         return `
+        ${qcRenderPanel(spellQCAnalyze(entry), 'spell', entry.name || '(unnamed)')}
+
         <div class="forge-section">
             <div class="section-header">Identity</div>
             <div class="section-body">
@@ -192,5 +296,10 @@ registerEditor('spell', {
                     : '<div class="extra-features-empty">No intent levels - add one below</div>'}
             </div>
         </div>`;
+    },
+
+    onLoad() {
+        tmRegister('spell', renderSpellTable);
+        tmOnLoad('spell');
     },
 });

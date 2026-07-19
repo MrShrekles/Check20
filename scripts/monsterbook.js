@@ -22,6 +22,24 @@ function saveOverrides(overrides) {
     localStorage.setItem(STORAGE_KEY_OVERRIDE, JSON.stringify(overrides));
 }
 
+// Merges the legacy flat "main feature" fields with the m.features array
+// instead of picking one or the other, so the primary feature isn't lost
+// whenever a monster also has extra features listed.
+function getFeatureList(m) {
+    const extras = Array.isArray(m.features) ? m.features : [];
+    if (m.feature_name || m.feature_effect) {
+        return [{
+            name:     m.feature_name,
+            type:     m.feature_type,
+            range:    m.feature_range,
+            damage:   m.feature_damage,
+            duration: m.feature_duration,
+            effect:   m.feature_effect,
+        }, ...extras];
+    }
+    return extras;
+}
+
 function toggleEditMode() {
     bookEditMode = !bookEditMode;
     document.body.classList.toggle("book-edit-mode", bookEditMode);
@@ -228,9 +246,7 @@ function createBookRow(m) {
         ? `<div class="mb-attack"><strong>${label}:</strong> ${atk.name}${atk.damage ? ` - ${atk.damage}` : ""}${(atk.type || atk.damage_type) ? ` <em>${atk.type || atk.damage_type}</em>` : ""}</div>`
         : "";
 
-    const featList = Array.isArray(m.features) && m.features.length
-        ? m.features
-        : (m.feature_name ? [{ name: m.feature_name, type: m.feature_type, range: m.feature_range, effect: m.feature_effect }] : []);
+    const featList = getFeatureList(m);
 
     const featuresHTML = featList.length ? featList.map(f => {
         const meta = [f.type, f.range].filter(Boolean).join(" · ");
@@ -407,16 +423,7 @@ function copyMonsterForChat(m, btn) {
     if (atkLines.length) { lines.push(""); lines.push("**ATTACKS**"); atkLines.forEach(a => lines.push(a)); }
 
     // Features - support both legacy fields and features array
-    const featList = Array.isArray(m.features) && m.features.length
-        ? m.features
-        : (m.feature_name ? [{
-            name:     m.feature_name,
-            type:     m.feature_type,
-            range:    m.feature_range,
-            damage:   m.feature_damage,
-            duration: m.feature_duration,
-            effect:   m.feature_effect,
-          }] : []);
+    const featList = getFeatureList(m);
 
     featList.forEach(f => {
         const meta = [f.type, f.range, f.damage, f.duration].filter(Boolean).join(" · ");
@@ -505,10 +512,7 @@ function openCardEdit(card, m) {
     const meleeAtk  = m.melee  || m.melee_attack  || {};
     const rangedAtk = m.ranged || m.ranged_attack  || {};
 
-    const featList = Array.isArray(m.features) && m.features.length
-        ? m.features
-        : (m.feature_name ? [{ name: m.feature_name, type: m.feature_type,
-                               range: m.feature_range, effect: m.feature_effect }] : []);
+    const featList = getFeatureList(m);
 
     // Builds one editable feature row (innerHTML only - values set via JS after)
     function featRowHtml() {
@@ -864,9 +868,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (found.fly)   moves.push(`Fly ${found.fly}ft`);
             if (found.swim)  moves.push(`Swim ${found.swim}ft`);
             if (found.climb) moves.push(`Climb ${found.climb}ft`);
-            const featList = Array.isArray(found.features) && found.features.length
-                ? found.features
-                : (found.feature_name ? [{ name: found.feature_name, type: found.feature_type }] : []);
+            const featList = getFeatureList(found);
             const featNames = featList.map(f => f.name).filter(Boolean).join(", ");
             tip.innerHTML = `
                 <span class="mlt-name">${found.name}</span>

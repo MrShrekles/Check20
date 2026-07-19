@@ -1,24 +1,11 @@
 // ── QUEST TABLE EDITOR ────────────────────────────────────────────────────────
 
-function updateQuestText(idx, value) {
-    if (state.data[idx]) state.data[idx].text = value;
-    markUnsaved();
-}
+function updateQuestText(idx, value) { teSetField(idx, 'text', value); }
 
-function removeQuestEntry(idx) {
-    state.data.splice(idx, 1);
-    state.filteredData = getVisibleData();
-    renderEntryList(); renderEditor(); markUnsaved();
-}
+function removeQuestEntry(idx) { teRemoveEntry(idx); }
 
 function addQuestEntry(type) {
-    state.data.push({ type, text: '' });
-    state.filteredData = getVisibleData();
-    renderEntryList(); renderEditor(); markUnsaved();
-    setTimeout(() => {
-        const inputs = document.querySelectorAll(`.te-chip-input[data-type="${type}"], .te-row-input[data-type="${type}"]`);
-        if (inputs.length) inputs[inputs.length - 1].focus();
-    }, 50);
+    teAddEntry({ type, text: '' }, `.te-chip-input[data-type="${type}"], .te-row-input[data-type="${type}"]`);
 }
 
 function renderQuestTable() {
@@ -75,6 +62,7 @@ registerEditor('quest', {
         badges: [{ label: e.type, color: '#cc8822' }],
     }),
     newEntry: (group) => ({ type: group || 'giver', text: '' }),
+    qcCount: (data) => qcCountBlankEntries(data),
     render: () => renderQuestTable(),
     headerActions: () => `<span style="font-size:11px;color:#cc8822;opacity:.7">Editing all ${state.data.length} entries</span>`,
 });

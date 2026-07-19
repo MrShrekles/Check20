@@ -89,7 +89,7 @@ function buildSpell() {
         <span class="transmission">${v.transmission}</span>
       </div>
       <details class="spell-effect" open>
-        <summary class="spell-features">${v.intent} <span class="sp-cost">${cost} SP</span></summary>
+        <summary class="spell-features">${v.intent} <span class="MN-cost">${cost} MN</span></summary>
         ${infoHTML}
         <p>${v.effect || '<em>No effect description provided.</em>'}</p>
       </details>
@@ -270,7 +270,7 @@ function spellCostRange(effects) {
   const costs = effects.map(e => getIntentCost(e.intent)).filter(c => c !== '?');
   if (!costs.length) return '?';
   const lo = Math.min(...costs), hi = Math.max(...costs);
-  return lo === hi ? `${lo} SP` : `${lo}–${hi} SP`;
+  return lo === hi ? `${lo} MN` : `${lo}–${hi} MN`;
 }
 
 // ── Main render ───────────────────────────────────────────────────────────────
@@ -363,7 +363,7 @@ function renderSpells() {
           <div class="spell-intent-block">
             <div class="spell-intent-header">
               <span class="intent-name">${e.intent}</span>
-              <span class="intent-cost">${getIntentCost(e.intent)} SP</span>
+              <span class="intent-cost">${getIntentCost(e.intent)} MN</span>
               ${meta ? `<span class="intent-meta">${meta}</span>` : ''}
             </div>
             <p class="intent-effect">${highlightText(e.effect, searchTerm)}</p>
@@ -412,7 +412,7 @@ function copySpellText(spell, button) {
   *Transmission*: ${spell.transmission}
 
 ${spell.effects.map(effect => {
-    return `**${effect.intent}** (${getIntentCost(effect.intent)} SP)
+    return `**${effect.intent}** (${getIntentCost(effect.intent)} MN)
 - Range: ${effect.range}
 - Duration: ${effect.duration}
 ${effect.target ? `- Target: ${effect.target}` : ''}
@@ -437,7 +437,7 @@ function copyMacroText(spell, button) {
   spell.effects.forEach(effect => {
     const safeEffect = effect.effect.replace(/\s*\n\s*/g, ' ');
     const cost = getIntentCost(effect.intent);
-    parts.push(`{{${effect.intent} (${cost} SP)=${safeEffect}}}`);
+    parts.push(`{{${effect.intent} (${cost} MN)=${safeEffect}}}`);
   });
 
   navigator.clipboard.writeText(parts.join(' ')).then(() => {

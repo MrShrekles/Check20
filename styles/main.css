@@ -15,8 +15,12 @@
     --hate: rgb(95, 45, 25);
     --border-radius: 10px;
     --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    --box-hover: red;
+    --box-hover: 0 0 8px 2px black;
     --padding: .5vw;
+
+    /* Page width: one printer-page-ish column, two side by side on ultra-wide screens */
+    --page-width: 850px;
+    --page-gap: 3rem;
 
     /* Grayscale Desaturated Dark */
     --dark-1: #0a0a0a;
@@ -48,6 +52,12 @@
     --red-3: pink;
 }
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 /* General Styles */
 body {
     font-family: "Candara", sans-serif;
@@ -55,7 +65,16 @@ body {
     color: var(--white);
     text-shadow: 1px 1px 1px black;
     overflow-x: hidden;
-    padding-left: 52px;
+    padding: 0 1.5rem 0 52px;
+    max-width: var(--page-width);
+    margin: 0 auto;
+}
+
+/* Ultra-wide monitors: give content roughly two page-widths to breathe into */
+@media (min-width: 1700px) {
+    body {
+        max-width: calc(var(--page-width) * 2 + var(--page-gap));
+    }
 }
 
 
@@ -75,7 +94,7 @@ body {
 }
 
 .header-title {
-    font-size: 6vw;
+    font-size: clamp(1.75rem, 6vw, 3rem);
     color: var(--gold);
     text-transform: uppercase;
     letter-spacing: 10px;
@@ -89,8 +108,8 @@ body {
 }
 
 .header-subtitle {
-    font-size: 3vw;
-    color: #7c531c;
+    font-size: 1.5rem;
+    color: var(--cream);
     text-transform: uppercase;
     font-family: "Playfair Display", serif;
     margin: 0;
@@ -126,11 +145,53 @@ header nav ul li a:hover {
     }
 }
 
-footer {
+.site-footer {
+    margin-top: 3rem;
+    border-top: 1px solid var(--gold-2);
     text-align: center;
-    padding: var(--padding);
-    background-color: var(--theme-alt);
-    color: black;
+    color: var(--text-cream);
+}
+
+.site-footer-inner {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1.75rem 1rem 2rem;
+}
+
+.site-footer-brand {
+    font-family: "Playfair Display", serif;
+    font-size: 1.3rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 .75rem;
+}
+
+.site-footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .4rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.site-footer-links a {
+    color: var(--text-cream);
+    text-decoration: none;
+    font-size: .85rem;
+    letter-spacing: .04em;
+    transition: color .2s ease;
+}
+
+.site-footer-links a:hover {
+    color: var(--gold);
+}
+
+.site-footer-note {
+    font-size: .75rem;
+    font-style: italic;
+    opacity: .65;
+    margin: 0;
 }
 
 /* 🔹 Details (Container for Dropdown) */
@@ -158,7 +219,6 @@ summary {
     font-weight: bold;
     cursor: pointer;
     border: none;
-    outline: none;
     transition: background 0.3s ease, box-shadow 0.3s ease;
     user-select: none;
 }
@@ -167,6 +227,11 @@ summary {
 summary:hover {
     background-color: var(--theme-hover);
     box-shadow: var(--box-hover);
+}
+
+/* 🔹 Keyboard focus indicator (outline is suppressed above) */
+summary:focus-visible {
+    box-shadow: 0 0 0 2px var(--gold), var(--box-shadow);
 }
 
 /* 🔹 When Open, Change Summary Button Style */
@@ -249,12 +314,6 @@ table td {
 .dark {
     background-color: var(--dark);
     font-size: large;
-}
-
-.header-subtitle {
-    font-size: 1.5rem;
-    color: var(--cream);
-    text-transform: uppercase;
 }
 
 nav ul {
@@ -363,7 +422,7 @@ b {
 }
 
 .img-standard {
-    max-width: 50vw;
+    max-width: 100%;
 }
 
 .img-back {
@@ -695,13 +754,20 @@ b {
 
 .display-box {
     flex-grow: 1;
-    background-color: var(--medium);
-    color: var(--white);
+    background-color: var(--dark);
+    color: var(--gold);
     text-align: center;
     padding: 0.5rem;
-    font-size: 0.85rem;
+    font-size: 1.2rem;
     border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
     overflow-x: auto;
+    transition: box-shadow .3s ease-in-out;
+}
+
+.display-box:hover {
+    box-shadow: inset 0 0 6px rgba(255, 215, 0, 0.4), 0 0 5px rgba(255, 215, 0, 0.3);
+    border-color: var(--darkgold);
 }
 
 .generator-grid {
@@ -977,14 +1043,6 @@ button:hover {
     visibility: visible;
 }
 
-.tooltip::after {
-    position: fixed;
-    left: 50%;
-    bottom: auto;
-    top: auto;
-    transform: translateX(-50%);
-}
-
 /* Dropdown Navigation */
 nav {
     display: flex;
@@ -1071,21 +1129,6 @@ a {
     box-shadow: var(--box-shadow);
     color: var(--white);
     min-height: 50px;
-}
-
-/* Display Box Styling */
-.display-box {
-    background-color: var(--dark);
-    color: var(--gold);
-    border-radius: var(--border-radius);
-    font-size: 1.2rem;
-    box-shadow: var(--box-shadow);
-    transition: box-shadow .3s ease-in-out;
-}
-
-.display-box:hover {
-    box-shadow: inset 0 0 6px rgba(255, 215, 0, 0.4), 0 0 5px rgba(255, 215, 0, 0.3);
-    border-color: var(--darkgold);
 }
 
 .two-column {
@@ -1496,6 +1539,7 @@ li:hover .lore-copy {
 .origin-tag.basic {
     background-color: darkslategray;
 }
+
 .origin-tag.all {
     background-color: rgb(255, 255, 255);
     color: rgb(0, 0, 0);
@@ -1586,7 +1630,7 @@ li:hover .lore-copy {
     color: var(--gold);
     border: 1px solid rgba(180, 140, 40, .3);
     border-radius: 3px;
-    padding:5px;
+    padding: 5px;
     margin: 5px;
     font-family: monospace;
     font-size: .88em;
@@ -1614,13 +1658,13 @@ li:hover .lore-copy {
     border: 1px solid var(--medium, #444);
     border-radius: 8px;
     padding: .6rem 1rem;
-    box-shadow: 0 4px 16px rgba(0,0,0,.4);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .4);
     transition: border-color .2s ease, box-shadow .2s ease;
 }
 
 .gs-bar:focus-within {
     border-color: var(--gold);
-    box-shadow: 0 4px 20px rgba(0,0,0,.5), 0 0 0 2px rgba(180,140,60,.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .5), 0 0 0 2px rgba(180, 140, 60, .2);
 }
 
 .gs-icon {
@@ -1660,19 +1704,22 @@ li:hover .lore-copy {
     background: var(--dark-1, #141414);
     border: 1px solid var(--medium, #444);
     border-radius: 8px;
-    box-shadow: 0 8px 32px rgba(0,0,0,.6);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, .6);
     max-height: 60vh;
     overflow-y: auto;
     overflow-x: hidden;
     z-index: 500;
     padding: .75rem;
     scrollbar-width: thin;
-    scrollbar-color: rgba(120,120,120,.4) transparent;
+    scrollbar-color: rgba(120, 120, 120, .4) transparent;
 }
 
-#global-search-results::-webkit-scrollbar { width: 5px; }
+#global-search-results::-webkit-scrollbar {
+    width: 5px;
+}
+
 #global-search-results::-webkit-scrollbar-thumb {
-    background: rgba(120,120,120,.4);
+    background: rgba(120, 120, 120, .4);
     border-radius: 4px;
 }
 

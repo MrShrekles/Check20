@@ -27,8 +27,8 @@
       "equipped": true
     },
     "ranged_attack": {
-      "name": "Siege Crossbow",
-      "damage": "2d6",
+      "name": "Heavy Crossbow",
+      "damage": "4d6",
       "damage_type": "Piercing",
       "equipped": true
     },
@@ -74,8 +74,8 @@
       "equipped": true
     },
     "ranged_attack": {
-      "name": "Siege Crossbow",
-      "damage": "2d6",
+      "name": "Heavy Crossbow",
+      "damage": "4d6",
       "damage_type": "Piercing",
       "equipped": true
     },
@@ -1927,8 +1927,8 @@
     },
     "ranged_attack": {
       "name": "Sniper Rifle",
-      "equipped": false,
-      "damage": "6d4!",
+      "equipped": true,
+      "damage": "4d4!",
       "damage_type": "Piercing"
     },
     "spell": {
@@ -1990,7 +1990,7 @@
     "ranged_attack": {
       "name": "Bolt-Action Rifle",
       "equipped": true,
-      "damage": "4d4!",
+      "damage": "2d4!",
       "damage_type": "Piercing"
     },
     "spell": {
@@ -2356,7 +2356,7 @@
     "ranged_attack": {
       "name": "Weak Flintlock Pistol",
       "equipped": true,
-      "damage": "2d4!",
+      "damage": "1d4!-1",
       "damage_type": "Piercing"
     },
     "spell": {
@@ -2418,7 +2418,7 @@
     "ranged_attack": {
       "name": "Flintlock Pistol",
       "equipped": true,
-      "damage": "3d4!",
+      "damage": "1d4!",
       "damage_type": "Piercing"
     },
     "spell": {
@@ -3069,7 +3069,7 @@
     "ranged_attack": {
       "name": "Flintlock Pistol",
       "equipped": true,
-      "damage": "3d4!",
+      "damage": "1d4!",
       "damage_type": "Piercing"
     },
     "spell": {
@@ -3723,7 +3723,7 @@
     "ranged_attack": {
       "name": "Assault Rifle",
       "equipped": true,
-      "damage": "3d4!",
+      "damage": "2d4!",
       "damage_type": "Piercing"
     },
     "spell": {
@@ -3817,7 +3817,7 @@
     "ranged_attack": {
       "name": "Umbrella Gun",
       "equipped": true,
-      "damage": "4d4!",
+      "damage": "2d4!",
       "damage_type": "Piercing"
     },
     "spell": {
@@ -4022,10 +4022,10 @@
       "damage_type": "Fire"
     },
     "ranged_attack": {
-      "name": "flar",
+      "name": "Flare Gun",
       "equipped": true,
-      "damage": "",
-      "damage_type": ""
+      "damage": "1d4!",
+      "damage_type": "Fire"
     },
     "spell": {
       "name": "Firebolt",
@@ -4755,7 +4755,7 @@
     "ranged_attack": {
       "name": "Revolver",
       "equipped": true,
-      "damage": "3d4!",
+      "damage": "1d4!",
       "damage_type": "Piercing"
     },
     "spell": {
@@ -4798,7 +4798,7 @@
       "damage_type": "Impact"
     },
     "ranged_attack": {
-      "name": "Revolver",
+      "name": "Breaker Revolver",
       "equipped": true,
       "damage": "3d4!",
       "damage_type": "Piercing"
@@ -4806,7 +4806,7 @@
     "spell": {
       "name": "Shock Grenade",
       "equipped": true,
-      "damage": "1d6",
+      "damage": "1d6!",
       "damage_type": "Lightning"
     },
     "features": [
@@ -5587,7 +5587,7 @@
     "ranged_attack": {
       "name": "Revolver",
       "equipped": true,
-      "damage": "3d4!",
+      "damage": "1d4!",
       "damage_type": "Piercing"
     },
     "spell": {
@@ -5641,7 +5641,7 @@
     "ranged_attack": {
       "name": "Bolt-Action Rifle",
       "equipped": true,
-      "damage": "4d4!",
+      "damage": "2d4!",
       "damage_type": "Piercing"
     },
     "spell": {

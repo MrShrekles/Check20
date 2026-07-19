@@ -315,7 +315,7 @@
 }
 
 /* Tags and Cost */
-.sp-cost {
+.MN-cost {
   background: var(--dark-2);
   padding: 5px;
   margin: 40px;
@@ -1041,8 +1041,8 @@ main {
   font-weight: normal;
 }
 
-/* SP badge on intent cards */
-.sp-badge {
+/* MN badge on intent cards */
+.MN-badge {
   font-size: 0.7rem;
   background: var(--dark-2);
   border: 1px solid var(--green-3);
@@ -1384,7 +1384,7 @@ main {
   font-weight: normal;
 }
 
-.sp-badge {
+.MN-badge {
   font-size: 0.7rem;
   background: var(--dark-2);
   border: 1px solid var(--green-3);
@@ -1480,8 +1480,8 @@ main {
   gap: 0.4rem;
 }
 
-/* ── SP Toggle Pills ── */
-.sp-toggle {
+/* ── MN Toggle Pills ── */
+.MN-toggle {
   padding: 0.3rem 0.65rem;
   background: var(--dark-2);
   color: var(--cream);
@@ -1494,30 +1494,30 @@ main {
   white-space: nowrap;
 }
 
-.sp-toggle em {
+.MN-toggle em {
   font-style: normal;
   color: var(--gold);
   margin-left: 0.25rem;
   font-size: 0.72rem;
 }
 
-.sp-toggle:hover {
+.MN-toggle:hover {
   background: var(--green-2);
   color: var(--white);
 }
 
-.sp-toggle.active {
+.MN-toggle.active {
   background: var(--green-2);
   border-color: var(--gold);
   color: var(--gold);
   box-shadow: 0 0 6px var(--gold);
 }
 
-.sp-toggle--cost {
+.MN-toggle--cost {
   border-color: var(--warm-2);
 }
 
-.sp-toggle--cost.active {
+.MN-toggle--cost.active {
   border-color: var(--gold);
 }
 
@@ -1546,8 +1546,8 @@ main {
   border: 1px solid var(--green-3);
 }
 
-/* ── SP Counter ── */
-#sp-counter {
+/* ── MN Counter ── */
+#MN-counter {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -1559,26 +1559,26 @@ main {
   transition: border-color 0.3s;
 }
 
-#sp-counter:has(.tier-9) {
+#MN-counter:has(.tier-9) {
   border-color: var(--warm-2);
 }
 
-#sp-counter:has(.tier-12) {
+#MN-counter:has(.tier-12) {
   border-color: var(--gold);
 }
 
-#sp-counter:has(.tier-24) {
+#MN-counter:has(.tier-24) {
   border-color: var(--red, #e06060);
 }
 
-.sp-counter-left {
+.MN-counter-left {
   display: flex;
   align-items: baseline;
   gap: 0.3rem;
   flex-shrink: 0;
 }
 
-.sp-total-number {
+.MN-total-number {
   font-size: 2.8rem;
   font-weight: bold;
   line-height: 1;
@@ -1614,20 +1614,20 @@ main {
   color: #e06060;
 }
 
-.sp-counter-label {
+.MN-counter-label {
   font-size: 1rem;
   font-weight: bold;
   color: var(--cream);
   opacity: 0.6;
 }
 
-.sp-counter-right {
+.MN-counter-right {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
 }
 
-.sp-intent-label {
+.MN-intent-label {
   font-size: 1rem;
   font-weight: bold;
   color: var(--gold);
@@ -1635,7 +1635,7 @@ main {
   letter-spacing: 0.06em;
 }
 
-.sp-breakdown {
+.MN-breakdown {
   font-size: 0.72rem;
   color: var(--text-muted, #888);
   font-style: italic;

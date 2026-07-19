@@ -1891,7 +1891,7 @@
         "target": "Self",
         "area": "",
         "duration": "Instant",
-        "effect": "Signal the nearest Guild Taxi dispatch. A cab arrives within a reasonable amount of time. The fare is paid in mana on arrival, siphoned directly by the driver's collection device.",
+        "effect": "Signal the nearest Taxi dispatch. A cab arrives within a reasonable amount of time. The fare is paid in mana on arrival, siphoned directly by the driver's collection device.",
         "cost": 1
       },
       {
@@ -1900,7 +1900,7 @@
         "target": "Creature",
         "area": "",
         "duration": "Instant",
-        "effect": "Ping the Guild relay from outside city limits. A driver will come to you for an additional mana surcharge on top of the standard fare.\n",
+        "effect": "Ping the Transport Union relay from outside city limits. A driver will come to you for an additional mana surcharge on top of the standard fare.\n",
         "cost": 3
       },
       {
@@ -1909,7 +1909,7 @@
         "target": "Creature",
         "area": "",
         "duration": "Instant",
-        "effect": "Broadcast an emergency signal through the Guild network. A reinforced Guild cab arrives wherever you are. The fare is steep. The interior is lined with arcane dampeners, astral magic cannot be cast inside or into the cab.",
+        "effect": "Broadcast an emergency signal through the Transport Union network. A reinforced Union cab arrives wherever you are. The fare is steep. The interior is lined with arcane dampeners, astral magic cannot be cast inside or into the cab.",
         "cost": 6
       }
     ]
@@ -2351,6 +2351,41 @@
         "cost": 9,
         "damage": "2d6",
         "damageType": "Thunder"
+      }
+    ]
+  },
+  {
+    "name": "Weapon Configuration",
+    "origin": "Tech",
+    "type": "spell",
+    "manner": "Manifest",
+    "transmission": "Material",
+    "effects": [
+      {
+        "intent": "Whisper",
+        "range": "Short",
+        "target": "Point",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Manifest a melee weapon of your choice within short range that lasts for 1 hour"
+      },
+      {
+        "intent": "Surge",
+        "range": "Short",
+        "target": "Point",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Manifest a ranged weapon of your choice within short range that lasts for 1 hour",
+        "cost": 3
+      },
+      {
+        "intent": "Shout",
+        "range": "Short",
+        "target": "Point",
+        "area": "",
+        "duration": "Instant",
+        "effect": "Manifest a firearm of your choice within short range that lasts for 1 hour",
+        "cost": 6
       }
     ]
   }

@@ -13,6 +13,109 @@ const SPD = {
 
 const SP_RARITY_COLOR = { Common: '#888', Uncommon: '#55aa55', Rare: '#5588cc', Epic: '#aa55cc', Legendary: '#cc8822' };
 
+// ── SPECIES TABLE ─────────────────────────────────────────────────────────────
+const GT_SPECIES_COLS = [
+    { label: '#',        key: null,      style: 'width:28px' },
+    { label: 'Name',     key: 'name' },
+    { label: 'Lineage',  key: 'lineage' },
+    { label: 'Option',   key: 'option' },
+    { label: 'Rarity',   key: 'rarity' },
+    { label: 'Origin',   key: 'origin' },
+    { label: 'Size',     key: 'size' },
+    { label: 'Diet',     key: 'diet' },
+    { label: 'Lifespan', key: 'lifespan', style: 'width:72px' },
+    { label: 'Region',   key: 'region' },
+    { label: '',         key: null,      style: 'width:56px' },
+];
+
+function renderSpeciesTable() {
+    const type = 'species';
+    const sel = buildSelect;
+    const lineages = [...new Set(state.data.map(e => e.lineage).filter(Boolean))].sort();
+    const options  = [...new Set(state.data.map(e => e.option).filter(Boolean))].sort();
+    const regions  = [...new Set(state.data.map(e => e.region).filter(Boolean))].sort();
+    const sorted = tmSortedRows(type, state.filteredData, ['lifespan'], ['rarity']);
+
+    const rows = sorted.map((e, rowNum) => {
+        const idx = state.data.indexOf(e);
+        return `
+        <tr data-idx="${idx}">
+            <td class="gt-row-num">${rowNum + 1}</td>
+            <td><input class="gt-input gt-input-name" type="text" value="${escAttr(e.name||'')}"
+                onchange="updateField(${idx},'name',this.value)" oninput="markUnsaved()"></td>
+            <td><input class="gt-input" type="text" list="gt-species-lineages" value="${escAttr(e.lineage||'')}"
+                onchange="updateField(${idx},'lineage',this.value);refreshGroups()" oninput="markUnsaved()" style="min-width:80px"></td>
+            <td><input class="gt-input" type="text" list="gt-species-options" value="${escAttr(e.option||'')}"
+                onchange="updateField(${idx},'option',this.value)" oninput="markUnsaved()" style="min-width:80px"></td>
+            <td><select class="gt-input" onchange="updateField(${idx},'rarity',this.value)">
+                ${sel(SPD.rarity, e.rarity)}</select></td>
+            <td><select class="gt-input" onchange="updateField(${idx},'origin',this.value)">
+                ${sel(SPD.origin, e.origin)}</select></td>
+            <td><input class="gt-input" type="text" value="${escAttr(e.size||'')}"
+                onchange="updateField(${idx},'size',this.value)" oninput="markUnsaved()" style="width:60px"></td>
+            <td><select class="gt-input" onchange="updateField(${idx},'diet',this.value)">
+                ${sel(SPD.diet, e.diet)}</select></td>
+            <td><input class="gt-input gt-input-mono" type="number" min="0" value="${e.lifespan??0}"
+                onchange="updateField(${idx},'lifespan',+this.value)" oninput="markUnsaved()" style="width:56px"></td>
+            <td><input class="gt-input" type="text" list="gt-species-regions" value="${escAttr(e.region||'')}"
+                onchange="updateField(${idx},'region',this.value)" oninput="markUnsaved()" style="min-width:80px"></td>
+            <td>
+                <div class="gt-actions">
+                    <button class="gt-btn gt-btn-edit" onclick="tmEditForm('species',${idx})" title="Edit features &amp; full form">✎</button>
+                    <button class="gt-btn gt-btn-del" onclick="tmDeleteRow('species',${idx})" title="Delete">✕</button>
+                </div>
+            </td>
+        </tr>`;
+    }).join('');
+
+    const count = state.filteredData.length;
+    const groupLabel = state.currentGroup === 'All' ? 'all lineages' : state.currentGroup;
+    document.getElementById('fieldEditor').innerHTML = `
+        <div class="gear-table-wrap">
+            <datalist id="gt-species-lineages">${lineages.map(l => `<option value="${escAttr(l)}">`).join('')}</datalist>
+            <datalist id="gt-species-options">${options.map(o => `<option value="${escAttr(o)}">`).join('')}</datalist>
+            <datalist id="gt-species-regions">${regions.map(r => `<option value="${escAttr(r)}">`).join('')}</datalist>
+            <div class="gear-table-topbar">
+                <div>
+                    <div class="entry-title">⊞ Table — ${escHtml(state.currentFile || 'Species')}</div>
+                    <div class="entry-subtitle">${count} species · ${escHtml(groupLabel)} · ✎ to edit features &amp; full form</div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-ghost" onclick="tmToggle('species')">← Form View</button>
+                    <button class="btn btn-green" onclick="speciesTableNewRow()">+ Add Row</button>
+                    <button class="btn btn-gold" onclick="saveFile()">Save All</button>
+                </div>
+            </div>
+            <div class="gear-table-scroll">
+                <table class="gear-table">
+                    <thead><tr>${tmThHtml(type, GT_SPECIES_COLS)}</tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        </div>`;
+}
+
+function speciesTableNewRow() {
+    const editor = EDITORS['species'];
+    const group = state.currentGroup !== 'All' ? state.currentGroup : '';
+    const entry = editor.newEntry(group);
+    state.data.push(entry);
+    state.filteredData = getVisibleData();
+    renderEntryList();
+    renderGroupSelector();
+    renderSpeciesTable();
+    markUnsaved();
+    updateStatus();
+    setTimeout(() => {
+        const newIdx = state.data.length - 1;
+        const row = document.querySelector(`.gear-table tbody tr[data-idx="${newIdx}"]`);
+        if (row) {
+            const inp = row.querySelector('.gt-input-name');
+            if (inp) { row.scrollIntoView({ block: 'center' }); inp.focus(); inp.select(); }
+        }
+    }, 30);
+}
+
 registerEditor('species', {
 
     groupKey: () => 'lineage',
@@ -270,6 +373,11 @@ registerEditor('species', {
         `;
     },
 
+    onLoad() {
+        tmRegister('species', renderSpeciesTable);
+        tmOnLoad('species');
+    },
+
 });
 
 // ── SPECIES QUALITY CHECKER ───────────────────────────────────────────────────
@@ -292,6 +400,7 @@ function spQCIgnore(key) {
     localStorage.setItem('speciesQC_v1', JSON.stringify([...s]));
     renderEditor();
     renderEntryList();
+    updateStatus();
 }
 
 function spQCUnignoreAll(entryName) {
@@ -302,6 +411,7 @@ function spQCUnignoreAll(entryName) {
     localStorage.setItem('speciesQC_v1', JSON.stringify([...s]));
     renderEditor();
     renderEntryList();
+    updateStatus();
 }
 
 function spQCApply(entryIdx, issueKey) {

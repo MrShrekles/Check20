@@ -27,15 +27,16 @@ function detectFileType(data) {
     if (groups.has('lords') && groups.has('enemies') && groups.has('travelConnectors')) return 'hexgen';
     if ('path' in e && 'talent' in e && 'class' in e && 'origin' in e) return 'class';
     if ('lineage' in e && 'option' in e) return 'species';
+    if ('term' in e && 'definition' in e) return 'glossary';
     if ('feature_name' in e || 'walk' in e || 'feature_effect' in e) return 'monster';
     if ('featureName' in e || 'baseType' in e || 'movement' in e) return 'monster';
     if ('damage' in e && 'damageType' in e && 'bulk' in e) return 'weapon';
     if ('armor' in e && 'movePenalty' in e) return 'armor';
     if ('manner' in e && 'transmission' in e && 'effects' in e) return 'spell';
-    if ('type' in e && 'text' in e && ['prefix','effect','damageType','check','itemType'].includes(e.type)) return 'enchanted';
-    if ('category' in e && 'value' in e && ['prefix','base','suffix'].includes(e.category)) return 'medicine';
-    if ('type' in e && 'text' in e && ['giver','target','twist','reward'].includes(e.type)) return 'quest';
-    if ('type' in e && ['door','lock','trap'].includes(e.type)) return 'traps';
+    if ('type' in e && 'text' in e && ['prefix', 'effect', 'damageType', 'check', 'itemType'].includes(e.type)) return 'enchanted';
+    if ('category' in e && 'value' in e && ['prefix', 'base', 'suffix'].includes(e.category)) return 'medicine';
+    if ('type' in e && 'text' in e && ['giver', 'target', 'twist', 'reward'].includes(e.type)) return 'quest';
+    if ('type' in e && ['door', 'lock', 'trap'].includes(e.type)) return 'traps';
     if (groups.has('affinities') && groups.has('motivations')) return 'worldbuilding';
     if (groups.has('tiers') && groups.has('mundane')) return 'loot';
     return 'generic';
@@ -186,7 +187,7 @@ app.get('/api/files', (req, res) => {
                 const structure = analyzeStructure(JSON.parse(fs.readFileSync(path.join(folder, filename), 'utf8')));
                 entryCount = structure.data.length;
                 fileType = detectFileType(structure.data);
-            } catch (e) {}
+            } catch (e) { }
             return { name: filename, size: stat.size, modified: stat.mtime, entryCount, fileType };
         }).sort((a, b) => a.name.localeCompare(b.name));
         res.json({ folder, files });
@@ -270,6 +271,32 @@ app.post('/api/folder', (req, res) => {
     if (!fs.existsSync(folder)) return res.status(404).json({ error: 'Folder not found' });
     process.env.DATA_FOLDER = folder;
     res.json({ success: true, folder });
+});
+
+app.get('/api/search', (req, res) => {
+    try {
+        const q = String(req.query.q || '').trim().toLowerCase();
+        if (!q) return res.json({ results: [] });
+        const folder = resolveDataPath();
+        if (!fs.existsSync(folder)) return res.status(404).json({ error: `Folder not found: ${folder}` });
+        const results = [];
+        const files = fs.readdirSync(folder).filter(isJsonFile);
+        for (const filename of files) {
+            let structure;
+            try { structure = analyzeStructure(JSON.parse(fs.readFileSync(path.join(folder, filename), 'utf8'))); }
+            catch (e) { continue; }
+            const fileType = detectFileType(structure.data);
+            for (let entryIndex = 0; entryIndex < structure.data.length; entryIndex++) {
+                const entry = structure.data[entryIndex];
+                if (!JSON.stringify(entry).toLowerCase().includes(q)) continue;
+                const name = entry.name || entry.term || entry.id || entry.title || entry.text || entry.value || '(unnamed)';
+                results.push({ filename, fileType, entryIndex, name: String(name).slice(0, 80) });
+                if (results.length >= 300) break;
+            }
+            if (results.length >= 300) break;
+        }
+        res.json({ results });
+    } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 app.get('/api/weapons', (req, res) => {
