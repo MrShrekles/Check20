@@ -414,9 +414,41 @@
             arr.forEach(d => {
                 const card = buildCard(d.theme, d.header, d.title, d.rows, d.tags);
                 enhanceCard(card, { type: 'card', data: d }, getSeedConfig ? getSeedConfig(d) : null);
+                if (d.roll20) attachRoll20Copy(card, d.roll20);
                 out.appendChild(card);
             });
         } catch(_) {}
+    }
+
+    // Copy button for cards with a Roll20 import packet attached (currently
+    // just enchanted items) - prints "!importitem {...}" to clipboard, the
+    // same convention shek-forge's monster editor uses for "!importmonster".
+    // No Roll20-side API script consumes this yet; this just gets the payload
+    // shaped and ready for when one exists.
+    function attachRoll20Copy(card, packet) {
+        const actions = card.querySelector('.gc-actions');
+        if (!actions) return;
+        const btn = document.createElement('button');
+        btn.className = 'gc-copy';
+        btn.textContent = '⬡ Roll20';
+        btn.title = 'Copy Roll20 import command';
+        btn.addEventListener('click', () => {
+            const cmd = `!importitem ${JSON.stringify(packet)}`;
+            const flash = () => {
+                btn.textContent = '✓ Copied!';
+                btn.classList.add('gc-copy--copied');
+                btn.disabled = true;
+                setTimeout(() => { btn.textContent = '⬡ Roll20'; btn.classList.remove('gc-copy--copied'); btn.disabled = false; }, 2000);
+            };
+            const fallback = () => {
+                const el = document.createElement('textarea');
+                el.value = cmd; document.body.appendChild(el); el.select();
+                document.execCommand('copy'); document.body.removeChild(el); flash();
+            };
+            if (navigator.clipboard) navigator.clipboard.writeText(cmd).then(flash).catch(fallback);
+            else fallback();
+        });
+        actions.insertBefore(btn, actions.firstChild);
     }
 
     function bindClear(btnId, outputId, storeKey) {
@@ -430,6 +462,7 @@
     const wbPick  = arr => arr[Math.floor(Math.random() * arr.length)];
     const byType  = (arr, t)  => arr.filter(e => e.type === t);
     const pickTxt = (arr, t)  => { const f = byType(arr, t); return f.length ? wbPick(f).text : '-'; };
+    const pickObj = (arr, t)  => { const f = byType(arr, t); return f.length ? wbPick(f) : null; };
 
     function randomPL() {
         const pool = [
@@ -482,9 +515,14 @@
             enchGen: {
                 prefixes:    e.filter(x => x.type === 'prefix').map(x => x.text),
                 effects:     e.filter(x => x.type === 'effect').map(x => x.text),
+                effectObjs:  e.filter(x => x.type === 'effect'), // {text, prefix} - prefix is linked per-effect
                 damageTypes: e.filter(x => x.type === 'damageType').map(x => x.text),
                 checks:      e.filter(x => x.type === 'check').map(x => x.text),
-                itemTypes:   e.filter(x => x.type === 'itemType').map(x => x.text),
+                origins:     e.filter(x => x.type === 'origin').map(x => x.text),
+                languages:   e.filter(x => x.type === 'language').map(x => x.text),
+                conditions:  e.filter(x => x.type === 'condition').map(x => x.text),
+                manners:      e.filter(x => x.type === 'manner').map(x => x.text),
+                transmissions: e.filter(x => x.type === 'transmission').map(x => x.text),
             },
         };
         loadSaved(STORE.quest,    'quest-output',  () => npcSeedConfig());
@@ -545,34 +583,102 @@
             const tp  = document.getElementById('item-type-pick')?.value   || 'any';
             const rp  = document.getElementById('item-rarity-pick')?.value || 'any';
 
-            const allItemTypes = byType(enchantData, 'itemType');
-            const categories   = [...new Set(allItemTypes.map(e => e.category))];
-            const chosenCat    = tp === 'any' ? wbPick(categories) : tp;
-            const inCat        = allItemTypes.filter(e => e.category === chosenCat);
-            const base         = inCat.length ? wbPick(inCat).text : 'Item';
+            // Base item is a real weapon/armor/item pulled from weapons.json +
+            // armor.json + items.json (instead of a generic placeholder shape
+            // like "Baton"), so the card shows an actual enchant-able item and
+            // its real stats.
+            const weaponPool = (lootData?.weapons || []).map(w => ({ ...w, kind: 'weapon', cat: w.category }));
+            const armorPool  = (lootData?.armor   || []).map(a => ({ ...a, kind: 'armor',  cat: a.category }));
+            const itemPool   = (lootData?.items   || []).map(i => ({ ...i, kind: 'item',   cat: i.category }));
+            const fullPool   = [...weaponPool, ...armorPool, ...itemPool];
+            const pool       = tp === 'any' ? fullPool : fullPool.filter(x => x.cat === tp);
+            const chosen     = wbPick(pool.length ? pool : fullPool) || { name: 'Item', kind: 'item', cat: 'Item' };
+
             const rar          = rp === 'any' ? wbPick(RARITIES) : rp.charAt(0).toUpperCase() + rp.slice(1);
             const dmgType      = pickTxt(enchantData, 'damageType');
             const check        = pickTxt(enchantData, 'check');
-            const effect       = pickTxt(enchantData, 'effect').replace('{type}', dmgType).replace('{check}', check);
+            // Prefix is linked to the specific effect (set per-effect in the Forge)
+            // instead of picked independently, so the name always makes sense even
+            // when the effect resolves a random {type}/{origin}/{language} value.
+            const effectEntry  = pickObj(enchantData, 'effect');
+            const effect       = (effectEntry?.text || '-')
+                .replace('{type}', dmgType)
+                .replace('{check}', check)
+                .replace('{origin}', pickTxt(enchantData, 'origin'))
+                .replace('{language}', pickTxt(enchantData, 'language'))
+                .replace('{condition}', pickTxt(enchantData, 'condition'))
+                .replace('{manner}', pickTxt(enchantData, 'manner'))
+                .replace('{transmission}', pickTxt(enchantData, 'transmission'));
+            const prefix        = effectEntry?.prefix || pickTxt(enchantData, 'prefix');
             const rarCol       = RARITY_COLORS[rar] || '#888';
-            const catLabel     = chosenCat.charAt(0).toUpperCase() + chosenCat.slice(1);
+            const catLabel     = (chosen.cat || 'Item').replace(/\b\w/g, c => c.toUpperCase());
+
+            // Base item's own real stats, shown before the enchantment - what
+            // shows depends on whether it's a weapon, armor/shield, or a mundane item.
+            const baseRows = chosen.kind === 'weapon'
+                ? [
+                    { key: 'Damage',   val: [chosen.damage, chosen.damageType].filter(Boolean).join(' ') || '-' },
+                    { key: 'Range',    val: chosen.range || '-' },
+                    { key: 'Check',    val: chosen.check || '-' },
+                    ...(chosen.properties  ? [{ key: 'Properties', val: chosen.properties, muted: true }] : []),
+                    ...(chosen.description ? [{ key: 'Desc',       val: chosen.description, muted: true }] : []),
+                    { key: 'Cost/Bulk', val: `${chosen.cost ?? '-'}g · ${chosen.bulk ?? '-'} bulk`, muted: true },
+                  ]
+                : chosen.kind === 'armor'
+                ? [
+                    { key: 'Armor',    val: chosen.armor != null ? `+${chosen.armor}` : '-' },
+                    ...(chosen.movePenalty  ? [{ key: 'Move Penalty',  val: chosen.movePenalty }] : []),
+                    ...(chosen.checkPenalty ? [{ key: 'Check Penalty', val: chosen.checkPenalty }] : []),
+                    ...(chosen.checkBonus   ? [{ key: 'Check Bonus',   val: chosen.checkBonus }] : []),
+                    ...(chosen.properties  ? [{ key: 'Properties', val: chosen.properties, muted: true }] : []),
+                    ...(chosen.description ? [{ key: 'Desc',       val: chosen.description, muted: true }] : []),
+                    { key: 'Cost/Bulk', val: `${chosen.cost ?? '-'}g · ${chosen.bulk ?? '-'} bulk`, muted: true },
+                  ]
+                : [
+                    ...(chosen.description ? [{ key: 'Desc', val: chosen.description, muted: true }] : []),
+                    { key: 'Cost/Bulk', val: `${chosen.cost ?? '-'}g · ${chosen.bulk != null ? chosen.bulk : '-'} bulk`, muted: true },
+                  ];
+
+            // Roll20 API import packet - see attachRoll20Copy() for the copy button
+            // that turns this into "!importitem {...}" on the clipboard.
+            const roll20 = {
+                name: `${prefix} ${chosen.name}`,
+                baseItem: chosen.name,
+                kind: chosen.kind,
+                category: chosen.cat,
+                rarity: rar,
+                damage: chosen.damage || null,
+                damageType: chosen.damageType || dmgType || null,
+                range: chosen.range || null,
+                check: chosen.check || null,
+                armor: chosen.armor ?? null,
+                movePenalty: chosen.movePenalty || null,
+                checkPenalty: chosen.checkPenalty || null,
+                checkBonus: chosen.checkBonus || null,
+                cost: chosen.cost ?? null,
+                bulk: chosen.bulk ?? null,
+                description: chosen.description || '',
+                enchantEffect: `This item ${effect}.`,
+            };
 
             const data = {
                 theme:  'enchanted',
                 header: `${catLabel} · <span style="color:${rarCol}">${rar}</span>`,
-                title:  `${pickTxt(enchantData,'prefix')} ${base}`,
+                title:  `${prefix} ${chosen.name}`,
                 rows: [
-                    { key:'Type',   val: base },
-                    { key:'Effect', val: `This item ${effect}.` },
+                    ...baseRows,
+                    { key:'Enchantment', val: `${effect}.` },
                 ],
                 tags: [
                     { text: dmgType, cls: 'gc-tag--element' },
                     { text: rar,     cls: `gc-tag--${rar.toLowerCase()}` },
                 ],
+                roll20,
             };
             saveCard(STORE.enchanted, data);
             const card = buildCard(data.theme, data.header, data.title, data.rows, data.tags);
             enhanceCard(card, { type: 'card', data });
+            attachRoll20Copy(card, roll20);
             document.getElementById('item-output')?.prepend(card);
         });
         bindClear('clear-items', 'item-output', STORE.enchanted);
@@ -651,12 +757,18 @@
                     const e = wbPick(enchanted);
                     result = { cat, name: e.name, desc: e.effect || e.description || '', meta: e.type || 'Enchanted' };
                 } else {
-                    const prefix   = wbPick(enchGen.prefixes);
-                    const itemType = wbPick(enchGen.itemTypes);
-                    const effect   = wbPick(enchGen.effects)
+                    const base        = wbPick([...weapons, ...armor, ...items]);
+                    const effectEntry = wbPick(enchGen.effectObjs);
+                    const prefix      = effectEntry?.prefix || wbPick(enchGen.prefixes);
+                    const effect      = (effectEntry?.text || '')
                         .replace('{type}',  wbPick(enchGen.damageTypes))
-                        .replace('{check}', wbPick(enchGen.checks));
-                    result = { cat, name: `${prefix} ${itemType}`, desc: effect, meta: 'Enchanted' };
+                        .replace('{check}', wbPick(enchGen.checks))
+                        .replace('{origin}', wbPick(enchGen.origins))
+                        .replace('{language}', wbPick(enchGen.languages))
+                        .replace('{condition}', wbPick(enchGen.conditions))
+                        .replace('{manner}', wbPick(enchGen.manners))
+                        .replace('{transmission}', wbPick(enchGen.transmissions));
+                    result = { cat, name: `${prefix} ${base?.name || 'Item'}`, desc: effect, meta: 'Enchanted' };
                 }
             }
 

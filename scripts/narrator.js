@@ -2567,9 +2567,14 @@ async function ensureLoot() {
             enchGen: {
                 prefixes:    enchGenRaw.filter(x => x.type === 'prefix').map(x => x.text),
                 effects:     enchGenRaw.filter(x => x.type === 'effect').map(x => x.text),
+                effectObjs:  enchGenRaw.filter(x => x.type === 'effect'), // {text, prefix} - prefix is linked per-effect
                 damageTypes: enchGenRaw.filter(x => x.type === 'damageType').map(x => x.text),
                 checks:      enchGenRaw.filter(x => x.type === 'check').map(x => x.text),
-                itemTypes:   enchGenRaw.filter(x => x.type === 'itemType').map(x => x.text),
+                origins:     enchGenRaw.filter(x => x.type === 'origin').map(x => x.text),
+                languages:   enchGenRaw.filter(x => x.type === 'language').map(x => x.text),
+                conditions:  enchGenRaw.filter(x => x.type === 'condition').map(x => x.text),
+                manners:      enchGenRaw.filter(x => x.type === 'manner').map(x => x.text),
+                transmissions: enchGenRaw.filter(x => x.type === 'transmission').map(x => x.text),
             },
         };
         lootLoaded = true;
@@ -2610,10 +2615,18 @@ function rollLoot(pl) {
                 const e = wP(enchanted);
                 res = { cat, name: e.name, desc: e.effect || e.description || '', meta: e.type || 'Enchanted' };
             } else {
-                const effect = wP(enchGen.effects)
+                const base        = wP([...weapons, ...armor, ...items]);
+                const effectEntry = wP(enchGen.effectObjs);
+                const prefix      = effectEntry?.prefix || wP(enchGen.prefixes);
+                const effect      = (effectEntry?.text || '')
                     .replace('{type}', wP(enchGen.damageTypes))
-                    .replace('{check}', wP(enchGen.checks));
-                res = { cat, name: `${wP(enchGen.prefixes)} ${wP(enchGen.itemTypes)}`, desc: effect, meta: 'Enchanted' };
+                    .replace('{check}', wP(enchGen.checks))
+                    .replace('{origin}', wP(enchGen.origins))
+                    .replace('{language}', wP(enchGen.languages))
+                    .replace('{condition}', wP(enchGen.conditions))
+                    .replace('{manner}', wP(enchGen.manners))
+                    .replace('{transmission}', wP(enchGen.transmissions));
+                res = { cat, name: `${prefix} ${base?.name || 'Item'}`, desc: effect, meta: 'Enchanted' };
             }
         }
         if (res) picks.push(res);
@@ -3005,24 +3018,35 @@ document.getElementById('btn-gen-quest')?.addEventListener('click', () => {
 let GEN_ITEMS    = null;
 let GEN_ENCHGEN  = null;
 let GEN_MEDICINE = null;
+let GEN_WEAPONS = null;
+let GEN_ARMOR = null;
 let commerceLoaded = false;
 
 async function ensureCommerce() {
     if (commerceLoaded) return;
     try {
-        const [items, enchgen, medicine] = await Promise.all([
+        const [items, weapons, armor, enchgen, medicine] = await Promise.all([
             fetch('../data/items.json').then(r => r.json()),
+            fetch('../data/weapons.json').then(r => r.json()),
+            fetch('../data/armor.json').then(r => r.json()),
             fetch('../data/enchantedgen.json').then(r => r.json()),
             fetch('../data/medicine.json').then(r => r.json()),
         ]);
         GEN_ITEMS = items;
+        GEN_WEAPONS = weapons;
+        GEN_ARMOR = armor;
         const byType = (arr, key, val) => arr.filter(x => (x.type || x.category) === val);
         GEN_ENCHGEN = {
             prefixes:    enchgen.filter(x => x.type === 'prefix').map(x => x.text),
             effects:     enchgen.filter(x => x.type === 'effect').map(x => x.text),
+            effectObjs:  enchgen.filter(x => x.type === 'effect'), // {text, prefix} - prefix is linked per-effect
             damageTypes: enchgen.filter(x => x.type === 'damageType').map(x => x.text),
             checks:      enchgen.filter(x => x.type === 'check').map(x => x.text),
-            itemTypes:   enchgen.filter(x => x.type === 'itemType').map(x => x.text),
+            origins:     enchgen.filter(x => x.type === 'origin').map(x => x.text),
+            languages:   enchgen.filter(x => x.type === 'language').map(x => x.text),
+            conditions:  enchgen.filter(x => x.type === 'condition').map(x => x.text),
+            manners:      enchgen.filter(x => x.type === 'manner').map(x => x.text),
+            transmissions: enchgen.filter(x => x.type === 'transmission').map(x => x.text),
         };
         GEN_MEDICINE = {
             prefixes:   medicine.filter(x => x.category === 'prefix').map(x => x.value),
@@ -3048,12 +3072,18 @@ function generateMundane() {
 
 function generateEnchanted() {
     if (!GEN_ENCHGEN) return null;
-    const prefix = pick(GEN_ENCHGEN.prefixes);
-    const itemType = pick(GEN_ENCHGEN.itemTypes);
-    let effect = pick(GEN_ENCHGEN.effects);
+    const base = pick([...(GEN_WEAPONS || []), ...(GEN_ARMOR || []), ...(GEN_ITEMS || [])]);
+    const effectEntry = pick(GEN_ENCHGEN.effectObjs);
+    const prefix = effectEntry?.prefix || pick(GEN_ENCHGEN.prefixes);
+    let effect = effectEntry?.text || '';
     effect = effect.replace('{type}', pick(GEN_ENCHGEN.damageTypes));
     effect = effect.replace('{check}', pick(GEN_ENCHGEN.checks));
-    return { id: crypto.randomUUID(), name: `${prefix} ${itemType}`, effect };
+    effect = effect.replace('{origin}', pick(GEN_ENCHGEN.origins));
+    effect = effect.replace('{language}', pick(GEN_ENCHGEN.languages));
+    effect = effect.replace('{condition}', pick(GEN_ENCHGEN.conditions));
+    effect = effect.replace('{manner}', pick(GEN_ENCHGEN.manners));
+    effect = effect.replace('{transmission}', pick(GEN_ENCHGEN.transmissions));
+    return { id: crypto.randomUUID(), name: `${prefix} ${base?.name || 'Item'}`, effect };
 }
 
 function generateMedicine() {

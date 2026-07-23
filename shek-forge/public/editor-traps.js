@@ -64,7 +64,7 @@ function renderTrapsTable() {
                 <button class="te-add-btn" onclick="addTrapEntry('door')">+ Add</button>
             </div>
             <div class="te-chips">
-                ${doorChips || `<p style="color:#555;font-size:12px">No door states yet</p>`}
+                ${doorChips || `<p class="empty-state">No door states yet</p>`}
                 ${doors.length ? `<button class="te-add-chip" onclick="addTrapEntry('door')">+ door state</button>` : ''}
             </div>
         </div>
@@ -76,7 +76,7 @@ function renderTrapsTable() {
             </div>
             ${colHints.replace('Dmg / Key','Key').replace('Effect / Hint','Hint')}
             <div class="te-rows">
-                ${lockRows || `<p style="color:#555;font-size:12px">No lock types yet</p>`}
+                ${lockRows || `<p class="empty-state">No lock types yet</p>`}
             </div>
         </div>
 
@@ -87,7 +87,7 @@ function renderTrapsTable() {
             </div>
             ${colHints}
             <div class="te-rows">
-                ${trapRows || `<p style="color:#555;font-size:12px">No trap types yet</p>`}
+                ${trapRows || `<p class="empty-state">No trap types yet</p>`}
             </div>
         </div>
 

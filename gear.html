@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gear | Armored Noir - Check20</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/codex-ui.css">
     <link rel="stylesheet" href="styles/spells.css">
     <link rel="stylesheet" href="styles/gear.css">
     <link rel="stylesheet" href="styles/toolbar-mobile.css">
@@ -37,54 +38,36 @@
         <!-- ═══════════ WEAPONS TAB ═══════════ -->
         <div id="tab-weapons" class="tab-content active">
 
-            <!-- Properties reference panel -->
-            <details class="gear-reference-panel" id="weapon-properties-ref">
-            <summary>📋 Weapon Properties Reference</summary>
-            <div class="gear-ref-grid">
-                <div class="gear-ref-item"><strong>1 Hand</strong> - Can be wielded in one hand, leaving the other hand free.</div>
-            
-                <div class="gear-ref-item"><strong>2 Hand</strong> - Requires both hands to use. You cannot use a shield or hold another item while wielding it.</div>
-            
-                <div class="gear-ref-item"><strong>1 or 2 Hand</strong> - Can be used with one or two hands. Using two hands provides no additional benefit unless otherwise stated.</div>
-            
-                <div class="gear-ref-item"><strong>Light</strong> - Can be used as an Off-Action.</div>
-            
-                <div class="gear-ref-item"><strong>Hefty</strong> - You can carry up to 2 Hefty items before becoming Pinned.</div>
-            
-                <div class="gear-ref-item"><strong>Reach</strong> - Can attack targets up to 10 ft away.</div>
-            
-                <div class="gear-ref-item"><strong>Thrown</strong> - Can be thrown as a ranged attack, usually at Short range.</div>
-            
-                <div class="gear-ref-item"><strong>Return</strong> - Returns to your hand immediately after being thrown.</div>
-            
-                <div class="gear-ref-item"><strong>Hidden</strong> - Easy to conceal. Creatures must succeed on an Observation check to find it on your person.</div>
-            
-                <div class="gear-ref-item"><strong>1 Shot / Reload</strong> - After firing, you must spend any action type to reload before firing again.</div>
-            
-                <div class="gear-ref-item"><strong>Close Range Disadvantage</strong> - Attack checks against targets in Melee range are made with disadvantage.</div>
-            
-                <div class="gear-ref-item"><strong>Attached</strong> - Worn or strapped to the body. Does not occupy a hand slot and cannot be disarmed.</div>
-            
-                <div class="gear-ref-item"><strong>Free Hands</strong> - Can be used without occupying either hand, such as a mounted weapon.</div>
-            
-                <div class="gear-ref-item"><strong>Firearm</strong> - Produces a loud gunshot that may attract attention or trigger environmental reactions.</div>
-            
-                <div class="gear-ref-item"><strong>Loud</strong> - Makes significant noise when used and automatically breaks stealth.</div>
-            
-                <div class="gear-ref-item"><strong>Tech</strong> - Tied to the Tech Origin and may interact with abilities or effects that target Tech items.</div>
-            
-                <div class="gear-ref-item"><strong>Surprise</strong> - Your first attack against an unaware target has advantage.</div>
-            </div>
-            </details>
-
             <div class="gear-toolbar" id="weapons-toolbar">
-                <button class="toolbar-toggle-btn" aria-label="Toggle filters">
-                    <span class="toolbar-toggle-left">
-                        <span class="toolbar-toggle-pip"></span>
-                        Filters
-                    </span>
-                    <span class="toolbar-toggle-chevron">▼</span>
-                </button>
+                <div class="toolbar-header-row">
+                    <button class="toolbar-toggle-btn" aria-label="Toggle filters">
+                        <span class="toolbar-toggle-left">
+                            <span class="toolbar-toggle-pip"></span>
+                            Filters
+                        </span>
+                        <span class="toolbar-toggle-chevron">▼</span>
+                    </button>
+                    <button class="toolbar-ref-toggle" data-ref-target="weapon-properties-ref" aria-expanded="false" aria-label="Weapon properties reference">📋 Properties</button>
+                </div>
+                <div class="gear-ref-grid gear-ref-inline" id="weapon-properties-ref" hidden>
+                    <div class="gear-ref-item"><strong>1 Hand</strong> - Can be wielded in one hand, leaving the other hand free.</div>
+                    <div class="gear-ref-item"><strong>2 Hand</strong> - Requires both hands to use. You cannot use a shield or hold another item while wielding it.</div>
+                    <div class="gear-ref-item"><strong>1 or 2 Hand</strong> - Can be used with one or two hands. Using two hands provides no additional benefit unless otherwise stated.</div>
+                    <div class="gear-ref-item"><strong>Light</strong> - Can be used as an Off-Action.</div>
+                    <div class="gear-ref-item"><strong>Hefty</strong> - You can carry up to 2 Hefty items before becoming Pinned.</div>
+                    <div class="gear-ref-item"><strong>Reach</strong> - Can attack targets up to 10 ft away.</div>
+                    <div class="gear-ref-item"><strong>Thrown</strong> - Can be thrown as a ranged attack, usually at Short range.</div>
+                    <div class="gear-ref-item"><strong>Return</strong> - Returns to your hand immediately after being thrown.</div>
+                    <div class="gear-ref-item"><strong>Hidden</strong> - Easy to conceal. Creatures must succeed on an Observation check to find it on your person.</div>
+                    <div class="gear-ref-item"><strong>1 Shot / Reload</strong> - After firing, you must spend any action type to reload before firing again.</div>
+                    <div class="gear-ref-item"><strong>Close Range Disadvantage</strong> - Attack checks against targets in Melee range are made with disadvantage.</div>
+                    <div class="gear-ref-item"><strong>Attached</strong> - Worn or strapped to the body. Does not occupy a hand slot and cannot be disarmed.</div>
+                    <div class="gear-ref-item"><strong>Free Hands</strong> - Can be used without occupying either hand, such as a mounted weapon.</div>
+                    <div class="gear-ref-item"><strong>Firearm</strong> - Produces a loud gunshot that may attract attention or trigger environmental reactions.</div>
+                    <div class="gear-ref-item"><strong>Loud</strong> - Makes significant noise when used and automatically breaks stealth.</div>
+                    <div class="gear-ref-item"><strong>Tech</strong> - Tied to the Tech Origin and may interact with abilities or effects that target Tech items.</div>
+                    <div class="gear-ref-item"><strong>Surprise</strong> - Your first attack against an unaware target has advantage.</div>
+                </div>
                 <div class="toolbar-collapsible">
                     <div class="gear-filter-row" id="weapon-category-toggles">
                         <button class="gear-tab active" data-filter="all">All</button>
@@ -93,7 +76,7 @@
                         <button class="gear-tab" data-filter="firearm"><img src="/assets/icons/handgun.svg" class="gear-btn-icon"> Firearm</button>
                         <button class="gear-tab" data-filter="magic"><img src="/assets/icons/wand.svg" class="gear-btn-icon"> Magic</button>
                     </div>
-                    <div class="gear-controls-row">
+                    <div class="gear-rarity-row">
                         <div class="gear-filter-chips" id="weapon-rarity-toggles">
                             <span class="control-label">Rarity</span>
                             <button data-rarity="common">Common</button>
@@ -102,10 +85,12 @@
                             <button data-rarity="very rare">Very Rare</button>
                             <button data-rarity="legendary">Legendary</button>
                         </div>
+                    </div>
+                    <div class="gear-sort-row">
                         <div class="gear-sort-toggles" id="weapon-sort-toggles">
                             <span class="control-label">Sort</span>
-                            <button data-sort="name" class="active">Name</button>
-                            <button data-sort="category">Category</button>
+                            <button data-sort="name">Name</button>
+                            <button data-sort="category" class="active">Category</button>
                             <button data-sort="damage">Damage</button>
                             <button data-sort="cost">Cost</button>
                         </div>
@@ -125,9 +110,18 @@
         <!-- ═══════════ ARMOR TAB ═══════════ -->
         <div id="tab-armor" class="tab-content">
 
-            <details class="gear-reference-panel">
-                <summary>📋 Armor Properties Reference</summary>
-                <div class="gear-ref-grid">
+            <div class="gear-toolbar" id="armor-toolbar">
+                <div class="toolbar-header-row">
+                    <button class="toolbar-toggle-btn" aria-label="Toggle filters">
+                        <span class="toolbar-toggle-left">
+                            <span class="toolbar-toggle-pip"></span>
+                            Filters
+                        </span>
+                        <span class="toolbar-toggle-chevron">▼</span>
+                    </button>
+                    <button class="toolbar-ref-toggle" data-ref-target="armor-properties-ref" aria-expanded="false" aria-label="Armor properties reference">📋 Properties</button>
+                </div>
+                <div class="gear-ref-grid gear-ref-inline" id="armor-properties-ref" hidden>
                     <div class="gear-ref-item"><strong>Armor Value</strong> - Reduces incoming damage by this amount before wounds are applied.</div>
                     <div class="gear-ref-item"><strong>Hefty</strong> - Heavy or cumbersome. May impose disadvantage on Agility or Stealth checks unless you meet the Strength requirement.</div>
                     <div class="gear-ref-item"><strong>Move Penalty</strong> - Reduces your movement speed by the listed amount (in feet).</div>
@@ -135,28 +129,20 @@
                     <div class="gear-ref-item"><strong>Check Bonus</strong> - The listed checks gain the stated bonus while wearing this armor.</div>
                     <div class="gear-ref-item"><strong>Shield</strong> - Held in one hand. You can use the <strong>Block</strong> action to halve incoming melee damage. Cannot dual-wield while using a shield.</div>
                 </div>
-            </details>
-
-            <div class="gear-toolbar" id="armor-toolbar">
-                <button class="toolbar-toggle-btn" aria-label="Toggle filters">
-                    <span class="toolbar-toggle-left">
-                        <span class="toolbar-toggle-pip"></span>
-                        Filters
-                    </span>
-                    <span class="toolbar-toggle-chevron">▼</span>
-                </button>
                 <div class="toolbar-collapsible">
                     <div class="gear-filter-row" id="armor-category-toggles">
                         <button class="gear-tab active" data-filter="all">All</button>
                         <button class="gear-tab" data-filter="armor"><img src="/assets/icons/kevlar-vest.svg" class="gear-btn-icon"> Armor</button>
                         <button class="gear-tab" data-filter="shield">🛡 Shield</button>
                     </div>
-                    <div class="gear-controls-row">
+                    <div class="gear-rarity-row">
                         <div class="gear-filter-chips" id="armor-hefty-toggles">
                             <span class="control-label">Weight</span>
                             <button data-hefty="no">Light</button>
                             <button data-hefty="yes">Hefty</button>
                         </div>
+                    </div>
+                    <div class="gear-sort-row">
                         <div class="gear-sort-toggles" id="armor-sort-toggles">
                             <span class="control-label">Sort</span>
                             <button data-sort="name" class="active">Name</button>
@@ -193,13 +179,14 @@
                         <button class="gear-tab" data-filter="Tools & Equipment">🔧 Tools</button>
                         <button class="gear-tab" data-filter="Musical Instruments">🎵 Music</button>
                         <button class="gear-tab" data-filter="Fashion">👒 Fashion</button>
+                        <button class="gear-tab" data-filter="Communication">📡 Communication</button>
                         <button class="gear-tab" data-filter="Miscellaneous">⭐ Misc</button>
                     </div>
-                    <div class="gear-controls-row">
+                    <div class="gear-sort-row">
                         <div class="gear-sort-toggles" id="item-sort-toggles">
                             <span class="control-label">Sort</span>
-                            <button data-sort="name" class="active">Name</button>
-                            <button data-sort="category">Category</button>
+                            <button data-sort="name">Name</button>
+                            <button data-sort="category" class="active">Category</button>
                             <button data-sort="cost">Cost</button>
                         </div>
                         <div class="gear-actions">

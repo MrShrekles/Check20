@@ -28,6 +28,30 @@ function updateHexField(idx, field, value) {
     });
 }
 
+// ── Per-section sort-by-name (persisted, independent per section) ──────────
+const HEX_SORT_KEY = 'hexSectionSort_v1';
+function hexGetSortState() {
+    try { return JSON.parse(localStorage.getItem(HEX_SORT_KEY)) || {}; } catch (e) { return {}; }
+}
+function hexSectionKey(group, sub) { return sub ? `${group}:${sub}` : group; }
+function hexToggleSort(group, sub) {
+    const s = hexGetSortState();
+    const k = hexSectionKey(group, sub);
+    s[k] = !s[k];
+    localStorage.setItem(HEX_SORT_KEY, JSON.stringify(s));
+    renderEditor();
+}
+function hexMaybeSort(entries, group, sub) {
+    if (!hexGetSortState()[hexSectionKey(group, sub)]) return entries;
+    return [...entries].sort((a, b) =>
+        String(a.name || '').localeCompare(String(b.name || ''), undefined, { numeric: true, sensitivity: 'base' }));
+}
+function hexSortBtn(group, sub) {
+    const on = !!hexGetSortState()[hexSectionKey(group, sub)];
+    return `<button class="te-add-btn te-sort-btn${on ? ' active' : ''}"
+        onclick="hexToggleSort('${group}'${sub ? `,'${sub}'` : ''})" title="Sort this section by name">⇅ A-Z</button>`;
+}
+
 function removeHexEntry(idx) { teRemoveEntry(idx); }
 
 function addHexEntry(group, subgroup) {
@@ -82,31 +106,37 @@ function renderHexgenTable() {
     ];
 
     const simpleSections = simpleGroups.map(({ group, label }) => {
-        const entries = byGroup(group);
+        const entries = hexMaybeSort(byGroup(group), group);
         const total   = hexGroupTotal(group, null);
         const rows    = entries.map(e => hexNameWeightRow(e, total)).join('');
         return `<div class="te-section">
             <div class="te-section-head">
                 <h3>${label} <span class="te-count">${entries.length} · ∑${total}</span></h3>
-                <button class="te-add-btn" onclick="addHexEntry('${group}')">+ Add</button>
+                <div style="display:flex;gap:6px">
+                    ${hexSortBtn(group)}
+                    <button class="te-add-btn" onclick="addHexEntry('${group}')">+ Add</button>
+                </div>
             </div>
             ${hexColHeader()}
-            <div class="te-rows">${rows || `<p style="color:#555;font-size:12px">Empty</p>`}</div>
+            <div class="te-rows">${rows || `<p class="empty-state">Empty</p>`}</div>
         </div>`;
     }).join('');
 
     // Environments (grouped by sub-terrain)
     const envBlocks = HEX_ENV_SUBS.map(sub => {
-        const entries = byGroup('environments', sub);
+        const entries = hexMaybeSort(byGroup('environments', sub), 'environments', sub);
         const total   = hexGroupTotal('environments', sub);
         const rows    = entries.map(e => hexNameWeightRow(e, total)).join('');
         return `<div class="te-cat">
             <div class="te-cat-label" style="display:flex;justify-content:space-between">
                 <span>${sub} <span class="te-count">${entries.length} · ∑${total}</span></span>
-                <button class="te-add-chip" onclick="addHexEntry('environments','${sub}')">+ ${sub}</button>
+                <div style="display:flex;gap:6px">
+                    ${hexSortBtn('environments', sub)}
+                    <button class="te-add-chip" onclick="addHexEntry('environments','${sub}')">+ ${sub}</button>
+                </div>
             </div>
             ${hexColHeader()}
-            <div class="te-rows">${rows || `<p style="color:#555;font-size:12px">Empty</p>`}</div>
+            <div class="te-rows">${rows || `<p class="empty-state">Empty</p>`}</div>
         </div>`;
     }).join('');
 
@@ -116,7 +146,7 @@ function renderHexgenTable() {
     </div>`;
 
     // Populations (name + tier + weight)
-    const pops      = byGroup('populations');
+    const pops      = hexMaybeSort(byGroup('populations'), 'populations');
     const popTotal  = hexGroupTotal('populations', null);
     const popRows   = pops.map(e => {
         const pct = hexPct(Number(e.weight) || 0, popTotal);
@@ -135,7 +165,10 @@ function renderHexgenTable() {
     const popSection = `<div class="te-section">
         <div class="te-section-head">
             <h3>Populations <span class="te-count">${pops.length} · ∑${popTotal}</span></h3>
-            <button class="te-add-btn" onclick="addHexEntry('populations')">+ Add</button>
+            <div style="display:flex;gap:6px">
+                ${hexSortBtn('populations')}
+                <button class="te-add-btn" onclick="addHexEntry('populations')">+ Add</button>
+            </div>
         </div>
         <div class="te-col-header" style="display:flex;gap:6px;margin-bottom:2px;font-size:10px;color:#444;padding:0 2px">
             <span style="flex:1">Name</span>
@@ -144,7 +177,7 @@ function renderHexgenTable() {
             <span style="flex:0 0 40px;text-align:right">%</span>
             <span style="width:28px"></span>
         </div>
-        <div class="te-rows">${popRows || `<p style="color:#555;font-size:12px">Empty</p>`}</div>
+        <div class="te-rows">${popRows || `<p class="empty-state">Empty</p>`}</div>
     </div>`;
 
     // Power Levels (pl + weight)
@@ -173,7 +206,7 @@ function renderHexgenTable() {
             <span style="flex:0 0 40px;text-align:right">%</span>
             <span style="width:28px"></span>
         </div>
-        <div class="te-rows">${plRows || `<p style="color:#555;font-size:12px">Empty</p>`}</div>
+        <div class="te-rows">${plRows || `<p class="empty-state">Empty</p>`}</div>
     </div>`;
 
     // Travel Connectors (plain strings)
@@ -191,7 +224,7 @@ function renderHexgenTable() {
             <h3>Travel Connectors <span class="te-count">${connectors.length}</span></h3>
             <button class="te-add-btn" onclick="addHexEntry('travelConnectors')">+ Add</button>
         </div>
-        <div class="te-rows te-rows--wide">${connRows || `<p style="color:#555;font-size:12px">Empty</p>`}</div>
+        <div class="te-rows te-rows--wide">${connRows || `<p class="empty-state">Empty</p>`}</div>
     </div>`;
 
     return `<div class="te-editor" style="

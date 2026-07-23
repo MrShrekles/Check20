@@ -52,36 +52,40 @@ function qcCheckDiceSyntax(text) {
 }
 
 // ── IGNORE LISTS (namespaced per editor) ────────────────────────────────────
+// storageKey is optional and defaults to `qcShared_${ns}_v1`; editors that
+// predate this shared module (class, species) pass their original literal
+// key so existing users don't lose previously-ignored issues on upgrade.
 const _qcIgnCaches = {};
-function qcGetIgnored(ns) {
+function _qcStorageKey(ns, storageKey) { return storageKey || `qcShared_${ns}_v1`; }
+function qcGetIgnored(ns, storageKey) {
     if (!_qcIgnCaches[ns]) {
-        try { _qcIgnCaches[ns] = new Set(JSON.parse(localStorage.getItem(`qcShared_${ns}_v1`) || '[]')); }
+        try { _qcIgnCaches[ns] = new Set(JSON.parse(localStorage.getItem(_qcStorageKey(ns, storageKey)) || '[]')); }
         catch (e) { _qcIgnCaches[ns] = new Set(); }
     }
     return _qcIgnCaches[ns];
 }
-function qcIgnore(ns, key) {
-    const s = qcGetIgnored(ns);
+function qcIgnore(ns, key, storageKey) {
+    const s = qcGetIgnored(ns, storageKey);
     s.add(key);
-    localStorage.setItem(`qcShared_${ns}_v1`, JSON.stringify([...s]));
+    localStorage.setItem(_qcStorageKey(ns, storageKey), JSON.stringify([...s]));
     renderEditor();
     renderEntryList();
     updateStatus();
 }
-function qcUnignoreAll(ns, entryLabel) {
-    const s = qcGetIgnored(ns);
+function qcUnignoreAll(ns, entryLabel, storageKey) {
+    const s = qcGetIgnored(ns, storageKey);
     const pfx = `${entryLabel}::`;
     for (const k of [...s]) if (k.startsWith(pfx)) s.delete(k);
-    localStorage.setItem(`qcShared_${ns}_v1`, JSON.stringify([...s]));
+    localStorage.setItem(_qcStorageKey(ns, storageKey), JSON.stringify([...s]));
     renderEditor();
     renderEntryList();
     updateStatus();
 }
-function qcIgnoreAllForEntry(ns, keysJson) {
+function qcIgnoreAllForEntry(ns, keysJson, storageKey) {
     const keys = JSON.parse(keysJson);
-    const s = qcGetIgnored(ns);
+    const s = qcGetIgnored(ns, storageKey);
     keys.forEach(k => s.add(k));
-    localStorage.setItem(`qcShared_${ns}_v1`, JSON.stringify([...s]));
+    localStorage.setItem(_qcStorageKey(ns, storageKey), JSON.stringify([...s]));
     renderEditor();
     renderEntryList();
     updateStatus();
@@ -202,7 +206,7 @@ function qcRenderPanel(issues, ns, entryLabel) {
                     <div class="class-qc-type" style="color:#cc8833;">${escHtml(issue.label)}</div>
                     <div class="class-qc-detail">${escHtml(issue.detail)}</div>
                     <div class="class-qc-actions">
-                        <button class="btn btn-ghost" style="font-size:9px;padding:2px 8px;"
+                        <button class="btn btn-ghost btn-qc-xs"
                             onclick="qcIgnore('${escAttr(ns)}','${escAttr(issue.key)}')">Ignore</button>
                     </div>
                 </div>
@@ -213,7 +217,7 @@ function qcRenderPanel(issues, ns, entryLabel) {
         : `<span class="class-qc-cnt class-qc-cnt-ok">✓</span>`;
 
     const ignoreAllBtn = issues.length > 1
-        ? `<button class="btn btn-ghost" style="font-size:9px;padding:1px 8px;"
+        ? `<button class="btn btn-ghost btn-qc-xs"
                onclick="event.preventDefault();qcIgnoreAllForEntry('${escAttr(ns)}','${escAttr(JSON.stringify(issues.map(i => i.key)))}')"
            >Ignore All (${issues.length})</button>`
         : '';
@@ -223,7 +227,7 @@ function qcRenderPanel(issues, ns, entryLabel) {
             <span class="forge-qc-title">Quality Check ${badge}</span>
             <div style="display:flex;gap:4px;">
                 ${ignoreAllBtn}
-                <button class="btn btn-ghost" style="font-size:9px;padding:1px 8px;"
+                <button class="btn btn-ghost btn-qc-xs"
                     onclick="event.preventDefault();qcUnignoreAll('${escAttr(ns)}','${escAttr(entryLabel)}')">Reset Ignored</button>
             </div>
         </summary>

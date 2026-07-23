@@ -39,11 +39,17 @@
     padding: 0.3rem var(--padding);
 }
 
+.toolbar-header-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
 .gear-toolbar .toolbar-toggle-btn {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    flex: 1;
     background: none;
     border: none;
     color: var(--text-cream);
@@ -56,6 +62,27 @@
 .toolbar-toggle-left  { display: flex; align-items: center; gap: 0.4rem; }
 .toolbar-toggle-pip   { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
 .toolbar-toggle-chevron { font-size: 0.65rem; color: var(--gold); }
+
+/* ── Properties reference toggle (lives in the toolbar header, not its own row) ── */
+.toolbar-ref-toggle {
+    flex-shrink: 0;
+    padding: 0.28rem 0.7rem;
+    font-size: 0.72rem;
+    background: var(--dark-2);
+    color: var(--text-cream);
+    border: 1px solid var(--theme-3);
+    border-radius: 3px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .12s, color .12s, border-color .12s;
+}
+
+.toolbar-ref-toggle:hover,
+.toolbar-ref-toggle[aria-expanded="true"] {
+    background: var(--theme-2);
+    color: var(--gold);
+    border-color: var(--gold);
+}
 
 .gear-toolbar .toolbar-collapsible {
     display: none;
@@ -90,12 +117,20 @@
 .gear-tab:hover         { background: var(--theme-1); color: var(--gold); border-color: var(--gold); }
 .gear-tab.active        { background: var(--theme-2); color: var(--gold); border-color: var(--gold); }
 
-/* ── Controls row (sort + chips + actions) ── */
-.gear-controls-row {
+/* ── Rarity row (its own line, clearly separated from sort/actions) ── */
+.gear-rarity-row {
+    padding-top: 0.35rem;
+    border-top: 1px solid rgba(255,255,255,.06);
+}
+
+/* ── Sort + actions row ── */
+.gear-sort-row {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
     align-items: center;
+    padding-top: 0.35rem;
+    border-top: 1px solid rgba(255,255,255,.06);
 }
 
 .gear-filter-chips,
@@ -154,28 +189,15 @@
     font-family: monospace;
 }
 
-/* ── Properties reference panel ── */
-.gear-reference-panel {
-    margin: 0.5rem var(--padding);
-    border: 1px solid var(--theme-2);
-    border-radius: var(--border-radius);
-    background: var(--dark-2);
-    overflow: hidden;
+/* ── Properties reference panel (toggled from the toolbar header) ── */
+.gear-ref-inline {
+    border-top: 1px solid var(--theme-2);
+    margin-top: 0.35rem;
 }
 
-.gear-reference-panel summary {
-    background: var(--theme-1);
-    color: var(--text-cream);
-    font-size: 0.82rem;
-    font-weight: bold;
-    padding: 0.5rem 0.75rem;
-    cursor: pointer;
-    border-radius: 0;
-    text-align: left;
-    letter-spacing: 0.04em;
+.gear-ref-inline[hidden] {
+    display: none;
 }
-
-.gear-reference-panel summary:hover { background: var(--theme-2); }
 
 .gear-ref-grid {
     display: grid;
@@ -196,11 +218,12 @@
 
 /* ── Row icon (SVG img) ── */
 .gear-row-icon {
-    width: 16px;
-    height: 16px;
+    width: var(--codex-icon-size, 16px);
+    height: var(--codex-icon-size, 16px);
     object-fit: contain;
     opacity: .75;
     flex-shrink: 0;
+    transition: width .15s ease, height .15s ease;
 }
 
 .gear-row-icon-wrap {
@@ -210,7 +233,7 @@
 }
 
 .gear-row-icon--emoji {
-    font-size: 0.95rem;
+    font-size: var(--codex-icon-size, 16px);
     line-height: 1;
 }
 
@@ -230,6 +253,28 @@
     opacity: .7;
     font-style: italic;
     margin-left: 2px;
+}
+
+/* ── Damage pill in row header - the number that actually matters ── */
+.gear-dmg-pill {
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--codex-cost-size, 0.75rem);
+    font-family: monospace;
+    font-weight: bold;
+    color: var(--red-2);
+    background: rgba(255, 100, 100, 0.12);
+    border: 1px solid rgba(255, 100, 100, 0.4);
+    border-radius: 3px;
+    padding: 2px 7px;
+    margin-left: auto;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.gear-dmg-pill .gear-dmg-type {
+    color: var(--red-2);
+    opacity: .75;
 }
 
 /* ── Gear-specific row tag colors ── */

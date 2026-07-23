@@ -41,7 +41,7 @@ function renderQuestTable() {
                     <button class="te-add-btn" onclick="addQuestEntry('${type}')">+ Add</button>
                 </div>
                 <div class="te-${long ? 'rows te-rows--wide' : 'chips'}">
-                    ${items || `<p style="color:#555;font-size:12px">No ${label.toLowerCase()} yet</p>`}
+                    ${items || `<p class="empty-state">No ${label.toLowerCase()} yet</p>`}
                 </div>
             </div>`;
     }).join('');

@@ -19,6 +19,7 @@ const ITEM_ICONS = {
     'Tools & Equipment':   '🔧',
     'Musical Instruments': '🎵',
     'Fashion':             '👒',
+    'Communication':       '📡',
     'Miscellaneous':       '⭐',
 };
 
@@ -32,9 +33,9 @@ const ENCHANTED_ICONS = {
 };
 
 const gearState = {
-    weapons:  { data: [], activeCategory: 'all', activeRarities: [], sort: 'name' },
+    weapons:  { data: [], activeCategory: 'all', activeRarities: [], sort: 'category' },
     armor:    { data: [], activeCategory: 'all', activeHefty: [],    sort: 'name' },
-    items:    { data: [], activeCategory: 'all',                      sort: 'name' },
+    items:    { data: [], activeCategory: 'all',                      sort: 'category' },
     enchanted:{ data: [], activeType: 'all',                          sort: 'name' },
 };
 
@@ -108,6 +109,19 @@ function initToolbars() {
         toolbar.querySelector('.toolbar-toggle-btn').addEventListener('click', () => {
             const open = col.classList.toggle('open');
             chevron.textContent = open ? '▲' : '▼';
+        });
+    });
+}
+
+// ─── Properties reference toggles ──────────────────────────────────────────────
+function initRefToggles() {
+    document.querySelectorAll('.toolbar-ref-toggle').forEach(btn => {
+        const panel = document.getElementById(btn.dataset.refTarget);
+        if (!panel) return;
+        btn.addEventListener('click', () => {
+            const open = panel.hidden;
+            panel.hidden = !open;
+            btn.setAttribute('aria-expanded', String(open));
         });
     });
 }
@@ -267,7 +281,8 @@ function buildWeaponRow(w, term) {
         <span class="spell-row-tags">
             <span class="gear-tag gear-tag--rarity gear-rarity--${rarityNorm.replace(' ', '-')}">${w.rarity || 'Common'}</span>
         </span>
-        <span class="spell-row-cost">${w.damage || '-'}${w.damageType ? ` <em class="gear-dmg-type">${w.damageType}</em>` : ''}</span>`;
+        ${w.cost != null ? `<span class="spell-row-cost">${w.cost} <span class="gear-gp">gp</span></span>` : ''}
+        <span class="gear-dmg-pill">${w.damage || '-'}${w.damageType ? ` <em class="gear-dmg-type">${w.damageType}</em>` : ''}</span>`;
 
     const propChips = w.properties
         ? w.properties.split(',').map(p => p.trim()).filter(Boolean)
@@ -382,7 +397,7 @@ function buildArmorRow(a, term) {
         <span class="spell-row-tags">
             ${a.hefty === 'yes' ? '<span class="gear-tag gear-tag--hefty">Hefty</span>' : ''}
         </span>
-        <span class="spell-row-cost">Armor ${a.armor ?? '-'}</span>`;
+        <span class="spell-row-cost">Armor ${a.armor ?? '-'}${a.cost != null ? ` · ${a.cost} <span class="gear-gp">gp</span>` : ''}</span>`;
 
     const stats = [
         a.movePenalty  ? `<span><strong>Move Penalty</strong> ${a.movePenalty}</span>`  : '',
@@ -565,6 +580,7 @@ function buildEnchantedRow(it, term) {
 document.addEventListener('DOMContentLoaded', async () => {
     initTabs();
     initToolbars();
+    initRefToggles();
     initCodexSize();
     initExpandCollapse();
     initWeaponFilters();

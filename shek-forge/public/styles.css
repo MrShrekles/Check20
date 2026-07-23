@@ -24,6 +24,7 @@
     --type-armor: #2a8a6a;
     --type-generic: #7a7a7a;
     --type-spell: #28d478;
+    --type-item: #b8862e;
     /* user-adjustable input sizing */
     --input-padding-v: 4px;
     --input-padding-h: 8px;
@@ -48,6 +49,7 @@ body {
 body.type-monster { --accent: var(--type-monster); --accent-dim: #6b1818; --accent-bright: #dd4444; --bg-hover: #201818; --bg-active: #281818; --border: #2e2020; --border-bright: #3d2828; --text-muted: #9a6060; }
 body.type-weapon  { --accent: var(--type-weapon);  --accent-dim: #1a4870; --accent-bright: #4a9ade; --bg-hover: #161e28; --bg-active: #1a2434; --border: #1e2a38; --border-bright: #2a3c50; --text-muted: #5a7a9a; }
 body.type-armor   { --accent: var(--type-armor);   --accent-dim: #185040; --accent-bright: #3aaa88; --bg-hover: #141e1a; --bg-active: #182620; --border: #1e2c28; --border-bright: #2a3e38; --text-muted: #5a8a7a; }
+body.type-item    { --accent: var(--type-item);    --accent-dim: #7a5518; --accent-bright: #e0aa44; --bg-hover: #201c14; --bg-active: #282218; --border: #2e2818; --border-bright: #3d3520; --text-muted: #9a8a60; }
 
 /* ── TITLEBAR ── */
 .titlebar { height: 38px; background: var(--bg-deep); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 16px; gap: 12px; flex-shrink: 0; user-select: none; transition: background 0.3s; }
@@ -62,6 +64,7 @@ body.type-armor   { --accent: var(--type-armor);   --accent-dim: #185040; --acce
 .file-type-badge.badge-monster { color: var(--type-monster); border-color: var(--type-monster); }
 .file-type-badge.badge-weapon  { color: var(--type-weapon);  border-color: var(--type-weapon); }
 .file-type-badge.badge-armor   { color: var(--type-armor);   border-color: var(--type-armor); }
+.file-type-badge.badge-item    { color: var(--type-item);    border-color: var(--type-item); }
 .file-type-badge.badge-generic { color: var(--type-generic); border-color: var(--type-generic); }
 
 .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-bright); }
@@ -112,6 +115,7 @@ body.type-armor   { --accent: var(--type-armor);   --accent-dim: #185040; --acce
 .file-type-dot.dot-monster { background: var(--type-monster); }
 .file-type-dot.dot-weapon  { background: var(--type-weapon); }
 .file-type-dot.dot-armor   { background: var(--type-armor); }
+.file-type-dot.dot-item    { background: var(--type-item); }
 .file-type-dot.dot-generic { background: var(--type-generic); opacity: 0.5; }
 
 /* ── ENTRY LIST ── */
@@ -285,6 +289,22 @@ textarea.field-input { resize: vertical; min-height: var(--textarea-min-height);
 .array-new-cancel { padding: 7px 10px; background: var(--bg-card); border: none; color: var(--text-muted); cursor: pointer; border-left: 1px solid var(--border); font-size: 12px; }
 .object-field { background: var(--bg-card); border: 1px solid var(--border); border-radius: 2px; padding: 10px; margin-top: 4px; }
 
+/* ── SHARED: empty-state text (was inline style="color:#555;font-size:12px" repeated across editors) ── */
+.empty-state { color: #555; font-size: 12px; }
+
+/* ── SHARED: name-field styling (was inline style repeated across editors) ── */
+.field-input-name { font-size: 13px; font-family: 'Cinzel', serif; letter-spacing: 0.04em; }
+
+/* ── SHARED: small QC action buttons (was inline style repeated across editors) ── */
+.btn-qc-xs { font-size: 9px; padding: 2px 8px; }
+
+/* ── SHARED: nested JSON-as-table renderer (generic editor read-only preview) ── */
+.json-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border: 1px solid var(--border); border-radius: 2px; }
+.json-table td { padding: 4px 8px; font-size: 11px; border-bottom: 1px solid var(--border); vertical-align: top; font-family: 'Share Tech Mono', monospace; color: var(--text-secondary); }
+.json-table tr:last-child td { border-bottom: none; }
+.json-table td.json-table-key { color: var(--text-label); font-weight: 500; white-space: nowrap; width: 1%; }
+.json-table .json-table { margin: 2px 0; }
+
 /* ── CLASS THEME ── */
 body.type-class { --accent: #5a78cc; --accent-dim: #2a3e7a; --accent-bright: #88aaee; --bg-hover: #101828; --bg-active: #141e34; --border: #1a2438; --border-bright: #243050; --text-muted: #6080aa; }
 .file-type-dot.dot-class  { background: #5a78cc; }
@@ -443,20 +463,42 @@ body.type-enchanted .section-header    { background: rgba(153,102,204,0.07); bor
 body.type-enchanted .forge-section     { box-shadow: 0 0 16px rgba(153,102,204,0.05); }
 body.type-enchanted .titlebar-brand    { text-shadow: 0 0 12px rgba(204,153,255,0.5); }
 
+/* ── ENCHANTED ITEMS (real magic-item catalog, enchanted.json) ────────────── */
+body.type-enchanteditem {
+    --accent: #cc4d7a;
+    --accent-dim: #6b2340;
+    --accent-bright: #ee7aa4;
+    --bg-hover: #200d16;
+    --bg-active: #2e1120;
+    --border: #45182c;
+    --border-bright: #6b2340;
+    --text-muted: #aa5577;
+}
+.file-type-dot.dot-enchanteditem   { background: #cc4d7a; box-shadow: 0 0 4px #cc4d7a; }
+.file-type-badge.badge-enchanteditem { color: #cc4d7a; border-color: #cc4d7a; }
+body.type-enchanteditem .section-header { background: rgba(204,77,122,0.07); border-bottom-color: #6b2340; }
+body.type-enchanteditem .forge-section  { box-shadow: 0 0 16px rgba(204,77,122,0.05); }
+body.type-enchanteditem .titlebar-brand { text-shadow: 0 0 12px rgba(238,122,164,0.5); }
+
 /* ── Enchanted table editor ─────────────────────────────────────────────── */
 .ench-editor        { display: flex; flex-direction: column; gap: 16px; padding: 4px 0; }
 .ench-section       { background: var(--bg-panel,#14141c); border: 1px solid var(--border-dim,#252535); border-radius: 8px; padding: 12px 14px; }
 .ench-section-head  { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .ench-section-head h3 { margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: #9966cc; }
 .ench-chips         { display: flex; flex-wrap: wrap; gap: 6px; }
-.ench-chip          { display: flex; align-items: center; gap: 0; background: #1e1130; border: 1px solid #3d1f66; border-radius: 20px; overflow: hidden; }
+.ench-chip          { display: flex; align-items: center; gap: 0; background: #1e1130; border: 1px solid #3d1f66; border-radius: 20px; overflow: hidden; transition: border-color .15s, box-shadow .15s; }
+.ench-chip:hover, .ench-chip:focus-within { border-color: #9966cc; box-shadow: 0 0 6px rgba(153,102,204,.3); }
 .ench-chip-input    { background: transparent; border: none; color: #cc99ff; font-size: 12px; padding: 3px 8px; min-width: 60px; max-width: 160px; outline: none; font-family: inherit; }
 .ench-chip-input:focus { background: rgba(153,102,204,0.12); }
-.ench-remove        { background: transparent; border: none; color: #664488; cursor: pointer; padding: 3px 7px; font-size: 13px; line-height: 1; }
+.ench-remove        { background: transparent; border: none; color: #664488; cursor: pointer; padding: 3px 7px; font-size: 13px; line-height: 1; transition: color .15s; }
 .ench-remove:hover  { color: #ff6060; }
 .ench-rows          { display: flex; flex-direction: column; gap: 6px; }
+.ench-rows--grid    { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; }
+@media (max-width: 1100px) { .ench-rows--grid { grid-template-columns: 1fr; } }
 .ench-row           { display: flex; align-items: center; gap: 6px; }
-.ench-row-input     { flex: 1; background: #0f0a18; border: 1px solid #2a1545; border-radius: 6px; color: #cc99ff; font-size: 12px; padding: 5px 8px; outline: none; font-family: inherit; }
+.ench-row-input     { flex: 1; background: #0f0a18; border: 1px solid #2a1545; border-radius: 6px; color: #cc99ff; font-size: 12px; padding: 5px 8px; outline: none; font-family: inherit; transition: border-color .15s; }
+.ench-row-input--prefix { flex: 0 0 110px; color: #e0b0ff; font-family: 'Cinzel', serif; font-size: 11px; }
+.ench-row-input:hover { border-color: #5533aa; }
 .ench-row-input:focus { border-color: #9966cc; }
 .ench-cat           { margin-bottom: 10px; }
 .ench-cat-label     { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: #664488; margin-bottom: 5px; }
@@ -580,6 +622,7 @@ body.type-worldbuilding .titlebar-brand  { text-shadow: 0 0 12px rgba(85,221,221
 }
 .te-add-btn:hover { border-color: var(--te-accent,#888); box-shadow: 0 0 8px var(--te-glow,rgba(136,136,136,.3)); color: #fff; }
 .te-add-btn:active { transform: scale(.97); }
+.te-sort-btn.active { border-color: var(--te-accent,#888); color: #fff; background: var(--te-accent,#888); }
 .te-add-chip {
     background: transparent; border: 1px dashed var(--te-border,#3a3a55);
     border-radius: 20px; color: var(--te-accent,#888); opacity: .6;
@@ -655,6 +698,9 @@ body.forge-compact .field-row { gap: 6px; }
 body.forge-compact .section-block { padding: 6px 10px; }
 body.forge-compact .entry-row { padding: 5px 12px; }
 body.forge-compact .field-editor { gap: 6px; padding: 8px; }
+
+/* ── WORD WRAP OFF - single-line, horizontal-scroll textareas ── */
+body.forge-nowrap textarea.field-input { white-space: pre; overflow-x: auto; }
 
 /* ── PRINT / B&W MODE ── */
 body.forge-print { filter: grayscale(1) contrast(1.1); }
@@ -820,6 +866,12 @@ details.forge-section-qc:not([open]) > summary.section-header {
 .gt-input:focus { border-color: var(--accent-dim); background: var(--bg-panel); }
 .gt-input-name { font-family: 'Cinzel', serif; font-size: 11px; min-width: 120px; }
 .gt-input-mono { font-family: 'Share Tech Mono', monospace; font-size: 11px; }
+/* Textarea variant of .gt-input, for long free-text table columns (e.g. Effect) -
+   wraps and auto-grows to fit its content (height set by JS in editor-enchanted-item.js)
+   instead of the single-line scroll a plain <input> is stuck with. No manual resize
+   handle or scrollbar - the box just matches its text. */
+textarea.gt-input { display: block; resize: none; overflow: hidden; min-height: 26px; line-height: 1.4; font-family: inherit; white-space: pre-wrap; word-wrap: break-word; }
+body.forge-nowrap textarea.gt-input { white-space: pre; overflow-x: auto; min-height: 0; }
 .gt-actions { display: flex; gap: 3px; justify-content: center; white-space: nowrap; }
 .gt-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 13px; padding: 2px 6px; border-radius: 3px; line-height: 1; transition: color 0.1s, background 0.1s; }
 .gt-btn:hover { color: var(--text-primary); background: var(--bg-hover); }
@@ -830,6 +882,13 @@ details.forge-section-qc:not([open]) > summary.section-header {
 .gt-th-sort:hover { color: var(--text-primary); background: var(--bg-hover); }
 .gt-th-active { color: var(--text-primary) !important; }
 .gt-effect-count { display: inline-block; min-width: 20px; padding: 1px 6px; background: var(--bg-hover); border-radius: 10px; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-muted); text-align: center; }
+
+/* ── COLUMN REORDER BUTTONS (table header) ─────────────────────────────────── */
+.gt-col-move { display: inline-flex; gap: 2px; margin-left: 6px; vertical-align: middle; opacity: 0.35; transition: opacity 0.15s; }
+th:hover .gt-col-move { opacity: 1; }
+.gt-col-move-btn { background: transparent; border: none; color: inherit; cursor: pointer; font-size: 8px; padding: 1px 3px; line-height: 1; border-radius: 2px; }
+.gt-col-move-btn:hover:not(:disabled) { background: var(--bg-hover); color: var(--text-primary); }
+.gt-col-move-btn:disabled { opacity: 0.25; cursor: default; }
 
 /* ── RESPONSIVE: touch devices (no hover capability) ──────────────────────── */
 /* Delete controls that only appear on :hover are invisible on touch - make

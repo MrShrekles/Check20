@@ -320,36 +320,14 @@ const CLASS_QC = {
 };
 
 let _qcIssues  = [];   // filled each render, used by click handlers
-let _qcIgnCache = null;
+const CLASS_QC_NS = 'class', CLASS_QC_STORAGE_KEY = 'classQC_v1'; // legacy key, kept via editor-qc-shared.js
 
-function _qcGetIgnored() {
-    if (!_qcIgnCache) {
-        try { _qcIgnCache = new Set(JSON.parse(localStorage.getItem('classQC_v1') || '[]')); }
-        catch(e) { _qcIgnCache = new Set(); }
-    }
-    return _qcIgnCache;
-}
-
-function classQCIgnore(key) {
-    _qcIgnCache = null;
-    const s = _qcGetIgnored();
-    s.add(key);
-    localStorage.setItem('classQC_v1', JSON.stringify([...s]));
-    renderEditor();
-    renderEntryList();
-    updateStatus();
-}
-
-function classQCUnignoreAll(entryName) {
-    _qcIgnCache = null;
-    const s = _qcGetIgnored();
-    const pfx = `${entryName}::`;
-    for (const k of [...s]) { if (k.startsWith(pfx)) s.delete(k); }
-    localStorage.setItem('classQC_v1', JSON.stringify([...s]));
-    renderEditor();
-    renderEntryList();
-    updateStatus();
-}
+// Delegates to the shared ignore-list infrastructure in editor-qc-shared.js
+// (same get/add/reset pattern every editor needs) while keeping the original
+// localStorage key so previously-ignored issues aren't lost.
+function _qcGetIgnored() { return qcGetIgnored(CLASS_QC_NS, CLASS_QC_STORAGE_KEY); }
+function classQCIgnore(key) { qcIgnore(CLASS_QC_NS, key, CLASS_QC_STORAGE_KEY); }
+function classQCUnignoreAll(entryName) { qcUnignoreAll(CLASS_QC_NS, entryName, CLASS_QC_STORAGE_KEY); }
 
 function classQCApply(entryIdx, issueKey) {
     const issue = _qcIssues.find(i => i.key === issueKey);
@@ -569,17 +547,17 @@ function renderClassQualityCheck(entry, idx) {
             const branchLbl  = issue.branch === 'path' ? 'PATH' : 'TALENT';
             const typeColor  = TYPE_COLOR[issue.code] || '#888888';
             const fixBtn = issue.fix
-                ? `<button class="btn btn-green" style="font-size:9px;padding:2px 8px;"
+                ? `<button class="btn btn-green btn-qc-xs"
                        onclick="classQCApply(${idx},'${escAttr(issue.key)}')"
                    >${escHtml(issue.fix.label)}</button>`
                 : '';
             const ignBtn = issue.code === 'untagged_check'
-                ? `<button class="btn btn-ghost" style="font-size:9px;padding:2px 8px;"
+                ? `<button class="btn btn-ghost btn-qc-xs"
                        onclick="updateField(${idx},'${escAttr(`${issue.branch}.steps.${issue.si}.checkType`)}','unneeded');classQCIgnore('${escAttr(issue.key)}')"
                    >Unneeded</button>`
                 : issue.code === 'empty_action'
                 ? ''
-                : `<button class="btn btn-ghost" style="font-size:9px;padding:2px 8px;"
+                : `<button class="btn btn-ghost btn-qc-xs"
                        onclick="classQCIgnore('${escAttr(issue.key)}')"
                    >Ignore</button>`;
             return `<div class="class-qc-issue" style="border-left:3px solid ${typeColor};">
@@ -602,7 +580,7 @@ function renderClassQualityCheck(entry, idx) {
     return `<details class="forge-section forge-section-qc" ${issues.length > 0 ? 'open' : ''}>
         <summary class="section-header section-header-split forge-qc-summary">
             <span class="forge-qc-title">Quality Check ${badge}</span>
-            <button class="btn btn-ghost" style="font-size:9px;padding:1px 8px;"
+            <button class="btn btn-ghost btn-qc-xs"
                 onclick="event.preventDefault();classQCUnignoreAll('${escAttr(entry.name)}')">Reset Ignored</button>
         </summary>
         ${body}

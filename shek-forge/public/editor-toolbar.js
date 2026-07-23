@@ -518,7 +518,15 @@
             const tbDisabled = typeof loadForgeSettings === 'function'
                 && loadForgeSettings().contextualBar === false;
 
-            if (tbDisabled || !el || !el.classList.contains('field-input')
+            // Form fields use .field-input; table-view prose cells (e.g. Effect/
+            // Description columns) use .gt-input textareas - only the textarea
+            // variant qualifies, since the single-word gt-input <input> cells
+            // (Name/Type/Check/...) don't benefit from a rich-text toolbar and
+            // it would visually clash with their datalist dropdowns.
+            const isEditable = el && (el.classList.contains('field-input')
+                || (el.classList.contains('gt-input') && el.tagName === 'TEXTAREA'));
+
+            if (tbDisabled || !isEditable
                     || el.type === 'number' || el.tagName === 'SELECT'
                     || (typeof state !== 'undefined' && state.fileType === 'species')) {
                 hideToolbar();

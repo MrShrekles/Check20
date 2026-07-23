@@ -70,7 +70,7 @@ function renderMedicineTable() {
                     <button class="te-add-btn" onclick="addMedEntry('${cat}')">+ Add</button>
                 </div>
                 <div class="${containerClass}">
-                    ${items || `<p style="color:#555;font-size:12px">No ${label.toLowerCase()} yet</p>`}
+                    ${items || `<p class="empty-state">No ${label.toLowerCase()} yet</p>`}
                 </div>
             </div>`;
     }).join('');

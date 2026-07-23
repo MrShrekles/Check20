@@ -60,6 +60,15 @@ function applyForgeSettings(s) {
     // Contextual toolbar
     syncToggle('contextualBarToggle', s.contextualBar !== false);
 
+    // Word wrap on textareas (default on - toggle off for a horizontal-scroll,
+    // single-line view, e.g. to spot exact formatting/trailing spaces)
+    document.body.classList.toggle('forge-nowrap', s.wordWrap === false);
+    syncToggle('wordWrapToggle', s.wordWrap !== false);
+    // Re-measure any auto-growing table textareas since wrap mode changes their line count
+    if (typeof enchantedItemAutoGrow === 'function') {
+        document.querySelectorAll('.gear-table textarea.gt-input').forEach(enchantedItemAutoGrow);
+    }
+
     // Input size
     const inputStep = INPUT_SIZE_STEPS[(s.inputSize || 3) - 1];
     document.documentElement.style.setProperty('--input-padding-v', inputStep.pv);
@@ -123,6 +132,13 @@ function toggleInvert() {
 function toggleContextualBar() {
     const s = loadForgeSettings();
     s.contextualBar = s.contextualBar === false ? true : false;
+    saveForgeSettings(s);
+    applyForgeSettings(s);
+}
+
+function toggleWordWrap() {
+    const s = loadForgeSettings();
+    s.wordWrap = s.wordWrap === false ? true : false;
     saveForgeSettings(s);
     applyForgeSettings(s);
 }

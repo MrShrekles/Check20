@@ -215,8 +215,7 @@ registerEditor('glossary', {
             <div class="forge-section">
                 <div class="section-header">Term</div>
                 <div class="section-body">
-                    <input class="field-input"
-                        style="font-size:13px;font-family:'Cinzel',serif;letter-spacing:0.04em;"
+                    <input class="field-input field-input-name"
                         type="text"
                         value="${escAttr(entry.term || '')}"
                         placeholder="Term name…"

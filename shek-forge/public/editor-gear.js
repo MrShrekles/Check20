@@ -229,7 +229,7 @@ function renderWeaponForm(e, idx) {
         <div class="forge-section">
             <div class="section-header">Name</div>
             <div class="section-body">
-                <input class="field-input" style="font-size:13px;font-family:'Cinzel',serif;letter-spacing:0.04em;" type="text"
+                <input class="field-input field-input-name" type="text"
                     value="${escAttr(e.name || '')}" onchange="updateField(${idx},'name',this.value)" oninput="markUnsaved()">
             </div>
         </div>
@@ -339,7 +339,7 @@ function renderArmorForm(e, idx) {
         <div class="forge-section">
             <div class="section-header">Name</div>
             <div class="section-body">
-                <input class="field-input" style="font-size:13px;font-family:'Cinzel',serif;letter-spacing:0.04em;" type="text"
+                <input class="field-input field-input-name" type="text"
                     value="${escAttr(e.name || '')}" onchange="updateField(${idx},'name',this.value)" oninput="markUnsaved()">
             </div>
         </div>

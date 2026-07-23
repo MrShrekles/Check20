@@ -181,6 +181,26 @@ function genericArray(key, arr, idx) {
     </div>`;
 }
 
+// ── NESTED JSON-AS-TABLE (read-only preview for values too deep to edit as fields) ──
+function genericJsonCell(v) {
+    if (v !== null && typeof v === 'object') return genericJsonTable(v);
+    return escHtml(String(v ?? ''));
+}
+
+function genericJsonTable(value) {
+    if (Array.isArray(value)) {
+        if (value.length === 0) return '<div class="empty-state">Empty array</div>';
+        const rows = value.map((v, i) =>
+            `<tr><td class="json-table-key">${i}</td><td>${genericJsonCell(v)}</td></tr>`).join('');
+        return `<table class="json-table"><tbody>${rows}</tbody></table>`;
+    }
+    const entries = Object.entries(value);
+    if (entries.length === 0) return '<div class="empty-state">Empty object</div>';
+    const rows = entries.map(([k, v]) =>
+        `<tr><td class="json-table-key">${escHtml(k)}</td><td>${genericJsonCell(v)}</td></tr>`).join('');
+    return `<table class="json-table"><tbody>${rows}</tbody></table>`;
+}
+
 // ── OBJECT SECTION ────────────────────────────────────────────────────────────
 function genericObject(key, obj, idx) {
     const label = key.replace(/^_/, '').replace(/_/g, ' ');
@@ -188,9 +208,8 @@ function genericObject(key, obj, idx) {
         if (Array.isArray(v) || (typeof v === 'object' && v !== null)) {
             return `<div class="field-wrap full">
                 <label class="field-label">${escHtml(k)}
-                    <span style="opacity:0.4;font-size:8px;"> (nested)</span></label>
-                <input class="field-input mono" type="text"
-                    value="${escAttr(JSON.stringify(v))}" readonly style="opacity:0.45;cursor:default;">
+                    <span style="opacity:0.4;font-size:8px;"> (nested, read-only)</span></label>
+                ${genericJsonTable(v)}
             </div>`;
         }
         return genericScalar(k, v, idx, `${key}.${k}`);

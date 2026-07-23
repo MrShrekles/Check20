@@ -472,6 +472,21 @@
 }
 .gc-seed:hover { color: var(--cream); border-color: #555; }
 
+.gc-copy {
+    background: transparent;
+    color: #555;
+    border: 1px solid #2e2e2e;
+    cursor: pointer;
+    font-size: .7rem;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-family: inherit;
+    letter-spacing: .02em;
+    transition: color .12s, border-color .12s;
+}
+.gc-copy:hover { color: var(--cream); border-color: #555; }
+.gc-copy--copied { color: var(--green-2, #5a9c6e); border-color: var(--green-2, #5a9c6e); }
+
 /* ── Batch count select ────────────────────────────────────── */
 /* Specificity matches ".gen-controls select" (class+type) so these
    declarations win regardless of which rule appears later in the file. */

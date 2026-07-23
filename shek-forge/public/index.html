@@ -143,6 +143,11 @@
           <input type="range" id="textareaHeightSlider" class="settings-slider" min="1" max="5" step="1" oninput="setTextareaHeight(+this.value)">
         </div>
 
+        <div class="settings-row">
+          <div class="settings-label">Word Wrap <span style="opacity:0.5;font-size:9px;">(long text boxes)</span></div>
+          <button class="settings-toggle" id="wordWrapToggle" onclick="toggleWordWrap()">ON</button>
+        </div>
+
         <div class="settings-section-label" style="margin-top:4px">Display</div>
 
         <div class="settings-row">
@@ -184,10 +189,12 @@
   <!-- Editor modules - each registers into window.EDITORS -->
   <script src="editor-monster.js"></script>
   <script src="editor-gear.js"></script>
+  <script src="editor-item.js"></script>
   <script src="editor-hexgen.js"></script>
   <script src="editor-class.js"></script>
   <script src="editor-spell.js"></script>
   <script src="editor-enchanted.js"></script>
+  <script src="editor-enchanted-item.js"></script>
   <script src="editor-medicine.js"></script>
   <script src="editor-quest.js"></script>
   <script src="editor-traps.js"></script>

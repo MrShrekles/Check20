@@ -1,11 +1,11 @@
 // ─── Shared Codex UI - size buttons for expandable-row pages ─────────────────
 // Usage: call initCodexSize() in DOMContentLoaded on any page that has
-//   #codex-size-btns and loads spells.css (which owns the --codex-* variables).
+//   #codex-size-btns and loads codex-ui.css (which owns the --codex-* variables).
 
 const CODEX_SIZE = {
-    small:  { '--codex-min': '220px', '--codex-name-size': '0.8rem',  '--codex-tag-size': '0.58rem', '--codex-cost-size': '0.68rem', '--codex-intent-size': '0.74rem', '--codex-effect-size': '0.76rem', '--codex-meta-size': '0.63rem', '--codex-row-pad': '.35rem .5rem',  '--codex-lh': '1.45' },
-    medium: { '--codex-min': '460px', '--codex-name-size': '0.92rem', '--codex-tag-size': '0.68rem', '--codex-cost-size': '0.78rem', '--codex-intent-size': '0.86rem', '--codex-effect-size': '0.88rem', '--codex-meta-size': '0.73rem', '--codex-row-pad': '.55rem .65rem', '--codex-lh': '1.55' },
-    large:  { '--codex-min': '820px', '--codex-name-size': '1.02rem', '--codex-tag-size': '0.75rem', '--codex-cost-size': '0.86rem', '--codex-intent-size': '0.94rem', '--codex-effect-size': '0.97rem', '--codex-meta-size': '0.8rem',  '--codex-row-pad': '.7rem .8rem',   '--codex-lh': '1.62' },
+    small:  { '--codex-min': '220px', '--codex-name-size': '0.8rem',  '--codex-tag-size': '0.58rem', '--codex-cost-size': '0.68rem', '--codex-intent-size': '0.74rem', '--codex-effect-size': '0.76rem', '--codex-meta-size': '0.63rem', '--codex-row-pad': '.35rem .5rem',  '--codex-lh': '1.45', '--codex-icon-size': '14px', '--codex-arrow-size': '0.55rem' },
+    medium: { '--codex-min': '460px', '--codex-name-size': '0.92rem', '--codex-tag-size': '0.68rem', '--codex-cost-size': '0.78rem', '--codex-intent-size': '0.86rem', '--codex-effect-size': '0.88rem', '--codex-meta-size': '0.73rem', '--codex-row-pad': '.55rem .65rem', '--codex-lh': '1.55', '--codex-icon-size': '18px', '--codex-arrow-size': '0.65rem' },
+    large:  { '--codex-min': '760px', '--codex-name-size': '1.2rem',  '--codex-tag-size': '0.85rem', '--codex-cost-size': '1rem',    '--codex-intent-size': '1.08rem', '--codex-effect-size': '1.12rem', '--codex-meta-size': '0.92rem', '--codex-row-pad': '.9rem 1.05rem', '--codex-lh': '1.7',  '--codex-icon-size': '24px', '--codex-arrow-size': '0.8rem' },
 };
 
 function applyCodexSize(key) {

@@ -1,0 +1,528 @@
+[
+  {
+    "type": "prefix",
+    "text": "Ancient"
+  },
+  {
+    "type": "prefix",
+    "text": "Cursed"
+  },
+  {
+    "type": "prefix",
+    "text": "Blessed"
+  },
+  {
+    "type": "prefix",
+    "text": "Shadow"
+  },
+  {
+    "type": "prefix",
+    "text": "Blazing"
+  },
+  {
+    "type": "prefix",
+    "text": "Frozen"
+  },
+  {
+    "type": "prefix",
+    "text": "Singing"
+  },
+  {
+    "type": "prefix",
+    "text": "Void"
+  },
+  {
+    "type": "prefix",
+    "text": "Verdant"
+  },
+  {
+    "type": "prefix",
+    "text": "Infernal"
+  },
+  {
+    "type": "prefix",
+    "text": "Celestial"
+  },
+  {
+    "type": "prefix",
+    "text": "Whispering"
+  },
+  {
+    "type": "prefix",
+    "text": "Shattered"
+  },
+  {
+    "type": "prefix",
+    "text": "Gilded"
+  },
+  {
+    "type": "prefix",
+    "text": "Hollow"
+  },
+  {
+    "type": "effect",
+    "text": "As an off-action once per day, immune to {type} damage until the end of your next turn"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, whispers warnings before creatures attack"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, you speak {language} language"
+  },
+  {
+    "type": "effect",
+    "text": "As an off-action once per day, grants advantage on a {check} check to a creature within short range"
+  },
+  {
+    "type": "effect",
+    "text": "As an off-action once per day, when hit with {type} damage heal for that amount or repair armor"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, you become nearly impossible to track"
+  },
+  {
+    "type": "effect",
+    "text": "As an action, reveals invisible creatures within short range until the end of your next turn"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, glows in the presence of {origin}"
+  },
+  {
+    "type": "effect",
+    "text": "leaves no footprints in any terrain"
+  },
+  {
+    "type": "effect",
+    "text": "Deal double damage to creatures and objects with {origin} origin"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, you take no fall damage from a long or shorter height"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand you understand any written language"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand  you have no shadow"
+  },
+  {
+    "type": "damageType",
+    "text": "Fire"
+  },
+  {
+    "type": "damageType",
+    "text": "Ice"
+  },
+  {
+    "type": "damageType",
+    "text": "Lightning"
+  },
+  {
+    "type": "damageType",
+    "text": "Solar"
+  },
+  {
+    "type": "damageType",
+    "text": "Eclipse"
+  },
+  {
+    "type": "damageType",
+    "text": "Vozian"
+  },
+  {
+    "type": "damageType",
+    "text": "Nature"
+  },
+  {
+    "type": "damageType",
+    "text": "Psychic"
+  },
+  {
+    "type": "damageType",
+    "text": "Acid"
+  },
+  {
+    "type": "damageType",
+    "text": "Thunder"
+  },
+  {
+    "type": "damageType",
+    "text": "Slashing"
+  },
+  {
+    "type": "damageType",
+    "text": "Impact"
+  },
+  {
+    "type": "check",
+    "text": "Agility"
+  },
+  {
+    "type": "check",
+    "text": "Strength"
+  },
+  {
+    "type": "check",
+    "text": "Intellect"
+  },
+  {
+    "type": "check",
+    "text": "Observation"
+  },
+  {
+    "type": "check",
+    "text": "Stealth"
+  },
+  {
+    "type": "check",
+    "text": "Influence"
+  },
+  {
+    "type": "check",
+    "text": "Luck"
+  },
+  {
+    "type": "check",
+    "text": "Spirit"
+  },
+  {
+    "type": "check",
+    "text": "Crafting"
+  },
+  {
+    "type": "check",
+    "text": "Survival"
+  },
+  {
+    "type": "itemType",
+    "category": "Weapon",
+    "text": "Longsword"
+  },
+  {
+    "type": "itemType",
+    "category": "Weapon",
+    "text": "Dagger"
+  },
+  {
+    "type": "itemType",
+    "category": "Weapon",
+    "text": "Spear"
+  },
+  {
+    "type": "itemType",
+    "category": "Weapon",
+    "text": "Bow"
+  },
+  {
+    "type": "itemType",
+    "category": "Weapon",
+    "text": "Axe"
+  },
+  {
+    "type": "itemType",
+    "category": "Weapon",
+    "text": "Mace"
+  },
+  {
+    "type": "itemType",
+    "category": "Weapon",
+    "text": "Crossbow"
+  },
+  {
+    "type": "itemType",
+    "category": "Weapon",
+    "text": "Warhammer"
+  },
+  {
+    "type": "itemType",
+    "category": "Weapon",
+    "text": "Flail"
+  },
+  {
+    "type": "itemType",
+    "category": "Weapon",
+    "text": "Scythe"
+  },
+  {
+    "type": "itemType",
+    "category": "Armor",
+    "text": "Chainmail"
+  },
+  {
+    "type": "itemType",
+    "category": "Armor",
+    "text": "Plate Armour"
+  },
+  {
+    "type": "itemType",
+    "category": "Armor",
+    "text": "Leather Vest"
+  },
+  {
+    "type": "itemType",
+    "category": "Armor",
+    "text": "Scale Mail"
+  },
+  {
+    "type": "itemType",
+    "category": "Armor",
+    "text": "Breastplate"
+  },
+  {
+    "type": "itemType",
+    "category": "Armor",
+    "text": "Shield"
+  },
+  {
+    "type": "itemType",
+    "category": "Armor",
+    "text": "Buckler"
+  },
+  {
+    "type": "itemType",
+    "category": "Amulet",
+    "text": "Ring"
+  },
+  {
+    "type": "itemType",
+    "category": "Amulet",
+    "text": "Signet Ring"
+  },
+  {
+    "type": "itemType",
+    "category": "Amulet",
+    "text": "Band"
+  },
+  {
+    "type": "itemType",
+    "category": "Amulet",
+    "text": "Amulet"
+  },
+  {
+    "type": "itemType",
+    "category": "Amulet",
+    "text": "Pendant"
+  },
+  {
+    "type": "itemType",
+    "category": "Amulet",
+    "text": "Medallion"
+  },
+  {
+    "type": "itemType",
+    "category": "Amulet",
+    "text": "Talisman"
+  },
+  {
+    "type": "itemType",
+    "category": "Fashion",
+    "text": "Cloak"
+  },
+  {
+    "type": "itemType",
+    "category": "Fashion",
+    "text": "Mantle"
+  },
+  {
+    "type": "itemType",
+    "category": "Fashion",
+    "text": "Shroud"
+  },
+  {
+    "type": "itemType",
+    "category": "Weapon",
+    "text": "Staff"
+  },
+  {
+    "type": "itemType",
+    "category": "Weapon",
+    "text": "Rod"
+  },
+  {
+    "type": "itemType",
+    "category": "Weapon",
+    "text": "Scepter"
+  },
+  {
+    "type": "itemType",
+    "category": "Gear",
+    "text": "Wand"
+  },
+  {
+    "type": "itemType",
+    "category": "Gear",
+    "text": "Baton"
+  },
+  {
+    "type": "itemType",
+    "category": "Fashion",
+    "text": "Boots"
+  },
+  {
+    "type": "itemType",
+    "category": "Fashion",
+    "text": "Greaves"
+  },
+  {
+    "type": "itemType",
+    "category": "Fashion",
+    "text": "Sandals"
+  },
+  {
+    "type": "itemType",
+    "category": "Fashion",
+    "text": "Gloves"
+  },
+  {
+    "type": "itemType",
+    "category": "Fashion",
+    "text": "Gauntlets"
+  },
+  {
+    "type": "itemType",
+    "category": "Fashion",
+    "text": "Bracers"
+  },
+  {
+    "type": "itemType",
+    "category": "Item",
+    "text": "Tome"
+  },
+  {
+    "type": "itemType",
+    "category": "Item",
+    "text": "Grimoire"
+  },
+  {
+    "type": "itemType",
+    "category": "Item",
+    "text": "Codex"
+  },
+  {
+    "type": "itemType",
+    "category": "Item",
+    "text": "Spellbook"
+  },
+  {
+    "type": "effect",
+    "text": "As an Off-Action, recall the weapon, dealing +1 damage to all creatures in the line it returns through"
+  },
+  {
+    "type": "effect",
+    "text": "Deals +2 additional {type} damage"
+  },
+  {
+    "type": "effect",
+    "text": "Grants +1 bonus to {check}"
+  },
+  {
+    "type": "origin",
+    "text": "Celestial"
+  },
+  {
+    "type": "origin",
+    "text": "Vozian"
+  },
+  {
+    "type": "origin",
+    "text": "Nature"
+  },
+  {
+    "type": "origin",
+    "text": "Dragon"
+  },
+  {
+    "type": "origin",
+    "text": "Arcane"
+  },
+  {
+    "type": "origin",
+    "text": "Chaos"
+  },
+  {
+    "type": "origin",
+    "text": "Basic"
+  },
+  {
+    "type": "origin",
+    "text": "Chrono"
+  },
+  {
+    "type": "origin",
+    "text": "Life"
+  },
+  {
+    "type": "origin",
+    "text": "Tech"
+  },
+  {
+    "type": "origin",
+    "text": "Crystal"
+  },
+  {
+    "type": "origin",
+    "text": "Elemental"
+  },
+  {
+    "type": "prefix",
+    "text": "Chained"
+  },
+  {
+    "type": "language",
+    "text": "Imperial"
+  },
+  {
+    "type": "language",
+    "text": "Orcish/Elvish"
+  },
+  {
+    "type": "language",
+    "text": "Naech"
+  },
+  {
+    "type": "language",
+    "text": "Dealig"
+  },
+  {
+    "type": "language",
+    "text": "Etheros"
+  },
+  {
+    "type": "language",
+    "text": "Night"
+  },
+  {
+    "type": "language",
+    "text": "Clunk"
+  },
+  {
+    "type": "language",
+    "text": "Yar"
+  },
+  {
+    "type": "language",
+    "text": "Drak"
+  },
+  {
+    "type": "language",
+    "text": "Holy"
+  },
+  {
+    "type": "language",
+    "text": "Jotun"
+  },
+  {
+    "type": "prefix",
+    "text": "Modern"
+  },
+  {
+    "type": "prefix",
+    "text": "Enhanced"
+  }
+]

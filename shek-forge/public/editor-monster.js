@@ -1,7 +1,6 @@
 // ── QUALITY CHECK ────────────────────────────────────────────────────────────
 // Prose fields (description/lore/feature effects/spell effects) get the
-// shared AI-wording/grammar/broken-link checks; attack blocks get a
-// cross-file check against the real weapons.json pool.
+// shared AI-wording/grammar/broken-link checks.
 function monsterQCFields(entry) {
     const sch = getMonsterSchema();
     const fields = [];
@@ -17,32 +16,9 @@ function monsterQCFields(entry) {
     return fields;
 }
 
-function monsterWeaponRefIssues(entry, entryLabel) {
-    const ignored = qcGetIgnored('monster');
-    const issues = [];
-    const checks = [
-        ['melee_attack', state.weapons.melee, 'Melee'],
-        ['ranged_attack', state.weapons.ranged, 'Ranged'],
-        ['melee', state.weapons.melee, 'Melee'],
-        ['ranged', state.weapons.ranged, 'Ranged'],
-    ];
-    for (const [key, pool, label] of checks) {
-        const name = entry[key] && entry[key].name;
-        if (name && pool && pool.length && !pool.some(w => w.name === name)) {
-            const k = `${entryLabel}::${key}::unknown_weapon`;
-            if (!ignored.has(k)) issues.push({
-                key: k, fieldLabel: `${label} Attack`, code: 'unknown_weapon',
-                label: 'Weapon not found in weapons.json',
-                detail: `"${name}" doesn't match any entry in weapons.json — check spelling or add it there.`,
-            });
-        }
-    }
-    return issues;
-}
-
 function monsterQCAnalyze(entry) {
     const entryLabel = entry.name || '(unnamed)';
-    return [...qcAnalyzeProse(entry, 'monster', entryLabel, monsterQCFields(entry)), ...monsterWeaponRefIssues(entry, entryLabel)];
+    return qcAnalyzeProse(entry, 'monster', entryLabel, monsterQCFields(entry));
 }
 
 // ── DUPLICATE ─────────────────────────────────────────────────────────────────
@@ -847,7 +823,7 @@ function renderMonsterBase(entry, idx) {
         <div class="forge-section">
             <div class="section-header">Name</div>
             <div class="section-body">
-                <input class="field-input" style="font-size:13px;font-family:'Cinzel',serif;letter-spacing:0.04em;"
+                <input class="field-input field-input-name"
                     type="text" value="${fa('name')}"
                     onchange="updateField(${idx},'name',this.value)" oninput="markUnsaved()">
             </div>
@@ -965,7 +941,7 @@ function renderMonsterMod(entry, idx) {
         <div class="forge-section">
             <div class="section-header">Name</div>
             <div class="section-body">
-                <input class="field-input" style="font-size:13px;font-family:'Cinzel',serif;letter-spacing:0.04em;"
+                <input class="field-input field-input-name"
                     type="text" value="${fa('name')}"
                     onchange="updateField(${idx},'name',this.value)" oninput="markUnsaved()">
             </div>
@@ -1378,7 +1354,7 @@ registerEditor('monster', {
             <div class="forge-section">
                 <div class="section-header">Name</div>
                 <div class="section-body">
-                    <input class="field-input" style="font-size:13px;font-family:'Cinzel',serif;letter-spacing:0.04em;"
+                    <input class="field-input field-input-name"
                         type="text" value="${fa('name')}"
                         onchange="updateField(${idx},'name',this.value)" oninput="markUnsaved()">
                 </div>

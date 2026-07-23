@@ -1403,5 +1403,18 @@
     "properties": "1 Hand, Light",
     "bulk": 1,
     "description": "A blade brought from the Iron Dominion in the Ordealis. Touching the blade feels uncomfortable and your soul aches more after each battle with this in your hand."
+  },
+  {
+    "name": "Shock Rifle",
+    "category": "firearm",
+    "check": "Intellect, Luck, Observation",
+    "range": "Medium",
+    "damage": "1d4!",
+    "damageType": "Lightning",
+    "cost": 200,
+    "rarity": "very rare",
+    "properties": "2 hand, light",
+    "bulk": 1,
+    "description": ""
   }
 ]

@@ -172,7 +172,7 @@ registerEditor('species', {
         <div class="forge-section">
             <div class="section-header">Name</div>
             <div class="section-body">
-                <input class="field-input" style="font-size:13px;font-family:'Cinzel',serif;letter-spacing:0.04em;"
+                <input class="field-input field-input-name"
                     type="text" value="${fa('name')}"
                     onchange="updateField(${idx},'name',this.value)" oninput="markUnsaved()">
             </div>
@@ -383,36 +383,14 @@ registerEditor('species', {
 // ── SPECIES QUALITY CHECKER ───────────────────────────────────────────────────
 
 let _spQCIssues   = [];
-let _spQCIgnCache = null;
+const SP_QC_NS = 'species', SP_QC_STORAGE_KEY = 'speciesQC_v1'; // legacy key, kept via editor-qc-shared.js
 
-function _spQCGetIgnored() {
-    if (!_spQCIgnCache) {
-        try { _spQCIgnCache = new Set(JSON.parse(localStorage.getItem('speciesQC_v1') || '[]')); }
-        catch(e) { _spQCIgnCache = new Set(); }
-    }
-    return _spQCIgnCache;
-}
-
-function spQCIgnore(key) {
-    _spQCIgnCache = null;
-    const s = _spQCGetIgnored();
-    s.add(key);
-    localStorage.setItem('speciesQC_v1', JSON.stringify([...s]));
-    renderEditor();
-    renderEntryList();
-    updateStatus();
-}
-
-function spQCUnignoreAll(entryName) {
-    _spQCIgnCache = null;
-    const s = _spQCGetIgnored();
-    const pfx = `${entryName}::`;
-    for (const k of [...s]) { if (k.startsWith(pfx)) s.delete(k); }
-    localStorage.setItem('speciesQC_v1', JSON.stringify([...s]));
-    renderEditor();
-    renderEntryList();
-    updateStatus();
-}
+// Delegates to the shared ignore-list infrastructure in editor-qc-shared.js
+// (same get/add/reset pattern every editor needs) while keeping the original
+// localStorage key so previously-ignored issues aren't lost.
+function _spQCGetIgnored() { return qcGetIgnored(SP_QC_NS, SP_QC_STORAGE_KEY); }
+function spQCIgnore(key) { qcIgnore(SP_QC_NS, key, SP_QC_STORAGE_KEY); }
+function spQCUnignoreAll(entryName) { qcUnignoreAll(SP_QC_NS, entryName, SP_QC_STORAGE_KEY); }
 
 function spQCApply(entryIdx, issueKey) {
     const issue = _spQCIssues.find(i => i.key === issueKey);
@@ -626,11 +604,11 @@ function renderSpeciesQualityCheck(entry, idx) {
             const scopeLbl  = issue.scope === 'sub' ? 'SUB' : 'MAIN';
             const typeColor = SP_QC_TYPE_COLOR[issue.code] || '#888';
             const fixBtn = issue.fix
-                ? `<button class="btn btn-green" style="font-size:9px;padding:2px 8px;"
+                ? `<button class="btn btn-green btn-qc-xs"
                        onclick="spQCApply(${idx},'${escAttr(issue.key)}')"
                    >${escHtml(issue.fix.label)}</button>`
                 : '';
-            const ignBtn = `<button class="btn btn-ghost" style="font-size:9px;padding:2px 8px;"
+            const ignBtn = `<button class="btn btn-ghost btn-qc-xs"
                     onclick="spQCIgnore('${escAttr(issue.key)}')"
                 >Ignore</button>`;
             const featLabel = issue.scope === 'sub'
@@ -656,7 +634,7 @@ function renderSpeciesQualityCheck(entry, idx) {
     return `<details class="forge-section forge-section-qc" ${issues.length > 0 ? 'open' : ''}>
         <summary class="section-header section-header-split forge-qc-summary">
             <span class="forge-qc-title">Quality Check ${badge}</span>
-            <button class="btn btn-ghost" style="font-size:9px;padding:1px 8px;"
+            <button class="btn btn-ghost btn-qc-xs"
                 onclick="event.preventDefault();spQCUnignoreAll('${escAttr(entry.name)}')">Reset Ignored</button>
         </summary>
         ${body}

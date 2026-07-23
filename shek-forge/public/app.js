@@ -25,11 +25,13 @@ const TYPE_CONFIG = {
     monster: { icon: '☠', label: 'Monsters', bodyClass: 'type-monster', badgeClass: 'badge-monster', dotClass: 'dot-monster' },
     weapon: { icon: '⚔', label: 'Weapons', bodyClass: 'type-weapon', badgeClass: 'badge-weapon', dotClass: 'dot-weapon' },
     armor: { icon: '🛡', label: 'Armor', bodyClass: 'type-armor', badgeClass: 'badge-armor', dotClass: 'dot-armor' },
+    item: { icon: '🎒', label: 'Items', bodyClass: 'type-item', badgeClass: 'badge-item', dotClass: 'dot-item' },
     hexgen: { icon: '⬡', label: 'Tables', bodyClass: 'type-hexgen', badgeClass: 'badge-hexgen', dotClass: 'dot-hexgen' },
     class: { icon: '⚑', label: 'Options', bodyClass: 'type-class', badgeClass: 'badge-class', dotClass: 'dot-class' },
     spell: { icon: '✦', label: 'Spells', bodyClass: 'type-spell', badgeClass: 'badge-spell', dotClass: 'dot-spell' },
     species: { icon: '❧', label: 'Species', bodyClass: 'type-species', badgeClass: 'badge-species', dotClass: 'dot-species' },
     enchanted: { icon: '✧', label: 'Enchanted', bodyClass: 'type-enchanted', badgeClass: 'badge-enchanted', dotClass: 'dot-enchanted' },
+    enchantedItem: { icon: '💎', label: 'Enchanted Items', bodyClass: 'type-enchanteditem', badgeClass: 'badge-enchanteditem', dotClass: 'dot-enchanteditem' },
     medicine: { icon: '⚕', label: 'Medicine', bodyClass: 'type-medicine', badgeClass: 'badge-medicine', dotClass: 'dot-medicine' },
     quest: { icon: '⚔', label: 'Quests', bodyClass: 'type-quest', badgeClass: 'badge-quest', dotClass: 'dot-quest' },
     traps: { icon: '⚠', label: 'Traps', bodyClass: 'type-traps', badgeClass: 'badge-traps', dotClass: 'dot-traps' },
@@ -728,6 +730,7 @@ const ALERTS_QC_TYPES = {
     glossary: { analyze: (e, data) => glossaryQCAnalyze(e, data), ignore: k => qcIgnore('glossary', k) },
     class: { analyze: e => classQCAnalyze(e), ignore: k => classQCIgnore(k) },
     species: { analyze: e => spQCAnalyze(e), ignore: k => spQCIgnore(k) },
+    enchantedItem: { analyze: e => enchantedItemQCAnalyze(e), ignore: k => qcIgnore('enchantedItem', k) },
 };
 const ALERTS_BLANK_TYPES = {
     quest: undefined, traps: undefined, medicine: undefined,
@@ -805,17 +808,17 @@ async function openAlertsPage() {
     overlay.className = 'dialog-overlay'; overlay.style.zIndex = 130;
     const box = document.createElement('div');
     box.className = 'dialog-box';
-    box.style.cssText = 'max-width:820px;width:90vw;max-height:85vh;display:flex;flex-direction:column;gap:8px;';
+    box.style.cssText = 'max-width:820px;width:90vw;max-height:85vh;display:flex;flex-direction:column;gap:8px;overflow:hidden;';
     box.innerHTML = `
-        <div class="dialog-title" style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="dialog-title" style="display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
             <span>⚠ Alerts</span>
             <div style="display:flex;gap:6px;">
                 <button class="btn btn-ghost" id="alerts-refresh" style="font-size:10px;">↺ Rescan</button>
                 <button class="btn btn-ghost" style="font-size:10px;" onclick="this.closest('.dialog-overlay').remove()">Close</button>
             </div>
         </div>
-        <div id="alerts-summary" style="font-size:11px;color:var(--text-muted);"></div>
-        <div id="alerts-body" style="overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px;"></div>`;
+        <div id="alerts-summary" style="font-size:11px;color:var(--text-muted);flex-shrink:0;"></div>
+        <div id="alerts-body" style="overflow-y:auto;flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;"></div>`;
     overlay.appendChild(box);
     document.body.appendChild(overlay);
 

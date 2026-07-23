@@ -5,6 +5,30 @@ function updateWBEntry(idx, value) { teSetField(idx, 'value', value); }
 
 function removeWBEntry(idx) { teRemoveEntry(idx); }
 
+// ── Per-section sort-by-value (persisted, independent per section) ─────────
+const WB_SORT_KEY = 'wbSectionSort_v1';
+function wbGetSortState() {
+    try { return JSON.parse(localStorage.getItem(WB_SORT_KEY)) || {}; } catch (e) { return {}; }
+}
+function wbSectionKey(group, sub) { return sub ? `${group}:${sub}` : group; }
+function wbToggleSort(group, sub) {
+    const s = wbGetSortState();
+    const k = wbSectionKey(group, sub);
+    s[k] = !s[k];
+    localStorage.setItem(WB_SORT_KEY, JSON.stringify(s));
+    renderEditor();
+}
+function wbMaybeSort(entries, group, sub) {
+    if (!wbGetSortState()[wbSectionKey(group, sub)]) return entries;
+    return [...entries].sort((a, b) =>
+        String(a.value || '').localeCompare(String(b.value || ''), undefined, { numeric: true, sensitivity: 'base' }));
+}
+function wbSortBtn(group, sub) {
+    const on = !!wbGetSortState()[wbSectionKey(group, sub)];
+    return `<button class="te-add-btn te-sort-btn${on ? ' active' : ''}"
+        onclick="wbToggleSort('${group}'${sub ? `,'${sub}'` : ''})" title="Sort this section A-Z">⇅ A-Z</button>`;
+}
+
 function addWBEntry(group, subgroup) {
     const entry = { _group: group, value: '' };
     if (subgroup) entry._subgroup = subgroup;
@@ -42,8 +66,8 @@ function renderWBTable() {
         if (nameStyles) {
             const styleBlocks = NAME_STYLES.map(({ label: styleLabel, subs }) => {
                 const subBlocks = subs.map(sg => {
-                    const entries = state.data.map((e, i) => ({ ...e, _i: i }))
-                        .filter(e => e._group === group && e._subgroup === sg);
+                    const entries = wbMaybeSort(state.data.map((e, i) => ({ ...e, _i: i }))
+                        .filter(e => e._group === group && e._subgroup === sg), group, sg);
                     const subLabel = sg.split('-').slice(1).join('-');
                     const chips = entries.map(e => `
                         <div class="te-chip">
@@ -55,7 +79,10 @@ function renderWBTable() {
                         </div>`).join('');
                     return `
                         <div class="te-cat">
-                            <div class="te-cat-label">${subLabel} (${entries.length})</div>
+                            <div class="te-cat-label" style="display:flex;justify-content:space-between;align-items:center">
+                                <span>${subLabel} (${entries.length})</span>
+                                ${wbSortBtn(group, sg)}
+                            </div>
                             <div class="te-chips">
                                 ${chips}
                                 <button class="te-add-chip" onclick="addWBEntry('${group}','${sg}')">+ add</button>
@@ -76,7 +103,7 @@ function renderWBTable() {
                 </div>`;
         }
 
-        const entries = state.data.map((e, i) => ({ ...e, _i: i })).filter(e => e._group === group);
+        const entries = wbMaybeSort(state.data.map((e, i) => ({ ...e, _i: i })).filter(e => e._group === group), group);
 
         const items = entries.map(e => long
             ? `<div class="te-row">
@@ -95,10 +122,13 @@ function renderWBTable() {
             <div class="te-section">
                 <div class="te-section-head">
                     <h3>${label} <span class="te-count">${entries.length}</span></h3>
-                    <button class="te-add-btn" onclick="addWBEntry('${group}')">+ Add</button>
+                    <div style="display:flex;gap:6px">
+                        ${wbSortBtn(group)}
+                        <button class="te-add-btn" onclick="addWBEntry('${group}')">+ Add</button>
+                    </div>
                 </div>
                 <div class="te-${long ? 'rows te-rows--wide' : 'chips'}${scroll ? ' te-chips--scroll' : ''}">
-                    ${items || `<p style="color:#555;font-size:12px">No entries yet</p>`}
+                    ${items || `<p class="empty-state">No entries yet</p>`}
                 </div>
             </div>`;
     }).join('');

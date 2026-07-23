@@ -32,8 +32,10 @@ function detectFileType(data) {
     if ('featureName' in e || 'baseType' in e || 'movement' in e) return 'monster';
     if ('damage' in e && 'damageType' in e && 'bulk' in e) return 'weapon';
     if ('armor' in e && 'movePenalty' in e) return 'armor';
+    if ('cost' in e && 'bulk' in e && 'category' in e) return 'item';
     if ('manner' in e && 'transmission' in e && 'effects' in e) return 'spell';
-    if ('type' in e && 'text' in e && ['prefix', 'effect', 'damageType', 'check', 'itemType'].includes(e.type)) return 'enchanted';
+    if ('type' in e && 'text' in e && ['prefix', 'effect', 'damageType', 'check', 'origin', 'language', 'condition', 'manner', 'transmission'].includes(e.type)) return 'enchanted';
+    if ('effect' in e && 'upgrade' in e && 'tags' in e) return 'enchantedItem';
     if ('category' in e && 'value' in e && ['prefix', 'base', 'suffix'].includes(e.category)) return 'medicine';
     if ('type' in e && 'text' in e && ['giver', 'target', 'twist', 'reward'].includes(e.type)) return 'quest';
     if ('type' in e && ['door', 'lock', 'trap'].includes(e.type)) return 'traps';
