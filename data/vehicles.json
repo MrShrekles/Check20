@@ -1,0 +1,176 @@
+{
+  "vehicles": [
+    {
+      "name": "The Rambler",
+      "category": "automobile",
+      "subtitle": "Detective's Sedan",
+      "rarity": "common",
+      "cost": 800,
+      "color": "#8b4a2f",
+      "stats": {
+        "speed": "60 ft (40 mph)",
+        "capacity": "4 passengers",
+        "speedTier": "Slow"
+      },
+      "desc": "A sturdy sedan favored by private detectives and journalists. Reliable, with modest speed and spacious enough for a team and their gear.",
+      "features": [
+        {
+          "name": "Trunk Stash",
+          "effect": "Has a hidden compartment that can conceal one Bulk 2 item from a cursory search."
+        }
+      ]
+    },
+    {
+      "name": "The Iron Hauler",
+      "category": "automobile",
+      "subtitle": "Cargo Truck",
+      "rarity": "common",
+      "cost": 1200,
+      "color": "#8b4a2f",
+      "stats": {
+        "speed": "50 ft (35 mph)",
+        "capacity": "2 passengers, heavy cargo"
+      },
+      "desc": "A rugged flatbed truck built for hauling freight across rough terrain. Slow to turn, but nearly impossible to stop once it's rolling.",
+      "features": [
+        {
+          "name": "Battering Ram",
+          "effect": "Ramming a stationary obstacle deals double the vehicle's collision damage."
+        }
+      ]
+    },
+    {
+      "name": "The Zephyr",
+      "category": "airship",
+      "subtitle": "Passenger Liner",
+      "rarity": "uncommon",
+      "cost": 6000,
+      "color": "#4c6e6e",
+      "stats": {
+        "speed": "80 ft (55 mph)",
+        "capacity": "10 passengers"
+      },
+      "desc": "A medium-sized airship capable of long voyages, offering a smooth ride and panoramic views from its gondola.",
+      "features": [
+        {
+          "name": "Cloud Cover",
+          "effect": "While flying through clouds or fog, the Zephyr gains Advantage on Stealth checks to avoid detection."
+        }
+      ]
+    },
+    {
+      "name": "The Vanguard",
+      "category": "airship",
+      "subtitle": "Armored Gunship",
+      "rarity": "rare",
+      "cost": 15000,
+      "color": "#4c6e6e",
+      "stats": {
+        "speed": "70 ft (48 mph)",
+        "capacity": "6 crew, 2 gun mounts"
+      },
+      "desc": "A militarized airship bristling with plating and mounted guns, built for aerial skirmishes rather than comfort.",
+      "features": [
+        {
+          "name": "Gun Mounts",
+          "effect": "Crew stationed at a gun mount can make ranged attacks as an action using the ship's weapons (2d8 damage, Long range)."
+        }
+      ]
+    },
+    {
+      "name": "The River Queen",
+      "category": "steamboat",
+      "subtitle": "Paddle Steamer",
+      "rarity": "common",
+      "cost": 3500,
+      "color": "#2f4f4f",
+      "stats": {
+        "speed": "40 ft (28 mph)",
+        "capacity": "20 passengers"
+      },
+      "desc": "A grand paddle steamer dominating river traffic, equipped for both freight and passenger service, known for its reliability and comfort.",
+      "features": [
+        {
+          "name": "Below Decks",
+          "effect": "Has private cabins that grant a full night's rest even while traveling."
+        }
+      ]
+    },
+    {
+      "name": "The Iron Comet",
+      "category": "train",
+      "subtitle": "Luxury Passenger Train",
+      "rarity": "uncommon",
+      "cost": 9000,
+      "color": "#664900",
+      "stats": {
+        "speed": "100 ft (68 mph)",
+        "capacity": "40+ passengers"
+      },
+      "desc": "A fast and luxurious passenger train offering a smooth, swift journey across Shek's varied landscapes.",
+      "features": [
+        {
+          "name": "Rail-Bound",
+          "effect": "Cannot leave its track, but ignores difficult terrain and cannot be forced off course by weather."
+        }
+      ]
+    },
+    {
+      "name": "The Sky Dancer",
+      "category": "biplane",
+      "subtitle": "Stunt Biplane",
+      "rarity": "uncommon",
+      "cost": 2500,
+      "color": "#5f2d19",
+      "stats": {
+        "speed": "120 ft (82 mph)",
+        "capacity": "2 passengers"
+      },
+      "desc": "A two-seater biplane known for its agility and speed, popular with stunt pilots and adventurers.",
+      "features": [
+        {
+          "name": "Barrel Roll",
+          "effect": "Once per encounter, may reroll a failed Agility check made to pilot the plane."
+        }
+      ]
+    },
+    {
+      "name": "The Colossus",
+      "category": "walker",
+      "subtitle": "Mechanical Walker",
+      "rarity": "rare",
+      "cost": 20000,
+      "color": "#664900",
+      "stats": {
+        "speed": "30 ft (walking)",
+        "capacity": "1 pilot, heavy cargo"
+      },
+      "desc": "A formidable mechanical walker designed for heavy lifting and construction, showcasing engineering prowess in the age of steam and gears.",
+      "features": [
+        {
+          "name": "Crushing Step",
+          "effect": "Can move through most obstacles and structures as if they were difficult terrain, destroying them in the process."
+        }
+      ]
+    },
+    {
+      "name": "The Wraith",
+      "category": "automobile",
+      "subtitle": "Motorcycle",
+      "rarity": "common",
+      "cost": 450,
+      "color": "#8b4a2f",
+      "stats": {
+        "speed": "70 ft (48 mph)",
+        "capacity": "1 passenger"
+      },
+      "desc": "A lean, growling motorcycle that slips through traffic and alleyways with ease. Popular with couriers and thrill-seekers alike.",
+      "features": [
+        {
+          "name": "Nimble",
+          "effect": "Ignores the first square of difficult terrain moved through each turn."
+        }
+      ]
+    }
+  ]
+}
