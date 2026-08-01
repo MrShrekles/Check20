@@ -39,6 +39,8 @@ function detectFileType(data) {
     if ('category' in e && 'value' in e && ['prefix', 'base', 'suffix'].includes(e.category)) return 'medicine';
     if ('type' in e && 'text' in e && ['giver', 'target', 'twist', 'reward'].includes(e.type)) return 'quest';
     if ('type' in e && ['door', 'lock', 'trap'].includes(e.type)) return 'traps';
+    if ('sections' in e && 'type' in e && ['curse', 'disease'].includes(e.type)) return 'curse';
+    if ('stats' in e && 'features' in e && 'category' in e) return 'vehicle';
     if (groups.has('affinities') && groups.has('motivations')) return 'worldbuilding';
     if (groups.has('tiers') && groups.has('mundane')) return 'loot';
     return 'generic';

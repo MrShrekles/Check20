@@ -206,17 +206,53 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('#origin-toggles button').forEach(btn => {
     btn.addEventListener('click', () => {
       const origin = btn.dataset.origin.toLowerCase();
+
+      if (origin === 'all') {
+        activeOrigins = [];
+        document.querySelectorAll('#origin-toggles button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderSpells();
+        return;
+      }
+
+      document.querySelector('#origin-toggles button[data-origin="all"]')?.classList.remove('active');
       btn.classList.toggle('active');
       if (activeOrigins.includes(origin)) {
         activeOrigins = activeOrigins.filter(o => o !== origin);
       } else {
         activeOrigins.push(origin);
       }
+      if (activeOrigins.length === 0) {
+        document.querySelector('#origin-toggles button[data-origin="all"]')?.classList.add('active');
+      }
       renderSpells();
     });
   });
 
-  // spell-search is now #sidebar-search-input, wired in sidebar.js after sidebar loads
+  document.getElementById('spell-search')?.addEventListener('input', renderSpells);
+
+  const filterToggle = document.getElementById('spellbook-filter-toggle');
+  const filterPanel  = document.getElementById('spellbook-filter-panel');
+  filterToggle?.addEventListener('click', () => {
+    const open = filterPanel.classList.toggle('open');
+    filterToggle.classList.toggle('open', open);
+  });
+
+  document.getElementById('spellbook-clear')?.addEventListener('click', () => {
+    activeIntents = [];
+    activeOrigins = [];
+    selectedSort = 'origin';
+
+    document.querySelectorAll('#intent-toggles button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#origin-toggles button').forEach(b => b.classList.remove('active'));
+    document.querySelector('#origin-toggles button[data-origin="all"]')?.classList.add('active');
+    document.querySelectorAll('#sort-toggles button').forEach(b => b.classList.toggle('active', b.dataset.sort === 'origin'));
+
+    const searchInput = document.getElementById('spell-search');
+    if (searchInput) searchInput.value = '';
+
+    renderSpells();
+  });
 
   const expandBtn = document.getElementById('expand-all');
   const collapseBtn = document.getElementById('collapse-all');
@@ -276,7 +312,8 @@ function spellCostRange(effects) {
 // ── Main render ───────────────────────────────────────────────────────────────
 function renderSpells() {
   const container = document.getElementById('spell-grid');
-  const searchTerm = document.getElementById('sidebar-search-input')?.value.toLowerCase() || '';
+  const searchTerm = (document.getElementById('spell-search')?.value ||
+                       document.getElementById('sidebar-search-input')?.value || '').toLowerCase();
 
   let filteredSpells = cachedSpells.filter(spell => {
     const matchesIntent  = activeIntents.length === 0 || spell.effects.some(e => activeIntents.includes(e.intent));
@@ -285,6 +322,9 @@ function renderSpells() {
                            spell.effects.some(e => e.effect.toLowerCase().includes(searchTerm));
     return matchesIntent && matchesOrigin && matchesSearch;
   });
+
+  const hasActiveFilters = activeIntents.length > 0 || activeOrigins.length > 0 || !!searchTerm;
+  document.getElementById('spellbook-filter-toggle')?.classList.toggle('has-filters', hasActiveFilters);
 
   if (selectedSort === 'name') {
     filteredSpells.sort((a, b) => a.name.localeCompare(b.name));

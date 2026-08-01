@@ -1,62 +1,34 @@
 /* ══════════════════════════════════════════════════════════════════
    CURSES & DISEASES CODEX - styles/curse.css
+   Structure/toolbar borrowed from styles/species.css (species-sticky-header,
+   species-toolbar-main, lineage-tabs, chip, toggle-btn, etc). This file only
+   holds curse-specific bits: the page background vibe and the row-detail
+   content (steps, sections, reward, infection) that species doesn't have.
    ══════════════════════════════════════════════════════════════════ */
 
-/* ── Toolbar ── */
-.curse-toolbar {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: .5rem;
-    padding: .5rem var(--padding, 1rem);
-    background: var(--dark-1, #0d0d0d);
-    border-bottom: 1px solid rgba(255,255,255,.07);
+/* ── Page background: sickly arcane/plague vibe ── */
+body[data-page-title="Curses & Diseases"] {
+    background:
+        radial-gradient(ellipse 900px 500px at 20% -10%, rgba(140, 40, 180, .16), transparent 60%),
+        radial-gradient(ellipse 900px 600px at 85% 15%, rgba(160, 60, 30, .12), transparent 55%),
+        radial-gradient(ellipse 1200px 800px at 50% 110%, rgba(40, 100, 60, .10), transparent 60%),
+        var(--dark);
+    background-attachment: fixed;
 }
 
-.curse-type-tabs {
-    display: flex;
-    gap: 2px;
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: var(--border-radius, 4px);
-    overflow: hidden;
+/* ── Search input sizing (species.css targets #species-search specifically) ── */
+.species-toolbar-main #curse-search {
+    flex: 1 1 140px;
+    min-width: 0;
+    font-size: .85rem;
+    padding: .3rem .6rem;
 }
 
-.curse-type-btn {
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    padding: 4px 12px;
-    font-size: .75rem;
-    color: var(--text-muted, #888);
-    cursor: pointer;
-    transition: background .12s, color .12s;
-    box-shadow: none;
-    transform: none !important;
-}
-
-.curse-type-btn:hover { background: rgba(255,255,255,.07); color: var(--text-cream, #e8dfc8); }
-.curse-type-btn.active { background: var(--gold-1, #c8922a); color: var(--dark-1, #111); }
-
-#curse-search {
-    flex: 1;
-    min-width: 160px;
-    max-width: 280px;
-    font-size: .8rem;
-}
-
-.curse-actions {
-    display: flex;
-    gap: .3rem;
-}
-.curse-actions button { font-size: .75rem; padding: 3px 10px; }
-
-.curse-count {
-    font-size: .75rem;
+#curse-count {
+    font-size: .78rem;
     color: var(--text-muted, #888);
     white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .curse-no-results {
@@ -112,19 +84,7 @@
 }
 @media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
 
-/* ── Grid ── */
-#curse-sections {
-    padding: var(--padding, 1rem);
-    gap: .5rem var(--padding, 1rem);
-}
-
-/* ── Row detail ── */
-.curse-row-detail {
-    background: var(--dark-2, #1a1a1a);
-    padding: .9rem 1rem 1.1rem 1.4rem;
-}
-
-/* ── Subtitle in row head ── */
+/* ── Subtitle in row head (curse-only, species has no equivalent) ── */
 .curse-subtitle {
     font-size: var(--codex-tag-size, .65rem);
     color: var(--text-muted, #888);
@@ -133,32 +93,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 200px;
-}
-
-/* ── Source + type tags ── */
-.curse-type-tag,
-.curse-source-tag {
-    font-size: var(--codex-tag-size, .65rem);
-    padding: 2px 7px;
-    border-radius: 3px;
-    text-transform: uppercase;
-    letter-spacing: .3px;
-    white-space: nowrap;
-}
-
-.curse-type-tag {
-    background: rgba(255,255,255,.07);
-    border: 1px solid rgba(255,255,255,.12);
-    color: rgba(255,255,255,.6);
-}
-
-.curse-type--disease { color: #e08060; border-color: rgba(200,80,40,.4); background: rgba(200,80,40,.1); }
-.curse-type--curse   { color: #b060e0; border-color: rgba(140,40,180,.4); background: rgba(140,40,180,.1); }
-
-.curse-source-tag {
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.08);
-    color: rgba(255,255,255,.4);
 }
 
 /* ── Row body ── */

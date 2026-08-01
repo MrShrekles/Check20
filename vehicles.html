@@ -6,144 +6,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vehicles</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/codex-ui.css">
+    <link rel="stylesheet" href="styles/spells.css">
+    <link rel="stylesheet" href="styles/species.css">
+    <link rel="stylesheet" href="styles/vehicles.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
     <script src="scripts/main.js" defer></script>
+    <script src="scripts/codex-ui.js" defer></script>
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/vehicles-data.js" defer></script>
+    <script src="scripts/vehicles-render.js" defer></script>
+    <script src="scripts/vehicles-ui.js" defer></script>
+    <script src="scripts/footer.js" defer></script>
 </head>
 
-<body data-page-title="Vehicles"> 
-        <div id="header-placeholder"></div>   
+<body data-page-title="Vehicles">
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
 
     <main>
-        <!-- Vehicles -->
-        <details>
-            <summary>
-                Vehicles
-            </summary>
-            <!-- Vehicles Section -->
-            <section id="vehicles">
-                <h2>Vehicles</h2>
-                <p>In the world of Shek, vehicles are the lifelines of modernity, weaving through city streets,
-                    soaring
-                    across open skies, and cutting across vast seas. From the sleek cars that line the boulevards to
-                    the
-                    airships that dance among the clouds and the steamboats that cruise the rivers, each vehicle is
-                    a
-                    testament to the era's boundless ambition and the adventurous hearts of those who pilot them. As
-                    integral parts of daily life, they serve not just as transportation but as companions in the
-                    journey
-                    of discovery and the pursuit of dreams in a world where magic meets machines.</p>
-
-                <div class="flex-container">
-                    <div class="flex-item">
-                        <h4>🚗 Automobiles</h4>
-                        <p>The workhorses of the urban streets, automobiles range from luxurious sedans for the
-                            city's
-                            elite to rugged trucks for adventurous souls.</p>
-                        <p><strong>The Rambler:</strong> A sturdy sedan favored by private detectives and
-                            journalists.
-                            Reliable, with modest speed and spacious enough for a team and their gear.</p>
-                    </div>
-                    <div class="flex-item">
-                        <h4>🚡 Airships</h4>
-                        <p>Symbols of progress and the romance of travel, airships float serenely across the sky,
-                            serving as both private vessels for the wealthy and commercial liners connecting
-                            continents.
-                        </p>
-                        <p><strong>The Zephyr:</strong> A medium-sized airship capable of long voyages, offering a
-                            smooth ride and panoramic views from its gondola.</p>
-                    </div>
-                    <div class="flex-item">
-                        <h4>🚢 Steamboats</h4>
-                        <p>On the waterways, steamboats chug along, their paddles churning through the waves. They
-                            range
-                            from small riverboats to grand vessels that ply the trade routes with passengers and
-                            cargo.
-                        </p>
-                        <p><strong>The River Queen:</strong> A grand paddle steamer dominating river traffic,
-                            equipped
-                            for both freight and passenger service, known for its reliability and comfort.</p>
-                    </div>
-                    <div class="flex-item">
-                        <h4>🚂 Trains</h4>
-                        <p>The iron horses of Shek, trains thunder across the continent, connecting industrial
-                            heartlands to bustling coastal cities.</p>
-                        <p><strong>The Iron Comet:</strong> A fast and luxurious passenger train offering a smooth,
-                            swift journey across Shek's varied landscapes.</p>
-                    </div>
-                    <div class="flex-item">
-                        <h4>✈️ Biplanes</h4>
-                        <p>For thrill-seekers and barnstormers, biplanes offer an unrivaled sense of freedom. These
-                            nimble crafts are as much about sport as they are transportation.</p>
-                        <p><strong>The Sky Dancer:</strong> A two-seater biplane known for its agility and speed,
-                            popular with stunt pilots and adventurers.</p>
-                    </div>
-                    <div class="flex-item">
-                        <h4>🤖 Mechanical Walkers</h4>
-                        <p>At the cutting edge of technology, mechanical walkers are rare and imposing, towering
-                            over
-                            landscapes with their complex clockwork legs.</p>
-                        <p><strong>The Colossus:</strong> A formidable mechanical walker designed for heavy lifting
-                            and
-                            construction, showcasing engineering prowess in the age of steam and gears.</p>
+        <div class="species-sticky-header">
+            <div class="species-toolbar-main">
+                <button class="species-filter-toggle" id="vehicle-filter-toggle">
+                    <span class="filter-pip"></span>
+                    Filters
+                    <span class="filter-chevron">▼</span>
+                </button>
+                <input id="vehicle-search" type="search" placeholder="Search vehicles…" autocomplete="off" spellcheck="false">
+                <div class="codex-size-wrap">
+                    <span>Size</span>
+                    <div class="codex-size-btns" id="codex-size-btns">
+                        <button class="codex-size-btn" data-size="small">S</button>
+                        <button class="codex-size-btn active" data-size="medium">M</button>
+                        <button class="codex-size-btn" data-size="large">L</button>
                     </div>
                 </div>
-                <p>These vehicles are the heartbeat of Shek, carrying tales of human endeavor and echoing the pulse
-                    of
-                    an era defined by its relentless pursuit of the extraordinary. Each type of vehicle offers a
-                    different experience and opportunity for adventure, shaping the very way the inhabitants of Shek
-                    interact with their world and each other.</p>
-            </section>
+                <span id="vehicle-count"></span>
+            </div>
+            <nav id="lineage-tabs" class="lineage-tabs"></nav>
+        </div>
 
-            <!-- Mounted Combat Section -->
-            <section id="mounted-combat">
-                <h2>Mounted Combat</h2>
-                <p>Mounted combat stands as a thrilling fusion of tradition and innovation. Knights and daredevils
-                    alike
-                    take to the streets and skies, not on horses, but on mechanized steeds and mystical creatures.
-                    Here,
-                    a well-timed cavalry charge might be led by a line of sleek motorcycles, while Pegasus-mounted
-                    aces
-                    could duel among the skyscrapers. In this era, the mounted warrior's valor is matched only by
-                    the
-                    speed of their mount, be it flesh or steel, feathered or geared.</p>
+        <div class="species-filter-panel" id="vehicle-filter-panel">
+            <div class="species-filter-actions">
+                <button id="vehicle-clear">Clear</button>
+                <button id="vehicle-collapse-all">Collapse all</button>
+                <button id="vehicle-expand-all">Expand all</button>
+            </div>
+            <div class="filter-group" data-key="rarity">
+                <h4>Rarity</h4>
+            </div>
+        </div>
 
-                <h3>Rules for Mounted Combat</h3>
-                <ul>
-                    <li><strong>Mount Movement:</strong> The base speed for beasts of burden such as horses is 60
-                        ft.
-                        Speed for other creatures used as mounts will be determined based on their type and size.
-                    </li>
-                    <li><strong>Target Selection:</strong> Enemies may choose to direct their attacks at either you
-                        or
-                        your mount.</li>
-                    <li><strong>Dismounting & Mounting:</strong> Exiting your mount requires either the expenditure
-                        of
-                        20 ft of movement or an action, and the same for mounting a creature or vehicle.</li>
-                    <li><strong>Mount Abilities:</strong> Different types of mounts provide various abilities and
-                        combat
-                        options. For example:
-                        <ul>
-                            <li><strong>Warhorse:</strong> Might grant a charge ability that allows for a powerful
-                                attack after moving a certain distance.</li>
-                            <li><strong>Flying Mount:</strong> Could offer aerial movement options, but with
-                                limitations
-                                on how long they can stay aloft or how they maneuver.</li>
-                            <li><strong>Aquatic Mount:</strong> May allow for swift underwater movement and possibly
-                                an
-                                evasion bonus due to the fluid environment.</li>
-                        </ul>
-                    </li>
-                </ul>
-            </section>
-
+        <!-- ── Intro panel ── -->
+        <details class="vehicle-intro-panel">
+            <summary>About Vehicles</summary>
+            <div class="vehicle-intro-body">
+                <p>In the world of Shek, vehicles are the lifelines of modernity, weaving through city streets, soaring across open skies, and cutting across vast seas. From the sleek cars that line the boulevards to the airships that dance among the clouds and the steamboats that cruise the rivers, each vehicle is a testament to the era's boundless ambition and the adventurous hearts of those who pilot them.</p>
+            </div>
         </details>
 
-    </main>
+        <p class="vehicle-no-results" id="vehicle-no-results">No results found.</p>
 
-    <div id="sidebar-placeholder"></div>
+        <section id="vehicle-sections" class="species-sections"></section>
+
+        <!-- ── Mounted Combat Section ── -->
+        <section id="mounted-combat">
+            <h2>Mounted Combat</h2>
+            <p>Mounted combat stands as a thrilling fusion of tradition and innovation. Knights and daredevils alike
+                take to the streets and skies, not on horses, but on mechanized steeds and mystical creatures.
+                Here, a well-timed cavalry charge might be led by a line of sleek motorcycles, while Pegasus-mounted
+                aces could duel among the skyscrapers. In this era, the mounted warrior's valor is matched only by
+                the speed of their mount, be it flesh or steel, feathered or geared.</p>
+
+            <h3>Rules for Mounted Combat</h3>
+            <ul>
+                <li><strong>Mount Movement:</strong> The base speed for beasts of burden such as horses is 60
+                    ft. Speed for other creatures used as mounts will be determined based on their type and size.
+                </li>
+                <li><strong>Target Selection:</strong> Enemies may choose to direct their attacks at either you
+                    or your mount.</li>
+                <li><strong>Dismounting & Mounting:</strong> Exiting your mount requires either the expenditure
+                    of 20 ft of movement or an action, and the same for mounting a creature or vehicle.</li>
+                <li><strong>Mount Abilities:</strong> Different types of mounts provide various abilities and
+                    combat options. For example:
+                    <ul>
+                        <li><strong>Warhorse:</strong> Might grant a charge ability that allows for a powerful
+                            attack after moving a certain distance.</li>
+                        <li><strong>Flying Mount:</strong> Could offer aerial movement options, but with
+                            limitations on how long they can stay aloft or how they maneuver.</li>
+                        <li><strong>Aquatic Mount:</strong> May allow for swift underwater movement and possibly
+                            an evasion bonus due to the fluid environment.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+    </main>
+    <div id="footer-placeholder"></div>
+
 </body>
 
 </html>

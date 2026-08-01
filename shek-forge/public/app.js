@@ -37,6 +37,8 @@ const TYPE_CONFIG = {
     traps: { icon: '⚠', label: 'Traps', bodyClass: 'type-traps', badgeClass: 'badge-traps', dotClass: 'dot-traps' },
     worldbuilding: { icon: '🌐', label: 'Worldbuilding', bodyClass: 'type-worldbuilding', badgeClass: 'badge-worldbuilding', dotClass: 'dot-worldbuilding' },
     loot: { icon: '⬡', label: 'Loot', bodyClass: 'type-loot', badgeClass: 'badge-loot', dotClass: 'dot-loot' },
+    vehicle: { icon: '🚗', label: 'Vehicles', bodyClass: 'type-vehicle', badgeClass: 'badge-vehicle', dotClass: 'dot-vehicle' },
+    curse: { icon: '☽', label: 'Curses', bodyClass: 'type-curse', badgeClass: 'badge-curse', dotClass: 'dot-curse' },
     generic: { icon: '◈', label: 'Entries', bodyClass: '', badgeClass: 'badge-generic', dotClass: 'dot-generic' },
 };
 function tc() { return TYPE_CONFIG[state.fileType] || TYPE_CONFIG.generic; }

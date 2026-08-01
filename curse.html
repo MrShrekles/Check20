@@ -7,16 +7,18 @@
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/codex-ui.css">
     <link rel="stylesheet" href="styles/spells.css">
+    <link rel="stylesheet" href="styles/species.css">
     <link rel="stylesheet" href="styles/curse.css">
     <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
     <script src="scripts/main.js" defer></script>
-    <script src="scripts/codex-ui.js"></script>
+    <script src="scripts/codex-ui.js" defer></script>
     <script src="scripts/sidebar.js" defer></script>
     <script src="scripts/header.js" defer></script>
     <script src="scripts/tooltips.js" defer></script>
     <script src="scripts/curses-data.js" defer></script>
     <script src="scripts/curses-render.js" defer></script>
     <script src="scripts/curses-ui.js" defer></script>
+    <script src="scripts/footer.js" defer></script>
 </head>
 
 <body data-page-title="Curses &amp; Diseases">
@@ -24,27 +26,36 @@
     <div id="sidebar-placeholder"></div>
 
     <main>
-        <!-- ── Sticky toolbar ── -->
-        <div class="curse-toolbar">
-            <div class="curse-type-tabs" id="curse-type-tabs">
-                <button class="curse-type-btn active" data-filter="all">All</button>
-                <button class="curse-type-btn" data-filter="curse">Curses</button>
-                <button class="curse-type-btn" data-filter="disease">Diseases</button>
-            </div>
-            <input id="curse-search" type="search" placeholder="Search curses &amp; diseases…" autocomplete="off" spellcheck="false">
-            <div class="codex-size-wrap">
-                <span>Size</span>
-                <div class="codex-size-btns" id="codex-size-btns">
-                    <button class="codex-size-btn" data-size="small">S</button>
-                    <button class="codex-size-btn active" data-size="medium">M</button>
-                    <button class="codex-size-btn" data-size="large">L</button>
+        <div class="species-sticky-header">
+            <div class="species-toolbar-main">
+                <button class="species-filter-toggle" id="curse-filter-toggle">
+                    <span class="filter-pip"></span>
+                    Filters
+                    <span class="filter-chevron">▼</span>
+                </button>
+                <input id="curse-search" type="search" placeholder="Search curses &amp; diseases…" autocomplete="off" spellcheck="false">
+                <div class="codex-size-wrap">
+                    <span>Size</span>
+                    <div class="codex-size-btns" id="codex-size-btns">
+                        <button class="codex-size-btn" data-size="small">S</button>
+                        <button class="codex-size-btn active" data-size="medium">M</button>
+                        <button class="codex-size-btn" data-size="large">L</button>
+                    </div>
                 </div>
+                <span id="curse-count"></span>
             </div>
-            <div class="curse-actions">
-                <button id="curse-expand-all">Expand all</button>
+            <nav id="lineage-tabs" class="lineage-tabs"></nav>
+        </div>
+
+        <div class="species-filter-panel" id="curse-filter-panel">
+            <div class="species-filter-actions">
+                <button id="curse-clear">Clear</button>
                 <button id="curse-collapse-all">Collapse all</button>
+                <button id="curse-expand-all">Expand all</button>
             </div>
-            <span id="curse-count" class="curse-count"></span>
+            <div class="filter-group" data-key="source">
+                <h4>Source</h4>
+            </div>
         </div>
 
         <!-- ── Intro panel ── -->
@@ -69,7 +80,9 @@
 
         <p class="curse-no-results" id="curse-no-results">No results found.</p>
 
-        <div class="spell-grid" id="curse-sections"></div>
+        <section id="curse-sections" class="species-sections"></section>
     </main>
+    <div id="footer-placeholder"></div>
+
 </body>
 </html>

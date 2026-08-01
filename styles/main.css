@@ -66,17 +66,24 @@ body {
     text-shadow: 1px 1px 1px black;
     overflow-x: hidden;
     padding: 0 1.5rem 0 52px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+/* Slender look restored for prose-heavy pages only */
+body[data-page-title="Class"] main,
+body[data-page-title="Conditions"] main {
     max-width: var(--page-width);
     margin: 0 auto;
 }
 
-/* Ultra-wide monitors: give content roughly two page-widths to breathe into */
 @media (min-width: 1700px) {
-    body {
+
+    body[data-page-title="Class"] main,
+    body[data-page-title="Conditions"] main {
         max-width: calc(var(--page-width) * 2 + var(--page-gap));
     }
 }
-
 
 .main-header {
     color: var(--white);
@@ -169,13 +176,21 @@ header nav ul li a:hover {
 
 .site-footer-links {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     gap: .4rem 1.25rem;
-    margin-bottom: 1rem;
+    margin: 0 0 1rem;
+    padding: 0;
+    background: none;
+    border-radius: 0;
 }
 
 .site-footer-links a {
+    display: inline;
+    background: none;
+    padding: 0;
+    border-radius: 0;
     color: var(--text-cream);
     text-decoration: none;
     font-size: .85rem;
@@ -192,6 +207,12 @@ header nav ul li a:hover {
     font-style: italic;
     opacity: .65;
     margin: 0;
+}
+
+.site-footer-copyright {
+    font-size: .7rem;
+    opacity: .5;
+    margin: .5rem 0 0;
 }
 
 /* 🔹 Details (Container for Dropdown) */

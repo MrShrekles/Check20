@@ -1,0 +1,142 @@
+/* ══════════════════════════════════════════════════════════════════
+   VEHICLES CODEX - styles/vehicles.css
+   Structure/toolbar borrowed from styles/species.css (species-sticky-header,
+   species-toolbar-main, lineage-tabs, chip, toggle-btn, etc). This file only
+   holds vehicle-specific bits: the page background vibe and the row-detail
+   content (stat grid, features) that species doesn't have.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Page background: industrial brass/steam vibe ── */
+body[data-page-title="Vehicles"] {
+    background:
+        radial-gradient(ellipse 900px 500px at 15% -10%, rgba(200, 146, 42, .14), transparent 60%),
+        radial-gradient(ellipse 900px 600px at 90% 20%, rgba(76, 110, 110, .12), transparent 55%),
+        radial-gradient(ellipse 1200px 800px at 50% 110%, rgba(95, 45, 25, .12), transparent 60%),
+        var(--dark);
+    background-attachment: fixed;
+}
+
+/* ── Search input sizing (species.css targets #species-search specifically) ── */
+.species-toolbar-main #vehicle-search {
+    flex: 1 1 140px;
+    min-width: 0;
+    font-size: .85rem;
+    padding: .3rem .6rem;
+}
+
+#vehicle-count {
+    font-size: .78rem;
+    color: var(--text-muted, #888);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.vehicle-no-results {
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-muted, #888);
+    display: none;
+}
+
+/* ── Intro panel ── */
+.vehicle-intro-panel {
+    margin: .75rem var(--padding, 1rem);
+    background: var(--dark-2, #1a1a1a);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: var(--border-radius, 4px);
+}
+
+.vehicle-intro-panel summary {
+    padding: .5rem .75rem;
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--text-muted, #888);
+    cursor: pointer;
+    user-select: none;
+}
+
+.vehicle-intro-body {
+    padding: .75rem 1rem 1rem;
+    border-top: 1px solid rgba(255,255,255,.06);
+    font-size: .83rem;
+    line-height: 1.6;
+    color: var(--text-cream, #e8dfc8);
+}
+
+/* ── Subtitle in row head (vehicle-only, species has no equivalent) ── */
+.vehicle-subtitle {
+    font-size: var(--codex-tag-size, .65rem);
+    color: var(--text-muted, #888);
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+/* ── Row body ── */
+.vehicle-desc {
+    font-size: var(--codex-effect-size, .85rem);
+    line-height: var(--codex-lh, 1.6);
+    color: var(--text-cream, #e8dfc8);
+    margin: 0 0 .75rem;
+}
+
+/* ── Stat grid ── */
+.vehicle-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: .5rem;
+    margin-bottom: .75rem;
+}
+
+.vehicle-stat {
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+    padding: .4rem .6rem;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-left: 3px solid var(--row-accent, #555);
+    border-radius: 0 var(--border-radius, 4px) var(--border-radius, 4px) 0;
+}
+
+.vehicle-stat-label {
+    font-size: .6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--gold-2, #a87820);
+}
+
+.vehicle-stat-value {
+    font-size: var(--codex-meta-size, .8rem);
+    color: var(--text-cream, #e8dfc8);
+}
+
+/* ── Features ── */
+.vehicle-features { display: flex; flex-direction: column; gap: .5rem; }
+
+.vehicle-feature {
+    padding: .35rem .6rem;
+    background: rgba(180,140,40,.06);
+    border: 1px solid rgba(180,140,40,.18);
+    border-radius: var(--border-radius, 4px);
+}
+
+.vehicle-feature-name {
+    font-size: var(--codex-meta-size, .73rem);
+    font-weight: 700;
+    color: var(--gold, #c8922a);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.vehicle-feature-effect {
+    font-size: var(--codex-meta-size, .73rem);
+    color: var(--text-muted, #999);
+    line-height: 1.5;
+    margin: .15rem 0 0;
+}

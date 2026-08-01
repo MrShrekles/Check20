@@ -18,6 +18,7 @@
     <script src="scripts/tooltips.js" defer></script>
     <script src="scripts/spellcraft.js" defer></script>
     <script src="scripts/toolbar-mobile.js" defer></script>
+    <script src="scripts/footer.js" defer></script>
 </head>
 
 <body data-page-title="Spellcasting">
@@ -411,39 +412,37 @@
 
             <!-- Sticky control toolbar -->
             <div id="spellbook-toolbar">
-                <button class="toolbar-toggle-btn" aria-label="Toggle filters">
-                    <span class="toolbar-toggle-left">
-                        <span class="toolbar-toggle-pip"></span>
+                <div class="spellbook-toolbar-main">
+                    <button class="spellbook-filter-toggle" id="spellbook-filter-toggle">
+                        <span class="filter-pip"></span>
                         Filters
-                    </span>
-                    <span class="toolbar-toggle-chevron">▼</span>
-                </button>
-                <div class="toolbar-collapsible">
-                    <div id="origin-toggles">
-                        <button class="origin-tab active" data-origin="all">All</button>
-                        <button class="origin-tab" data-origin="arcane">Arcane</button>
-                        <button class="origin-tab" data-origin="basic">Basic</button>
-                        <button class="origin-tab" data-origin="celestial">Celestial</button>
-                        <button class="origin-tab" data-origin="dragon">Dragon</button>
-                        <button class="origin-tab" data-origin="elemental">Elemental</button>
-                        <button class="origin-tab" data-origin="life">Life</button>
-                        <button class="origin-tab" data-origin="chaos">Chaos</button>
-                        <button class="origin-tab" data-origin="chrono">Chrono</button>
-                        <button class="origin-tab" data-origin="vozian">Vozian</button>
-                        <button class="origin-tab" data-origin="nature">Nature</button>
-                        <button class="origin-tab" data-origin="crystal">Crystal</button>
-                        <button class="origin-tab" data-origin="tech">Tech</button>
+                        <span class="filter-chevron">▼</span>
+                    </button>
+                    <input id="spell-search" type="search" placeholder="Search spells…" autocomplete="off" spellcheck="false">
+                    <div class="codex-size-wrap">
+                        <span>Size</span>
+                        <div class="codex-size-btns" id="codex-size-btns">
+                            <button class="codex-size-btn" data-size="small">S</button>
+                            <button class="codex-size-btn active" data-size="medium">M</button>
+                            <button class="codex-size-btn" data-size="large">L</button>
+                        </div>
                     </div>
-                    <div id="spellbook-controls-row">
+                    <span id="spell-count" class="spell-count"></span>
+                </div>
+
+                <div class="spellbook-filter-panel" id="spellbook-filter-panel">
+                    <div class="filter-row">
+                        <span class="control-label">Sort</span>
                         <div id="sort-toggles">
-                            <span class="control-label">Sort</span>
                             <button data-sort="name">Name</button>
                             <button data-sort="range">Range</button>
                             <button data-sort="duration">Duration</button>
                             <button data-sort="origin" class="active">Origin</button>
                         </div>
+                    </div>
+                    <div class="filter-row">
+                        <span class="control-label">Intent</span>
                         <div id="intent-toggles">
-                            <span class="control-label">Intent</span>
                             <button data-intent="Light Whisper">Light Whisper</button>
                             <button data-intent="Whisper">Whisper</button>
                             <button data-intent="Surge">Surge</button>
@@ -452,19 +451,30 @@
                             <button data-intent="Storm">Storm</button>
                             <button data-intent="Cataclysm">Cataclysm</button>
                         </div>
-                        <div class="spellbook-actions">
-                            <button id="expand-all">Expand All</button>
-                            <button id="collapse-all">Collapse All</button>
-                            <span id="spell-count" class="spell-count"></span>
-                            <div class="codex-size-wrap">
-                                <span>Size</span>
-                                <div class="codex-size-btns" id="codex-size-btns">
-                                    <button class="codex-size-btn" data-size="small">S</button>
-                                    <button class="codex-size-btn active" data-size="medium">M</button>
-                                    <button class="codex-size-btn" data-size="large">L</button>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                </div>
+
+                <nav id="origin-toggles" class="origin-tabs">
+                    <button class="origin-tab active" data-origin="all">All</button>
+                    <button class="origin-tab" data-origin="arcane">Arcane</button>
+                    <button class="origin-tab" data-origin="basic">Basic</button>
+                    <button class="origin-tab" data-origin="celestial">Celestial</button>
+                    <button class="origin-tab" data-origin="dragon">Dragon</button>
+                    <button class="origin-tab" data-origin="elemental">Elemental</button>
+                    <button class="origin-tab" data-origin="life">Life</button>
+                    <button class="origin-tab" data-origin="chaos">Chaos</button>
+                    <button class="origin-tab" data-origin="chrono">Chrono</button>
+                    <button class="origin-tab" data-origin="vozian">Vozian</button>
+                    <button class="origin-tab" data-origin="nature">Nature</button>
+                    <button class="origin-tab" data-origin="crystal">Crystal</button>
+                    <button class="origin-tab" data-origin="tech">Tech</button>
+                </nav>
+
+                <div class="spellbook-actions-row">
+                    <div class="spellbook-actions">
+                        <button id="spellbook-clear">Clear</button>
+                        <button id="expand-all">Expand All</button>
+                        <button id="collapse-all">Collapse All</button>
                     </div>
                 </div>
             </div>
@@ -478,6 +488,8 @@
 
     </main>
     <div id="sidebar-placeholder"></div>
+    <div id="footer-placeholder"></div>
+
 
 </body>
 

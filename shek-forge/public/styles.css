@@ -585,6 +585,28 @@ body.type-worldbuilding .section-header  { background: rgba(51,170,170,.07); bor
 body.type-worldbuilding .forge-section   { box-shadow: 0 0 16px rgba(51,170,170,.05); }
 body.type-worldbuilding .titlebar-brand  { text-shadow: 0 0 12px rgba(85,221,221,.5); }
 
+/* ── VEHICLES ────────────────────────────────────────────────────────────── */
+body.type-vehicle {
+    --accent: #4c8a6e; --accent-dim: #0e2e20; --accent-bright: #6ecca0;
+    --bg-hover: #06140f; --bg-active: #0a1a14; --border: #0e3020; --border-bright: #1a4a35; --text-muted: #447760;
+}
+.file-type-dot.dot-vehicle       { background: #4c8a6e; box-shadow: 0 0 4px #4c8a6e; }
+.file-type-badge.badge-vehicle   { color: #4c8a6e; border-color: #4c8a6e; }
+body.type-vehicle .section-header  { background: rgba(76,138,110,.07); border-bottom-color: #1a4a35; }
+body.type-vehicle .forge-section   { box-shadow: 0 0 16px rgba(76,138,110,.05); }
+body.type-vehicle .titlebar-brand  { text-shadow: 0 0 12px rgba(110,204,160,.5); }
+
+/* ── CURSES ──────────────────────────────────────────────────────────────── */
+body.type-curse {
+    --accent: #8020a0; --accent-dim: #2e0a3d; --accent-bright: #b040d0;
+    --bg-hover: #12061a; --bg-active: #180a20; --border: #2e0e3a; --border-bright: #4a1a5a; --text-muted: #774499;
+}
+.file-type-dot.dot-curse       { background: #8020a0; box-shadow: 0 0 4px #8020a0; }
+.file-type-badge.badge-curse   { color: #8020a0; border-color: #8020a0; }
+body.type-curse .section-header  { background: rgba(128,32,160,.07); border-bottom-color: #4a1a5a; }
+body.type-curse .forge-section   { box-shadow: 0 0 16px rgba(128,32,160,.05); }
+body.type-curse .titlebar-brand  { text-shadow: 0 0 12px rgba(176,64,208,.5); }
+
 /* ── Shared table editor (all generators) ──────────────────────────────── */
 /* Each editor sets its own --te-* vars */
 .te-editor        { display: flex; flex-direction: column; gap: 14px; padding: 4px 0; }

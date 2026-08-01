@@ -169,42 +169,46 @@ ul.transmission strong {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: 0.3rem;
 }
 
-#sort-toggles button {
-  padding: 0.25rem 0.65rem;
-  background: var(--theme-1);
+#sort-toggles button,
+#intent-toggles button {
+  padding: 0.25rem 0.7rem;
+  background: transparent;
   color: var(--text-cream);
   border: 1px solid var(--theme-2);
-  border-radius: 4px;
+  border-radius: 999px;
   cursor: pointer;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
+  box-shadow: none;
+  transform: none !important;
 }
 
-#sort-toggles button:hover {
+#sort-toggles button:hover,
+#intent-toggles button:hover {
   background: var(--green-2);
   border-color: var(--green-3);
   color: var(--white);
-  transform: none;
 }
 
-#sort-toggles button.active {
-  background: var(--green-2);
-  border-color: var(--gold);
-  color: var(--gold);
+#sort-toggles button.active,
+#intent-toggles button.active {
+  background: var(--gold-1);
+  border-color: var(--gold-2);
+  color: var(--text-gold);
 }
 
-/* Expand / Collapse + Count */
+/* Expand / Collapse / Clear */
 .spellbook-actions {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  margin-left: auto;
+  flex-wrap: wrap;
 }
 
 .spellbook-actions button {
@@ -212,64 +216,48 @@ ul.transmission strong {
   background: var(--dark-2);
   color: var(--text-cream);
   border: 1px solid var(--green-3);
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   cursor: pointer;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   transition: background 0.15s, color 0.15s;
+  box-shadow: none;
+  transform: none !important;
 }
 
 .spellbook-actions button:hover {
   background: var(--green-2);
   color: var(--white);
-  transform: none;
+}
+
+#spellbook-clear {
+  border-color: var(--theme-2);
 }
 
 .spell-count {
-  font-size: 0.72rem;
-  color: var(--gold);
+  font-size: 0.78rem;
+  color: var(--text-muted, #888);
   white-space: nowrap;
-  opacity: 0.8;
-  padding-left: 0.5rem;
-  border-left: 1px solid var(--theme-2);
+  flex-shrink: 0;
 }
 
-/* Intent Toggles - inline in controls row */
+/* Intent Toggles - now inside the collapsible filter panel */
 #intent-toggles {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.25rem;
-  padding-left: 0.75rem;
-  border-left: 1px solid var(--theme-2);
+  gap: 0.3rem;
 }
 
-#intent-toggles button {
-  padding: 0.25rem 0.55rem;
-  background: var(--dark-2);
-  color: var(--text-cream);
-  border: 1px solid var(--theme-2);
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.75rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-
-#intent-toggles button:hover {
-  background: var(--green-2);
-  color: var(--white);
-  transform: none;
-}
-
-#intent-toggles button.active {
-  background: var(--green-2);
-  border-color: var(--gold);
-  color: var(--gold);
+/* ── Filter row labels (Sort / Intent) ── */
+.filter-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: .6rem;
 }
 
 main {
@@ -342,52 +330,132 @@ main {
   flex-direction: column;
 }
 
-/* ── Origin Sub-tabs ─────────────────────────────────────────────── */
+/* ── Main row: filter toggle, search, size, count ──────────────────── */
+.spellbook-toolbar-main {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  padding: .4rem .75rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(255, 255, 255, .05);
+}
+
+.spellbook-filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .28rem .65rem;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--green-3);
+  color: var(--text-muted, #888);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  white-space: nowrap;
+  font-family: inherit;
+  box-shadow: none;
+  transform: none !important;
+}
+
+.spellbook-filter-toggle:hover,
+.spellbook-filter-toggle.open {
+  background: var(--green-1);
+  color: var(--text-cream);
+}
+
+.spellbook-filter-toggle .filter-pip {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .4;
+  transition: background .2s, opacity .2s, box-shadow .2s;
+  flex-shrink: 0;
+}
+
+.spellbook-filter-toggle.has-filters .filter-pip {
+  background: #e8a050;
+  opacity: 1;
+  box-shadow: 0 0 5px #e8a050;
+}
+
+.spellbook-filter-toggle .filter-chevron {
+  font-size: .6rem;
+  transition: transform .2s ease;
+  display: inline-block;
+  opacity: .6;
+}
+
+.spellbook-filter-toggle.open .filter-chevron {
+  transform: rotate(180deg);
+}
+
+.spellbook-toolbar-main #spell-search {
+  flex: 1 1 140px;
+  min-width: 0;
+  font-size: .85rem;
+  padding: .3rem .6rem;
+}
+
+/* ── Origin pill tabs (always visible, primary filter) ─────────────── */
 #origin-toggles {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
+  align-items: center;
+  gap: .3rem;
+  margin-top: 0;
+  padding: .4rem .75rem;
   background: var(--theme-1);
+  border-radius: 0;
   border-bottom: 1px solid rgba(143, 191, 143, 0.2);
-  padding: 4px 6px;
-  gap: 3px;
 }
 
 .origin-tab {
-  padding: 0.45rem 0.8rem;
+  padding: .7rem;
+  border-radius: 999px;
+  border: 1px solid var(--green-3);
   background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  font-size: 0.75rem;
-  font-weight: bold;
   color: var(--text-cream);
-  letter-spacing: 0.06em;
+  font-size: .75rem;
+  font-weight: bold;
+  letter-spacing: .05em;
   text-transform: uppercase;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  box-shadow: none;
+  cursor: pointer;
+  opacity: .7;
+  transition: opacity .15s, background .15s;
   white-space: nowrap;
-  border-radius: 4px 4px 0 0;
+  transform: none !important;
 }
 
 .origin-tab:hover {
-  color: var(--white);
+  opacity: .95;
   background: var(--green-2);
-  transform: none;
+  color: var(--white);
 }
 
 .origin-tab.active {
-  color: var(--gold);
-  border-bottom-color: var(--gold);
-  background: var(--green-2);
+  opacity: 1;
+  background: var(--gold-1);
+  color: var(--text-gold);
+  border-color: var(--gold-2);
 }
 
-/* ── Controls Row ────────────────────────────────────────────────── */
-#spellbook-controls-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 6px 10px;
+/* ── Collapsible filter panel: Sort / Intent / actions ─────────────── */
+.spellbook-filter-panel {
+  display: none;
+  padding: .6rem .75rem .7rem;
   background: var(--dark-2);
-  flex-wrap: wrap;
+  border-bottom: 1px solid var(--green-3);
+}
+
+.spellbook-filter-panel.open {
+  display: block;
 }
 
 .control-label {
@@ -397,6 +465,13 @@ main {
   letter-spacing: 0.08em;
   color: var(--green-3);
   flex-shrink: 0;
+}
+
+/* ── Actions row: Clear / Expand / Collapse, always visible below origins ── */
+.spellbook-actions-row {
+  padding: .4rem .75rem;
+  background: var(--theme-1);
+  border-bottom: 1px solid rgba(143, 191, 143, 0.2);
 }
 
 /* ── Spell Builder ───────────────────────────────────────────────── */

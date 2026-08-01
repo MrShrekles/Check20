@@ -6,6 +6,8 @@ function esc(s) {
     );
 }
 
+const CURSE_TYPE_LABEL = { curse: 'Curses', disease: 'Diseases' };
+
 function renderStep(step, index, type) {
     const num    = type === 'numbered' ? `<span class="curse-step-num">${index + 1}</span>` : '';
     const action = step.action ? `<span class="curse-action-tag">${esc(step.action)}</span>` : '';
@@ -48,15 +50,16 @@ function renderSection(section, sIdx) {
 
 function renderCurseRow(entry) {
     const row = document.createElement('div');
-    row.className = 'spell-row curse-row';
+    row.className = 'spell-row';
     row.dataset.slug = entry.name.toLowerCase().replace(/\s+/g, '-');
     row.dataset.type = entry.type;
     if (entry.color) row.style.setProperty('--row-accent', entry.color);
 
     const typeLabel = entry.type === 'disease' ? 'Disease' : 'Curse';
+    const rarityClass = `rarity-${entry.type === 'disease' ? 'rare' : 'uncommon'}`;
     const sourceTag = entry.source
-        ? `<span class="curse-source-tag curse-source--${esc(entry.source)}">${esc(entry.source)}</span>` : '';
-    const typeTag   = `<span class="curse-type-tag curse-type--${esc(entry.type)}">${typeLabel}</span>`;
+        ? `<span class="species-origin-tag">${esc(entry.source)}</span>` : '';
+    const typeTag   = `<span class="chip chip-rarity ${rarityClass}">${esc(typeLabel)}</span>`;
     const subtitle  = entry.subtitle
         ? `<span class="curse-subtitle">${esc(entry.subtitle)}</span>` : '';
 
@@ -69,21 +72,21 @@ function renderCurseRow(entry) {
     const sectionsHtml = (entry.sections || []).map(renderSection).join('');
 
     row.innerHTML = `
-        <div class="spell-row-head curse-row-head">
+        <div class="spell-row-head">
             <span class="spell-row-arrow">▶</span>
             <span class="spell-row-name">${esc(entry.name)}</span>
             ${subtitle}
-            <div class="spell-row-tags">
-                ${typeTag}${sourceTag}
+            <div class="spell-row-tags species-row-tags">
+                ${sourceTag}${typeTag}
             </div>
         </div>
-        <div class="spell-row-detail curse-row-detail">
+        <div class="spell-row-detail">
             <p class="curse-desc">${esc(entry.desc)}</p>
             ${infectionHtml}
             ${sectionsHtml}
         </div>`;
 
-    row.querySelector('.curse-row-head').addEventListener('click', () => {
+    row.querySelector('.spell-row-head').addEventListener('click', () => {
         const open = row.classList.toggle('open');
         row.querySelector('.spell-row-arrow').textContent = open ? '▼' : '▶';
     });
@@ -91,38 +94,53 @@ function renderCurseRow(entry) {
     return row;
 }
 
+/* ── Main render: two-level grouping, mirrors species renderGrid ── */
 function renderCurses(items) {
     const container = document.getElementById('curse-sections');
     if (!container) return;
 
+    const typeMap = new Map();
+    items.forEach(e => {
+        const tKey = e.type || 'curse';
+        if (!typeMap.has(tKey)) typeMap.set(tKey, { label: CURSE_TYPE_LABEL[tKey] || tKey, sources: new Map() });
+
+        const sKey = e.sourceKey || '__none__';
+        const tg = typeMap.get(tKey);
+        if (!tg.sources.has(sKey)) tg.sources.set(sKey, { label: e.source || '', items: [] });
+        tg.sources.get(sKey).items.push(e);
+    });
+
     container.innerHTML = '';
+    const frag = document.createDocumentFragment();
 
-    /* Group headers when showing all */
-    const curses   = items.filter(e => e.type === 'curse');
-    const diseases = items.filter(e => e.type === 'disease');
-    const frag     = document.createDocumentFragment();
+    typeMap.forEach(({ label: typeLabel, sources }) => {
+        const total = [...sources.values()].reduce((n, s) => n + s.items.length, 0);
 
-    function appendGroup(label, entries) {
-        if (!entries.length) return;
-        const hdr = document.createElement('div');
-        hdr.className = 'spell-group-header';
-        hdr.textContent = `${label}  (${entries.length})`;
-        frag.appendChild(hdr);
-        entries.forEach(e => frag.appendChild(renderCurseRow(e)));
-    }
+        const grid = document.createElement('div');
+        grid.className = 'spell-grid';
 
-    /* When both types are present, show grouped headers */
-    if (curses.length && diseases.length) {
-        appendGroup('Curses', curses);
-        appendGroup('Diseases', diseases);
-    } else {
-        items.forEach(e => frag.appendChild(renderCurseRow(e)));
-    }
+        const tHdr = document.createElement('div');
+        tHdr.className = 'spell-group-header';
+        tHdr.textContent = `${typeLabel}  (${total})`;
+        grid.appendChild(tHdr);
+
+        sources.forEach(({ label: sourceLabel, items: sourceItems }) => {
+            if (sourceLabel) {
+                const sHdr = document.createElement('div');
+                sHdr.className = 'species-option-header';
+                sHdr.textContent = `${sourceLabel}  (${sourceItems.length})`;
+                grid.appendChild(sHdr);
+            }
+            sourceItems.forEach(e => grid.appendChild(renderCurseRow(e)));
+        });
+
+        frag.appendChild(grid);
+    });
 
     container.appendChild(frag);
 
     document.getElementById('curse-count').textContent =
-        `${items.length} entr${items.length !== 1 ? 'ies' : 'y'}`;
+        `${items.length} result${items.length !== 1 ? 's' : ''}`;
     document.getElementById('curse-no-results').style.display =
         items.length ? 'none' : '';
 }
