@@ -23,6 +23,8 @@
     --danger: #a3312a;
     --danger-bg: #f6dedd;
     --ok: #2f6f4f;
+    --adv: #2f6f4f;
+    --adv-bg: #d9ecdf;
     --radius: 5px;
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
     --font-head: Cambria, Cochin, Georgia, 'Times New Roman', serif;
@@ -49,6 +51,8 @@ body.sheet-darkmode {
     --danger: #e0736c;
     --danger-bg: #3a1414;
     --ok: #7fbf9f;
+    --adv: #7fbf9f;
+    --adv-bg: #16301f;
     --shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
@@ -65,7 +69,7 @@ body.sheet-darkmode {
     font-size: 12px;
     color: var(--text-plain);
     background: var(--bg-1);
-    max-width: 760px;
+    max-width: 820px;
 }
 
 .charsheet input[type="text"],
@@ -79,6 +83,7 @@ body.sheet-darkmode {
     border: 1px solid var(--bg-3);
     border-radius: 3px;
     padding: 2px 4px;
+    min-width: 0;
 }
 
 .charsheet textarea {
@@ -103,8 +108,161 @@ body.sheet-darkmode {
 
 #c20logo {
     display: block;
-    max-width: 140px;
-    margin: 0 auto 6px;
+    max-width: 130px;
+    margin: 0 auto 4px;
+}
+
+.hint-line {
+    margin: 6px 0 0;
+    font-size: 10px;
+    color: var(--theme-3);
+    line-height: 1.4;
+}
+
+/* ============================================================
+   ROLL BAR — always-visible control strip
+   ============================================================ */
+.rollbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 4px 10px;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    background: var(--theme-1);
+    border: 1px solid var(--theme-2);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.rollbar-block {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.rollbar-block.grow {
+    flex: 1 1 160px;
+}
+
+.rollbar-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--theme-3);
+}
+
+/* --- roll mode segmented control --- */
+.rollmode input[type="radio"] {
+    display: none;
+}
+
+.rollmode-toggle {
+    display: flex;
+    border: 1px solid var(--theme-2);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.rollmode-toggle label {
+    padding: 3px 10px;
+    background: var(--bg-2);
+    color: var(--theme-3);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+    border-right: 1px solid var(--theme-2);
+    white-space: nowrap;
+}
+
+.rollmode-toggle label:last-child {
+    border-right: none;
+}
+
+#rollmode_normal:checked~.rollmode-toggle label[for="rollmode_normal"] {
+    background: var(--theme-2);
+    color: var(--text-inverse);
+}
+
+#rollmode_adv:checked~.rollmode-toggle label[for="rollmode_adv"] {
+    background: var(--adv);
+    color: #06140c;
+}
+
+#rollmode_dis:checked~.rollmode-toggle label[for="rollmode_dis"] {
+    background: var(--danger);
+    color: #fff;
+}
+
+/* --- temp mod inputs --- */
+.mod-strip,
+.vital-strip {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.mod-cell,
+.vital-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--theme-3);
+}
+
+.mod-cell input {
+    width: 40px;
+    text-align: center;
+}
+
+.vital-cell input {
+    width: 42px;
+    text-align: center;
+}
+
+.vital-cell em {
+    font-style: normal;
+    font-size: 10px;
+    color: var(--theme-3);
+}
+
+.charsheet button.mini {
+    padding: 2px 6px;
+    font-size: 10px;
+    align-self: flex-end;
+}
+
+/* --- computed totals baked into every roll --- */
+.total-strip {
+    display: flex;
+    gap: 4px;
+}
+
+.total-chip {
+    background: var(--bg-2);
+    border: 1px solid var(--gold-2);
+    border-radius: var(--radius);
+    padding: 3px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-gold);
+    white-space: nowrap;
+}
+
+.active-conditions-box {
+    width: 100%;
+    padding: 4px 6px;
+    background: var(--danger-bg) !important;
+    border: 1px solid var(--danger) !important;
+    border-radius: var(--radius);
+    color: var(--danger) !important;
+    font-size: 11px;
+    font-weight: 600;
 }
 
 /* ============================================================
@@ -140,29 +298,34 @@ body.sheet-darkmode {
     white-space: nowrap;
 }
 
-.sheet-tabs .content > .tab-page {
+.sheet-tabs .content>.tab-page {
     display: none;
     animation: arc20-fade .12s ease-in;
 }
 
 @keyframes arc20-fade {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
-#tab-combat:checked ~ .content #combat-content,
-#tab-inventory:checked ~ .content #inventory-content,
-#tab-progression:checked ~ .content #progression-content,
-#tab-conditions:checked ~ .content #conditions-content,
-#tab-reference:checked ~ .content #reference-content {
+#tab-core:checked~.content #core-content,
+#tab-combat:checked~.content #combat-content,
+#tab-magic:checked~.content #magic-content,
+#tab-gear:checked~.content #gear-content,
+#tab-reference:checked~.content #reference-content {
     display: block;
 }
 
-#tab-combat:checked ~ nav.tabs label[for="tab-combat"],
-#tab-inventory:checked ~ nav.tabs label[for="tab-inventory"],
-#tab-progression:checked ~ nav.tabs label[for="tab-progression"],
-#tab-conditions:checked ~ nav.tabs label[for="tab-conditions"],
-#tab-reference:checked ~ nav.tabs label[for="tab-reference"] {
+#tab-core:checked~nav.tabs label[for="tab-core"],
+#tab-combat:checked~nav.tabs label[for="tab-combat"],
+#tab-magic:checked~nav.tabs label[for="tab-magic"],
+#tab-gear:checked~nav.tabs label[for="tab-gear"],
+#tab-reference:checked~nav.tabs label[for="tab-reference"] {
     background: var(--theme-2);
     color: var(--text-inverse);
 }
@@ -176,7 +339,7 @@ body.sheet-darkmode {
     align-items: flex-start;
 }
 
-.two-col > .col {
+.two-col>.col {
     flex: 1 1 50%;
     min-width: 0;
 }
@@ -194,6 +357,17 @@ body.sheet-darkmode {
     gap: 4px 8px;
 }
 
+.btn-row {
+    display: flex;
+    gap: 4px;
+    margin-top: 5px;
+}
+
+.btn-row input.narrow {
+    width: 52px;
+    text-align: center;
+}
+
 /* ============================================================
    COLLAPSIBLE SECTIONS
    ============================================================ */
@@ -205,7 +379,7 @@ body.sheet-darkmode {
     margin-bottom: 6px;
 }
 
-.charsheet details.section > summary {
+.charsheet details.section>summary {
     list-style: none;
     cursor: pointer;
     padding: 5px 8px;
@@ -217,23 +391,32 @@ body.sheet-darkmode {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
 }
 
-.charsheet details.section > summary::-webkit-details-marker {
+.charsheet details.section>summary::-webkit-details-marker {
     display: none;
 }
 
-.charsheet details.section > summary::after {
+.charsheet details.section>summary::marker {
+    content: "";
+}
+
+.charsheet details.section>summary::after {
     content: "▸";
+    margin-left: auto;
     transition: transform .1s;
 }
 
-.charsheet details.section[open] > summary::after {
+.charsheet details.section[open]>summary::after {
     transform: rotate(90deg);
 }
 
-.charsheet details.section > summary::marker {
-    content: "";
+.summary-note {
+    font-weight: 400;
+    font-size: 10px;
+    color: var(--theme-3);
+    opacity: 0.85;
 }
 
 .section-body {
@@ -267,46 +450,39 @@ body.sheet-darkmode {
     color: #211a00;
 }
 
-.charsheet button.wide {
-    width: 100%;
-}
-
-.roll-mode-toggle {
-    display: flex;
-    gap: 0;
-    border: 1px solid var(--theme-2);
-    border-radius: var(--radius);
-    overflow: hidden;
-    width: fit-content;
-}
-
-.roll-mode-toggle input[type="radio"] {
-    display: none;
-}
-
-.roll-mode-toggle label {
-    padding: 3px 10px;
-    background: var(--bg-2);
-    color: var(--theme-3);
-    cursor: pointer;
-    font-size: 11px;
-    font-weight: 700;
-    border-right: 1px solid var(--theme-2);
-}
-
-.roll-mode-toggle label:last-child {
-    border-right: none;
-}
-
-#rollmode_normal:checked ~ .roll-mode-toggle label[for="rollmode_normal"],
-#rollmode_adv:checked ~ .roll-mode-toggle label[for="rollmode_adv"],
-#rollmode_dis:checked ~ .roll-mode-toggle label[for="rollmode_dis"] {
-    background: var(--theme-2);
+.charsheet button.gold:hover {
+    background: var(--gold-3);
     color: var(--text-inverse);
 }
 
+.charsheet button.wide {
+    width: 100%;
+    margin-bottom: 3px;
+}
+
+.charsheet button.atk {
+    background: var(--warm-3);
+    border-color: var(--warm-2);
+    flex: 0 0 auto;
+}
+
+.charsheet button.atk:hover {
+    background: var(--warm-2);
+}
+
+.charsheet button.dmg {
+    background: var(--bg-3);
+    color: var(--text-plain);
+    border-color: var(--theme-3);
+    flex: 0 0 auto;
+}
+
+.charsheet button.dmg:hover {
+    background: var(--warm-1);
+}
+
 /* ============================================================
-   TABLES — health / checks / resources
+   TABLES — checks / health / resources
    ============================================================ */
 .charsheet table {
     width: 100%;
@@ -315,7 +491,7 @@ body.sheet-darkmode {
 
 .charsheet table.stat-table td,
 .charsheet table.stat-table th {
-    padding: 3px 4px;
+    padding: 2px 4px;
     border-bottom: 1px solid var(--bg-3);
     text-align: center;
     font-size: 11px;
@@ -333,8 +509,14 @@ body.sheet-darkmode {
 }
 
 .charsheet table.stat-table input {
-    width: 42px;
+    width: 46px;
     text-align: center;
+}
+
+.charsheet table.stat-table tr.total-row td {
+    color: var(--theme-3);
+    font-weight: 700;
+    border-bottom: none;
 }
 
 .formula-hint {
@@ -355,7 +537,7 @@ body.sheet-darkmode {
 .cond-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 6px 12px;
+    gap: 4px 12px;
 }
 
 .cond-cat-label {
@@ -375,26 +557,17 @@ body.sheet-darkmode {
     font-size: 11px;
     font-weight: 400;
     color: var(--text-plain);
+    cursor: pointer;
 }
 
 .cond-item .cond-desc {
     color: var(--theme-3);
-    font-size: 10px;
-}
-
-.active-conditions-box {
-    margin-top: 6px;
-    padding: 4px 6px;
-    background: var(--danger-bg);
-    border: 1px solid var(--danger);
-    border-radius: var(--radius);
-    color: var(--danger);
-    font-size: 11px;
-    min-height: 16px;
+    font-size: 9px;
+    opacity: 0.85;
 }
 
 /* ============================================================
-   REPEATING SECTIONS — weapons / armor / items / npc / features
+   REPEATING SECTIONS
    ============================================================ */
 .charsheet fieldset {
     border: none;
@@ -409,26 +582,47 @@ body.sheet-darkmode {
     margin-bottom: 4px;
 }
 
-.rep-row > summary {
+.rep-row>summary {
     list-style: none;
     cursor: pointer;
     display: flex;
-    gap: 6px;
+    gap: 5px;
     align-items: center;
     padding: 4px 6px;
 }
 
-.rep-row > summary::-webkit-details-marker {
+.rep-row>summary::-webkit-details-marker {
     display: none;
 }
 
-.rep-row > summary::marker {
+.rep-row>summary::marker {
     content: "";
 }
 
+.rep-row>summary::after {
+    content: "▾";
+    color: var(--theme-3);
+    font-size: 10px;
+    margin-left: auto;
+}
+
+.rep-row[open]>summary::after {
+    content: "▴";
+}
+
 .rep-row summary input[type="text"] {
-    flex: 1 1 auto;
+    flex: 1 1 90px;
     font-weight: 700;
+}
+
+.rep-row summary input.narrow {
+    flex: 0 0 62px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.rep-row summary select.narrow-sel {
+    flex: 0 0 96px;
 }
 
 .rep-row .rep-body {
@@ -436,20 +630,108 @@ body.sheet-darkmode {
     border-top: 1px solid var(--bg-3);
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 10px;
+    gap: 4px 10px;
 }
 
 .rep-row .rep-body .form-row {
-    flex: 1 1 120px;
+    flex: 1 1 130px;
 }
 
-.rep-row .rep-body textarea {
+.rep-row .rep-body textarea,
+.rep-row .rep-body button.wide {
     flex: 1 1 100%;
 }
 
 .repcontrol_add,
-.repcontrol_del {
+.repcontrol_del,
+.repcontrol_edit {
     border: 1px solid var(--theme-2) !important;
+}
+
+/* --- global mods --- */
+.glob-head {
+    display: grid;
+    grid-template-columns: 1fr 96px 62px 28px 14px;
+    gap: 5px;
+    padding: 0 12px 3px 12px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--theme-3);
+}
+
+/* mirror .glob-head so the column headers actually line up */
+.glob-row>summary {
+    display: grid;
+    grid-template-columns: 1fr 96px 62px 28px 14px;
+    gap: 5px;
+    align-items: center;
+}
+
+.glob-row>summary::after {
+    margin-left: 0;
+    text-align: center;
+}
+
+.glob-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.glob-toggle input[type="checkbox"] {
+    display: none;
+}
+
+.glob-toggle span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 18px;
+    text-align: center;
+    border: 1px solid var(--bg-3);
+    border-radius: 3px;
+    background: var(--bg-2);
+    color: transparent;
+    font-size: 12px;
+}
+
+.glob-toggle input[type="checkbox"]:checked+span {
+    background: var(--adv-bg);
+    border-color: var(--adv);
+    color: var(--adv);
+}
+
+/* --- press on uses --- */
+.presson-uses .repcontrol,
+.presson-uses .itemcontrol {
+    display: none;
+}
+
+.presson-uses .repcontainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 4px 0 6px;
+}
+
+.presson-uses .repitem {
+    width: auto;
+}
+
+.use-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 7px;
+    border: 1px solid var(--theme-2);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    font-size: 10px;
+    text-transform: uppercase;
+    cursor: pointer;
 }
 
 /* simple flat tables (armor / items / npc) */
@@ -463,10 +745,17 @@ table.flat-table th {
 table.flat-table th {
     background: var(--theme-1);
     color: var(--theme-3);
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+table.flat-table input,
+table.flat-table select {
+    width: 100%;
 }
 
 /* ============================================================
-   REFERENCE TAB — conditions table + damage grid + quick ref cards
+   REFERENCE TAB
    ============================================================ */
 .ref-table {
     width: 100%;
@@ -527,6 +816,7 @@ table.flat-table th {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 6px;
+    margin-bottom: 6px;
 }
 
 .ref-card {
@@ -548,6 +838,11 @@ table.flat-table th {
     font-size: 10.5px;
 }
 
+.ref-card p {
+    margin: 0 0 4px;
+    font-size: 10.5px;
+}
+
 .ref-card li {
     margin-bottom: 2px;
 }
@@ -556,8 +851,8 @@ table.flat-table th {
    ROLL TEMPLATE — &{template:arc20}
    ============================================================ */
 .sheet-rolltemplate-arc20 .sheet-container {
-    font-family: var(--font-head);
-    color: var(--text-inverse);
+    font-family: Cambria, Cochin, Georgia, 'Times New Roman', serif;
+    color: #fffaf0;
     background: #1e1e1e;
     border: 2px solid #2f4f4f;
     border-radius: 6px;
@@ -566,17 +861,28 @@ table.flat-table th {
 
 .sheet-rolltemplate-arc20 .sheet-header {
     background: #2f4f4f;
+    padding: 3px 5px;
+    border-radius: 4px 4px 0 0;
+    text-align: center;
+}
+
+.sheet-rolltemplate-arc20 .sheet-name {
     color: #ffd700;
     font-size: 1.15em;
-    text-align: center;
-    padding: 3px;
-    border-radius: 4px 4px 0 0;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.sheet-rolltemplate-arc20 .sheet-subtitle {
+    color: #d9b382;
+    font-size: 0.95em;
+    font-style: italic;
 }
 
 .sheet-rolltemplate-arc20 .sheet-content {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 4px 6px;
+    gap: 3px 6px;
     padding: 4px;
     align-items: center;
 }
@@ -611,6 +917,7 @@ table.flat-table th {
     padding: 3px 5px;
     border-radius: 4px;
     font-style: italic;
+    font-size: 0.9em;
 }
 
 .sheet-rolltemplate-arc20 .inlinerollresult {
@@ -627,9 +934,10 @@ table.flat-table th {
     color: #e0736c;
 }
 
-/* ============================================================
-   PRINT / NO-PRINT (n/a in Roll20 but harmless if pasted elsewhere)
-   ============================================================ */
-.no-sheet {
-    display: none;
+.sheet-rolltemplate-arc20 .inlinerollresult.importantroll {
+    color: #ffd700;
+}
+
+.sheet-rolltemplate-arc20 a {
+    color: #d9b382;
 }

@@ -74,6 +74,16 @@ function tmOnLoad(type) {
     }
 }
 
+// For grid-first files (roll tables and the like) whose form view is the
+// exception rather than the rule. Call from onLoad, after tmOnLoad: the
+// renderEmptyEditor() that openFile runs next then paints the table directly,
+// so the empty state never flashes on screen.
+function tmOpenInTableMode(type) {
+    if (!TM[type]) return;
+    TM[type].mode = true;
+    _tmRefreshBtn(type);
+}
+
 function tmSortBy(type, col) {
     const t = TM[type];
     if (!t) return;

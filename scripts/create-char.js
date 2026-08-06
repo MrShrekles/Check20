@@ -633,7 +633,7 @@ function renderReview() {
         <div class="review-row"><span class="review-lbl">Class</span><strong>${wiz.classKey}</strong></div>
         ${wiz.pathName   ? `<div class="review-row"><span class="review-lbl">Path</span><strong>${wiz.pathName}</strong></div>` : ''}
         ${wiz.talentName ? `<div class="review-row"><span class="review-lbl">Talent</span><strong>${wiz.talentName}</strong></div>` : ''}
-        ${s ? `<div class="review-row"><span class="review-lbl">Species</span><strong>${titleCase(s.name)}</strong> <span class="review-sub">${s.lineage}</span></div>` : ''}
+        ${s ? `<div class="review-row"><span class="review-lbl">Species</span><strong>${titleCase(s.name)} ${titleCase(s.option)}</strong></div>` : ''}
         <div class="review-row"><span class="review-lbl">Stats</span><span class="review-stats">${statsLine || '-'}</span></div>
         <div class="review-row"><span class="review-lbl">Points</span><span class="review-points${pointsLeft() < 0 ? ' review-points--over' : ''}">
             ${pointsSpent()} / ${classLimits().total} used${pointsLeft() > 0 ? ` (${pointsLeft()} unspent)` : ''}
@@ -696,6 +696,7 @@ function buildAndSave() {
             pathName:   wiz.pathName,
             talentName: wiz.talentName,
             speciesLineage:    s?.lineage || '',
+            speciesOption:     s?.option  || '',
             speciesFeature:    s?.feature_name ? {
                 name:   s.feature_name,
                 effect: s.feature_effect || '',

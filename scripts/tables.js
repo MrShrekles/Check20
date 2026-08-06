@@ -305,6 +305,71 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedWealth = localStorage.getItem('startingWealth');
   if (savedWealth) startingWealthAmount.textContent = savedWealth;
 
+  // === ASH SURGE ===
+  // Unlike the lists above, the surge table lives in data/surges.json so it can be
+  // edited in Shek-Forge. Results 1-3 chain into extra rolls that re-roll 1-3 away,
+  // so a single click can resolve into several stacked effects.
+  const selectedSurge = document.getElementById("selected-surge");
+  const rollSurgeButton = document.getElementById("roll-surge");
+  const surgeList = document.getElementById("surge-list");
+
+  if (selectedSurge && rollSurgeButton) {
+    fetch('data/surges.json')
+      .then(r => r.json())
+      .then(json => {
+        const surges = (json.surges || [])
+          .filter(s => s.table === 'Ash Surge')
+          .sort((a, b) => a.roll - b.roll);
+        if (!surges.length) return;
+
+        if (surgeList) {
+          surgeList.innerHTML = surges
+            .map(s => `<li>${s.text}</li>`)
+            .join('');
+        }
+
+        // Chained rolls (1-3) can theoretically stack forever, so cap the depth.
+        const MAX_DEPTH = 10;
+        function rollOnce(ignoreLow) {
+          let entry;
+          do {
+            entry = surges[Math.floor(Math.random() * surges.length)];
+          } while (ignoreLow && entry.roll <= 3);
+          return entry;
+        }
+
+        function rollSurge() {
+          const results = [];
+          let pending = [{ ignoreLow: false }];
+          let depth = 0;
+          while (pending.length && depth < MAX_DEPTH) {
+            const next = [];
+            for (const { ignoreLow } of pending) {
+              const entry = rollOnce(ignoreLow);
+              results.push(`${entry.roll}. ${entry.text}`);
+              // 1 -> 3 extra rolls, 2 -> 2, 3 -> 1, each ignoring 1-3
+              if (entry.roll <= 3) {
+                for (let i = 0; i < 4 - entry.roll; i++) next.push({ ignoreLow: true });
+              }
+            }
+            pending = next;
+            depth++;
+          }
+          const result = results.join(' | ');
+          selectedSurge.textContent = result;
+          localStorage.setItem('selectedSurge', result);
+        }
+
+        rollSurgeButton.addEventListener("click", rollSurge);
+      })
+      .catch(() => {
+        selectedSurge.textContent = "Could not load the surge table.";
+      });
+
+    const savedSurge = localStorage.getItem('selectedSurge');
+    if (savedSurge) selectedSurge.textContent = savedSurge;
+  }
+
   // === COPY BUTTONS (SHARED HANDLER) ===
   document.querySelectorAll(".copy-button").forEach(button => {
     button.addEventListener("click", () => {

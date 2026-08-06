@@ -71,6 +71,21 @@
                     <button class="copy-button" data-target="selected-trinket">Copy</button>
                 </div>
 
+                <div class="flex-item" id="ash-surge">
+                    <h2>Ash Surge</h2>
+                    <p>
+                        When magic slips its leash, the Ash answers. Roll a d100 on the surge table below. Results 1-3
+                        chain into further rolls, ignoring 1-3 on those.
+                    </p>
+                    <div class="features">
+                        <p id="selected-surge">Your surge will appear here.</p>
+                    </div>
+                    <div class="controls">
+                        <button id="roll-surge">Roll for Surge</button>
+                    </div>
+                    <button class="copy-button" data-target="selected-surge">Copy</button>
+                </div>
+
                 <div class="flex-item" id="starting-wealth">
                     <h2>Starting Wealth</h2>
                     <p>
@@ -565,6 +580,16 @@
                         <li>A coin that jumps slightly when near treasure</li>
                         <li>A feather that acts as a magnet for paper</li>
                     </ol>
+                </div>
+            </details>
+
+            <!-- Ash Surge -->
+            <details>
+                <summary>Ash Surge Table</summary>
+                <!-- Populated from data/surges.json by scripts/tables.js -->
+                <div class="features">
+                    <p>Roll a d100 to choose a surge or choose from the list below</p>
+                    <ol class="motivation-list" id="surge-list"></ol>
                 </div>
             </details>
         </section>

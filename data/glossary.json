@@ -476,7 +476,7 @@
     "term": "Stances",
     "type": "action",
     "category": "Half-Action",
-    "definition": "Choose a combat stance lasting until your next turn: Advantage Stance (advantage on next attack), Disadvantage Stance (enemies attacking you or nearby allies suffer disadvantage), Offensive Stance (use Off-Action to Provoke), or Reaction Stance (react to failed attacks against you)."
+    "definition": "Choose a combat stance lasting until your next turn: Advantage Stance (gain advantage on your next attack), Disadvantage Stance (give disadvantage to enemies attacking you or allies in range), or Guard Stance (when a creature attacks you, Provoke without using an Off-Action once; on all failed attacks, you may also Provoke at disadvantage)."
   },
   {
     "term": "Reaction",

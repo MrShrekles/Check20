@@ -1020,6 +1020,55 @@ body.privacy-mode .prow-name {
 
 .gen-npc-row--item { align-items: flex-start; gap: 6px; }
 
+/* Quick-edit controls: dropdown / text field + per-field reroll */
+
+.gen-npc-ctrl {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.gen-npc-select,
+.gen-npc-input {
+    flex: 1;
+    min-width: 0;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--text);
+    font: inherit;
+    font-size: 12px;
+    padding: 4px 6px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.gen-npc-select {
+    /* leave room for the caret */
+    padding-right: 20px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+                      linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position: calc(100% - 12px) 52%, calc(100% - 8px) 52%;
+    background-size: 4px 4px, 4px 4px;
+    background-repeat: no-repeat;
+}
+.gen-npc-select:focus,
+.gen-npc-input:focus { border-color: var(--accent-mid); }
+
+.gen-npc-reroll {
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font-size: 11px;
+    line-height: 1;
+    padding: 5px 6px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.gen-npc-reroll:active { background: var(--accent-dim); }
+
 .gen-mini-label {
     font-size: 11px;
     font-weight: 700;
@@ -1062,6 +1111,59 @@ body.privacy-mode .prow-name {
     border-top: 1px solid var(--line);
     margin-top: 2px;
 }
+
+/* ── GENERATORS: ENCHANTED ITEMS ─────────────────────────────────── */
+
+.gen-filter-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+.gen-filter-row .sheet-select { flex: 1; min-width: 0; }
+
+.gen-ench-card {
+    border-left: 3px solid var(--ench-col, var(--line));
+}
+
+.gen-ench-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gen-ench-name {
+    flex: 1;
+    min-width: 0;
+    font-weight: 800;
+    font-size: 14px;
+}
+
+.gen-ench-rarity {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ench-col, var(--muted));
+    border: 1px solid var(--ench-col, var(--line));
+    border-radius: 999px;
+    padding: 2px 8px;
+}
+
+.gen-ench-sub {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-top: -2px;
+}
+
+.gen-ench-effect-row {
+    align-items: flex-start;
+    padding-top: 5px;
+    border-top: 1px dashed var(--line);
+}
+.gen-ench-effect { color: var(--accent); }
 
 /* ── MONSTERS: ENCOUNTER SUMMARY ─────────────────────────────────── */
 

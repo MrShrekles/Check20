@@ -8,6 +8,8 @@ function esc(s) {
 
 const CURSE_TYPE_LABEL = { curse: 'Curses', disease: 'Diseases' };
 
+// originClass()/originColor() come from scripts/origin-colors.js (shared codex-ui standard)
+
 function renderStep(step, index, type) {
     const num    = type === 'numbered' ? `<span class="curse-step-num">${index + 1}</span>` : '';
     const action = step.action ? `<span class="curse-action-tag">${esc(step.action)}</span>` : '';
@@ -48,28 +50,59 @@ function renderSection(section, sIdx) {
     </div>`;
 }
 
-function renderCurseRow(entry) {
-    const row = document.createElement('div');
-    row.className = 'spell-row';
-    row.dataset.slug = entry.name.toLowerCase().replace(/\s+/g, '-');
-    row.dataset.type = entry.type;
-    if (entry.color) row.style.setProperty('--row-accent', entry.color);
+function renderStage(stage, index) {
+    return `<div class="disease-stage" data-stage="${index + 1}">
+        <div class="disease-stage-num">${index + 1}</div>
+        <div class="disease-stage-body">
+            <h4 class="disease-stage-label">${esc(stage.label || `Stage ${index + 1}`)}</h4>
+            <p class="disease-stage-desc">${esc(stage.desc)}</p>
+        </div>
+    </div>`;
+}
 
-    const typeLabel = entry.type === 'disease' ? 'Disease' : 'Curse';
-    const rarityClass = `rarity-${entry.type === 'disease' ? 'rare' : 'uncommon'}`;
-    const sourceTag = entry.source
-        ? `<span class="species-origin-tag">${esc(entry.source)}</span>` : '';
-    const typeTag   = `<span class="chip chip-rarity ${rarityClass}">${esc(typeLabel)}</span>`;
-    const subtitle  = entry.subtitle
-        ? `<span class="curse-subtitle">${esc(entry.subtitle)}</span>` : '';
-
+function renderDiseaseBody(entry) {
     const infectionHtml = entry.infection
         ? `<div class="curse-infection">
                <span class="curse-infection-label">Infection:</span>
                ${esc(entry.infection)}
            </div>` : '';
 
-    const sectionsHtml = (entry.sections || []).map(renderSection).join('');
+    const progressionHtml = entry.progression
+        ? `<div class="curse-infection">
+               <span class="curse-infection-label">Progression:</span>
+               ${esc(entry.progression)}
+           </div>` : '';
+
+    const stagesHtml = (entry.stages || []).length
+        ? `<div class="disease-stages">${entry.stages.map(renderStage).join('')}</div>` : '';
+
+    const advancedHtml = entry.advanced?.desc
+        ? `<div class="curse-reward">
+               <span class="curse-reward-label">Advanced:</span>
+               ${entry.advanced.curse ? `<strong>${esc(entry.advanced.curse)}</strong> - ` : ''}${esc(entry.advanced.desc)}
+           </div>` : '';
+
+    return `${infectionHtml}${progressionHtml}${stagesHtml}${advancedHtml}`;
+}
+
+function renderCurseRow(entry) {
+    const row = document.createElement('div');
+    row.className = 'spell-row';
+    row.dataset.slug = entry.name.toLowerCase().replace(/\s+/g, '-');
+    row.dataset.type = entry.type;
+    row.style.setProperty('--row-accent', originColor(entry.source));
+
+    const typeLabel = entry.type === 'disease' ? 'Disease' : 'Curse';
+    const rarityClass = `rarity-${entry.type === 'disease' ? 'rare' : 'uncommon'}`;
+    const sourceTag = entry.source
+        ? `<span class="origin-tag ${originClass(entry.source)}">${esc(entry.source)}</span>` : '';
+    const typeTag   = `<span class="chip chip-rarity ${rarityClass}">${esc(typeLabel)}</span>`;
+    const subtitle  = entry.subtitle
+        ? `<span class="curse-subtitle">${esc(entry.subtitle)}</span>` : '';
+
+    const bodyHtml = entry.type === 'disease'
+        ? renderDiseaseBody(entry)
+        : (entry.sections || []).map(renderSection).join('');
 
     row.innerHTML = `
         <div class="spell-row-head">
@@ -82,8 +115,7 @@ function renderCurseRow(entry) {
         </div>
         <div class="spell-row-detail">
             <p class="curse-desc">${esc(entry.desc)}</p>
-            ${infectionHtml}
-            ${sectionsHtml}
+            ${bodyHtml}
         </div>`;
 
     row.querySelector('.spell-row-head').addEventListener('click', () => {
@@ -129,6 +161,7 @@ function renderCurses(items) {
                 const sHdr = document.createElement('div');
                 sHdr.className = 'species-option-header';
                 sHdr.textContent = `${sourceLabel}  (${sourceItems.length})`;
+                sHdr.style.setProperty('--origin-accent', originColor(sourceLabel));
                 grid.appendChild(sHdr);
             }
             sourceItems.forEach(e => grid.appendChild(renderCurseRow(e)));

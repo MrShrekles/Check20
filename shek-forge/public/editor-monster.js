@@ -7,12 +7,16 @@ function monsterQCFields(entry) {
     if ('description' in entry) fields.push({ label: 'Description', get: e => e.description });
     if ('lore' in entry) fields.push({ label: 'Lore', get: e => e.lore });
     if (sch.featureEffectKey && entry[sch.featureEffectKey] !== undefined)
-        fields.push({ label: 'Main Feature Effect', get: e => e[sch.featureEffectKey] });
+        fields.push({ label: 'Main Feature Effect', get: e => e[sch.featureEffectKey],
+                      duration: e => sch.featureDurationKey ? e[sch.featureDurationKey] : null });
     (entry.features || []).forEach((f, fi) =>
-        fields.push({ label: `Feature: ${f.name || fi + 1}`, get: e => (e.features || [])[fi]?.effect }));
+        fields.push({ label: `Feature: ${f.name || fi + 1}`, get: e => (e.features || [])[fi]?.effect,
+                      duration: e => (e.features || [])[fi]?.duration }));
     (entry.spells || []).forEach((s, si) =>
         (s.effects || []).forEach((eff, ei) =>
-            fields.push({ label: `Spell ${s.name || si + 1} (${eff.intent || ei + 1})`, get: e => (e.spells || [])[si]?.effects?.[ei]?.effect })));
+            fields.push({ label: `Spell ${s.name || si + 1} (${eff.intent || ei + 1})`,
+                          get: e => (e.spells || [])[si]?.effects?.[ei]?.effect,
+                          duration: e => (e.spells || [])[si]?.effects?.[ei]?.duration })));
     return fields;
 }
 

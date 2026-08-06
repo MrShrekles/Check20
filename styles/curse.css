@@ -6,12 +6,12 @@
    content (steps, sections, reward, infection) that species doesn't have.
    ══════════════════════════════════════════════════════════════════ */
 
-/* ── Page background: sickly arcane/plague vibe ── */
+/* ── Page background: sickly plague-green / rusty-rot vibe ── */
 body[data-page-title="Curses & Diseases"] {
     background:
-        radial-gradient(ellipse 900px 500px at 20% -10%, rgba(140, 40, 180, .16), transparent 60%),
-        radial-gradient(ellipse 900px 600px at 85% 15%, rgba(160, 60, 30, .12), transparent 55%),
-        radial-gradient(ellipse 1200px 800px at 50% 110%, rgba(40, 100, 60, .10), transparent 60%),
+        radial-gradient(ellipse 900px 500px at 18% -10%, rgba(120, 150, 30, .17), transparent 60%),
+        radial-gradient(ellipse 900px 600px at 88% 12%, rgba(150, 75, 25, .15), transparent 55%),
+        radial-gradient(ellipse 1200px 800px at 50% 112%, rgba(80, 55, 15, .14), transparent 60%),
         var(--dark);
     background-attachment: fixed;
 }
@@ -42,7 +42,7 @@ body[data-page-title="Curses & Diseases"] {
 .curse-intro-panel {
     margin: .75rem var(--padding, 1rem);
     background: var(--dark-2, #1a1a1a);
-    border: 1px solid rgba(255,255,255,.07);
+    border: 1px solid rgba(255, 255, 255, .07);
     border-radius: var(--border-radius, 4px);
 }
 
@@ -59,7 +59,7 @@ body[data-page-title="Curses & Diseases"] {
 
 .curse-intro-body {
     padding: .75rem 1rem 1rem;
-    border-top: 1px solid rgba(255,255,255,.06);
+    border-top: 1px solid rgba(255, 255, 255, .06);
 }
 
 .curse-intro-body h3 {
@@ -82,7 +82,19 @@ body[data-page-title="Curses & Diseases"] {
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
 }
-@media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
+
+@media (max-width: 580px) {
+    .two-col {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Origin-colored group headers (source groups within a Curses/Diseases section) ── */
+#curse-sections .species-option-header {
+    color: color-mix(in srgb, var(--origin-accent, var(--text-cream)) 75%, white 25%);
+    border-bottom-color: color-mix(in srgb, var(--origin-accent, #555) 45%, transparent);
+    opacity: 1;
+}
 
 /* ── Subtitle in row head (curse-only, species has no equivalent) ── */
 .curse-subtitle {
@@ -106,7 +118,7 @@ body[data-page-title="Curses & Diseases"] {
 /* ── Infection notice ── */
 .curse-infection {
     font-size: var(--codex-meta-size, .73rem);
-    background: rgba(255,255,255,.04);
+    background: rgba(255, 255, 255, .04);
     border-left: 3px solid var(--row-accent, #555);
     border-radius: 0 var(--border-radius, 4px) var(--border-radius, 4px) 0;
     padding: .4rem .65rem;
@@ -125,7 +137,9 @@ body[data-page-title="Curses & Diseases"] {
 }
 
 /* ── Section blocks ── */
-.curse-section-block { margin-bottom: .85rem; }
+.curse-section-block {
+    margin-bottom: .85rem;
+}
 
 .curse-section-label {
     font-size: .65rem;
@@ -135,7 +149,7 @@ body[data-page-title="Curses & Diseases"] {
     color: var(--gold-2, #a87820);
     margin: 0 0 .3rem;
     padding-bottom: .2rem;
-    border-bottom: 1px solid rgba(255,255,255,.07);
+    border-bottom: 1px solid rgba(255, 255, 255, .07);
 }
 
 .curse-section-intro {
@@ -159,9 +173,12 @@ body[data-page-title="Curses & Diseases"] {
     font-size: var(--codex-meta-size, .73rem);
     line-height: 1.5;
     padding: .28rem 0;
-    border-bottom: 1px solid rgba(255,255,255,.04);
+    border-bottom: 1px solid rgba(255, 255, 255, .04);
 }
-.curse-step:last-child { border-bottom: none; }
+
+.curse-step:last-child {
+    border-bottom: none;
+}
 
 .curse-step-num {
     flex-shrink: 0;
@@ -172,14 +189,17 @@ body[data-page-title="Curses & Diseases"] {
     justify-content: center;
     font-size: .62rem;
     font-weight: 700;
-    background: rgba(255,255,255,.06);
+    background: rgba(255, 255, 255, .06);
     color: var(--text-muted, #888);
     border-radius: 50%;
-    border: 1px solid rgba(255,255,255,.1);
+    border: 1px solid rgba(255, 255, 255, .1);
     margin-top: .15rem;
 }
 
-.curse-step-body { flex: 1; min-width: 0; }
+.curse-step-body {
+    flex: 1;
+    min-width: 0;
+}
 
 .curse-step-head {
     display: flex;
@@ -198,8 +218,8 @@ body[data-page-title="Curses & Diseases"] {
     font-size: .6rem;
     padding: 1px 5px;
     border-radius: 3px;
-    background: rgba(255,255,255,.07);
-    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255, 255, 255, .07);
+    border: 1px solid rgba(255, 255, 255, .12);
     color: var(--text-muted, #888);
     text-transform: uppercase;
     letter-spacing: .3px;
@@ -209,8 +229,8 @@ body[data-page-title="Curses & Diseases"] {
     font-size: .6rem;
     padding: 1px 5px;
     border-radius: 3px;
-    background: rgba(180,140,40,.1);
-    border: 1px solid rgba(180,140,40,.25);
+    background: rgba(180, 140, 40, .1);
+    border: 1px solid rgba(180, 140, 40, .25);
     color: var(--gold, #c8922a);
     letter-spacing: .2px;
 }
@@ -220,12 +240,77 @@ body[data-page-title="Curses & Diseases"] {
     margin: 0;
 }
 
+/* ── Disease stages: the main event, must read clearly at a glance ── */
+.disease-stages {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    margin-bottom: .75rem;
+}
+
+.disease-stage {
+    display: flex;
+    gap: .65rem;
+    align-items: flex-start;
+    padding: .55rem .7rem;
+    border-radius: var(--border-radius, 4px);
+    border: 1px solid color-mix(in srgb, var(--row-accent, #888) 35%, transparent);
+    background: color-mix(in srgb, var(--row-accent, #888) 8%, transparent);
+}
+
+.disease-stage[data-stage="2"] {
+    border-color: color-mix(in srgb, var(--row-accent, #888) 50%, transparent);
+    background: color-mix(in srgb, var(--row-accent, #888) 14%, transparent);
+}
+
+.disease-stage[data-stage="3"] {
+    border-color: color-mix(in srgb, var(--row-accent, #888) 70%, transparent);
+    background: color-mix(in srgb, var(--row-accent, #888) 22%, transparent);
+}
+
+.disease-stage-num {
+    flex-shrink: 0;
+    width: 1.8em;
+    height: 1.8em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
+    font-weight: 800;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--row-accent, #888) 60%, black 15%);
+    color: #fff;
+    border: 1px solid color-mix(in srgb, var(--row-accent, #888) 85%, white 15%);
+    margin-top: .05rem;
+}
+
+.disease-stage-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.disease-stage-label {
+    font-size: .72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--text-cream, #f2ead4);
+    margin: 0 0 .2rem;
+}
+
+.disease-stage-desc {
+    font-size: var(--codex-effect-size, .85rem);
+    line-height: var(--codex-lh, 1.6);
+    color: var(--text-cream, #e8dfc8);
+    margin: 0;
+}
+
 /* ── Unlock reward ── */
 .curse-reward {
     margin-top: .5rem;
     padding: .4rem .65rem;
-    background: rgba(180,140,40,.08);
-    border: 1px solid rgba(180,140,40,.2);
+    background: rgba(180, 140, 40, .08);
+    border: 1px solid rgba(180, 140, 40, .2);
     border-radius: var(--border-radius, 4px);
     font-size: var(--codex-meta-size, .73rem);
     color: var(--text-cream, #e8dfc8);

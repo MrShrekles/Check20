@@ -607,6 +607,17 @@ body.type-curse .section-header  { background: rgba(128,32,160,.07); border-bott
 body.type-curse .forge-section   { box-shadow: 0 0 16px rgba(128,32,160,.05); }
 body.type-curse .titlebar-brand  { text-shadow: 0 0 12px rgba(176,64,208,.5); }
 
+/* ── SURGES (roll tables) ────────────────────────────────────────────────── */
+body.type-surge {
+    --accent: #b05a1e; --accent-dim: #3d1c07; --accent-bright: #e08a3c;
+    --bg-hover: #1a0f06; --bg-active: #22140a; --border: #3a220e; --border-bright: #5a3418; --text-muted: #99724a;
+}
+.file-type-dot.dot-surge       { background: #b05a1e; box-shadow: 0 0 4px #b05a1e; }
+.file-type-badge.badge-surge   { color: #b05a1e; border-color: #b05a1e; }
+body.type-surge .section-header  { background: rgba(176,90,30,.07); border-bottom-color: #5a3418; }
+body.type-surge .forge-section   { box-shadow: 0 0 16px rgba(176,90,30,.05); }
+body.type-surge .titlebar-brand  { text-shadow: 0 0 12px rgba(224,138,60,.5); }
+
 /* ── Shared table editor (all generators) ──────────────────────────────── */
 /* Each editor sets its own --te-* vars */
 .te-editor        { display: flex; flex-direction: column; gap: 14px; padding: 4px 0; }
@@ -899,6 +910,8 @@ body.forge-nowrap textarea.gt-input { white-space: pre; overflow-x: auto; min-he
 .gt-btn:hover { color: var(--text-primary); background: var(--bg-hover); }
 .gt-btn-del:hover { color: #dd4444; background: rgba(200,40,40,0.12); }
 .gt-btn-edit:hover { color: var(--accent-bright); }
+/* Inline quality-check marker on a table row - hover for the issue list */
+.gt-flag { color: #cc7733; font-size: 11px; cursor: help; align-self: center; }
 .gt-row-num { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-muted); text-align: right; padding: 2px 6px 2px 4px; user-select: none; }
 .gt-th-sort { cursor: pointer; user-select: none; transition: color 0.1s; }
 .gt-th-sort:hover { color: var(--text-primary); background: var(--bg-hover); }

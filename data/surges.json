@@ -1,0 +1,504 @@
+{
+  "surges": [
+    {
+      "table": "Ash Surge",
+      "roll": 1,
+      "text": "Roll on this table +3 more times, ignoring 1-3"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 2,
+      "text": "Roll on this table +2 more times, ignoring 1-3"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 3,
+      "text": "Roll on this table +1 more time, ignoring 1-3"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 4,
+      "text": "A thorned black rose blooms at your feet"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 5,
+      "text": "Creature nearest the surge hears the thoughts of all creatures within short range at once for 1 minute"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 6,
+      "text": "Targeted creature feels a severe chill, must make a con save of DC12 or become frozen for 1 minute"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 7,
+      "text": "Targeted creature begins to spew acid from every orifice taking 3d8 acid damage, and all creatures within 30 ft must make a DEX save or take 1d8 acid damage"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 8,
+      "text": "A massive wind expels from the surge pushing all but the targeted creature 60ft, Strength save DC12 to be pushed half as far"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 9,
+      "text": "Fireball centered on the target of the surge"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 10,
+      "text": "Within 60 ft of the target, ghostly skeleton hands claw at all living creatures. You are grappled by the hands, DC12 con save or take 2d8 necrotic damage, maximum HP reduced by the damage until a long rest"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 11,
+      "text": "All creatures within 30 ft are fully healed"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 12,
+      "text": "All creatures within 30ft have 1 remaining hp"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 13,
+      "text": "Spiders crawl out from the creature nearest the surge for 1 minute, DC12 con save or take 3d6 poison damage"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 14,
+      "text": "Thick fur or feathers (if more appropriate) sprout from the target's skin. If the target already has this fur or feathers, it becomes thicker, dreaded, or matted and must be removed"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 15,
+      "text": "Spell Dread. Caster is afraid of magic for 1 minute. If a spell is cast they must make a DC12 wisdom save or be frightened, running in a random direction as fast as possible"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 16,
+      "text": "Target's skin becomes either pale or darkens, whichever is closest to the opposite, and the target is vulnerable to necrotic and radiant damage"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 17,
+      "text": "Reverse caster's knees and elbows for 24 hours, disadvantage on physical attacks and saves"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 18,
+      "text": "Target's skin becomes pure white or black, whichever is the closest to opposite of their natural skin color"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 19,
+      "text": "Black blood drips from the caster's mouth and eyes for 24 hours. +2 intimidation for the duration"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 20,
+      "text": "Target's skin becomes either pale or darkens, whichever is closest to the opposite, and the target is resistant to necrotic and radiant damage"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 21,
+      "text": "Calm Emotions on all creatures within 30 ft of the target and the effects last for 1 hour"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 22,
+      "text": "All targets within 10 ft have detect magic active for 24 hours"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 23,
+      "text": "Stat Change. Roll a d6 to select a stat from top to bottom. Roll another d6 and trade the numbers."
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 24,
+      "text": "A strong, nearly irresistible urge for cannibalism for 24 hours"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 25,
+      "text": "Stat Bump. Roll a d6 to select a stat from top to bottom. Roll another d6 and add the result to the stat."
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 26,
+      "text": "Alignment becomes the chaotic alignment. If already chaotic then slip into madness, attacking all nearby creatures"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 27,
+      "text": "9th level fireball centered on target"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 28,
+      "text": "Can no longer understand the common language, or another language if not applicable"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 29,
+      "text": "Cast earthquake centered on the surge, lasts for 1 minute. If on a ship the entire ship is the target and will break apart for the duration"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 30,
+      "text": "Runes appear on the caster and the person that reads them (1 abyssal/2 infernal/3 celestial/4 primordial) gains a level and the runes disappear"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 31,
+      "text": "Ash Claws. Add a 1d8 to unarmed strikes"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 32,
+      "text": "Adhesive Hands. Advantage on contested grapple and strength checks for climbing"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 33,
+      "text": "Target's eyes become black and the target is blind. Blindsight 20ft"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 34,
+      "text": "Caster bursts into flames but takes no damage. Lasts for 1 hour. Flames do 1d6 damage to other creatures"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 35,
+      "text": "Parts of the caster become invisible"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 36,
+      "text": "Ash Touched Eyes. The caster's eyes glow with violet light and give +100 low light vision"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 37,
+      "text": "empty"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 38,
+      "text": "Targeted creature's limbs fall from the body like doll limbs. Simply putting them back removes the curse"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 39,
+      "text": "Mind Split. Suffer insanity 1/day. During this time the character can run as fast as possible in 1 direction without stopping, or attack the nearest creature"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 40,
+      "text": "Everything tastes like genitals"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 41,
+      "text": "Vines grasp all living creatures within 120 ft., DC15 dex save or take 2d12 necrotic damage. Caster gains that as permanent hp"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 42,
+      "text": "The targeted creature has Divination cast on them"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 43,
+      "text": "Targeted creature can no longer perceive time"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 44,
+      "text": "Ash Bomb. All creatures within 30 ft are pushed 30 ft away. Creatures within 5 ft take 5d6 damage, reduce a die per 5 ft"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 45,
+      "text": "Targeted creature hovers 3 inches off of the ground with a hover speed equal to half movement. They cannot use any other form of movement. Remove Curse to remove"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 46,
+      "text": "Anti-magic Circle cast on everything within 30 ft of the creature nearest the surge"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 47,
+      "text": "Ash Lance. Choose 1 living creature. A barrage of ash energy is cast at the target dealing 5d10 damage"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 48,
+      "text": "Targeted creature's teeth become valuable jewels and gems"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 49,
+      "text": "Summon an Ash Elemental not under your control"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 50,
+      "text": "A goblin made of shadows appears and attempts to kill the targeted creature"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 51,
+      "text": "An imp appears and becomes a familiar for the targeted creature. If the targeted creature had a familiar the imp tries to kill the opposing familiar"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 52,
+      "text": "Summon a small Ash familiar for the nearest living creature near the surge"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 53,
+      "text": "Targeted creature's Constitution score increases by +1 but drugs and alcohol have no positive effects"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 54,
+      "text": "Ash Mouth. A mouth forms centered at your belly button, as wide as you are, and acts like a bag of devouring. Remove curse to end this effect"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 55,
+      "text": "All hair falls off the targeted creature and no longer grows"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 56,
+      "text": "Targeted creature no longer has a mouth, instead has mouth gills on the neck from which to speak and eat"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 57,
+      "text": "Spikes form on tough areas of skin like elbows and knuckles. They are small like thorns and add +2 damage to unarmed strikes"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 58,
+      "text": "Targeted creature is mute and can only speak to one creature at a time with telepathy"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 59,
+      "text": "The creature nearest the surge suddenly becomes withered and aged. The skin is loose and begins to rot in some places"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 60,
+      "text": "Creatures within 30ft of the targeted creature are deeply in love with the targeted creature"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 61,
+      "text": "All teeth within 30 ft of the surge turn soft, bite attacks are ineffective"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 62,
+      "text": "Armored Skin. Your skin blackens and becomes thick. While not wearing any armor your AC is 17"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 63,
+      "text": "Creatures within 30ft of the targeted creature cannot hear or see the targeted creature"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 64,
+      "text": "Pale tentacles grow from your back that you don't control. Remove curse to end this effect"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 65,
+      "text": "One of the targeted creature's arms becomes a slug and plops to the ground. Roll odd for left, even for right"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 66,
+      "text": "Targeted creature's name becomes reversed and nobody notices the difference"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 67,
+      "text": "Grow a fully functional arm on your torso"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 68,
+      "text": "Grow a benign arm on your torso"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 69,
+      "text": "Gain advantage on charisma checks for the rest of the day"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 70,
+      "text": "Missile Barrage. Cast magic missile on all living things within 60 ft of the surge"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 71,
+      "text": "Read the mind of a creature within 10 ft"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 72,
+      "text": "Grow to a Gargantuan size for 2 rounds/12 seconds and +4 strength"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 73,
+      "text": "Plane shift to the realm of shadows for 1 year"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 74,
+      "text": "The creature nearest the surge falls to 0 hp with 1 failed death saving throw"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 75,
+      "text": "Targeted creature instantly dies but becomes undead. No longer needs sleep or food but can only regain hp on a long rest. Wish spell to undo this effect"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 76,
+      "text": "The creature nearest the surge becomes undead. No longer has a need for food or water, long rest is a 4 hour trance"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 77,
+      "text": "Skin becomes black pudding, gain resistance to acid, cold, lightning, and slashing. Anything that makes a melee attack against you takes 1d8 acid damage and non-magical weapons and armor take a -1 penalty until broken"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 78,
+      "text": "Plane shift to Helheim for 2 months"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 79,
+      "text": "You become ethereal. Remove curse to end this effect"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 80,
+      "text": "Plane shift to the Abyss for 3 days"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 81,
+      "text": "You are frightened by all living creatures for 2 rounds"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 82,
+      "text": "All living creatures within 60 ft are frightened of you for 1 minute"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 83,
+      "text": "You turn to sand. For the next 24 hours you slowly reconstitute wherever the most of the sand is"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 84,
+      "text": "Amnesia from the past 24 hours"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 85,
+      "text": "Plane shift to the realm of Celestial for 4 hours"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 86,
+      "text": "You can take an additional Action immediately"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 87,
+      "text": "Plane shift to the realm of elemental chaos for 5 minutes"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 88,
+      "text": "Time for all creatures within 30 ft of the creature nearest the surge moves forward by 12 hours. They see the world through that time frame, however they are physically in the same time as the rest of the world"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 89,
+      "text": "All creatures within 30 ft are time stopped for 1 minute"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 90,
+      "text": "Long Rest. You take a long rest in the blink of an eye"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 91,
+      "text": "Caster's next long rest is a short rest"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 92,
+      "text": "Plane shift to the fey realm for 6 seconds"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 93,
+      "text": "Targeted creature has a fear of flames. If they see fire they become frightened even if they have immunity or resistance to becoming frightened"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 94,
+      "text": "All dragons and dragonkind hate the targeted creature and will attack on sight"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 95,
+      "text": "A dungeon appears below the targeted creature. The targeted creature is the lord of the dungeon and can choose the theme and the monsters that will be attracted to the dungeon. If creatures die in the dungeon it counts for experience for the dungeon lord. There are a number of rooms equal to the dungeon lord's level"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 96,
+      "text": "Lose half your levels, gain xp at a doubled rate"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 97,
+      "text": "The targeted creature never existed, nobody remembers this creature and they have no birthplace"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 98,
+      "text": "Targeted creature becomes immortal but can no longer feel love"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 99,
+      "text": "Targeted creature gains a basic weapon attack as a legendary action"
+    },
+    {
+      "table": "Ash Surge",
+      "roll": 100,
+      "text": "The next three words the targeted creature says within the next 8 seconds become a truth of the world"
+    }
+  ]
+}

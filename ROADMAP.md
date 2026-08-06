@@ -66,6 +66,18 @@
 - ❌ Phase 6 — Persistence (multiple rooms, session log export, player sheet sync for narrator)
 - ❌ Phase 7 — CSS cleanup (after features stabilize)
 - ❌ Phase 8 — Visual polish (themes, animated entry screen, pull-to-refresh)
+- ❌ Narrator spell/ability filtering per room — merge into the existing "Campaign Settings Overhaul" project (per-room filters), not a standalone build.
+
+### Fixed (2026-08-01)
+- ✅ Species display bug: feature page / bio header / char-creation review showed "{variation} {lineage}" (e.g. "Jungle Human") instead of "{variation} {category}" (e.g. "Jungle Orc"). Now stores `speciesOption` and displays `name + option`; old saves auto-backfill on load. (`scripts/active-sheet.js`, `scripts/create-char.js`)
+- ✅ Talent/path upgrade grouping: steps named "Base: Variant" (e.g. Steadfast's "Storm Stance: Resolve") weren't nesting under their base feature card — `featFamily()` now strips the ": Variant" suffix, not just roman numerals. This pattern is used across most of class-new.json, so it fixes grouping broadly, not just Steadfast. (`scripts/active-sheet.js`)
+- ✅ Mobile swipe: the panel-cycle `ORDER` array was stale (referenced a nonexistent `'spells'` panel, was missing `'journal'` entirely — swiping into "Journal" or past "Actions" toward "Journal" was broken). Fixed the list, and added swipe-to-cycle for the Features panel's Class/Equipment/Spells sub-tabs specifically (main panel swipe still governs everywhere else). (`scripts/active-sheet.js`)
+- ✅ XP: confirmed reducing total XP intentionally does NOT retroactively revoke purchased path/talent steps (by design, per your call) — added a red "over budget" style when available XP goes negative, as a visual nudge only. (`scripts/active-sheet.js`, `active-sheet.css`)
+
+### Acknowledged, not changed
+- ⚠️ Devtools admin bypass: `admins/{uid}` self-create in `firestore.rules` has no server-side passcode check — the passcode in `moderation.js` is plaintext client-side "obscurity" only. Accepted as low-risk for this campaign's player base per your call; real fix would be a Cloud Function or removing self-serve entirely if it ever matters.
+- ⚠️ Equipment/resources panel reorder — dropped, you vetoed it yourself (equipment page doesn't work below resources).
+- ⚠️ Dice Mode — built and then rolled back same day. All the info a player needs at the table is already visible on the existing check buttons; a dedicated mode didn't add enough to be worth the extra toggle/UI surface.
 
 ### Char Creation
 - ✅ Build guide: ally/enemy check split (checkType field + heuristic fallback)

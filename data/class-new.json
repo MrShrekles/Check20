@@ -5427,7 +5427,7 @@
             {
               "step": 1,
               "name": "Attunement: Shielding",
-              "action": "Special",
+              "action": "Upgrade",
               "check": "",
               "range": "",
               "description": "When you attune to a creature, they are wrapped in momentary potential shielding. They gain +10 Armor while attuned",
@@ -5440,7 +5440,7 @@
             {
               "step": 2,
               "name": "Attunement: Extend",
-              "action": "Special",
+              "action": "Upgrade",
               "check": "",
               "range": "Short",
               "description": "You no longer need to touch a creature to attune. You may attune to any creature within short range",
@@ -5453,7 +5453,7 @@
             {
               "step": 3,
               "name": "Attunement: Dual Link",
-              "action": "Resource",
+              "action": "Upgrade",
               "check": "",
               "range": "",
               "description": "You may maintain attunement with up to 2 creatures simultaneously. You feel their movements in parallel, as if each heartbeat echoes twice.",
@@ -5466,7 +5466,7 @@
             {
               "step": 4,
               "name": "Attunement: Fleetstep",
-              "action": "Special",
+              "action": "Upgrade",
               "check": "",
               "range": "",
               "description": "Attuned creatures no longer provoke when moving. The steps they take fall between seconds.",
@@ -5479,7 +5479,7 @@
             {
               "step": 5,
               "name": "Attunement: Backstep",
-              "action": "Special",
+              "action": "Upgrade",
               "check": "",
               "range": "",
               "description": "When an attuned creature takes damage, you may end their attunement to intercept fate. Prevent the damage, but you take half of it instead.",
@@ -5492,7 +5492,7 @@
             {
               "step": 6,
               "name": "Attunement: Critical",
-              "action": "Special",
+              "action": "Upgrade",
               "check": "",
               "range": "",
               "description": "When an attuned creature lands a critical hit, they deal triple damage instead of double. Their strike lands at the perfect moment in time.",
@@ -5505,7 +5505,7 @@
             {
               "step": 7,
               "name": "Attunement: Skillset",
-              "action": "Resource",
+              "action": "Upgrade",
               "check": "",
               "range": "",
               "description": "Attuned creatures gain +1 to all checks while attuned.",
@@ -5518,7 +5518,7 @@
             {
               "step": 8,
               "name": "Attunement: Overdrive",
-              "action": "Special",
+              "action": "Upgrade",
               "check": "",
               "range": "",
               "description": "Attuned creatures gain an additional Off-Action each round. Their thoughts move in harmony with yours, anticipating the flow of time.",
@@ -7365,7 +7365,7 @@
               "action": "Action",
               "check": "",
               "range": "Short",
-              "description": "As an action, lay down suppressing fire at a point within short range. Enemies within reach of that area take -2 to all checks until the end of your next turn.",
+              "description": "As an action, lay down suppressing fire at a point within short range by using a weapon or throwing things. Enemies within reach of that area take -2 to all checks until the end of your next turn.",
               "duration": "Until the end of your next turn",
               "damage": "",
               "damageType": "",
@@ -17293,9 +17293,9 @@
       },
       {
         "class": "mage",
-        "name": "Callshot",
+        "name": "Kusari",
         "origin": "vozian",
-        "desc": "Like a cowboy with creature cards. Summons beasts or spirits like pulling guns”duel-style, one after another.",
+        "desc": "You are partial to a chain.\n\nNo one remembers if it chose you or you chose it. Maybe it was cursed onto your wrist in the dark, a debt paid in flesh instead of gold. Maybe you were raised by a union of chain assassin mages, fed its weight before you could walk, taught that steel remembers every throat it's opened. Either story might be true. Neither matters anymore.\n\nWhat matters is that it grows. Every kill feeds it. Every drop of spilled blood tempers the metal a little sharper, a little hungrier. It does not rust. It does not dull. It listens.\n\nIn your hands it becomes whatever your work requires: a garrote thin as a whisper, a whip that opens a man from throat to hip, a lash of hooks that drags secrets out screaming. You don't just wield the chain, you negotiate with it, and so far it has always agreed with your designs.\n\nNo one's dared ask you what happens the day it disagrees.",
         "path": {
           "steps": []
         },

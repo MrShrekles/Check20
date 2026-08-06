@@ -51,6 +51,82 @@ function qcCheckDiceSyntax(text) {
     return issues;
 }
 
+// ── SUMMON RULES ─────────────────────────────────────────────────────────────
+// Anything that summons a creature has to answer two questions or it falls
+// apart at the table: how long does it stick around, and if it sticks around
+// forever, what happens when it dies? A permanent summon with no death rule
+// is an infinite free ally, so the text has to say whether getting it back
+// costs an action, a ritual, downtime, crafting, or finding a new one.
+const QC_SUMMON_RX = /\b(summons?|summoned|summoning|conjures?|conjured|conjuring)\b/i;
+
+// Any phrasing that pins down how long the summon lasts. Matches both real
+// durations ("for 1 minute", "until the end of your next turn") and the
+// open-ended ones ("permanent", "until dismissed").
+const QC_DURATION_RX = new RegExp([
+    /(?:for|lasts?|lasting|remains? for|persists? for)\s+(?:\d+|a|an|one|your)\s*(?:round|turn|minute|hour|day|week|month|year)s?\b/.source,
+    /until\s+(?:the\s+)?(?:end|start|beginning)\s+of\b/.source,
+    /until\s+(?:you\s+)?(?:dismiss|dispel)/.source,
+    /until\s+(?:it\s+is\s+)?(?:dismissed|dispelled|destroyed|banished|slain|killed)\b/.source,
+    /until\s+it\s+(?:dies|drops)\b/.source,
+    /\b(?:instant|instantaneous|permanent(?:ly)?|indefinite(?:ly)?)\b/.source,
+].join('|'), 'i');
+
+const QC_PERMANENT_RX = new RegExp([
+    /\bpermanent(?:ly)?\b/.source,
+    /\bindefinite(?:ly)?\b/.source,
+    /until\s+(?:it\s+is\s+)?(?:dismissed|destroyed|banished|slain|killed)\b/.source,
+    /until\s+(?:you\s+)?dismiss/.source,
+    /until\s+it\s+dies\b/.source,
+    /\b(?:does\s+not|doesn'?t|never)\s+expires?\b/.source,
+    /\bno\s+duration\b/.source,
+].join('|'), 'i');
+
+// Does the text say anything at all about the summon being killed/removed?
+const QC_SUMMON_DEATH_RX = /\b(dies|die|death|dead|killed|slain|destroyed|banished|reduced to 0|drops? to 0|falls in combat)\b/i;
+
+// Does it say how you get the summon back (or that you can't)?
+const QC_SUMMON_RECOVERY_RX = new RegExp([
+    /\bre-?summon\w*/.source,
+    /\bre-?conjure\w*/.source,
+    /\britual\b/.source,
+    /\b(?:as|takes?|costs?|requires?|spend(?:ing)?)\s+(?:an?\s+)?(?:action|reaction|bonus action|turn|minute|hour|day)/.source,
+    /\bdowntime\b/.source,
+    /\b(?:craft|forge|build|construct|rebuild|repair)\w*\b/.source,
+    /\b(?:find|locate|seek|tame|bond with|recruit)\s+(?:a\s+)?(?:new|another|replacement)/.source,
+    /\b(?:new|another|replacement)\s+(?:familiar|companion|summon|creature|minion|servant|beast)/.source,
+    /\b(?:long|short|full)\s+rest\b/.source,
+    /\b(?:cannot|can'?t|may not)\s+be\s+(?:re-?summoned|replaced|restored|revived)/.source,
+    /\b(?:lost|gone)\s+(?:forever|permanently)\b/.source,
+    /\bpermanently\s+(?:lost|destroyed)\b/.source,
+].join('|'), 'i');
+
+// text: the prose being checked. duration: the entry's duration field value
+// (pass null/undefined when the data shape has no such field - the check then
+// relies on the prose alone).
+function qcCheckSummon(text, duration) {
+    if (!text || !QC_SUMMON_RX.test(text)) return [];
+    const dur = String(duration ?? '').trim();
+    const durInText = QC_DURATION_RX.test(text);
+
+    if (!dur && !durInText) {
+        return [{ code: 'summon_no_duration', label: 'Summon has no duration',
+            detail: 'This summons a creature but never says how long it lasts. Set a duration, or state it in the text (for example "for 1 minute", "until the end of your next turn", or "Permanent").' }];
+    }
+
+    const permanent = QC_PERMANENT_RX.test(dur) || QC_PERMANENT_RX.test(text);
+    if (!permanent) return [];
+
+    if (!QC_SUMMON_DEATH_RX.test(text)) {
+        return [{ code: 'summon_permanent_no_death_rule', label: 'Permanent summon with no death rule',
+            detail: 'This summon is permanent but never says what happens when it dies. Add the rule: is it gone for good, or can you get it back?' }];
+    }
+    if (!QC_SUMMON_RECOVERY_RX.test(text)) {
+        return [{ code: 'summon_no_recovery_cost', label: 'Permanent summon: no cost to replace it',
+            detail: 'The text covers the summon dying but not what it takes to get another one. Say which it is: an action to resummon, a ritual, downtime, crafting a new body, finding or bonding with a new familiar, or that it is lost for good.' }];
+    }
+    return [];
+}
+
 // ── IGNORE LISTS (namespaced per editor) ────────────────────────────────────
 // storageKey is optional and defaults to `qcShared_${ns}_v1`; editors that
 // predate this shared module (class, species) pass their original literal
@@ -143,7 +219,9 @@ qcGetGlossaryTerms().then(() => {
 });
 
 // ── PROSE ANALYZER ───────────────────────────────────────────────────────────
-// fields: [{ label, get(entry) => string, required?: bool }]
+// fields: [{ label, get(entry) => string, required?: bool, duration?(entry) => string }]
+// `duration` is optional - supply it when the data shape has a duration field
+// next to the prose so the summon check can read it instead of guessing.
 // Returns [{ key, fieldLabel, code, label, detail }]
 function qcAnalyzeProse(entry, ns, entryLabel, fields) {
     const ignored = qcGetIgnored(ns);
@@ -175,6 +253,10 @@ function qcAnalyzeProse(entry, ns, entryLabel, fields) {
         }
 
         for (const hit of qcCheckDiceSyntax(text)) {
+            push(f.label, hit.code, hit.label, hit.detail);
+        }
+
+        for (const hit of qcCheckSummon(text, f.duration ? f.duration(entry) : null)) {
             push(f.label, hit.code, hit.label, hit.detail);
         }
 

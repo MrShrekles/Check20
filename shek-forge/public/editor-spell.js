@@ -32,7 +32,9 @@ const INTENT_COSTS_S = { 'light whisper': 0, 'whisper': 1, 'surge': 3, 'shout': 
 // ── QUALITY CHECK ─────────────────────────────────────────────────────────────
 function spellQCFields(entry) {
     return (entry.effects || []).map((e, ei) =>
-        ({ label: e.intent || `Effect ${ei + 1}`, get: en => (en.effects || [])[ei]?.effect }));
+        ({ label: e.intent || `Effect ${ei + 1}`,
+           get: en => (en.effects || [])[ei]?.effect,
+           duration: en => (en.effects || [])[ei]?.duration }));
 }
 function spellQCAnalyze(entry) {
     return qcAnalyzeProse(entry, 'spell', entry.name || '(unnamed)', spellQCFields(entry));

@@ -148,6 +148,7 @@ const state = {
         species: '', age: '', size: '', diet: '', language: '', motivation: '',
         classKey: '', pathName: '', talentName: '',
         speciesLineage: '',
+        speciesOption: '',
         speciesFeature: null,  // { name, effect, action, check }
         speciesSubFeature: null,  // { name, effect }
         trinket: '',
@@ -214,7 +215,7 @@ function updateXpDisplay() {
     if (spentEl) spentEl.textContent = spent;
     if (availEl) {
         availEl.textContent = avail;
-        availEl.className = `xp-num xp-num--avail${avail >= 20 ? ' xp-num--ready' : ''}`;
+        availEl.className = `xp-num xp-num--avail${avail >= 20 ? ' xp-num--ready' : ''}${avail < 0 ? ' xp-num--over' : ''}`;
     }
     if (fillEl) fillEl.style.width = total > 0 ? `${Math.min(100, (spent / total) * 100)}%` : '0%';
     // Sync input field (skip if it currently has focus to avoid clobbering typing)
@@ -1666,6 +1667,7 @@ function applySpeciesSelection() {
     if (!s) return;
     state.char.species = s.name;
     state.char.speciesLineage = s.lineage || '';
+    state.char.speciesOption = s.option || '';
     state.char.size = s.size || state.char.size;
     state.char.diet = s.diet || state.char.diet;
     state.char.language = s.language || state.char.language;
@@ -1687,7 +1689,7 @@ function applySpeciesSelection() {
 }
 
 function syncSpeciesDisplay() {
-    const species = titleCase(state.char.species) || '-';
+    const species = [titleCase(state.char.species), titleCase(state.char.speciesOption)].filter(Boolean).join(' ') || '-';
     const sub     = state.char.speciesLineage || '';
     const nameEl  = document.getElementById('bio-species-name');
     const subEl   = document.getElementById('bio-species-sub');
@@ -1762,8 +1764,8 @@ function renderSpeciesView() {
     const ssf = state.char.speciesSubFeature;
     el.innerHTML = `
         <div class="species-display-head">
-            <span class="species-display-name">${titleCase(state.char.species)}</span>
-            <span class="species-display-meta">${[state.char.speciesLineage, state.char.size].filter(Boolean).join(' · ')}</span>
+            <span class="species-display-name">${[titleCase(state.char.species), titleCase(state.char.speciesOption)].filter(Boolean).join(' ')}</span>
+            <span class="species-display-meta">${state.char.size ? `Size ${state.char.size}` : ''}</span>
         </div>
         ${sf ? renderStepCard({ name: sf.name, description: sf.effect, action: sf.action, check: sf.check }) : ''}
         ${ssf ? renderStepCard({ name: ssf.name, description: ssf.effect, action: 'Passive' }) : ''}`;
@@ -1793,7 +1795,8 @@ function renderClassView() {
     const talentProgSteps = talentEntry?.talent?.steps?.filter(s => Number(s.step) !== 0) || [];
 
     // Strip Roman numeral suffix to find upgrade family (e.g. "Relentless II" → "Relentless")
-    const featFamily = name => (name || '').replace(/\s+(II|III|IV|V|VI|VII|VIII)\s*$/i, '').trim();
+    // "Storm Stance: Resolve" upgrades "Storm Stance" - strip the ": Variant" suffix along with roman numerals
+    const featFamily = name => (name || '').split(':')[0].replace(/\s+(II|III|IV|V|VI|VII|VIII)\s*$/i, '').trim();
 
     // Group unlocked progression steps under their base feature
     function buildGroupedCards(initSteps, progSteps, checkedArr) {
@@ -2530,9 +2533,12 @@ document.addEventListener('arc:firebase-ready', () => {
         snap => renderPlayerLoot(snap.docs.map(d => ({ id: d.id, ...d.data() }))),
     );
 
-    // Listen to handouts
+    // Listen to handouts - only the ones the narrator has revealed
     _handoutsUnsub = arc.onSnapshot(
-        arc.collection(arc.db, 'rooms', room, 'handouts'),
+        arc.query(
+            arc.collection(arc.db, 'rooms', room, 'handouts'),
+            arc.where('revealed', '==', true),
+        ),
         snap => renderPlayerHandouts(snap.docs.map(d => ({ id: d.id, ...d.data() }))),
     );
 
@@ -2550,6 +2556,8 @@ document.addEventListener('arc:firebase-ready', () => {
                 const ageMs = Date.now() - r.at.toMillis();
                 if (ageMs <= 4000) triggerEmojiReaction(r.chatMsgId, r.anim);
             }
+
+            maybeShowHandoutPopup(data.handoutPopup);
 
             const typingEl = document.getElementById('typing-indicator');
             if (typingEl) {
@@ -2759,11 +2767,30 @@ function renderPlayerCast(characters) {
     }).join('');
 }
 
+// The narrator writes rooms/{code}.handoutPopup when they tap "Show All".
+// Pop it once per broadcast, and only if it's fresh - so a reload or a late
+// join doesn't replay an old reveal.
+let _lastHandoutPopupKey = null;
+
+function maybeShowHandoutPopup(hp) {
+    if (!hp?.id || !hp?.at) return;
+    const at  = hp.at.toMillis ? hp.at.toMillis() : hp.at;
+    const key = `${hp.id}:${at}`;
+    if (key === _lastHandoutPopupKey) return;
+    const first = _lastHandoutPopupKey === null;
+    _lastHandoutPopupKey = key;
+    if (first || Date.now() - at > 30000) return;   // stale / initial sync
+    openHandoutPopup(hp.title, hp.body);
+    ArcNotify.show(hp.title || 'Handout', 'The narrator shared a handout');
+}
+
 function renderPlayerHandouts(items) {
     const el = document.getElementById('player-handouts-list');
     if (!el) return;
-    if (!items.length) { el.innerHTML = '<p class="empty-hint">No handouts yet.</p>'; return; }
-    const sorted = [...items].sort((a, b) => (b.postedAt?.toMillis?.() || 0) - (a.postedAt?.toMillis?.() || 0));
+    // Players only see handouts the narrator has explicitly revealed
+    const visible = items.filter(h => h.revealed === true);
+    if (!visible.length) { el.innerHTML = '<p class="empty-hint">No handouts yet.</p>'; return; }
+    const sorted = [...visible].sort((a, b) => (b.postedAt?.toMillis?.() || 0) - (a.postedAt?.toMillis?.() || 0));
     el.innerHTML = sorted.map(h => `
         <div class="handout-card">
             <div class="handout-head">
@@ -4648,6 +4675,19 @@ document.addEventListener('DOMContentLoaded', () => {
     bindFeatTabs();
     if (state.char?.featTab) setFeatTab(state.char.featTab);
     renderSpeciesView();
+
+    // Backfill speciesOption for characters saved before it existed
+    if (state.char?.species && !state.char.speciesOption) {
+        loadSpeciesData().then(() => {
+            const match = allSpeciesData.find(s => s.name === state.char.species && s.lineage === state.char.speciesLineage);
+            if (match?.option) {
+                state.char.speciesOption = match.option;
+                saveState();
+                syncSpeciesDisplay();
+                renderSpeciesView();
+            }
+        });
+    }
     bindXpControls();
     bindProgressionPanel();
     syncUI();
@@ -4705,9 +4745,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Mobile swipe left/right to cycle panels
+    // Mobile swipe left/right to cycle panels (or sub-tabs, when the active panel has them)
     (function () {
-        const ORDER = ['chat', 'play', 'actions', 'spells', 'ref', 'progression'];
+        const ORDER = ['chat', 'play', 'actions', 'journal', 'ref', 'progression'];
+        const FEAT_TABS = ['class', 'equip', 'spells'];
         let sx = 0, sy = 0, live = false;
         document.addEventListener('touchstart', e => {
             if (e.target.closest('input, select, textarea, button, [role="slider"]')) { live = false; return; }
@@ -4719,6 +4760,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const dy = e.changedTouches[0].clientY - sy;
             if (Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx)) return;
             const cur = els.navBtns.find(b => b.classList.contains('is-active'))?.dataset.nav;
+
+            if (cur === 'actions') {
+                const curTab = document.querySelector('.feat-tab.is-active')?.dataset.featTab;
+                const tabIdx = FEAT_TABS.indexOf(curTab);
+                const nextTab = tabIdx === -1 ? null : FEAT_TABS[tabIdx + (dx < 0 ? 1 : -1)];
+                if (nextTab) setFeatTab(nextTab);
+                return;
+            }
+
             const idx = ORDER.indexOf(cur);
             if (idx === -1) return;
             const next = ORDER[idx + (dx < 0 ? 1 : -1)];

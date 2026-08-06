@@ -285,3 +285,43 @@
   color: var(--dark-2);
   border-color: var(--gold);
 }
+
+/* ── Origin tag: canonical color standard, shared by every page that badges
+   an "origin" (spells, monsters, classes, gods, curses/diseases, ...).
+   JS should assign the class via originClass()/originColor() from
+   scripts/origin-colors.js rather than hardcoding a per-page palette.
+   Pages needing absolute positioning (e.g. class.html) override position
+   locally - keep colors here so they never drift out of sync. ── */
+.origin-tag {
+  position: relative;
+  padding: 2px 6px;
+  border-radius: var(--border-radius);
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--white);
+  pointer-events: none;
+}
+
+.origin-tag.basic     { background-color: darkslategray; }
+.origin-tag.arcane    { background-color: darkcyan; }
+.origin-tag.tech      { background-color: darkblue; }
+.origin-tag.crystal   { background-color: rgb(79, 0, 0); }
+.origin-tag.nature    { background-color: #1b7a41; }
+.origin-tag.vozian    { background-color: #502379; }
+.origin-tag.chrono    { background-color: #8a5408; }
+.origin-tag.chaos     { background-color: #331f0e; }
+.origin-tag.life      { background-color: #6b2a6a; }
+.origin-tag.elemental { background-color: #275c65; }
+.origin-tag.dragon    { background-color: #ff5500; }
+.origin-tag.celestial { background-color: #7a4000; }
+.origin-tag.fey       { background-color: #aa44aa; }
+
+.origin-tag.all {
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  text-shadow: none;
+}
+
+.origin-tag.none { background-color: #999; }

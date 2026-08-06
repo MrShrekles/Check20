@@ -5,11 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nonEmpty = v => v !== undefined && v !== null && String(v).trim() !== "";
     const cap = s => String(s).charAt(0).toUpperCase() + String(s).slice(1);
 
-    const originClass = o => {
-        const k = String(o || "none").trim().toLowerCase();
-        return ["basic","arcane","tech","crystal","nature","vozian","chrono","chaos","life","elemental","dragon","celestial","none"]
-            .includes(k) ? k : "none";
-    };
+    // originClass() comes from scripts/origin-colors.js (shared codex-ui standard)
 
     const STORAGE_KEY = "c20_monsters_v2";
     let saveTimer = null;

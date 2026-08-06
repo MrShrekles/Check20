@@ -2448,7 +2448,7 @@
         "name": "Vampire Kiss (Avuţie)",
         "type": "Action",
         "range": "",
-        "effect": "Make an attack check against a creature. On a hit deal  [[PL]] piercing damage. The target must make a Survival check or contract the Vampire Disease. While infected they have the Charmed condition. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Coughing and Slowed conditions. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Avuție.",
+        "effect": "Make an attack check against a creature. On a hit deal  [[PL]] piercing damage. The target must make a Survival check or contract the Vampiric Fever Disease. While infected they have the Charmed condition. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Coughing and Slowed conditions. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Avuție.",
         "duration": "",
         "damage": ""
       }
@@ -2597,7 +2597,7 @@
         "name": "Plagued Breath",
         "type": "Action",
         "range": "Reach",
-        "effect": "Make an attack check against a creature. On a hit deal [[PL]] toxic damage. The target must make a Survival check or contract the Vampire Disease. While infected they have the Coughing and Confused conditions. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Exhausted condition. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Tristețe.",
+        "effect": "Make an attack check against a creature. On a hit deal [[PL]] toxic damage. The target must make a Survival check or contract the Vampiric Fever Disease. While infected they have the Coughing and Confused conditions. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Exhausted condition. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Tristețe.",
         "duration": "",
         "damage": ""
       }
@@ -2692,7 +2692,7 @@
         "name": "Vampire Claw (Tărie)",
         "type": "Action",
         "range": "Melee",
-        "effect": "Make an attack check against a creature. On a hit deal [[PL]] slashing damage. The target must make a Survival check or contract the Vampire Disease. While infected they have the Bleeding condition. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Exhausted and Weakened conditions. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Tărie.",
+        "effect": "Make an attack check against a creature. On a hit deal [[PL]] slashing damage. The target must make a Survival check or contract the Vampiric Fever Disease. While infected they have the Bleeding condition. At the next Press On or Long Rest they make another Survival check, on a failure they gain the Exhausted and Weakened conditions. At the following Press On or Long Rest they make a final Survival check, on a failure they remove all previous conditions and permanently gain the Undying Disease and features of the Tărie.",
         "duration": "",
         "damage": ""
       }

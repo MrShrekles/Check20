@@ -1,18 +1,4 @@
-// ─── Origin accent colors ─────────────────────────────────────────────────────
-const SPELL_ORIGIN_COLORS = {
-    arcane:    '#5020a0',
-    basic:     '#505050',
-    celestial: '#a08020',
-    chaos:     '#8c2020',
-    chrono:    '#208080',
-    crystal:   '#3080b0',
-    dragon:    '#802020',
-    elemental: '#308060',
-    life:      '#507030',
-    nature:    '#406030',
-    tech:      '#205080',
-    vozian:    '#702040',
-};
+// originClass()/originColor() come from scripts/origin-colors.js (shared codex-ui standard)
 
 // ─── Spell Builder ───────────────────────────────────────────────────────────
 
@@ -369,8 +355,7 @@ function renderSpells() {
       // ── Row shell ──
       const row = document.createElement('div');
       row.className = 'spell-row';
-      const originAccent = SPELL_ORIGIN_COLORS[(spell.origin || '').toLowerCase()];
-      if (originAccent) row.style.setProperty('--row-accent', originAccent);
+      row.style.setProperty('--row-accent', originColor(spell.origin));
 
       // ── Collapsed header ──
       const head = document.createElement('div');
@@ -379,7 +364,7 @@ function renderSpells() {
         <span class="spell-row-arrow">▶</span>
         <span class="spell-row-name">${highlightText(toTitleCase(spell.name), searchTerm)}</span>
         <span class="spell-row-tags">
-          <span class="origin">${spell.origin}</span>
+          <span class="origin-tag ${originClass(spell.origin)}">${spell.origin}</span>
           <span class="manner">${spell.manner}</span>
           <span class="transmission">${spell.transmission}</span>
         </span>

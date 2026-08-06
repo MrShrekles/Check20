@@ -1,72 +1,251 @@
 <img id="c20logo" src="https://i.imgur.com/sonF8xq.png" alt="ARC20">
 <div class="charsheet">
+
+    <!-- ============================================================
+         ROLL BAR — always visible, outside the tab system.
+         Everything that changes mid-roll lives here.
+         ============================================================ -->
+    <div class="rollbar">
+
+        <!-- Roll mode: swaps the @{d20mode} attribute used by EVERY d20 roll -->
+        <div class="rollbar-block rollmode">
+            <span class="rollbar-label">Roll Mode</span>
+            <input type="radio" name="attr_rollmode" id="rollmode_normal" value="normal" checked>
+            <input type="radio" name="attr_rollmode" id="rollmode_adv" value="adv">
+            <input type="radio" name="attr_rollmode" id="rollmode_dis" value="dis">
+            <div class="rollmode-toggle">
+                <label for="rollmode_normal">Normal</label>
+                <label for="rollmode_adv" class="is-adv">Adv</label>
+                <label for="rollmode_dis" class="is-dis">Dis</label>
+            </div>
+            <input type="hidden" name="attr_d20mode" value="1d20">
+        </div>
+
+        <!-- Temp modifiers. Added on top of the Global Mods list. -->
+        <div class="rollbar-block">
+            <span class="rollbar-label">Temp Mods</span>
+            <div class="mod-strip">
+                <label class="mod-cell">
+                    <span>Check</span>
+                    <input type="number" name="attr_gm_check" value="0">
+                </label>
+                <label class="mod-cell">
+                    <span>Attack</span>
+                    <input type="number" name="attr_gm_attack" value="0">
+                </label>
+                <label class="mod-cell">
+                    <span>Damage</span>
+                    <input type="number" name="attr_gm_damage" value="0">
+                </label>
+                <button type="action" name="act_clear_temp" class="mini" title="Reset all temp mods to 0">Clear</button>
+            </div>
+        </div>
+
+        <!-- Live totals actually baked into rolls (temp + every active Global Mod) -->
+        <div class="rollbar-block">
+            <span class="rollbar-label">In Every Roll</span>
+            <div class="total-strip">
+                <span class="total-chip">CHK <span name="attr_global_check">0</span></span>
+                <span class="total-chip">ATK <span name="attr_global_attack">0</span></span>
+                <span class="total-chip">DMG <span name="attr_global_damage">0</span></span>
+            </div>
+            <!-- Defaults so token macros can roll before the sheet is ever opened;
+                 an unset attr resolves to "" and breaks the inline roll. -->
+            <input type="hidden" name="attr_global_check" value="0">
+            <input type="hidden" name="attr_global_attack" value="0">
+            <input type="hidden" name="attr_global_damage" value="0">
+            <input type="hidden" name="attr_global_wounds" value="0">
+        </div>
+
+        <!-- Vitals at a glance -->
+        <div class="rollbar-block">
+            <span class="rollbar-label">Vitals</span>
+            <div class="vital-strip">
+                <label class="vital-cell">
+                    <span>Wounds</span>
+                    <input type="number" name="attr_wounds" value="0">
+                    <em>/ <span name="attr_wounds_max">0</span></em>
+                </label>
+                <label class="vital-cell">
+                    <span>Armor</span>
+                    <input type="number" name="attr_armor" value="0">
+                    <em>/ <span name="attr_armor_max">0</span></em>
+                </label>
+                <label class="vital-cell">
+                    <span>Mana</span>
+                    <input type="number" name="attr_mana" value="0">
+                    <em>/ <span name="attr_mana_max">0</span></em>
+                </label>
+            </div>
+        </div>
+
+        <div class="rollbar-block grow">
+            <span class="rollbar-label">Active Conditions</span>
+            <input type="text" name="attr_disadvantages" value="None" readonly class="active-conditions-box">
+        </div>
+    </div>
+
+    <!-- ============================================================
+         TABS
+         ============================================================ -->
     <div class="sheet-tabs">
-        <input type="radio" name="attr_tab" id="tab-combat" value="combat" checked>
-        <input type="radio" name="attr_tab" id="tab-inventory" value="inventory">
-        <input type="radio" name="attr_tab" id="tab-progression" value="progression">
-        <input type="radio" name="attr_tab" id="tab-conditions" value="conditions">
+        <input type="radio" name="attr_tab" id="tab-core" value="core" checked>
+        <input type="radio" name="attr_tab" id="tab-combat" value="combat">
+        <input type="radio" name="attr_tab" id="tab-magic" value="magic">
+        <input type="radio" name="attr_tab" id="tab-gear" value="gear">
         <input type="radio" name="attr_tab" id="tab-reference" value="reference">
 
         <nav class="tabs">
+            <label for="tab-core" class="tab">Core</label>
             <label for="tab-combat" class="tab">Combat</label>
-            <label for="tab-inventory" class="tab">Inventory</label>
-            <label for="tab-progression" class="tab">Progression</label>
-            <label for="tab-conditions" class="tab">Conditions</label>
+            <label for="tab-magic" class="tab">Magic</label>
+            <label for="tab-gear" class="tab">Gear</label>
             <label for="tab-reference" class="tab">Reference</label>
         </nav>
 
         <div class="content">
 
-            <!-- ==================== COMBAT ==================== -->
-            <section class="tab-page" id="combat-content">
+            <!-- ==================== CORE ==================== -->
+            <section class="tab-page" id="core-content">
                 <div class="two-col">
 
-                    <!-- LEFT: initiative / health / resources / press on -->
+                    <!-- LEFT -->
                     <div class="col">
                         <details class="section" open>
-                            <summary>Initiative &amp; Roll Mode</summary>
+                            <summary>Checks</summary>
                             <div class="section-body">
-                                <button type="roll" class="wide gold" name="roll_init" value="&{template:arc20} {{name=@{character_name}}} {{Initiative=[[@{d20mode}+@{initiative_mod}]]}} {{cond=@{disadvantages}}}">Roll Initiative</button>
+                                <table class="stat-table">
+                                    <tr>
+                                        <th>Check</th>
+                                        <th>Rank</th>
+                                        <th>Mod</th>
+                                    </tr>
+                                    <tr>
+                                        <td><button type="roll" class="check-btn" name="roll_agility" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Agility Check}} {{Result=[[@{d20mode}+@{agility}[rank]+@{agility_mod}[mod]+@{global_check}[global]]]}} {{cond=@{disadvantages}}}">Agility</button></td>
+                                        <td><input type="number" name="attr_agility" value="0" min="0" max="20"></td>
+                                        <td><input type="number" name="attr_agility_mod" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><button type="roll" class="check-btn" name="roll_crafting" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Crafting Check}} {{Result=[[@{d20mode}+@{crafting}[rank]+@{crafting_mod}[mod]+@{global_check}[global]]]}} {{cond=@{disadvantages}}}">Crafting</button></td>
+                                        <td><input type="number" name="attr_crafting" value="0" min="0" max="20"></td>
+                                        <td><input type="number" name="attr_crafting_mod" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><button type="roll" class="check-btn" name="roll_influence" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Influence Check}} {{Result=[[@{d20mode}+@{influence}[rank]+@{influence_mod}[mod]+@{global_check}[global]]]}} {{cond=@{disadvantages}}}">Influence</button></td>
+                                        <td><input type="number" name="attr_influence" value="0" min="0" max="20"></td>
+                                        <td><input type="number" name="attr_influence_mod" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><button type="roll" class="check-btn" name="roll_intellect" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Intellect Check}} {{Result=[[@{d20mode}+@{intellect}[rank]+@{intellect_mod}[mod]+@{global_check}[global]]]}} {{cond=@{disadvantages}}}">Intellect</button></td>
+                                        <td><input type="number" name="attr_intellect" value="0" min="0" max="20"></td>
+                                        <td><input type="number" name="attr_intellect_mod" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><button type="roll" class="check-btn" name="roll_luck" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Luck Check}} {{Result=[[@{d20mode}+@{luck}[rank]+@{luck_mod}[mod]+@{global_check}[global]]]}} {{cond=@{disadvantages}}}">Luck</button></td>
+                                        <td><input type="number" name="attr_luck" value="0" min="0" max="20"></td>
+                                        <td><input type="number" name="attr_luck_mod" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><button type="roll" class="check-btn" name="roll_observation" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Observation Check}} {{Result=[[@{d20mode}+@{observation}[rank]+@{observation_mod}[mod]+@{global_check}[global]]]}} {{cond=@{disadvantages}}}">Observation</button></td>
+                                        <td><input type="number" name="attr_observation" value="0" min="0" max="20"></td>
+                                        <td><input type="number" name="attr_observation_mod" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><button type="roll" class="check-btn" name="roll_spirit" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Spirit Check}} {{Result=[[@{d20mode}+@{spirit}[rank]+@{spirit_mod}[mod]+@{global_check}[global]]]}} {{cond=@{disadvantages}}}">Spirit</button></td>
+                                        <td><input type="number" name="attr_spirit" value="0" min="0" max="20"></td>
+                                        <td><input type="number" name="attr_spirit_mod" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><button type="roll" class="check-btn" name="roll_stealth" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Stealth Check}} {{Result=[[@{d20mode}+@{stealth}[rank]+@{stealth_mod}[mod]+@{global_check}[global]]]}} {{cond=@{disadvantages}}}">Stealth</button></td>
+                                        <td><input type="number" name="attr_stealth" value="0" min="0" max="20"></td>
+                                        <td><input type="number" name="attr_stealth_mod" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><button type="roll" class="check-btn" name="roll_strength" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Strength Check}} {{Result=[[@{d20mode}+@{strength}[rank]+@{strength_mod}[mod]+@{global_check}[global]]]}} {{cond=@{disadvantages}}}">Strength</button></td>
+                                        <td><input type="number" name="attr_strength" value="0" min="0" max="20"></td>
+                                        <td><input type="number" name="attr_strength_mod" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><button type="roll" class="check-btn" name="roll_survival" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Survival Check}} {{Result=[[@{d20mode}+@{survival}[rank]+@{survival_mod}[mod]+@{global_check}[global]]]}} {{cond=@{disadvantages}}}">Survival</button></td>
+                                        <td><input type="number" name="attr_survival" value="0" min="0" max="20"></td>
+                                        <td><input type="number" name="attr_survival_mod" value="0"></td>
+                                    </tr>
+                                    <tr class="total-row">
+                                        <td>Points Spent</td>
+                                        <td><input type="number" name="attr_total_checks" readonly></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
 
-                                <div class="form-row" style="margin-top:6px;">
-                                    <label for="initmod">Initiative Mod</label>
-                                    <input type="number" id="initmod" name="attr_initiative_mod" value="0">
+                                <div class="btn-row">
+                                    <button type="roll" class="wide gold" name="roll_init" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Initiative}} {{Result=[[@{d20mode}+@{initiative_mod}[init]+@{global_check}[global]&{tracker}]]}} {{cond=@{disadvantages}}}">Roll Initiative</button>
+                                    <input type="number" name="attr_initiative_mod" value="0" title="Initiative Mod" class="narrow">
                                 </div>
-
-                                <div class="form-row" style="margin-top:6px;">
-                                    <label>Roll Mode</label>
-                                    <input type="radio" name="attr_rollmode" id="rollmode_normal" value="normal" checked>
-                                    <input type="radio" name="attr_rollmode" id="rollmode_adv" value="adv">
-                                    <input type="radio" name="attr_rollmode" id="rollmode_dis" value="dis">
-                                    <div class="roll-mode-toggle">
-                                        <label for="rollmode_normal">Normal</label>
-                                        <label for="rollmode_adv">Advantage</label>
-                                        <label for="rollmode_dis">Disadvantage</label>
-                                    </div>
-                                    <input type="hidden" name="attr_d20mode" value="1d20">
-                                </div>
-
-                                <div class="form-row" style="margin-top:6px;">
-                                    <label for="globalcheck">Global Check Mod <span class="formula-hint">temporary session-wide bonus/penalty applied to every check</span></label>
-                                    <input type="number" id="globalcheck" name="attr_global_check" value="0">
+                                <div class="btn-row">
+                                    <button type="roll" class="wide" name="roll_flat" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Flat Check}} {{Result=[[@{d20mode}+@{global_check}[global]]]}} {{cond=@{disadvantages}}}">Flat d20</button>
+                                    <button type="roll" class="wide" name="roll_stresspush" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Stress Push}} {{Stress Taken=4}} {{Bonus=+3}} {{desc=Take 4 stress damage to add +3 to a low roll.}}">Stress Push</button>
                                 </div>
                             </div>
                         </details>
 
+                        <details class="section">
+                            <summary>Identity</summary>
+                            <div class="section-body">
+                                <div class="form-grid">
+                                    <div class="form-row"><label>Species</label><input type="text" name="attr_species"></div>
+                                    <div class="form-row"><label>Subspecies</label><input type="text" name="attr_subspecies"></div>
+                                    <div class="form-row"><label>Class</label><input type="text" name="attr_class"></div>
+                                    <div class="form-row"><label>Path</label><input type="text" name="attr_path"></div>
+                                    <div class="form-row"><label>Talent</label><input type="text" name="attr_talent"></div>
+                                    <div class="form-row"><label>Specialization</label><input type="text" name="attr_specialization"></div>
+                                    <div class="form-row"><label>Tier</label><input type="number" name="attr_tier" value="1" min="1"></div>
+                                    <div class="form-row">
+                                        <label>Size</label>
+                                        <select name="attr_size">
+                                            <option>Tiny</option>
+                                            <option>Small</option>
+                                            <option value="Medium" selected>Medium</option>
+                                            <option>Large</option>
+                                            <option>Giant</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row"><label>Age</label><input type="number" name="attr_age" min="0"></div>
+                                    <div class="form-row"><label>Language</label><input type="text" name="attr_language"></div>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- RIGHT -->
+                    <div class="col">
                         <details class="section" open>
-                            <summary>Health</summary>
+                            <summary>Health &amp; Resources</summary>
                             <div class="section-body">
                                 <table class="stat-table">
-                                    <tr><th></th><th>Current</th><th>Max</th></tr>
+                                    <tr>
+                                        <th></th>
+                                        <th>Current</th>
+                                        <th>Max</th>
+                                    </tr>
                                     <tr>
                                         <td>Armor</td>
                                         <td><input type="number" name="attr_armor" value="0"></td>
                                         <td><input type="number" name="attr_armor_max" value="0"></td>
                                     </tr>
                                     <tr>
-                                        <td>Wounds<span class="formula-hint">Agi + Str</span></td>
+                                        <td>Wounds<span class="formula-hint">Agi + Str + wound mods</span></td>
                                         <td><input type="number" name="attr_wounds" value="0"></td>
                                         <td><input type="number" name="attr_wounds_max" value="0" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Class Resource</td>
+                                        <td><input type="number" name="attr_class_resource" value="0"></td>
+                                        <td><input type="number" name="attr_class_resource_max" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mana</td>
+                                        <td><input type="number" name="attr_mana" value="0"></td>
+                                        <td><input type="number" name="attr_mana_max" value="0"></td>
                                     </tr>
                                     <tr>
                                         <td>Movement<span class="formula-hint">30 + 5 per 2 Agi</span></td>
@@ -83,35 +262,13 @@
                         </details>
 
                         <details class="section" open>
-                            <summary>Resources</summary>
-                            <div class="section-body">
-                                <table class="stat-table">
-                                    <tr><th></th><th>Current</th><th>Max</th></tr>
-                                    <tr>
-                                        <td>Class Resource</td>
-                                        <td><input type="number" name="attr_class_resource" value="0"></td>
-                                        <td><input type="number" name="attr_class_resource_max" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Mana</td>
-                                        <td><input type="number" name="attr_mana" value="0"></td>
-                                        <td><input type="number" name="attr_mana_max" value="0"></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </details>
-
-                        <details class="section">
                             <summary>Press On &amp; Long Rest</summary>
                             <div class="section-body">
-                                <div class="form-row">
-                                    <label for="pressonmax">Uses / Day</label>
-                                    <input type="number" id="pressonmax" name="attr_presson_max" value="2" min="0">
-                                </div>
-                                <fieldset class="repeating_pressonuse">
-                                    <label><input type="checkbox" name="attr_used"> Used</label>
-                                </fieldset>
-                                <div class="form-grid" style="margin:4px 0;">
+                                <div class="form-grid">
+                                    <div class="form-row">
+                                        <label>Uses / Day</label>
+                                        <input type="number" name="attr_presson_max" value="2" min="0">
+                                    </div>
                                     <div class="form-row">
                                         <label>Repair Die</label>
                                         <select name="attr_presson_repair_die">
@@ -133,241 +290,372 @@
                                         </select>
                                     </div>
                                 </div>
-                                <button type="roll" class="wide" name="roll_presson" value="&{template:arc20} {{name=@{character_name} Presses On}} {{Regain=1 Class Resource, 1 Mana}} {{Repair Armor=[[1d@{presson_repair_die}+@{crafting}+@{crafting_mod}]]}} {{Healing=[[1d@{presson_heal_die}+@{survival}+@{survival_mod}]]}} {{desc=Removes all conditions lasting 1 minute or less.}}">Press On</button>
-                                <button type="roll" class="wide" name="roll_longrest" value="&{template:arc20} {{name=@{character_name} takes a Long Rest}} {{desc=Restores all wounds, class resources, and mana. Repairs armor to at least half. Removes conditions lasting one day or less. Usable once per day.}}">Long Rest</button>
+                                <div class="presson-uses">
+                                    <fieldset class="repeating_pressonuse">
+                                        <label class="use-box"><input type="checkbox" name="attr_used" value="1"><span>Used</span></label>
+                                    </fieldset>
+                                </div>
+                                <button type="roll" class="wide" name="roll_presson" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Presses On}} {{Regain=1 Class Resource, 1 Mana}} {{Repair Armor=[[1d@{presson_repair_die}+@{crafting}[craft]+@{crafting_mod}[mod]]]}} {{Healing=[[1d@{presson_heal_die}+@{survival}[surv]+@{survival_mod}[mod]]]}} {{desc=Removes all conditions lasting 1 minute or less.}}">Press On</button>
+                                <button type="roll" class="wide" name="roll_longrest" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Long Rest}} {{desc=Restores all wounds, class resources, and mana. Repairs armor to at least half. Removes conditions lasting one day or less. Usable once per day.}}">Long Rest</button>
                             </div>
                         </details>
-                    </div>
 
-                    <!-- RIGHT: checks -->
-                    <div class="col">
                         <details class="section" open>
-                            <summary>Checks</summary>
+                            <summary>Conditions</summary>
                             <div class="section-body">
-                                <table class="stat-table">
-                                    <tr><th>Check</th><th>Total</th><th>Mod</th></tr>
-                                    <tr>
-                                        <td><button type="roll" class="check-btn" name="roll_agility" value="&{template:arc20} {{name=@{character_name}}} {{Agility=[[@{d20mode}+@{agility}+@{agility_mod}+@{global_check}]]}} {{cond=@{disadvantages}}}">Agility</button></td>
-                                        <td><input type="number" name="attr_agility" value="0" min="0" max="20"></td>
-                                        <td><input type="number" name="attr_agility_mod" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><button type="roll" class="check-btn" name="roll_crafting" value="&{template:arc20} {{name=@{character_name}}} {{Crafting=[[@{d20mode}+@{crafting}+@{crafting_mod}+@{global_check}]]}} {{cond=@{disadvantages}}}">Crafting</button></td>
-                                        <td><input type="number" name="attr_crafting" value="0" min="0" max="20"></td>
-                                        <td><input type="number" name="attr_crafting_mod" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><button type="roll" class="check-btn" name="roll_stealth" value="&{template:arc20} {{name=@{character_name}}} {{Stealth=[[@{d20mode}+@{stealth}+@{stealth_mod}+@{global_check}]]}} {{cond=@{disadvantages}}}">Stealth</button></td>
-                                        <td><input type="number" name="attr_stealth" value="0" min="0" max="20"></td>
-                                        <td><input type="number" name="attr_stealth_mod" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><button type="roll" class="check-btn" name="roll_strength" value="&{template:arc20} {{name=@{character_name}}} {{Strength=[[@{d20mode}+@{strength}+@{strength_mod}+@{global_check}]]}} {{cond=@{disadvantages}}}">Strength</button></td>
-                                        <td><input type="number" name="attr_strength" value="0" min="0" max="20"></td>
-                                        <td><input type="number" name="attr_strength_mod" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><button type="roll" class="check-btn" name="roll_survival" value="&{template:arc20} {{name=@{character_name}}} {{Survival=[[@{d20mode}+@{survival}+@{survival_mod}+@{global_check}]]}} {{cond=@{disadvantages}}}">Survival</button></td>
-                                        <td><input type="number" name="attr_survival" value="0" min="0" max="20"></td>
-                                        <td><input type="number" name="attr_survival_mod" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><button type="roll" class="check-btn" name="roll_influence" value="&{template:arc20} {{name=@{character_name}}} {{Influence=[[@{d20mode}+@{influence}+@{influence_mod}+@{global_check}]]}} {{cond=@{disadvantages}}}">Influence</button></td>
-                                        <td><input type="number" name="attr_influence" value="0" min="0" max="20"></td>
-                                        <td><input type="number" name="attr_influence_mod" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><button type="roll" class="check-btn" name="roll_intellect" value="&{template:arc20} {{name=@{character_name}}} {{Intellect=[[@{d20mode}+@{intellect}+@{intellect_mod}+@{global_check}]]}} {{cond=@{disadvantages}}}">Intellect</button></td>
-                                        <td><input type="number" name="attr_intellect" value="0" min="0" max="20"></td>
-                                        <td><input type="number" name="attr_intellect_mod" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><button type="roll" class="check-btn" name="roll_luck" value="&{template:arc20} {{name=@{character_name}}} {{Luck=[[@{d20mode}+@{luck}+@{luck_mod}+@{global_check}]]}} {{cond=@{disadvantages}}}">Luck</button></td>
-                                        <td><input type="number" name="attr_luck" value="0" min="0" max="20"></td>
-                                        <td><input type="number" name="attr_luck_mod" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><button type="roll" class="check-btn" name="roll_observation" value="&{template:arc20} {{name=@{character_name}}} {{Observation=[[@{d20mode}+@{observation}+@{observation_mod}+@{global_check}]]}} {{cond=@{disadvantages}}}">Observation</button></td>
-                                        <td><input type="number" name="attr_observation" value="0" min="0" max="20"></td>
-                                        <td><input type="number" name="attr_observation_mod" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><button type="roll" class="check-btn" name="roll_spirit" value="&{template:arc20} {{name=@{character_name}}} {{Spirit=[[@{d20mode}+@{spirit}+@{spirit_mod}+@{global_check}]]}} {{cond=@{disadvantages}}}">Spirit</button></td>
-                                        <td><input type="number" name="attr_spirit" value="0" min="0" max="20"></td>
-                                        <td><input type="number" name="attr_spirit_mod" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Total</td>
-                                        <td><input type="number" name="attr_total_checks" readonly></td>
-                                        <td></td>
-                                    </tr>
-                                </table>
+                                <div class="cond-grid">
+                                    <div class="cond-cat-label">Corpus</div>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_bleeding" value="1"> Bleeding <span class="cond-desc">no healing</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_broken" value="1"> Broken <span class="cond-desc">Phys Dis</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_concussion" value="1"> Concussion <span class="cond-desc">Men+Cast Dis</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_coughing" value="1"> Coughing <span class="cond-desc">Men Dis</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_dislocation" value="1"> Dislocation <span class="cond-desc">Phys Dis</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_slowed" value="1"> Slowed <span class="cond-desc">½ Move</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_pinned" value="1"> Pinned <span class="cond-desc">no move</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_prone" value="1"> Prone <span class="cond-desc">Rng Dis</span></label>
+
+                                    <div class="cond-cat-label">Cognition</div>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_blind" value="1"> Blind <span class="cond-desc">Atk Dis</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_charmed" value="1"> Charmed <span class="cond-desc">Men Dis</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_confused" value="1"> Confused <span class="cond-desc">Men Dis</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_deaf" value="1"> Deaf <span class="cond-desc">Cast Dis</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_fear" value="1"> Fear <span class="cond-desc">Dash/Hide</span></label>
+
+                                    <div class="cond-cat-label">Special</div>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_intangible" value="1"> Intangible <span class="cond-desc">no Phys Atk</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_invisible" value="1"> Invisible <span class="cond-desc">no OA</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_unconscious" value="1"> Unconscious <span class="cond-desc">no Act</span></label>
+
+                                    <div class="cond-cat-label">Major</div>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_stunned" value="1"> Stunned <span class="cond-desc">All Dis</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_exhaustion" value="1"> Exhaustion <span class="cond-desc">All Dis</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_constrained" value="1"> Constrained <span class="cond-desc">no Atk</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_exposed" value="1"> Exposed <span class="cond-desc">×2 Dmg</span></label>
+                                    <label class="cond-item"><input type="checkbox" name="attr_cond_injured" value="1"> Injured <span class="cond-desc">0 HP = Death</span></label>
+                                </div>
+                                <p class="hint-line">Active conditions are listed in the roll bar and attached to every roll you make.</p>
                             </div>
                         </details>
                     </div>
                 </div>
+            </section>
 
-                <details class="section">
-                    <summary>Conditions</summary>
+            <!-- ==================== COMBAT ==================== -->
+            <section class="tab-page" id="combat-content">
+
+                <details class="section" open>
+                    <summary>Global Mods <span class="summary-note">buffs, curses, stances — toggle on/off mid-fight</span></summary>
                     <div class="section-body">
-                        <div class="cond-grid">
-                            <div class="cond-cat-label">Corpus</div>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_bleeding"> Bleeding <span class="cond-desc">— no healing</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_broken"> Broken <span class="cond-desc">— Phys Dis</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_concussion"> Concussion <span class="cond-desc">— Men+Cast Dis</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_coughing"> Coughing <span class="cond-desc">— Men Dis</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_dislocation"> Dislocation <span class="cond-desc">— Phys Dis</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_slowed"> Slowed <span class="cond-desc">— ½ Move</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_pinned"> Pinned <span class="cond-desc">— no move</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_prone"> Prone <span class="cond-desc">— Rng Dis</span></label>
-
-                            <div class="cond-cat-label">Cognition</div>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_blind"> Blind <span class="cond-desc">— Atk Dis</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_charmed"> Charmed <span class="cond-desc">— Men Dis</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_confused"> Confused <span class="cond-desc">— Men Dis</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_deaf"> Deaf <span class="cond-desc">— Cast Dis</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_fear"> Fear <span class="cond-desc">— Dash/Hide</span></label>
-
-                            <div class="cond-cat-label">Special</div>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_intangible"> Intangible <span class="cond-desc">— no Phys Atk</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_invisible"> Invisible <span class="cond-desc">— no OA</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_unconscious"> Unconscious <span class="cond-desc">— no Act</span></label>
-
-                            <div class="cond-cat-label">Major</div>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_stunned"> Stunned <span class="cond-desc">— All Dis</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_exhaustion"> Exhaustion <span class="cond-desc">— All Dis</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_constrained"> Constrained <span class="cond-desc">— no Atk</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_exposed"> Exposed <span class="cond-desc">— ×2 Dmg</span></label>
-                            <label class="cond-item"><input type="checkbox" name="attr_cond_injured"> Injured <span class="cond-desc">— 0 HP = Death</span></label>
+                        <div class="glob-head">
+                            <span>Source</span><span>Applies To</span><span>Amt</span><span>On</span>
                         </div>
+                        <fieldset class="repeating_globals">
+                            <details class="rep-row glob-row">
+                                <summary>
+                                    <input type="text" name="attr_gmod_name" placeholder="Mod Name">
+                                    <select name="attr_gmod_type">
+                                        <option value="check">Checks</option>
+                                        <option value="attack">Attacks</option>
+                                        <option value="damage">Damage</option>
+                                        <option value="wounds">Max Wounds</option>
+                                    </select>
+                                    <input type="number" name="attr_gmod_amount" value="0" class="narrow">
+                                    <label class="glob-toggle"><input type="checkbox" name="attr_gmod_on" value="1"><span>✔</span></label>
+                                </summary>
+                                <div class="rep-body">
+                                    <textarea name="attr_gmod_desc" placeholder="Where does this come from? How long does it last?" rows="2"></textarea>
+                                    <button type="roll" class="wide" name="roll_gmod" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=@{gmod_name}}} {{Applies To=@{gmod_type}}} {{Amount=@{gmod_amount}}} {{desc=@{gmod_desc}}}">Post to Chat</button>
+                                </div>
+                            </details>
+                        </fieldset>
+                        <p class="hint-line">Anything checked here is folded into <strong>@{global_check}</strong>, <strong>@{global_attack}</strong>, <strong>@{global_damage}</strong> or max wounds automatically — no need to touch individual rolls.</p>
+                    </div>
+                </details>
 
-                        <div class="form-row" style="margin-top:6px;">
-                            <label for="disadv">Active Conditions <span class="formula-hint">auto-fills into every roll's chat card</span></label>
-                            <input type="text" id="disadv" name="attr_disadvantages" value="None" readonly class="active-conditions-box">
-                        </div>
+                <details class="section" open>
+                    <summary>Weapons</summary>
+                    <div class="section-body">
+                        <fieldset class="repeating_weapon">
+                            <details class="rep-row">
+                                <summary>
+                                    <input type="text" name="attr_wep_name" placeholder="Weapon Name">
+                                    <input type="text" name="attr_wep_damage" value="1d6" class="narrow" title="Damage dice">
+                                    <button type="roll" class="atk" name="roll_wep_atk" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=@{wep_name}}} {{Attack=[[@{d20mode}cs>@{wep_crit}+@{wep_checkstat}+@{wep_atkbonus}[wep]+@{global_attack}[atk]+@{global_check}[global]]]}} {{Damage=[[@{wep_damage}+@{global_damage}[dmg]]]}} {{Type=@{wep_damage_type} [+Table](!damage @{wep_damage_type})}} {{Range=@{wep_range}}} {{Action=@{wep_action}}} {{desc=@{wep_notes}}} {{cond=@{disadvantages}}}">Attack</button>
+                                    <button type="roll" class="dmg" name="roll_wep_dmg" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=@{wep_name}}} {{Damage=[[@{wep_damage}+@{global_damage}[dmg]]]}} {{Type=@{wep_damage_type} [+Table](!damage @{wep_damage_type})}} {{desc=@{wep_notes}}}">Dmg</button>
+                                </summary>
+                                <div class="rep-body">
+                                    <div class="form-row">
+                                        <label>Check Used</label>
+                                        <select name="attr_wep_checkstat">
+                                            <option value="0">None</option>
+                                            <option value="(@{agility}+@{agility_mod})">Agility</option>
+                                            <option value="(@{crafting}+@{crafting_mod})">Crafting</option>
+                                            <option value="(@{influence}+@{influence_mod})">Influence</option>
+                                            <option value="(@{intellect}+@{intellect_mod})">Intellect</option>
+                                            <option value="(@{luck}+@{luck_mod})">Luck</option>
+                                            <option value="(@{observation}+@{observation_mod})">Observation</option>
+                                            <option value="(@{spirit}+@{spirit_mod})">Spirit</option>
+                                            <option value="(@{stealth}+@{stealth_mod})">Stealth</option>
+                                            <option value="(@{strength}+@{strength_mod})">Strength</option>
+                                            <option value="(@{survival}+@{survival_mod})">Survival</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row"><label>Attack Bonus</label><input type="number" name="attr_wep_atkbonus" value="0"></div>
+                                    <div class="form-row"><label>Crit Range</label><input type="number" name="attr_wep_crit" value="20"></div>
+                                    <div class="form-row">
+                                        <label>Damage Type</label>
+                                        <select name="attr_wep_damage_type">
+                                            <option>None</option>
+                                            <option disabled>— Physical —</option>
+                                            <option>Impact</option>
+                                            <option>Piercing</option>
+                                            <option>Slashing</option>
+                                            <option disabled>— Elemental —</option>
+                                            <option>Acid</option>
+                                            <option>Eclipse</option>
+                                            <option>Fire</option>
+                                            <option>Fluid</option>
+                                            <option>Ice</option>
+                                            <option>Lightning</option>
+                                            <option>Solar</option>
+                                            <option>Thunder</option>
+                                            <option>Toxic</option>
+                                            <option disabled>— Realm —</option>
+                                            <option>Nature</option>
+                                            <option>Psychic</option>
+                                            <option>Vozian</option>
+                                            <option disabled>— Other —</option>
+                                            <option>Healing</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Range</label>
+                                        <select name="attr_wep_range">
+                                            <option>Melee</option>
+                                            <option>Reach</option>
+                                            <option>Short</option>
+                                            <option>Medium</option>
+                                            <option>Long</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Action Cost</label>
+                                        <select name="attr_wep_action">
+                                            <option>Action</option>
+                                            <option>Half-Action</option>
+                                            <option>Off-Action</option>
+                                            <option>Non-Action</option>
+                                            <option>Special</option>
+                                        </select>
+                                    </div>
+                                    <textarea name="attr_wep_notes" placeholder="Traits / notes" rows="2"></textarea>
+                                </div>
+                            </details>
+                        </fieldset>
+                    </div>
+                </details>
+
+                <details class="section" open>
+                    <summary>Features &amp; Abilities</summary>
+                    <div class="section-body">
+                        <fieldset class="repeating_features">
+                            <details class="rep-row">
+                                <summary>
+                                    <input type="text" name="attr_feat_name" placeholder="Feature Name">
+                                    <select name="attr_feat_action" class="narrow-sel">
+                                        <option>Passive</option>
+                                        <option>Action</option>
+                                        <option>Half-Action</option>
+                                        <option>Off-Action</option>
+                                        <option>Non-Action</option>
+                                    </select>
+                                    <button type="roll" class="atk" name="roll_feat" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=@{feat_name}}} {{Action=@{feat_action}}} {{Cost=@{feat_cost}}} {{desc=@{feat_desc}}} {{cond=@{disadvantages}}}">Use</button>
+                                    <button type="roll" class="dmg" name="roll_feat_check" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=@{feat_name}}} {{Check=[[@{d20mode}+@{feat_checkstat}+@{global_attack}[atk]+@{global_check}[global]]]}} {{desc=@{feat_desc}}} {{cond=@{disadvantages}}}">Roll</button>
+                                </summary>
+                                <div class="rep-body">
+                                    <div class="form-row">
+                                        <label>Check Used</label>
+                                        <select name="attr_feat_checkstat">
+                                            <option value="0">None</option>
+                                            <option value="(@{agility}+@{agility_mod})">Agility</option>
+                                            <option value="(@{crafting}+@{crafting_mod})">Crafting</option>
+                                            <option value="(@{influence}+@{influence_mod})">Influence</option>
+                                            <option value="(@{intellect}+@{intellect_mod})">Intellect</option>
+                                            <option value="(@{luck}+@{luck_mod})">Luck</option>
+                                            <option value="(@{observation}+@{observation_mod})">Observation</option>
+                                            <option value="(@{spirit}+@{spirit_mod})">Spirit</option>
+                                            <option value="(@{stealth}+@{stealth_mod})">Stealth</option>
+                                            <option value="(@{strength}+@{strength_mod})">Strength</option>
+                                            <option value="(@{survival}+@{survival_mod})">Survival</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row"><label>Cost</label><input type="text" name="attr_feat_cost" placeholder="1 Class Resource"></div>
+                                    <textarea name="attr_feat_desc" placeholder="Description" rows="3"></textarea>
+                                </div>
+                            </details>
+                        </fieldset>
                     </div>
                 </details>
             </section>
 
-            <!-- ==================== INVENTORY ==================== -->
-            <section class="tab-page" id="inventory-content">
-                <div class="two-col">
+            <!-- ==================== MAGIC ==================== -->
+            <section class="tab-page" id="magic-content">
+                <details class="section" open>
+                    <summary>Spellcasting</summary>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-row"><label>Spellcasting Rank</label><input type="number" name="attr_spellcasting" value="0" min="0"></div>
+                            <div class="form-row"><label>Spellcasting Mod</label><input type="number" name="attr_spellcasting_mod" value="0"></div>
+                            <div class="form-row"><label>Mana</label><input type="number" name="attr_mana" value="0"></div>
+                            <div class="form-row"><label>Mana Max</label><input type="number" name="attr_mana_max" value="0"></div>
+                        </div>
+                        <button type="roll" class="wide gold" name="roll_castcheck" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Spellcasting Check}} {{Result=[[@{d20mode}+@{spellcasting}[rank]+@{spellcasting_mod}[mod]+@{global_attack}[atk]+@{global_check}[global]]]}} {{cond=@{disadvantages}}}">Raw Spellcasting Check</button>
+                    </div>
+                </details>
 
-                    <!-- LEFT: details + notes -->
-                    <div class="col">
-                        <details class="section" open>
-                            <summary>Character Details</summary>
-                            <div class="section-body">
-                                <div class="form-grid">
-                                    <div class="form-row"><label>Language</label><input type="text" name="attr_language"></div>
-                                    <div class="form-row"><label>Age</label><input type="number" name="attr_age" min="0"></div>
-                                    <div class="form-row"><label>Diet</label><input type="text" name="attr_diet"></div>
+                <details class="section" open>
+                    <summary>Spells</summary>
+                    <div class="section-body">
+                        <fieldset class="repeating_spells">
+                            <details class="rep-row">
+                                <summary>
+                                    <input type="text" name="attr_spell_name" placeholder="Spell Name">
+                                    <select name="attr_spell_intent" class="narrow-sel">
+                                        <option value="Light Whisper (0)">Light Whisper</option>
+                                        <option value="Whisper (1)">Whisper</option>
+                                        <option value="Surge (3)">Surge</option>
+                                        <option value="Shout (6)">Shout</option>
+                                        <option value="Roar (9)">Roar</option>
+                                        <option value="Storm (12)">Storm</option>
+                                        <option value="Cataclysm (24)">Cataclysm</option>
+                                    </select>
+                                    <button type="roll" class="atk" name="roll_spell" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=@{spell_name}}} {{Intent=@{spell_intent}}} {{Cast=[[@{d20mode}+@{spellcasting}[rank]+@{spellcasting_mod}[mod]+@{global_attack}[atk]+@{global_check}[global]]]}} {{Damage=[[@{spell_damage}+@{global_damage}[dmg]]]}} {{Type=@{spell_damage_type} [+Table](!damage @{spell_damage_type})}} {{Range=@{spell_range}}} {{Target=@{spell_target}}} {{Duration=@{spell_duration}}} {{desc=@{spell_effect}}} {{cond=@{disadvantages}}}">Cast</button>
+                                    <button type="roll" class="dmg" name="roll_spell_info" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=@{spell_name}}} {{Intent=@{spell_intent}}} {{Manner=@{spell_manner}}} {{Transmission=@{spell_transmission}}} {{Range=@{spell_range}}} {{Area=@{spell_area}}} {{Target=@{spell_target}}} {{Duration=@{spell_duration}}} {{desc=@{spell_effect}}}">Info</button>
+                                </summary>
+                                <div class="rep-body">
                                     <div class="form-row">
-                                        <label>Size</label>
-                                        <select name="attr_size">
-                                            <option value="">-- Select --</option>
-                                            <option>Tiny</option>
-                                            <option>Small</option>
-                                            <option value="Medium" selected>Medium</option>
-                                            <option>Large</option>
-                                            <option>Giant</option>
+                                        <label>Manner</label>
+                                        <select name="attr_spell_manner">
+                                            <option>—</option>
+                                            <option>Manifest</option>
+                                            <option>Domineer</option>
+                                            <option>Discern</option>
+                                            <option>Decay</option>
+                                            <option>Transmute</option>
                                         </select>
                                     </div>
+                                    <div class="form-row">
+                                        <label>Transmission</label>
+                                        <select name="attr_spell_transmission">
+                                            <option>—</option>
+                                            <option>Material</option>
+                                            <option>Elemental</option>
+                                            <option>Corpus</option>
+                                            <option>Astral</option>
+                                            <option>Aether</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row"><label>Damage</label><input type="text" name="attr_spell_damage" value="0"></div>
+                                    <div class="form-row">
+                                        <label>Damage Type</label>
+                                        <select name="attr_spell_damage_type">
+                                            <option>None</option>
+                                            <option disabled>— Physical —</option>
+                                            <option>Impact</option>
+                                            <option>Piercing</option>
+                                            <option>Slashing</option>
+                                            <option disabled>— Elemental —</option>
+                                            <option>Acid</option>
+                                            <option>Eclipse</option>
+                                            <option>Fire</option>
+                                            <option>Fluid</option>
+                                            <option>Ice</option>
+                                            <option>Lightning</option>
+                                            <option>Solar</option>
+                                            <option>Thunder</option>
+                                            <option>Toxic</option>
+                                            <option disabled>— Realm —</option>
+                                            <option>Nature</option>
+                                            <option>Psychic</option>
+                                            <option>Vozian</option>
+                                            <option disabled>— Other —</option>
+                                            <option>Healing</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Range</label>
+                                        <select name="attr_spell_range">
+                                            <option>Self</option>
+                                            <option>Touch</option>
+                                            <option>Short</option>
+                                            <option>Medium</option>
+                                            <option>Long</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row"><label>Area</label><input type="text" name="attr_spell_area" placeholder="Area (if any)"></div>
+                                    <div class="form-row"><label>Target</label><input type="text" name="attr_spell_target" placeholder="Creature, area…"></div>
+                                    <div class="form-row"><label>Duration</label><input type="text" name="attr_spell_duration" placeholder="Instant, 1 min…"></div>
+                                    <textarea name="attr_spell_effect" placeholder="Spell effect" rows="3"></textarea>
                                 </div>
-                                <div class="form-row" style="margin-top:6px;"><label>Wealth (gp)</label><input type="number" name="attr_gp" value="0" min="0"></div>
-                                <button type="roll" class="wide" style="margin-top:4px;" name="roll_wealth" value="&{template:arc20} {{name=@{character_name}}} {{Starting Wealth=[[1d100+50]]}}">Roll Starting Wealth (1d100+50)</button>
-                            </div>
-                        </details>
-
-                        <details class="section">
-                            <summary>Notes</summary>
-                            <div class="section-body">
-                                <div class="form-row"><label>Motivation</label><textarea name="attr_motivation" rows="2"></textarea></div>
-                                <div class="form-row"><label>Trinket</label><textarea name="attr_trinket" rows="2"></textarea></div>
-                                <div class="form-row"><label>Additional Equipment</label><textarea name="attr_addEquip" rows="2"></textarea></div>
-                                <div class="form-row"><label>Session Notes</label><textarea name="attr_session_notes" rows="6"></textarea></div>
-                            </div>
-                        </details>
+                            </details>
+                        </fieldset>
                     </div>
+                </details>
 
-                    <!-- RIGHT: weapons / armor / items -->
+                <details class="section">
+                    <summary>Intent Reference</summary>
+                    <div class="section-body">
+                        <table class="ref-table">
+                            <tr>
+                                <th>Intent</th>
+                                <th>Mana Cost</th>
+                            </tr>
+                            <tr>
+                                <td>Light Whisper</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Whisper</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Surge</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>Shout</td>
+                                <td>6</td>
+                            </tr>
+                            <tr>
+                                <td>Roar</td>
+                                <td>9</td>
+                            </tr>
+                            <tr>
+                                <td>Storm</td>
+                                <td>12</td>
+                            </tr>
+                            <tr>
+                                <td>Cataclysm</td>
+                                <td>24</td>
+                            </tr>
+                        </table>
+                    </div>
+                </details>
+            </section>
+
+            <!-- ==================== GEAR ==================== -->
+            <section class="tab-page" id="gear-content">
+                <div class="two-col">
                     <div class="col">
                         <details class="section" open>
-                            <summary>Weapons</summary>
-                            <div class="section-body">
-                                <fieldset class="repeating_weapon">
-                                    <details class="rep-row">
-                                        <summary>
-                                            <input type="text" name="attr_wep_name" placeholder="Weapon Name">
-                                        </summary>
-                                        <div class="rep-body">
-                                            <div class="form-row">
-                                                <label>Check</label>
-                                                <select name="attr_wep_checkstat">
-                                                    <option value="0">None</option>
-                                                    <option value="(@{agility}+@{agility_mod})">Agility</option>
-                                                    <option value="(@{crafting}+@{crafting_mod})">Crafting</option>
-                                                    <option value="(@{stealth}+@{stealth_mod})">Stealth</option>
-                                                    <option value="(@{strength}+@{strength_mod})">Strength</option>
-                                                    <option value="(@{survival}+@{survival_mod})">Survival</option>
-                                                    <option value="(@{influence}+@{influence_mod})">Influence</option>
-                                                    <option value="(@{intellect}+@{intellect_mod})">Intellect</option>
-                                                    <option value="(@{luck}+@{luck_mod})">Luck</option>
-                                                    <option value="(@{observation}+@{observation_mod})">Observation</option>
-                                                    <option value="(@{spirit}+@{spirit_mod})">Spirit</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-row"><label>Attack Bonus</label><input type="number" name="attr_wep_atkbonus" value="0"></div>
-                                            <div class="form-row"><label>Crit Range</label><input type="number" name="attr_wep_crit" value="20"></div>
-                                            <div class="form-row"><label>Damage</label><input type="text" name="attr_wep_damage" value="1d6"></div>
-                                            <div class="form-row">
-                                                <label>Damage Type</label>
-                                                <select name="attr_wep_damage_type">
-                                                    <option>None</option>
-                                                    <option disabled>— Physical —</option>
-                                                    <option>Impact</option>
-                                                    <option>Piercing</option>
-                                                    <option>Slashing</option>
-                                                    <option disabled>— Elemental —</option>
-                                                    <option>Acid</option>
-                                                    <option>Eclipse</option>
-                                                    <option>Fire</option>
-                                                    <option>Fluid</option>
-                                                    <option>Ice</option>
-                                                    <option>Lightning</option>
-                                                    <option>Solar</option>
-                                                    <option>Thunder</option>
-                                                    <option>Toxic</option>
-                                                    <option disabled>— Realm —</option>
-                                                    <option>Nature</option>
-                                                    <option>Psychic</option>
-                                                    <option>Vozian</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-row">
-                                                <label>Range</label>
-                                                <select name="attr_wep_range">
-                                                    <option>Melee</option>
-                                                    <option>Reach</option>
-                                                    <option>Short</option>
-                                                    <option>Medium</option>
-                                                    <option>Long</option>
-                                                </select>
-                                            </div>
-                                            <textarea name="attr_wep_notes" placeholder="Traits / notes" rows="2"></textarea>
-                                            <button type="roll" name="roll_wep_atk" value="&{template:arc20} {{name=@{character_name}}} {{@{wep_name}=[[@{d20mode}cs>@{wep_crit}+@{wep_checkstat}+@{wep_atkbonus}+@{global_check}]]}} {{Range=@{wep_range}}} {{cond=@{disadvantages}}}">Attack</button>
-                                            <button type="roll" name="roll_wep_dmg" value="&{template:arc20} {{name=@{character_name}}} {{@{wep_name} Damage=[[@{wep_damage}]]}} {{Type=@{wep_damage_type}}} {{desc=@{wep_notes}}}">Damage</button>
-                                        </div>
-                                    </details>
-                                </fieldset>
-                            </div>
-                        </details>
-
-                        <details class="section">
                             <summary>Armor</summary>
                             <div class="section-body">
                                 <table class="flat-table">
-                                    <tr><th>Name</th><th>Value</th><th>Qualities</th></tr>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Value</th>
+                                        <th>Qualities</th>
+                                    </tr>
                                     <fieldset class="repeating_armor">
                                         <tr>
                                             <td><input type="text" name="attr_arm_name"></td>
@@ -379,18 +667,44 @@
                             </div>
                         </details>
 
-                        <details class="section">
+                        <details class="section" open>
                             <summary>Items</summary>
                             <div class="section-body">
                                 <table class="flat-table">
-                                    <tr><th>Name</th><th>Notes</th></tr>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Qty</th>
+                                        <th>Notes</th>
+                                    </tr>
                                     <fieldset class="repeating_items">
                                         <tr>
                                             <td><input type="text" name="attr_item_name"></td>
+                                            <td><input type="number" name="attr_item_qty" value="1"></td>
                                             <td><input type="text" name="attr_item_notes"></td>
                                         </tr>
                                     </fieldset>
                                 </table>
+                            </div>
+                        </details>
+
+                        <details class="section">
+                            <summary>Wealth</summary>
+                            <div class="section-body">
+                                <div class="form-row"><label>Wealth (gp)</label><input type="number" name="attr_gp" value="0" min="0"></div>
+                                <div class="form-row"><label>Diet</label><input type="text" name="attr_diet"></div>
+                                <button type="roll" class="wide" name="roll_wealth" value="&{template:arc20} {{name=@{character_name}}} {{subtitle=Starting Wealth}} {{Gold=[[1d100+50]]}}">Roll Starting Wealth (1d100+50)</button>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="col">
+                        <details class="section" open>
+                            <summary>Notes</summary>
+                            <div class="section-body">
+                                <div class="form-row"><label>Motivation</label><textarea name="attr_motivation" rows="2"></textarea></div>
+                                <div class="form-row"><label>Trinket</label><textarea name="attr_trinket" rows="2"></textarea></div>
+                                <div class="form-row"><label>Additional Equipment</label><textarea name="attr_addEquip" rows="2"></textarea></div>
+                                <div class="form-row"><label>Session Notes</label><textarea name="attr_session_notes" rows="8"></textarea></div>
                             </div>
                         </details>
                     </div>
@@ -400,7 +714,12 @@
                     <summary>NPC Tracker</summary>
                     <div class="section-body">
                         <table class="flat-table">
-                            <tr><th>Name</th><th>Faction / Role</th><th>Status</th><th>Notes</th></tr>
+                            <tr>
+                                <th>Name</th>
+                                <th>Faction / Role</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                            </tr>
                             <fieldset class="repeating_npc">
                                 <tr>
                                     <td><input type="text" name="attr_npc_name"></td>
@@ -420,105 +739,21 @@
                 </details>
             </section>
 
-            <!-- ==================== PROGRESSION ==================== -->
-            <section class="tab-page" id="progression-content">
-                <details class="section" open>
-                    <summary>Identity</summary>
-                    <div class="section-body">
-                        <div class="form-grid">
-                            <div class="form-row"><label>Species</label><input type="text" name="attr_species"></div>
-                            <div class="form-row"><label>Subspecies / Option</label><input type="text" name="attr_subspecies"></div>
-                            <div class="form-row"><label>Class</label><input type="text" name="attr_class"></div>
-                            <div class="form-row"><label>Path</label><input type="text" name="attr_path"></div>
-                            <div class="form-row"><label>Talent</label><input type="text" name="attr_talent"></div>
-                            <div class="form-row"><label>Specialization</label><input type="text" name="attr_specialization"></div>
-                            <div class="form-row"><label>Tier</label><input type="number" name="attr_tier" value="1" min="1"></div>
-                        </div>
-                    </div>
-                </details>
-
-                <details class="section" open>
-                    <summary>Features</summary>
-                    <div class="section-body">
-                        <fieldset class="repeating_features">
-                            <details class="rep-row">
-                                <summary><input type="text" name="attr_feat_name" placeholder="Feature Name"></summary>
-                                <div class="rep-body">
-                                    <textarea name="attr_feat_desc" placeholder="Description" rows="3"></textarea>
-                                </div>
-                            </details>
-                        </fieldset>
-                    </div>
-                </details>
-            </section>
-
-            <!-- ==================== CONDITIONS & DAMAGE (reference) ==================== -->
-            <section class="tab-page" id="conditions-content">
-                <details class="section" open>
-                    <summary>Condition Effects</summary>
-                    <div class="section-body">
-                        <table class="ref-table">
-                            <tr><th>Condition</th><th>Effect</th><th>Duration / Description</th></tr>
-                            <tr class="category-row"><td colspan="3">Corpus Conditions</td></tr>
-                            <tr><td>Bleeding</td><td>Cannot recover wounds or receive healing.</td><td>Lasts 1 minute</td></tr>
-                            <tr><td>Broken</td><td>Physical Disadvantage</td><td>Lasts 6 weeks</td></tr>
-                            <tr><td>Concussion</td><td>Mental Disadvantage, Spellcasting Disadvantage</td><td>Until a Long Rest</td></tr>
-                            <tr><td>Coughing</td><td>Mental Disadvantage</td><td>Until a Press On or irritant removed</td></tr>
-                            <tr><td>Dislocation</td><td>Physical Disadvantage</td><td>Until a Long Rest, or Survival Check</td></tr>
-                            <tr><td>Slowed</td><td>Movement halved</td><td>Until source removed</td></tr>
-                            <tr><td>Pinned</td><td>Cannot move; restrained by an object or creature.</td><td>Until source removed, or Off-Action removal</td></tr>
-                            <tr><td>Prone</td><td>Disadvantage on ranged attacks; advantage for melee attacks against you.</td><td>Requires 15 ft of movement to stand.</td></tr>
-
-                            <tr class="category-row"><td colspan="3">Cognition Conditions</td></tr>
-                            <tr><td>Blind</td><td>Disadvantage on attack checks; attacks against you have advantage.</td><td>Off-Action removal if possible or permanent effects require a healer</td></tr>
-                            <tr><td>Charmed</td><td>Mental Disadvantage; cannot attack the source of the charm.</td><td>Ends based on the charm's source</td></tr>
-                            <tr><td>Confused</td><td>Mental Disadvantage, attacks against you have advantage.</td><td>Until end of next turn or Press On</td></tr>
-                            <tr><td>Deaf</td><td>Stealth disadvantage; Spellcasting disadvantage</td><td>Lasts 1 minute or source removed</td></tr>
-                            <tr><td>Fear</td><td>Must dash away or hide until the end of your next turn.</td><td>Ends if you cannot see the source for a full round; typically cannot be the same source twice.</td></tr>
-
-                            <tr class="category-row"><td colspan="3">Special Conditions</td></tr>
-                            <tr><td>Intangible</td><td>Immune to physical damage; cannot attack; movement halved.</td><td>Ends after the effect's duration or through magical disruption. Cannot move through inorganic material.</td></tr>
-                            <tr><td>Invisible</td><td>Cannot be targeted by opportunity attacks; attacks against have disadvantage.</td><td>Ends after making an aggressive action or when revealed by substances like powder or oil.</td></tr>
-                            <tr><td>Unconscious</td><td>Unable to act; vulnerable to critical hits and Finishers.</td><td>Ends after a set duration, damage taken, or Off-Action ally assistance.</td></tr>
-
-                            <tr class="category-row"><td colspan="3">Major Conditions</td></tr>
-                            <tr><td>Stunned</td><td>Disadvantage on all checks; movement halved.</td><td>Until end of next turn or Press On</td></tr>
-                            <tr><td>Exhaustion</td><td>Disadvantage on all checks; movement halved.</td><td>Persists until a long rest, magical recovery, or specific intervention (e.g., caffeine).</td></tr>
-                            <tr><td>Constrained</td><td>Cannot make attack actions; attacks against have advantage</td><td>Off-Action removal if possible, escape check from restraints</td></tr>
-                            <tr><td>Exposed</td><td>Take double damage</td><td>Until end of next turn or Press On</td></tr>
-                            <tr><td>Injured</td><td>At 0 wounds, any further damage causes immediate Death.</td><td>Healing removes the condition. Excess damage beyond reducing wounds to 0 is ignored and does not carry over and cause death</td></tr>
-                            <tr><td>Death</td><td>Character dies and cannot interact with the living world.</td><td>Only resurrection magic can remove this condition.</td></tr>
-                        </table>
-                    </div>
-                </details>
-
-                <details class="section">
-                    <summary>Damage Tables</summary>
-                    <div class="section-body">
-                        <div class="damage-grid">
-                            <div class="damage-box"><h4>Impact</h4><ol><li>Broken</li><li>Concussion</li><li>Coughing</li><li>Dislocation</li><li>Prone</li><li>Knockback (10ft)</li></ol></div>
-                            <div class="damage-box"><h4>Piercing</h4><ol><li>Additional +1</li><li>Additional +2</li><li>Additional +3</li><li>Additional +4</li><li>Additional +5</li><li>Pinned</li></ol></div>
-                            <div class="damage-box"><h4>Slashing</h4><ol><li>Additional +2</li><li>Additional +3</li><li>Bleeding</li><li>Cleave</li><li>Disarm</li><li>Feint (Take Stance)</li></ol></div>
-                            <div class="damage-box"><h4>Acid</h4><ol><li>Additional +1</li><li>Additional +2</li><li>Additional +3</li><li>Exposed</li><li>Slowed</li><li>Coughing</li></ol></div>
-                            <div class="damage-box"><h4>Eclipse</h4><ol><li>Additional +1</li><li>Additional +2</li><li>Blind</li><li>Deaf</li><li>Raise upon Death</li><li>Fear</li></ol></div>
-                            <div class="damage-box"><h4>Fire</h4><ol><li>Additional +1</li><li>Additional +2</li><li>Additional +3</li><li>Exposed</li><li>Blind</li><li>Coughing</li></ol></div>
-                            <div class="damage-box"><h4>Fluid</h4><ol><li>Blind</li><li>Coughing</li><li>Deaf</li><li>Broken</li><li>Concussion</li><li>Prone</li></ol></div>
-                            <div class="damage-box"><h4>Ice</h4><ol><li>Additional +1</li><li>Additional +2</li><li>Constrained</li><li>Dislocation</li><li>Slowed (End Next)</li><li>Pinned</li></ol></div>
-                            <div class="damage-box"><h4>Lightning</h4><ol><li>Additional +1</li><li>Additional +2</li><li>Additional +3</li><li>Blind</li><li>Confusion</li><li>Pinned</li></ol></div>
-                            <div class="damage-box"><h4>Solar</h4><ol><li>Additional +1</li><li>Additional +2</li><li>Additional +3</li><li>Blind</li><li>Pinned</li><li>Evil Banishment</li></ol></div>
-                            <div class="damage-box"><h4>Thunder</h4><ol><li>Additional +1</li><li>Cleave</li><li>Confusion</li><li>Deaf</li><li>Disarm</li><li>Knockback (20ft)</li></ol></div>
-                            <div class="damage-box"><h4>Toxic</h4><ol><li>Additional +1</li><li>Additional +2</li><li>Blind</li><li>Confusion</li><li>Coughing</li><li>Fear</li></ol></div>
-                            <div class="damage-box"><h4>Nature</h4><ol><li>Additional +1</li><li>Constrained</li><li>Confusion</li><li>Coughing</li><li>Disease (Verdant Fever)</li><li>Pinned</li></ol></div>
-                            <div class="damage-box"><h4>Psychic</h4><ol><li>Additional +1</li><li>Blind</li><li>Charmed</li><li>Concussion</li><li>Confusion</li><li>Fear</li></ol></div>
-                            <div class="damage-box"><h4>Vozian</h4><ol><li>Siphon (Half Damage)</li><li>Blind</li><li>Coughing</li><li>Disease (Infernal Skritches)</li><li>Intangible (1 round)</li><li>Double Damage</li></ol></div>
-                        </div>
-                    </div>
-                </details>
-            </section>
-
-            <!-- ==================== QUICK REFERENCE ==================== -->
+            <!-- ==================== REFERENCE ==================== -->
             <section class="tab-page" id="reference-content">
                 <div class="ref-cards">
+                    <div class="ref-card">
+                        <h4>Check Result Outcomes</h4>
+                        <ul>
+                            <li><strong>1–4:</strong> Fail + Provoke @Adv</li>
+                            <li><strong>5–9:</strong> Fail: Provoke</li>
+                            <li><strong>10–14:</strong> Fail: Provoke @Dis</li>
+                            <li><strong>15–19:</strong> Success</li>
+                            <li><strong>20–24:</strong> Success + −1 roll</li>
+                            <li><strong>25–29:</strong> Success ++ −2 rolls</li>
+                            <li><strong>30–34:</strong> Success +++ −3 rolls</li>
+                        </ul>
+                    </div>
                     <div class="ref-card">
                         <h4>Action Types</h4>
                         <ul>
@@ -528,37 +763,6 @@
                             <li><strong>Off-Action:</strong> Usable on your turn or after. Provoke, light weapon strikes, switching weapons.</li>
                             <li><strong>Non-Action:</strong> Talk, other.</li>
                             <li><strong>Finisher:</strong> Eliminate locked or submitted foes.</li>
-                        </ul>
-                    </div>
-                    <div class="ref-card">
-                        <h4>Movement</h4>
-                        <ul>
-                            <li><strong>Difficult Terrain:</strong> Halved speed</li>
-                            <li><strong>Jump:</strong> 2ft × Agility or Strength</li>
-                            <li><strong>Climb/Swim:</strong> Counts as difficult terrain</li>
-                            <li><strong>Prone:</strong> Disadv on ranged attacks; adv for melee attacks against you. Stand costs 15ft</li>
-                            <li><strong>Moving Past Creatures:</strong> Can only move past smaller creatures</li>
-                            <li><strong>Dash:</strong> Double distance (Action)</li>
-                            <li><strong>Fall:</strong> 5 dmg per 10ft</li>
-                            <li><strong>Extreme Hazard:</strong> 10 dmg/sec</li>
-                            <li><strong>Burrowing:</strong> Unseen; can't target nor breathe</li>
-                            <li><strong>Teleport:</strong> Unoccupied space, no opportunity attacks</li>
-                        </ul>
-                    </div>
-                    <div class="ref-card">
-                        <h4>Non-Actions</h4>
-                        <ul>
-                            <li><strong>Stress Push:</strong> Take 4 stress damage to gain a +3 bonus on a low roll.</li>
-                            <li><strong>Roleplay:</strong> Briefly communicate or give orders without consequence.</li>
-                        </ul>
-                    </div>
-                    <div class="ref-card">
-                        <h4>Special</h4>
-                        <ul>
-                            <li><strong>Called Shot:</strong> −10 for condition</li>
-                            <li><strong>Surprise:</strong> Additional action</li>
-                            <li><strong>Cover:</strong> Disadv. to be hit</li>
-                            <li><strong>Full Cover:</strong> Cannot be targeted without line of sight</li>
                         </ul>
                     </div>
                     <div class="ref-card">
@@ -583,6 +787,15 @@
                         </ul>
                     </div>
                     <div class="ref-card">
+                        <h4>Off-Actions</h4>
+                        <ul>
+                            <li><strong>Provoke:</strong> Attack a creature that missed you or willingly left your melee range.</li>
+                            <li><strong>Block:</strong> Reduce incoming damage by half if you have shield Armor.</li>
+                            <li><strong>Demoralize:</strong> Contested Influence check; success inflicts Fear.</li>
+                            <li><strong>Switch Weapons:</strong> Drop a weapon and draw another.</li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
                         <h4>Stances</h4>
                         <ul>
                             <li><strong>Advantage Stance:</strong> Gain advantage on your next attack.</li>
@@ -591,12 +804,28 @@
                         </ul>
                     </div>
                     <div class="ref-card">
-                        <h4>Off-Actions</h4>
+                        <h4>Movement</h4>
                         <ul>
-                            <li><strong>Provoke:</strong> Attack a creature that missed you or willingly left your melee range.</li>
-                            <li><strong>Block:</strong> Reduce incoming damage by half if you have shield Armor.</li>
-                            <li><strong>Demoralize:</strong> Contested Influence check; success inflicts Fear.</li>
-                            <li><strong>Switch Weapons:</strong> Drop a weapon and draw another.</li>
+                            <li><strong>Difficult Terrain:</strong> Halved speed</li>
+                            <li><strong>Jump:</strong> 2ft × Agility or Strength</li>
+                            <li><strong>Climb/Swim:</strong> Counts as difficult terrain</li>
+                            <li><strong>Prone:</strong> Disadv on ranged attacks; adv for melee attacks against you. Stand costs 15ft</li>
+                            <li><strong>Moving Past Creatures:</strong> Can only move past smaller creatures</li>
+                            <li><strong>Dash:</strong> Double distance (Action)</li>
+                            <li><strong>Fall:</strong> 5 dmg per 10ft</li>
+                            <li><strong>Extreme Hazard:</strong> 10 dmg/sec</li>
+                            <li><strong>Burrowing:</strong> Unseen; can't target nor breathe</li>
+                            <li><strong>Teleport:</strong> Unoccupied space, no opportunity attacks</li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <h4>Special</h4>
+                        <ul>
+                            <li><strong>Called Shot:</strong> −10 for condition</li>
+                            <li><strong>Surprise:</strong> Additional action</li>
+                            <li><strong>Cover:</strong> Disadv. to be hit</li>
+                            <li><strong>Full Cover:</strong> Cannot be targeted without line of sight</li>
+                            <li><strong>Stress Push:</strong> Take 4 stress damage to gain a +3 bonus on a low roll.</li>
                         </ul>
                     </div>
                     <div class="ref-card">
@@ -611,36 +840,364 @@
                         </ul>
                     </div>
                     <div class="ref-card">
-                        <h4>Press On</h4>
-                        <p>After combat, recover 1 Class Resource and 1 Mana, repair armor (1d6 + Crafting), and heal (1d6 + Survival). Removes all conditions lasting 1 minute or less. Usable twice per day.</p>
-                    </div>
-                    <div class="ref-card">
-                        <h4>Long Rest</h4>
-                        <p>Requires 10 hours of uninterrupted downtime in a safe environment. Restores all wounds, class resources, and Mana; repairs armor to at least half; removes conditions lasting one day or less. Once per day.</p>
-                    </div>
-                    <div class="ref-card">
-                        <h4>Check Result Outcomes</h4>
-                        <ul>
-                            <li><strong>1–4:</strong> Fail + Provoke @Adv</li>
-                            <li><strong>5–9:</strong> Fail: Provoke</li>
-                            <li><strong>10–14:</strong> Fail: Provoke @Dis</li>
-                            <li><strong>15–19:</strong> Success</li>
-                            <li><strong>20–24:</strong> Success + −1 roll</li>
-                            <li><strong>25–29:</strong> Success ++ −2 rolls</li>
-                            <li><strong>30–34:</strong> Success +++ −3 rolls</li>
-                        </ul>
+                        <h4>Rest</h4>
+                        <p><strong>Press On:</strong> After combat, recover 1 Class Resource and 1 Mana, repair armor (1d6 + Crafting), and heal (1d6 + Survival). Removes all conditions lasting 1 minute or less.</p>
+                        <p><strong>Long Rest:</strong> 10 hours of uninterrupted downtime in a safe environment. Restores all wounds, class resources, and Mana; repairs armor to at least half; removes conditions lasting one day or less. Once per day.</p>
                     </div>
                 </div>
+
+                <details class="section">
+                    <summary>Condition Effects</summary>
+                    <div class="section-body">
+                        <table class="ref-table">
+                            <tr>
+                                <th>Condition</th>
+                                <th>Effect</th>
+                                <th>Duration / Description</th>
+                            </tr>
+                            <tr class="category-row">
+                                <td colspan="3">Corpus Conditions</td>
+                            </tr>
+                            <tr>
+                                <td>Bleeding</td>
+                                <td>Cannot recover wounds or receive healing.</td>
+                                <td>Lasts 1 minute</td>
+                            </tr>
+                            <tr>
+                                <td>Broken</td>
+                                <td>Physical Disadvantage</td>
+                                <td>Lasts 6 weeks</td>
+                            </tr>
+                            <tr>
+                                <td>Concussion</td>
+                                <td>Mental Disadvantage, Spellcasting Disadvantage</td>
+                                <td>Until a Long Rest</td>
+                            </tr>
+                            <tr>
+                                <td>Coughing</td>
+                                <td>Mental Disadvantage</td>
+                                <td>Until a Press On or irritant removed</td>
+                            </tr>
+                            <tr>
+                                <td>Dislocation</td>
+                                <td>Physical Disadvantage</td>
+                                <td>Until a Long Rest, or Survival Check</td>
+                            </tr>
+                            <tr>
+                                <td>Slowed</td>
+                                <td>Movement halved</td>
+                                <td>Until source removed</td>
+                            </tr>
+                            <tr>
+                                <td>Pinned</td>
+                                <td>Cannot move; restrained by an object or creature.</td>
+                                <td>Until source removed, or Off-Action removal</td>
+                            </tr>
+                            <tr>
+                                <td>Prone</td>
+                                <td>Disadvantage on ranged attacks; advantage for melee attacks against you.</td>
+                                <td>Requires 15 ft of movement to stand.</td>
+                            </tr>
+
+                            <tr class="category-row">
+                                <td colspan="3">Cognition Conditions</td>
+                            </tr>
+                            <tr>
+                                <td>Blind</td>
+                                <td>Disadvantage on attack checks; attacks against you have advantage.</td>
+                                <td>Off-Action removal if possible or permanent effects require a healer</td>
+                            </tr>
+                            <tr>
+                                <td>Charmed</td>
+                                <td>Mental Disadvantage; cannot attack the source of the charm.</td>
+                                <td>Ends based on the charm's source</td>
+                            </tr>
+                            <tr>
+                                <td>Confused</td>
+                                <td>Mental Disadvantage, attacks against you have advantage.</td>
+                                <td>Until end of next turn or Press On</td>
+                            </tr>
+                            <tr>
+                                <td>Deaf</td>
+                                <td>Stealth disadvantage; Spellcasting disadvantage</td>
+                                <td>Lasts 1 minute or source removed</td>
+                            </tr>
+                            <tr>
+                                <td>Fear</td>
+                                <td>Must dash away or hide until the end of your next turn.</td>
+                                <td>Ends if you cannot see the source for a full round; typically cannot be the same source twice.</td>
+                            </tr>
+
+                            <tr class="category-row">
+                                <td colspan="3">Special Conditions</td>
+                            </tr>
+                            <tr>
+                                <td>Intangible</td>
+                                <td>Immune to physical damage; cannot attack; movement halved.</td>
+                                <td>Ends after the effect's duration or through magical disruption. Cannot move through inorganic material.</td>
+                            </tr>
+                            <tr>
+                                <td>Invisible</td>
+                                <td>Cannot be targeted by opportunity attacks; attacks against have disadvantage.</td>
+                                <td>Ends after making an aggressive action or when revealed by substances like powder or oil.</td>
+                            </tr>
+                            <tr>
+                                <td>Unconscious</td>
+                                <td>Unable to act; vulnerable to critical hits and Finishers.</td>
+                                <td>Ends after a set duration, damage taken, or Off-Action ally assistance.</td>
+                            </tr>
+
+                            <tr class="category-row">
+                                <td colspan="3">Major Conditions</td>
+                            </tr>
+                            <tr>
+                                <td>Stunned</td>
+                                <td>Disadvantage on all checks; movement halved.</td>
+                                <td>Until end of next turn or Press On</td>
+                            </tr>
+                            <tr>
+                                <td>Exhaustion</td>
+                                <td>Disadvantage on all checks; movement halved.</td>
+                                <td>Persists until a long rest, magical recovery, or specific intervention (e.g., caffeine).</td>
+                            </tr>
+                            <tr>
+                                <td>Constrained</td>
+                                <td>Cannot make attack actions; attacks against have advantage</td>
+                                <td>Off-Action removal if possible, escape check from restraints</td>
+                            </tr>
+                            <tr>
+                                <td>Exposed</td>
+                                <td>Take double damage</td>
+                                <td>Until end of next turn or Press On</td>
+                            </tr>
+                            <tr>
+                                <td>Injured</td>
+                                <td>At 0 wounds, any further damage causes immediate Death.</td>
+                                <td>Healing removes the condition. Excess damage beyond reducing wounds to 0 is ignored and does not carry over and cause death</td>
+                            </tr>
+                            <tr>
+                                <td>Death</td>
+                                <td>Character dies and cannot interact with the living world.</td>
+                                <td>Only resurrection magic can remove this condition.</td>
+                            </tr>
+                        </table>
+                    </div>
+                </details>
+
+                <details class="section">
+                    <summary>Damage Tables</summary>
+                    <div class="section-body">
+                        <div class="damage-grid">
+                            <div class="damage-box">
+                                <h4>Impact</h4>
+                                <ol>
+                                    <li>Broken</li>
+                                    <li>Concussion</li>
+                                    <li>Coughing</li>
+                                    <li>Dislocation</li>
+                                    <li>Prone</li>
+                                    <li>Knockback (10ft)</li>
+                                </ol>
+                            </div>
+                            <div class="damage-box">
+                                <h4>Piercing</h4>
+                                <ol>
+                                    <li>Additional +1</li>
+                                    <li>Additional +2</li>
+                                    <li>Additional +3</li>
+                                    <li>Additional +4</li>
+                                    <li>Additional +5</li>
+                                    <li>Pinned</li>
+                                </ol>
+                            </div>
+                            <div class="damage-box">
+                                <h4>Slashing</h4>
+                                <ol>
+                                    <li>Additional +2</li>
+                                    <li>Additional +3</li>
+                                    <li>Bleeding</li>
+                                    <li>Cleave</li>
+                                    <li>Disarm</li>
+                                    <li>Feint (Take Stance)</li>
+                                </ol>
+                            </div>
+                            <div class="damage-box">
+                                <h4>Acid</h4>
+                                <ol>
+                                    <li>Additional +1</li>
+                                    <li>Additional +2</li>
+                                    <li>Additional +3</li>
+                                    <li>Exposed</li>
+                                    <li>Slowed</li>
+                                    <li>Coughing</li>
+                                </ol>
+                            </div>
+                            <div class="damage-box">
+                                <h4>Eclipse</h4>
+                                <ol>
+                                    <li>Additional +1</li>
+                                    <li>Additional +2</li>
+                                    <li>Blind</li>
+                                    <li>Deaf</li>
+                                    <li>Raise upon Death</li>
+                                    <li>Fear</li>
+                                </ol>
+                            </div>
+                            <div class="damage-box">
+                                <h4>Fire</h4>
+                                <ol>
+                                    <li>Additional +1</li>
+                                    <li>Additional +2</li>
+                                    <li>Additional +3</li>
+                                    <li>Exposed</li>
+                                    <li>Blind</li>
+                                    <li>Coughing</li>
+                                </ol>
+                            </div>
+                            <div class="damage-box">
+                                <h4>Fluid</h4>
+                                <ol>
+                                    <li>Blind</li>
+                                    <li>Coughing</li>
+                                    <li>Deaf</li>
+                                    <li>Broken</li>
+                                    <li>Concussion</li>
+                                    <li>Prone</li>
+                                </ol>
+                            </div>
+                            <div class="damage-box">
+                                <h4>Ice</h4>
+                                <ol>
+                                    <li>Additional +1</li>
+                                    <li>Additional +2</li>
+                                    <li>Constrained</li>
+                                    <li>Dislocation</li>
+                                    <li>Slowed (End Next)</li>
+                                    <li>Pinned</li>
+                                </ol>
+                            </div>
+                            <div class="damage-box">
+                                <h4>Lightning</h4>
+                                <ol>
+                                    <li>Additional +1</li>
+                                    <li>Additional +2</li>
+                                    <li>Additional +3</li>
+                                    <li>Blind</li>
+                                    <li>Confusion</li>
+                                    <li>Pinned</li>
+                                </ol>
+                            </div>
+                            <div class="damage-box">
+                                <h4>Solar</h4>
+                                <ol>
+                                    <li>Additional +1</li>
+                                    <li>Additional +2</li>
+                                    <li>Additional +3</li>
+                                    <li>Blind</li>
+                                    <li>Pinned</li>
+                                    <li>Evil Banishment</li>
+                                </ol>
+                            </div>
+                            <div class="damage-box">
+                                <h4>Thunder</h4>
+                                <ol>
+                                    <li>Additional +1</li>
+                                    <li>Cleave</li>
+                                    <li>Confusion</li>
+                                    <li>Deaf</li>
+                                    <li>Disarm</li>
+                                    <li>Knockback (20ft)</li>
+                                </ol>
+                            </div>
+                            <div class="damage-box">
+                                <h4>Toxic</h4>
+                                <ol>
+                                    <li>Additional +1</li>
+                                    <li>Additional +2</li>
+                                    <li>Blind</li>
+                                    <li>Confusion</li>
+                                    <li>Coughing</li>
+                                    <li>Fear</li>
+                                </ol>
+                            </div>
+                            <div class="damage-box">
+                                <h4>Nature</h4>
+                                <ol>
+                                    <li>Additional +1</li>
+                                    <li>Constrained</li>
+                                    <li>Confusion</li>
+                                    <li>Coughing</li>
+                                    <li>Disease (Verdant Fever)</li>
+                                    <li>Pinned</li>
+                                </ol>
+                            </div>
+                            <div class="damage-box">
+                                <h4>Psychic</h4>
+                                <ol>
+                                    <li>Additional +1</li>
+                                    <li>Blind</li>
+                                    <li>Charmed</li>
+                                    <li>Concussion</li>
+                                    <li>Confusion</li>
+                                    <li>Fear</li>
+                                </ol>
+                            </div>
+                            <div class="damage-box">
+                                <h4>Vozian</h4>
+                                <ol>
+                                    <li>Siphon (Half Damage)</li>
+                                    <li>Blind</li>
+                                    <li>Coughing</li>
+                                    <li>Disease (Infernal Skritches)</li>
+                                    <li>Intangible (1 round)</li>
+                                    <li>Double Damage</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </details>
             </section>
 
         </div>
     </div>
 </div>
 
+<!-- ============================================================
+     ROLL TEMPLATE
+     ============================================================ -->
+<rolltemplate class="sheet-rolltemplate-arc20">
+    <div class="sheet-container">
+        <div class="sheet-header">
+            {{#name}}<div class="sheet-name">{{name}}</div>{{/name}}
+            {{#subtitle}}<div class="sheet-subtitle">{{subtitle}}</div>{{/subtitle}}
+        </div>
+        <div class="sheet-content">
+            {{#allprops() name subtitle desc cond}}
+            <div class="sheet-key">{{key}}</div>
+            <div class="sheet-value">{{value}}</div>
+            {{/allprops() name subtitle desc cond}}
+            {{#desc}}<div class="sheet-desc">{{desc}}</div>{{/desc}}
+            {{#cond}}<div class="sheet-cond">⚠ {{cond}}</div>{{/cond}}
+        </div>
+    </div>
+</rolltemplate>
+
 <script type="text/worker">
     // ============================================================
-    // ROLL MODE — Normal / Advantage / Disadvantage -> d20mode formula
+    // ROLL MODE — swaps the die expression every d20 roll references.
+    // @{d20mode} is embedded in every check / attack / cast button,
+    // so changing this radio changes every roll on the sheet at once.
     // ============================================================
+    // Older sheets stored tab names that no longer exist (inventory/progression/
+    // conditions). Without this they open to a blank body.
+    const VALID_TABS = ["core", "combat", "magic", "gear", "reference"];
+
+    on("sheet:opened", function() {
+        getAttrs(["tab"], function(v) {
+            if (VALID_TABS.indexOf(v.tab) === -1) setAttrs({ tab: "core" });
+        });
+    });
+
     const ROLL_MODE_FORMULAS = { normal: "1d20", adv: "2d20kh1", dis: "2d20kl1" };
 
     on("change:rollmode sheet:opened", function() {
@@ -650,15 +1207,57 @@
     });
 
     // ============================================================
+    // GLOBAL MODS — repeating_globals + the temp mods in the roll bar
+    // roll up into global_check / global_attack / global_damage /
+    // global_wounds. Rolls only ever reference those four attrs.
+    // ============================================================
+    function recalcGlobals() {
+        getSectionIDs("repeating_globals", function(ids) {
+            const fields = ["gm_check", "gm_attack", "gm_damage"];
+            ids.forEach(function(id) {
+                fields.push("repeating_globals_" + id + "_gmod_type");
+                fields.push("repeating_globals_" + id + "_gmod_amount");
+                fields.push("repeating_globals_" + id + "_gmod_on");
+            });
+
+            getAttrs(fields, function(v) {
+                const total = { check: 0, attack: 0, damage: 0, wounds: 0 };
+
+                ids.forEach(function(id) {
+                    if (v["repeating_globals_" + id + "_gmod_on"] !== "1") return;
+                    const type = v["repeating_globals_" + id + "_gmod_type"] || "check";
+                    if (!(type in total)) return;
+                    total[type] += parseInt(v["repeating_globals_" + id + "_gmod_amount"], 10) || 0;
+                });
+
+                setAttrs({
+                    global_check:  total.check  + (parseInt(v.gm_check, 10)  || 0),
+                    global_attack: total.attack + (parseInt(v.gm_attack, 10) || 0),
+                    global_damage: total.damage + (parseInt(v.gm_damage, 10) || 0),
+                    global_wounds: total.wounds
+                });
+            });
+        });
+    }
+
+    on("change:repeating_globals:gmod_type change:repeating_globals:gmod_amount change:repeating_globals:gmod_on " +
+       "remove:repeating_globals change:gm_check change:gm_attack change:gm_damage sheet:opened", recalcGlobals);
+
+    on("clicked:clear_temp", function() {
+        setAttrs({ gm_check: 0, gm_attack: 0, gm_damage: 0 });
+    });
+
+    // ============================================================
     // DERIVED STATS — Wounds / Movement / Low-Light Vision max
     // ============================================================
-    on("change:agility change:strength change:observation sheet:opened", function() {
-        getAttrs(["agility", "strength", "observation"], function(v) {
+    on("change:agility change:strength change:observation change:global_wounds sheet:opened", function() {
+        getAttrs(["agility", "strength", "observation", "global_wounds"], function(v) {
             const agi = parseInt(v.agility, 10) || 0;
             const str = parseInt(v.strength, 10) || 0;
             const obs = parseInt(v.observation, 10) || 0;
+            const bonus = parseInt(v.global_wounds, 10) || 0;
             setAttrs({
-                wounds_max: agi + str,
+                wounds_max: agi + str + bonus,
                 movement_max: 30 + 5 * Math.floor(agi / 2),
                 llv_max: 30 + 5 * Math.floor(obs / 2)
             });
@@ -666,11 +1265,12 @@
     });
 
     // ============================================================
-    // TOTAL CHECKS — quick sanity sum during character creation
+    // TOTAL CHECKS — point-spend sanity sum during character creation
     // ============================================================
-    const CHECK_NAMES = ["agility", "crafting", "stealth", "strength", "survival", "influence", "intellect", "luck", "observation", "spirit"];
+    const CHECK_NAMES = ["agility", "crafting", "influence", "intellect", "luck",
+                         "observation", "spirit", "stealth", "strength", "survival"];
 
-    on(CHECK_NAMES.map(n => "change:" + n).join(" ") + " sheet:opened", function() {
+    on(CHECK_NAMES.map(function(n) { return "change:" + n; }).join(" ") + " sheet:opened", function() {
         getAttrs(CHECK_NAMES, function(v) {
             let sum = 0;
             CHECK_NAMES.forEach(function(n) { sum += parseInt(v[n], 10) || 0; });
@@ -679,7 +1279,7 @@
     });
 
     // ============================================================
-    // CONDITIONS -> DISADVANTAGES TAG (auto-feeds every roll's chat card)
+    // CONDITIONS -> @{disadvantages} (auto-attached to every roll card)
     // ============================================================
     const CONDITIONS = [
         ["cond_bleeding", "Bleeding"], ["cond_broken", "Broken"], ["cond_concussion", "Concussion"],
@@ -695,13 +1295,14 @@
 
     on(CONDITION_NAMES.map(function(n) { return "change:" + n; }).join(" ") + " sheet:opened", function() {
         getAttrs(CONDITION_NAMES, function(v) {
-            const active = CONDITIONS.filter(function(c) { return v[c[0]] === "1"; }).map(function(c) { return c[1]; });
+            const active = CONDITIONS.filter(function(c) { return v[c[0]] === "1"; })
+                                     .map(function(c) { return c[1]; });
             setAttrs({ disadvantages: active.length ? active.join(", ") : "None" });
         });
     });
 
     // ============================================================
-    // PRESS ON — dynamic use-checkboxes matching uses/day
+    // PRESS ON — keep the use-checkbox count matching uses/day
     // ============================================================
     on("change:presson_max sheet:opened", function() {
         getAttrs(["presson_max"], function(v) {
@@ -711,12 +1312,13 @@
                 if (current < max) {
                     const updates = {};
                     for (let i = 0; i < (max - current); i++) {
-                        const rowId = generateRowID();
-                        updates["repeating_pressonuse_" + rowId + "_used"] = "0";
+                        updates["repeating_pressonuse_" + generateRowID() + "_used"] = "0";
                     }
                     setAttrs(updates);
                 } else if (current > max) {
-                    ids.slice(max).forEach(function(id) { removeRepeatingRow("repeating_pressonuse_" + id); });
+                    ids.slice(max).forEach(function(id) {
+                        removeRepeatingRow("repeating_pressonuse_" + id);
+                    });
                 }
             });
         });

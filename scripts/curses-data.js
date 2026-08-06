@@ -18,10 +18,12 @@ async function loadCurses() {
         type: e.type || fallbackType,
         sourceKey: (e.source || '').toLowerCase(),
         searchKey: [
-            e.name, e.subtitle, e.source, e.desc, e.infection,
+            e.name, e.subtitle, e.source, e.desc,
+            e.infection, e.progression, e.advanced?.curse, e.advanced?.desc,
             ...(e.sections || []).flatMap(s =>
                 [s.label, s.intro, ...(s.steps || []).flatMap(st => [st.name, st.desc])]
-            )
+            ),
+            ...(e.stages || []).flatMap(s => [s.label, s.desc])
         ].filter(Boolean).join(' ').toLowerCase(),
     }));
 

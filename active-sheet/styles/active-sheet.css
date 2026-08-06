@@ -1893,6 +1893,7 @@ body[data-page-title="Active-Sheet"] #site-header {
 .xp-num--spent { color: var(--muted); font-size: 16px; }
 .xp-num--avail { color: var(--muted); }
 .xp-num--avail.xp-num--ready { color: var(--accent); }
+.xp-num--avail.xp-num--over { color: #e05555; }
 
 .xp-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
 
@@ -3550,6 +3551,131 @@ body[data-page-title="Active-Sheet"] #site-header {
     color: var(--text);
     font-weight: 700;
 }
+
+/* Narrator-only: reveal controls + hidden state */
+
+.handout-card--hidden {
+    border-style: dashed;
+    opacity: 0.82;
+}
+
+.handout-reveal-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.handout-state {
+    flex: 1;
+    min-width: 0;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+}
+.handout-state--shown { color: var(--gold); }
+
+.handout-reveal-btn,
+.handout-popup-btn {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font: inherit;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.handout-popup-btn {
+    border-color: var(--gold);
+    background: var(--gold-dim);
+    color: var(--gold);
+    font-weight: 700;
+}
+.handout-reveal-btn:active { background: var(--panel-2); }
+.handout-popup-btn:active  { background: var(--gold-glow); }
+
+/* ── HANDOUT POPUP (broadcast reveal) ───────────────────────── */
+
+.handout-popup {
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    background: var(--panel);
+    color: var(--text);
+    padding: 0;
+    width: min(92vw, 460px);
+    max-height: 84vh;
+    overflow: hidden;
+}
+.handout-popup::backdrop { background: rgba(0, 0, 0, 0.72); }
+
+.handout-popup-inner {
+    display: flex;
+    flex-direction: column;
+    max-height: 84vh;
+    padding: 14px 16px 16px;
+    box-sizing: border-box;
+}
+
+.handout-popup-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.handout-popup-kicker {
+    flex: 1;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.handout-popup-x {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1;
+    padding: 4px 6px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.handout-popup-x:active { background: var(--panel-2); }
+
+.handout-popup-title {
+    margin: 6px 0 10px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.handout-popup-body {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text);
+}
+
+.handout-popup-dismiss {
+    margin-top: 14px;
+    padding: 10px;
+    width: 100%;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    color: var(--gold);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.handout-popup-dismiss:active { background: var(--gold-glow); }
 
 /* ── THEME HUE SLIDERS ──────────────────────────────────────── */
 

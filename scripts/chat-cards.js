@@ -191,6 +191,35 @@ function parseHandoutMarkdown(text) {
     return parts.join('');
 }
 
+// Modal handout reveal - fired on the narrator's own screen and on every player's
+// screen when the narrator taps "Show All". The dialog is built on first use so
+// neither page needs the markup in its HTML.
+function openHandoutPopup(title, body) {
+    let dlg = document.getElementById('handout-popup');
+    if (!dlg) {
+        dlg = document.createElement('dialog');
+        dlg.id = 'handout-popup';
+        dlg.className = 'handout-popup';
+        dlg.innerHTML = `
+            <div class="handout-popup-inner">
+                <div class="handout-popup-head">
+                    <span class="handout-popup-kicker">Handout</span>
+                    <button class="handout-popup-x" type="button" aria-label="Close">✕</button>
+                </div>
+                <p class="handout-popup-title"></p>
+                <div class="handout-popup-body"></div>
+                <button class="handout-popup-dismiss" type="button">Close</button>
+            </div>`;
+        document.body.appendChild(dlg);
+        dlg.querySelector('.handout-popup-x').addEventListener('click', () => dlg.close());
+        dlg.querySelector('.handout-popup-dismiss').addEventListener('click', () => dlg.close());
+    }
+    dlg.querySelector('.handout-popup-title').textContent = title || 'Handout';
+    dlg.querySelector('.handout-popup-body').innerHTML    = parseHandoutMarkdown(body || '');
+    dlg.querySelector('.handout-popup-body').scrollTop     = 0;
+    if (!dlg.open) dlg.showModal();
+}
+
 const CHAT_TEXT_CLAMP_LENGTH = 240; // chars; above this, clamp + offer "Show more"
 
 // Renders a chat message's text span, clamping long messages with a "Show more" toggle.
@@ -486,11 +515,9 @@ const REF_ACTIONS = [
     { name: 'Disengage',        desc: "Move out of a creature's range without provoking opportunity attacks." },
     { name: 'Unarmed Strike',   desc: 'Deals 1 BPorS damage. Can also be taken as an Off-Action.' },
     { group: 'Stances (Half-Action)' },
-    { name: 'Advantage Stance',    desc: 'Gain Advantage on your next attack.' },
-    { name: 'Disadvantage Stance', desc: 'Give Disadvantage to enemies attacking you or allies in range.' },
-    { name: 'Offensive Stance',    desc: 'Use your Off-Action to Provoke.' },
-    { name: 'Reaction Stance',     desc: 'React to failed attacks against you.' },
-    { name: 'Guard Stance',        desc: 'When attacked, Provoke once without using an Off-Action. On all failed attacks, may Provoke at Disadvantage.' },
+    { name: 'Advantage Stance',    desc: 'Gain advantage on your next attack.' },
+    { name: 'Disadvantage Stance', desc: 'Give disadvantage to enemies attacking you or allies in range.' },
+    { name: 'Guard Stance',        desc: 'When a creature attacks you, Provoke without using an Off-Action once. On all failed attacks, you may also Provoke at disadvantage.' },
     { group: 'Off-Actions' },
     { name: 'Provoke',    desc: 'Attack creatures leaving your melee range without disengaging, when they fail a check against you, or per a specific ability.' },
     { name: 'Drink',      desc: 'Drink or hand off a potion.' },

@@ -51,6 +51,15 @@ service cloud.firestore {
       allow update: if isSignedIn();
     }
 
+    // Handouts stay secret until the narrator reveals them. Players query with
+    // where('revealed','==',true); the narrator reads the whole collection via narratorUid.
+    match /rooms/{roomCode}/handouts/{handoutId} {
+      allow read: if resource.data.revealed == true
+                  || (isSignedIn()
+                      && request.auth.uid == get(/databases/$(database)/documents/rooms/$(roomCode)).data.narratorUid);
+      allow write: if isSignedIn();
+    }
+
     // PRESERVES CURRENT OPEN BEHAVIOR for every other path (rooms/*, players, presence,
     // analytics, etc.). REVIEW your current Console rules before deploying this file — if your
     // project's existing rules differ from "allow everything", adjust this catch-all to match.

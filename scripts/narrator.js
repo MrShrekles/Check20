@@ -841,16 +841,24 @@ function renderNarHandouts() {
     }
 
     const sorted = [...fbHandouts].sort((a, b) => (b.postedAt?.toMillis?.() || 0) - (a.postedAt?.toMillis?.() || 0));
-    el.innerHTML = sorted.map(h => `
-        <div class="handout-card">
+    el.innerHTML = sorted.map(h => {
+        const shown = h.revealed === true;
+        return `
+        <div class="handout-card${shown ? '' : ' handout-card--hidden'}">
             <div class="handout-head">
                 <div class="handout-title">${h.title}</div>
                 <button class="handout-toggle" data-cid="handout-${h.id}" type="button">▾</button>
                 <button class="handout-edit" data-handout-edit="${h.id}" type="button">✎</button>
                 <button class="gen-mon-remove" data-handout-remove="${h.id}">✕</button>
             </div>
+            <div class="handout-reveal-row">
+                <span class="handout-state${shown ? ' handout-state--shown' : ''}">${shown ? '👁 Visible to players' : '🔒 Hidden from players'}</span>
+                <button class="handout-reveal-btn" data-handout-reveal="${h.id}" type="button">${shown ? 'Hide' : 'Reveal'}</button>
+                <button class="handout-popup-btn" data-handout-popup="${h.id}" type="button" title="Pop this up on everyone's screen">📢 Show All</button>
+            </div>
             <div class="handout-body" id="handout-${h.id}-exp" hidden>${parseHandoutMarkdown(h.body || '')}</div>
-        </div>`).join('');
+        </div>`;
+    }).join('');
 
     el.querySelectorAll('.handout-toggle').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -868,6 +876,40 @@ function renderNarHandouts() {
     el.querySelectorAll('[data-handout-remove]').forEach(btn => {
         btn.addEventListener('click', () => removeHandout(btn.dataset.handoutRemove));
     });
+
+    el.querySelectorAll('[data-handout-reveal]').forEach(btn => {
+        btn.addEventListener('click', () => toggleHandoutRevealed(btn.dataset.handoutReveal));
+    });
+
+    el.querySelectorAll('[data-handout-popup]').forEach(btn => {
+        btn.addEventListener('click', () => showHandoutToPlayers(btn.dataset.handoutPopup));
+    });
+}
+
+// Persistent visibility: whether the handout appears in the players' Journal at all.
+async function toggleHandoutRevealed(id) {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    const h = fbHandouts.find(x => x.id === id);
+    if (!h) return;
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'handouts', id), { revealed: h.revealed !== true });
+    } catch(e) { console.error('[ARC] toggleHandoutRevealed failed:', e); }
+}
+
+// Reveal + broadcast: pops the handout up on every screen in the room.
+async function showHandoutToPlayers(id) {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    const h = fbHandouts.find(x => x.id === id);
+    if (!h) return;
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'handouts', id), { revealed: true });
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), {
+            handoutPopup: { id, title: h.title || '', body: h.body || '', at: arc.serverTimestamp() },
+        });
+    } catch(e) { console.error('[ARC] showHandoutToPlayers failed:', e); }
+    openHandoutPopup(h.title, h.body);
 }
 
 async function removeHandout(id) {
@@ -910,7 +952,7 @@ document.getElementById('btn-add-handout')?.addEventListener('click', async func
             await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'handouts', editingHandoutId), { title, body });
         } else {
             await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'handouts', crypto.randomUUID()), {
-                title, body, postedAt: arc.serverTimestamp(),
+                title, body, revealed: false, postedAt: arc.serverTimestamp(),
             });
         }
     } catch(e) { console.error('[ARC] addHandout failed:', e); }
@@ -2327,7 +2369,13 @@ function weightedPick(list, weightFn) {
 
 function genNpcName() {
     const n = GEN_WORLD.names;
-    let name = pick(n.start) + pick(n.core) + pick(n.end);
+    const first = pick(n['fantasy-start']);
+    const last  = pick(n['fantasy-end']);
+    let   core  = pick(n['fantasy-core']);
+    // Avoid doubled letters where the syllables meet
+    if (core && first.endsWith(core[0])) core = core.slice(1);
+    if (core && core.endsWith(last[0]))  core = core.slice(0, -1);
+    const name = first + core + last;
     return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
@@ -2403,6 +2451,47 @@ function appendToJournal(text, title = 'Generator Note') {
     setTimeout(() => document.querySelector('#journal-session-list .jsess-card')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
 }
 
+function escAttr(s) {
+    return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+}
+
+// Source table behind each editable NPC field. Loyalty keeps its table order
+// (Loyal → Hostile); the rest are deduped + sorted so they're scannable.
+function npcFieldPool(field) {
+    if (field === 'loyalty') return LOYALTY_TABLE;
+    if (!GEN_WORLD) return [];
+    const raw =
+        field === 'species'    ? (GEN_SPECIES?.species || []).map(formatSpeciesName) :
+        field === 'faction'    ? GEN_WORLD.affinities   :
+        field === 'religion'   ? GEN_WORLD.gods         :
+        field === 'habitat'    ? GEN_WORLD.habitats     :
+        field === 'item'       ? GEN_WORLD.signatureItems :
+        field === 'motivation' ? GEN_WORLD.motivations  : [];
+    return [...new Set(raw)].sort((a, b) => String(a).localeCompare(String(b)));
+}
+
+// Options are filled on first focus - some pools run to 500+ entries and there
+// can be many cards on screen, so we don't want them all in the DOM up front.
+function fillNpcSelect(sel) {
+    if (sel.dataset.filled === '1') return;
+    const cur  = sel.dataset.value || '';
+    const pool = npcFieldPool(sel.dataset.field);
+    const opts = pool.includes(cur) || !cur ? pool : [cur, ...pool];
+    sel.innerHTML = opts.map(v =>
+        `<option value="${escAttr(v)}"${v === cur ? ' selected' : ''}>${escAttr(v)}</option>`).join('');
+    sel.dataset.filled = '1';
+}
+
+function refreshNpcHead(n) {
+    const card = document.getElementById(`gnpc-${n.id}`);
+    if (!card) return;
+    card.querySelector('.gen-npc-name').textContent    = n.name    || '';
+    card.querySelector('.gen-npc-species').textContent = n.species || '';
+    card.querySelector('.gen-npc-faction').textContent = n.faction || '';
+    const loy = card.querySelector('.gen-npc-loyalty');
+    if (loy) { loy.textContent = n.loyalty || ''; loy.dataset.loyalty = (n.loyalty || '').toLowerCase(); }
+}
+
 function renderGenNpcList() {
     const el = document.getElementById('gen-npc-list');
     if (!el) return;
@@ -2411,8 +2500,31 @@ function renderGenNpcList() {
         return;
     }
 
-    const editable = (npcId, field, value) =>
-        `<span class="gen-npc-edit" contenteditable="true" data-npc-id="${npcId}" data-field="${field}">${value ?? ''}</span>`;
+    // Dropdown-backed field: current value is the only option until it's focused.
+    const dropdown = (npcId, field, value) => `
+        <span class="gen-npc-ctrl">
+            <select class="gen-npc-select" data-npc-id="${npcId}" data-field="${field}" data-value="${escAttr(value)}">
+                <option value="${escAttr(value)}" selected>${escAttr(value)}</option>
+            </select>
+            <button class="gen-npc-reroll" data-npc-id="${npcId}" data-field="${field}" type="button" title="Reroll">🎲</button>
+        </span>`;
+
+    const textField = (npcId, field, value) => `
+        <span class="gen-npc-ctrl">
+            <input class="gen-npc-input" type="text" value="${escAttr(value)}"
+                   data-npc-id="${npcId}" data-field="${field}" autocomplete="off" />
+            <button class="gen-npc-reroll" data-npc-id="${npcId}" data-field="${field}" type="button" title="Reroll">🎲</button>
+        </span>`;
+
+    const ROWS = [
+        ['Species',    'species'],
+        ['Faction',    'faction'],
+        ['Loyalty',    'loyalty'],
+        ['Religion',   'religion'],
+        ['From',       'habitat'],
+        ['Item',       'item'],
+        ['Motivation', 'motivation'],
+    ];
 
     el.innerHTML = nar.genNpcs.map(n => `
         <details class="gen-npc-card" id="gnpc-${n.id}">
@@ -2431,27 +2543,65 @@ function renderGenNpcList() {
                 </div>
             </summary>
             <div class="gen-npc-expanded">
-                <div class="gen-npc-row"><span class="gen-npc-label">Name</span>${editable(n.id,'name',n.name)}</div>
-                <div class="gen-npc-row"><span class="gen-npc-label">Species</span>${editable(n.id,'species',n.species)}</div>
-                <div class="gen-npc-row"><span class="gen-npc-label">Faction</span>${editable(n.id,'faction',n.faction)}</div>
-                <div class="gen-npc-row"><span class="gen-npc-label">Loyalty</span>${editable(n.id,'loyalty',n.loyalty)}</div>
-                <div class="gen-npc-row"><span class="gen-npc-label">Religion</span>${editable(n.id,'religion',n.religion)}</div>
-                <div class="gen-npc-row"><span class="gen-npc-label">From</span>${editable(n.id,'habitat',n.habitat)}</div>
-                <div class="gen-npc-row"><span class="gen-npc-label">Item</span>${editable(n.id,'item',n.item)}</div>
-                <div class="gen-npc-row"><span class="gen-npc-label">Motivation</span>${editable(n.id,'motivation',n.motivation)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Name</span>${textField(n.id, 'name', n.name)}</div>
+                ${ROWS.map(([label, field]) =>
+                    `<div class="gen-npc-row"><span class="gen-npc-label">${label}</span>${dropdown(n.id, field, n[field])}</div>`
+                ).join('')}
             </div>
         </details>`).join('');
 
     el.querySelectorAll('.gen-npc-head button').forEach(btn =>
         btn.addEventListener('click', e => e.stopPropagation())
     );
-    el.querySelectorAll('.gen-npc-edit').forEach(span => {
-        span.addEventListener('click', e => e.stopPropagation());
-        span.addEventListener('blur', () => {
-            const n = nar.genNpcs.find(x => x.id === span.dataset.npcId);
-            if (n) { n[span.dataset.field] = span.textContent.trim(); saveNar(); }
+
+    el.querySelectorAll('.gen-npc-select').forEach(sel => {
+        // Native pickers open on pointerdown, so options must exist by then
+        ['focus', 'pointerdown'].forEach(ev => sel.addEventListener(ev, () => fillNpcSelect(sel)));
+        sel.addEventListener('change', () => {
+            const n = nar.genNpcs.find(x => x.id === sel.dataset.npcId);
+            if (!n) return;
+            n[sel.dataset.field] = sel.value;
+            sel.dataset.value = sel.value;
+            saveNar(); refreshNpcHead(n);
         });
     });
+
+    el.querySelectorAll('.gen-npc-input').forEach(inp => {
+        inp.addEventListener('change', () => {
+            const n = nar.genNpcs.find(x => x.id === inp.dataset.npcId);
+            if (!n) return;
+            n[inp.dataset.field] = inp.value.trim();
+            saveNar(); refreshNpcHead(n);
+        });
+    });
+
+    el.querySelectorAll('.gen-npc-reroll').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const n = nar.genNpcs.find(x => x.id === btn.dataset.npcId);
+            if (!n) return;
+            const field = btn.dataset.field;
+            if (field === 'name') {
+                if (!GEN_WORLD) return;
+                n.name = genNpcName();
+            } else {
+                const pool = npcFieldPool(field);
+                if (!pool.length) return;
+                n[field] = pick(pool);
+            }
+            saveNar();
+            const row  = btn.closest('.gen-npc-row');
+            const ctrl = row?.querySelector('.gen-npc-select, .gen-npc-input');
+            if (ctrl?.classList.contains('gen-npc-select')) {
+                ctrl.dataset.filled = '';
+                ctrl.dataset.value  = n[field];
+                ctrl.innerHTML = `<option value="${escAttr(n[field])}" selected>${escAttr(n[field])}</option>`;
+            } else if (ctrl) {
+                ctrl.value = n[field];
+            }
+            refreshNpcHead(n);
+        });
+    });
+
     el.querySelectorAll('.gen-npc-save').forEach(btn => {
         btn.addEventListener('click', e => {
             e.stopPropagation();
@@ -3070,20 +3220,147 @@ function generateMundane() {
     return { id: crypto.randomUUID(), ...item };
 }
 
+const ENCH_RARITIES      = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
+const ENCH_RARITY_COLORS = { Common:'#888', Uncommon:'#55aa55', Rare:'#5588cc', Epic:'#aa55cc', Legendary:'#cc8822' };
+
+// Full port of the worldbuilding.html enchanted generator: the base item is a real
+// weapon/armor/item (so it carries genuine stats), filtered by the type + rarity
+// pickers, and the naming prefix is the one linked to the rolled effect.
 function generateEnchanted() {
     if (!GEN_ENCHGEN) return null;
-    const base = pick([...(GEN_WEAPONS || []), ...(GEN_ARMOR || []), ...(GEN_ITEMS || [])]);
+
+    const tp = document.getElementById('ench-type-pick')?.value   || 'any';
+    const rp = document.getElementById('ench-rarity-pick')?.value || 'any';
+
+    const weaponPool = (GEN_WEAPONS || []).map(w => ({ ...w, kind: 'weapon', cat: w.category }));
+    const armorPool  = (GEN_ARMOR   || []).map(a => ({ ...a, kind: 'armor',  cat: a.category }));
+    const itemPool   = (GEN_ITEMS   || []).map(i => ({ ...i, kind: 'item',   cat: i.category }));
+    const fullPool   = [...weaponPool, ...armorPool, ...itemPool];
+    const pool       = tp === 'any' ? fullPool : fullPool.filter(x => x.cat === tp);
+    const chosen     = pick(pool.length ? pool : fullPool) || { name: 'Item', kind: 'item', cat: 'Item' };
+
+    const rarity  = rp === 'any' ? pick(ENCH_RARITIES) : rp.charAt(0).toUpperCase() + rp.slice(1);
+    const dmgType = pick(GEN_ENCHGEN.damageTypes);
+    const check   = pick(GEN_ENCHGEN.checks);
+
     const effectEntry = pick(GEN_ENCHGEN.effectObjs);
+    const effect = (effectEntry?.text || '-')
+        .replace('{type}',         dmgType)
+        .replace('{check}',        check)
+        .replace('{origin}',       pick(GEN_ENCHGEN.origins))
+        .replace('{language}',     pick(GEN_ENCHGEN.languages))
+        .replace('{condition}',    pick(GEN_ENCHGEN.conditions))
+        .replace('{manner}',       pick(GEN_ENCHGEN.manners))
+        .replace('{transmission}', pick(GEN_ENCHGEN.transmissions))
+        .trim();
     const prefix = effectEntry?.prefix || pick(GEN_ENCHGEN.prefixes);
-    let effect = effectEntry?.text || '';
-    effect = effect.replace('{type}', pick(GEN_ENCHGEN.damageTypes));
-    effect = effect.replace('{check}', pick(GEN_ENCHGEN.checks));
-    effect = effect.replace('{origin}', pick(GEN_ENCHGEN.origins));
-    effect = effect.replace('{language}', pick(GEN_ENCHGEN.languages));
-    effect = effect.replace('{condition}', pick(GEN_ENCHGEN.conditions));
-    effect = effect.replace('{manner}', pick(GEN_ENCHGEN.manners));
-    effect = effect.replace('{transmission}', pick(GEN_ENCHGEN.transmissions));
-    return { id: crypto.randomUUID(), name: `${prefix} ${base?.name || 'Item'}`, effect };
+
+    return {
+        id:           crypto.randomUUID(),
+        name:         `${prefix} ${chosen.name}`,
+        baseItem:     chosen.name,
+        kind:         chosen.kind,
+        category:     chosen.cat || 'Item',
+        catLabel:     String(chosen.cat || 'Item').replace(/\b\w/g, c => c.toUpperCase()),
+        rarity,
+        effect,
+        damage:       chosen.damage       || '',
+        damageType:   chosen.damageType   || dmgType || '',
+        range:        chosen.range        || '',
+        check:        chosen.check        || '',
+        properties:   chosen.properties   || '',
+        description:  chosen.description  || '',
+        armor:        chosen.armor ?? null,
+        movePenalty:  chosen.movePenalty  || '',
+        checkPenalty: chosen.checkPenalty || '',
+        checkBonus:   chosen.checkBonus   || '',
+        cost:         chosen.cost ?? null,
+        bulk:         chosen.bulk ?? null,
+    };
+}
+
+// Enchantment as a finished sentence - some source effects already end in punctuation.
+function enchantEffectText(it) {
+    const e = String(it.effect || '').trim();
+    if (!e) return '';
+    return /[.!?]$/.test(e) ? e : `${e}.`;
+}
+
+// Base-item stat rows, matching what the main site shows before the enchantment.
+function enchantedStatRows(it) {
+    if (!it.kind) return [];   // legacy card saved before the full port
+    const costBulk = ['Cost/Bulk', `${it.cost ?? '-'}g · ${it.bulk ?? '-'} bulk`];
+    if (it.kind === 'weapon') {
+        return [
+            ['Damage', [it.damage, it.damageType].filter(Boolean).join(' ') || '-'],
+            ['Range',  it.range || '-'],
+            ['Check',  it.check || '-'],
+            ...(it.properties  ? [['Props', it.properties]] : []),
+            ...(it.description ? [['Desc',  it.description]] : []),
+            costBulk,
+        ];
+    }
+    if (it.kind === 'armor') {
+        return [
+            ['Armor', it.armor != null ? `+${it.armor}` : '-'],
+            ...(it.movePenalty  ? [['Move Pen',   it.movePenalty]]  : []),
+            ...(it.checkPenalty ? [['Check Pen',  it.checkPenalty]] : []),
+            ...(it.checkBonus   ? [['Check Bonus', it.checkBonus]]  : []),
+            ...(it.properties   ? [['Props', it.properties]] : []),
+            ...(it.description  ? [['Desc',  it.description]] : []),
+            costBulk,
+        ];
+    }
+    return [
+        ...(it.description ? [['Desc', it.description]] : []),
+        costBulk,
+    ];
+}
+
+// Pushes a generated enchanted item into the party inventory with its full stat
+// block, so a player claiming it lands a working weapon/armor on their sheet.
+async function giveEnchantedToParty(it) {
+    const equipCat = it.kind === 'weapon' ? 'weapon' : it.kind === 'armor' ? 'armor' : 'gear';
+    const payload = {
+        name:         it.name,
+        desc:         [enchantEffectText(it), it.description].filter(Boolean).join(' '),
+        amount:       1,
+        bulk:         it.bulk ?? 1,
+        category:     equipCat,
+        rarity:       it.rarity || '',
+        enchanted:    true,
+        damage:       it.damage       || '',
+        damageType:   it.damageType   || '',
+        range:        it.range        || '',
+        check:        it.check        || '',
+        properties:   it.properties   || '',
+        attackBonus:  0,
+        armorRating:  it.armor ?? 0,
+        notes:        [it.movePenalty, it.checkPenalty, it.checkBonus].filter(Boolean).join(', '),
+    };
+
+    if (currentRoomCode) {
+        const arc = window.__arc;
+        if (arc?.db) {
+            try {
+                await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', crypto.randomUUID()), {
+                    ...payload, addedAt: arc.serverTimestamp(),
+                });
+                postToSharedChat({
+                    type: 'feature', name: it.name,
+                    tags: [it.rarity, it.catLabel, 'Added to Party Inventory'].filter(Boolean),
+                    desc: payload.desc,
+                    time: chatTimestamp(), diceRolls: [],
+                });
+            } catch(e) { console.error('[ARC] giveEnchantedToParty failed:', e); }
+        }
+    } else {
+        nar.inventory.push({ id: crypto.randomUUID(), ...payload });
+        saveNar(); renderInventory();
+    }
+
+    setActivePanel('party');
+    setTimeout(() => document.getElementById('inventory-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
 }
 
 function generateMedicine() {
@@ -3162,10 +3439,54 @@ function renderGenMundaneList() {
 }
 
 function renderGenEnchantedList() {
-    renderCommerceList('gen-enchanted-list', nar.genEnchanted, item => [
-        ['Item', item.name],
-        ['Effect', item.effect],
-    ], 'enchanted');
+    const el = document.getElementById('gen-enchanted-list');
+    if (!el) return;
+    if (!nar.genEnchanted.length) {
+        el.innerHTML = '<p class="empty-hint">Tap Generate to roll an enchanted item.</p>';
+        return;
+    }
+
+    el.innerHTML = nar.genEnchanted.map(it => {
+        const col  = ENCH_RARITY_COLORS[it.rarity] || '#888';
+        const sub  = [it.catLabel, it.baseItem].filter(Boolean).join(' · ');
+        const rows = enchantedStatRows(it);
+        return `
+        <div class="gen-quest-card gen-ench-card" style="--ench-col:${col}">
+            <div class="gen-ench-head">
+                <span class="gen-ench-name">${it.name}</span>
+                ${it.rarity ? `<span class="gen-ench-rarity">${it.rarity}</span>` : ''}
+            </div>
+            ${sub ? `<div class="gen-ench-sub">${sub}</div>` : ''}
+            <div class="gen-quest-rows">
+                ${rows.map(([l, v]) => `
+                <div class="gen-npc-row">
+                    <span class="gen-npc-label">${l}</span>
+                    <span>${v}</span>
+                </div>`).join('')}
+                <div class="gen-npc-row gen-ench-effect-row">
+                    <span class="gen-npc-label">Enchant</span>
+                    <span class="gen-ench-effect">${enchantEffectText(it)}</span>
+                </div>
+            </div>
+            <div class="gen-quest-actions">
+                <button class="gen-npc-journal" data-ench-give="${it.id}">🎁 Give to Party</button>
+                <button class="gen-mon-remove" data-ench-remove="${it.id}">✕</button>
+            </div>
+        </div>`;
+    }).join('');
+
+    el.querySelectorAll('[data-ench-give]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const it = nar.genEnchanted.find(x => x.id === btn.dataset.enchGive);
+            if (it) giveEnchantedToParty(it);
+        });
+    });
+    el.querySelectorAll('[data-ench-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            nar.genEnchanted = nar.genEnchanted.filter(x => x.id !== btn.dataset.enchRemove);
+            saveNar(); renderGenEnchantedList();
+        });
+    });
 }
 
 function renderGenMedicineList() {

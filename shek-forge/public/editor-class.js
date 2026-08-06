@@ -430,6 +430,11 @@ function classQCAnalyze(entry) {
                 }
             }
 
+            // ── 4b. Summon rules (shared with every other editor) ────────────
+            for (const hit of qcCheckSummon(desc, step.duration)) {
+                push(hit.code, hit.label, hit.detail, null);
+            }
+
             // ── 5. Damage dice in description but damage field empty ─────────
             if (!step.damage) {
                 const diceM = desc.match(/\[?\[?(\d+d\d+)\]?\]?/);
@@ -523,6 +528,9 @@ function renderClassQualityCheck(entry, idx) {
         unknown_condition:   '#cc5544',
         missing_check:       '#cc8833',
         missing_duration:    '#7788bb',
+        summon_no_duration:              '#cc5544',
+        summon_permanent_no_death_rule:  '#cc5544',
+        summon_no_recovery_cost:         '#cc8833',
         missing_damage:      '#7788bb',
         damage_no_type:      '#cc5544',
         type_no_damage:      '#cc5544',

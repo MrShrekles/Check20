@@ -20,6 +20,27 @@ function crsSourceOptions() {
     return [...new Set(state.data.map(e => e.source).filter(Boolean))].sort();
 }
 
+// ── ORIGIN COLORS ──────────────────────────────────────────────────────────────
+// Mirrors the site's scripts/origin-colors.js standard - color is tied to
+// origin, not a per-entry override. Kept local since shek-forge doesn't load
+// the site's scripts.
+const CRS_ORIGIN_COLORS = {
+    basic: 'darkslategray', arcane: 'darkcyan', tech: 'darkblue',
+    crystal: 'rgb(79, 0, 0)', nature: '#1b7a41', vozian: '#502379',
+    chrono: '#8a5408', chaos: '#331f0e', life: '#6b2a6a',
+    elemental: '#275c65', dragon: '#ff5500', celestial: '#7a4000',
+    fey: '#aa44aa', none: '#999',
+};
+const CRS_ORIGIN_ALIAS = {
+    divine: 'celestial', infernal: 'dragon', undead: 'crystal',
+    plague: 'chrono', vampire: 'life',
+};
+function crsOriginColor(source) {
+    const key = String(source || '').trim().toLowerCase();
+    const cls = key in CRS_ORIGIN_COLORS ? key : (CRS_ORIGIN_ALIAS[key] || 'none');
+    return CRS_ORIGIN_COLORS[cls];
+}
+
 // ── SECTION / STEP / REWARD MUTATIONS ─────────────────────────────────────────
 function crsAddSection(idx) {
     if (!Array.isArray(state.data[idx].sections)) state.data[idx].sections = [];
@@ -46,6 +67,16 @@ function crsToggleReward(idx, si) {
     const sec = state.data[idx].sections[si];
     if (sec.reward) delete sec.reward;
     else sec.reward = { name: '', desc: '' };
+    markUnsaved();
+    renderEditor();
+}
+
+// ── DISEASE ADVANCED-CURSE MUTATION ─────────────────────────────────────────────
+function crsToggleAdvancedCurse(idx) {
+    const e = state.data[idx];
+    if (!e.advanced) e.advanced = { desc: '' };
+    if ('curse' in e.advanced) delete e.advanced.curse;
+    else e.advanced.curse = '';
     markUnsaved();
     renderEditor();
 }
@@ -144,8 +175,114 @@ function renderCurseSection(idx, sec, si) {
     </div>`;
 }
 
+// ── DISEASE STAGE RENDER ────────────────────────────────────────────────────────
+function renderDiseaseStage(idx, stage, sgi) {
+    return `<div class="field-wrap full" style="margin-bottom:8px;">
+        <label class="field-label">Stage ${sgi + 1}</label>
+        <textarea class="field-input" rows="3" placeholder="What happens while diseased at this stage - conditions, flavor, etc."
+            onchange="updateField(${idx},'stages.${sgi}.desc',this.value)"
+            oninput="markUnsaved()">${escHtml(stage.desc || '')}</textarea>
+    </div>`;
+}
+
+// ── DISEASE FORM ──────────────────────────────────────────────────────────────
+function renderDiseaseForm(e, idx) {
+    const srcOpts = crsSourceOptions();
+    if (!Array.isArray(e.stages)) e.stages = [];
+    while (e.stages.length < 3) e.stages.push({ label: `Stage ${e.stages.length + 1}`, desc: '' });
+    const stages = e.stages.map((stage, sgi) => renderDiseaseStage(idx, stage, sgi)).join('');
+
+    if (!e.advanced) e.advanced = { desc: '' };
+    const curseOpts = state.data.filter(d => d.type === 'curse').map(d => d.name).filter(Boolean);
+    const hasCurse = 'curse' in e.advanced;
+    const advancedCurseField = hasCurse ? `
+        <div class="field-wrap">
+            <label class="field-label">Grants Curse <span style="opacity:0.4;font-size:8px;">(optional)</span></label>
+            <datalist id="crs-curse-opts-${idx}">${curseOpts.map(c => `<option value="${escAttr(c)}">`).join('')}</datalist>
+            <input class="field-input" type="text" list="crs-curse-opts-${idx}"
+                value="${escAttr(e.advanced.curse || '')}"
+                onchange="updateField(${idx},'advanced.curse',this.value)" oninput="markUnsaved()">
+        </div>` : '';
+
+    return `
+        <div class="forge-section">
+            <div class="section-header">Name</div>
+            <div class="section-body">
+                <input class="field-input field-input-name" type="text"
+                    value="${escAttr(e.name || '')}" onchange="updateField(${idx},'name',this.value)" oninput="markUnsaved()">
+            </div>
+        </div>
+        <div class="forge-section">
+            <div class="section-header">Identity</div>
+            <div class="section-body">
+                <div class="field-grid">
+                    <datalist id="crs-src-opts-${idx}">${srcOpts.map(s => `<option value="${escAttr(s)}">`).join('')}</datalist>
+                    <div class="field-wrap">
+                        <label class="field-label">Origin</label>
+                        <input class="field-input" type="text" list="crs-src-opts-${idx}"
+                            value="${escAttr(e.source || '')}" onchange="updateField(${idx},'source',this.value)" oninput="markUnsaved()">
+                    </div>
+                    <div class="field-wrap">
+                        <label class="field-label">Type</label>
+                        <select class="field-input" onchange="updateField(${idx},'type',this.value);refreshGroups()">
+                            ${buildSelect(CRS_TYPE, e.type)}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="forge-section">
+            <div class="section-header">Description</div>
+            <div class="section-body">
+                <textarea class="field-input" rows="3"
+                    onchange="updateField(${idx},'desc',this.value)"
+                    oninput="markUnsaved()">${escHtml(e.desc || '')}</textarea>
+            </div>
+        </div>
+        <div class="forge-section">
+            <div class="section-header">Infection</div>
+            <div class="section-body">
+                <textarea class="field-input" rows="2"
+                    onchange="updateField(${idx},'infection',this.value)"
+                    oninput="markUnsaved()">${escHtml(e.infection || '')}</textarea>
+            </div>
+        </div>
+        <div class="forge-section">
+            <div class="section-header">Progression <span style="opacity:0.4;font-size:8px;">(Press On &amp; Long Rest, not checks - avoid letting one turn force the final stage)</span></div>
+            <div class="section-body">
+                <textarea class="field-input" rows="2"
+                    onchange="updateField(${idx},'progression',this.value)"
+                    oninput="markUnsaved()">${escHtml(e.progression || '')}</textarea>
+            </div>
+        </div>
+        <div class="forge-section">
+            <div class="section-header">Stages</div>
+            <div class="section-body">
+                ${stages}
+            </div>
+        </div>
+        <div class="forge-section">
+            <div class="section-header section-header-split">
+                <span>Advanced <span style="opacity:0.4;font-size:8px;">(progressing past Stage 3)</span></span>
+                <button class="btn-section-add" onclick="crsToggleAdvancedCurse(${idx})">${hasCurse ? '✕ Remove Curse' : '+ Grants a Curse'}</button>
+            </div>
+            <div class="section-body">
+                <div class="field-grid">
+                    ${advancedCurseField}
+                    <div class="field-wrap full">
+                        <label class="field-label">Description</label>
+                        <textarea class="field-input" rows="3"
+                            onchange="updateField(${idx},'advanced.desc',this.value)"
+                            oninput="markUnsaved()">${escHtml(e.advanced.desc || '')}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+}
+
 // ── CURSE FORM ────────────────────────────────────────────────────────────────
 function renderCurseForm(e, idx) {
+    if (e.type === 'disease') return renderDiseaseForm(e, idx);
     const srcOpts = crsSourceOptions();
     const sections = (e.sections || []).map((sec, si) => renderCurseSection(idx, sec, si)).join('');
     return `
@@ -177,11 +314,6 @@ function renderCurseForm(e, idx) {
                         <input class="field-input" type="text" list="crs-src-opts-${idx}"
                             value="${escAttr(e.source || '')}" onchange="updateField(${idx},'source',this.value)" oninput="markUnsaved()">
                     </div>
-                    <div class="field-wrap">
-                        <label class="field-label">Color</label>
-                        <input class="field-input mono" type="text" placeholder="#rrggbb"
-                            value="${escAttr(e.color || '')}" onchange="updateField(${idx},'color',this.value)" oninput="markUnsaved()">
-                    </div>
                 </div>
             </div>
         </div>
@@ -193,15 +325,6 @@ function renderCurseForm(e, idx) {
                     oninput="markUnsaved()">${escHtml(e.desc || '')}</textarea>
             </div>
         </div>
-        ${e.type === 'disease' ? `
-        <div class="forge-section">
-            <div class="section-header">Infection <span style="opacity:0.4;font-size:8px;">(optional)</span></div>
-            <div class="section-body">
-                <textarea class="field-input" rows="2"
-                    onchange="updateField(${idx},'infection',this.value)"
-                    oninput="markUnsaved()">${escHtml(e.infection || '')}</textarea>
-            </div>
-        </div>` : ''}
         <div class="section-header-split" style="margin:10px 4px 4px;">
             <span>Sections <span style="opacity:0.4;font-size:9px;">[${(e.sections || []).length}]</span></span>
             <button class="btn-section-add" onclick="crsAddSection(${idx})">+ Add Section</button>
@@ -216,7 +339,7 @@ const CRS_COLS = [
     { label: 'Subtitle', key: 'subtitle' },
     { label: 'Type',     key: 'type',    style: 'width:80px' },
     { label: 'Source',   key: 'source',  style: 'width:90px' },
-    { label: 'Sections', key: null,      style: 'width:64px' },
+    { label: 'Progress', key: null,      style: 'width:64px' },
     { label: '',         key: null,      style: 'width:56px' },
 ];
 
@@ -238,7 +361,7 @@ function renderCurseTable() {
                 ${buildSelect(CRS_TYPE, e.type)}</select></td>
             <td><input class="gt-input" type="text" list="crs-src-opts" value="${escAttr(e.source || '')}"
                 onchange="updateField(${idx},'source',this.value)" oninput="markUnsaved()" style="min-width:90px"></td>
-            <td class="gt-row-num">${(e.sections || []).length}</td>
+            <td class="gt-row-num">${e.type === 'disease' ? (e.stages || []).length + ' stg' : (e.sections || []).length}</td>
             <td>
                 <div class="gt-actions">
                     <button class="gt-btn gt-btn-edit" onclick="tmEditForm('${type}',${idx})" title="Edit full progression">✎</button>
@@ -300,8 +423,8 @@ function curseEntryRow(entry) {
         name: entry.name || '(unnamed)',
         meta: entry.subtitle || entry.source || '',
         badges: [
-            entry.type ? { label: entry.type, color: entry.color || '#8020a0' } : null,
-            entry.source ? { label: entry.source, color: '#7a7a7a' } : null,
+            entry.type ? { label: entry.type, color: entry.type === 'disease' ? '#a02020' : '#8020a0' } : null,
+            entry.source ? { label: entry.source, color: crsOriginColor(entry.source) } : null,
         ].filter(Boolean),
     };
 }
@@ -312,10 +435,24 @@ registerEditor('curse', {
     entryTitle: (entry) => entry.name || '(unnamed)',
     entryRow:   curseEntryRow,
     headerActions: (entry, idx) => `<button class="btn btn-ghost" onclick="duplicateCurse(${idx})" title="Duplicate this entry">⧉ Duplicate</button>`,
-    newEntry: (group) => ({
-        name: '', subtitle: '', type: group || 'curse', source: '', color: '#5020a0',
-        desc: '', sections: [],
-    }),
+    newEntry: (group) => {
+        const type = group || 'curse';
+        if (type === 'disease') {
+            return {
+                name: '', subtitle: '', type: 'disease', source: '',
+                desc: '',
+                infection: '',
+                progression: 'When you Press On or Long Rest you move to the next stage. You can only move stages once per Press On.',
+                stages: [
+                    { label: 'Stage 1', desc: '' },
+                    { label: 'Stage 2', desc: '' },
+                    { label: 'Stage 3', desc: '' },
+                ],
+                advanced: { desc: '' },
+            };
+        }
+        return { name: '', subtitle: '', type: 'curse', source: '', desc: '', sections: [] };
+    },
     render: (entry, idx) => renderCurseForm(entry, idx),
     onLoad() {
         tmRegister('curse', renderCurseTable);
