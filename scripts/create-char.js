@@ -189,6 +189,7 @@ let classOptData    = {};
 let allSpecies      = [];
 let worldMotivations = [];
 let worldObjects     = [];
+let worldNames       = {};
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 
@@ -209,6 +210,7 @@ async function loadData() {
         allSpecies       = sj?.species      || [];
         worldMotivations = wj?.motivations  || [];
         worldObjects     = wj?.objects      || [];
+        worldNames       = wj?.names        || {};
         // Pre-load armor data so buildAndSave() can store armorRating on equipment
         fetch(DATA_BASE + 'armor.json').then(r => r.json()).then(d => { window._armorData = d; }).catch(() => {});
         renderClassGrid();
@@ -303,6 +305,52 @@ function renderPathStep() {
     updatePathPreview();
 }
 
+// Full step-by-step breakdown of a path/talent, grouped by step number so you can
+// see what the choice unlocks at every level before committing to it.
+function buildProgressionDetails(label, name, steps) {
+    if (!steps?.length) return '';
+
+    const byStep = new Map();
+    steps.forEach(s => {
+        const n = Number(s.step) || 0;
+        if (!byStep.has(n)) byStep.set(n, []);
+        byStep.get(n).push(s);
+    });
+    const ordered = [...byStep.entries()].sort((a, b) => a[0] - b[0]);
+
+    const groups = ordered.map(([step, list]) => `
+        <div class="prog-step-group">
+            <div class="prog-step-num">${step === 0 ? 'Start' : `Step ${step}`}</div>
+            <div class="prog-step-feats">${list.map(s => {
+                const meta = [s.action, s.check, s.range, s.duration].filter(Boolean).join(' · ');
+                const dmg  = [s.damage, s.damageType].filter(v => v !== '' && v != null).join(' ');
+                const bits = [
+                    dmg           ? `Damage ${dmg}`   : '',
+                    s.armor  !== '' && s.armor  != null ? `Armor ${s.armor}` : '',
+                    s.condition   ? `${s.condition}`   : '',
+                ].filter(Boolean).join(' · ');
+                return `
+                <div class="prog-feat">
+                    <div class="prog-feat-name">${s.name || '-'}</div>
+                    ${meta ? `<div class="prog-feat-meta">${meta}</div>` : ''}
+                    ${s.description ? `<div class="prog-feat-desc">${s.description}</div>` : ''}
+                    ${bits ? `<div class="prog-feat-meta prog-feat-meta--stat">${bits}</div>` : ''}
+                </div>`;
+            }).join('')}</div>
+        </div>`).join('');
+
+    const count = steps.length;
+    return `
+    <details class="prog-details">
+        <summary class="prog-summary">
+            <span class="prog-summary-label">${label}</span>
+            <span class="prog-summary-name">${name}</span>
+            <span class="prog-summary-count">${count} feature${count === 1 ? '' : 's'}</span>
+        </summary>
+        <div class="prog-body">${groups}</div>
+    </details>`;
+}
+
 function updatePathPreview() {
     const entries = getEntries(wiz.classKey);
     const preview = document.getElementById('path-preview');
@@ -311,15 +359,19 @@ function updatePathPreview() {
 
     if (wiz.pathName) {
         const pe = entries.find(e => e.name === wiz.pathName);
-        const init = pe?.path?.steps?.filter(s => Number(s.step) === 0) || [];
+        const steps = pe?.path?.steps || [];
+        const init  = steps.filter(s => Number(s.step) === 0);
         if (init.length) parts.push(`<div class="preview-label">Starting Path Feature</div>` +
             init.map(s => `<div class="preview-feat"><strong>${s.name}</strong>${s.description ? ` - ${s.description}` : ''}</div>`).join(''));
+        parts.push(buildProgressionDetails('Path', wiz.pathName, steps));
     }
     if (wiz.talentName) {
         const te = entries.find(e => e.name === wiz.talentName);
-        const init = te?.talent?.steps?.filter(s => Number(s.step) === 0) || [];
+        const steps = te?.talent?.steps || [];
+        const init  = steps.filter(s => Number(s.step) === 0);
         if (init.length) parts.push(`<div class="preview-label">Starting Talent Feature</div>` +
             init.map(s => `<div class="preview-feat"><strong>${s.name}</strong>${s.description ? ` - ${s.description}` : ''}</div>`).join(''));
+        parts.push(buildProgressionDetails('Talent', wiz.talentName, steps));
     }
     preview.innerHTML = parts.join('');
 }
@@ -643,6 +695,42 @@ function renderReview() {
         ${wiz.motivation ? `<div class="review-row"><span class="review-lbl">Motivation</span><span class="review-stats">${wiz.motivation.slice(0,80)}${wiz.motivation.length > 80 ? '…' : ''}</span></div>` : ''}`;
 }
 
+// ── NAME GENERATOR ────────────────────────────────────────────────────────────
+
+let nameStyle = 'fantasy';
+
+// Same syllable logic as the main site's npcGenerator, reading the shared
+// worldbuilding.json name tables.
+function generateCharName(style = 'fantasy') {
+    const n = worldNames;
+    if (!n || !n['fantasy-start']) return '';
+
+    if (style === 'twenties' || style === 'victorian') {
+        return `${pick(n[`${style}-first`])} ${pick(n[`${style}-last`])}`;
+    }
+    if (style === 'goblin') {
+        return pick(n['goblin-prefix']) + pick(n['goblin-suffix']);
+    }
+
+    const first = pick(n['fantasy-start']);
+    const last  = pick(n['fantasy-end']);
+    let   core  = pick(n['fantasy-core']);
+    // Trim where syllables would double a letter
+    if (core && first.endsWith(core[0])) core = core.slice(1);
+    if (core && core.endsWith(last[0]))  core = core.slice(0, -1);
+    const name = first + core + last;
+    return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
+function rollCharName() {
+    const name = generateCharName(nameStyle);
+    if (!name) return;
+    wiz.name = name;
+    const el = document.getElementById('wiz-name');
+    if (el) el.value = name;
+    renderReview();
+}
+
 // ── EQUIPMENT CATEGORY INFERENCE ──────────────────────────────────────────────
 
 function inferEquipCategory(name, notes) {
@@ -658,7 +746,8 @@ function inferEquipCategory(name, notes) {
 function buildAndSave() {
     const s = wiz.speciesObj;
     const classData = classBaseData.find(c => c.name === wiz.classKey);
-    const equipment = (classData?.equipment || []).map(e => {
+    // Blank entries in classes.json would otherwise become nameless ghost items
+    const equipment = (classData?.equipment || []).filter(e => e?.name?.trim()).map(e => {
         const cat = inferEquipCategory(e.name, e.description || '');
         // Look up armor rating from loaded data so active-sheet can sum it immediately
         const armorMatch = cat === 'armor'
@@ -901,5 +990,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('wiz-name').addEventListener('input', e => {
         wiz.name = e.target.value.trim();
+    });
+
+    // Name generator
+    document.getElementById('roll-name')?.addEventListener('click', rollCharName);
+    document.getElementById('name-style-seg')?.addEventListener('click', e => {
+        const btn = e.target.closest('[data-name-style]');
+        if (!btn) return;
+        nameStyle = btn.dataset.nameStyle;
+        btn.parentElement.querySelectorAll('[data-name-style]').forEach(b =>
+            b.classList.toggle('is-sel', b === btn));
+        rollCharName();
     });
 });

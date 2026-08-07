@@ -6198,7 +6198,7 @@
               "action": "Resource",
               "check": "",
               "range": "",
-              "description": "You are bonded with a Gutter Minion, a rat, crow, or alley cat at PL 3. It acts on your turn as an off-action, can scout ahead or carry messages, and makes a bite or claw attack for 1d4 piercing damage. On death, returns after a long rest.",
+              "description": "You are bonded with a Gutter Minion, a rat, crow, or alley cat at PL 3. It acts on your turn as an off-action, can scout ahead or carry messages, and makes a bite or claw attack for 1d4 piercing damage.",
               "duration": "",
               "damage": "1d4",
               "damageType": "Piercing",

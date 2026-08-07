@@ -91,10 +91,6 @@
         {
           "name": "Pistol",
           "description": "1d4! Piercing; Agility, Luck, Observation; Medium; 1 Hand, Light; Bulk: 2"
-        },
-        {
-          "name": "",
-          "description": ""
         }
       ]
     },

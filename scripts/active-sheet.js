@@ -578,6 +578,19 @@ function rebuildWmCheckChips(checkLabel) {
     });
 }
 
+// Brief "Saved ✓" confirmation on a button, then optionally run a follow-up.
+function flashSaved(btn, then) {
+    if (!btn) { then?.(); return; }
+    const original = btn.textContent;
+    btn.textContent = 'Saved ✓';
+    btn.disabled = true;
+    setTimeout(() => {
+        btn.textContent = original;
+        btn.disabled = false;
+        then?.();
+    }, 450);
+}
+
 function saveWeaponToState() {
     if (weaponModalIndex < 0) return;
     const item = state.equipment[weaponModalIndex];
@@ -634,6 +647,14 @@ function closeWeaponModal() {
 function bindWeaponModal() {
     document.getElementById('wm-close')?.addEventListener('click', closeWeaponModal);
     document.getElementById('wm-scrim')?.addEventListener('click', closeWeaponModal);
+
+    // Explicit save - edits already persist on change, but the button makes that
+    // visible and gives a way out of the modal that isn't "Roll".
+    document.getElementById('wm-save')?.addEventListener('click', () => {
+        saveWeaponToState();
+        renderEquipment();
+        flashSaved(document.getElementById('wm-save'), closeWeaponModal);
+    });
 
     // Auto-save all edit inputs on change
     ['wm-name-input','wm-damage-input','wm-dmg-type-input','wm-range-input',
@@ -2111,8 +2132,10 @@ function renderEquipment() {
                 <button class="step-action-btn" type="button" title="Send to chat"
                     data-action="chat" data-name="${esc(item.name)}"
                     data-desc="${esc(item.flavor || item.notes || '')}"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
-                ${isArmor ? `<button class="step-action-btn" type="button" title="Edit"
-                    data-action="edit-armor" data-equip-index="${i}">✎</button>` : ''}
+                <button class="step-action-btn" type="button" title="Give to another player or the party"
+                    data-action="give-equip" data-equip-index="${i}">📤</button>
+                <button class="step-action-btn" type="button" title="Edit"
+                    data-action="edit-equip" data-equip-index="${i}">✎</button>
                 <button class="step-action-btn step-action-btn--danger" type="button"
                     data-action="del-equip" data-equip-index="${i}" aria-label="Remove">✕</button>
             </div>
@@ -2152,6 +2175,10 @@ function renderInventory() {
                 <button class="step-action-btn" type="button" title="Send to chat"
                     data-action="chat" data-name="${esc(item.name)}"
                     data-desc="${esc(item.notes || '')}"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
+                <button class="step-action-btn" type="button" title="Give to another player or the party"
+                    data-action="give-equip" data-equip-index="${i}">📤</button>
+                <button class="step-action-btn" type="button" title="Edit"
+                    data-action="edit-equip" data-equip-index="${i}">✎</button>
                 <button class="step-action-btn step-action-btn--danger" type="button"
                     data-action="del-equip" data-equip-index="${i}" aria-label="Remove">✕</button>
             </div>
@@ -2533,6 +2560,9 @@ document.addEventListener('arc:firebase-ready', () => {
         snap => renderPlayerLoot(snap.docs.map(d => ({ id: d.id, ...d.data() }))),
     );
 
+    // Listen for items other players send directly to us
+    listenToGifts(room);
+
     // Listen to handouts - only the ones the narrator has revealed
     _handoutsUnsub = arc.onSnapshot(
         arc.query(
@@ -2725,7 +2755,188 @@ document.getElementById('player-next-turn-btn')?.addEventListener('click', async
     }
 });
 
+// ── GIVING ITEMS (player → player, player → party inventory) ──────────────────
+
+let roomPlayers = [];       // kept fresh by the players listener, used by the give dialog
+let giveItemRef = null;     // the actual item object, so an incoming gift can't shift an index
+
+// Everything the party-inventory and gift docs need to rebuild a working
+// equipment entry on the receiving end. Firestore rejects undefined, so
+// every field gets a concrete fallback.
+function itemTransferPayload(item) {
+    const cat = item.category || inferEquipCategory(item.name, item.notes);
+    return {
+        name:        item.name        || 'Item',
+        desc:        item.flavor      || item.notes || '',
+        category:    cat,
+        notes:       item.notes       || '',
+        flavor:      item.flavor      || '',
+        damage:      item.damage      || '',
+        damageType:  item.damageType  || '',
+        range:       item.range       || '',
+        check:       item.check       || '',
+        properties:  item.properties  || '',
+        attackBonus: item.attackBonus || 0,
+        critRange:   item.critRange   || 20,
+        armorRating: item.armorRating || 0,
+        moveMod:     item.moveMod     || 0,
+        lowlightMod: item.lowlightMod || 0,
+        bulk:        item.bulk ?? 1,
+        amount:      1,
+    };
+}
+
+// Inverse of itemTransferPayload - rebuilds a sheet equipment entry.
+function equipmentFromPayload(p) {
+    const cat = p.category || 'gear';
+    const entry = { name: p.name, category: cat, notes: p.notes || '', flavor: p.flavor || p.desc || '' };
+    if (cat === 'weapon') {
+        Object.assign(entry, {
+            damage: p.damage || '', damageType: p.damageType || '', range: p.range || '',
+            check: p.check || '', properties: p.properties || '-',
+            attackBonus: p.attackBonus || 0, critRange: p.critRange || 20,
+        });
+        if (!entry.notes) entry.notes = [p.damage, p.damageType, p.range].filter(Boolean).join(' · ');
+    } else if (cat === 'armor') {
+        entry.armorRating = p.armorRating || 0;
+    }
+    if (p.moveMod)     entry.moveMod     = p.moveMod;
+    if (p.lowlightMod) entry.lowlightMod = p.lowlightMod;
+    return entry;
+}
+
+function openGiveDialog(idx) {
+    const item = state.equipment[idx];
+    if (!item) return;
+    const dlg  = document.getElementById('give-item-dialog');
+    const list = document.getElementById('give-target-list');
+    if (!dlg || !list) return;
+
+    giveItemRef = item;
+    document.getElementById('give-item-name').textContent = item.name;
+
+    const room  = localStorage.getItem('arc-room');
+    const myUid = window.__arc?.uid;
+    const hint  = document.getElementById('give-hint');
+
+    if (!room) {
+        hint.textContent = 'Join a session to give items to your party.';
+        list.innerHTML = '';
+        dlg.showModal();
+        return;
+    }
+
+    const others = roomPlayers.filter(p => p.id !== myUid);
+    hint.textContent = 'Choose where it goes. The item leaves your sheet.';
+    list.innerHTML = `
+        <button class="give-target give-target--party" type="button" data-give-party>
+            <span class="give-target-name">Party Inventory</span>
+            <span class="give-target-sub">Anyone can claim it</span>
+        </button>
+        ${others.length
+            ? others.map(p => `
+                <button class="give-target" type="button" data-give-uid="${esc(p.id)}" data-give-name="${esc(p.name || 'Player')}">
+                    <span class="give-target-name">${p.name || 'Player'}</span>
+                    <span class="give-target-sub">Send directly</span>
+                </button>`).join('')
+            : '<p class="empty-hint">No other players in the session yet.</p>'}`;
+
+    dlg.showModal();
+}
+
+function closeGiveDialog() {
+    document.getElementById('give-item-dialog')?.close();
+    giveItemRef = null;
+}
+
+async function giveItemTo(target) {
+    const item = giveItemRef;
+    if (!item) return closeGiveDialog();
+
+    const arc   = window.__arc;
+    const room  = localStorage.getItem('arc-room');
+    if (!arc?.db || !room) return closeGiveDialog();
+
+    const payload = itemTransferPayload(item);
+    const from    = state.char?.name || 'Player';
+
+    try {
+        if (target.kind === 'party') {
+            await arc.setDoc(arc.doc(arc.db, 'rooms', room, 'loot', crypto.randomUUID()), {
+                ...payload, addedAt: arc.serverTimestamp(),
+            });
+        } else {
+            await arc.setDoc(arc.doc(arc.db, 'rooms', room, 'gifts', crypto.randomUUID()), {
+                ...payload,
+                toUid:    target.uid,
+                fromUid:  arc.uid || '',
+                fromName: from,
+                sentAt:   arc.serverTimestamp(),
+            });
+        }
+    } catch(e) {
+        console.error('[ARC] give item failed:', e);
+        return closeGiveDialog();
+    }
+
+    // Only leaves the sheet once the write succeeded
+    const idx = state.equipment.indexOf(item);
+    if (idx >= 0) state.equipment.splice(idx, 1);
+    saveState();
+    recalcArmorBonuses(); renderEquipment(); renderInventory(); calcDerived();
+
+    broadcastChatEntry({
+        type: 'feature',
+        name: payload.name,
+        tags: [target.kind === 'party' ? `${from} → Party Inventory` : `${from} → ${target.name}`],
+        desc: payload.desc,
+        time: chatTimestamp(),
+        diceRolls: [],
+    });
+
+    closeGiveDialog();
+}
+
+// Items sent straight to this player land here, get added to the sheet, then the
+// gift doc is deleted so it can't be applied twice.
+let _giftsUnsub = null;
+
+function listenToGifts(room) {
+    const arc = window.__arc;
+    if (!arc?.db || !arc?.uid) return;
+    if (_giftsUnsub) _giftsUnsub();
+    _giftsUnsub = arc.onSnapshot(
+        arc.query(arc.collection(arc.db, 'rooms', room, 'gifts'), arc.where('toUid', '==', arc.uid)),
+        snap => {
+            snap.docChanges().forEach(async change => {
+                if (change.type !== 'added') return;
+                const p = change.doc.data();
+                state.equipment.push(equipmentFromPayload(p));
+                saveState();
+                recalcArmorBonuses(); renderEquipment(); renderInventory(); calcDerived();
+                ArcNotify.show(`${p.fromName || 'A player'} gave you an item`, p.name || 'Item');
+                try {
+                    await arc.deleteDoc(arc.doc(arc.db, 'rooms', room, 'gifts', change.doc.id));
+                } catch(e) { console.error('[ARC] gift cleanup failed:', e); }
+            });
+        },
+        err => console.error('[ARC] gifts listener error:', err)
+    );
+}
+
+function bindGiveDialog() {
+    document.getElementById('give-close')?.addEventListener('click', closeGiveDialog);
+    document.getElementById('give-cancel')?.addEventListener('click', closeGiveDialog);
+    document.getElementById('give-target-list')?.addEventListener('click', e => {
+        const btn = e.target.closest('.give-target');
+        if (!btn) return;
+        if (btn.hasAttribute('data-give-party')) giveItemTo({ kind: 'party' });
+        else giveItemTo({ kind: 'player', uid: btn.dataset.giveUid, name: btn.dataset.giveName });
+    });
+}
+
 function renderPlayerParty(players) {
+    roomPlayers = players;
     const el = document.getElementById('player-party-list');
     if (!el) return;
     if (!players.length) { el.innerHTML = '<p class="empty-hint">No other players yet.</p>'; return; }
@@ -2950,7 +3161,8 @@ function loadState() {
             });
         }
         if (Array.isArray(d.activeConditions)) state.activeConditions = new Set(d.activeConditions);
-        if (Array.isArray(d.equipment)) state.equipment = d.equipment;
+        // Drop nameless entries - older saves picked up a blank starting item from classes.json
+        if (Array.isArray(d.equipment)) state.equipment = d.equipment.filter(e => e?.name?.trim());
         if (d.progression) Object.assign(state.progression, d.progression);
         if (Array.isArray(d.chat)) state.chat = d.chat;
     } catch (_) { }
@@ -3654,23 +3866,50 @@ function bindAddEquipDrawer() {
         drawer.inert = true;
         document.getElementById('ae-search').value = '';
         document.getElementById('ae-search-results').hidden = true;
-        document.getElementById('ae-add-btn').textContent = '+ Add Item';
+        setAeSubmitLabel(false);
         aeEditIndex = -1;
+    }
+
+    // Both submit buttons (header + end of form) always read the same
+    function setAeSubmitLabel(editing) {
+        const bottom = document.getElementById('ae-add-btn');
+        const top    = document.getElementById('ae-save-top');
+        if (bottom) bottom.textContent = editing ? '✓ Save Changes' : '+ Add Item';
+        if (top)    top.textContent    = editing ? '✓ Save'         : '+ Add';
     }
 
     function openAeDrawerForEdit(idx) {
         const item = state.equipment[idx];
         if (!item) return;
+        const cat = item.category || 'gear';
         aeEditIndex = idx;
-        setAeCategory('armor');
+        setAeCategory(cat);
         openAeDrawer();
-        document.getElementById('ae-drawer-title').textContent = 'Edit Armor';
-        document.getElementById('ae-add-btn').textContent = '✓ Save Changes';
-        document.getElementById('ae-a-name').value  = item.name  || '';
-        document.getElementById('ae-a-notes').value = item.notes || '';
-        const ratingOut = document.getElementById('ae-a-rating');
-        ratingOut.dataset.val = item.armorRating || 0;
-        ratingOut.textContent = item.armorRating || 0;
+        document.getElementById('ae-drawer-title').textContent =
+            cat === 'armor' ? 'Edit Armor' : cat === 'weapon' ? 'Edit Weapon' : 'Edit Item';
+        setAeSubmitLabel(true);
+
+        if (cat === 'weapon') {
+            document.getElementById('ae-w-name').value     = item.name       || '';
+            document.getElementById('ae-w-damage').value   = item.damage     || '';
+            document.getElementById('ae-w-dmg-type').value = item.damageType || '';
+            document.getElementById('ae-w-range').value    = item.range      || '';
+            document.getElementById('ae-w-props').value    = item.properties && item.properties !== '-' ? item.properties : '';
+            document.getElementById('ae-w-check').value    = item.check ? item.check.split(',')[0].trim() : '';
+            const atkOut = document.getElementById('ae-w-atk');
+            atkOut.dataset.val = item.attackBonus || 0;
+            atkOut.textContent = item.attackBonus || 0;
+        } else if (cat === 'armor') {
+            document.getElementById('ae-a-name').value  = item.name  || '';
+            document.getElementById('ae-a-notes').value = item.notes || '';
+            const ratingOut = document.getElementById('ae-a-rating');
+            ratingOut.dataset.val = item.armorRating || 0;
+            ratingOut.textContent = item.armorRating || 0;
+        } else {
+            document.getElementById('ae-g-name').value  = item.name  || '';
+            document.getElementById('ae-g-notes').value = item.notes || '';
+        }
+
         document.getElementById('ae-desc').value = item.flavor || '';
         const moveOut = document.getElementById('ae-move');
         moveOut.dataset.val = item.moveMod || 0; moveOut.textContent = item.moveMod || 0;
@@ -3682,7 +3921,7 @@ function bindAddEquipDrawer() {
 
     function resetAeForm() {
         ['ae-w-name','ae-w-damage','ae-w-dmg-type','ae-w-range','ae-w-props','ae-w-check',
-         'ae-a-name','ae-a-notes','ae-desc'].forEach(id => {
+         'ae-a-name','ae-a-notes','ae-g-name','ae-g-notes','ae-desc'].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.value = '';
         });
@@ -3698,8 +3937,18 @@ function bindAddEquipDrawer() {
             b.classList.toggle('is-sel', b.dataset.aeCat === cat));
         document.getElementById('ae-weapon-fields').hidden = cat !== 'weapon';
         document.getElementById('ae-armor-fields').hidden  = cat !== 'armor';
-        document.getElementById('ae-drawer-title').textContent = cat === 'armor' ? 'Add Armor' : 'Add Weapon';
+        const gearFields = document.getElementById('ae-gear-fields');
+        if (gearFields) gearFields.hidden = cat !== 'gear';
+        const label = cat === 'armor' ? 'Armor' : cat === 'weapon' ? 'Weapon' : 'Item';
+        document.getElementById('ae-drawer-title').textContent =
+            `${aeEditIndex >= 0 ? 'Edit' : 'Add'} ${label}`;
     }
+
+    // Header save mirrors the button at the bottom of the form, so a long form
+    // doesn't require scrolling past every field to commit an edit.
+    document.getElementById('ae-save-top')?.addEventListener('click', () => {
+        document.getElementById('ae-add-btn')?.click();
+    });
 
     // Open
     document.getElementById('btn-open-add-equip')?.addEventListener('click', openAeDrawer);
@@ -3779,19 +4028,59 @@ function bindAddEquipDrawer() {
         const moveMod     = aeStepVal('ae-move');
         const lowlightMod = aeStepVal('ae-lowlight');
 
-        // Edit existing armor
-        if (aeEditIndex >= 0 && aeCategory === 'armor') {
+        // Edit an existing item - mutate in place so fields the drawer doesn't
+        // expose (critRange, enchant flags, …) survive the edit.
+        if (aeEditIndex >= 0) {
             const item = state.equipment[aeEditIndex];
             if (!item) return;
-            const name   = document.getElementById('ae-a-name').value.trim();
+            const nameId = aeCategory === 'weapon' ? 'ae-w-name'
+                         : aeCategory === 'armor'  ? 'ae-a-name' : 'ae-g-name';
+            const name = document.getElementById(nameId)?.value.trim();
             if (!name) return;
-            item.name        = name;
-            item.notes       = document.getElementById('ae-a-notes').value.trim();
-            item.armorRating = aeStepVal('ae-a-rating');
-            item.flavor      = document.getElementById('ae-desc')?.value.trim() || '';
+
+            item.name     = name;
+            item.category = aeCategory;
+            item.flavor   = document.getElementById('ae-desc')?.value.trim() || '';
+
+            if (aeCategory === 'weapon') {
+                item.damage      = document.getElementById('ae-w-damage').value;
+                item.damageType  = document.getElementById('ae-w-dmg-type').value;
+                item.range       = document.getElementById('ae-w-range').value;
+                item.properties  = document.getElementById('ae-w-props').value || '-';
+                item.check       = document.getElementById('ae-w-check').value;
+                item.attackBonus = aeStepVal('ae-w-atk');
+                item.critRange   = item.critRange || 20;
+                item.notes       = [item.damage, item.damageType, item.range].filter(Boolean).join(' · ');
+                delete item.armorRating;
+            } else if (aeCategory === 'armor') {
+                item.notes       = document.getElementById('ae-a-notes').value.trim();
+                item.armorRating = aeStepVal('ae-a-rating');
+            } else {
+                item.notes = document.getElementById('ae-g-notes').value.trim();
+                delete item.armorRating;
+            }
+
             if (moveMod) item.moveMod = moveMod; else delete item.moveMod;
             if (lowlightMod) item.lowlightMod = lowlightMod; else delete item.lowlightMod;
-            recalcArmorBonuses(); renderEquipment(); calcDerived();
+
+            saveState();
+            recalcArmorBonuses(); renderEquipment(); renderInventory(); calcDerived();
+            resetAeForm(); closeAeDrawer();
+            return;
+        }
+
+        if (aeCategory === 'gear') {
+            const name = document.getElementById('ae-g-name').value.trim();
+            if (!name) return;
+            const entry = {
+                name, category: 'gear',
+                notes:  document.getElementById('ae-g-notes').value.trim(),
+                flavor: document.getElementById('ae-desc')?.value.trim() || '',
+            };
+            if (moveMod)     entry.moveMod = moveMod;
+            if (lowlightMod) entry.lowlightMod = lowlightMod;
+            state.equipment.push(entry);
+            saveState(); renderInventory(); calcDerived();
             resetAeForm(); closeAeDrawer();
             return;
         }
@@ -4419,8 +4708,14 @@ function bindProgressionPanel() {
             return;
         }
 
-        if (action === 'edit-armor') {
+        // 'edit-armor' kept for any cached markup from an older build
+        if (action === 'edit-equip' || action === 'edit-armor') {
             openAeDrawerForEdit(parseInt(btn.dataset.equipIndex, 10));
+            return;
+        }
+
+        if (action === 'give-equip') {
+            openGiveDialog(parseInt(btn.dataset.equipIndex, 10));
             return;
         }
 
@@ -4659,6 +4954,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bindSectionEditors();
     bindWeaponModal();
     bindAddEquipDrawer();
+    bindGiveDialog();
     bindFeatureRollModal();
     bindSettings();
     bindSpellsPanel();

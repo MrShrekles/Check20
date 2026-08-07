@@ -242,10 +242,19 @@
             <!-- Step 6: Name & Review -->
             <div class="step" id="step-review">
                 <p class="step-hint">Name your character and confirm your choices.</p>
-                <label class="wiz-field">
+                <div class="wiz-field">
                     <span class="wiz-label">Character Name</span>
-                    <input id="wiz-name" type="text" placeholder="Enter a name…" autocomplete="off" class="wiz-input" />
-                </label>
+                    <div class="name-gen-row">
+                        <input id="wiz-name" type="text" placeholder="Enter a name…" autocomplete="off" class="wiz-input" />
+                        <button class="detail-roll-btn name-gen-btn" id="roll-name" type="button" title="Generate a name">🎲</button>
+                    </div>
+                    <div class="name-style-seg" id="name-style-seg" role="group" aria-label="Name style">
+                        <button class="name-style-btn is-sel" data-name-style="fantasy"   type="button">Fantasy</button>
+                        <button class="name-style-btn"        data-name-style="twenties"  type="button">Modern</button>
+                        <button class="name-style-btn"        data-name-style="victorian" type="button">Victorian</button>
+                        <button class="name-style-btn"        data-name-style="goblin"    type="button">Goblin</button>
+                    </div>
+                </div>
                 <div class="review-card" id="review-card"></div>
             </div>
 

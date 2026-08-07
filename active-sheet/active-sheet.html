@@ -767,6 +767,7 @@
                 <div class="drawer-handle" aria-hidden="true"></div>
                 <div class="drawer-head">
                     <div class="drawer-title" id="ae-drawer-title">Add Equipment</div>
+                    <button class="wm-save-btn" id="ae-save-top" type="button">✓ Save</button>
                     <button class="icon-btn" type="button" data-ae-close aria-label="Close">✕</button>
                 </div>
                 <div class="drawer-body">
@@ -781,6 +782,7 @@
                     <div class="equip-type-toggle ae-type-toggle">
                         <button class="equip-type-btn is-sel" data-ae-cat="weapon" type="button">Weapon</button>
                         <button class="equip-type-btn"        data-ae-cat="armor"  type="button">Armor</button>
+                        <button class="equip-type-btn"        data-ae-cat="gear"   type="button">Item</button>
                     </div>
 
                     <!-- Weapon fields -->
@@ -849,6 +851,16 @@
                         </label>
                     </div>
 
+                    <!-- Item / gear fields -->
+                    <div id="ae-gear-fields" hidden>
+                        <label class="field"><span class="field-label">Name</span>
+                            <input id="ae-g-name" type="text" placeholder="Item name…" autocomplete="off" />
+                        </label>
+                        <label class="field"><span class="field-label">Notes</span>
+                            <input id="ae-g-notes" type="text" placeholder="Quantity, condition, use…" autocomplete="off" />
+                        </label>
+                    </div>
+
                     <!-- Description (magic items, special effects, etc.) -->
                     <label class="field">
                         <span class="field-label">Description</span>
@@ -881,6 +893,20 @@
         <!-- Floating Roll button (thumb friendly) -->
     </main>
 
+    <!-- Give Item Dialog -->
+    <dialog id="give-item-dialog" class="give-dialog">
+        <div class="give-dialog-inner">
+            <div class="give-head">
+                <span class="give-kicker">Give Item</span>
+                <button class="icon-btn" id="give-close" type="button" aria-label="Close">✕</button>
+            </div>
+            <p class="give-item-name" id="give-item-name"></p>
+            <p class="give-hint" id="give-hint">Choose where it goes. The item leaves your sheet.</p>
+            <div class="give-target-list" id="give-target-list"></div>
+            <button class="give-cancel-btn" id="give-cancel" type="button">Cancel</button>
+        </div>
+    </dialog>
+
     <!-- Weapon Attack Modal -->
     <div class="weapon-modal" id="weapon-modal" hidden>
         <div class="weapon-modal-scrim" id="wm-scrim"></div>
@@ -888,6 +914,7 @@
             <div class="drawer-handle" aria-hidden="true"></div>
             <div class="wm-head">
                 <input class="wm-name-input" id="wm-name-input" type="text" placeholder="Weapon name…" autocomplete="off" />
+                <button class="wm-save-btn" id="wm-save" type="button">✓ Save</button>
                 <button class="icon-btn" id="wm-close" type="button" aria-label="Close">✕</button>
             </div>
 

@@ -687,47 +687,149 @@ function renderInventory() {
             </div>
             <span class="inv-amount">×${item.amount}</span>
             <span class="inv-bulk">${bulkTotal} bulk</span>
-            <button class="inv-claim-btn" data-inv-id="${item.id}">Claim</button>
+            <button class="inv-claim-btn" data-inv-award="${item.id}">Award →</button>
+            <button class="gen-mon-remove" data-inv-remove="${item.id}" title="Remove from inventory">✕</button>
         </div>`;
     }).join('');
 
-    el.querySelectorAll('.inv-claim-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const id   = btn.dataset.invId;
-            if (currentRoomCode) {
-                claimLootItem(id);
-            } else {
-                const item = nar.inventory.find(x => x.id === id);
-                if (!item) return;
-                item.amount = Math.max(0, item.amount - 1);
-                if (item.amount === 0) nar.inventory = nar.inventory.filter(x => x.id !== id);
-                saveNar(); renderInventory();
-            }
-        });
+    el.querySelectorAll('[data-inv-award]').forEach(btn => {
+        btn.addEventListener('click', () => openAwardDialog(btn.dataset.invAward));
+    });
+
+    el.querySelectorAll('[data-inv-remove]').forEach(btn => {
+        btn.addEventListener('click', () => removeLootItem(btn.dataset.invRemove));
     });
 }
 
-async function claimLootItem(id) {
+// Drops one of an item without giving it to anyone (spent, destroyed, mis-added).
+async function removeLootItem(id) {
+    if (!currentRoomCode) {
+        const item = nar.inventory.find(x => x.id === id);
+        if (!item) return;
+        item.amount = Math.max(0, (item.amount || 1) - 1);
+        if (item.amount === 0) nar.inventory = nar.inventory.filter(x => x.id !== id);
+        saveNar(); renderInventory();
+        return;
+    }
     const arc  = window.__arc;
-    if (!arc?.db || !currentRoomCode) return;
+    if (!arc?.db) return;
     const item = fbLoot.find(x => x.id === id);
     if (!item) return;
     try {
-        if (item.amount <= 1) {
+        if ((item.amount || 1) <= 1) {
             await arc.deleteDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', id));
         } else {
-            await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', id), {
-                amount: item.amount - 1,
-            });
+            await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', id), { amount: item.amount - 1 });
         }
-        postToSharedChat({
-            type: 'feature', name: item.name,
-            tags: ['Removed from Inventory'],
-            desc: item.desc || '',
-            time: chatTimestamp(), diceRolls: [],
-        });
-    } catch(e) { console.error('[ARC] claimLoot failed:', e); }
+    } catch(e) { console.error('[ARC] removeLoot failed:', e); }
 }
+
+// ── AWARDING ITEMS TO A SPECIFIC PLAYER ───────────────────────────────────────
+
+let awardItemId = null;
+
+// Normalised to what the player sheet's equipmentFromPayload() reads back.
+// Firestore rejects undefined, so every field gets a concrete fallback.
+function lootToGiftPayload(item) {
+    return {
+        name:        item.name        || 'Item',
+        desc:        item.desc        || '',
+        category:    item.category    || 'gear',
+        notes:       item.notes       || '',
+        flavor:      item.flavor      || '',
+        damage:      item.damage      || '',
+        damageType:  item.damageType  || '',
+        range:       item.range       || '',
+        check:       item.check       || '',
+        properties:  item.properties  || '',
+        attackBonus: item.attackBonus || 0,
+        critRange:   item.critRange   || 20,
+        armorRating: item.armorRating || 0,
+        moveMod:     item.moveMod     || 0,
+        lowlightMod: item.lowlightMod || 0,
+        bulk:        item.bulk ?? 1,
+    };
+}
+
+function openAwardDialog(id) {
+    const dlg  = document.getElementById('award-item-dialog');
+    const list = document.getElementById('award-target-list');
+    const hint = document.getElementById('award-hint');
+    if (!dlg || !list) return;
+
+    const item = currentRoomCode ? fbLoot.find(x => x.id === id) : nar.inventory.find(x => x.id === id);
+    if (!item) return;
+
+    awardItemId = id;
+    document.getElementById('award-item-name').textContent = item.name || 'Item';
+
+    if (!currentRoomCode) {
+        hint.textContent = 'Create a session to award items to players.';
+        list.innerHTML = '';
+        dlg.showModal();
+        return;
+    }
+
+    const players = fbPlayers.filter(p => !nar.archived.includes(p.id));
+    hint.textContent = 'Choose who receives it. It lands straight on their sheet.';
+    list.innerHTML = players.length
+        ? players.map(p => `
+            <button class="give-target" type="button" data-award-uid="${escAttr(p.id)}" data-award-name="${escAttr(p.name || 'Player')}">
+                <span class="give-target-name">${p.name || 'Player'}</span>
+                <span class="give-target-sub">Send to their sheet</span>
+            </button>`).join('')
+        : '<p class="empty-hint">No players have joined the session yet.</p>';
+
+    dlg.showModal();
+}
+
+function closeAwardDialog() {
+    document.getElementById('award-item-dialog')?.close();
+    awardItemId = null;
+}
+
+async function awardItemTo(uid, playerName) {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode || !awardItemId) return closeAwardDialog();
+
+    const id   = awardItemId;
+    const item = fbLoot.find(x => x.id === id);
+    if (!item) return closeAwardDialog();
+
+    const payload = lootToGiftPayload(item);
+
+    try {
+        await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'gifts', crypto.randomUUID()), {
+            ...payload,
+            toUid:    uid,
+            fromUid:  arc.uid || '',
+            fromName: 'Narrator',
+            sentAt:   arc.serverTimestamp(),
+        });
+    } catch(e) {
+        console.error('[ARC] awardItem failed:', e);
+        return closeAwardDialog();
+    }
+
+    // Only leaves party inventory once the gift write succeeded
+    await removeLootItem(id);
+
+    postToSharedChat({
+        type: 'feature', name: payload.name,
+        tags: [`Awarded to ${playerName}`],
+        desc: payload.desc,
+        time: chatTimestamp(), diceRolls: [],
+    });
+
+    closeAwardDialog();
+}
+
+document.getElementById('award-close')?.addEventListener('click', closeAwardDialog);
+document.getElementById('award-cancel')?.addEventListener('click', closeAwardDialog);
+document.getElementById('award-target-list')?.addEventListener('click', e => {
+    const btn = e.target.closest('[data-award-uid]');
+    if (btn) awardItemTo(btn.dataset.awardUid, btn.dataset.awardName);
+});
 
 // "+ Add Item" type toggle (Item / Weapon / Armor)
 let invCategory = 'gear';

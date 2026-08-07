@@ -60,6 +60,13 @@ service cloud.firestore {
       allow write: if isSignedIn();
     }
 
+    // Direct player-to-player item handoffs. Only the recipient can read or clear
+    // their own gifts; any signed-in member of the room can send one.
+    match /rooms/{roomCode}/gifts/{giftId} {
+      allow read, delete: if isSignedIn() && request.auth.uid == resource.data.toUid;
+      allow create: if isSignedIn() && request.resource.data.fromUid == request.auth.uid;
+    }
+
     // PRESERVES CURRENT OPEN BEHAVIOR for every other path (rooms/*, players, presence,
     // analytics, etc.). REVIEW your current Console rules before deploying this file — if your
     // project's existing rules differ from "allow everything", adjust this catch-all to match.
