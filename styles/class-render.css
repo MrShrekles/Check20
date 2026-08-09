@@ -162,3 +162,101 @@ select {
 .collapsible-box[open] summary::after {
     transform: rotate(180deg);
 }
+/* ─── Origin option grid ─────────────────────────────────────────────────────
+   Path/talent picker. One option per origin, all twelve visible at once, each
+   tinted with its canonical origin colour from scripts/origin-colors.js.
+   Replaces the old <select> - see class-loader.js for why.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.picker-hint {
+    margin: .2rem 0 .6rem;
+    font-size: .8rem;
+    color: var(--cream, #ddd);
+    opacity: .7;
+}
+
+.origin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 6px;
+    margin-bottom: 1.25rem;
+}
+
+.origin-opt {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    padding: .45rem .55rem;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    color: var(--white, #fff);
+    background: color-mix(in srgb, var(--pill-accent, #666) 22%, var(--dark-3, #222));
+    border: 1px solid color-mix(in srgb, var(--pill-accent, #666) 55%, transparent);
+    border-left: 4px solid var(--pill-accent, #666);
+    border-radius: var(--border-radius, 4px);
+    box-shadow: none;
+    transform: none !important;
+    transition: background .15s ease, border-color .15s ease;
+}
+
+.origin-opt:hover {
+    background: color-mix(in srgb, var(--pill-accent, #666) 45%, var(--dark-3, #222));
+    border-color: var(--pill-accent, #666);
+}
+
+.origin-opt.selected {
+    background: var(--pill-accent, #666);
+    border-color: var(--cream, #eee);
+    box-shadow: 0 0 0 1px var(--cream, #eee) inset;
+}
+
+.origin-opt-name {
+    font-weight: 700;
+    font-size: .82rem;
+    line-height: 1.2;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .7);
+}
+
+.origin-opt-origin {
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: .8;
+}
+
+.origin-opt.selected .origin-opt-origin {
+    opacity: 1;
+}
+
+/* Narrow screens: the two columns stack, so allow wider option cards */
+@media (max-width: 600px) {
+    .origin-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+}
+
+/* ─── Selected path/talent meta strip ─── */
+.feature-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .3rem 1.1rem;
+    margin: .35rem 0 .7rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+    font-size: .78rem;
+    color: var(--cream, #ddd);
+}
+
+.feature-meta strong {
+    display: block;
+    font-size: .58rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: .55;
+    font-weight: 700;
+}

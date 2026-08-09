@@ -1,0 +1,226 @@
+/* ═══════════════════════════════════════════════════════════
+   CLASS CODEX - class-codex.html
+   Loads after main.css → codex-ui.css → spells.css → species.css.
+   Only page-local bits live here; rows, grids, origin tags and
+   the sticky toolbar all come from the shared codex layers.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Toolbar sort select ── */
+.species-toolbar-main #class-sort {
+    width: auto;
+    min-width: 0;
+    flex-shrink: 0;
+    font-size: .85rem;
+    padding: .3rem .55rem;
+}
+
+.species-toolbar-main #class-search {
+    flex: 1 1 160px;
+    min-width: 0;
+    font-size: .85rem;
+    padding: .3rem .6rem;
+}
+
+#class-count {
+    font-size: .78rem;
+    color: var(--text-muted, #888);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* ── Origin filter pills carry their canonical colour ── */
+.toggle-btn.origin-pill {
+    border-left: 4px solid var(--pill-accent, #999);
+    text-transform: capitalize;
+}
+
+.toggle-btn.origin-pill.active {
+    background: color-mix(in srgb, var(--pill-accent, #999) 28%, transparent);
+    border-color: var(--pill-accent, #999);
+}
+
+/* ── Path / Talent / Core chip in the row head ── */
+.class-kind-chip {
+    font-size: var(--codex-tag-size, .65rem);
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    font-weight: 700;
+    flex-shrink: 0;
+    background: var(--dark-1, #0a0a0a);
+    border: 1px solid rgba(255, 255, 255, .18);
+    color: rgba(255, 255, 255, .65);
+}
+
+.class-kind-chip.kind-path {
+    border-color: var(--gold-1, #c8922a);
+    color: var(--gold-1, #c8922a);
+}
+
+.class-kind-chip.kind-talent {
+    border-color: var(--green-3, #4a7a45);
+    color: var(--green-3, #4a7a45);
+}
+
+.class-kind-chip.kind-core {
+    background: var(--gold-1, #c8922a);
+    border-color: var(--gold-2, #e0b455);
+    color: var(--dark-1, #111);
+}
+
+/* ── Class core row sits apart from the option rows ── */
+.class-core-row {
+    grid-column: 1 / -1;
+    border-left-color: var(--gold-1, #c8922a);
+    background: #201705;
+}
+
+.class-core-row .spell-row-name {
+    letter-spacing: .12em;
+}
+
+.class-equip-list {
+    margin: .25rem 0 0 1.1rem;
+    padding: 0;
+    font-size: var(--codex-effect-size, .83rem);
+    line-height: var(--codex-lh, 1.5);
+}
+
+.class-equip-list strong {
+    color: var(--gold-2, #e0b455);
+}
+
+/* ── Row detail ── */
+.class-desc {
+    font-size: var(--codex-effect-size, .83rem);
+    line-height: var(--codex-lh, 1.5);
+    color: var(--text-cream);
+    margin: .5rem 0 .75rem;
+    padding-bottom: .6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .07);
+}
+
+.class-step-group {
+    margin-bottom: .85rem;
+}
+
+.class-step-label {
+    margin: 0 0 .35rem;
+    font-size: .62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--gold-2, #e0b455);
+    opacity: .8;
+}
+
+.class-step .spell-intent-header {
+    align-items: center;
+    gap: .45rem;
+}
+
+.class-step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.35em;
+    height: 1.35em;
+    padding: 0 .3em;
+    border-radius: 3px;
+    background: var(--dark-1, #0a0a0a);
+    border: 1px solid var(--green-3, #4a7a45);
+    color: var(--text-cream);
+    font-family: monospace;
+    font-size: var(--codex-meta-size, .7rem);
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.class-step-num--open {
+    border-color: transparent;
+    background: transparent;
+    color: var(--gold-1, #c8922a);
+}
+
+.class-step-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    margin: .25rem 0 .35rem;
+}
+
+.class-tag {
+    font-size: var(--codex-tag-size, .65rem);
+    padding: 1px 6px;
+    border-radius: 3px;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+    background: var(--dark-1, #0a0a0a);
+    border: 1px solid rgba(255, 255, 255, .12);
+    color: rgba(255, 255, 255, .7);
+    white-space: nowrap;
+}
+
+.class-tag.tag-action    { border-color: var(--gold-1, #c8922a); color: var(--gold-1, #c8922a); }
+.class-tag.tag-check     { border-color: #4f8fb0; color: #8fc6e0; }
+.class-tag.tag-damage    { border-color: #a33; color: #e08585; }
+.class-tag.tag-condition { border-color: #8a5408; color: #d5a458; }
+.class-tag.tag-armor     { border-color: #5a6f8a; color: #a8bcd4; }
+
+/* ── Intro panel ── */
+.class-intro-panel {
+    margin: var(--padding, 1rem);
+    background: var(--dark-2, #1a1a1a);
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-left: 3px solid var(--gold-1, #c8922a);
+    border-radius: var(--border-radius, 4px);
+}
+
+.class-intro-panel > summary {
+    cursor: pointer;
+    padding: .55rem .8rem;
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--gold, #c8922a);
+}
+
+.class-intro-body {
+    padding: 0 .9rem .9rem;
+    font-size: .85rem;
+    line-height: 1.55;
+}
+
+.class-intro-body .two-col {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+}
+
+.class-intro-body h3 {
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold-2, #e0b455);
+    margin: .9rem 0 .3rem;
+}
+
+.class-intro-body ol {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.class-intro-body li {
+    margin-bottom: .4rem;
+}
+
+/* ── No results ── */
+.class-no-results {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted, #888);
+    font-style: italic;
+}

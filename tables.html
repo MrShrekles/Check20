@@ -103,6 +103,57 @@
                     <button class="copy-button" data-target="starting-wealth-amount">Copy</button>
                 </div>
 
+                <div class="flex-item" id="name-generator">
+                    <h2>Name Generator</h2>
+                    <p>
+                        Stuck on a name? Roll a handful and take whichever one sticks. Fantasy names are
+                        stitched together from syllables; the other styles pull from period name lists.
+                    </p>
+                    <div class="features">
+                        <p id="generated-names">Your names will appear here.</p>
+                    </div>
+                    <div class="controls">
+                        <button id="roll-names">Roll for Names</button>
+                        <select id="name-style-pick" title="Naming style">
+                            <option value="fantasy">Fantasy</option>
+                            <option value="twenties">1920s</option>
+                            <option value="victorian">Victorian</option>
+                            <option value="goblin">Goblin</option>
+                            <option value="any">Any Style</option>
+                        </select>
+                    </div>
+                    <button class="copy-button" data-target="generated-names">Copy</button>
+                </div>
+
+                <div class="flex-item" id="random-weapon">
+                    <h2>Random Weapon</h2>
+                    <p>
+                        Pull something straight off the <a href="weapons.html">weapons list</a>. Good for
+                        loot drops, starting gear, or when you cannot decide what your character carries.
+                    </p>
+                    <div class="features">
+                        <p id="selected-weapon">Your weapon will appear here.</p>
+                    </div>
+                    <div class="controls">
+                        <button id="roll-weapon">Roll for Weapon</button>
+                        <select id="weapon-category-pick" title="Weapon category">
+                            <option value="any">Any Type</option>
+                            <option value="melee">Melee</option>
+                            <option value="ranged">Ranged</option>
+                            <option value="firearm">Firearm</option>
+                            <option value="magic">Magic</option>
+                        </select>
+                        <select id="weapon-rarity-pick" title="Weapon rarity">
+                            <option value="any">Any Rarity</option>
+                            <option value="common">Common</option>
+                            <option value="uncommon">Uncommon</option>
+                            <option value="rare">Rare</option>
+                            <option value="very rare">Very Rare</option>
+                        </select>
+                    </div>
+                    <button class="copy-button" data-target="selected-weapon">Copy</button>
+                </div>
+
                 <img src="assets/images/Adventure.png" style="width: 101%; border-radius: var(--border-radius);transform: scale(102%);" alt="">
 
             </div>

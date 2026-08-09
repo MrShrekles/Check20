@@ -13,6 +13,7 @@ function setActivePanel(key) {
     if (key === 'chat' && window.innerWidth >= 1100) {
         const notif = document.getElementById('chat-notif');
         if (notif) notif.hidden = true;
+        setNarChatSubTab('messages');
         return;
     }
     PANEL_IDS.forEach(id => {
@@ -28,6 +29,9 @@ function setActivePanel(key) {
     if (key === 'chat') {
         const notif = document.getElementById('chat-notif');
         if (notif) notif.hidden = true;
+        // Always land on Messages. Anything that wants Initiative (openInitiative)
+        // calls setNarChatSubTab after this and wins.
+        setNarChatSubTab('messages');
         // scroll to newest (top) when opening chat
         const scroller = document.getElementById('chat-sub-messages');
         if (scroller) scroller.scrollTop = 0;
@@ -1037,7 +1041,7 @@ function startEditHandout(id) {
 
     if (titleEl) titleEl.value = h.title || '';
     if (bodyEl)  bodyEl.value  = h.body  || '';
-    if (addBtn)  addBtn.textContent = '✓ Save Changes';
+    if (addBtn)  addBtn.textContent = '✓ Save';
     if (details) details.open = true;
 }
 
@@ -1781,11 +1785,7 @@ async function endSession() {
     } catch(e) { console.error('[ARC] endSession failed:', e); }
 
     // Clean up narrator side
-    if (partyUnsubscribe)  { partyUnsubscribe();  partyUnsubscribe  = null; }
-    if (lootUnsubscribe)   { lootUnsubscribe();   lootUnsubscribe   = null; }
-    if (handoutsUnsubscribe) { handoutsUnsubscribe(); handoutsUnsubscribe = null; }
-    if (roomUnsubscribe)   { roomUnsubscribe();   roomUnsubscribe   = null; }
-    if (chatUnsubscribe)   { chatUnsubscribe();   chatUnsubscribe   = null; }
+    detachRoomListeners();
 
 
     currentRoomCode = null;
@@ -1931,17 +1931,8 @@ document.getElementById('btn-nar-dice-roll')?.addEventListener('click', () => {
     const total  = rolls.reduce((s, r) => s + r, 0) + bonus;
     const sidesLabel = sides === 100 ? '%' : sides;
     const label  = `${count}d${sidesLabel}${bonus !== 0 ? (bonus > 0 ? '+' + bonus : bonus) : ''}`;
-    const note   = count > 1 ? `[${rolls.join('+')}]${bonus !== 0 ? (bonus > 0 ? '+' + bonus : bonus) : ''}` : (bonus !== 0 ? String(bonus > 0 ? '+' + bonus : bonus) : '');
-    const resultEl = document.getElementById('nar-roll-result');
-    if (resultEl) {
-        resultEl.hidden    = false;
-        resultEl.className = 'nar-roll-result';
-        resultEl.innerHTML = `
-            <div class="nar-roll-label">${label}</div>
-            <div class="nar-roll-num">${total}</div>
-            ${note ? `<div class="nar-roll-sub">${note}</div>` : ''}
-        `;
-    }
+    // The roll lands in the chat feed directly below the dice panel, so there is
+    // no separate local readout (the old #nar-roll-result element no longer exists).
     postToSharedChat({ type: 'dice', label, total, rolls, bonus: 0, notation: label });
 });
 
@@ -3799,6 +3790,9 @@ function listenToSharedChat(code) {
                               m.type === 'weapon-attack' ? `${m.weaponName || 'Attack'} - ${m.total ?? ''}` :
                               m.text ? m.text.slice(0, 80) : 'New message';
                 ArcNotify.show(title, body);
+                // ArcNotify no-ops while the page is focused; the toast covers that
+                const onChat = document.getElementById('panel-chat')?.classList.contains('is-active');
+                if (!onChat) showChatToast(m.author || 'New message', body, () => setActivePanel('chat'));
             });
         }
         // Auto-add players who rolled initiative
@@ -4127,45 +4121,6 @@ arcInitBanNotice('chat-input-row');
 const NAR_DEFAULT_A1 = '#4c6e6e';  // teal-light
 const NAR_DEFAULT_A2 = '#b8860b';  // dark goldenrod
 
-function hexToRgb(hex) {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return { r, g, b };
-}
-
-function hexToHue(hex) {
-    if (!hex || hex.length < 7) return 0;
-    const { r, g, b } = hexToRgb(hex);
-    const r1 = r/255, g1 = g/255, b1 = b/255;
-    const max = Math.max(r1,g1,b1), min = Math.min(r1,g1,b1), d = max - min;
-    if (d === 0) return 0;
-    let h;
-    if (max === r1)      h = ((g1 - b1) / d + 6) % 6;
-    else if (max === g1) h = (b1 - r1)  / d + 2;
-    else                 h = (r1 - g1)  / d + 4;
-    return Math.round(h * 60);
-}
-
-function hexToSL(hex) {
-    if (!hex || hex.length < 7) return { s: 65, l: 60 };
-    const { r, g, b } = hexToRgb(hex);
-    const r1 = r/255, g1 = g/255, b1 = b/255;
-    const max = Math.max(r1,g1,b1), min = Math.min(r1,g1,b1);
-    const l = (max + min) / 2;
-    const d = max - min;
-    const s = d === 0 ? 0 : d / (1 - Math.abs(2*l - 1));
-    return { s: Math.round(s * 100), l: Math.round(l * 100) };
-}
-
-function hslToHex(h, s = 65, l = 60) {
-    s /= 100; l /= 100;
-    const k = n => (n + h / 30) % 12;
-    const a = s * Math.min(l, 1 - l);
-    const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
-    return '#' + [f(0), f(8), f(4)].map(x => Math.round(x * 255).toString(16).padStart(2, '0')).join('');
-}
-
 function applyTheme() {
     const t  = nar.theme || {};
     const a1 = t.a1 || NAR_DEFAULT_A1;
@@ -4406,14 +4361,29 @@ async function createRoom(name = '', welcomeMsg = '') {
         currentRoomCode = code;
         localStorage.setItem('arc-narrator-room', code);
         showRoomBadge(code, name);
-        listenToPlayers(code);
-        listenToLoot(code);
-        listenToHandouts(code);
-        listenToRoomDoc(code);
-        listenToSharedChat(code);
-        ArcNotify.requestPermission().then(() => ArcNotify.registerPushToken(code));
-
+        attachRoomListeners(code);
+        updateChatInputState();
     } catch(e) { console.error('[ARC] createRoom failed:', e); alert('Failed to create room.'); }
+}
+
+// ── ROOM LISTENER PLUMBING ────────────────────────────────────────────────────
+// Shared by create / restore / switch so every entry point wires the same set.
+
+function attachRoomListeners(code) {
+    listenToPlayers(code);
+    listenToLoot(code);
+    listenToHandouts(code);
+    listenToRoomDoc(code);
+    listenToSharedChat(code);
+    ArcNotify.requestPermission().then(() => ArcNotify.registerPushToken(code));
+}
+
+function detachRoomListeners() {
+    if (partyUnsubscribe)    { partyUnsubscribe();    partyUnsubscribe    = null; }
+    if (lootUnsubscribe)     { lootUnsubscribe();     lootUnsubscribe     = null; }
+    if (handoutsUnsubscribe) { handoutsUnsubscribe(); handoutsUnsubscribe = null; }
+    if (roomUnsubscribe)     { roomUnsubscribe();     roomUnsubscribe     = null; }
+    if (chatUnsubscribe)     { chatUnsubscribe();     chatUnsubscribe     = null; }
 }
 
 async function restoreRoom(code) {
@@ -4423,12 +4393,7 @@ async function restoreRoom(code) {
         const snap = await arc.getDoc(arc.doc(arc.db, 'rooms', code));
         if (snap.exists() && snap.data().status === 'active') {
             showRoomBadge(code, snap.data().name || '');
-            listenToPlayers(code);
-            listenToLoot(code);
-            listenToHandouts(code);
-            listenToRoomDoc(code);
-            listenToSharedChat(code);
-            ArcNotify.requestPermission().then(() => ArcNotify.registerPushToken(code));
+            attachRoomListeners(code);
         } else {
             localStorage.removeItem('arc-narrator-room');
             currentRoomCode = null;
@@ -4520,6 +4485,177 @@ function setBadgeContent(code, name) {
     if (nameEl) nameEl.textContent = name ? `${name} ` : '';
     if (codeEl) codeEl.textContent = name ? `· ${code}` : code;
 }
+
+// ── MULTI-ROOM MANAGEMENT ─────────────────────────────────────────────────────
+// A narrator can run several campaigns. Rooms are owned via narratorUid, so the
+// list is a single-equality query (no composite index needed); status is
+// filtered client-side.
+
+let roomsCache = [];
+let editingRoomCode = null;
+
+async function fetchMyRooms() {
+    const arc = window.__arc;
+    if (!arc?.db || !arc?.uid) return [];
+    try {
+        const snap = await arc.getDocs(arc.query(
+            arc.collection(arc.db, 'rooms'),
+            arc.where('narratorUid', '==', arc.uid)
+        ));
+        const when = r => r.lastActivityAt?.toMillis?.() || r.createdAt?.toMillis?.() || 0;
+        return snap.docs
+            .map(d => ({ code: d.id, ...d.data() }))
+            .filter(r => r.status !== 'closed')
+            .sort((a, b) => when(b) - when(a));
+    } catch (e) { console.error('[ARC] fetchMyRooms failed:', e); return []; }
+}
+
+async function switchRoom(code) {
+    const arc = window.__arc;
+    if (!arc?.db || code === currentRoomCode) return;
+
+    let name = '';
+    try {
+        const snap = await arc.getDoc(arc.doc(arc.db, 'rooms', code));
+        if (!snap.exists()) return;
+        name = snap.data().name || '';
+    } catch (e) { console.error('[ARC] switchRoom failed:', e); return; }
+
+    detachRoomListeners();
+    fbPlayers = []; fbLoot = []; fbGold = 0; fbSharedChat = []; fbHandouts = [];
+
+    currentRoomCode = code;
+    localStorage.setItem('arc-narrator-room', code);
+    showRoomBadge(code, name);
+    attachRoomListeners(code);
+    updateChatInputState();
+    renderParty(); renderInventory(); renderNarHandouts(); renderNarChat();
+}
+
+async function saveRoomEdits(code) {
+    const arc  = window.__arc;
+    const name = document.getElementById('room-edit-name')?.value.trim() || '';
+    const msg  = document.getElementById('room-edit-welcome')?.value.trim() || '';
+    if (!arc?.db) return;
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', code), { name, welcomeMsg: msg });
+    } catch (e) { console.error('[ARC] saveRoomEdits failed:', e); return; }
+    if (code === currentRoomCode) setBadgeContent(code, name);
+    editingRoomCode = null;
+}
+
+async function closeRoom(code) {
+    const arc = window.__arc;
+    if (!arc?.db) return;
+    if (!confirm(`Close room ${code}? Players will no longer be able to use it.`)) return;
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', code), { status: 'closed' });
+    } catch (e) { console.error('[ARC] closeRoom failed:', e); return; }
+
+    // Closing the room you're running tears the live session down too
+    if (code === currentRoomCode) {
+        detachRoomListeners();
+        currentRoomCode = null;
+        localStorage.removeItem('arc-narrator-room');
+        fbPlayers = []; fbLoot = []; fbGold = 0; fbSharedChat = []; fbHandouts = [];
+        const badge = document.getElementById('room-code-badge');
+        if (badge) { badge.hidden = true; setBadgeContent('', ''); }
+        const privacyBtn = document.getElementById('btn-privacy-mode');
+        const goldRow    = document.getElementById('party-gold-row');
+        const handouts   = document.getElementById('nar-handouts-section');
+        const invite     = document.getElementById('btn-invite');
+        if (privacyBtn) privacyBtn.hidden = true;
+        if (goldRow)    goldRow.hidden = true;
+        if (handouts)   handouts.hidden = true;
+        if (invite)     invite.textContent = 'Invite';
+        updateChatInputState();
+        renderParty(); renderInventory(); renderNarHandouts(); renderNarChat();
+    }
+    await refreshRoomsList();
+}
+
+function renderRoomsList() {
+    const el = document.getElementById('rooms-list');
+    if (!el) return;
+    if (!roomsCache.length) {
+        el.innerHTML = '<p class="empty-hint">No open rooms yet. Tap New Room to start one.</p>';
+        return;
+    }
+    el.innerHTML = roomsCache.map(r => {
+        const isCur = r.code === currentRoomCode;
+
+        if (r.code === editingRoomCode) {
+            return `
+            <div class="room-row room-row--editing">
+                <label class="nar-form-field"><span class="nar-form-label">Campaign Name</span>
+                    <input id="room-edit-name" type="text" maxlength="40" value="${escAttr(r.name || '')}" autocomplete="off" /></label>
+                <label class="nar-form-field"><span class="nar-form-label">Welcome Message</span>
+                    <textarea id="room-edit-welcome" rows="2" maxlength="200">${escAttr(r.welcomeMsg || '')}</textarea></label>
+                <div class="room-row-actions">
+                    <button class="room-btn room-btn--primary" data-room-save="${r.code}" type="button">✓ Save</button>
+                    <button class="room-btn" data-room-cancel type="button">Cancel</button>
+                </div>
+            </div>`;
+        }
+
+        return `
+        <div class="room-row${isCur ? ' room-row--current' : ''}">
+            <div class="room-row-info">
+                <span class="room-row-name">${r.name || 'Untitled Campaign'}${isCur ? ' <span class="room-row-live">active</span>' : ''}</span>
+                <span class="room-row-code">${r.code}</span>
+            </div>
+            <div class="room-row-actions">
+                ${isCur ? '' : `<button class="room-btn room-btn--primary" data-room-switch="${r.code}" type="button">Switch</button>`}
+                <button class="room-btn" data-room-edit="${r.code}" type="button">✎ Edit</button>
+                <button class="room-btn room-btn--danger" data-room-close="${r.code}" type="button">Close</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+async function refreshRoomsList() {
+    const el = document.getElementById('rooms-list');
+    if (el) el.innerHTML = '<p class="empty-hint">Loading rooms…</p>';
+    roomsCache = await fetchMyRooms();
+    renderRoomsList();
+}
+
+async function openRoomsDialog() {
+    editingRoomCode = null;
+    document.getElementById('rooms-dialog')?.showModal();
+    await refreshRoomsList();
+}
+
+document.getElementById('btn-manage-rooms')?.addEventListener('click', () => {
+    closeSettings();
+    openRoomsDialog();
+});
+document.getElementById('rooms-close')?.addEventListener('click', () => document.getElementById('rooms-dialog')?.close());
+document.getElementById('rooms-done')?.addEventListener('click', () => document.getElementById('rooms-dialog')?.close());
+document.getElementById('rooms-new')?.addEventListener('click', () => {
+    document.getElementById('rooms-dialog')?.close();
+    document.getElementById('room-create-dialog')?.showModal();
+});
+
+document.getElementById('rooms-list')?.addEventListener('click', async e => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    if (btn.dataset.roomSwitch) {
+        await switchRoom(btn.dataset.roomSwitch);
+        document.getElementById('rooms-dialog')?.close();
+    } else if (btn.dataset.roomEdit) {
+        editingRoomCode = btn.dataset.roomEdit;
+        renderRoomsList();
+    } else if (btn.dataset.roomSave) {
+        await saveRoomEdits(btn.dataset.roomSave);
+        await refreshRoomsList();
+    } else if (btn.hasAttribute('data-room-cancel')) {
+        editingRoomCode = null;
+        renderRoomsList();
+    } else if (btn.dataset.roomClose) {
+        await closeRoom(btn.dataset.roomClose);
+    }
+});
 
 function showRoomBadge(code, name) {
     const badge      = document.getElementById('room-code-badge');

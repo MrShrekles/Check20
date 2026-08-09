@@ -224,14 +224,6 @@ function updateXpDisplay() {
 
 // ── EQUIPMENT CATEGORY INFERENCE ─────────────────────────────────────────────
 
-function inferEquipCategory(name, notes) {
-    const n = (name || '').toLowerCase();
-    const d = (notes || '').toLowerCase();
-    if (d.includes('armor:') || n.includes('armor') || n.includes('shield') || n.includes('cloak') || n.includes('robes')) return 'armor';
-    if (/\dd\d/.test(d) || /\dd\d/.test(n)) return 'weapon';
-    return 'gear';
-}
-
 // ── ARMOR CHECK BONUSES ───────────────────────────────────────────────────────
 
 function parseArmorMods(notes) {
@@ -270,8 +262,13 @@ function recalcArmorBonuses() {
         });
     });
 
+    // A character that has never had armor set (0/0) fills to full rather than
+    // staying pinned at 0 - same "wasBlank" rule calcDerived() uses for Wounds.
+    const armorWasBlank = state.resources.armor.max === 0 && state.resources.armor.current === 0;
     state.resources.armor.max = totalArmor;
-    state.resources.armor.current = Math.min(state.resources.armor.current, totalArmor);
+    state.resources.armor.current = armorWasBlank
+        ? totalArmor
+        : Math.min(state.resources.armor.current, totalArmor);
 
     renderQuickChecks();
     syncInitiativeDisplay();
@@ -474,8 +471,8 @@ async function loadWeapons() {
             datalist.appendChild(opt);
         });
         document.body.appendChild(datalist);
-        const nameInput = document.getElementById('equip-name-input');
-        if (nameInput) nameInput.setAttribute('list', 'items-datalist');
+        // Autocomplete the drawer's item-name field (the old equip-name-input is gone)
+        document.getElementById('ae-g-name')?.setAttribute('list', 'items-datalist');
     } catch (e) { console.warn('Could not load equipment data', e); }
 }
 
@@ -1166,12 +1163,6 @@ function bindRefPanel() {
             c.classList.toggle('is-active', c.id === `ref-tab-${target}`));
     });
 
-    // Quick roll
-    document.getElementById('ref-quick-roll-btn')?.addEventListener('click', () => {
-        const type = document.getElementById('ref-dmg-type-sel')?.value;
-        if (!type) return;
-        rollAndShowRefTable(type, 'ref-quick-result');
-    });
 
     // Whole card header rolls; expand button toggles entries
     document.getElementById('ref-tables-grid')?.addEventListener('click', e => {
@@ -1383,45 +1374,6 @@ function bindSpellRollModal() {
 
 const DEFAULT_A1 = '#4c6e6e';  // teal-light
 const DEFAULT_A2 = '#b8860b';  // dark goldenrod
-
-function hexToRgb(hex) {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return { r, g, b };
-}
-
-function hexToHue(hex) {
-    if (!hex || hex.length < 7) return 0;
-    const { r, g, b } = hexToRgb(hex);
-    const r1 = r/255, g1 = g/255, b1 = b/255;
-    const max = Math.max(r1,g1,b1), min = Math.min(r1,g1,b1), d = max - min;
-    if (d === 0) return 0;
-    let h;
-    if (max === r1)      h = ((g1 - b1) / d + 6) % 6;
-    else if (max === g1) h = (b1 - r1)  / d + 2;
-    else                 h = (r1 - g1)  / d + 4;
-    return Math.round(h * 60);
-}
-
-function hexToSL(hex) {
-    if (!hex || hex.length < 7) return { s: 65, l: 60 };
-    const { r, g, b } = hexToRgb(hex);
-    const r1 = r/255, g1 = g/255, b1 = b/255;
-    const max = Math.max(r1,g1,b1), min = Math.min(r1,g1,b1);
-    const l = (max + min) / 2;
-    const d = max - min;
-    const s = d === 0 ? 0 : d / (1 - Math.abs(2*l - 1));
-    return { s: Math.round(s * 100), l: Math.round(l * 100) };
-}
-
-function hslToHex(h, s = 65, l = 60) {
-    s /= 100; l /= 100;
-    const k = n => (n + h / 30) % 12;
-    const a = s * Math.min(l, 1 - l);
-    const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
-    return '#' + [f(0), f(8), f(4)].map(x => Math.round(x * 255).toString(16).padStart(2, '0')).join('');
-}
 
 function applyTheme() {
     const t  = state.char.theme || {};
@@ -2087,6 +2039,80 @@ function renderOtherGains() {
 
 let equipTab = 'all';
 
+// ── ITEM DETAIL MODAL ───────────────────────────────────────
+// Read-only look at an item without leaving the inventory list.
+
+function itemDetailRows(item) {
+    const cat = item.category || 'gear';
+    const row = (l, v) => (v === '' || v == null ? '' : [l, v]);
+    const rows = [];
+    if (cat === 'weapon') {
+        rows.push(row('Damage', [item.damage, item.damageType].filter(Boolean).join(' ')));
+        rows.push(row('Range', item.range));
+        rows.push(row('Check', item.check));
+        rows.push(row('Properties', item.properties && item.properties !== '-' ? item.properties : ''));
+        rows.push(row('Attack Bonus', item.attackBonus ? (item.attackBonus > 0 ? '+' + item.attackBonus : item.attackBonus) : ''));
+        rows.push(row('Crit Range', item.critRange && item.critRange !== 20 ? item.critRange : ''));
+    } else if (cat === 'armor') {
+        rows.push(row('Armor Rating', item.armorRating ? '+' + item.armorRating : ''));
+        rows.push(row('Check Penalties', item.notes));
+    } else {
+        rows.push(row('Notes', item.notes));
+    }
+    rows.push(row('Bulk', item.bulk));
+    if (item.moveMod)     rows.push(['Move', (item.moveMod > 0 ? '+' : '') + item.moveMod + ' ft']);
+    if (item.lowlightMod) rows.push(['Low Light', (item.lowlightMod > 0 ? '+' : '') + item.lowlightMod + ' ft']);
+    return rows.filter(Boolean);
+}
+
+function openItemDetail(idx) {
+    const item = state.equipment[idx];
+    if (!item) return;
+    let dlg = document.getElementById('item-detail-dialog');
+    if (!dlg) {
+        dlg = document.createElement('dialog');
+        dlg.id = 'item-detail-dialog';
+        dlg.className = 'arc-modal item-detail';
+        dlg.innerHTML = `
+            <div class="arc-modal-inner item-detail-inner">
+                <div class="item-detail-head">
+                    <span class="item-detail-cat"></span>
+                    <button class="item-detail-x" type="button" aria-label="Close">✕</button>
+                </div>
+                <p class="item-detail-name"></p>
+                <div class="item-detail-rows"></div>
+                <div class="item-detail-desc"></div>
+                <div class="item-detail-actions">
+                    <button class="item-detail-btn" data-detail-edit type="button">✎ Edit</button>
+                    <button class="item-detail-btn" data-detail-give type="button">📤 Give</button>
+                    <button class="item-detail-btn item-detail-btn--close" data-detail-close type="button">Close</button>
+                </div>
+            </div>`;
+        document.body.appendChild(dlg);
+        dlg.querySelector('.item-detail-x').addEventListener('click', () => dlg.close());
+        dlg.querySelector('[data-detail-close]').addEventListener('click', () => dlg.close());
+        dlg.querySelector('[data-detail-edit]').addEventListener('click', () => {
+            const i = dlg._idx; dlg.close();
+            const it = state.equipment[i];
+            if ((it?.category || '') === 'weapon') openWeaponModal(i); else openAeDrawerForEdit(i);
+        });
+        dlg.querySelector('[data-detail-give]').addEventListener('click', () => {
+            const i = dlg._idx; dlg.close(); openGiveDialog(i);
+        });
+    }
+    dlg._idx = idx;
+    const cat = item.category || 'gear';
+    dlg.querySelector('.item-detail-cat').textContent  = cat;
+    dlg.querySelector('.item-detail-name').textContent = item.name || 'Item';
+    dlg.querySelector('.item-detail-rows').innerHTML = itemDetailRows(item).map(([l, v]) =>
+        `<div class="item-detail-row"><span class="item-detail-label">${l}</span><span>${v}</span></div>`).join('');
+    const desc = item.flavor || '';
+    const descEl = dlg.querySelector('.item-detail-desc');
+    descEl.innerHTML = desc ? parseHandoutMarkdown(desc) : '';
+    descEl.hidden = !desc;
+    dlg.showModal();
+}
+
 function renderEquipment() {
     const el = document.getElementById('equip-list');
     if (!el) return;
@@ -2132,6 +2158,8 @@ function renderEquipment() {
                 <button class="step-action-btn" type="button" title="Send to chat"
                     data-action="chat" data-name="${esc(item.name)}"
                     data-desc="${esc(item.flavor || item.notes || '')}"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
+                <button class="step-action-btn" type="button" title="View item"
+                    data-action="view-equip" data-equip-index="${i}">🔍</button>
                 <button class="step-action-btn" type="button" title="Give to another player or the party"
                     data-action="give-equip" data-equip-index="${i}">📤</button>
                 <button class="step-action-btn" type="button" title="Edit"
@@ -2175,6 +2203,8 @@ function renderInventory() {
                 <button class="step-action-btn" type="button" title="Send to chat"
                     data-action="chat" data-name="${esc(item.name)}"
                     data-desc="${esc(item.notes || '')}"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
+                <button class="step-action-btn" type="button" title="View item"
+                    data-action="view-equip" data-equip-index="${i}">🔍</button>
                 <button class="step-action-btn" type="button" title="Give to another player or the party"
                     data-action="give-equip" data-equip-index="${i}">📤</button>
                 <button class="step-action-btn" type="button" title="Edit"
@@ -2331,6 +2361,11 @@ let _roomUnsub     = null;
 let sharedChatMsgs = [];
 let _chatUnsub     = null;
 
+// True when the player is already looking at chat - no toast needed then.
+function chatPanelActive() {
+    return !!document.getElementById('panel-chat')?.classList.contains('is-active');
+}
+
 function listenToSharedChat(code) {
     if (_chatUnsub) _chatUnsub();
     const arc = window.__arc;
@@ -2362,6 +2397,10 @@ function listenToSharedChat(code) {
                                 m.type === 'weapon-attack' ? `${m.weaponName || 'Attack'} - ${m.total ?? ''}` :
                                 m.text ? m.text.slice(0, 80) : 'New message';
                 ArcNotify.show(title, body);
+                // ArcNotify no-ops while the page is focused; the toast covers that
+                if (!chatPanelActive()) {
+                    showChatToast(m.author || 'New message', body, () => setActivePanel('chat'));
+                }
             });
         }
         prevCount = snap.docs.length;
@@ -3045,37 +3084,38 @@ function renderPlayerLoot(items) {
             const arc  = window.__arc;
             const room = localStorage.getItem('arc-room');
             if (!arc?.db || !room) return;
+            // A fast double-tap used to run this twice before the snapshot came
+            // back, claiming the same item into the sheet two or more times.
+            if (btn.disabled) return;
+            btn.disabled = true;
+
             const id   = btn.dataset.lootId;
             const item = items.find(x => x.id === id);
-            if (!item) return;
+            if (!item) { btn.disabled = false; return; }
 
-            // 1. Add to personal inventory, sorted into the right equipment category
-            const category = item.category || inferEquipCategory(item.name, item.desc);
-            let entry;
-            if (category === 'weapon') {
-                entry = {
-                    name: item.name, category: 'weapon',
-                    damage: item.damage || '', damageType: item.damageType || '',
-                    range: item.range || '', properties: item.properties || '-',
-                    check: item.check || '', attackBonus: item.attackBonus || 0, critRange: 20,
-                    notes: [item.damage, item.damageType, item.range].filter(Boolean).join(' · '),
-                    flavor: item.desc || '',
-                };
-            } else if (category === 'armor') {
-                entry = {
-                    name: item.name, category: 'armor',
-                    notes: item.notes || '', armorRating: item.armorRating || 0,
-                    flavor: item.desc || '',
-                };
-            } else {
-                entry = { name: item.name, notes: item.desc || '', category: 'gear' };
+            // 1. Take it out of party loot FIRST - if that write fails, nothing
+            //    lands on the sheet, so the item can never be duplicated.
+            try {
+                if ((item.amount || 1) <= 1) {
+                    await arc.deleteDoc(arc.doc(arc.db, 'rooms', room, 'loot', id));
+                } else {
+                    await arc.updateDoc(arc.doc(arc.db, 'rooms', room, 'loot', id), { amount: item.amount - 1 });
+                }
+            } catch(e) {
+                console.error('[ARC] claim loot failed:', e);
+                btn.disabled = false;
+                return;
             }
-            state.equipment.push(entry);
+
+            // 2. Add to the sheet, sorted into the right equipment category
+            const category = item.category || inferEquipCategory(item.name, item.desc);
+            state.equipment.push(equipmentFromPayload({ ...item, category }));
             saveState();
             if (category === 'armor') recalcArmorBonuses();
-            renderEquipment(); calcDerived();
+            // renderInventory() was missing - claimed gear only appeared after a reload
+            renderEquipment(); renderInventory(); calcDerived();
 
-            // 2. Announce in shared chat
+            // 3. Announce in shared chat
             broadcastChatEntry({
                 type:      'feature',
                 name:      item.name,
@@ -3084,15 +3124,6 @@ function renderPlayerLoot(items) {
                 time:      chatTimestamp(),
                 diceRolls: [],
             });
-
-            // 3. Remove from party loot
-            try {
-                if (item.amount <= 1) {
-                    await arc.deleteDoc(arc.doc(arc.db, 'rooms', room, 'loot', id));
-                } else {
-                    await arc.updateDoc(arc.doc(arc.db, 'rooms', room, 'loot', id), { amount: item.amount - 1 });
-                }
-            } catch(e) { console.error('[ARC] claim loot failed:', e); }
         });
     });
 }
@@ -3874,7 +3905,7 @@ function bindAddEquipDrawer() {
     function setAeSubmitLabel(editing) {
         const bottom = document.getElementById('ae-add-btn');
         const top    = document.getElementById('ae-save-top');
-        if (bottom) bottom.textContent = editing ? '✓ Save Changes' : '+ Add Item';
+        if (bottom) bottom.textContent = editing ? '✓ Save' : '+ Add';
         if (top)    top.textContent    = editing ? '✓ Save'         : '+ Add';
     }
 
@@ -4410,9 +4441,11 @@ function bindBio() {
         state.char.notes = document.getElementById('char-notes')?.value || '';
         saveState();
     });
-    document.getElementById('btn-save-notes')?.addEventListener('click', () => {
+    document.getElementById('btn-save-notes')?.addEventListener('click', e => {
         state.char.notes = document.getElementById('char-notes')?.value || '';
         saveState();
+        // Nothing closes here, so without the flash there is no sign it saved
+        flashSaved(e.currentTarget);
     });
 
     // NPCs - loyalty stepper
@@ -4463,6 +4496,7 @@ function bindBio() {
 function syncBioDisplay() {
     const txt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || '-'; };
     txt('bio-display-name',       state.char.name);
+    txt('bio-display-level',      state.char.level);
     txt('bio-display-size',       state.char.size);
     txt('bio-display-age',        state.char.age);
     txt('bio-display-diet',       state.char.diet);
@@ -4563,7 +4597,10 @@ function bindProgressionPanel() {
         });
     });
 
-    document.getElementById('equip-list')?.addEventListener('click', e => {
+    // Inventory (gear) rows render the same edit / delete / give buttons as the
+    // equipment list but had no listener, so nothing on a gear row responded.
+    ['equip-list', 'inventory-list'].forEach(listId =>
+    document.getElementById(listId)?.addEventListener('click', e => {
         const btn = e.target.closest('[data-action]');
         if (!btn) return;
         const { action } = btn.dataset;
@@ -4600,83 +4637,10 @@ function bindProgressionPanel() {
         }
 
         // ── Equipment edit ────────────────────────────────────────
-        if (action === 'edit-equip') {
-            const item = state.equipment[idx];
-            if (!item) return;
-            // Weapons get the full weapon modal
-            if ((item.category || '') === 'weapon') { openWeaponModal(idx); return; }
-            const isArmorItem = (item.category || '') === 'armor';
-            const specificFields = isArmorItem ? `
-                <div class="equip-edit-grid">
-                    <label class="field">
-                        <span class="field-label">Armor Rating</span>
-                        <input type="number" class="equip-edit-rating" value="${item.armorRating || 0}" min="0" />
-                    </label>
-                    <label class="field">
-                        <span class="field-label">Bulk</span>
-                        <input type="text" class="equip-edit-bulk" value="${esc(item.bulk || '')}" placeholder="2" />
-                    </label>
-                </div>
-                <label class="field">
-                    <span class="field-label">Check Penalties</span>
-                    <input type="text" class="equip-edit-notes" value="${esc(item.notes || '')}" placeholder="Stealth -2, Agility -1…" />
-                </label>` : `
-                <div class="equip-edit-grid">
-                    <label class="field">
-                        <span class="field-label">Stats / Notes</span>
-                        <input type="text" class="equip-edit-notes" value="${esc(item.notes || '')}" placeholder="1d6 · Short · Bulk 1…" />
-                    </label>
-                    <label class="field">
-                        <span class="field-label">Bulk</span>
-                        <input type="text" class="equip-edit-bulk" value="${esc(item.bulk || '')}" placeholder="1" />
-                    </label>
-                </div>`;
-            row.innerHTML = `<div class="equip-edit-form">
-                <label class="field">
-                    <span class="field-label">Name</span>
-                    <input type="text" class="equip-edit-name" value="${esc(item.name || '')}" placeholder="Item name…" />
-                </label>
-                ${specificFields}
-                <label class="field u-mt-6">
-                    <span class="field-label">Description / Flavor</span>
-                    <textarea class="step-edit-desc equip-edit-desc" rows="2">${esc(item.flavor || '')}</textarea>
-                </label>
-                <label class="step-edit-check">
-                    <input type="checkbox" class="equip-edit-hideroll" ${item.hideRoll ? 'checked' : ''}> Hide roll button
-                </label>
-                <div class="step-edit-btns">
-                    <button class="step-edit-btn step-edit-btn--save"
-                        data-action="save-equip-edit" data-equip-index="${idx}" type="button">Save</button>
-                    <button class="step-edit-btn step-edit-btn--cancel"
-                        data-action="cancel-equip-edit" type="button">Cancel</button>
-                </div>
-            </div>`;
-            return;
-        }
-
-        if (action === 'save-equip-edit') {
-            const item = state.equipment[idx];
-            if (!item) return;
-            const isArmorItem = (item.category || '') === 'armor';
-            const nameVal = row.querySelector('.equip-edit-name')?.value?.trim();
-            if (nameVal) item.name = nameVal;
-            item.notes  = row.querySelector('.equip-edit-notes')?.value?.trim() || '';
-            item.bulk   = row.querySelector('.equip-edit-bulk')?.value?.trim()  || '';
-            item.flavor = row.querySelector('.equip-edit-desc')?.value?.trim()  || '';
-            item.hideRoll = row.querySelector('.equip-edit-hideroll')?.checked || false;
-            if (isArmorItem) {
-                item.armorRating = parseInt(row.querySelector('.equip-edit-rating')?.value || '0', 10) || 0;
-                recalcArmorBonuses();
-            }
-            saveState();
-            renderEquipment();
-            return;
-        }
-
-        if (action === 'cancel-equip-edit') {
-            renderEquipment();
-        }
-    });
+        // Editing is handled by the shared add/edit drawer (and the weapon modal
+        // for weapons) via the global .step-action-btn listener - see 'edit-equip'
+        // there. The old inline row form was a second, conflicting editor.
+    }));
 
     // Equipment category sub-tabs
     document.querySelector('.equip-tab-row')?.addEventListener('click', e => {
@@ -4711,6 +4675,11 @@ function bindProgressionPanel() {
         // 'edit-armor' kept for any cached markup from an older build
         if (action === 'edit-equip' || action === 'edit-armor') {
             openAeDrawerForEdit(parseInt(btn.dataset.equipIndex, 10));
+            return;
+        }
+
+        if (action === 'view-equip') {
+            openItemDetail(parseInt(btn.dataset.equipIndex, 10));
             return;
         }
 

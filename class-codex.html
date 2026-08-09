@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Classes Codex | Armored Noir - Check20</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/codex-ui.css" />
+  <link rel="stylesheet" href="styles/spells.css" />
+  <link rel="stylesheet" href="styles/species.css" />
+  <link rel="stylesheet" href="styles/class-codex.css" />
+  <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+  <script src="scripts/main.js" defer></script>
+  <script src="scripts/codex-ui.js" defer></script>
+  <script src="scripts/sidebar.js" defer></script>
+  <script src="scripts/header.js" defer></script>
+  <script src="scripts/tooltips.js" defer></script>
+  <script src="scripts/origin-colors.js" defer></script>
+  <script src="scripts/class-codex-data.js" defer></script>
+  <script src="scripts/class-codex-render.js" defer></script>
+  <script src="scripts/class-codex-ui.js" defer></script>
+  <script src="scripts/footer.js" defer></script>
+</head>
+
+<body data-page-title="Classes Codex">
+  <div id="header-placeholder"></div>
+  <div id="sidebar-placeholder"></div>
+
+  <main>
+    <div class="species-sticky-header">
+      <div class="species-toolbar-main">
+        <button class="species-filter-toggle" id="class-filter-toggle">
+          <span class="filter-pip"></span>
+          Filters
+          <span class="filter-chevron">&#9660;</span>
+        </button>
+        <input id="class-search" type="search" placeholder="Search paths, talents, features&hellip;" autocomplete="off" spellcheck="false">
+        <select id="class-sort" title="Sort within each group">
+          <option value="origin">Sort: Origin</option>
+          <option value="name">Sort: Name</option>
+        </select>
+        <div class="codex-size-wrap">
+          <span>Size</span>
+          <div class="codex-size-btns" id="codex-size-btns">
+            <button class="codex-size-btn" data-size="small">S</button>
+            <button class="codex-size-btn active" data-size="medium">M</button>
+            <button class="codex-size-btn" data-size="large">L</button>
+          </div>
+        </div>
+        <span id="class-count"></span>
+      </div>
+      <nav id="lineage-tabs" class="lineage-tabs"></nav>
+    </div>
+
+    <div class="species-filter-panel" id="class-filter-panel">
+      <div class="species-filter-actions">
+        <button id="class-clear">Clear</button>
+        <button id="class-collapse-all">Collapse all</button>
+        <button id="class-expand-all">Expand all</button>
+      </div>
+      <div class="filter-group" data-key="kind">
+        <h4>Type</h4>
+      </div>
+      <div class="filter-group" data-key="origin">
+        <h4>Origin</h4>
+      </div>
+    </div>
+
+    <!-- Character creation primer -->
+    <details class="class-intro-panel">
+      <summary>How To Make A Character</summary>
+      <div class="class-intro-body">
+        <div class="two-col">
+          <div>
+            <ol>
+              <li><strong>Choose a Class:</strong> Begin by selecting a class that will define your character's core abilities.</li>
+              <li><strong>Select a Path &amp; Talents of your Class:</strong> Refine your character's abilities and potential growth with a path and associated talents.</li>
+              <li><strong>Class Path Progression:</strong> Reflects the overall growth in a character's chosen class. It's linear and sequential, with each step unlocking new class-specific abilities.</li>
+              <li><strong>Talent Progression:</strong> Focuses on specialized skills or unique capabilities within a class. Steps within a Talent can be chosen and advanced in any order, allowing for customization and you gain +1 per talent chosen.</li>
+              <li><strong><a href="species.html">Determine your species</a>:</strong> Choose a species type for your character and apply the corresponding features to your sheet.</li>
+              <li><strong><a href="reference.html#checks">Fill Out Checks (Stats):</a></strong> You have 20 points to put into your checks with a maximum of 10. It's recommended that you put a 10, 5, 3, and 2 with some slight variations.</li>
+              <li><strong><a href="tables.html">Roll or Pick from each of these tables:</a></strong> Motivation, Additional Equipment, and a Trinket.</li>
+              <li><strong>Personalize Your Character:</strong> Name, Size (default medium), Gender, Age, Diet, Speed (30ft, +5ft per 2 points of agility), and Gold (1d100 + 50 gp).</li>
+            </ol>
+          </div>
+          <div>
+            <h3>Paths &amp; Talents</h3>
+            <p><strong>Path:</strong> Represents your character's progression and growth in power. Path progression is linear, unlocking new class abilities in order.</p>
+            <p><strong>Talents:</strong> Customizable skills and abilities that add unique aspects to your character. Talent steps can be chosen from the pool in any order.</p>
+            <h3>Origins</h3>
+            <p>Every path and talent carries an <strong>origin</strong> - the flavour of power behind it. Origin colours here match the rest of the codex, so a Tech path badges the same colour whether you meet it on a class, a spell, or a monster. Filter by origin to build a themed character, or to see which classes can express a given origin.</p>
+            <h3>Experience &amp; Progression</h3>
+            <p>Each class path has 10 steps, requiring 20 XP per step to advance.</p>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <p class="class-no-results" id="class-no-results">No results found.</p>
+
+    <section id="class-sections" class="species-sections"></section>
+  </main>
+
+  <div id="footer-placeholder"></div>
+</body>
+
+</html>

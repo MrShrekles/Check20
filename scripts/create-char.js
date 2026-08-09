@@ -733,14 +733,6 @@ function rollCharName() {
 
 // ── EQUIPMENT CATEGORY INFERENCE ──────────────────────────────────────────────
 
-function inferEquipCategory(name, notes) {
-    const n = (name  || '').toLowerCase();
-    const d = (notes || '').toLowerCase();
-    if (d.includes('armor:') || n.includes('armor') || n.includes('shield') || n.includes('cloak') || n.includes('robes')) return 'armor';
-    if (/\dd\d/.test(d) || /\dd\d/.test(n)) return 'weapon';
-    return 'gear';
-}
-
 // ── BUILD & SAVE ──────────────────────────────────────────────────────────────
 
 function buildAndSave() {
@@ -765,6 +757,18 @@ function buildAndSave() {
     (wiz.extraEquip || '').split('\n').map(s => s.trim()).filter(Boolean).forEach(name => {
         equipment.push({ name, notes: '', category: inferEquipCategory(name, ''), armorRating: 0 });
     });
+
+    // Starting armor from worn equipment, so the sheet opens at full armor
+    // instead of 0 / N until something triggers a recalc.
+    const startingArmor = equipment.reduce((sum, e) => sum + (e.armorRating || 0), 0);
+
+    // Class features granting flat max Wounds - Tank's "Gain +10 Wounds".
+    // Matches "gain +N wounds" only, so Support's "heal +10 wounds" is skipped.
+    const woundsBonus = (classData?.features || []).reduce((sum, f) => {
+        const txt = Array.isArray(f.description) ? f.description.join(' ') : (f.description || '');
+        const m = txt.match(/\bgain\s+\+(\d+)\s+wounds\b/i);
+        return sum + (m ? parseInt(m[1], 10) : 0);
+    }, 0);
 
     // Species features are stored in char.speciesFeature - no longer duplicated in otherGains
     const otherGains = [];
@@ -798,8 +802,8 @@ function buildAndSave() {
             } : null,
         },
         resources: {
-            hp:       { current: 0, max: 0 },
-            armor:    { current: 0, max: 0 },
+            hp:       { current: 0, max: 0, bonus: woundsBonus },
+            armor:    { current: startingArmor, max: startingArmor },
             MN:       { current: 0, max: 0 },
             classRes: { current: 0, max: 0, label: 'Resource' },
         },

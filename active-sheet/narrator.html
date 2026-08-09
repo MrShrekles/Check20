@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="styles/narrator.css" />
     <script src="../scripts/notifications.js" defer></script>
     <script src="../scripts/automod-wordlist.js" defer></script>
+    <script src="../scripts/arc-shared.js" defer></script>
     <script src="../scripts/chat-cards.js" defer></script>
     <script type="module" src="../scripts/firebase.js"></script>
     <script src="../scripts/narrator.js" defer></script>
@@ -672,6 +673,7 @@
 
             <div class="settings-section">
                 <div class="settings-section-title">Session</div>
+                <button class="settings-action-btn" id="btn-manage-rooms" type="button">Manage Rooms</button>
                 <button class="settings-action-btn settings-action-btn--danger" id="btn-end-session" type="button">End Active Session</button>
             </div>
 
@@ -761,14 +763,14 @@
                 </div>
             </div>
 
-            <button class="nar-dialog-action" id="btn-char-edit-save" type="button">Save Changes</button>
+            <button class="nar-dialog-action" id="btn-char-edit-save" type="button">✓ Save</button>
             <button class="nar-dialog-action nar-dialog-action--cancel" id="btn-char-edit-cancel" type="button">Cancel</button>
         </div>
     </dialog>
 
     <!-- Award Item Dialog: narrator picks which player receives a party-inventory item -->
-    <dialog id="award-item-dialog" class="give-dialog">
-        <div class="give-dialog-inner">
+    <dialog id="award-item-dialog" class="arc-modal give-dialog" style="--modal-w:380px">
+        <div class="arc-modal-inner give-dialog-inner">
             <div class="give-head">
                 <span class="give-kicker">Award Item</span>
                 <button class="icon-btn" id="award-close" type="button" aria-label="Close">✕</button>
@@ -787,6 +789,22 @@
             <button class="nar-dialog-action" id="btn-ped-archive" type="button">Archive Character</button>
             <button class="nar-dialog-action nar-dialog-action--danger" id="btn-ped-remove" type="button">Remove from Party</button>
             <button class="nar-dialog-action nar-dialog-action--cancel" id="btn-ped-cancel" type="button">Cancel</button>
+        </div>
+    </dialog>
+
+    <!-- Rooms Manager: switch between campaigns, rename them, close them -->
+    <dialog id="rooms-dialog" class="arc-modal rooms-dialog" style="--modal-w:480px">
+        <div class="arc-modal-inner rooms-dialog-inner">
+            <div class="rooms-head">
+                <span class="rooms-kicker">My Rooms</span>
+                <button class="icon-btn" id="rooms-close" type="button" aria-label="Close">✕</button>
+            </div>
+            <p class="rooms-hint">Switch between campaigns, rename them, or close one down.</p>
+            <div class="rooms-list" id="rooms-list"></div>
+            <div class="rooms-actions">
+                <button class="room-btn room-btn--primary" id="rooms-new" type="button">+ New Room</button>
+                <button class="room-btn" id="rooms-done" type="button">Done</button>
+            </div>
         </div>
     </dialog>
 

@@ -370,6 +370,110 @@ document.addEventListener("DOMContentLoaded", () => {
     if (savedSurge) selectedSurge.textContent = savedSurge;
   }
 
+  // === NAME GENERATOR ===
+  // Reads the same name tables as the NPC generator (data/worldbuilding.json) so both
+  // pages stay in sync when the lists are edited in Shek-Forge.
+  const generatedNames = document.getElementById("generated-names");
+  const rollNamesButton = document.getElementById("roll-names");
+  const nameStylePick = document.getElementById("name-style-pick");
+  const NAME_STYLES = ["fantasy", "twenties", "victorian", "goblin"];
+  const NAMES_PER_ROLL = 6;
+
+  if (generatedNames && rollNamesButton) {
+    fetch('data/worldbuilding.json')
+      .then(r => r.json())
+      .then(json => {
+        const names = json.names || {};
+        if (!names['fantasy-start']) return;
+
+        const pick = list => list[Math.floor(Math.random() * list.length)];
+
+        function makeName(style) {
+          if (style === 'twenties' || style === 'victorian') {
+            return `${pick(names[`${style}-first`])} ${pick(names[`${style}-last`])}`;
+          }
+          if (style === 'goblin') {
+            return pick(names['goblin-prefix']) + pick(names['goblin-suffix']);
+          }
+          // Fantasy names are built from syllables, trimming seams that double a letter.
+          const first = pick(names['fantasy-start']);
+          const last = pick(names['fantasy-end']);
+          let core = pick(names['fantasy-core']);
+          if (core && first.endsWith(core[0])) core = core.slice(1);
+          if (core && last && core.endsWith(last[0])) core = core.slice(0, -1);
+          const name = first + core + last;
+          return name.charAt(0).toUpperCase() + name.slice(1);
+        }
+
+        function rollNames() {
+          const chosen = nameStylePick?.value || 'fantasy';
+          const results = [];
+          for (let i = 0; i < NAMES_PER_ROLL; i++) {
+            results.push(makeName(chosen === 'any' ? pick(NAME_STYLES) : chosen));
+          }
+          const result = results.join(' • ');
+          generatedNames.textContent = result;
+          localStorage.setItem('generatedNames', result);
+        }
+
+        rollNamesButton.addEventListener("click", rollNames);
+      })
+      .catch(() => {
+        generatedNames.textContent = "Could not load the name tables.";
+      });
+
+    const savedNames = localStorage.getItem('generatedNames');
+    if (savedNames) generatedNames.textContent = savedNames;
+  }
+
+  // === RANDOM WEAPON ===
+  // Pulls straight from data/weapons.json, the same list weapons.html renders.
+  const selectedWeapon = document.getElementById("selected-weapon");
+  const rollWeaponButton = document.getElementById("roll-weapon");
+  const weaponCategoryPick = document.getElementById("weapon-category-pick");
+  const weaponRarityPick = document.getElementById("weapon-rarity-pick");
+
+  if (selectedWeapon && rollWeaponButton) {
+    fetch('data/weapons.json')
+      .then(r => r.json())
+      .then(weapons => {
+        if (!Array.isArray(weapons) || !weapons.length) return;
+
+        function rollWeapon() {
+          const category = weaponCategoryPick?.value || 'any';
+          const rarity = weaponRarityPick?.value || 'any';
+          const pool = weapons.filter(w =>
+            (category === 'any' || w.category === category) &&
+            (rarity === 'any' || w.rarity === rarity));
+
+          if (!pool.length) {
+            selectedWeapon.textContent = "Nothing on the list matches those filters.";
+            return;
+          }
+
+          const w = pool[Math.floor(Math.random() * pool.length)];
+          const details = [
+            w.damage ? `${w.damage} ${w.damageType || ''}`.trim() : '',
+            w.range ? `${w.range} range` : '',
+            w.check,
+            w.properties,
+            w.cost != null ? `${w.cost} gp` : ''
+          ].filter(Boolean);
+          const result = `${w.name} (${w.rarity}, ${w.category}) — ${details.join(' | ')}`;
+          selectedWeapon.textContent = result;
+          localStorage.setItem('selectedWeapon', result);
+        }
+
+        rollWeaponButton.addEventListener("click", rollWeapon);
+      })
+      .catch(() => {
+        selectedWeapon.textContent = "Could not load the weapon list.";
+      });
+
+    const savedWeapon = localStorage.getItem('selectedWeapon');
+    if (savedWeapon) selectedWeapon.textContent = savedWeapon;
+  }
+
   // === COPY BUTTONS (SHARED HANDLER) ===
   document.querySelectorAll(".copy-button").forEach(button => {
     button.addEventListener("click", () => {

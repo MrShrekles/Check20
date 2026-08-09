@@ -153,34 +153,6 @@
           "description": "1d6 Slashing; Agility, Strength; Melee; 1 hand, Light; Bulk: 2"
         }
       ]
-    },
-    {
-      "name": "Crafter",
-      "description": "You are a master of your trade, whether it be blacksmithing, alchemy, or any other form of craftsmanship. Your skills allow you to create items of great value and utility, and your knowledge of materials and techniques is unparalleled. As a Crafter, you have the ability to repair and maintain equipment, ensuring that your allies are always well-equipped for the challenges ahead. Your expertise also allows you to identify and appraise items, making you an invaluable asset to any adventuring party.",
-      "features": [
-        {
-          "name": "Weaponcraft",
-          "description": "As an action craft a weapon or repair a damaged one. You may also imbue a weapon with a temporary enchantment, granting it +1 to attack and damage checks for 1 hour."
-        },
-        {
-          "name": "Spellburn",
-          "description": "Your magic leaves a mark. Your damaging spells deal +2 damage"
-        }
-      ],
-      "equipment": [
-        {
-          "name": "Arcane Robes",
-          "description": "Armor: 15; Bulk: 2; Move Penalty: -10"
-        },
-        {
-          "name": "Fire Wand",
-          "description": "1d6 Fire damage; Check: Spellcasting; Short; 1 hand; Bulk: 1;"
-        },
-        {
-          "name": "Townsword",
-          "description": "1d6 Slashing; Agility, Strength; Melee; 1 hand, Light; Bulk: 2"
-        }
-      ]
     }
   ]
 }

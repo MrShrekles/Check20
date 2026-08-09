@@ -199,9 +199,10 @@ function openHandoutPopup(title, body) {
     if (!dlg) {
         dlg = document.createElement('dialog');
         dlg.id = 'handout-popup';
-        dlg.className = 'handout-popup';
+        dlg.className = 'arc-modal arc-modal--accent handout-popup';
+        dlg.style.setProperty('--modal-w', '460px');
         dlg.innerHTML = `
-            <div class="handout-popup-inner">
+            <div class="arc-modal-inner handout-popup-inner">
                 <div class="handout-popup-head">
                     <span class="handout-popup-kicker">Handout</span>
                     <button class="handout-popup-x" type="button" aria-label="Close">✕</button>
@@ -218,6 +219,45 @@ function openHandoutPopup(title, body) {
     dlg.querySelector('.handout-popup-body').innerHTML    = parseHandoutMarkdown(body || '');
     dlg.querySelector('.handout-popup-body').scrollTop     = 0;
     if (!dlg.open) dlg.showModal();
+}
+
+// In-app chat toast. ArcNotify.show() deliberately does nothing while the page
+// has focus, which is exactly when someone is using the app - this covers that
+// gap with an in-page banner plus a jump-to-chat button.
+let _chatToastTimer = null;
+
+function showChatToast(title, body, onView) {
+    let el = document.getElementById('chat-toast');
+    if (!el) {
+        el = document.createElement('div');
+        el.id = 'chat-toast';
+        el.className = 'chat-toast';
+        el.innerHTML = `
+            <div class="chat-toast-body">
+                <div class="chat-toast-title"></div>
+                <div class="chat-toast-text"></div>
+            </div>
+            <button class="chat-toast-view" type="button">View</button>
+            <button class="chat-toast-x" type="button" aria-label="Dismiss">✕</button>`;
+        document.body.appendChild(el);
+        el.querySelector('.chat-toast-x').addEventListener('click', hideChatToast);
+        el.querySelector('.chat-toast-view').addEventListener('click', () => {
+            const fn = el._onView;
+            hideChatToast();
+            fn?.();
+        });
+    }
+    el.querySelector('.chat-toast-title').textContent = title || 'New message';
+    el.querySelector('.chat-toast-text').textContent  = body  || '';
+    el._onView = onView;
+    el.classList.add('is-open');
+    clearTimeout(_chatToastTimer);
+    _chatToastTimer = setTimeout(hideChatToast, 6000);
+}
+
+function hideChatToast() {
+    clearTimeout(_chatToastTimer);
+    document.getElementById('chat-toast')?.classList.remove('is-open');
 }
 
 const CHAT_TEXT_CLAMP_LENGTH = 240; // chars; above this, clamp + offer "Show more"

@@ -3618,27 +3618,192 @@ body[data-page-title="Active-Sheet"] #site-header {
 .handout-reveal-btn:active { background: var(--panel-2); }
 .handout-popup-btn:active  { background: var(--gold-glow); }
 
-/* ── GIVE ITEM DIALOG ───────────────────────────────────────── */
+/* ── MODAL SHELL ─────────────────────────────────────────────
+   One centred <dialog> shell shared by the item detail, give item,
+   handout reveal and rooms manager. Width is the only thing that
+   varies; set it with a --modal-w custom property on the dialog. */
 
-.give-dialog {
+.arc-modal {
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--panel);
     color: var(--text);
     padding: 0;
-    width: min(92vw, 380px);
-    max-height: 80vh;
+    width: min(92vw, var(--modal-w, 420px));
+    max-height: 84vh;
     overflow: hidden;
 }
-.give-dialog::backdrop { background: rgba(0, 0, 0, 0.68); }
+.arc-modal::backdrop { background: rgba(0, 0, 0, 0.7); }
+.arc-modal--accent { border-color: var(--gold); }
 
-.give-dialog-inner {
+.arc-modal-inner {
     display: flex;
     flex-direction: column;
-    max-height: 80vh;
+    max-height: 84vh;
     padding: 14px 16px 16px;
     box-sizing: border-box;
 }
+
+/* ── ITEM DETAIL MODAL ─────────────────────────── */
+
+.item-detail-head { display: flex; align-items: center; gap: 8px; }
+
+.item-detail-cat {
+    flex: 1;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.item-detail-x {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1;
+    padding: 4px 6px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.item-detail-x:active { background: var(--panel-2); }
+
+.item-detail-name {
+    margin: 6px 0 10px;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.item-detail-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.item-detail-row {
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    align-items: baseline;
+}
+
+.item-detail-label {
+    min-width: 96px;
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+}
+
+.item-detail-desc {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--muted);
+    overflow-y: auto;
+}
+
+.item-detail-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 14px;
+    flex-shrink: 0;
+}
+
+.item-detail-btn {
+    flex: 1;
+    padding: 9px 6px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--text);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.item-detail-btn:active { background: var(--focus); }
+.item-detail-btn--close { color: var(--muted); font-weight: 400; }
+
+/* ── IN-APP CHAT TOAST ──────────────────────────── */
+
+.chat-toast {
+    position: fixed;
+    left: 50%;
+    top: calc(10px + var(--safe-t));
+    transform: translate(-50%, -140%);
+    z-index: 900;
+    width: min(94vw, 460px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--panel);
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.22s ease, opacity 0.22s ease;
+}
+.chat-toast.is-open {
+    transform: translate(-50%, 0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.chat-toast-body { flex: 1; min-width: 0; }
+
+.chat-toast-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--gold);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chat-toast-text {
+    font-size: 13px;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chat-toast-view {
+    flex-shrink: 0;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    color: var(--gold);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 5px 12px;
+    cursor: pointer;
+}
+.chat-toast-view:active { background: var(--gold-glow); }
+
+.chat-toast-x {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1;
+    padding: 4px 2px;
+    cursor: pointer;
+}
+
+/* ── GIVE ITEM DIALOG ───────────────────────────────────────── */
 
 .give-head {
     display: flex;
@@ -3714,26 +3879,6 @@ body[data-page-title="Active-Sheet"] #site-header {
 .give-cancel-btn:active { background: var(--panel-2); }
 
 /* ── HANDOUT POPUP (broadcast reveal) ───────────────────────── */
-
-.handout-popup {
-    border: 1px solid var(--gold);
-    border-radius: var(--radius);
-    background: var(--panel);
-    color: var(--text);
-    padding: 0;
-    width: min(92vw, 460px);
-    max-height: 84vh;
-    overflow: hidden;
-}
-.handout-popup::backdrop { background: rgba(0, 0, 0, 0.72); }
-
-.handout-popup-inner {
-    display: flex;
-    flex-direction: column;
-    max-height: 84vh;
-    padding: 14px 16px 16px;
-    box-sizing: border-box;
-}
 
 .handout-popup-head {
     display: flex;
@@ -6046,3 +6191,12 @@ body[data-page-title="Active-Sheet"] #site-header {
 }
 .enc-readonly-active-tag--targeted { color: #ff8080; }
 
+
+/* Party gold, mirrored from the narrator's tracker via the room doc */
+.player-gold-chip {
+    margin-left: auto;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--gold);
+    white-space: nowrap;
+}

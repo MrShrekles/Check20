@@ -291,19 +291,7 @@
           }
         ]
       }
-    ],
-    "melee_attack": {
-      "equipped": true,
-      "name": "Claw (NPC)",
-      "damage": "1d6",
-      "damage_type": "Slashing"
-    },
-    "ranged_attack": {
-      "equipped": true,
-      "name": "Vile Spit (NPC)",
-      "damage": "1d6",
-      "damage_type": "Acid"
-    }
+    ]
   },
   {
     "name": "Booy",
@@ -946,7 +934,7 @@
     "ranged_attack": {
       "name": "Vile Spit",
       "equipped": true,
-      "damage": "1d6",
+      "damage": "",
       "damage_type": ""
     },
     "spell": {

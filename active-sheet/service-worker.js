@@ -1,8 +1,7 @@
-const CACHE = 'arc20-v27';
+const CACHE = 'arc20-v28';
 
 // Everything network-first during active development.
 // When data is stable, data/*.json can be moved back to cache-first for offline use.
-const HTML_FILES = ['home.html', 'active-sheet.html', 'create-char.html'];
 const ALWAYS_FRESH = ['.html', '.js', '.css', '.json'];
 
 self.addEventListener('install', e => {

@@ -75,16 +75,12 @@ button, input, select, textarea, a {
     text-shadow: 0 0 12px var(--gold-glow);
 }
 
-.wiz-cancel {
-    font-size: 18px;
-    color: var(--muted);
-    text-decoration: none;
+/* Balances the Back button so the step label stays centred. There is no
+   close button during creation - leaving mid-wizard loses the character. */
+.wiz-header-spacer {
     min-width: 60px;
-    text-align: right;
-    line-height: 1;
+    flex-shrink: 0;
 }
-
-.wiz-cancel:hover { color: var(--text); }
 
 /* ── BODY (scrollable step area) ─────────────────────────────────── */
 

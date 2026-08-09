@@ -88,6 +88,33 @@ function renderBaseClassInfo(cls) {
   `;
 }
 
+/* ─── Origin option grid ─────────────────────────────────────────────────────
+   Each class has exactly one path and one talent per origin (12 of each), so a
+   dropdown hid twelve items behind a click and a scrollbar for no gain. These
+   are laid out as an always-visible grid of origin-coloured buttons instead:
+   every option and its origin is readable at a glance, and both columns are
+   sorted by origin so the Path and Talent of the same origin line up.
+   Colours come from originColor() in scripts/origin-colors.js.
+   ───────────────────────────────────────────────────────────────────────── */
+
+function byOrigin(a, b) {
+  return (a.origin || "none").localeCompare(b.origin || "none");
+}
+
+function renderOriginGrid(kind, entries) {
+  const items = entries.slice().sort(byOrigin).map(e => {
+    const o = e.origin || "none";
+    return `
+      <button type="button" class="origin-opt" data-name="${e.name}" data-origin="${o}"
+              style="--pill-accent:${originColor(o)}">
+        <span class="origin-opt-name">${e.name}</span>
+        <span class="origin-opt-origin">${o}</span>
+      </button>`;
+  }).join("");
+
+  return `<div class="origin-grid" data-kind="${kind}">${items}</div>`;
+}
+
 function renderPathTalentUI(entries = []) {
   const paths = entries.filter(e => e.path?.steps?.length);
   const talents = entries.filter(e => e.talent?.steps?.length);
@@ -97,23 +124,15 @@ function renderPathTalentUI(entries = []) {
     <div class="two-column">
       <div class="column">
         <h1>Path</h1>
-        <label>Select a Path:
-          <select class="path-dropdown">
-            <option disabled selected>Select...</option>
-            ${paths.map(p => `<option value="${p.name}">${p.name}</option>`).join("")}
-          </select>
-        </label>
+        <p class="picker-hint">Linear progression &mdash; steps unlock in order. ${paths.length} to choose from, one per origin.</p>
+        ${renderOriginGrid("path", paths)}
         <div class="path-info"></div>
       </div>
 
       <div class="column">
         <h1>Talent</h1>
-        <label>Select a Talent:
-          <select class="talent-dropdown">
-            <option disabled selected>Select...</option>
-            ${talents.map(t => `<option value="${t.name}">${t.name}</option>`).join("")}
-          </select>
-        </label>
+        <p class="picker-hint">Steps may be taken in any order, +1 per talent chosen. ${talents.length} to choose from, one per origin.</p>
+        ${renderOriginGrid("talent", talents)}
         <div class="talent-info"></div>
       </div>
     </div>
@@ -123,19 +142,35 @@ function renderPathTalentUI(entries = []) {
 }
 
 function setupDropdownHandlers(entries) {
-  const pathSelect = document.querySelector(".path-dropdown");
-  const talentSelect = document.querySelector(".talent-dropdown");
-  const pathInfo = document.querySelector(".path-info");
-  const talentInfo = document.querySelector(".talent-info");
+  wireOriginGrid("path", entries, true, document.querySelector(".path-info"));
+  wireOriginGrid("talent", entries, false, document.querySelector(".talent-info"));
+}
 
-  pathSelect?.addEventListener("change", () => {
-    const chosen = entries.find(e => e.name === pathSelect.value && e.path?.steps?.length);
-    pathInfo.innerHTML = chosen ? renderPathTalentDetails(chosen, true) : "<p>No path found.</p>";
-  });
+function wireOriginGrid(kind, entries, isPath, infoEl) {
+  const grid = document.querySelector(`.origin-grid[data-kind="${kind}"]`);
+  if (!grid || !infoEl) return;
 
-  talentSelect?.addEventListener("change", () => {
-    const chosen = entries.find(e => e.name === talentSelect.value && e.talent?.steps?.length);
-    talentInfo.innerHTML = chosen ? renderPathTalentDetails(chosen, false) : "<p>No talent found.</p>";
+  const opts = [...grid.querySelectorAll(".origin-opt")];
+
+  opts.forEach(opt => {
+    opt.addEventListener("click", () => {
+      // Clicking the active option again clears the selection.
+      if (opt.classList.contains("selected")) {
+        opt.classList.remove("selected");
+        infoEl.innerHTML = "";
+        return;
+      }
+
+      opts.forEach(o => o.classList.toggle("selected", o === opt));
+
+      const chosen = entries.find(e =>
+        e.name === opt.dataset.name && (isPath ? e.path?.steps?.length : e.talent?.steps?.length)
+      );
+
+      infoEl.innerHTML = chosen
+        ? renderPathTalentDetails(chosen, isPath)
+        : `<p>No ${isPath ? "path" : "talent"} found.</p>`;
+    });
   });
 }
 
@@ -148,7 +183,13 @@ function renderPathTalentDetails(entry, isPath = true) {
     <div class="feature-block">
       <div class="feature-header">
         <h1>${entry.name}</h1>
-        <span class="origin-tag ${entry.origin?.toLowerCase() || "none"}">${entry.origin || "None"}</span>
+        <span class="origin-tag ${originClass(entry.origin)}">${entry.origin || "None"}</span>
+      </div>
+      <div class="feature-meta">
+        <span><strong>Type</strong> ${isPath ? "Path" : "Talent"}</span>
+        <span><strong>Origin</strong> ${entry.origin || "None"}</span>
+        <span><strong>Steps</strong> ${rest?.length || 0}</span>
+        <span><strong>Order</strong> ${isPath ? "Sequential" : "Any order"}</span>
       </div>
       <p>${entry.desc || "No description available."}</p>
 
