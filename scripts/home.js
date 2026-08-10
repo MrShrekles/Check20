@@ -216,6 +216,7 @@ async function doCreateRoom() {
         }, { merge: true });
 
         localStorage.setItem('arc-room', code);
+        document.dispatchEvent(new CustomEvent('arc:room-changed'));
         showJoinStatus(`Room ${code} created! Loading…`, 'success');
         setTimeout(() => { window.location.href = 'active-sheet.html'; }, 800);
     } catch(e) {
@@ -273,6 +274,7 @@ document.getElementById('btn-leave-session')?.addEventListener('click', async ()
 
     localStorage.removeItem('arc-room');
     localStorage.removeItem('arc-room-name');
+    document.dispatchEvent(new CustomEvent('arc:room-changed'));
     document.getElementById('home-active-session').hidden   = true;
     document.getElementById('home-join-form-wrap').hidden   = false;
     const btn = document.getElementById('btn-join-session');
@@ -314,6 +316,7 @@ async function completeJoin(code, roomName) {
     }).catch(() => {});
 
     localStorage.setItem('arc-room', code);
+    document.dispatchEvent(new CustomEvent('arc:room-changed'));
     if (roomName) localStorage.setItem('arc-room-name', roomName);
     else localStorage.removeItem('arc-room-name');
 

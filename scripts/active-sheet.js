@@ -518,7 +518,7 @@ function populatePathTalentSelects(className) {
 function parseWeaponData(item) {
     if (item.damage !== undefined) return item; // already structured
     const notes = item.notes || '';
-    const dmgMatch = notes.match(/(\d+d\d+[!]?(?:[+-]\d+)?)/i);
+    const dmgMatch = notes.match(/(\d*d\d+!?(?:\s*[+-]\s*\d*d?\d+!?)*)/i);
     const damage = dmgMatch ? dmgMatch[1] : '';
     const damageType = DAMAGE_TYPES.find(t => notes.includes(t)) || '';
     const range = RANGES.find(r => notes.includes(r)) || '';
@@ -631,6 +631,9 @@ function openWeaponModal(itemIndex) {
     document.querySelectorAll('#wm-roll-seg .roll-seg-btn').forEach(b => b.classList.remove('is-sel'));
     document.querySelector('#wm-roll-seg [data-seg="flat"]')?.classList.add('is-sel');
 
+    const giveBtn = document.getElementById('wm-give');
+    if (giveBtn) giveBtn.hidden = itemIndex < 0;
+
     document.getElementById('weapon-modal').hidden = false;
 }
 
@@ -643,6 +646,12 @@ function closeWeaponModal() {
 
 function bindWeaponModal() {
     document.getElementById('wm-close')?.addEventListener('click', closeWeaponModal);
+    // Giving is only reachable from here and the item detail view, not the list row
+    document.getElementById('wm-give')?.addEventListener('click', () => {
+        const idx = weaponModalIndex;
+        closeWeaponModal();
+        if (idx >= 0) openGiveDialog(idx);
+    });
     document.getElementById('wm-scrim')?.addEventListener('click', closeWeaponModal);
 
     // Explicit save - edits already persist on change, but the button makes that
@@ -938,7 +947,7 @@ function openFeatureRollModal({ name, tags, desc }) {
     let damageNotation = '', damageType = '';
     if (dmgTag) {
         const dmgStr = dmgTag.slice(4).trim();
-        const diceMatch = dmgStr.match(/(\d+d\d+[!]?(?:[+-]\d+)?)/i);
+        const diceMatch = dmgStr.match(/(\d*d\d+!?(?:\s*[+-]\s*\d*d?\d+!?)*)/i);
         if (diceMatch) damageNotation = diceMatch[1];
         damageType = DAMAGE_TYPES.find(t => dmgStr.toLowerCase().includes(t.toLowerCase())) || '';
     }
@@ -1030,7 +1039,7 @@ function bindFeatureRollModal() {
         else { d20 = r(); rollNote = `d20(${d20})`; }
 
         const total = d20 + checkMod + bonus;
-        const diceRolls = notation ? [rollDiceNotation(notation)] : [];
+        const diceRolls = notation ? [rollDiceNotation(notation)].filter(Boolean) : [];
         const allTags = [
             ...frm.feature.displayTags,
             `Check: ${checkLbl}`,
@@ -1059,6 +1068,7 @@ function bindFeatureRollModal() {
         const dmgType = document.getElementById('frm-dmg-type')?.value?.trim() || '';
         const desc = document.getElementById('frm-desc-input')?.value?.trim() || '';
         const dmg = rollDiceNotation(notation);
+        if (!dmg) return;
         dmg.type = dmgType;
 
         const allTags = [
@@ -1245,7 +1255,7 @@ function openSpellRollModal(spell, intent) {
         : `<span class="srm-check-chips-empty">No check available</span>`;
 
     // Stat row
-    const diceMatch = (intent.effect || '').match(/\[\[(\d+d\d+[!]?(?:[+-]\d+)?)\]\]/i);
+    const diceMatch = (intent.effect || '').match(/\[\[(\d*d\d+!?(?:\s*[+-]\s*\d*d?\d+!?)*)\]\]/i);
     document.getElementById('srm-damage').textContent  = diceMatch ? diceMatch[1] : '-';
     document.getElementById('srm-dmg-type').textContent = spell.transmission || '-';
     document.getElementById('srm-manner').textContent   = spell.manner || '-';
@@ -1314,8 +1324,8 @@ function srmDoRoll(spendMana) {
             : mnNow >= cost ? `${cost} MN spent`
                 : `⚠ ${cost} MN (only ${mnNow} available)`;
 
-    const diceMatch = (sfrm.intent.effect || '').match(/\[\[(\d+d\d+[!]?(?:[+-]\d+)?)\]\]/i);
-    const diceRolls = diceMatch ? [rollDiceNotation(diceMatch[1])] : [];
+    const diceMatch = (sfrm.intent.effect || '').match(/\[\[(\d*d\d+!?(?:\s*[+-]\s*\d*d?\d+!?)*)\]\]/i);
+    const diceRolls = diceMatch ? [rollDiceNotation(diceMatch[1])].filter(Boolean) : [];
 
     const allTags = [
         sfrm.spell.manner,
@@ -2160,8 +2170,6 @@ function renderEquipment() {
                     data-desc="${esc(item.flavor || item.notes || '')}"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
                 <button class="step-action-btn" type="button" title="View item"
                     data-action="view-equip" data-equip-index="${i}">🔍</button>
-                <button class="step-action-btn" type="button" title="Give to another player or the party"
-                    data-action="give-equip" data-equip-index="${i}">📤</button>
                 <button class="step-action-btn" type="button" title="Edit"
                     data-action="edit-equip" data-equip-index="${i}">✎</button>
                 <button class="step-action-btn step-action-btn--danger" type="button"
@@ -2205,8 +2213,6 @@ function renderInventory() {
                     data-desc="${esc(item.notes || '')}"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
                 <button class="step-action-btn" type="button" title="View item"
                     data-action="view-equip" data-equip-index="${i}">🔍</button>
-                <button class="step-action-btn" type="button" title="Give to another player or the party"
-                    data-action="give-equip" data-equip-index="${i}">📤</button>
                 <button class="step-action-btn" type="button" title="Edit"
                     data-action="edit-equip" data-equip-index="${i}">✎</button>
                 <button class="step-action-btn step-action-btn--danger" type="button"
@@ -2374,36 +2380,44 @@ function listenToSharedChat(code) {
         arc.orderBy('postedAt', 'desc'),
         arc.limit(60)
     );
-    let prevCount = 0;
+    // The query keeps only the newest 60, so once a room passes 60 messages
+    // snap.docs.length stops growing and a count comparison never fires again -
+    // which silently killed the badge, the toast and the OS notification.
+    // Gate on "have we seen the first snapshot yet" instead.
+    let primed = false;
     _chatUnsub = arc.onSnapshot(q, snap => {
         sharedChatMsgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         renderSharedChat();
-        // Badge + OS notification if chat tab not active and messages increased
-        if (snap.docs.length > prevCount && prevCount > 0) {
-            const chatPanel = document.getElementById('panel-chat');
-            const notif     = document.getElementById('chat-notif');
-            if (notif && !chatPanel?.classList.contains('is-active')) {
-                notif.hidden = false;
-            }
-            // Only notify for incoming messages (not own sends, not system/turn types)
-            snap.docChanges().forEach(change => {
-                if (change.type !== 'added') return;
-                const m = change.doc.data();
-                if (['system', 'turn'].includes(m.type) || m.removed) return;
-                if (m.uid === window.__arc?.uid) return;
-                const room    = localStorage.getItem('arc-room');
-                const title   = m.author ? `${m.author} - ${room || 'ARC20'}` : (room || 'ARC20');
-                const body    = m.type === 'roll'          ? `Rolled ${m.total ?? ''}` :
-                                m.type === 'weapon-attack' ? `${m.weaponName || 'Attack'} - ${m.total ?? ''}` :
-                                m.text ? m.text.slice(0, 80) : 'New message';
-                ArcNotify.show(title, body);
-                // ArcNotify no-ops while the page is focused; the toast covers that
-                if (!chatPanelActive()) {
-                    showChatToast(m.author || 'New message', body, () => setActivePanel('chat'));
-                }
-            });
+
+        const wasPrimed = primed;
+        primed = true;
+        if (!wasPrimed) return;   // first snapshot is the backlog, not news
+
+        // Only notify for incoming messages (not own sends, not system/turn types)
+        const incoming = snap.docChanges()
+            .filter(c => c.type === 'added')
+            .map(c => c.doc.data())
+            .filter(m => !['system', 'turn'].includes(m.type) && !m.removed
+                && m.uid !== window.__arc?.uid);
+        if (!incoming.length) return;
+
+        if (!chatPanelActive()) {
+            const notif = document.getElementById('chat-notif');
+            if (notif) notif.hidden = false;
         }
-        prevCount = snap.docs.length;
+
+        const room = localStorage.getItem('arc-room');
+        incoming.forEach(m => ArcNotify.show(
+            m.author ? `${m.author} - ${room || 'ARC20'}` : (room || 'ARC20'),
+            chatNotifyBody(m)));
+
+        // ArcNotify no-ops while the page is focused; the toast covers that.
+        // Only the newest gets a toast - there is one toast element to share.
+        if (!chatPanelActive()) {
+            const last = incoming[incoming.length - 1];
+            showChatToast(last.author || 'New message', chatNotifyBody(last),
+                () => setActivePanel('chat'));
+        }
     }, err => console.error('[ARC] shared chat:', err));
 }
 
@@ -3885,6 +3899,9 @@ function bindAddEquipDrawer() {
         if (rangeSel && !rangeSel.options.length) {
             rangeSel.innerHTML = RANGES.map(r => `<option>${r}</option>`).join('');
         }
+        const giveBtn = document.getElementById('ae-give');
+        if (giveBtn) giveBtn.hidden = aeEditIndex < 0;
+
         drawer.inert = false;
         drawer.removeAttribute('aria-hidden');
         drawer.classList.add('is-open');
@@ -3979,6 +3996,15 @@ function bindAddEquipDrawer() {
     // doesn't require scrolling past every field to commit an edit.
     document.getElementById('ae-save-top')?.addEventListener('click', () => {
         document.getElementById('ae-add-btn')?.click();
+    });
+
+    // Giving is only reachable from here and the item detail view, not the list row.
+    // Save first so the recipient gets the edits made in this drawer.
+    document.getElementById('ae-give')?.addEventListener('click', () => {
+        const idx = aeEditIndex;
+        if (idx < 0) return;
+        document.getElementById('ae-add-btn')?.click();
+        openGiveDialog(idx);
     });
 
     // Open
@@ -4683,6 +4709,8 @@ function bindProgressionPanel() {
             return;
         }
 
+        // Rows no longer carry a Give button - kept for markup a service worker
+        // cached from an older build
         if (action === 'give-equip') {
             openGiveDialog(parseInt(btn.dataset.equipIndex, 10));
             return;
@@ -4879,7 +4907,7 @@ function parseDiceFromText(text) {
     if (!text) return [];
     const cleaned = text.replace(/\[\[|\]\]/g, '');
     const results = [];
-    const re = /\b(\d+d\d+[!]?(?:[+-]\d+)?)\b/gi;
+    const re = /\b(\d*d\d+!?(?:\s*[+-]\s*\d*d?\d+!?)*)\b/gi;
     let m;
     while ((m = re.exec(cleaned)) !== null) {
         const r = rollDiceNotation(m[1]);
@@ -4971,6 +4999,12 @@ document.addEventListener('DOMContentLoaded', () => {
     updateXpDisplay();
     // Close drawer cleanly on boot (ensure inert state matches)
     closeDrawer();
+
+    // active-sheet.html#chat - the "Go to chat" button on the toast other pages show
+    if (location.hash === '#chat') {
+        setActivePanel('chat');
+        history.replaceState(null, '', location.pathname + location.search);
+    }
 
     // Chat sub-tabs (Messages / Initiative)
     document.querySelectorAll('.chat-sub-tab').forEach(btn => {

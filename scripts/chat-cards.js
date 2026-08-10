@@ -221,44 +221,8 @@ function openHandoutPopup(title, body) {
     if (!dlg.open) dlg.showModal();
 }
 
-// In-app chat toast. ArcNotify.show() deliberately does nothing while the page
-// has focus, which is exactly when someone is using the app - this covers that
-// gap with an in-page banner plus a jump-to-chat button.
-let _chatToastTimer = null;
-
-function showChatToast(title, body, onView) {
-    let el = document.getElementById('chat-toast');
-    if (!el) {
-        el = document.createElement('div');
-        el.id = 'chat-toast';
-        el.className = 'chat-toast';
-        el.innerHTML = `
-            <div class="chat-toast-body">
-                <div class="chat-toast-title"></div>
-                <div class="chat-toast-text"></div>
-            </div>
-            <button class="chat-toast-view" type="button">View</button>
-            <button class="chat-toast-x" type="button" aria-label="Dismiss">✕</button>`;
-        document.body.appendChild(el);
-        el.querySelector('.chat-toast-x').addEventListener('click', hideChatToast);
-        el.querySelector('.chat-toast-view').addEventListener('click', () => {
-            const fn = el._onView;
-            hideChatToast();
-            fn?.();
-        });
-    }
-    el.querySelector('.chat-toast-title').textContent = title || 'New message';
-    el.querySelector('.chat-toast-text').textContent  = body  || '';
-    el._onView = onView;
-    el.classList.add('is-open');
-    clearTimeout(_chatToastTimer);
-    _chatToastTimer = setTimeout(hideChatToast, 6000);
-}
-
-function hideChatToast() {
-    clearTimeout(_chatToastTimer);
-    document.getElementById('chat-toast')?.classList.remove('is-open');
-}
+// showChatToast / hideChatToast / chatNotifyBody live in chat-watch.js, which
+// every page loading this file also loads.
 
 const CHAT_TEXT_CLAMP_LENGTH = 240; // chars; above this, clamp + offer "Show more"
 
@@ -632,38 +596,141 @@ document.addEventListener('click', e => {
 function fmtSigned(n) { const v = Number(n) || 0; return v >= 0 ? `+${v}` : `${v}`; }
 
 function naturalRoll(rollNote) {
-    if (!rollNote) return null;
+    return parseRollNote(rollNote).kept;
+}
+
+// "adv(14,3)" / "dis(5,18)" / "d20(11)" -> which die was kept, and which was thrown out
+function parseRollNote(rollNote) {
+    if (!rollNote) return { kept: null, dropped: null };
     const nums = rollNote.match(/\d+/g)?.map(Number) || [];
-    if (!nums.length) return null;
-    if (rollNote.startsWith('adv')) return Math.max(...nums);
-    if (rollNote.startsWith('dis')) return Math.min(...nums);
-    // "d20(14)" - the actual die result is inside the parens, not the "20" from "d20"
+    if (!nums.length) return { kept: null, dropped: null };
+    if (rollNote.startsWith('adv') || rollNote.startsWith('dis')) {
+        if (nums.length < 2) return { kept: nums[0], dropped: null };
+        const hi = Math.max(nums[0], nums[1]), lo = Math.min(nums[0], nums[1]);
+        return rollNote.startsWith('adv') ? { kept: hi, dropped: lo } : { kept: lo, dropped: hi };
+    }
+    // "d20(14)" - the real result is inside the parens, not the "20" from "d20"
     const paren = rollNote.match(/\((\d+)\)/);
-    if (paren) return parseInt(paren[1], 10);
-    return nums[0];
+    return { kept: paren ? parseInt(paren[1], 10) : nums[0], dropped: null };
+}
+
+// A row of the faces that actually landed, so every total shows its work.
+function diceTrayHtml(faces, { kind = 'plain', lead = '', drop = null, mod = 0, extra = '' } = {}) {
+    const list = faces || [];
+    const body = list.length > 8
+        ? `<span class="chat-die-count">${list.length} dice</span>`
+        : list.map(f => `<span class="chat-die chat-die--${kind}">${f}</span>`).join('');
+    const dropHtml = drop != null ? `<span class="chat-die chat-die--drop">${drop}</span>` : '';
+    const modHtml  = mod ? `<span class="chat-die-mod">${fmtSigned(mod)}</span>` : '';
+    const inner = `${lead}${body}${dropHtml}${modHtml}${extra}`;
+    return inner ? `<div class="chat-dice-tray">${inner}</div>` : '';
+}
+
+// Left half of a roll card: the d20 that was thrown.
+function checkStatHtml({ label, total, rollNote, mod = 0, note = '' }) {
+    const { kept, dropped } = parseRollNote(rollNote);
+    const faceCls = kept === 20 ? ' is-nat20' : kept === 1 ? ' is-nat1' : '';
+    const valCls  = kept === 20 ? ' chat-res--nat20' : kept === 1 ? ' chat-res--nat1' : '';
+    const lead = kept != null ? `<span class="chat-die chat-die--d20${faceCls}">${kept}</span>` : '';
+    const labelHtml = (label || note)
+        ? `<div class="chat-stat-label">${label}${note ? `<span class="chat-stat-note">${note}</span>` : ''}</div>`
+        : '';
+    return `<div class="chat-stat chat-stat--check">
+        ${labelHtml}
+        <div class="chat-stat-val${valCls}">${total}</div>
+        ${diceTrayHtml([], { lead, drop: dropped, mod })}
+    </div>`;
+}
+
+// Right half: the damage. Deliberately the loudest number on the card.
+function damageStatHtml(roll, { isCrit = false, type = '', empty = '' } = {}) {
+    if (!roll) {
+        return `<div class="chat-stat chat-stat--dmg is-empty">
+            <div class="chat-stat-label">Damage</div>
+            <div class="chat-stat-none">${empty || '&mdash;'}</div>
+            ${type ? `<div class="chat-dmg-type">${type}</div>` : ''}
+        </div>`;
+    }
+    const total = isCrit ? roll.total * 2 : roll.total;
+    const crit  = isCrit ? '<span class="chat-die-mod chat-die-mod--crit">&times;2</span>' : '';
+    return `<div class="chat-stat chat-stat--dmg${isCrit ? ' is-crit' : ''}">
+        <div class="chat-stat-label">Damage<span class="chat-stat-note">${roll.notation}</span></div>
+        <div class="chat-stat-val chat-stat-val--dmg">${total}</div>
+        ${diceTrayHtml(roll.rolls, { kind: 'dmg', mod: roll.bonus, extra: crit })}
+        ${type ? `<div class="chat-dmg-type">${type}</div>` : ''}
+    </div>`;
+}
+
+// Tags carry meaning, so let them carry a colour too.
+function featTagHtml(t) {
+    const kind = /^Dmg:/i.test(t) ? ' chat-feat-tag--dmg'
+        : /^Check:/i.test(t) ? ' chat-feat-tag--check'
+        : /\bMN\b|\bcost\b/i.test(t) ? ' chat-feat-tag--cost' : '';
+    return `<span class="chat-feat-tag${kind}">${t}</span>`;
+}
+
+function featTagsHtml(tags) {
+    return tags?.length
+        ? `<div class="chat-feat-tags">${tags.map(featTagHtml).join('')}</div>` : '';
 }
 
 function successCount(total) {
     return total >= 15 ? Math.floor((total - 10) / 5) : 0;
 }
 
+// Parses a full damage expression: any number of dice terms plus flat modifiers,
+// whitespace-tolerant, with an optional die count ("d6" == "1d6"). All of these work:
+//   1d6   1d6+2   1d6 + 2   d6+2   1d6+1d4   2d6 + 1d8! - 1   3
+// Returns null only when a term is neither dice nor a number (e.g. "equal to PL").
 function rollDiceNotation(raw) {
     const clean = (raw || '').replace(/\[\[|\]\]/g, '').trim();
-    const m = clean.match(/^(\d+)d(\d+)(!?)([+-]\d+)?$/i);
-    if (!m) return null;
-    const count = Math.min(parseInt(m[1]), 20);
-    const sides  = Math.min(parseInt(m[2]), 100);
-    const explode = !!m[3], bonus = m[4] ? parseInt(m[4]) : 0;
+    if (!clean) return null;
+    const terms = clean.match(/[+-]?[^+-]+/g);
+    if (!terms) return null;
+
     const rolls = [];
-    for (let i = 0; i < count; i++) {
-        let r = Math.floor(Math.random() * sides) + 1;
-        rolls.push(r);
-        if (explode) {
-            let cap = 20;
-            while (r === sides && cap-- > 0) { r = Math.floor(Math.random() * sides) + 1; rolls.push(r); }
+    let bonus = 0, total = 0, sawTerm = false;
+
+    for (const rawTerm of terms) {
+        const term = rawTerm.replace(/\s+/g, '');
+        if (!term) continue;
+
+        const d = term.match(/^([+-]?)(\d*)d(\d+)(!?)$/i);
+        if (d) {
+            const sign    = d[1] === '-' ? -1 : 1;
+            const count   = Math.min(parseInt(d[2] || '1', 10), 20);
+            const sides   = Math.min(parseInt(d[3], 10), 100);
+            const explode = !!d[4];
+            if (!sides || !count) return null;
+            let sum = 0;
+            for (let i = 0; i < count; i++) {
+                let r = Math.floor(Math.random() * sides) + 1;
+                rolls.push(r); sum += r;
+                if (explode) {
+                    let cap = 20;
+                    while (r === sides && cap-- > 0) {
+                        r = Math.floor(Math.random() * sides) + 1;
+                        rolls.push(r); sum += r;
+                    }
+                }
+            }
+            total += sign * sum;
+            sawTerm = true;
+            continue;
         }
+
+        const flat = term.match(/^([+-]?)(\d+)$/);
+        if (flat) {
+            const v = (flat[1] === '-' ? -1 : 1) * parseInt(flat[2], 10);
+            bonus += v; total += v;
+            sawTerm = true;
+            continue;
+        }
+
+        return null; // unparseable term - the whole expression is not dice
     }
-    return { notation: clean, rolls, bonus, total: rolls.reduce((a, b) => a + b, 0) + bonus };
+    if (!sawTerm) return null;
+    return { notation: clean, rolls, bonus, total };
 }
 
 function autoTableRolls(d20Total, damageType) {
@@ -677,10 +744,13 @@ function autoTableRolls(d20Total, damageType) {
 
 function successHtml(total) {
     const n = successCount(total);
-    if (n === 0) return `<div class="roll-outcome roll-outcome--fail">✗ No Success</div>`;
+    if (n === 0) return `<div class="roll-outcome roll-outcome--fail">No Success</div>`;
     const label = n === 1 ? '1 Success' : `${n} Successes`;
-    const pips  = '◆'.repeat(Math.min(n, 6));
-    return `<div class="roll-outcome roll-outcome--success">${pips} ${label}</div>`;
+    const pips = Array.from({ length: Math.min(n, 6) },
+        (_, i) => `<span class="roll-pip" style="--i:${i}"></span>`).join('');
+    return `<div class="roll-outcome roll-outcome--success">
+        <span class="roll-outcome-pips">${pips}</span>${label}
+    </div>`;
 }
 
 function damageTableBtnHtml(total, damageType) {
@@ -704,138 +774,121 @@ function expandableDesc(desc) {
 
 function diceChipsHtml(diceRolls) {
     if (!diceRolls?.length) return '';
-    return `<div class="chat-feat-dice">${diceRolls.map(r => {
-        const detail   = r.rolls?.length > 1 ? ` [${r.rolls.join('+')}]` : '';
-        const bonusTxt = r.bonus ? (r.bonus > 0 ? `+${r.bonus}` : `${r.bonus}`) : '';
-        return `<div class="chat-dice-chip">
-            <span class="chat-dice-notation">${r.notation}</span>
-            <span class="chat-dice-arrow">→</span>
-            <span class="chat-dice-total">${r.total}</span>
-            <span class="chat-dice-detail">${detail}${bonusTxt}</span>
-        </div>`;
-    }).join('')}</div>`;
+    return `<div class="chat-feat-dice">${diceRolls.map(r => `<div class="chat-dice-chip">
+            <div class="chat-dice-chip-head">
+                <span class="chat-dice-notation">${r.notation}</span>
+                <span class="chat-dice-total">${r.total}</span>
+            </div>
+            ${diceTrayHtml(r.rolls, { kind: 'dmg', mod: r.bonus })}
+        </div>`).join('')}</div>`;
 }
 
 // ── RENDER FUNCTIONS ──────────────────────────────────────────────────────────
 
 function renderWeaponAttackEntry(entry) {
-    const nat      = naturalRoll(entry.rollNote);
-    const isCrit   = nat === 20;
-    const resClass = isCrit ? 'chat-res--nat20' : nat === 1 ? 'chat-res--nat1' : '';
-    const typeLbl  = entry.rollType === 'adv' ? '· Adv' : entry.rollType === 'dis' ? '· Dis' : '';
-    const bonusTxt = entry.attackBonus ? ` ${fmtSigned(entry.attackBonus)}` : '';
-    const condHtml = entry.conditions?.length
+    const nat        = naturalRoll(entry.rollNote);
+    const isCrit     = nat === 20, isFumble = nat === 1;
+    const stateClass = isCrit ? ' chat-roll--crit' : isFumble ? ' chat-roll--fumble' : '';
+    const typeNote   = entry.rollType === 'adv' ? 'Adv' : entry.rollType === 'dis' ? 'Dis' : '';
+    const condHtml   = entry.conditions?.length
         ? `<div class="chat-roll-cond">${entry.conditions.map(condChip).join(' · ')}</div>` : '';
+    const meta = [entry.range, entry.properties].filter(Boolean).join(' · ');
 
-    const dmgHtml = entry.damageRoll ? (() => {
-        const base   = entry.damageRoll.total;
-        const total  = isCrit ? base * 2 : base;
-        const rolls  = entry.damageRoll.rolls || [];
-        const breakdown = rolls.length > 6 ? `[${rolls.length} dice]` : rolls.length ? `[${rolls.join('+')}]` : '';
-        const detail = isCrit
-            ? `<span class="chat-dice-detail">${breakdown}×2</span><span class="chat-crit-label">CRIT</span>`
-            : breakdown ? `<span class="chat-dice-detail">${breakdown}</span>` : '';
-        return `<div class="chat-dice-chip${isCrit ? ' chat-dice-chip--crit' : ''}">
-            <span class="chat-dice-notation">${entry.damageRoll.notation}</span>
-            <span class="chat-dice-arrow">→</span>
-            <span class="chat-dice-total">${total}</span>
-            ${detail}
-        </div>
-        <div class="chat-wep-meta">${[entry.damageType, entry.range, entry.properties].filter(Boolean).join(' · ')}</div>`;
-    })()
-        : `<div class="chat-wep-meta">${[entry.damage, entry.damageType, entry.range, entry.properties].filter(Boolean).join(' · ')}</div>`;
-
-    const critClass = isCrit ? ' chat-roll--crit' : nat === 1 ? ' chat-roll--fumble' : '';
-    return `<div class="chat-roll-card chat-roll--weapon${critClass}">
-        <div class="chat-card-head">
-            <span class="chat-card-title">⚔ ${entry.charName ? `${entry.charName} · ` : ''}${entry.weaponName || ''}</span>
-            ${isCrit ? '<span class="chat-crit-tag">CRIT</span>' : nat === 1 ? '<span class="chat-fumble-tag">FUMBLE</span>' : ''}
-            <span class="chat-time">${entry.time || ''}</span>
-        </div>
-        <div class="chat-wep-body">
-            <div class="chat-wep-col">
-                <div class="chat-attack-label">${entry.checkLabel || ''}</div>
-                <div class="chat-roll-result ${resClass}">${entry.d20Total}</div>
-                <div class="chat-roll-breakdown">${entry.rollNote || ''} ${fmtSigned(entry.checkMod)}${bonusTxt} ${typeLbl}</div>
-            </div>
-            <div class="chat-wep-col chat-wep-col--right">
-                <div class="chat-attack-label">DAMAGE</div>
-                ${dmgHtml}
-            </div>
-        </div>
-        ${successHtml(entry.d20Total)}
-        ${entry.tableRolls?.length
-            ? entry.tableRolls.map(r => `<div class="chat-inline-table-row">
+    const tableRows = entry.tableRolls?.length
+        ? entry.tableRolls.map(r => `<div class="chat-inline-table-row">
                 <span class="chat-table-type">${entry.damageType} Table</span>
                 <span class="chat-table-die">d6→${r.roll}</span>
                 <span class="chat-table-result">${r.result}</span>
               </div>`).join('')
-            : damageTableBtnHtml(entry.d20Total, entry.damageType)}
+        : '';
+
+    return `<div class="chat-roll-card chat-roll--weapon${stateClass}">
+        <div class="chat-card-head">
+            <span class="chat-card-title">⚔ ${entry.charName ? `${entry.charName} · ` : ''}${entry.weaponName || ''}</span>
+            ${isCrit ? '<span class="chat-crit-tag">CRIT</span>' : isFumble ? '<span class="chat-fumble-tag">FUMBLE</span>' : ''}
+            <span class="chat-time">${entry.time || ''}</span>
+        </div>
+        <div class="chat-duel">
+            ${checkStatHtml({
+                label: entry.checkLabel || 'Check',
+                total: entry.d20Total,
+                rollNote: entry.rollNote,
+                mod: (entry.checkMod || 0) + (entry.attackBonus || 0),
+                note: typeNote,
+            })}
+            ${damageStatHtml(entry.damageRoll, { isCrit, type: entry.damageType, empty: entry.damage })}
+        </div>
+        ${meta ? `<div class="chat-wep-meta">${meta}</div>` : ''}
+        ${successHtml(entry.d20Total)}
+        ${tableRows}
         ${entry.target ? `<div class="chat-roll-target">↠ ${entry.target}</div>` : ''}
-        ${entry.d20Total < 15 ? `<button class="provoke-btn" type="button"> Provoke!</button>` : ''}
         ${entry.desc ? expandableDesc(entry.desc) : ''}
+        ${tableRows ? '' : damageTableBtnHtml(entry.d20Total, entry.damageType)}
+        ${entry.d20Total < 15 ? `<button class="provoke-btn" type="button">⚡ Provoke!</button>` : ''}
         ${condHtml}
     </div>`;
 }
 
 function renderRollEntry(entry) {
-    const fc        = entry.featureContext;
-    const nat       = naturalRoll(entry.rollNote);
-    const resClass  = nat === 20 ? 'chat-res--nat20' : nat === 1 ? 'chat-res--nat1' : '';
-    const critClass = nat === 20 ? ' chat-roll--crit' : nat === 1 ? ' chat-roll--fumble' : '';
-    const critTag   = nat === 20 ? '<span class="chat-crit-tag">CRIT</span>' : nat === 1 ? '<span class="chat-fumble-tag">FUMBLE</span>' : '';
-    const typeLabel = entry.rollType === 'adv' ? '· Adv' : entry.rollType === 'dis' ? '· Dis' : '';
-    const condHtml  = entry.conditions?.length
+    const fc         = entry.featureContext;
+    const nat        = naturalRoll(entry.rollNote);
+    const stateClass = nat === 20 ? ' chat-roll--crit' : nat === 1 ? ' chat-roll--fumble' : '';
+    const critTag    = nat === 20 ? '<span class="chat-crit-tag">CRIT</span>'
+        : nat === 1 ? '<span class="chat-fumble-tag">FUMBLE</span>' : '';
+    const typeNote   = entry.rollType === 'adv' ? 'Adv' : entry.rollType === 'dis' ? 'Dis' : '';
+    const borderClass = entry.rollType === 'adv' ? ' chat-roll--adv'
+        : entry.rollType === 'dis' ? ' chat-roll--dis' : '';
+    const condHtml   = entry.conditions?.length
         ? `<div class="chat-roll-cond">${entry.conditions.map(condChip).join(' · ')}</div>` : '';
-    const charLabel = entry.charName ? `${entry.charName} · ` : '';
+    const charLabel  = entry.charName ? `${entry.charName} · ` : '';
 
     if (fc) {
-        const fcDice      = fc.diceRolls?.length ? fc.diceRolls : [];
-        const checkTag    = fc.tags?.find(t => t.startsWith('Check:'));
-        const checkLabel  = checkTag ? checkTag.replace('Check: ', '') : (entry.label || 'Check');
-        const displayTags = fc.tags?.filter(t => !t.startsWith('Check:')) || [];
-        const tagsHtml    = displayTags.length
-            ? `<div class="chat-feat-tags">${displayTags.map(t => `<span class="chat-feat-tag">${t}</span>`).join('')}</div>` : '';
-        const borderClass = entry.rollType === 'adv' ? 'chat-roll--adv'
-            : entry.rollType === 'dis' ? 'chat-roll--dis' : '';
-        const modStr = entry.mod !== 0 ? ` ${fmtSigned(entry.mod)}` : '';
-        return `<div class="chat-roll-card ${borderClass}${critClass}">
+        const fcDice     = fc.diceRolls?.length ? fc.diceRolls : [];
+        const checkTag   = fc.tags?.find(t => t.startsWith('Check:'));
+        const checkLabel = checkTag ? checkTag.replace('Check: ', '') : (entry.label || 'Check');
+        const dmgTag     = fc.tags?.find(t => t.startsWith('Dmg:'));
+        const dmgType    = dmgTag?.match(/\(([^)]+)\)/)?.[1] || '';
+        // The damage half of the duel already spells out Dmg: - don't say it twice
+        const displayTags = fc.tags?.filter(t =>
+            !t.startsWith('Check:') && !(fcDice.length === 1 && t === dmgTag)) || [];
+
+        const checkHtml = checkStatHtml({
+            label: checkLabel, total: entry.total, rollNote: entry.rollNote,
+            mod: entry.mod || 0, note: typeNote,
+        });
+        // One damage roll gets the big treatment; several stay chips so the card can breathe
+        const duelHtml = fcDice.length === 1
+            ? `<div class="chat-duel">${checkHtml}${damageStatHtml(fcDice[0], { type: dmgType })}</div>`
+            : `<div class="chat-duel chat-duel--solo">${checkHtml}</div>${diceChipsHtml(fcDice)}`;
+
+        return `<div class="chat-roll-card${borderClass}${stateClass}">
             <div class="chat-card-head">
                 <span class="chat-card-title">⚡ ${charLabel}${fc.name}</span>
                 ${critTag}
                 <span class="chat-time">${entry.time || ''}</span>
             </div>
-            ${tagsHtml}
-            <div class="chat-attack-row">
-                <div class="chat-attack-block">
-                    <div class="chat-attack-label">${checkLabel.toUpperCase()}</div>
-                    <div class="chat-roll-result ${resClass}">${entry.total}</div>
-                    <div class="chat-roll-breakdown">${entry.rollNote || ''}${modStr}${typeLabel ? ` ${typeLabel}` : ''}</div>
-                </div>
-                ${fcDice.length ? `<div class="chat-attack-block">
-                    <div class="chat-attack-label">DAMAGE</div>
-                    ${diceChipsHtml(fcDice)}
-                </div>` : ''}
-            </div>
+            ${featTagsHtml(displayTags)}
+            ${duelHtml}
             ${successHtml(entry.total)}
-            ${damageTableBtnHtml(entry.total, fc.tags?.find(t => t.startsWith('Dmg:'))?.match(/\(([^)]+)\)/)?.[1] || '')}
-            ${entry.total < 15 ? `<button class="provoke-btn" type="button">⚡ Provoke!</button>` : ''}
             ${fc.desc ? expandableDesc(fc.desc) : ''}
+            ${damageTableBtnHtml(entry.total, dmgType)}
+            ${entry.total < 15 ? `<button class="provoke-btn" type="button">⚡ Provoke!</button>` : ''}
             ${condHtml}
         </div>`;
     }
 
-    const borderClass = entry.rollType === 'adv' ? 'chat-roll--adv'
-        : entry.rollType === 'dis' ? 'chat-roll--dis' : '';
-    const modStr = entry.mod !== 0 ? ` ${fmtSigned(entry.mod)}` : '';
-    return `<div class="chat-roll-card ${borderClass}${critClass}">
+    return `<div class="chat-roll-card chat-roll--solo${borderClass}${stateClass}">
         <div class="chat-card-head">
             <span class="chat-card-title">${charLabel}${entry.label || 'Roll'}</span>
             ${critTag}
             <span class="chat-time">${entry.time || ''}</span>
         </div>
-        <div class="chat-roll-result ${resClass}">${entry.total}</div>
-        <div class="chat-roll-breakdown">${entry.rollNote || ''}${modStr}${typeLabel ? ` ${typeLabel}` : ''}</div>
+        <div class="chat-duel chat-duel--solo">
+            ${checkStatHtml({
+                label: '', total: entry.total,
+                rollNote: entry.rollNote, mod: entry.mod || 0, note: typeNote,
+            })}
+        </div>
         ${entry.label !== 'Initiative' ? successHtml(entry.total) : ''}
         ${entry.target ? `<div class="chat-roll-target">↠ ${entry.target}</div>` : ''}
         ${entry.label !== 'Initiative' && entry.total < 15 ? `<button class="provoke-btn" type="button">⚡ Provoke!</button>` : ''}
@@ -860,16 +913,13 @@ function renderRecoveryEntry(entry) {
 }
 
 function renderDiceEntry(entry) {
-    const breakdown = entry.rolls?.length > 1
-        ? `<div class="dice-card-breakdown">[${entry.rolls.join(' + ')}]${entry.bonus !== 0 ? ` ${fmtSigned(entry.bonus)}` : ''}</div>`
-        : '';
     return `<div class="chat-dice-card">
         <div class="chat-card-head">
             <span class="chat-card-title">${entry.charName ? `${entry.charName} · ` : ''}${entry.notation || ''}</span>
             <span class="chat-time">${entry.time || ''}</span>
         </div>
         <div class="dice-card-total">${entry.total}</div>
-        ${breakdown}
+        ${diceTrayHtml(entry.rolls, { kind: 'dmg', mod: entry.bonus })}
     </div>`;
 }
 
@@ -903,19 +953,15 @@ function renderTurnEntry(entry) {
 }
 
 function renderFeatureEntry(entry) {
-    const tagsHtml = entry.tags?.length
-        ? `<div class="chat-feat-tags">${entry.tags.map(t => `<span class="chat-feat-tag">${t}</span>`).join('')}</div>` : '';
-
     const upgradesHtml = entry.upgrades?.length
-        ? `<div class="chat-feat-upgrades">${entry.upgrades.map(u => {
-            const uTags = u.tags?.length
-                ? `<div class="chat-feat-tags">${u.tags.map(t => `<span class="chat-feat-tag">${t}</span>`).join('')}</div>` : '';
-            return `<div class="chat-feat-upgrade">
-                <div class="chat-feat-upgrade-name">↳ ${u.name || ''}</div>
-                ${uTags}
+        ? `<div class="chat-feat-upgrades">
+            <div class="chat-feat-upgrades-label">Upgrades</div>
+            ${entry.upgrades.map(u => `<div class="chat-feat-upgrade">
+                <div class="chat-feat-upgrade-name">${u.name || ''}</div>
+                ${featTagsHtml(u.tags)}
                 ${u.desc ? `<p class="chat-feat-upgrade-desc">${u.desc}</p>` : ''}
-            </div>`;
-        }).join('')}</div>`
+            </div>`).join('')}
+        </div>`
         : '';
 
     return `<div class="chat-feat-card">
@@ -923,7 +969,7 @@ function renderFeatureEntry(entry) {
             <span class="chat-card-title">⚡ ${entry.name || ''}</span>
             <span class="chat-time">${entry.time || ''}</span>
         </div>
-        ${tagsHtml}
+        ${featTagsHtml(entry.tags)}
         ${diceChipsHtml(entry.diceRolls)}
         ${expandableDesc(entry.desc)}
         ${upgradesHtml}

@@ -926,8 +926,6 @@ body[data-page-title="Active-Sheet"] #site-header {
 /* ── ATTACK CARD ─────────────────────────────────────────────────── */
 
 .chat-roll--weapon { border-left-color: rgba(255, 120, 60, 0.8); }
-.chat-roll--crit   { border-left-color: #ffd700; background: rgba(255,215,0,0.06); }
-.chat-roll--fumble { border-left-color: #ff4444; background: rgba(255,68,68,0.06); }
 
 .chat-crit-tag, .chat-fumble-tag {
     font-size: 9px;
@@ -942,23 +940,8 @@ body[data-page-title="Active-Sheet"] #site-header {
 .chat-crit-tag   { background: rgba(255,215,0,0.18); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); }
 .chat-fumble-tag { background: rgba(255,68,68,0.15);  color: #ff6060; border: 1px solid rgba(255,68,68,0.4); }
 
-.chat-attack-row {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    margin: 4px 0 8px;
-}
 
-.chat-attack-block { flex: 1; }
 
-.chat-attack-label {
-    font-size: 9px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-    margin-bottom: 4px;
-}
 
 /* Bottom nav */
 .bottom-nav {
@@ -1389,6 +1372,7 @@ body[data-page-title="Active-Sheet"] #site-header {
     * {
         scroll-behavior: auto !important;
         transition: none !important;
+        animation: none !important;
     }
 }
 
@@ -2475,24 +2459,8 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 /* ── WEAPON ATTACK CHAT CARD ─────────────────────────────────────── */
 
-.chat-wep-body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 4px 0 8px;
-    align-items: start;
-}
 
-.chat-wep-col--right {
-    border-left: 1px solid var(--line);
-    padding-left: 12px;
-}
 
-.chat-wep-meta {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 4px;
-}
 
 /* ── BIO - SPECIES LOCKED DISPLAY ───────────────────────────────── */
 
@@ -3734,74 +3702,11 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 /* ── IN-APP CHAT TOAST ──────────────────────────── */
 
-.chat-toast {
-    position: fixed;
-    left: 50%;
-    top: calc(10px + var(--safe-t));
-    transform: translate(-50%, -140%);
-    z-index: 900;
-    width: min(94vw, 460px);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    background: var(--panel);
-    border: 1px solid var(--gold);
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-    opacity: 0;
-    pointer-events: none;
-    transition: transform 0.22s ease, opacity 0.22s ease;
-}
-.chat-toast.is-open {
-    transform: translate(-50%, 0);
-    opacity: 1;
-    pointer-events: auto;
-}
 
-.chat-toast-body { flex: 1; min-width: 0; }
 
-.chat-toast-title {
-    font-size: 12px;
-    font-weight: 800;
-    color: var(--gold);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
 
-.chat-toast-text {
-    font-size: 13px;
-    color: var(--muted);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
 
-.chat-toast-view {
-    flex-shrink: 0;
-    background: var(--gold-dim);
-    border: 1px solid var(--gold);
-    border-radius: 999px;
-    color: var(--gold);
-    font: inherit;
-    font-size: 12px;
-    font-weight: 800;
-    padding: 5px 12px;
-    cursor: pointer;
-}
-.chat-toast-view:active { background: var(--gold-glow); }
 
-.chat-toast-x {
-    flex-shrink: 0;
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1;
-    padding: 4px 2px;
-    cursor: pointer;
-}
 
 /* ── GIVE ITEM DIALOG ───────────────────────────────────────── */
 
@@ -4520,36 +4425,10 @@ body[data-page-title="Active-Sheet"] #site-header {
 .chat-roll--dis { border-left-color: #ff9060; }
 
 
-.chat-roll-result {
-    font-size: 52px;
-    font-weight: 900;
-    text-align: center;
-    line-height: 1;
-    color: var(--text);
-    margin: 0 0 8px;
-    letter-spacing: -0.02em;
-}
 
-.chat-res--nat20 { color: #ffd700; }
-.chat-res--nat1  { color: #ff6060; }
 
-.roll-outcome {
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    text-align: center;
-    margin: 4px 0 2px;
-}
 
-.roll-outcome--success { color: var(--accent); }
-.roll-outcome--fail    { color: var(--muted); }
 
-.chat-roll-breakdown {
-    text-align: center;
-    font-size: 13px;
-    color: var(--text);
-}
 
 .chat-roll-cond {
     margin-top: 8px;
@@ -4574,97 +4453,16 @@ body[data-page-title="Active-Sheet"] #site-header {
 
 .chat-feat-card:hover { background: rgba(70,100,100,0.10); border-color: rgba(70,100,100,0.5); }
 
-.chat-feat-upgrades {
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid var(--line);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-.chat-feat-upgrade {
-    padding-left: 10px;
-    border-left: 2px solid var(--accent2);
-    opacity: 0.85;
-}
-.chat-feat-upgrade-name {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 3px;
-}
-.chat-feat-upgrade-desc {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.5;
-    margin: 0;
-}
 
-.chat-feat-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-bottom: 7px;
-}
 
-.chat-feat-tag {
-    font-size: 10px;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 2px 8px;
-    color: var(--muted);
-}
 
 /* Dice chips */
-.chat-feat-dice {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 8px;
-}
 
-.chat-dice-chip {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(70, 100, 100, 0.12);
-    border: 1px solid rgba(70, 100, 100, 0.35);
-    border-radius: 9px;
-    padding: 6px 10px;
-}
 
-.chat-dice-notation {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--muted);
-    font-family: monospace;
-}
 
-.chat-dice-arrow { font-size: 11px; color: var(--muted); }
 
-.chat-dice-total {
-    font-size: 22px;
-    font-weight: 900;
-    line-height: 1;
-    min-width: 20px;
-    text-align: center;
-}
 
-.chat-dice-chip--crit { background: rgba(255,200,80,0.12); border: 1px solid rgba(255,200,80,0.3); }
-.chat-dice-chip--crit .chat-dice-total { color: #ffc840; }
-.chat-crit-label {
-    font-size: 10px;
-    font-weight: 800;
-    color: #ffc840;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-}
 
-.chat-dice-detail {
-    font-size: 10px;
-    color: var(--muted);
-    font-family: monospace;
-}
 
 /* Expandable description */
 .chat-desc-body.is-clamped .chat-feat-desc {
@@ -5254,11 +5052,16 @@ body[data-page-title="Active-Sheet"] #site-header {
     padding: 10px 12px;
 }
 
+/* Centred to match the roll cards - the tray underneath is centred too */
 .dice-card-total {
-    font-size: 40px;
+    font-size: 44px;
     font-weight: 900;
     line-height: 1.1;
-    margin: 4px 0 2px;
+    margin: 4px 0 6px;
+    text-align: center;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+    animation: chat-val-pop 0.34s cubic-bezier(0.2, 1.2, 0.3, 1) 0.08s backwards;
 }
 
 .provoke-btn {
@@ -5280,11 +5083,6 @@ body[data-page-title="Active-Sheet"] #site-header {
 .provoke-btn:active { transform: scale(0.97); background: rgba(220, 100, 60, 0.22); }
 
 
-.dice-card-breakdown {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 600;
-}
 
 /* ─────────────────────────────────────────────────────────────────── */
 
@@ -6200,3 +5998,376 @@ body[data-page-title="Active-Sheet"] #site-header {
     color: var(--gold);
     white-space: nowrap;
 }
+
+/* ══ CHAT CARDS ═════════════════════════════════════════════════════
+   A roll card is read left-to-right: what you threw, then what it did.
+   The dice tray under each number shows the faces that actually landed,
+   so a total never appears out of nowhere. Damage is the loud half.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── The two-up: check | damage ──────────────────────────────────── */
+.chat-duel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 2px 0 8px;
+}
+.chat-duel--solo { grid-template-columns: 1fr; }
+
+.chat-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+    padding: 9px 8px 10px;
+    border-radius: 11px;
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.028);
+}
+/* A lone check doesn't need a box around it */
+.chat-duel--solo .chat-stat { background: none; border: 0; padding: 2px 0 4px; }
+
+.chat-stat-label {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    max-width: 100%;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.chat-stat-note {
+    font-family: monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+    opacity: 0.72;
+}
+
+.chat-stat-val {
+    font-size: 44px;
+    font-weight: 900;
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
+.chat-duel--solo .chat-stat-val { font-size: 54px; }
+
+.chat-stat-none {
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+.chat-res--nat20 { color: #ffd700; }
+.chat-res--nat1  { color: #ff6060; }
+
+/* ── Damage: the payoff ──────────────────────────────────────────── */
+.chat-stat--dmg {
+    border-color: var(--accent2-mid);
+    background: linear-gradient(180deg, var(--accent2-dim), rgba(0, 0, 0, 0) 78%);
+}
+.chat-stat--dmg.is-empty { opacity: 0.6; }
+
+.chat-stat-val--dmg {
+    color: var(--gold);                                        /* fallback */
+    color: color-mix(in srgb, var(--accent2) 68%, #ffe9b0);
+    text-shadow: 0 0 20px var(--accent2-mid);
+}
+
+.chat-dmg-type {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--gold);
+    color: color-mix(in srgb, var(--accent2) 62%, #ffe9b0);
+    opacity: 0.85;
+}
+
+.chat-stat--dmg.is-crit {
+    border-color: rgba(255, 215, 0, 0.5);
+    background: linear-gradient(180deg, rgba(255, 215, 0, 0.17), rgba(0, 0, 0, 0) 78%);
+}
+.chat-stat--dmg.is-crit .chat-stat-val--dmg {
+    color: #ffd700;
+    text-shadow: 0 0 26px rgba(255, 215, 0, 0.55);
+}
+.chat-stat--dmg.is-crit .chat-dmg-type { color: #ffd700; }
+
+/* ── The tray: faces that actually landed ────────────────────────── */
+.chat-dice-tray {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    min-height: 22px;
+}
+
+.chat-die {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 5px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.06);
+    font-size: 12px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+}
+
+/* The d20 gets a die silhouette so the check half reads as "thrown" */
+.chat-die--d20 {
+    min-width: 27px;
+    height: 27px;
+    padding: 0 3px;
+    border: 0;
+    border-radius: 0;
+    clip-path: polygon(50% 0%, 94% 26%, 94% 74%, 50% 100%, 6% 74%, 6% 26%);
+    background: var(--accent-mid);
+    font-size: 13px;
+}
+.chat-die--d20.is-nat20 { background: rgba(255, 215, 0, 0.32); color: #ffd700; }
+.chat-die--d20.is-nat1  { background: rgba(255, 68, 68, 0.28);  color: #ff8080; }
+
+.chat-die--dmg {
+    border-color: var(--accent2-mid);
+    background: var(--accent2-dim);
+}
+
+/* The die advantage/disadvantage threw away */
+.chat-die--drop {
+    opacity: 0.38;
+    text-decoration: line-through;
+    font-weight: 600;
+}
+
+.chat-die-mod {
+    padding: 0 2px;
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+}
+.chat-die-mod--crit {
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.chat-die-count {
+    font-family: monospace;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+/* ── Verdict band ────────────────────────────────────────────────── */
+.roll-outcome {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 2px;
+    padding: 6px 0 4px;
+    border-top: 1px solid var(--line);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+}
+.roll-outcome--success {
+    color: var(--gold);                                        /* fallback */
+    color: color-mix(in srgb, var(--accent2) 58%, #ffe9b0);
+}
+.roll-outcome--fail    { color: var(--muted); opacity: 0.75; }
+
+.roll-outcome-pips { display: inline-flex; gap: 4px; }
+.roll-pip {
+    width: 7px;
+    height: 7px;
+    background: currentColor;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+/* ── Meta / target lines ─────────────────────────────────────────── */
+.chat-wep-meta {
+    margin-top: -2px;
+    font-size: 11.5px;
+    text-align: center;
+    color: var(--muted);
+}
+
+/* ── Feature tags: colour carries meaning ────────────────────────── */
+.chat-feat-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.chat-feat-tag {
+    padding: 2px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.025);
+    font-size: 10px;
+    color: var(--muted);
+}
+.chat-feat-tag--dmg {
+    border-color: var(--accent2-mid);
+    background: var(--accent2-dim);
+    color: var(--gold);
+    color: color-mix(in srgb, var(--accent2) 60%, #ffe9b0);
+}
+.chat-feat-tag--check {
+    border-color: var(--accent-mid);
+    background: var(--accent-dim);
+    color: var(--text);
+}
+.chat-feat-tag--cost {
+    border-color: rgba(127, 176, 216, 0.38);
+    background: rgba(127, 176, 216, 0.10);
+    color: #8fbde0;
+}
+
+/* ── Standalone damage chips (features that roll more than one) ───── */
+.chat-feat-dice {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 9px;
+}
+
+.chat-dice-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 12px 8px;
+    border: 1px solid var(--accent2-mid);
+    border-radius: 11px;
+    background: linear-gradient(180deg, var(--accent2-dim), rgba(0, 0, 0, 0) 80%);
+}
+.chat-dice-chip-head {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+.chat-dice-notation {
+    font-family: monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+}
+.chat-dice-total {
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--gold);
+    color: color-mix(in srgb, var(--accent2) 68%, #ffe9b0);
+}
+
+/* ── Upgrades ────────────────────────────────────────────────────── */
+.chat-feat-upgrades {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 10px;
+    padding-top: 9px;
+    border-top: 1px solid var(--line);
+}
+.chat-feat-upgrades-label {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0.8;
+}
+.chat-feat-upgrade {
+    padding: 7px 11px 8px 11px;
+    border-left: 2px solid var(--accent2-mid);
+    border-radius: 0 9px 9px 0;
+    background: rgba(255, 255, 255, 0.032);
+}
+.chat-feat-upgrade-name {
+    margin-bottom: 4px;
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--text);
+}
+.chat-feat-upgrade-name::before {
+    content: '▸ ';
+    color: var(--accent2);
+}
+.chat-feat-upgrade .chat-feat-tags { margin-bottom: 5px; }
+.chat-feat-upgrade-desc {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+/* ── Crit / fumble card states ───────────────────────────────────── */
+.chat-roll--crit {
+    border-left-color: #ffd700;
+    background: linear-gradient(180deg, rgba(255, 215, 0, 0.09), rgba(0, 0, 0, 0) 55%), var(--panel-2);
+    box-shadow: 0 4px 20px -8px rgba(255, 215, 0, 0.4);
+}
+.chat-roll--fumble {
+    border-left-color: #ff4444;
+    background: linear-gradient(180deg, rgba(255, 68, 68, 0.09), rgba(0, 0, 0, 0) 55%), var(--panel-2);
+}
+
+/* ── Motion: make it feel thrown ─────────────────────────────────── */
+@keyframes chat-die-land {
+    0%   { transform: translateY(-7px) scale(0.55) rotate(-30deg); opacity: 0; }
+    62%  { transform: translateY(0) scale(1.14) rotate(5deg); opacity: 1; }
+    100% { transform: none; opacity: 1; }
+}
+@keyframes chat-val-pop {
+    0%   { transform: scale(0.7); opacity: 0; }
+    66%  { transform: scale(1.07); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+/* Damage arrives from above and hits - heavier than the check's pop */
+@keyframes chat-dmg-impact {
+    0%   { transform: scale(1.55); opacity: 0; filter: blur(5px); }
+    58%  { transform: scale(0.93); opacity: 1; filter: blur(0); }
+    78%  { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+@keyframes chat-pip-in {
+    from { transform: scale(0) rotate(-90deg); opacity: 0; }
+    to   { transform: none; opacity: 1; }
+}
+
+.chat-die { animation: chat-die-land 0.34s cubic-bezier(0.2, 1.3, 0.4, 1) backwards; }
+.chat-die:nth-child(2) { animation-delay: 0.05s; }
+.chat-die:nth-child(3) { animation-delay: 0.10s; }
+.chat-die:nth-child(4) { animation-delay: 0.15s; }
+.chat-die:nth-child(5) { animation-delay: 0.20s; }
+.chat-die:nth-child(n+6) { animation-delay: 0.25s; }
+
+.chat-stat-val      { animation: chat-val-pop 0.34s cubic-bezier(0.2, 1.2, 0.3, 1) 0.08s backwards; }
+.chat-stat-val--dmg { animation: chat-dmg-impact 0.44s cubic-bezier(0.2, 0.9, 0.3, 1) 0.18s backwards; }
+.roll-pip           { animation: chat-pip-in 0.3s cubic-bezier(0.2, 1.4, 0.4, 1) calc(0.34s + var(--i) * 0.07s) backwards; }
+
+/* Both logs render newest-first and rebuild wholesale, so only the top card
+   animates - otherwise every re-render replays the entire session. */
+:is(#chat-log, #nar-chat-log) > li:not(:first-child)
+    :is(.chat-die, .chat-stat-val, .roll-pip, .dice-card-total) { animation: none; }

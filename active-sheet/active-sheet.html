@@ -16,6 +16,7 @@
     <meta name="apple-mobile-web-app-title" content="ARC20" />
     <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
     <link rel="stylesheet" href="styles/active-sheet.css" />
+    <link rel="stylesheet" href="styles/chat-toast.css" />
 
     <script src="../scripts/tooltips.js" defer></script>
 
@@ -24,6 +25,7 @@
     <script src="../scripts/automod-wordlist.js" defer></script>
     <script src="../scripts/arc-shared.js" defer></script>
     <script src="../scripts/chat-cards.js" defer></script>
+    <script src="../scripts/chat-watch.js" defer></script>
     <script type="module" src="../scripts/firebase.js"></script>
     <script src="../scripts/analytics.js" defer></script>
     <script src="../scripts/active-sheet.js" defer></script>
@@ -771,6 +773,7 @@
                 <div class="drawer-handle" aria-hidden="true"></div>
                 <div class="drawer-head">
                     <div class="drawer-title" id="ae-drawer-title">Add Equipment</div>
+                    <button class="icon-btn" id="ae-give" type="button" title="Give to another player or the party" hidden>📤</button>
                     <button class="wm-save-btn" id="ae-save-top" type="button">✓ Save</button>
                     <button class="icon-btn" type="button" data-ae-close aria-label="Close">✕</button>
                 </div>
@@ -918,6 +921,7 @@
             <div class="drawer-handle" aria-hidden="true"></div>
             <div class="wm-head">
                 <input class="wm-name-input" id="wm-name-input" type="text" placeholder="Weapon name…" autocomplete="off" />
+                <button class="icon-btn" id="wm-give" type="button" title="Give to another player or the party" hidden>📤</button>
                 <button class="wm-save-btn" id="wm-save" type="button">✓ Save</button>
                 <button class="icon-btn" id="wm-close" type="button" aria-label="Close">✕</button>
             </div>

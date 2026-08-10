@@ -1941,7 +1941,7 @@ document.getElementById('btn-nar-dice-roll')?.addEventListener('click', () => {
 // rollDiceNotation is defined in chat-cards.js
 
 function extractAndRollDice(text) {
-    const matches = [...(text || '').matchAll(/\[\[(\d+d\d+(?:[+-]\d+)?)\]\]/gi)];
+    const matches = [...(text || '').matchAll(/\[\[(\d*d\d+!?(?:\s*[+-]\s*\d*d?\d+!?)*)\]\]/gi)];
     return matches.map(m => rollDiceNotation(m[1])).filter(Boolean);
 }
 
@@ -3770,31 +3770,44 @@ function listenToSharedChat(code) {
         arc.orderBy('postedAt', 'desc'),
         arc.limit(60)
     );
-    let prevChatCount = 0;
+    // The query keeps only the newest 60, so once a room passes 60 messages
+    // snap.docs.length stops growing and a count comparison never fires again -
+    // which silently killed the badge, the toast and the OS notification.
+    // Gate on "have we seen the first snapshot yet" instead.
+    let primed = false;
     chatUnsubscribe = arc.onSnapshot(q, snap => {
         fbSharedChat = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         renderNarChat();
-        if (snap.docs.length > prevChatCount && prevChatCount > 0) {
-            const chatPanel = document.getElementById('panel-chat');
-            const notif     = document.getElementById('chat-notif');
-            if (notif && !chatPanel?.classList.contains('is-active')) notif.hidden = false;
-        }
-        // OS notification for incoming player messages
-        if (snap.docs.length > prevChatCount && prevChatCount > 0) {
-            snap.docChanges().forEach(change => {
-                if (change.type !== 'added') return;
-                const m = change.doc.data();
-                if (['system', 'turn'].includes(m.type) || m.removed || m.isNarrator) return;
-                const title = m.author ? `${m.author} - ${currentRoomCode || 'ARC20'}` : (currentRoomCode || 'ARC20');
-                const body  = m.type === 'roll'          ? `Rolled ${m.total ?? ''}` :
-                              m.type === 'weapon-attack' ? `${m.weaponName || 'Attack'} - ${m.total ?? ''}` :
-                              m.text ? m.text.slice(0, 80) : 'New message';
-                ArcNotify.show(title, body);
-                // ArcNotify no-ops while the page is focused; the toast covers that
+
+        const wasPrimed = primed;
+        primed = true;
+
+        if (wasPrimed) {
+            // Incoming player messages only - the narrator's own posts aren't news
+            const incoming = snap.docChanges()
+                .filter(c => c.type === 'added')
+                .map(c => c.doc.data())
+                .filter(m => !['system', 'turn'].includes(m.type) && !m.removed && !m.isNarrator);
+
+            if (incoming.length) {
                 const onChat = document.getElementById('panel-chat')?.classList.contains('is-active');
-                if (!onChat) showChatToast(m.author || 'New message', body, () => setActivePanel('chat'));
-            });
+                if (!onChat) {
+                    const notif = document.getElementById('chat-notif');
+                    if (notif) notif.hidden = false;
+                }
+                incoming.forEach(m => ArcNotify.show(
+                    m.author ? `${m.author} - ${currentRoomCode || 'ARC20'}` : (currentRoomCode || 'ARC20'),
+                    chatNotifyBody(m)));
+                // ArcNotify no-ops while the page is focused; the toast covers that.
+                // Only the newest gets a toast - there is one toast element to share.
+                if (!onChat) {
+                    const last = incoming[incoming.length - 1];
+                    showChatToast(last.author || 'New message', chatNotifyBody(last),
+                        () => setActivePanel('chat'));
+                }
+            }
         }
+
         // Auto-add players who rolled initiative
         snap.docChanges().forEach(change => {
             if (change.type !== 'added') return;
@@ -3808,7 +3821,6 @@ function listenToSharedChat(code) {
             }
             saveNar(); renderEncounter();
         });
-        prevChatCount = snap.docs.length;
     }, err => console.error('[ARC] chat listener:', err));
 }
 
