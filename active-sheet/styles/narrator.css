@@ -332,69 +332,13 @@ details.minion-card[open] .minion-chevron {
 
 /* ── INVENTORY ROWS ───────────────────────────────────────────────── */
 
-.inv-row {
-    display: grid;
-    grid-template-columns: 1fr auto 52px 66px 26px;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 2px;
-    border-bottom: 1px solid var(--line);
-}
 
-.inv-name-col {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-}
 
-.inv-name {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--accent2);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
 
-.inv-desc {
-    font-size: 11px;
-    color: var(--muted);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
 
-.inv-amount {
-    font-size: 13px;
-    font-weight: 800;
-    text-align: center;
-    white-space: nowrap;
-}
 
-.inv-bulk {
-    font-size: 11px;
-    color: var(--muted);
-    text-align: center;
-    white-space: nowrap;
-}
 
-.inv-claim-btn {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--accent2);
-    background: none;
-    border: 1px solid var(--accent-mid);
-    border-radius: 8px;
-    padding: 4px 6px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.15s;
-}
 
-.inv-claim-btn:active {
-    background: var(--accent-dim);
-}
 
 /* ── PLAYER EDIT DIALOG ───────────────────────────────────────────── */
 
@@ -577,6 +521,7 @@ body.privacy-mode .prow-name {
     background: var(--accent-dim);
     border-left: 3px solid var(--accent-mid);
     padding-left: 10px;
+    border-radius: 12px;
 }
 
 .scard--nar-roll {
@@ -1692,7 +1637,6 @@ body.privacy-mode .prow-name {
 .enc-init-badge--enemy  { background: rgba(224,85,85,0.15); border-color: rgba(224,85,85,0.4); color: #e05555; }
 
 .enc-link-btn   { color: var(--accent); font-size: 13px; padding: 2px 4px; }
-.enc-reroll-btn { color: var(--muted);  font-size: 13px; padding: 2px 4px; }
 
 .enc-name-col {
     flex: 1;
@@ -2260,4 +2204,204 @@ body.privacy-mode .prow-name {
     gap: 6px;
     margin-top: 14px;
     flex-shrink: 0;
+}
+
+/* ── MONSTER BROWSER ──────────────────────────────────────────────
+   98 monsters behind a name-only search was effectively unbrowsable.
+   Filter down by group / PL band / environment, then pin or drop
+   straight into initiative from the row. */
+.mon-browse-head {
+    cursor: pointer;
+    list-style: none;
+    align-items: center;
+}
+.mon-browse-head::-webkit-details-marker { display: none; }
+.mon-browse-head::after {
+    content: '▾';
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--muted);
+    transition: transform 0.15s;
+}
+details[open] > .mon-browse-head::after { transform: rotate(180deg); }
+
+.mon-browse-count {
+    margin-left: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+}
+
+.mon-filter-row {
+    display: flex;
+    gap: 6px;
+    margin: 8px 0;
+}
+.mon-filter {
+    flex: 1;
+    min-width: 0;
+    padding: 6px 8px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--panel-2);
+    color: var(--text);
+    font: inherit;
+    font-size: 12px;
+}
+
+.mon-browse-list {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.mon-browse-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 4px;
+    border-bottom: 1px solid var(--line);
+}
+.mon-browse-row.is-pinned { background: rgba(255, 255, 255, 0.03); }
+
+.mon-browse-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+.mon-browse-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.mon-browse-meta {
+    font-size: 10.5px;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.mon-browse-stats {
+    font-size: 10.5px;
+    color: var(--muted);
+    white-space: nowrap;
+}
+.mon-browse-stats strong {
+    margin-left: 2px;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
+.mon-browse-row.is-pinned .mon-browse-pin { color: var(--accent2); }
+
+/* Cast dialog */
+#mon-cast-dialog .nar-form-field { margin-bottom: 8px; }
+#mon-cast-dialog select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--panel-2);
+    color: var(--text);
+    font: inherit;
+}
+
+/* ── REFERENCE: GEAR ──────────────────────────────────────────────
+   Weapon/armor lookup without leaving the app mid-session. */
+.ref-gear-list { max-height: 62vh; overflow-y: auto; }
+
+.ref-gear-row { border-bottom: 1px solid var(--line); }
+
+.ref-gear-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 4px;
+    cursor: pointer;
+    list-style: none;
+}
+.ref-gear-head::-webkit-details-marker { display: none; }
+
+.ref-gear-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+.ref-gear-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.ref-gear-sub {
+    font-size: 10.5px;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.ref-gear-stat {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent2);
+    text-align: right;
+    max-width: 45%;
+}
+
+.ref-gear-body { padding: 2px 4px 10px; }
+.ref-gear-desc,
+.ref-gear-feat {
+    margin: 0 0 6px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+.ref-gear-feat strong { color: var(--accent2); }
+
+.ref-gear-acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+/* 22 of 98 monsters cast - mark them so you can find a caster without
+   opening every card. */
+.gen-mon-spell-badge {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 5px;
+    padding: 1px 6px;
+    border: 1px solid var(--accent2-mid);
+    border-radius: 999px;
+    background: var(--accent2-dim);
+    font-size: 9.5px;
+    font-weight: 800;
+    color: var(--accent2);
+    vertical-align: middle;
+}
+
+/* Cast dialog: optgroups separate initiative from players and characters */
+#mon-cast-dialog optgroup {
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--panel);
+}
+#mon-cast-dialog option {
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--text);
 }

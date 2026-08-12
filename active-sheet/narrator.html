@@ -202,7 +202,7 @@
                                 <span class="room-badge-name" id="room-badge-name"></span><span class="room-badge-code" id="room-badge-code"></span>
                             </button>
                             <button class="ghost-btn privacy-btn" id="btn-privacy-mode" type="button" title="Privacy mode - hides room code for streaming" hidden>👁</button>
-                            <button class="ghost-btn" id="btn-invite" type="button">Invite</button>
+                            <button class="ghost-btn" id="btn-invite" type="button">Manage Rooms</button>
                         </div>
                     </div>
 
@@ -409,6 +409,43 @@
                     </details>
                 </div>
 
+
+                <!-- Quest Log -->
+                <div class="section party-subsection">
+                    <div class="section-head">
+                        <h2 class="section-title">Quest Log</h2>
+                    </div>
+                    <div id="journal-quest-list"></div>
+                    <details class="nar-add-form u-mt-8">
+                        <summary class="nar-add-summary">+ Add Quest</summary>
+                        <div class="nar-form">
+                            <label class="nar-form-field"><span class="nar-form-label">Quest</span>
+                                <input id="jquest-text" type="text" placeholder="Quest description…" autocomplete="off" /></label>
+                        </div>
+                        <button class="done-btn" id="btn-add-jquest" type="button">+ Add</button>
+                    </details>
+                </div>
+
+                <!-- Session Notes -->
+                <div class="section party-subsection">
+                    <div class="section-head">
+                        <h2 class="section-title">Session Notes</h2>
+                    </div>
+                    <div id="journal-session-list"></div>
+                    <details class="nar-add-form u-mt-8">
+                        <summary class="nar-add-summary">+ Add Session</summary>
+                        <div class="nar-form">
+                            <label class="nar-form-field"><span class="nar-form-label">Session Title</span>
+                                <input id="jsess-title" type="text" placeholder="Session 1 - The Beginning…" autocomplete="off" /></label>
+                            <label class="nar-form-field"><span class="nar-form-label">Date</span>
+                                <input id="jsess-date" type="date" /></label>
+                            <label class="nar-form-field"><span class="nar-form-label">Notes</span>
+                                <textarea id="jsess-notes" rows="4" placeholder="What happened this session…"></textarea></label>
+                        </div>
+                        <button class="done-btn" id="btn-add-jsess" type="button">+ Add Session</button>
+                    </details>
+                </div>
+
             </section>
 
             <!-- GENERATORS -->
@@ -577,70 +614,52 @@
                     </div>
                 </div>
 
-                <!-- Monster Book -->
-                <div class="section">
-                    <div class="section-head">
-                        <h2 class="section-title">Monster Book</h2>
+                <!-- Browse the whole catalogue: filter down, then pin to the book -->
+                <details class="section mon-browse" id="mon-browse">
+                    <summary class="section-head mon-browse-head">
+                        <h2 class="section-title">Browse Monsters</h2>
+                        <span class="mon-browse-count" id="mon-browse-count"></span>
+                    </summary>
+                    <div class="gen-search-row">
+                        <input type="text" id="gen-mon-search" class="gen-search-input" placeholder="Search name, group, environment…" autocomplete="off" />
                         <button class="ghost-btn" id="btn-gen-mon-random" type="button">Random</button>
                     </div>
-                    <div class="gen-search-row">
-                        <input type="text" id="gen-mon-search" class="gen-search-input" placeholder="Search by name…" autocomplete="off" />
+                    <div class="mon-filter-row">
+                        <select id="mon-filter-group" class="mon-filter"><option value="">All groups</option></select>
+                        <select id="mon-filter-pl" class="mon-filter">
+                            <option value="">Any PL</option>
+                            <option value="1-3">PL 1-3</option>
+                            <option value="4-6">PL 4-6</option>
+                            <option value="7-10">PL 7-10</option>
+                            <option value="11-99">PL 11+</option>
+                        </select>
+                        <select id="mon-filter-env" class="mon-filter"><option value="">Any environment</option></select>
                     </div>
+                    <div class="mon-browse-list" id="mon-browse-list"></div>
+                </details>
+
+                <!-- Monster Book -->
+                <details class="section" id="mon-book" open>
+                    <summary class="section-head mon-browse-head">
+                        <h2 class="section-title">Monster Book</h2>
+                        <span class="mon-browse-count" id="mon-book-count"></span>
+                    </summary>
                     <div class="gen-search-results" id="gen-mon-results" hidden></div>
                     <div id="gen-mon-list">
-                        <p class="empty-hint">No monsters added. Search or tap Random.</p>
+                        <p class="empty-hint">No monsters pinned. Browse above to add some.</p>
                     </div>
-                </div>
+                </details>
 
             </section>
 
             <!-- JOURNAL -->
-            <section class="panel" id="panel-journal" role="region" aria-label="Journal">
-
-                <!-- Quest Log -->
-                <div class="section party-subsection">
-                    <div class="section-head">
-                        <h2 class="section-title">Quest Log</h2>
-                    </div>
-                    <div id="journal-quest-list"></div>
-                    <details class="nar-add-form u-mt-8">
-                        <summary class="nar-add-summary">+ Add Quest</summary>
-                        <div class="nar-form">
-                            <label class="nar-form-field"><span class="nar-form-label">Quest</span>
-                                <input id="jquest-text" type="text" placeholder="Quest description…" autocomplete="off" /></label>
-                        </div>
-                        <button class="done-btn" id="btn-add-jquest" type="button">+ Add</button>
-                    </details>
-                </div>
-
-                <!-- Session Notes -->
-                <div class="section party-subsection">
-                    <div class="section-head">
-                        <h2 class="section-title">Session Notes</h2>
-                    </div>
-                    <div id="journal-session-list"></div>
-                    <details class="nar-add-form u-mt-8">
-                        <summary class="nar-add-summary">+ Add Session</summary>
-                        <div class="nar-form">
-                            <label class="nar-form-field"><span class="nar-form-label">Session Title</span>
-                                <input id="jsess-title" type="text" placeholder="Session 1 - The Beginning…" autocomplete="off" /></label>
-                            <label class="nar-form-field"><span class="nar-form-label">Date</span>
-                                <input id="jsess-date" type="date" /></label>
-                            <label class="nar-form-field"><span class="nar-form-label">Notes</span>
-                                <textarea id="jsess-notes" rows="4" placeholder="What happened this session…"></textarea></label>
-                        </div>
-                        <button class="done-btn" id="btn-add-jsess" type="button">+ Add Session</button>
-                    </details>
-                </div>
-
-            </section>
-
             <!-- REFERENCE -->
             <section class="panel" id="panel-ref" role="region" aria-label="Reference">
                 <div class="ref-tab-row">
                     <button class="ref-tab is-active" data-ref-tab="tables" type="button">Damage Tables</button>
                     <button class="ref-tab" data-ref-tab="conditions" type="button">Conditions</button>
                     <button class="ref-tab" data-ref-tab="actions" type="button">Actions</button>
+                    <button class="ref-tab" data-ref-tab="gear" type="button">Gear</button>
                 </div>
                 <div class="ref-tab-content is-active" id="ref-tab-tables">
                     <div class="ref-tables-grid" id="ref-tables-grid"></div>
@@ -650,6 +669,23 @@
                 </div>
                 <div class="ref-tab-content" id="ref-tab-actions">
                     <div class="ref-actions-list" id="ref-actions-list"></div>
+                </div>
+                <div class="ref-tab-content" id="ref-tab-gear">
+                    <div class="gen-search-row">
+                        <input type="text" id="ref-gear-search" class="gen-search-input" placeholder="Search weapons &amp; armor…" autocomplete="off" />
+                    </div>
+                    <div class="mon-filter-row">
+                        <select id="ref-gear-cat" class="mon-filter">
+                            <option value="">All gear</option>
+                            <option value="melee">Melee</option>
+                            <option value="ranged">Ranged</option>
+                            <option value="firearm">Firearm</option>
+                            <option value="magic">Magic</option>
+                            <option value="armor">Armor</option>
+                        </select>
+                        <span class="mon-browse-count" id="ref-gear-count"></span>
+                    </div>
+                    <div class="ref-gear-list" id="ref-gear-list"></div>
                 </div>
             </section>
 
@@ -680,6 +716,15 @@
             </div>
 
             <div class="settings-section">
+                <div class="settings-section-title">Table Rules</div>
+                <p class="settings-hint">Turn off Provoke when the table is clowning. Players still see that a roll could provoke - the button just stops working.</p>
+                <label class="settings-toggle">
+                    <input type="checkbox" id="toggle-provoke-lock" />
+                    <span>Disable Provoke for players</span>
+                </label>
+            </div>
+
+            <div class="settings-section">
                 <div class="settings-section-title">Narrator</div>
                 <button class="settings-action-btn settings-action-btn--danger" id="btn-reset-nar" type="button">Reset Narrator Data</button>
                 <div class="settings-reset-confirm" id="nar-reset-confirm" hidden>
@@ -693,6 +738,25 @@
 
         </div>
     </div>
+
+    <!-- Monster Cast Dialog: who is casting, and at whom -->
+    <dialog id="mon-cast-dialog" class="nar-dialog">
+        <div class="nar-dialog-inner">
+            <div class="nar-ced-head">
+                <div class="wm-name" id="mon-cast-title">Cast Spell</div>
+                <button class="icon-btn" id="mon-cast-close" type="button" aria-label="Close">✕</button>
+            </div>
+            <p class="settings-hint" id="mon-cast-sub"></p>
+            <label class="nar-form-field"><span class="nar-form-label">Cast by</span>
+                <select id="mon-cast-by"></select></label>
+            <label class="nar-form-field"><span class="nar-form-label">Target</span>
+                <select id="mon-cast-target"></select></label>
+            <div class="step-edit-btns u-mt-8">
+                <button class="done-btn" id="mon-cast-go" type="button">✨ Cast</button>
+                <button class="step-edit-btn step-edit-btn--cancel" id="mon-cast-cancel" type="button">Cancel</button>
+            </div>
+        </div>
+    </dialog>
 
     <!-- Character Edit Dialog -->
     <dialog id="char-edit-dialog" class="nar-dialog nar-dialog--tall">
@@ -853,7 +917,7 @@
             <span class="nav-label">Chat</span>
         </button>
         <button class="nav-btn is-active" data-nav="party" type="button" aria-controls="panel-party">
-            <img class="nav-icon" src="../assets/icons/features.png" alt="" aria-hidden="true" />
+            <img class="nav-icon" src="../assets/icons/wax-tablet.png" alt="" aria-hidden="true" />
             <span class="nav-label">Party</span>
         </button>
         <button class="nav-btn" data-nav="generators" type="button" aria-controls="panel-generators">
@@ -864,9 +928,9 @@
             <img class="nav-icon" src="../assets/icons/monster.png" alt="" aria-hidden="true" />
             <span class="nav-label">Monsters</span>
         </button>
-        <button class="nav-btn" data-nav="journal" type="button" aria-controls="panel-journal">
-            <img class="nav-icon" src="../assets/icons/wax-tablet.png" alt="" aria-hidden="true" />
-            <span class="nav-label">Journal</span>
+        <button class="nav-btn" data-nav="initiative" type="button" aria-controls="panel-chat">
+            <img class="nav-icon" src="../assets/icons/weapon.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Initiative</span>
         </button>
         <button class="nav-btn" data-nav="ref" type="button" aria-controls="panel-ref">
             <img class="nav-icon" src="../assets/icons/reference.png" alt="" aria-hidden="true" />

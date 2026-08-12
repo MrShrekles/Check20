@@ -6,9 +6,25 @@ let narTarget     = null;
 
 // ── PANELS ────────────────────────────────────────────────────────────────────
 
-const PANEL_IDS = ['chat', 'party', 'generators', 'monsters', 'journal', 'ref'];
+const PANEL_IDS = ['chat', 'party', 'generators', 'monsters', 'ref'];
 
 function setActivePanel(key) {
+    // Initiative lives inside the chat panel as a sub-tab, but it earns its own
+    // nav button - route the key and let openInitiative do the rest.
+    if (key === 'initiative') {
+        PANEL_IDS.forEach(id => {
+            const el = document.getElementById(`panel-${id}`);
+            if (el) el.classList.toggle('is-active', id === 'chat');
+        });
+        document.querySelectorAll('.nav-btn[data-nav]').forEach(btn => {
+            btn.classList.toggle('is-active', btn.dataset.nav === 'initiative');
+        });
+        const notif = document.getElementById('chat-notif');
+        if (notif) notif.hidden = true;
+        setNarChatSubTab('initiative');
+        return;
+    }
+
     // On desktop (≥1100px) chat is always pinned to the left column - don't clear the right panel
     if (key === 'chat' && window.innerWidth >= 1100) {
         const notif = document.getElementById('chat-notif');
@@ -25,7 +41,7 @@ function setActivePanel(key) {
     });
     if (key === 'generators') { ensureWorld(); ensureQuest(); ensureCommerce(); ensureHex(); ensureGods(); ensureLoot(); }
     if (key === 'party')      { ensureMonsters(); }
-    if (key === 'monsters')   { ensureMonsters(); renderMonstersEncSummary(); }
+    if (key === 'monsters')   { ensureMonsters(); renderMonstersEncSummary(); renderMonBrowse(); }
     if (key === 'chat') {
         const notif = document.getElementById('chat-notif');
         if (notif) notif.hidden = true;
@@ -216,12 +232,11 @@ function renderParty() {
     });
 }
 
-document.getElementById('btn-invite')?.addEventListener('click', () => {
-    if (currentRoomCode) {
-        if (!confirm(`You already have room ${currentRoomCode} open.\n\nCreating a new room will close the current one. Players will need the new code.\n\nAre you sure?`)) return;
-    }
-    openCreateRoomDialog();
-});
+// Creating a room is one thing you can do with rooms, not the only one. This now
+// opens the manager - where + New Room sits beside switch, rename and close - so
+// starting a new campaign no longer means closing the current one behind a
+// confirm() prompt.
+document.getElementById('btn-invite')?.addEventListener('click', openRoomsDialog);
 
 document.getElementById('btn-add-player')?.addEventListener('click', function() {
     const name      = document.getElementById('pp-name')?.value.trim();
@@ -415,9 +430,13 @@ function buildNpcCardHtml(n) {
     const condTags = nConds.map(cd =>
         `<span class="enc-cond-tag" data-char-rm-cond="${n.id}" data-cond="${cd}">${condChip(cd)} ×</span>`
     ).join('');
-    const picker = QUICK_CONDITIONS.map(cd =>
-        `<button class="enc-cond-pick${nConds.includes(cd) ? ' is-on' : ''}" data-char-cond="${n.id}" data-cond="${cd}">${condChip(cd)}</button>`
-    ).join('');
+    const picker = conditionGroups().map(([group, names]) => `
+        <div class="enc-cond-group">
+            <div class="enc-cond-group-label">${group}</div>
+            <div class="enc-cond-group-picks">${names.map(cd =>
+                `<button class="enc-cond-pick${nConds.includes(cd) ? ' is-on' : ''}" data-char-cond="${n.id}" data-cond="${cd}">${condChip(cd)}</button>`
+            ).join('')}</div>
+        </div>`).join('');
     const charInv  = n.inventory || [];
     const invHtml  = charInv.length ? `
         <div class="char-inv-section">
@@ -603,7 +622,9 @@ function renderCharacters() {
                 const sp = mon.spells?.[parseInt(btn.dataset.spellIdx, 10)];
                 const ef = sp?.effects?.[parseInt(btn.dataset.effectIdx, 10)];
                 if (!sp || !ef) return;
-                entry = monsterSpellEntry(mon, sp, ef);
+                // Same cast dialog as the Monsters page - who casts it, at whom
+                openMonsterCastModal(mon, sp, ef);
+                return;
             }
             if (entry) { postToSharedChat(entry); setActivePanel('chat'); }
         });
@@ -1100,43 +1121,75 @@ function sortedEncounter() {
 
 const QUICK_CONDITIONS = ['Bleeding','Broken','Stunned','Prone','Exposed','Injured','Concussion','Exhaustion'];
 
+// conditions.json groups everything under Corpus / Cognition / Major / Special.
+// Keep that order - it runs body, mind, then the ones that end a turn.
+const COND_GROUP_ORDER = ['Corpus', 'Cognition', 'Major', 'Special'];
+
+function conditionGroups() {
+    const keys = Object.keys(narCondGroups);
+    if (!keys.length) return [['Common', QUICK_CONDITIONS]];
+    const ordered = [
+        ...COND_GROUP_ORDER.filter(g => narCondGroups[g]?.length),
+        ...keys.filter(g => !COND_GROUP_ORDER.includes(g)),
+    ];
+    return ordered.map(g => [g, narCondGroups[g]]);
+}
+
+// Picker with a heading per group, so a long list stays findable.
+function condPickerHtml(entryId, conds) {
+    return conditionGroups().map(([group, names]) => `
+        <div class="enc-cond-group">
+            <div class="enc-cond-group-label">${group}</div>
+            <div class="enc-cond-group-picks">${names.map(cd =>
+                `<button class="enc-cond-pick${conds.includes(cd) ? ' is-on' : ''}" data-enc-action="toggle-cond" data-enc-id="${entryId}" data-cond="${cd}">${condChip(cd)}</button>`
+            ).join('')}</div>
+        </div>`).join('');
+}
+
+// A condition should be obvious from the collapsed row, not something you find by
+// expanding. Major conditions shout louder than the rest.
+function condBadgeHtml(conds) {
+    if (!conds?.length) return '';
+    const major = conds.filter(c => (narCondGroups.Major || []).includes(c));
+    const cls   = major.length ? ' enc-cond-badge--major' : '';
+    return `<span class="enc-cond-badge${cls}" title="${conds.join(', ')}">${conds.map(condChip).join('')}</span>`;
+}
+
+// Actions are a function of Power Level: one per 4 PL, minimum one. Nothing to
+// set by hand - it moves when the narrator adjusts PL.
+function monsterActions(e) {
+    return Math.max(1, Math.ceil((entryStats(e).pl || 1) / 4));
+}
+
+function actionPipsHtml(e) {
+    const n = monsterActions(e);
+    if (n <= 1) return '';
+    return `<span class="enc-action-pips" title="${n} actions per round (1 per 4 PL)">${'◆'.repeat(Math.min(n, 6))}</span>`;
+}
+
 function renderEnemyMonster(e, label) {
     label = label || e.name;
     const pct    = (e.maxHp || 0) > 0 ? Math.round(((e.hp ?? e.maxHp) / e.maxHp) * 100) : 0;
     const hp     = e.hp ?? e.maxHp ?? 0;
     const barClr = pct > 60 ? '#4ca859' : pct > 25 ? '#d4922a' : '#e05555';
     const mon    = getMonster(e.name);
-    const meleeA  = mon?.melee_attack  || mon?.melee  || null;
-    const rangedA = mon?.ranged_attack || mon?.ranged || null;
-    const monFeats = [];
-    if (mon?.feature_name) monFeats.push({ name: mon.feature_name, type: mon.feature_type || '' });
-    if (Array.isArray(mon?.features)) mon.features.forEach(f => {
-        if (f.name && f.name !== mon.feature_name) monFeats.push({ name: f.name, type: f.type || '' });
-    });
-    const peekContent = mon ? `
-        ${meleeA?.name  ? `<div class="enc-peek-atk">⚔ ${meleeA.name} - ${meleeA.damage} ${meleeA.damage_type || ''}</div>`   : ''}
-        ${rangedA?.name ? `<div class="enc-peek-atk">⊙ ${rangedA.name} - ${rangedA.damage} ${rangedA.damage_type || ''}</div>` : ''}
-        ${monFeats.map(f => `<div class="enc-peek-feat"><span class="enc-peek-feat-name">${f.name}</span><span class="enc-peek-feat-type">${f.type}</span></div>`).join('')}
-    ` : '';
     const conds     = e.conditions || [];
     const condTags  = conds.map(cd =>
         `<span class="enc-cond-tag" data-enc-action="rm-cond" data-enc-id="${e.id}" data-cond="${cd}">${condChip(cd)} ×</span>`
     ).join('');
-    const picker    = QUICK_CONDITIONS.map(cd =>
-        `<button class="enc-cond-pick${conds.includes(cd) ? ' is-on' : ''}" data-enc-action="toggle-cond" data-enc-id="${e.id}" data-cond="${cd}">${condChip(cd)}</button>`
-    ).join('');
+    const picker    = condPickerHtml(e.id, conds);
 
     return `<details class="enc-enemy-row${e.defeated ? ' enc-enemy-row--defeated' : ''}">
         <summary class="enc-enemy-summary">
             <div class="enc-card-row enc-card-row--tight">
                 <span class="enc-init-mini">${e.initiative}</span>
                 <div class="enc-mon-info">
-                    <span class="enc-name">${label}</span>
-                    ${mon ? (() => { const es = effectiveStats(mon); return `<span class="enc-mon-checks">PL<strong>${es.pl ?? '-'}</strong> Ph<strong>${es.ph}</strong> Mt<strong>${es.mt}</strong>${es.mt>0?` MN<strong>${es.mt*2}</strong>`:''}</span>`; })() : ''}
+                    <span class="enc-name">${label}</span>${actionPipsHtml(e)}${threatPipsHtml(e)}
+                    ${condBadgeHtml(conds)}
+                    ${mon ? (() => { const es = entryStats(e); return `<span class="enc-mon-checks${e.pl ? ' is-tuned' : ''}">PL<strong>${es.pl ?? '-'}</strong> Ph<strong>${es.ph}</strong> Mt<strong>${es.mt}</strong>${es.mt>0?` MN<strong>${es.mt*2}</strong>`:''}</span>`; })() : ''}
                 </div>
                 <div class="enc-card-ctrl">
                     ${mon ? `<button class="step-action-btn enc-link-btn" data-enc-action="link-mon" data-enc-name="${e.name}">↗</button>` : ''}
-                    <button class="step-action-btn enc-reroll-btn" data-enc-action="reroll" data-enc-id="${e.id}">↺</button>
                     <button class="step-action-btn step-action-btn--danger" data-enc-action="remove" data-enc-id="${e.id}">✕</button>
                 </div>
             </div>
@@ -1149,8 +1202,10 @@ function renderEnemyMonster(e, label) {
             </div>
         </summary>
         <div class="enc-enemy-detail">
+            ${entryPlRowHtml(e)}
+            ${threatRowHtml(e)}
             <input class="enc-note-input" type="text" placeholder="Note…" value="${(e.note||'').replace(/"/g,'&quot;')}" data-enc-note="${e.id}" />
-            ${mon ? `<div class="enc-stat-peek">${peekContent}</div>` : ''}
+            ${mon ? `<div class="enc-statblock">${monsterStatblockHtml(mon)}</div>` : ''}
             <details class="enc-cond-details">
                 <summary class="enc-cond-summary">+C${conds.length ? ` <span class="enc-cond-count">${conds.length}</span>` : ''}</summary>
                 ${conds.length ? `<div class="enc-cond-tags">${condTags}</div>` : ''}
@@ -1194,6 +1249,8 @@ function syncEncounter() {
             id: e.id, name: e.name, type: e.type || 'enemy',
             hp: e.hp ?? e.maxHp ?? 0, maxHp: e.maxHp ?? 0,
             initiative: e.initiative || 0,
+            actions: monsterActions(e),
+            pl: entryStats(e).pl,
             hidden: e.hidden || false,
             conditions: e.conditions || [],
             defeated: e.defeated || false,
@@ -1250,8 +1307,12 @@ function renderEncounter() {
     if (timeEl)   timeEl.textContent  = encTime(nar.round);
     if (activeEl) activeEl.textContent = activeName;
 
-    listEl.innerHTML = sorted.map((c, i) => {
-        const isActive = i === activeTurn;
+    // Whose turn it is belongs at the top. The order still cycles - it just
+    // scrolls under the current turn instead of the reader hunting for it.
+    const rotated = [...sorted.slice(activeTurn), ...sorted.slice(0, activeTurn)];
+
+    listEl.innerHTML = rotated.map((c, i) => {
+        const isActive = i === 0;
 
         // ── Enemy / NPC Group ──────────────────────────────────────────
         if (c._isEnemyGroup) return renderEncounterGroupCard(c, isActive, 'enemy');
@@ -1269,14 +1330,13 @@ function renderEncounter() {
             const barClr = hpPct > 60 ? '#4ca859' : hpPct > 25 ? '#d4922a' : '#e05555';
             const conds  = c.conditions || [];
             const condTags = conds.map(cd =>
-                `<span class="enc-cond-tag" data-enc-action="rm-cond" data-enc-id="${c.id}" data-cond="${cd}">${cd} ×</span>`
+                `<span class="enc-cond-tag" data-enc-action="rm-cond" data-enc-id="${c.id}" data-cond="${cd}">${condChip(cd)} ×</span>`
             ).join('');
-            const picker = QUICK_CONDITIONS.map(cd =>
-                `<button class="enc-cond-pick${conds.includes(cd) ? ' is-on' : ''}" data-enc-action="toggle-cond" data-enc-id="${c.id}" data-cond="${cd}">${cd}</button>`
-            ).join('');
+            const picker = condPickerHtml(c.id, conds);
             return `<div class="enc-card enc-card--player${isActive ? ' enc-card--active' : ''}">
                 <div class="enc-card-row">
                     <span class="enc-init-badge enc-init-badge--player">${c.initiative}</span>
+                    ${condBadgeHtml(conds)}
                     <div class="enc-mon-info">
                         <span class="enc-name">${c.name}</span>
                         ${fbP ? `<span class="enc-mon-checks enc-mon-checks--player">HP<strong>${hpCur ?? '?'}</strong>/${hpMax ?? '?'} MN<strong>${mnCur ?? '?'}</strong></span>` : ''}
@@ -1343,6 +1403,15 @@ function renderEncounter() {
                 narTarget = narTarget === name ? null : name;
                 updateNarContextBar(); renderEncounter(); return;
             }
+            if (action === 'threat-spend')  { spendThreat(c, btn.dataset.threat); return; }
+            if (action === 'threat-inc')    { c.threat = Math.min(threatMax(c), threatNow(c) + 1); saveNar(); renderEncounter(); syncEncounter(); return; }
+            if (action === 'threat-dec')    { c.threat = Math.max(0, threatNow(c) - 1); saveNar(); renderEncounter(); syncEncounter(); return; }
+            if (action === 'threat-reset')  { c.threat = threatMax(c); saveNar(); renderEncounter(); syncEncounter(); return; }
+            if (action === 'threat-toggle') { c.noThreat = !c.noThreat; if (!c.noThreat) c.threat = threatMax(c); saveNar(); renderEncounter(); syncEncounter(); return; }
+            if (action === 'pl-inc' || action === 'pl-dec') {
+                setEntryPl(c, entryStats(c).pl + (action === 'pl-inc' ? 1 : -1));
+                saveNar(); renderEncounter(); syncEncounter(); return;
+            }
             if (action === 'toggle-cond') {
                 if (!c.conditions) c.conditions = [];
                 const cond = btn.dataset.cond;
@@ -1360,10 +1429,6 @@ function renderEncounter() {
                 pendingMonsterFocus = name;
                 setActivePanel('monsters');
                 if (monstersLoaded) renderGenMonsterList();
-                return;
-            }
-            if (action === 'reroll') {
-                if (c) { c.initiative = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6); saveNar(); renderEncounter(); }
                 return;
             }
             const prevHp = c?.hp ?? c?.maxHp;
@@ -1802,7 +1867,7 @@ async function endSession() {
     if (badge)      { badge.hidden = true; setBadgeContent('', ''); }
     if (privacyBtn) privacyBtn.hidden = true;
     if (goldRow)    goldRow.hidden = true;
-    if (invite)     invite.textContent = 'Invite';
+    if (invite)     invite.textContent = 'Manage Rooms';
     if (handoutsSection) handoutsSection.hidden = true;
 
     renderParty(); renderInventory(); renderNarHandouts(); renderNarChat();
@@ -1942,7 +2007,12 @@ document.getElementById('btn-nar-dice-roll')?.addEventListener('click', () => {
 
 function extractAndRollDice(text) {
     const matches = [...(text || '').matchAll(/\[\[(\d*d\d+!?(?:\s*[+-]\s*\d*d?\d+!?)*)\]\]/gi)];
-    return matches.map(m => rollDiceNotation(m[1])).filter(Boolean);
+    if (matches.length) return matches.map(m => rollDiceNotation(m[1])).filter(Boolean);
+    // Plenty of monster spells write "4d6 lightning damage" in prose instead of
+    // bracketing it - those used to roll nothing at all.
+    const bare = effectDiceNotation(text);
+    const roll = bare ? rollDiceNotation(bare) : null;
+    return roll ? [roll] : [];
 }
 
 function subPL(text, pl) {
@@ -2044,17 +2114,371 @@ async function ensureMonsters() {
         GEN_MONSTERS = await res.json();
         monstersLoaded = true;
         renderGenMonsterList();
+        renderMonBrowse();
         renderEncounter();
         renderCharacters();
     } catch(e) { console.error('Failed to load monsterbook.json', e); }
 }
 
-function effectiveStats(m) {
-    const pl      = (nar.monPlOverrides?.[m.name] ?? m.pl ?? 1);
+// ── MONSTER SPELLCASTING ──────────────────────────────────────────────────────
+// A spell used to post as the bare monster name with no target. With several
+// copies of a monster in initiative that told the table nothing, so casting now
+// asks who is casting it and at whom.
+
+let _castCtx = null;
+
+// Everyone in the encounter, labelled the way the tracker labels them
+// (Goblin 1, Goblin 2, …) so the chat card matches what the narrator sees.
+function encounterLabels() {
+    const counts = {};
+    nar.encounter.forEach(e => { counts[e.name] = (counts[e.name] || 0) + 1; });
+    const seen = {};
+    return nar.encounter.map(e => {
+        let label = e.name;
+        if (counts[e.name] > 1) {
+            seen[e.name] = (seen[e.name] || 0) + 1;
+            label = `${e.name} ${seen[e.name]}`;
+        }
+        return { id: e.id, label, name: e.name, type: e.type || 'enemy', hidden: !!e.hidden };
+    });
+}
+
+// Anyone who could cast this: copies already in the fight first, then minions or
+// NPCs of the same creature, then the book entry as a fallback so the Monsters
+// page still works with no encounter running.
+function castCasterOptions(m) {
+    const opts = [];
+    encounterLabels().filter(x => x.name === m.name)
+        .forEach(x => opts.push({ value: x.id, label: x.label, group: 'In initiative' }));
+    nar.characters.filter(c => c.name === m.name)
+        .forEach(c => opts.push({ value: `char:${c.id}`, label: `${c.name} (${c.role})`, group: 'Characters' }));
+    if (!opts.length) opts.push({ value: '', label: m.name, group: '' });
+    return opts;
+}
+
+// Targets are not limited to the encounter - the narrator may be lining a spell
+// up against a player before anyone has rolled initiative.
+function castTargetOptions(m) {
+    const opts  = [];
+    const seen  = new Set();
+    const push  = (label, group) => {
+        if (!label || seen.has(label)) return;
+        seen.add(label);
+        opts.push({ value: label, label, group });
+    };
+    encounterLabels().filter(x => !x.hidden && x.name !== m.name)
+        .forEach(x => push(x.label, 'In initiative'));
+    fbPlayers.filter(p => !nar.archived.includes(p.id)).forEach(p => push(p.name || 'Player', 'Players'));
+    nar.partyManual.filter(p => !nar.archived.includes(p.id)).forEach(p => push(p.name, 'Players'));
+    nar.characters.filter(c => !c.hidden && c.name !== m.name).forEach(c => push(c.name, 'Characters'));
+    return opts;
+}
+
+// <optgroup>s keep a long list readable
+function castOptionsHtml(opts, { placeholder } = {}) {
+    let html = placeholder ? `<option value="">${placeholder}</option>` : '';
+    const groups = [...new Set(opts.map(o => o.group))];
+    for (const g of groups) {
+        const rows = opts.filter(o => o.group === g)
+            .map(o => `<option value="${escAttr(o.value)}">${o.label}</option>`).join('');
+        html += g ? `<optgroup label="${escAttr(g)}">${rows}</optgroup>` : rows;
+    }
+    return html;
+}
+
+function openMonsterCastModal(m, sp, ef) {
+    const dlg = document.getElementById('mon-cast-dialog');
+    if (!dlg) { postToSharedChat(monsterSpellEntry(m, sp, ef)); setActivePanel('chat'); return; }
+
+    _castCtx = { m, sp, ef };
+    document.getElementById('mon-cast-title').textContent = `${sp.name} - ${ef.intent}`;
+    document.getElementById('mon-cast-sub').textContent =
+        [ef.cost != null ? `${ef.cost} MN` : '', ef.range, ef.area].filter(Boolean).join(' · ');
+
+    document.getElementById('mon-cast-by').innerHTML = castOptionsHtml(castCasterOptions(m));
+
+    const tgtSel = document.getElementById('mon-cast-target');
+    tgtSel.innerHTML = castOptionsHtml(castTargetOptions(m), { placeholder: 'No target' });
+    // Whatever the narrator already had targeted is the likely answer
+    if (narTarget && [...tgtSel.options].some(o => o.value === narTarget)) tgtSel.value = narTarget;
+
+    dlg.showModal();
+}
+
+function closeMonsterCastModal() {
+    _castCtx = null;
+    document.getElementById('mon-cast-dialog')?.close();
+}
+
+document.getElementById('mon-cast-close')?.addEventListener('click', closeMonsterCastModal);
+document.getElementById('mon-cast-cancel')?.addEventListener('click', closeMonsterCastModal);
+
+document.getElementById('mon-cast-go')?.addEventListener('click', () => {
+    if (!_castCtx) return closeMonsterCastModal();
+    const { m, sp, ef } = _castCtx;
+    const casterId    = document.getElementById('mon-cast-by')?.value || '';
+    const casterLabel = document.getElementById('mon-cast-by')?.selectedOptions?.[0]?.textContent || m.name;
+    const target      = document.getElementById('mon-cast-target')?.value || '';
+
+    const entry = monsterSpellEntry(m, sp, ef);
+    // The caster's own numbers drive the roll, not the book default - a tuned
+    // copy in initiative, or a minion/NPC of the same creature.
+    const caster = casterId.startsWith('char:')
+        ? nar.characters.find(c => c.id === casterId.slice(5))
+        : casterId ? nar.encounter.find(e => e.id === casterId) : null;
+    if (caster) {
+        const mt = caster.role
+            ? (parseInt(caster.plMent, 10) || parseInt(caster.ment, 10) || 0)
+            : entryStats(caster).mt;
+        const d20 = parseInt((entry.rollNote.match(/\((\d+)\)/) || [])[1] || '0', 10);
+        entry.checkMod   = mt;
+        entry.d20Total   = d20 + mt;
+        entry.tableRolls = autoTableRolls(entry.d20Total, entry.damageType);
+    }
+    entry.charName = casterLabel;
+    if (target) entry.target = target;
+
+    postToSharedChat(entry);
+    closeMonsterCastModal();
+    setActivePanel('chat');
+});
+
+// ── MONSTER STAT BLOCK ────────────────────────────────────────────────────────
+// One renderer, two homes: the Monsters page and, expanded, each combatant in the
+// initiative tracker - so the narrator never has to swap pages mid-fight.
+// The buttons inside are handled by a delegated listener, so it works anywhere.
+
+function monsterFeatureList(m) {
+    const feats = [];
+    if (m.feature_name) feats.push({ name: m.feature_name, type: m.feature_type || '', range: m.feature_range || '', effect: m.feature_effect || '' });
+    if (Array.isArray(m.features)) m.features.forEach(f => {
+        if (f.name && f.name !== m.feature_name) feats.push({ name: f.name, type: f.type || '', range: f.range || '', effect: f.effect || '' });
+    });
+    return feats;
+}
+
+function monsterStatblockHtml(m) {
+    if (!m) return '';
+    const moveParts = [
+        m.walk  && `Walk ${m.walk}`,
+        m.fly   && `Fly ${m.fly}`,
+        m.swim  && `Swim ${m.swim}`,
+        m.climb && `Climb ${m.climb}`,
+    ].filter(Boolean);
+
+    const meleeAtk  = m.melee_attack  || m.melee  || null;
+    const rangedAtk = m.ranged_attack || m.ranged || null;
+    const fmtAtk = (atk, label) => {
+        if (!atk?.name) return '';
+        const dmg = [atk.damage, atk.damage_type || atk.type].filter(Boolean).join(' ');
+        return `<div class="gen-mon-atk">
+            <span class="gen-mon-atk-label">${label}</span>
+            <span>${atk.name}${dmg ? ' - ' + dmg : ''}</span>
+            <button class="step-action-btn mon-chat-btn" type="button" title="Roll &amp; send"
+                data-mon-name="${m.name}" data-atk-type="${label.toLowerCase()}">
+                <img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>
+        </div>`;
+    };
+
+    const spellMn = (m.check_mental || 0) * 2;
+    const spellsHtml = Array.isArray(m.spells) && m.spells.length
+        ? `<div class="gen-mon-spells">
+            <div class="gen-mon-spells-header">SPELLS <span class="gen-mon-spells-mn">· MN: ${spellMn}</span></div>
+            ${m.spells.map((sp, si) => `
+                <details class="gen-mon-spell">
+                    <summary class="gen-mon-spell-row">
+                        <span class="gen-mon-spell-name">${sp.name}</span>
+                        <span class="gen-mon-spell-tags">${[sp.manner, sp.transmission].filter(Boolean).join(' · ')}</span>
+                    </summary>
+                    <div class="gen-mon-spell-effects">
+                        ${sp.effects.map((ef, ei) => `
+                            <div class="gen-mon-spell-effect">
+                                <span class="gen-mon-spell-intent">${ef.intent}</span>
+                                <span class="gen-mon-spell-cost">${ef.cost} MN</span>
+                                ${ef.range ? `<span class="gen-mon-spell-range">${ef.range}</span>` : ''}
+                                <button class="step-action-btn mon-chat-btn" type="button" title="Roll &amp; send"
+                                    data-mon-name="${m.name}" data-spell-idx="${si}" data-effect-idx="${ei}">
+                                    <img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>
+                            </div>`).join('')}
+                    </div>
+                </details>`).join('')}
+        </div>` : '';
+
+    const featsHtml = monsterFeatureList(m).map((f, fi) => `
+        <div class="gen-mon-feature">
+            <div class="gen-mon-feature-head">
+                <span class="gen-mon-feature-name">${f.name}</span>
+                <span class="gen-mon-feature-type">${[f.type, f.range].filter(Boolean).join(' · ')}</span>
+                <button class="step-action-btn mon-chat-btn" type="button" title="Send to chat"
+                    data-mon-name="${m.name}" data-feat-idx="${fi}">
+                    <img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
+            </div>
+            <p class="gen-mon-feature-effect">${f.effect}</p>
+        </div>`).join('');
+
+    return `<div class="gen-mon-meta">${[m.size, m.origin, m.rarity, m.environment, m.behavior].filter(Boolean).join(' · ')}</div>
+        ${m.motivation ? `<div class="gen-mon-motivation">Motif: ${m.motivation}</div>` : ''}
+        ${moveParts.length ? `<div class="gen-mon-move">${moveParts.join(' / ')}</div>` : ''}
+        ${m.description ? `<div class="gen-mon-desc">${m.description}</div>` : ''}
+        <div class="gen-mon-attacks">${fmtAtk(meleeAtk, 'Melee')}${fmtAtk(rangedAtk, 'Ranged')}</div>
+        ${featsHtml}
+        ${spellsHtml}`;
+}
+
+// Delegated so the stat block's roll/chat buttons work on the Monsters page and
+// inside the initiative tracker alike.
+document.addEventListener('click', e => {
+    const btn = e.target.closest('.mon-chat-btn');
+    if (!btn) return;
+    const m = getMonster(btn.dataset.monName);
+    if (!m) return;
+
+    let entry;
+    if (btn.dataset.featIdx !== undefined) {
+        const f = monsterFeatureList(m)[parseInt(btn.dataset.featIdx, 10)];
+        if (!f) return;
+        entry = { type: 'feature', monsterName: m.name, name: f.name, tags: [f.type, f.range].filter(Boolean), desc: subPL(f.effect, m.pl), time: chatTimestamp(), diceRolls: [] };
+    } else if (btn.dataset.atkType) {
+        const isM = btn.dataset.atkType === 'melee';
+        const atk = isM ? (m.melee_attack || m.melee) : (m.ranged_attack || m.ranged);
+        if (!atk?.name) return;
+        entry = monsterAttackEntry(m, atk, btn.dataset.atkType);
+    } else if (btn.dataset.spellIdx !== undefined) {
+        const sp = m.spells?.[parseInt(btn.dataset.spellIdx, 10)];
+        const ef = sp?.effects?.[parseInt(btn.dataset.effectIdx, 10)];
+        if (!sp || !ef) return;
+        openMonsterCastModal(m, sp, ef);   // asks who casts it and at whom
+        return;
+    }
+    if (entry) { postToSharedChat(entry); setActivePanel('chat'); }
+});
+
+function effectiveStats(m, plOverride) {
+    const pl      = (plOverride ?? nar.monPlOverrides?.[m.name] ?? m.pl ?? 1);
     const base    = m.pl || 1;
     const phFrac  = (m.check_physical ?? 0) / base;
     const ph      = Math.max(0, Math.min(pl, Math.round(pl * phFrac)));
     return { pl, hp: pl * pl, ph, mt: pl - ph };
+}
+
+// monPlOverrides is keyed by monster name, so every copy of a Goblin shared one
+// PL. An encounter entry carries its own `pl` when the narrator tunes it, which
+// wins over the name-wide override - so the wounded runt and the champion in the
+// same group can differ.
+function entryStats(e) {
+    const mon = getMonster(e?.name);
+    if (!mon) {
+        const pl = e?.pl ?? 1;
+        return { pl, hp: pl * pl, ph: 0, mt: 0 };
+    }
+    return effectiveStats(mon, e?.pl);
+}
+
+// PL drives HP (PL²), the check split, and the action count, so the stepper
+// keeps the current HP proportional rather than snapping it to full.
+function setEntryPl(e, next) {
+    const pl = Math.max(1, Math.min(30, next));
+    const oldMax = e.maxHp || 1;
+    const frac   = oldMax > 0 ? (e.hp ?? oldMax) / oldMax : 1;
+    e.pl    = pl;
+    e.maxHp = pl * pl;
+    e.hp    = Math.max(0, Math.min(e.maxHp, Math.round(e.maxHp * frac)));
+    if (e.hp > 0) e.defeated = false;
+}
+
+function entryPlRowHtml(e) {
+    const st = entryStats(e);
+    return `<div class="enc-pl-row">
+        <span class="enc-pl-label">PL</span>
+        <button class="step-action-btn" data-enc-action="pl-dec" data-enc-id="${e.id}">−</button>
+        <span class="enc-pl-val">${st.pl}</span>
+        <button class="step-action-btn" data-enc-action="pl-inc" data-enc-id="${e.id}">+</button>
+        <span class="enc-pl-derived">HP <strong>${st.hp}</strong> · Ph <strong>${st.ph}</strong> · Mt <strong>${st.mt}</strong>${st.mt > 0 ? ` · MN <strong>${st.mt * 2}</strong>` : ''}</span>
+    </div>`;
+}
+
+// ── THREAT ────────────────────────────────────────────────────────────────────
+// Per the Roll20 sheet (v8): a creature's reserve of extra effort - provokes and
+// dramatic manoeuvres. It does NOT replace their Action; it is spent to react
+// outside their turn, or to take an extra Action on it. Pool is floor(PL/2), so
+// PL 1-2 creatures get none at all, and the narrator can switch it off for
+// anything that shouldn't have a reserve.
+
+const THREAT_ACTIONS = [
+    { key: 'attack',      name: 'Attack',            cost: 1, desc: 'Make an additional attack immediately.' },
+    { key: 'remove',      name: 'Remove Condition',  cost: 1, desc: 'End one condition currently affecting this creature.' },
+    { key: 'disengage',   name: 'Disengage',         cost: 1, desc: 'Move without provoking opportunity attacks.' },
+    { key: 'reduce',      name: 'Reduce Damage',     cost: 1, desc: 'Reduce incoming damage by half.' },
+    { key: 'environment', name: 'Environment Shift', cost: 2, desc: 'Add or remove an environmental element such as cover, difficult terrain, hazards, or line-of-sight blockers within Short range. Narrator adjudicates impact.' },
+    { key: 'flee',        name: 'Flee',              cost: 1, variable: true, desc: 'Attempt to escape the scene. Initiate a chase or skill contest: the party must achieve a number of successes equal to the Threat spent to prevent escape. On failure, this creature escapes; on success, the chase continues or the creature is cornered.' },
+];
+
+function threatMax(e) {
+    if (e?.noThreat) return 0;
+    return Math.floor((entryStats(e).pl || 0) / 2);
+}
+
+// Current threat, clamped to the pool PL currently allows
+function threatNow(e) {
+    const max = threatMax(e);
+    return Math.max(0, Math.min(max, e.threat ?? max));
+}
+
+function threatPipsHtml(e) {
+    const max = threatMax(e);
+    if (!max) return '';
+    const now = threatNow(e);
+    const pips = Array.from({ length: Math.min(max, 8) },
+        (_, i) => `<span class="enc-threat-pip${i < now ? ' is-full' : ''}"></span>`).join('');
+    return `<span class="enc-threat-badge" title="Threat ${now}/${max}">${pips}</span>`;
+}
+
+function threatRowHtml(e) {
+    const max = threatMax(e);
+    const canHave = Math.floor((entryStats(e).pl || 0) / 2) > 0;
+    if (!canHave && !e.noThreat) {
+        return `<div class="enc-threat-row enc-threat-row--none">
+            <span class="enc-threat-label">Threat</span>
+            <span class="enc-threat-hint">None at PL ${entryStats(e).pl} (needs PL 2+)</span>
+        </div>`;
+    }
+    const now = threatNow(e);
+    const actions = max ? THREAT_ACTIONS.map(a => {
+        const afford = now >= a.cost;
+        return `<button class="enc-threat-act${afford ? '' : ' is-spent'}" type="button"
+            data-enc-action="threat-spend" data-enc-id="${e.id}" data-threat="${a.key}"
+            title="${escAttr(a.desc)}">${a.name} <span class="enc-threat-cost">${a.variable ? '1+' : a.cost}</span></button>`;
+    }).join('') : '';
+
+    return `<div class="enc-threat-row">
+        <span class="enc-threat-label">Threat</span>
+        <button class="step-action-btn" data-enc-action="threat-dec" data-enc-id="${e.id}">−</button>
+        <span class="enc-threat-val">${now}<span class="enc-threat-max">/${max}</span></span>
+        <button class="step-action-btn" data-enc-action="threat-inc" data-enc-id="${e.id}">+</button>
+        <button class="step-action-btn" data-enc-action="threat-reset" data-enc-id="${e.id}" title="Refill the reserve">↺</button>
+        <label class="enc-threat-off" title="Some creatures have no reserve to draw on">
+            <input type="checkbox" data-enc-action="threat-toggle" data-enc-id="${e.id}"${e.noThreat ? ' checked' : ''} /> off
+        </label>
+        ${actions ? `<div class="enc-threat-acts">${actions}</div>` : ''}
+    </div>`;
+}
+
+// Spending announces itself - the table needs to know a reaction just happened
+function spendThreat(e, key) {
+    const a = THREAT_ACTIONS.find(x => x.key === key);
+    if (!a) return;
+    const now = threatNow(e);
+    if (now < a.cost) return;
+    e.threat = now - a.cost;
+    saveNar(); renderEncounter(); syncEncounter();
+
+    postToSharedChat({
+        type: 'feature',
+        name: `⚡ ${e.name} - ${a.name}`,
+        tags: [`${a.variable ? a.cost + '+' : a.cost} Threat`, `${e.threat}/${threatMax(e)} left`],
+        desc: a.desc,
+        time: chatTimestamp(), diceRolls: [],
+    });
 }
 
 function monsterHp(m) { return (nar.monPlOverrides?.[m?.name] ?? m?.pl ?? 1) ** 2; }
@@ -2074,6 +2498,9 @@ function removeGenMonster(name) {
 }
 
 function renderGenMonsterList() {
+    const bookCount = document.getElementById('mon-book-count');
+    if (bookCount) bookCount.textContent = nar.genMonsters.length ? `${nar.genMonsters.length} pinned` : '';
+
     const el = document.getElementById('gen-mon-list');
     if (!el) return;
 
@@ -2104,74 +2531,10 @@ function renderGenMonsterList() {
         const stats = effectiveStats(m);
         const cid   = `gmc-${i}`;
 
-        const moveParts = [
-            m.walk  && `Walk ${m.walk}`,
-            m.fly   && `Fly ${m.fly}`,
-            m.swim  && `Swim ${m.swim}`,
-            m.climb && `Climb ${m.climb}`,
-        ].filter(Boolean);
-
-        const meleeAtk  = m.melee_attack  || m.melee  || null;
-        const rangedAtk = m.ranged_attack || m.ranged || null;
-        const fmtAtk = (atk, label) => {
-            if (!atk?.name) return '';
-            const dmg = [atk.damage, atk.damage_type || atk.type].filter(Boolean).join(' ');
-            return `<div class="gen-mon-atk">
-                <span class="gen-mon-atk-label">${label}</span>
-                <span>${atk.name}${dmg ? ' - ' + dmg : ''}</span>
-                <button class="step-action-btn mon-chat-btn" type="button" title="Roll &amp; send"
-                    data-mon-name="${m.name}" data-atk-type="${label.toLowerCase()}">
-                    <img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>
-            </div>`;
-        };
-
-        const spellMn = (m.check_mental || 0) * 2;
-        const spellsHtml = Array.isArray(m.spells) && m.spells.length
-            ? `<div class="gen-mon-spells">
-                <div class="gen-mon-spells-header">SPELLS <span class="gen-mon-spells-mn">· MN: ${spellMn}</span></div>
-                ${m.spells.map((sp, si) => `
-                    <details class="gen-mon-spell">
-                        <summary class="gen-mon-spell-row">
-                            <span class="gen-mon-spell-name">${sp.name}</span>
-                            <span class="gen-mon-spell-tags">${[sp.manner, sp.transmission].filter(Boolean).join(' · ')}</span>
-                        </summary>
-                        <div class="gen-mon-spell-effects">
-                            ${sp.effects.map((ef, ei) => `
-                                <div class="gen-mon-spell-effect">
-                                    <span class="gen-mon-spell-intent">${ef.intent}</span>
-                                    <span class="gen-mon-spell-cost">${ef.cost} MN</span>
-                                    ${ef.range ? `<span class="gen-mon-spell-range">${ef.range}</span>` : ''}
-                                    <button class="step-action-btn mon-chat-btn" type="button" title="Roll &amp; send"
-                                        data-mon-name="${m.name}" data-spell-idx="${si}" data-effect-idx="${ei}">
-                                        <img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>
-                                </div>`).join('')}
-                        </div>
-                    </details>`).join('')}
-            </div>` : '';
-
-        // Main feature + additional features[]
-        const allFeats = [];
-        if (m.feature_name) allFeats.push({ name: m.feature_name, type: m.feature_type || '', range: m.feature_range || '', effect: m.feature_effect || '' });
-        if (Array.isArray(m.features)) m.features.forEach(f => {
-            if (f.name && f.name !== m.feature_name) allFeats.push({ name: f.name, type: f.type || '', range: f.range || '', effect: f.effect || '' });
-        });
-
-        const featsHtml = allFeats.map((f, fi) => `
-            <div class="gen-mon-feature">
-                <div class="gen-mon-feature-head">
-                    <span class="gen-mon-feature-name">${f.name}</span>
-                    <span class="gen-mon-feature-type">${[f.type, f.range].filter(Boolean).join(' · ')}</span>
-                    <button class="step-action-btn mon-chat-btn" type="button" title="Send to chat"
-                        data-mon-name="${m.name}" data-feat-idx="${fi}">
-                        <img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
-                </div>
-                <p class="gen-mon-feature-effect">${f.effect}</p>
-            </div>`).join('');
-
         const card = `<div class="gen-mon-card" id="${cid}">
             <div class="gen-mon-head">
                 <div class="gen-mon-info">
-                    <span class="gen-mon-name" data-cid="${cid}">${m.name}</span>
+                    <span class="gen-mon-name" data-cid="${cid}">${m.name}</span>${m.spells?.length ? `<span class="gen-mon-spell-badge" title="${m.spells.length} spell${m.spells.length === 1 ? '' : 's'}">✨${m.spells.length}</span>` : ''}
                     <span class="gen-mon-group">${m._group || m.origin || ''}</span>
                 </div>
                 <div class="gen-mon-stats">
@@ -2194,13 +2557,7 @@ function renderGenMonsterList() {
                     <button class="step-action-btn gen-pl-btn" data-pl-delta="1" data-pl-mon="${m.name}" data-pl-cid="${cid}">+</button>
                     <span class="gen-pl-derived">HP <strong id="${cid}-pl-hp">${stats.hp}</strong> · Ph <strong id="${cid}-pl-ph">${stats.ph}</strong> · Mt <strong id="${cid}-pl-mt">${stats.mt}</strong></span>
                 </div>
-                <div class="gen-mon-meta">${[m.size, m.origin, m.rarity, m.environment, m.behavior].filter(Boolean).join(' · ')}</div>
-                ${m.motivation ? `<div class="gen-mon-motivation">Motif: ${m.motivation}</div>` : ''}
-                ${moveParts.length ? `<div class="gen-mon-move">${moveParts.join(' / ')}</div>` : ''}
-                ${m.description ? `<div class="gen-mon-desc">${m.description}</div>` : ''}
-                <div class="gen-mon-attacks">${fmtAtk(meleeAtk, 'Melee')}${fmtAtk(rangedAtk, 'Ranged')}</div>
-                ${featsHtml}
-                ${spellsHtml}
+                ${monsterStatblockHtml(m)}
                 <div class="gen-mon-card-actions">
                     <button class="done-btn gen-mon-init-btn" data-add-init="${m.name}" data-hp="${stats.hp}" id="${cid}-init-btn">+ Init</button>
                     <button class="gen-mon-action-btn" data-mon-minion="${m.name}">+ Minion</button>
@@ -2276,43 +2633,30 @@ function renderGenMonsterList() {
         btn.addEventListener('click', () => removeGenMonster(btn.dataset.remove));
     });
 
+    // Adding a monster no longer yanks the narrator to the initiative page - tap
+    // "+ Init" as many times as you want monsters and the toast keeps the tally,
+    // with a button to jump over once the group is built.
     el.querySelectorAll('[data-add-init]').forEach(btn => {
         btn.addEventListener('click', () => {
-            const hp = parseInt(btn.dataset.hp, 10);
-            const initiative = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
-            nar.encounter.push({ id: crypto.randomUUID(), name: btn.dataset.addInit, hp, maxHp: hp, initiative, type: 'enemy' });
-            saveNar(); renderEncounter(); openInitiative();
-        });
-    });
+            const name = btn.dataset.addInit;
+            const hp   = parseInt(btn.dataset.hp, 10);
+            // Monsters of a kind act together, so a second copy joins the first's
+            // initiative rather than rolling its own.
+            const twin = nar.encounter.find(e => e.name === name && e.type === 'enemy');
+            const initiative = twin ? twin.initiative
+                : Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
+            const mon = getMonster(name);
+            nar.encounter.push({
+                id: crypto.randomUUID(), name, hp, maxHp: hp,
+                initiative, type: 'enemy',
+                pl: mon ? effectiveStats(mon).pl : 1,
+            });
+            saveNar(); renderEncounter(); syncEncounter();
 
-    el.querySelectorAll('.mon-chat-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const monName = btn.dataset.monName;
-            const m = getMonster(monName);
-            if (!m) return;
-
-            let entry;
-            if (btn.dataset.featIdx !== undefined) {
-                const allFeats = [];
-                if (m.feature_name) allFeats.push({ name: m.feature_name, type: m.feature_type || '', range: m.feature_range || '', effect: m.feature_effect || '' });
-                if (Array.isArray(m.features)) m.features.forEach(f => {
-                    if (f.name && f.name !== m.feature_name) allFeats.push({ name: f.name, type: f.type || '', range: f.range || '', effect: f.effect || '' });
-                });
-                const f = allFeats[parseInt(btn.dataset.featIdx, 10)];
-                if (!f) return;
-                entry = { type: 'feature', monsterName: monName, name: f.name, tags: [f.type, f.range].filter(Boolean), desc: subPL(f.effect, m.pl), time: chatTimestamp(), diceRolls: [] };
-            } else if (btn.dataset.atkType) {
-                const isM = btn.dataset.atkType === 'melee';
-                const atk = isM ? (m.melee_attack || m.melee) : (m.ranged_attack || m.ranged);
-                if (!atk?.name) return;
-                entry = monsterAttackEntry(m, atk, btn.dataset.atkType);
-            } else if (btn.dataset.spellIdx !== undefined) {
-                const sp = m.spells?.[parseInt(btn.dataset.spellIdx, 10)];
-                const ef = sp?.effects?.[parseInt(btn.dataset.effectIdx, 10)];
-                if (!sp || !ef) return;
-                entry = monsterSpellEntry(m, sp, ef);
-            }
-            if (entry) { postToSharedChat(entry); setActivePanel('chat'); }
+            const n = nar.encounter.filter(e => e.name === name && e.type === 'enemy').length;
+            showChatToast(`${name} ×${n}`,
+                `In initiative at ${initiative}${n > 1 ? ' (acting as a group)' : ''}`,
+                () => openInitiative(), 'Go to initiative');
         });
     });
 
@@ -2385,36 +2729,134 @@ function renderGenMonsterList() {
 }
 
 // Search
-document.getElementById('gen-mon-search')?.addEventListener('input', function () {
-    const q       = this.value.trim().toLowerCase();
-    const resultsEl = document.getElementById('gen-mon-results');
-    if (!resultsEl) return;
-    if (!q || !GEN_MONSTERS.length) { resultsEl.hidden = true; return; }
+// ── MONSTER BROWSER ───────────────────────────────────────────────────────────
+// The old search showed 8 name matches and nothing else, which made a 98-monster
+// book effectively unbrowsable unless you already knew what you wanted. This
+// filters the whole catalogue by group, PL band and environment, and pins to the
+// book from the result row.
 
-    const matches = GEN_MONSTERS.filter(m => m.name.toLowerCase().includes(q)).slice(0, 8);
-    if (!matches.length) { resultsEl.hidden = true; return; }
+function monBrowseFilters() {
+    return {
+        q:     (document.getElementById('gen-mon-search')?.value || '').trim().toLowerCase(),
+        group: document.getElementById('mon-filter-group')?.value || '',
+        pl:    document.getElementById('mon-filter-pl')?.value || '',
+        env:   document.getElementById('mon-filter-env')?.value || '',
+    };
+}
 
-    resultsEl.hidden = false;
-    resultsEl.innerHTML = matches.map(m =>
-        `<button class="gen-search-result" data-name="${m.name}">
-            <span class="gen-search-name">${m.name}</span>
-            <span class="gen-search-meta">${[m._group, `PL ${m.pl}`].filter(Boolean).join(' · ')}</span>
-        </button>`
-    ).join('');
+function monMatchesFilters(m, f) {
+    if (f.group && (m._group || m.origin || '') !== f.group) return false;
+    if (f.env   && (m.environment || '') !== f.env) return false;
+    if (f.pl) {
+        const [lo, hi] = f.pl.split('-').map(Number);
+        const pl = effectiveStats(m).pl;
+        if (pl < lo || pl > hi) return false;
+    }
+    if (f.q) {
+        const hay = [m.name, m._group, m.origin, m.environment, m.behavior, m.size, m.rarity]
+            .filter(Boolean).join(' ').toLowerCase();
+        if (!hay.includes(f.q)) return false;
+    }
+    return true;
+}
 
-    resultsEl.querySelectorAll('.gen-search-result').forEach(btn => {
-        btn.addEventListener('click', () => {
-            addGenMonster(btn.dataset.name);
-            document.getElementById('gen-mon-search').value = '';
-            resultsEl.hidden = true;
-        });
-    });
+function populateMonFilterOptions() {
+    const groupSel = document.getElementById('mon-filter-group');
+    const envSel   = document.getElementById('mon-filter-env');
+    if (!groupSel || !GEN_MONSTERS.length) return;
+    if (groupSel.options.length > 1) return;   // already filled
+
+    const groups = [...new Set(GEN_MONSTERS.map(m => m._group || m.origin).filter(Boolean))].sort();
+    groupSel.innerHTML = `<option value="">All groups</option>` +
+        groups.map(g => `<option>${g}</option>`).join('');
+
+    const envs = [...new Set(GEN_MONSTERS.map(m => m.environment).filter(Boolean))].sort();
+    if (envSel) envSel.innerHTML = `<option value="">Any environment</option>` +
+        envs.map(e => `<option>${e}</option>`).join('');
+}
+
+function renderMonBrowse() {
+    const el = document.getElementById('mon-browse-list');
+    if (!el) return;
+    if (!GEN_MONSTERS.length) { el.innerHTML = '<p class="empty-hint">Loading monsters…</p>'; return; }
+
+    populateMonFilterOptions();
+    const f = monBrowseFilters();
+    const matches = GEN_MONSTERS.filter(m => monMatchesFilters(m, f))
+        .sort((a, b) => effectiveStats(a).pl - effectiveStats(b).pl || a.name.localeCompare(b.name));
+
+    const countEl = document.getElementById('mon-browse-count');
+    if (countEl) countEl.textContent = `${matches.length} of ${GEN_MONSTERS.length}`;
+
+    if (!matches.length) { el.innerHTML = '<p class="empty-hint">Nothing matches those filters.</p>'; return; }
+
+    el.innerHTML = matches.map(m => {
+        const st     = effectiveStats(m);
+        const pinned = nar.genMonsters.includes(m.name);
+        const meta   = [m._group || m.origin, m.size, m.environment].filter(Boolean).join(' · ');
+        return `<div class="mon-browse-row${pinned ? ' is-pinned' : ''}">
+            <div class="mon-browse-info">
+                <span class="mon-browse-name">${m.name}${m.spells?.length ? ` <span class="gen-mon-spell-badge">✨${m.spells.length}</span>` : ''}</span>
+                <span class="mon-browse-meta">${meta}</span>
+            </div>
+            <span class="mon-browse-stats">PL<strong>${st.pl}</strong> HP<strong>${st.hp}</strong></span>
+            <button class="step-action-btn mon-browse-init" data-browse-init="${escAttr(m.name)}" title="Straight into initiative">⚔</button>
+            <button class="step-action-btn mon-browse-pin" data-browse-pin="${escAttr(m.name)}" title="${pinned ? 'In your book' : 'Pin to your book'}">${pinned ? '★' : '☆'}</button>
+        </div>`;
+    }).join('');
+}
+
+['gen-mon-search', 'mon-filter-group', 'mon-filter-pl', 'mon-filter-env'].forEach(id => {
+    const el = document.getElementById(id);
+    el?.addEventListener(id === 'gen-mon-search' ? 'input' : 'change', renderMonBrowse);
 });
 
+document.getElementById('mon-browse-list')?.addEventListener('click', e => {
+    const pin = e.target.closest('[data-browse-pin]');
+    if (pin) {
+        const name = pin.dataset.browsePin;
+        if (nar.genMonsters.includes(name)) {
+            nar.genMonsters = nar.genMonsters.filter(n => n !== name);
+            nar.monFavorites = nar.monFavorites.filter(n => n !== name);
+            saveNar(); renderGenMonsterList();
+        } else {
+            addGenMonster(name);
+        }
+        renderMonBrowse();
+        return;
+    }
+    const init = e.target.closest('[data-browse-init]');
+    if (init) {
+        const name = init.dataset.browseInit;
+        const m = getMonster(name);
+        if (!m) return;
+        const st   = effectiveStats(m);
+        const twin = nar.encounter.find(x => x.name === name && x.type === 'enemy');
+        const initiative = twin ? twin.initiative
+            : Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
+        nar.encounter.push({
+            id: crypto.randomUUID(), name, hp: st.hp, maxHp: st.hp,
+            initiative, type: 'enemy', pl: st.pl,
+        });
+        saveNar(); renderEncounter(); syncEncounter();
+        const n = nar.encounter.filter(x => x.name === name && x.type === 'enemy').length;
+        showChatToast(`${name} ×${n}`,
+            `In initiative at ${initiative}${n > 1 ? ' (acting as a group)' : ''}`,
+            () => openInitiative(), 'Go to initiative');
+    }
+});
 document.getElementById('btn-gen-mon-random')?.addEventListener('click', () => {
     if (!GEN_MONSTERS.length) { ensureMonsters(); return; }
-    const m = GEN_MONSTERS[Math.floor(Math.random() * GEN_MONSTERS.length)];
+    // Respect the filters - a random pick from "Undead, PL 4-6" is the useful kind
+    const f    = monBrowseFilters();
+    const pool = GEN_MONSTERS.filter(m => monMatchesFilters(m, f));
+    const list = pool.length ? pool : GEN_MONSTERS;
+    const m    = list[Math.floor(Math.random() * list.length)];
     addGenMonster(m.name);
+    renderMonBrowse();
+    showChatToast(m.name, `Pinned to your book · PL ${effectiveStats(m).pl}`, () => {
+        document.getElementById('mon-book')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 'Show');
 });
 
 // ── GENERATORS: NPC & LOCATION ────────────────────────────────────────────────
@@ -2540,7 +2982,7 @@ function saveNpcToJournal(n) {
 function appendToJournal(text, title = 'Generator Note') {
     nar.sessions.unshift({ id: crypto.randomUUID(), title, date: '', notes: text.trim() });
     saveNar(); renderSessions();
-    setActivePanel('journal');
+    setActivePanel('party');
     setTimeout(() => document.querySelector('#journal-session-list .jsess-card')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
 }
 
@@ -4318,7 +4760,7 @@ applyPrivacyMode();
 
 // ── KEYBOARD SHORTCUTS ────────────────────────────────────────────────────────
 
-const KB_NAV = { '1': 'chat', '2': 'party', '3': 'generators', '4': 'journal', '5': 'initiative' };
+const KB_NAV = { '1': 'chat', '2': 'party', '3': 'generators', '4': 'monsters', '5': 'initiative', '6': 'ref' };
 
 document.addEventListener('keydown', e => {
     if (e.target.closest('input, textarea, [contenteditable]')) return;
@@ -4462,6 +4904,9 @@ function listenToRoomDoc(code) {
                 saveNar(); renderEncounter();
             }
 
+            const provokeBox = document.getElementById('toggle-provoke-lock');
+            if (provokeBox) provokeBox.checked = !!data.provokeLocked;
+
             // Keep badge in sync if campaign name ever changes
             const badge = document.getElementById('room-code-badge');
             if (badge && !badge.hidden) setBadgeContent(code, data.name || '');
@@ -4579,7 +5024,7 @@ async function closeRoom(code) {
         if (privacyBtn) privacyBtn.hidden = true;
         if (goldRow)    goldRow.hidden = true;
         if (handouts)   handouts.hidden = true;
-        if (invite)     invite.textContent = 'Invite';
+        if (invite)     invite.textContent = 'Manage Rooms';
         updateChatInputState();
         renderParty(); renderInventory(); renderNarHandouts(); renderNarChat();
     }
@@ -4590,7 +5035,7 @@ function renderRoomsList() {
     const el = document.getElementById('rooms-list');
     if (!el) return;
     if (!roomsCache.length) {
-        el.innerHTML = '<p class="empty-hint">No open rooms yet. Tap New Room to start one.</p>';
+        el.innerHTML = '<p class="empty-hint">No rooms yet. Tap <strong>+ New Room</strong> below to start your first campaign.</p>';
         return;
     }
     el.innerHTML = roomsCache.map(r => {
@@ -4638,6 +5083,14 @@ async function openRoomsDialog() {
     await refreshRoomsList();
 }
 
+document.getElementById('toggle-provoke-lock')?.addEventListener('change', async e => {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), { provokeLocked: e.target.checked });
+    } catch (err) { console.error('[ARC] provoke lock failed:', err); }
+});
+
 document.getElementById('btn-manage-rooms')?.addEventListener('click', () => {
     closeSettings();
     openRoomsDialog();
@@ -4681,7 +5134,7 @@ function showRoomBadge(code, name) {
         badge.hidden = false;
     }
     if (privacyBtn) privacyBtn.hidden = false;
-    if (inviteBtn)  inviteBtn.textContent = 'New Room';
+    if (inviteBtn)  inviteBtn.textContent = 'Manage Rooms';
     if (goldRow)    goldRow.hidden = false;
     if (handoutsSection) handoutsSection.hidden = false;
     const chatInput = document.getElementById('nar-chat-input');
@@ -4795,6 +5248,7 @@ function bindNarRefPanel() {
         if (!tab) return;
         const target = tab.dataset.refTab;
         document.querySelectorAll('#panel-ref .ref-tab').forEach(t => t.classList.toggle('is-active', t === tab));
+        if (target === 'gear') ensureRefGear();
         document.querySelectorAll('#panel-ref .ref-tab-content').forEach(c =>
             c.classList.toggle('is-active', c.id === `ref-tab-${target}`));
     });
@@ -4884,9 +5338,133 @@ document.querySelectorAll('.chat-sub-tab').forEach(btn => {
     btn.addEventListener('click', () => setNarChatSubTab(btn.dataset.chatSub));
 });
 
+// ── REFERENCE: GEAR ───────────────────────────────────────────────────────────
+// The narrator had no way to look up a weapon mid-session without leaving the
+// app. Rolls straight to chat, and drops into the party inventory in one tap.
+
+let REF_GEAR = null;
+
+async function ensureRefGear() {
+    if (REF_GEAR) return;
+    try {
+        const [w, a] = await Promise.all([
+            fetch('../data/weapons.json').then(r => r.json()),
+            fetch('../data/armor.json').then(r => r.json()),
+        ]);
+        REF_GEAR = [
+            ...w.map(x => ({ ...x, _kind: 'weapon' })),
+            ...a.map(x => ({ ...x, _kind: 'armor', category: 'armor' })),
+        ];
+        renderRefGear();
+    } catch (e) { console.error('[ARC] gear reference failed to load:', e); }
+}
+
+function renderRefGear() {
+    const el = document.getElementById('ref-gear-list');
+    if (!el) return;
+    if (!REF_GEAR) { el.innerHTML = '<p class="empty-hint">Loading gear…</p>'; ensureRefGear(); return; }
+
+    const q   = (document.getElementById('ref-gear-search')?.value || '').trim().toLowerCase();
+    const cat = document.getElementById('ref-gear-cat')?.value || '';
+
+    const rows = REF_GEAR.filter(g => {
+        if (cat && (g.category || '') !== cat) return false;
+        if (!q) return true;
+        return [g.name, g.category, g.damageType, g.range, g.properties, g.rarity]
+            .filter(Boolean).join(' ').toLowerCase().includes(q);
+    });
+
+    const count = document.getElementById('ref-gear-count');
+    if (count) count.textContent = `${rows.length} of ${REF_GEAR.length}`;
+    if (!rows.length) { el.innerHTML = '<p class="empty-hint">Nothing matches.</p>'; return; }
+
+    el.innerHTML = rows.map(g => {
+        const stat = g._kind === 'armor'
+            ? [g.armor != null ? `AR +${g.armor}` : '', g.movePenalty ? `Move ${g.movePenalty}` : '', g.checkPenalty ? `Check ${g.checkPenalty}` : '']
+                .filter(Boolean).join(' · ')
+            : [g.damage, g.damageType, g.range].filter(Boolean).join(' · ');
+        const sub = [g.category, g.rarity, g.cost != null ? `${g.cost}g` : '', g.properties]
+            .filter(Boolean).join(' · ');
+        return `<details class="ref-gear-row">
+            <summary class="ref-gear-head">
+                <div class="ref-gear-info">
+                    <span class="ref-gear-name">${g.name}</span>
+                    <span class="ref-gear-sub">${sub}</span>
+                </div>
+                <span class="ref-gear-stat">${stat}</span>
+            </summary>
+            <div class="ref-gear-body">
+                ${g.description ? `<p class="ref-gear-desc">${g.description}</p>` : ''}
+                ${g.featureName ? `<p class="ref-gear-feat"><strong>${g.featureName}</strong> ${g.featureEffect || ''}</p>` : ''}
+                <div class="ref-gear-acts">
+                    ${g.damage ? `<button class="ghost-btn" data-gear-roll="${escAttr(g.name)}" type="button">🎲 Roll damage</button>` : ''}
+                    <button class="ghost-btn" data-gear-chat="${escAttr(g.name)}" type="button">Post to chat</button>
+                    <button class="ghost-btn" data-gear-loot="${escAttr(g.name)}" type="button">+ Party inventory</button>
+                </div>
+            </div>
+        </details>`;
+    }).join('');
+}
+
+function refGearByName(name) { return REF_GEAR?.find(g => g.name === name) || null; }
+
+document.getElementById('ref-gear-search')?.addEventListener('input', renderRefGear);
+document.getElementById('ref-gear-cat')?.addEventListener('change', renderRefGear);
+
+document.getElementById('ref-gear-list')?.addEventListener('click', async e => {
+    const rollBtn = e.target.closest('[data-gear-roll]');
+    if (rollBtn) {
+        const g = refGearByName(rollBtn.dataset.gearRoll);
+        if (!g) return;
+        const roll = rollDiceNotation(g.damage);
+        postToSharedChat({
+            type: 'dice', charName: narSpeakingAs || 'Narrator',
+            notation: g.damage, rolls: roll?.rolls || [], bonus: roll?.bonus || 0,
+            total: roll?.total ?? 0, time: chatTimestamp(),
+        });
+        setActivePanel('chat');
+        return;
+    }
+    const chatBtn = e.target.closest('[data-gear-chat]');
+    if (chatBtn) {
+        const g = refGearByName(chatBtn.dataset.gearChat);
+        if (!g) return;
+        postToSharedChat({
+            type: 'feature', name: g.name,
+            tags: [g.category, g.damage, g.damageType, g.range, g.rarity].filter(Boolean),
+            desc: [g.description, g.featureName && `${g.featureName}: ${g.featureEffect || ''}`].filter(Boolean).join('\n'),
+            time: chatTimestamp(), diceRolls: [],
+        });
+        setActivePanel('chat');
+        return;
+    }
+    const lootBtn = e.target.closest('[data-gear-loot]');
+    if (lootBtn) {
+        const g = refGearByName(lootBtn.dataset.gearLoot);
+        if (!g) return;
+        const entry = {
+            name: g.name, desc: g.description || '', amount: 1, bulk: g.bulk ?? 1,
+            category: g._kind === 'armor' ? 'armor' : 'weapon',
+            damage: g.damage || '', damageType: g.damageType || '', range: g.range || '',
+            properties: g.properties || '', check: g.check || '',
+            armorRating: g.armor || 0,
+        };
+        const arc = window.__arc;
+        if (currentRoomCode && arc?.db) {
+            try {
+                await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', crypto.randomUUID()),
+                    { ...entry, addedAt: arc.serverTimestamp() });
+            } catch (err) { console.error('[ARC] gear -> loot failed:', err); }
+        } else {
+            nar.inventory.push({ id: crypto.randomUUID(), ...entry });
+            saveNar(); renderInventory();
+        }
+        showChatToast(g.name, 'Added to party inventory', () => setActivePanel('party'), 'Show');
+    }
+});
+
 function openInitiative() {
-    setActivePanel('chat');
-    setNarChatSubTab('initiative');
+    setActivePanel('initiative');
 }
 
 document.getElementById('btn-monsters-open-initiative')?.addEventListener('click', openInitiative);
@@ -4995,7 +5573,7 @@ function buildNarTargetPanel() {
 
 // Mobile swipe left/right to cycle panels
 (function () {
-    const ORDER = ['chat', 'party', 'generators', 'journal', 'ref'];
+    const ORDER = ['chat', 'party', 'generators', 'monsters', 'initiative', 'ref'];
     let sx = 0, sy = 0, live = false;
     document.addEventListener('touchstart', e => {
         if (e.target.closest('input, select, textarea, button, [role="slider"]')) { live = false; return; }

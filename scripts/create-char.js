@@ -217,6 +217,75 @@ async function loadData() {
     } catch (e) { console.error('create-char: data load failed', e); }
 }
 
+// ── PICKS BUBBLE ──────────────────────────────────────────────────────────────
+// A running tally of what you've chosen. Six steps is enough that by the time you
+// are allocating stats you have forgotten which talent you took - and every row
+// jumps back to the step that set it.
+
+function pickRows() {
+    const statLine = STAT_KEYS
+        .filter(k => wiz.stats[k] > 0)
+        .map(k => `${k.slice(0, 3).toUpperCase()} ${wiz.stats[k]}`)
+        .join(' · ');
+
+    return [
+        { step: 'class',   label: 'Class',   value: wiz.classKey },
+        { step: 'path',    label: 'Path',    value: wiz.pathName },
+        { step: 'path',    label: 'Talent',  value: wiz.talentName },
+        { step: 'species', label: 'Species', value: wiz.speciesName },
+        { step: 'species', label: 'Feature', value: wiz.speciesObj?.feature_name },
+        { step: 'stats',   label: 'Stats',   value: statLine },
+        { step: 'details', label: 'Name',    value: wiz.name },
+    ];
+}
+
+function renderPicks() {
+    const body  = document.getElementById('wiz-picks-body');
+    const count = document.getElementById('wiz-picks-count');
+    const wrap  = document.getElementById('wiz-picks');
+    if (!body) return;
+
+    const rows = pickRows();
+    const made = rows.filter(r => r.value);
+    if (count) count.textContent = made.length;
+    if (wrap) wrap.classList.toggle('is-empty', !made.length);
+
+    body.innerHTML = made.length
+        ? made.map(r => `
+            <button class="wiz-pick" type="button" data-pick-step="${r.step}">
+                <span class="wiz-pick-label">${r.label}</span>
+                <span class="wiz-pick-value">${r.value}</span>
+            </button>`).join('')
+        : '<p class="wiz-pick-empty">Nothing chosen yet.</p>';
+
+    // Points remaining is the number you actually need while allocating
+    if (currentStep() === 'stats') {
+        const left = pointsLeft();
+        body.insertAdjacentHTML('beforeend',
+            `<div class="wiz-pick-points${left < 0 ? ' is-over' : left === 0 ? ' is-exact' : ''}">
+                ${left < 0 ? `${-left} over budget` : `${left} point${left === 1 ? '' : 's'} left`}
+            </div>`);
+    }
+}
+
+document.getElementById('wiz-picks-tab')?.addEventListener('click', () => {
+    const wrap = document.getElementById('wiz-picks');
+    const tab  = document.getElementById('wiz-picks-tab');
+    if (!wrap) return;
+    const open = wrap.classList.toggle('is-open');
+    tab?.setAttribute('aria-expanded', String(open));
+});
+
+document.getElementById('wiz-picks-body')?.addEventListener('click', e => {
+    const btn = e.target.closest('[data-pick-step]');
+    if (!btn) return;
+    const idx = STEPS.indexOf(btn.dataset.pickStep);
+    if (idx >= 0) {
+        goTo(idx);
+        document.getElementById('wiz-picks')?.classList.remove('is-open');
+    }
+});
+
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
 
 function currentStep() { return STEPS[wiz.stepIdx]; }
@@ -241,6 +310,7 @@ function goTo(idx) {
     if (id === 'stats')   renderBuildGuide();
     if (id === 'details') renderDetailsStep();
     if (id === 'review')  renderReview();
+    renderPicks();
 }
 
 function validate() {
@@ -584,6 +654,34 @@ function isEnemyFacingCheck(step) {
     return step.description ? _ENEMY_SAVE_RX.test(step.description) : false;
 }
 
+// Species features key off checks just like path and talent steps do, but they
+// were never fed into the guide - so you allocated stats without seeing that your
+// species' feature runs on Stealth.
+function speciesGuideSteps() {
+    const s = wiz.speciesObj;
+    if (!s) return [];
+    const steps = [];
+    if (s.feature_name) {
+        steps.push({
+            name: s.feature_name,
+            check: s.fetCheck || '',
+            checkType: (s.fetAction || '').toLowerCase() === 'passive' ? 'passive' : '',
+            description: [s.feature_effect, s.fetRange && `Range: ${s.fetRange}`, s.fetDuration && `Duration: ${s.fetDuration}`]
+                .filter(Boolean).join(' · '),
+            source: wiz.speciesName,
+        });
+    }
+    if (s['sub-fet-name']) {
+        steps.push({
+            name: s['sub-fet-name'],
+            check: '',
+            description: s['sub-fet-effect'] || '',
+            source: wiz.speciesName,
+        });
+    }
+    return steps;
+}
+
 function renderBuildGuide() {
     const el = document.getElementById('build-guide');
     if (!el) return;
@@ -597,7 +695,9 @@ function renderBuildGuide() {
         ...(talentEntry?.talent?.steps || []).map(s => ({ ...s, source: wiz.talentName })),
     ].filter(s => s.name && s.check && VALID_STAT_CHECKS.has(s.check) && s.checkType !== 'unneeded');
 
-    if (!allSteps.length) { el.hidden = true; return; }
+    const speciesSteps = speciesGuideSteps();
+
+    if (!allSteps.length && !speciesSteps.length) { el.hidden = true; return; }
 
     const yourChecks  = allSteps.filter(s => !isEnemyFacingCheck(s));
     const enemySaves  = allSteps.filter(s =>  isEnemyFacingCheck(s));
@@ -623,12 +723,35 @@ function renderBuildGuide() {
             : `<div class="guide-feat-row${isEnemy ? ' guide-feat-row--enemy' : ''}">${inner}</div>`;
     };
 
+    // A species feature with no check still matters - it just doesn't steer points
+    const speciesRow = s => {
+        const inner = `
+            <span class="guide-feat-left">
+                <span class="guide-feat-name">${s.name}</span>
+                ${s.check
+                    ? `<span class="guide-feat-check">${s.check}</span>`
+                    : `<span class="guide-feat-check guide-feat-check--none">no check</span>`}
+            </span>`;
+        return s.description
+            ? `<details class="guide-feat-row guide-feat-row--expand guide-feat-row--species">
+                <summary class="guide-feat-summary">${inner}</summary>
+                <p class="guide-feat-desc">${s.description}</p>
+               </details>`
+            : `<div class="guide-feat-row guide-feat-row--species">${inner}</div>`;
+    };
+
     el.hidden = false;
     el.innerHTML = `
         ${yourChecks.length ? `
         <div class="guide-feat-label">Ally checks — invest in these</div>
         <div class="guide-feat-list">
             ${yourChecks.map(s => rowHtml(s, false)).join('')}
+        </div>` : ''}
+
+        ${speciesSteps.length ? `
+        <div class="guide-feat-label guide-feat-label--species">${wiz.speciesName || 'Species'} features</div>
+        <div class="guide-feat-list guide-feat-list--species">
+            ${speciesSteps.map(speciesRow).join('')}
         </div>` : ''}
 
         ${enemySaves.length ? `
@@ -642,6 +765,7 @@ function pointsSpent()  { return STAT_KEYS.reduce((n, k) => n + wiz.stats[k], 0)
 function pointsLeft()   { return classLimits().total - pointsSpent(); }
 
 function refreshStats() {
+    renderPicks();
     STAT_KEYS.forEach(k => {
         const el = document.getElementById(`sv-${k}`);
         if (el) el.textContent = wiz.stats[k];
@@ -863,6 +987,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!card) return;
         if (card.dataset.class !== wiz.classKey) { wiz.pathName = ''; wiz.talentName = ''; }
         wiz.classKey = card.dataset.class;
+        renderPicks();
         document.querySelectorAll('.class-card').forEach(c =>
             c.classList.toggle('is-sel', c.dataset.class === wiz.classKey));
         clearError();
@@ -871,10 +996,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Path / talent selects
     document.getElementById('wiz-path-select').addEventListener('change', e => {
         wiz.pathName = e.target.value;
+        renderPicks();
         updatePathPreview();
     });
     document.getElementById('wiz-talent-select').addEventListener('change', e => {
         wiz.talentName = e.target.value;
+        renderPicks();
         updatePathPreview();
     });
 
@@ -905,6 +1032,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = e.target.closest('[data-species]');
         if (!card) return;
         wiz.speciesName = card.dataset.species;
+        renderPicks();
         wiz.speciesObj  = allSpecies.find(s => s.name === wiz.speciesName) || null;
         document.querySelectorAll('.species-card').forEach(c =>
             c.classList.toggle('is-sel', c.dataset.species === wiz.speciesName));

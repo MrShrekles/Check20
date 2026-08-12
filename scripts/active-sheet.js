@@ -1255,8 +1255,8 @@ function openSpellRollModal(spell, intent) {
         : `<span class="srm-check-chips-empty">No check available</span>`;
 
     // Stat row
-    const diceMatch = (intent.effect || '').match(/\[\[(\d*d\d+!?(?:\s*[+-]\s*\d*d?\d+!?)*)\]\]/i);
-    document.getElementById('srm-damage').textContent  = diceMatch ? diceMatch[1] : '-';
+    const spellDice = effectDiceNotation(intent.effect);
+    document.getElementById('srm-damage').textContent  = spellDice || '-';
     document.getElementById('srm-dmg-type').textContent = spell.transmission || '-';
     document.getElementById('srm-manner').textContent   = spell.manner || '-';
     document.getElementById('srm-range').textContent    = intent.range || '-';
@@ -1324,8 +1324,8 @@ function srmDoRoll(spendMana) {
             : mnNow >= cost ? `${cost} MN spent`
                 : `⚠ ${cost} MN (only ${mnNow} available)`;
 
-    const diceMatch = (sfrm.intent.effect || '').match(/\[\[(\d*d\d+!?(?:\s*[+-]\s*\d*d?\d+!?)*)\]\]/i);
-    const diceRolls = diceMatch ? [rollDiceNotation(diceMatch[1])].filter(Boolean) : [];
+    const spellDice = effectDiceNotation(sfrm.intent.effect);
+    const diceRolls = spellDice ? [rollDiceNotation(spellDice)].filter(Boolean) : [];
 
     const allTags = [
         sfrm.spell.manner,
@@ -2075,6 +2075,14 @@ function itemDetailRows(item) {
     return rows.filter(Boolean);
 }
 
+function resetDetailDelete(dlg) {
+    const b = dlg?.querySelector('[data-detail-del]');
+    if (!b) return;
+    clearTimeout(dlg._delTimer);
+    b.classList.remove('is-confirming');
+    b.textContent = '🗑 Delete';
+}
+
 function openItemDetail(idx) {
     const item = state.equipment[idx];
     if (!item) return;
@@ -2095,6 +2103,7 @@ function openItemDetail(idx) {
                 <div class="item-detail-actions">
                     <button class="item-detail-btn" data-detail-edit type="button">✎ Edit</button>
                     <button class="item-detail-btn" data-detail-give type="button">📤 Give</button>
+                    <button class="item-detail-btn item-detail-btn--danger" data-detail-del type="button">🗑 Delete</button>
                     <button class="item-detail-btn item-detail-btn--close" data-detail-close type="button">Close</button>
                 </div>
             </div>`;
@@ -2109,8 +2118,25 @@ function openItemDetail(idx) {
         dlg.querySelector('[data-detail-give]').addEventListener('click', () => {
             const i = dlg._idx; dlg.close(); openGiveDialog(i);
         });
+        // Two taps, in place - no inline confirm row to hunt for after the modal closes
+        dlg.querySelector('[data-detail-del]').addEventListener('click', function () {
+            const i = dlg._idx;
+            if (!this.classList.contains('is-confirming')) {
+                this.classList.add('is-confirming');
+                this.textContent = 'Delete for good?';
+                clearTimeout(dlg._delTimer);
+                dlg._delTimer = setTimeout(() => resetDetailDelete(dlg), 4000);
+                return;
+            }
+            const removed = state.equipment.splice(i, 1)[0];
+            dlg.close();
+            if (removed?.category === 'armor') recalcArmorBonuses();
+            else saveState();
+            renderEquipment(); renderInventory(); calcDerived();
+        });
     }
     dlg._idx = idx;
+    resetDetailDelete(dlg);
     const cat = item.category || 'gear';
     dlg.querySelector('.item-detail-cat').textContent  = cat;
     dlg.querySelector('.item-detail-name').textContent = item.name || 'Item';
@@ -2170,10 +2196,6 @@ function renderEquipment() {
                     data-desc="${esc(item.flavor || item.notes || '')}"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
                 <button class="step-action-btn" type="button" title="View item"
                     data-action="view-equip" data-equip-index="${i}">🔍</button>
-                <button class="step-action-btn" type="button" title="Edit"
-                    data-action="edit-equip" data-equip-index="${i}">✎</button>
-                <button class="step-action-btn step-action-btn--danger" type="button"
-                    data-action="del-equip" data-equip-index="${i}" aria-label="Remove">✕</button>
             </div>
         </div>`;
     }).join('');
@@ -2213,10 +2235,6 @@ function renderInventory() {
                     data-desc="${esc(item.notes || '')}"><img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
                 <button class="step-action-btn" type="button" title="View item"
                     data-action="view-equip" data-equip-index="${i}">🔍</button>
-                <button class="step-action-btn" type="button" title="Edit"
-                    data-action="edit-equip" data-equip-index="${i}">✎</button>
-                <button class="step-action-btn step-action-btn--danger" type="button"
-                    data-action="del-equip" data-equip-index="${i}" aria-label="Remove">✕</button>
             </div>
         </div>`;
     }).join('');
@@ -2642,6 +2660,10 @@ document.addEventListener('arc:firebase-ready', () => {
 
             maybeShowHandoutPopup(data.handoutPopup);
 
+            // Narrator can pull the provoke button when the table gets silly
+            const locked = !!data.provokeLocked;
+            if (locked !== provokeLocked) { provokeLocked = locked; renderChat(); }
+
             const typingEl = document.getElementById('typing-indicator');
             if (typingEl) {
                 const tn = data.typingNar;
@@ -2658,6 +2680,11 @@ document.addEventListener('arc:firebase-ready', () => {
     const _heartbeat = setInterval(syncToRoom, 60000);
     window.addEventListener('beforeunload', () => clearInterval(_heartbeat));
 });
+
+// Set from the room doc by the narrator; chat cards render a static "Can Provoke"
+// tag instead of a live button while it is on.
+let provokeLocked = false;
+window.arcProvokeLocked = () => provokeLocked;
 
 let playerTarget = null;
 let _lastEncounterData = null;
@@ -2734,13 +2761,21 @@ function renderEncounterReadonly(data) {
     const myTurn = active?.type === 'player' && active.name === state.char?.name;
     if (nextBtn) nextBtn.hidden = !myTurn;
 
-    listEl.innerHTML = visualSorted.map(c => {
+    const isActiveCard = c => active?._isEnemyGroup
+        ? (c.type !== 'player' && c.type !== 'event' && c.type !== 'npc')
+        : active?._isNpcGroup
+            ? c.type === 'npc'
+            : active?.id === c.id;
+
+    // Match the narrator: whose turn it is sits at the top, order cycles under it
+    const firstActive = visualSorted.findIndex(isActiveCard);
+    const visualOrder = firstActive > 0
+        ? [...visualSorted.slice(firstActive), ...visualSorted.slice(0, firstActive)]
+        : visualSorted;
+
+    listEl.innerHTML = visualOrder.map(c => {
         if (c.hidden) return '';
-        const isActive = active?._isEnemyGroup
-            ? (c.type !== 'player' && c.type !== 'event' && c.type !== 'npc')
-            : active?._isNpcGroup
-                ? c.type === 'npc'
-                : active?.id === c.id;
+        const isActive = isActiveCard(c);
         const hp    = c.hp ?? c.maxHp ?? 0;
         const maxHp = c.maxHp || 1;
         const pct   = maxHp > 0 ? Math.max(0, Math.min(100, Math.round((hp / maxHp) * 100))) : 0;
@@ -2759,11 +2794,17 @@ function renderEncounterReadonly(data) {
                 </div>
                 ${isTargeted ? '<span class="enc-readonly-active-tag enc-readonly-active-tag--targeted">🎯</span>' : isActive ? '<span class="enc-readonly-active-tag">▶</span>' : ''}
             </div>
-            ${!isEvent && maxHp > 0 ? `
-            <div class="enc-hp-controls enc-hp-controls--readonly">
+            ${!isEvent && maxHp > 0 ? (isPlayer
+                ? `<div class="enc-hp-controls enc-hp-controls--readonly">
                 <span class="enc-hp">${hp}<span class="enc-hp-max">/${maxHp}</span></span>
                 <div class="enc-hp-bar-track enc-hp-bar-inline"><div class="enc-hp-bar-fill" style="width:${pct}%;background:${barClr}"></div></div>
-            </div>` : ''}
+            </div>`
+                // Players get the bar - how hurt it looks - but never the numbers,
+                // because max HP is PL squared and would give the PL away.
+                : `<div class="enc-hp-controls enc-hp-controls--readonly">
+                <span class="enc-hp-vague">${c.defeated ? 'Down' : pct > 60 ? 'Healthy' : pct > 25 ? 'Wounded' : 'Bloodied'}</span>
+                <div class="enc-hp-bar-track enc-hp-bar-inline"><div class="enc-hp-bar-fill" style="width:${pct}%;background:${barClr}"></div></div>
+            </div>`) : ''}
         </div>`;
     }).join('');
 
@@ -2967,7 +3008,29 @@ function listenToGifts(room) {
                 state.equipment.push(equipmentFromPayload(p));
                 saveState();
                 recalcArmorBonuses(); renderEquipment(); renderInventory(); calcDerived();
-                ArcNotify.show(`${p.fromName || 'A player'} gave you an item`, p.name || 'Item');
+
+                const from = p.fromName || 'Someone';
+                const what = p.name || 'an item';
+                ArcNotify.show(`${from} gave you an item`, what);
+                // ArcNotify no-ops while the page is focused - which is exactly when
+                // the player is looking at their sheet - so always toast as well.
+                showChatToast(`${from} gave you ${what}`,
+                    p.category === 'weapon' ? 'Added to your weapons'
+                        : p.category === 'armor' ? 'Added to your armor'
+                            : 'Added to your inventory',
+                    () => setActivePanel('play'), 'Open sheet');
+                // A gift is worth a line in the log - it changed the sheet
+                state.chat.unshift({
+                    type: 'feature', time: chatTimestamp(),
+                    name: `🎁 Received ${what}`,
+                    tags: [`From ${from}`, p.category || 'gear'].filter(Boolean),
+                    desc: p.desc || '',
+                    diceRolls: [],
+                });
+                if (state.chat.length > 100) state.chat.length = 100;
+                saveState();
+                renderChat();
+
                 try {
                     await arc.deleteDoc(arc.doc(arc.db, 'rooms', room, 'gifts', change.doc.id));
                 } catch(e) { console.error('[ARC] gift cleanup failed:', e); }
@@ -3337,22 +3400,33 @@ function syncInitiativeDisplay() {
     if (el) el.textContent = mod >= 0 ? `+${mod}` : `${mod}`;
 }
 
+function rollInitiative() {
+    const agiCheck = [...state.checks.physical, ...state.checks.mental].find(c => c.key === 'agi');
+    const agiMod = (agiCheck?.mod || 0) + (agiCheck?.bonus || 0) + (agiCheck?.armorBonus || 0);
+    const bonus  = parseInt(document.getElementById('initiative-bonus')?.value || '0', 10) || 0;
+    const mod    = agiMod + bonus;
+    const d20    = Math.floor(Math.random() * 20) + 1;
+    const total  = d20 + mod;
+    const entry = {
+        type: 'roll', label: 'Initiative', charName: state.char?.name || 'Player',
+        mod, rollNote: `d20(${d20})`, total, rollType: 'flat',
+        conditions: [...state.activeConditions], time: chatTimestamp(),
+    };
+    state.chat.unshift(entry);
+    if (state.chat.length > 100) state.chat.length = 100;
+    saveState(); renderChat();
+    broadcastChatEntry(entry);
+    // Land on the initiative list, not the message log - that is what you rolled for
+    setActivePanel('chat');
+    document.querySelector('.chat-sub-tab[data-chat-sub="initiative"]')?.click();
+    return total;
+}
+
 function bindInitiative() {
-    document.getElementById('btn-roll-initiative')?.addEventListener('click', () => {
-        const agiCheck = [...state.checks.physical, ...state.checks.mental].find(c => c.key === 'agi');
-        const agiMod = (agiCheck?.mod || 0) + (agiCheck?.bonus || 0) + (agiCheck?.armorBonus || 0);
-        const bonus  = parseInt(document.getElementById('initiative-bonus')?.value || '0', 10) || 0;
-        const mod    = agiMod + bonus;
-        const d20    = Math.floor(Math.random() * 20) + 1;
-        const total  = d20 + mod;
-        state.chat.unshift({
-            type: 'roll', label: 'Initiative', charName: state.char?.name || 'Player',
-            mod, rollNote: `d20(${d20})`, total, rollType: 'flat',
-            conditions: [...state.activeConditions], time: chatTimestamp(),
-        });
-        if (state.chat.length > 100) state.chat.length = 100;
-        saveState(); renderChat();
-        setActivePanel('chat');
+    // Three entry points share one roll: the Play section, the topbar, and the
+    // initiative page itself.
+    document.querySelectorAll('.js-roll-initiative').forEach(btn => {
+        btn.addEventListener('click', rollInitiative);
     });
 }
 
@@ -3584,7 +3658,8 @@ function renderQuickChecks() {
             b.addEventListener('click', () => {
                 els.rollLabel.value = `${chk.label} Check`;
                 els.rollMod.value = total;
-                openDrawer();
+                // Opened from a named check: the name is a fact, not a prompt
+                openDrawer(null, null, { lockLabel: true });
             });
             grid.appendChild(b);
         });
@@ -3813,8 +3888,15 @@ function findChecksForFeature(checkStr) {
     );
 }
 
-function openDrawer(label = null, checkStr = null) {
+function openDrawer(label = null, checkStr = null, { lockLabel = false } = {}) {
     if (label !== null) els.rollLabel.value = label;
+
+    // A named check is not editable - and focusing it threw up the mobile
+    // keyboard over the Flat/Adv/Dis buttons the player actually came for.
+    if (els.rollLabel) {
+        els.rollLabel.readOnly = lockLabel;
+        els.rollLabel.classList.toggle("is-locked", lockLabel);
+    }
 
     // Reset segmented control to Flat
     document.querySelectorAll('.roll-seg-btn').forEach(b => b.classList.remove('is-sel'));
@@ -3865,7 +3947,7 @@ function openDrawer(label = null, checkStr = null) {
     els.rollDrawer.inert = false;
     els.rollDrawer.removeAttribute('aria-hidden');
     els.rollDrawer.classList.add('is-open');
-    setTimeout(() => els.rollLabel?.focus(), 0);
+    // Never autofocus: on mobile it opens the keyboard on top of the roll buttons
 }
 
 function closeDrawer() {
@@ -4522,7 +4604,6 @@ function bindBio() {
 function syncBioDisplay() {
     const txt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || '-'; };
     txt('bio-display-name',       state.char.name);
-    txt('bio-display-level',      state.char.level);
     txt('bio-display-size',       state.char.size);
     txt('bio-display-age',        state.char.age);
     txt('bio-display-diet',       state.char.diet);
@@ -4900,6 +4981,71 @@ function syncUI() {
     calcDerived();
 }
 
+// ── TAKE DAMAGE ───────────────────────────────────────────────────────────────
+// Armor absorbs first, the remainder cuts into wounds. Doing this by hand across
+// two pills was the easiest thing on the sheet to get wrong mid-combat.
+
+function applyDamage(amount) {
+    const dmg = Math.max(0, Math.floor(Number(amount) || 0));
+    if (!dmg) return null;
+
+    const armor  = state.resources.armor;
+    const wounds = state.resources.hp;
+    const armorHit  = Math.min(armor?.current ?? 0, dmg);
+    const woundsHit = dmg - armorHit;
+
+    if (armor)  armor.current  = Math.max(0, (armor.current  || 0) - armorHit);
+    if (wounds) wounds.current = Math.max(0, (wounds.current || 0) - woundsHit);
+
+    syncUI();
+    saveState();
+    return { dmg, armorHit, woundsHit, downed: (wounds?.current ?? 1) <= 0 };
+}
+
+function bindTakeDamage() {
+    const input = document.getElementById('take-dmg-input');
+    const btn   = document.getElementById('take-dmg-btn');
+    const hint  = document.getElementById('take-dmg-hint');
+    if (!btn || !input) return;
+
+    const run = () => {
+        const res = applyDamage(input.value);
+        if (!res) return;
+        input.value = '';
+        input.blur();
+
+        if (hint) {
+            const parts = [];
+            if (res.armorHit)  parts.push(`${res.armorHit} to armor`);
+            if (res.woundsHit) parts.push(`${res.woundsHit} to wounds`);
+            hint.textContent = `−${res.dmg}: ${parts.join(', ')}${res.downed ? ' — you are down' : ''}`;
+            hint.hidden = false;
+            hint.classList.toggle('is-critical', res.downed);
+            clearTimeout(hint._t);
+            hint._t = setTimeout(() => { hint.hidden = true; }, 6000);
+        }
+
+        state.chat.unshift({
+            type: 'feature', time: chatTimestamp(),
+            charName: state.char.name || '',
+            name: `🩸 Took ${res.dmg} damage`,
+            tags: [
+                res.armorHit  ? `Armor −${res.armorHit}`   : null,
+                res.woundsHit ? `Wounds −${res.woundsHit}` : null,
+                res.downed    ? 'Down' : null,
+            ].filter(Boolean),
+            desc: '', diceRolls: [],
+        });
+        if (state.chat.length > 100) state.chat.length = 100;
+        saveState();
+        renderChat();
+        broadcastChatEntry(state.chat[0]);
+    };
+
+    btn.addEventListener('click', run);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); run(); } });
+}
+
 // ── DICE UTILITIES ────────────────────────────────────────────────────────────
 // rollDiceNotation is defined in chat-cards.js
 
@@ -4991,6 +5137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderOtherGains();
     renderChat();
     bindDiceRoller();
+    bindTakeDamage();
     loadClassData();
     loadSpells();
     loadWeapons();     // calls recalcArmorBonuses() internally after armorData loads

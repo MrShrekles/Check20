@@ -1072,3 +1072,120 @@ details[open] .guide-feat-summary { background: rgba(70, 100, 100, 0.08); }
 
 .review-points       { color: var(--muted); }
 .review-points--over { color: #ff6060; }
+
+/* ── WIZARD: PICKS BUBBLE ─────────────────────────────────────────
+   Six steps is enough that by the stat step you've forgotten which
+   talent you took. Sits as a tab against the edge, expands on tap,
+   and every row jumps back to the step that set it. */
+.wiz-picks {
+    position: fixed;
+    top: 90px;
+    right: 0;
+    z-index: 40;
+    display: flex;
+    align-items: flex-start;
+    max-width: min(78vw, 300px);
+}
+.wiz-picks.is-empty { display: none; }
+
+.wiz-picks-tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    padding: 8px 10px;
+    border: 1px solid var(--gold, goldenrod);
+    border-right: 0;
+    border-radius: 10px 0 0 10px;
+    background: var(--panel, #282828);
+    color: var(--gold, goldenrod);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    touch-action: manipulation;
+    writing-mode: vertical-rl;
+}
+.wiz-picks-tab-icon { writing-mode: horizontal-tb; }
+.wiz-picks-tab-count {
+    writing-mode: horizontal-tb;
+    min-width: 16px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--gold-dim, rgba(218, 165, 32, 0.15));
+    text-align: center;
+}
+
+.wiz-picks-body {
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    background: var(--panel, #282828);
+    border: 1px solid var(--gold, goldenrod);
+    border-radius: 0 0 0 10px;
+    transition: width 0.18s ease, opacity 0.18s ease;
+}
+.wiz-picks.is-open .wiz-picks-body {
+    width: min(66vw, 240px);
+    padding: 8px;
+    opacity: 1;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.wiz-pick {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    width: 100%;
+    padding: 5px 7px;
+    margin-bottom: 3px;
+    border: 0;
+    border-left: 2px solid var(--gold, goldenrod);
+    border-radius: 0 6px 6px 0;
+    background: rgba(255, 255, 255, 0.03);
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+.wiz-pick:active { background: rgba(255, 255, 255, 0.07); }
+
+.wiz-pick-label {
+    font-size: 8.5px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted, rgba(220, 205, 185, 0.7));
+}
+.wiz-pick-value {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text, #fffaf0);
+    overflow-wrap: anywhere;
+}
+
+.wiz-pick-empty,
+.wiz-pick-points {
+    margin: 4px 0 0;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--muted, rgba(220, 205, 185, 0.7));
+}
+.wiz-pick-points.is-exact { color: #60e090; }
+.wiz-pick-points.is-over  { color: #ff6060; }
+
+/* ── BUILD GUIDE: SPECIES ─────────────────────────────────────────
+   Species features were missing from the stat step entirely. */
+.guide-feat-label--species { color: var(--cream, #d9b382); }
+.guide-feat-row--species { border-left: 2px solid var(--cream, #d9b382); }
+.guide-feat-check--none {
+    opacity: 0.6;
+    font-style: italic;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wiz-picks-body { transition: none; }
+}

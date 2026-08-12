@@ -404,6 +404,13 @@ body[data-page-title="Active-Sheet"] #site-header {
     transition: color 0.12s, background 0.12s;
 }
 
+.gear-btn--add {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--accent2);
+}
+
 .gear-btn:hover, .gear-btn.is-active {
     color: var(--text);
     background: var(--panel-2);
@@ -3991,10 +3998,13 @@ body[data-page-title="Active-Sheet"] #site-header {
     list-style: none;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 4px 8px;
+    gap: 8px;
+    padding: 1px 8px;
     opacity: 0.45;
 }
+/* A run of removed messages is noise - let them close ranks. The log is a
+   flex column with an 8px gap, so pull the neighbours back over it. */
+.chat-msg--removed + .chat-msg--removed { margin-top: -6px; }
 .chat-removed-text {
     font-style: italic;
     font-size: 12px;
@@ -6371,3 +6381,467 @@ body[data-page-title="Active-Sheet"] #site-header {
    animates - otherwise every re-render replays the entire session. */
 :is(#chat-log, #nar-chat-log) > li:not(:first-child)
     :is(.chat-die, .chat-stat-val, .roll-pip, .dice-card-total) { animation: none; }
+
+/* A check opened from a quick-check tile shows its name as a label, not a field -
+   editable-looking chrome invited a rename nobody wanted. */
+#roll-label.is-locked {
+    background: transparent;
+    border-color: transparent;
+    padding-left: 0;
+    font-weight: 800;
+    color: var(--text);
+    pointer-events: none;
+}
+
+/* The flag now sits at the far end of the row, well clear of the reaction
+   button - a misfired report is worse than a misfired emoji. */
+.chat-reactions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.chat-reactions .chat-report-btn {
+    margin-left: auto;
+    opacity: 0.45;
+}
+.chat-reactions .chat-report-btn:hover { opacity: 1; }
+
+/* Item detail: destructive action reads as such, and louder once armed */
+.item-detail-btn--danger {
+    border-color: rgba(220, 70, 70, 0.45);
+    color: #ff8080;
+}
+.item-detail-btn--danger.is-confirming {
+    background: rgba(220, 70, 70, 0.22);
+    border-color: rgba(220, 70, 70, 0.8);
+    color: #ffd0d0;
+    font-weight: 800;
+}
+
+/* Settings toggle row */
+.settings-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 2px;
+    font-size: 14px;
+    color: var(--text);
+    cursor: pointer;
+}
+.settings-toggle input { width: 18px; height: 18px; accent-color: var(--accent2); flex-shrink: 0; }
+
+/* Provoke is locked: the card still reports the opportunity, minus the button */
+.provoke-locked {
+    margin-top: 6px;
+    padding: 7px 0;
+    border: 1px dashed rgba(220, 100, 60, 0.4);
+    border-radius: 8px;
+    color: rgba(224, 96, 64, 0.7);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-align: center;
+}
+
+/* Players see a monster's condition, never its exact hit points */
+.enc-hp-vague {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+/* ── SHARED INVENTORY ROWS ────────────────────────────────────────
+   Used by the narrator's party inventory AND the player's claimable
+   "Party Inventory" list. These lived in narrator.css, which the player
+   sheet never loads - so those rows rendered completely unstyled. */
+
+.inv-row {
+    display: grid;
+    grid-template-columns: 1fr auto 52px 66px 26px;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 2px;
+    border-bottom: 1px solid var(--line);
+}
+
+.inv-name-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.inv-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent2);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.inv-desc {
+    font-size: 11px;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.inv-amount {
+    font-size: 13px;
+    font-weight: 800;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.inv-bulk {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    white-space: nowrap;
+}
+
+.inv-claim-btn {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent2);
+    background: none;
+    border: 1px solid var(--accent-mid);
+    border-radius: 8px;
+    padding: 4px 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+}
+
+.inv-claim-btn:active {
+    background: var(--accent-dim);
+}
+
+/* ── TAKE DAMAGE ──────────────────────────────────────────────────
+   Armor first, then wounds - one control instead of two pills and
+   mental arithmetic in the middle of a fight. */
+.take-dmg-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 8px 10px;
+    border: 1px solid rgba(220, 70, 70, 0.28);
+    border-radius: 10px;
+    background: rgba(220, 70, 70, 0.06);
+}
+.take-dmg-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex: 1;
+}
+.take-dmg-input {
+    width: 68px;
+    text-align: center;
+    font-weight: 800;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 6px 4px;
+}
+.take-dmg-btn {
+    padding: 7px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(220, 70, 70, 0.5);
+    background: rgba(220, 70, 70, 0.16);
+    color: #ff8080;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+.take-dmg-btn:active { transform: scale(0.97); background: rgba(220, 70, 70, 0.28); }
+
+.take-dmg-hint {
+    margin: 6px 2px 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+}
+.take-dmg-hint.is-critical { color: #ff8080; }
+
+/* ── INITIATIVE: ACTION COUNT ─────────────────────────────────────
+   Some monsters act more than once a round. */
+.enc-action-pips {
+    margin-left: 6px;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--accent2);
+    vertical-align: middle;
+}
+
+.enc-action-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+}
+.enc-action-label {
+    flex: 1;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.enc-action-val {
+    min-width: 20px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+}
+
+/* The condition picker now carries the full list, so it needs to scroll */
+.enc-cond-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    max-height: 148px;
+    overflow-y: auto;
+    padding: 2px 0;
+}
+
+/* Initiative is called constantly - one tap from anywhere on the sheet */
+.topbar-init-btn {
+    flex-shrink: 0;
+    margin-left: auto;
+    padding: 5px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--accent2-mid);
+    background: var(--accent2-dim);
+    color: var(--accent2);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+.topbar-init-btn:active { transform: scale(0.96); }
+
+/* ── INITIATIVE: GROUPED CONDITIONS ───────────────────────────────
+   The picker carries all 22 conditions now, so it needs headings to
+   stay findable rather than being one long wall of chips. */
+.enc-cond-group { margin-bottom: 6px; }
+
+.enc-cond-group-label {
+    margin-bottom: 3px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0.75;
+}
+
+.enc-cond-group-picks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+/* A condition should be visible without expanding the card */
+.enc-cond-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: 6px;
+    padding: 1px 6px;
+    border: 1px solid rgba(212, 146, 42, 0.45);
+    border-radius: 999px;
+    background: rgba(212, 146, 42, 0.14);
+    font-size: 10px;
+    line-height: 1.5;
+    vertical-align: middle;
+}
+.enc-cond-badge--major {
+    border-color: rgba(224, 85, 85, 0.6);
+    background: rgba(224, 85, 85, 0.18);
+    box-shadow: 0 0 0 1px rgba(224, 85, 85, 0.12);
+}
+
+/* ── INITIATIVE: INLINE STAT BLOCK ────────────────────────────────
+   The same block the Monsters page renders, so a fight never needs a
+   page swap. Indented and capped so it doesn't swamp the tracker. */
+.enc-statblock {
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-left: 2px solid var(--accent2-mid);
+    border-radius: 0 8px 8px 0;
+    background: rgba(255, 255, 255, 0.025);
+    max-height: 420px;
+    overflow-y: auto;
+}
+.enc-statblock .gen-mon-meta {
+    font-size: 11px;
+    color: var(--muted);
+}
+.enc-statblock .gen-mon-desc {
+    font-size: 11.5px;
+    line-height: 1.45;
+}
+
+/* ── INITIATIVE: PER-ENEMY PL ─────────────────────────────────────
+   monPlOverrides is keyed by monster name, so it moves every copy at
+   once. This stepper tunes one entry, letting a runt and a champion
+   of the same kind sit in the same group. */
+.enc-pl-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+    padding: 5px 8px;
+    border: 1px solid var(--accent2-mid);
+    border-radius: 8px;
+    background: var(--accent2-dim);
+}
+.enc-pl-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.enc-pl-val {
+    min-width: 22px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+}
+.enc-pl-derived {
+    flex: 1;
+    text-align: right;
+    font-size: 10.5px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Marks a copy whose PL has been tuned away from the book value */
+.enc-mon-checks.is-tuned {
+    color: var(--gold);
+    color: color-mix(in srgb, var(--accent2) 62%, #ffe9b0);
+}
+
+/* ── THREAT ───────────────────────────────────────────────────────
+   A reserve of extra effort - provokes and dramatic manoeuvres -
+   sized at floor(PL/2). Pips on the collapsed row so you can see
+   who still has something held back. */
+.enc-threat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+.enc-threat-pip {
+    width: 6px;
+    height: 10px;
+    border-radius: 2px;
+    border: 1px solid rgba(224, 96, 64, 0.55);
+    background: transparent;
+}
+.enc-threat-pip.is-full {
+    background: #e06040;
+    box-shadow: 0 0 5px rgba(224, 96, 64, 0.6);
+}
+
+.enc-threat-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 6px;
+    padding: 5px 8px;
+    border: 1px solid rgba(224, 96, 64, 0.32);
+    border-radius: 8px;
+    background: rgba(224, 96, 64, 0.07);
+}
+.enc-threat-row--none { opacity: 0.55; }
+
+.enc-threat-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #e06040;
+}
+.enc-threat-hint {
+    font-size: 10.5px;
+    color: var(--muted);
+}
+.enc-threat-val {
+    min-width: 30px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+}
+.enc-threat-max {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+}
+.enc-threat-off {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--muted);
+    cursor: pointer;
+}
+.enc-threat-off input { width: 13px; height: 13px; accent-color: #e06040; }
+
+.enc-threat-acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    width: 100%;
+}
+.enc-threat-act {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 9px;
+    border: 1px solid rgba(224, 96, 64, 0.45);
+    border-radius: 999px;
+    background: rgba(224, 96, 64, 0.1);
+    color: #ff9070;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+.enc-threat-act:active { transform: scale(0.97); }
+.enc-threat-act.is-spent {
+    opacity: 0.35;
+    pointer-events: none;
+}
+.enc-threat-cost {
+    padding: 0 5px;
+    border-radius: 999px;
+    background: rgba(224, 96, 64, 0.28);
+    font-size: 10px;
+    font-weight: 900;
+}

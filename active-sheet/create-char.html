@@ -38,6 +38,17 @@
             <span class="wiz-header-spacer" aria-hidden="true"></span>
         </div>
 
+        <!-- Running tally of what has been chosen so far. Collapsed to a tab on
+             narrow screens so it never fights the wizard for room. -->
+        <aside class="wiz-picks" id="wiz-picks" aria-label="Your choices so far">
+            <button class="wiz-picks-tab" id="wiz-picks-tab" type="button" aria-expanded="false">
+                <span class="wiz-picks-tab-icon">◆</span>
+                <span class="wiz-picks-tab-label">Your build</span>
+                <span class="wiz-picks-tab-count" id="wiz-picks-count">0</span>
+            </button>
+            <div class="wiz-picks-body" id="wiz-picks-body"></div>
+        </aside>
+
         <!-- Steps -->
         <div class="wiz-body">
 

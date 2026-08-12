@@ -255,6 +255,13 @@ const REPORT_REASONS = [
     { key: 'other',      label: 'Other' },
 ];
 
+// Reporting is a narrator/moderator job. Players got a flag sitting right next
+// to the reaction button, which made misfires easy and invited misuse - so they
+// no longer get one at all, and the narrator's sits off on its own end.
+function arcIsNarrator() {
+    return document.body?.dataset.pageTitle === 'Narrator';
+}
+
 function buildReactionBar(m, myUid) {
     if (!m?.id) return '';
     const reactions = m.reactions || {};
@@ -268,7 +275,7 @@ function buildReactionBar(m, myUid) {
         `<button class="reaction-pick-btn" data-emoji="${e}" type="button">${e}</button>`
     ).join('');
 
-    const canReport   = myUid && m.uid !== myUid;
+    const canReport   = arcIsNarrator() && myUid && m.uid !== myUid;
     const reportBtn   = canReport ? `<button class="chat-report-btn" data-msg-id="${m.id}" type="button" title="Report message">🚩</button>` : '';
     const reportPicker = canReport
         ? `<div class="report-reason-picker" hidden>${REPORT_REASONS.map(r =>
@@ -276,7 +283,7 @@ function buildReactionBar(m, myUid) {
           ).join('')}</div>`
         : '';
 
-    return `<div class="chat-reactions" data-msg-id="${m.id}"><div class="reaction-chips">${chips}<button class="reaction-add-btn" type="button" title="Add reaction">＋</button>${reportBtn}</div><div class="reaction-picker" hidden>${picker}</div>${reportPicker}</div>`;
+    return `<div class="chat-reactions" data-msg-id="${m.id}"><div class="reaction-chips">${chips}<button class="reaction-add-btn" type="button" title="Add reaction">＋</button></div>${reportBtn}<div class="reaction-picker" hidden>${picker}</div>${reportPicker}</div>`;
 }
 
 // Close open reaction/report pickers when clicking outside
@@ -520,7 +527,7 @@ const REF_ACTIONS = [
     { name: 'Unarmed Strike',   desc: 'Deals 1 BPorS damage. Can also be taken as an Off-Action.' },
     { group: 'Stances (Half-Action)' },
     { name: 'Advantage Stance',    desc: 'Gain advantage on your next attack.' },
-    { name: 'Disadvantage Stance', desc: 'Give disadvantage to enemies attacking you or allies in range.' },
+    { name: 'Disadvantage Stance', desc: 'Give disadvantage to enemies attacking you or allies within Reach.' },
     { name: 'Guard Stance',        desc: 'When a creature attacks you, Provoke without using an Off-Action once. On all failed attacks, you may also Provoke at disadvantage.' },
     { group: 'Off-Actions' },
     { name: 'Provoke',    desc: 'Attack creatures leaving your melee range without disengaging, when they fail a check against you, or per a specific ability.' },
@@ -733,6 +740,19 @@ function rollDiceNotation(raw) {
     return { notation: clean, rolls, bonus, total };
 }
 
+// Spell effects are supposed to mark their dice as [[2d6]], but most of them
+// just write "3d6 toxic damage" in prose - those silently rolled nothing. Prefer
+// the bracketed form, fall back to the first bare dice expression in the text.
+const EFFECT_DICE_SRC = '\\d*d\\d+!?(?:\\s*[+-]\\s*\\d*d?\\d+!?)*';
+
+function effectDiceNotation(text) {
+    if (!text) return '';
+    const bracketed = text.match(new RegExp('\\[\\[(' + EFFECT_DICE_SRC + ')\\]\\]', 'i'));
+    if (bracketed) return bracketed[1].trim();
+    const bare = text.replace(/\[\[[^\]]*\]\]/g, '').match(new RegExp(EFFECT_DICE_SRC, 'i'));
+    return bare ? bare[0].trim() : '';
+}
+
 function autoTableRolls(d20Total, damageType) {
     const n = successCount(d20Total);
     if (n < 2 || !damageType || !window.damageData?.[damageType]) return null;
@@ -751,6 +771,15 @@ function successHtml(total) {
     return `<div class="roll-outcome roll-outcome--success">
         <span class="roll-outcome-pips">${pips}</span>${label}
     </div>`;
+}
+
+// The narrator can lock provoking. When locked the card still says the roll was
+// low enough to provoke - it just stops being a button.
+function provokeHtml(total) {
+    if (total >= 15) return '';
+    return window.arcProvokeLocked?.()
+        ? '<div class="provoke-locked">⚡ Can Provoke</div>'
+        : '<button class="provoke-btn" type="button">⚡ Provoke!</button>';
 }
 
 function damageTableBtnHtml(total, damageType) {
@@ -824,7 +853,7 @@ function renderWeaponAttackEntry(entry) {
         ${entry.target ? `<div class="chat-roll-target">↠ ${entry.target}</div>` : ''}
         ${entry.desc ? expandableDesc(entry.desc) : ''}
         ${tableRows ? '' : damageTableBtnHtml(entry.d20Total, entry.damageType)}
-        ${entry.d20Total < 15 ? `<button class="provoke-btn" type="button">⚡ Provoke!</button>` : ''}
+        ${provokeHtml(entry.d20Total)}
         ${condHtml}
     </div>`;
 }
@@ -872,7 +901,7 @@ function renderRollEntry(entry) {
             ${successHtml(entry.total)}
             ${fc.desc ? expandableDesc(fc.desc) : ''}
             ${damageTableBtnHtml(entry.total, dmgType)}
-            ${entry.total < 15 ? `<button class="provoke-btn" type="button">⚡ Provoke!</button>` : ''}
+            ${provokeHtml(entry.total)}
             ${condHtml}
         </div>`;
     }
@@ -891,7 +920,7 @@ function renderRollEntry(entry) {
         </div>
         ${entry.label !== 'Initiative' ? successHtml(entry.total) : ''}
         ${entry.target ? `<div class="chat-roll-target">↠ ${entry.target}</div>` : ''}
-        ${entry.label !== 'Initiative' && entry.total < 15 ? `<button class="provoke-btn" type="button">⚡ Provoke!</button>` : ''}
+        ${entry.label !== 'Initiative' ? provokeHtml(entry.total) : ''}
         ${condHtml}
     </div>`;
 }

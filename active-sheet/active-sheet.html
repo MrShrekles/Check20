@@ -36,6 +36,7 @@
         <div class="app-topbar">
             <a href="home.html" class="topbar-home" aria-label="Character Home">⌂</a>
             <span class="topbar-name" id="topbar-name"></span>
+            <button class="topbar-init-btn js-roll-initiative" type="button" title="Roll Initiative" aria-label="Roll Initiative">⚡ Init</button>
             <a href="../../index.html" class="topbar-settings-btn topbar-settings-btn--link" aria-label="Main Site">Site↗</a>
             <button class="topbar-settings-btn" id="btn-settings" type="button" aria-label="Settings">⚙</button>
         </div>
@@ -101,18 +102,6 @@
                         <button class="done-btn" data-save="health" type="button">✓ Save</button>
                     </div>
                     <div class="resource-grid">
-                        <div class="resource-pill" data-resource="hp">
-                            <span class="pill-label">Wounds</span>
-                            <div class="pill-value">
-                                <button class="pill-btn pill-btn--5" data-action="dec5" aria-label="−5 Wounds">−5</button>
-                                <button class="pill-btn" data-action="dec" aria-label="−1 Wounds">−</button>
-                                <output class="pill-num" id="hp-current">0</output>
-                                <span class="pill-sep">/</span>
-                                <output class="pill-num pill-max" id="hp-max">0</output>
-                                <button class="pill-btn" data-action="inc" aria-label="+2 Wounds">+</button>
-                                <button class="pill-btn pill-btn--5" data-action="inc5" aria-label="+5 Wounds">+5</button>
-                            </div>
-                        </div>
                         <div class="resource-pill" data-resource="armor">
                             <span class="pill-label">Armor</span>
                             <div class="pill-value">
@@ -125,6 +114,26 @@
                                 <button class="pill-btn pill-btn--5" data-action="inc5" aria-label="+5 Armor">+5</button>
                             </div>
                         </div>
+                        <div class="resource-pill" data-resource="hp">
+                            <span class="pill-label">Wounds</span>
+                            <div class="pill-value">
+                                <button class="pill-btn pill-btn--5" data-action="dec5" aria-label="−5 Wounds">−5</button>
+                                <button class="pill-btn" data-action="dec" aria-label="−1 Wounds">−</button>
+                                <output class="pill-num" id="hp-current">0</output>
+                                <span class="pill-sep">/</span>
+                                <output class="pill-num pill-max" id="hp-max">0</output>
+                                <button class="pill-btn" data-action="inc" aria-label="+2 Wounds">+</button>
+                                <button class="pill-btn pill-btn--5" data-action="inc5" aria-label="+5 Wounds">+5</button>
+                            </div>
+                        </div>
+                        <!-- Damage lands on armor first, then wounds - doing that by hand
+                             across two pills was the most error-prone thing on the sheet -->
+                        <div class="take-dmg-row">
+                            <span class="take-dmg-label">Take Damage</span>
+                            <input class="take-dmg-input" id="take-dmg-input" type="number" inputmode="numeric" min="0" placeholder="0" />
+                            <button class="take-dmg-btn" id="take-dmg-btn" type="button">Apply</button>
+                        </div>
+                        <p class="take-dmg-hint" id="take-dmg-hint" hidden></p>
                     </div>
                     <!-- Derived stats - auto-calculated from checks -->
                     <div class="derived-stats" id="derived-stats">
@@ -211,7 +220,7 @@
                             <input id="initiative-bonus" type="number" inputmode="numeric"
                                 step="1" value="0" />
                         </label>
-                        <button class="initiative-roll-btn" id="btn-roll-initiative" type="button">
+                        <button class="initiative-roll-btn js-roll-initiative" id="btn-roll-initiative" type="button">
                             ⚡ Roll Initiative
                         </button>
                     </div>
@@ -325,7 +334,7 @@
                     <div class="section">
                         <div class="section-head">
                             <h2 class="section-title">Equipment</h2>
-                            <button class="gear-btn" id="btn-open-add-equip" type="button" aria-label="Add equipment">⚙</button>
+                            <button class="gear-btn gear-btn--add" id="btn-open-add-equip" type="button" aria-label="Add equipment" title="Add equipment">+</button>
                         </div>
                         <div class="equip-tab-row">
                             <button class="equip-tab is-active" data-equip-tab="all"    type="button">All</button>
@@ -339,7 +348,7 @@
                     <div class="section">
                         <div class="section-head">
                             <h2 class="section-title">Inventory</h2>
-                            <button class="gear-btn" data-editor="inventory-editor" type="button" aria-label="Add item">⚙</button>
+                            <button class="gear-btn gear-btn--add" data-editor="inventory-editor" type="button" aria-label="Add item" title="Add item">+</button>
                         </div>
                         <div class="section-editor" id="inventory-editor">
                             <label class="field"><span class="field-label">Name</span><input id="inv-name-input" type="text" placeholder="Item name…" autocomplete="off" /></label>
@@ -396,7 +405,6 @@
                                 <span id="bio-species-name">-</span><span id="bio-species-sub" class="bio-display-sub"></span>
                             </div>
                             <div class="bio-display-grid">
-                                <div class="bio-display-item"><span class="bio-display-label">Level</span><span id="bio-display-level">-</span></div>
                                 <div class="bio-display-item"><span class="bio-display-label">Size</span><span id="bio-display-size">-</span></div>
                                 <div class="bio-display-item"><span class="bio-display-label">Age</span><span id="bio-display-age">-</span></div>
                                 <div class="bio-display-item"><span class="bio-display-label">Diet</span><span id="bio-display-diet">-</span></div>
