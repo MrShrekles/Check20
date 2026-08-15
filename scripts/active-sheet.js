@@ -253,9 +253,15 @@ function recalcArmorBonuses() {
     allChecks.forEach(c => { c.armorBonus = 0; });
 
     let totalArmor = 0;
-    state.equipment.filter(e => e.category === 'armor').forEach(item => {
-        totalArmor += armorRatingFor(item);
-        const mods = parseArmorMods(item.notes || '');
+    state.equipment.forEach(item => {
+        if (item.category === 'armor') totalArmor += armorRatingFor(item);
+        // Structured checkBonus/checkPenalty apply from any equipped item - a
+        // Silk Scarf's "Stealth +1" counts the same as armor's. Free-text notes
+        // stay armor-only, so a player's scratch notes on a gear item can't
+        // silently move their checks.
+        const sources = [item.checkBonus, item.checkPenalty];
+        if (item.category === 'armor') sources.push(item.notes || '');
+        const mods = parseArmorMods(sources.filter(Boolean).join(', '));
         Object.entries(mods).forEach(([key, val]) => {
             const chk = allChecks.find(c => c.key === key);
             if (chk) chk.armorBonus += val;
@@ -2896,6 +2902,10 @@ function equipmentFromPayload(p) {
     }
     if (p.moveMod)     entry.moveMod     = p.moveMod;
     if (p.lowlightMod) entry.lowlightMod = p.lowlightMod;
+    // Carried from items.json / armor.json in "Stealth +1" form so the sheet can
+    // apply the modifier itself instead of the player doing it by hand.
+    if (p.checkBonus)   entry.checkBonus   = p.checkBonus;
+    if (p.checkPenalty) entry.checkPenalty = p.checkPenalty;
     return entry;
 }
 
@@ -4899,9 +4909,10 @@ function calcDerived() {
     const agi = get('agi');
     const str = get('str');
     const obs = get('obs');
+    const sur = get('sur');
 
-    // Wounds max = Agility + Strength + manual bonus (class features, etc.)
-    const wounds = agi + str + (state.resources.hp.bonus || 0);
+    // Wounds max = Agility + Strength + Survival + manual bonus (class features, etc.)
+    const wounds = agi + str + sur + (state.resources.hp.bonus || 0);
     if (wounds > 0) {
         const wasBlank = state.resources.hp.max === 0 && state.resources.hp.current === 0;
         state.resources.hp.max = wounds;

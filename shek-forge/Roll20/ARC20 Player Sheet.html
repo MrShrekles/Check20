@@ -233,7 +233,7 @@
                                         <td><input type="number" name="attr_armor_max" value="0"></td>
                                     </tr>
                                     <tr>
-                                        <td>Wounds<span class="formula-hint">Agi + Str + wound mods</span></td>
+                                        <td>Wounds<span class="formula-hint">Agi + Str + Sur + wound mods</span></td>
                                         <td><input type="number" name="attr_wounds" value="0"></td>
                                         <td><input type="number" name="attr_wounds_max" value="0" readonly></td>
                                     </tr>
@@ -1250,14 +1250,15 @@
     // ============================================================
     // DERIVED STATS — Wounds / Movement / Low-Light Vision max
     // ============================================================
-    on("change:agility change:strength change:observation change:global_wounds sheet:opened", function() {
-        getAttrs(["agility", "strength", "observation", "global_wounds"], function(v) {
+    on("change:agility change:strength change:observation change:survival change:global_wounds sheet:opened", function() {
+        getAttrs(["agility", "strength", "observation", "survival", "global_wounds"], function(v) {
             const agi = parseInt(v.agility, 10) || 0;
             const str = parseInt(v.strength, 10) || 0;
             const obs = parseInt(v.observation, 10) || 0;
+            const sur = parseInt(v.survival, 10) || 0;
             const bonus = parseInt(v.global_wounds, 10) || 0;
             setAttrs({
-                wounds_max: agi + str + bonus,
+                wounds_max: agi + str + sur + bonus,
                 movement_max: 30 + 5 * Math.floor(agi / 2),
                 llv_max: 30 + 5 * Math.floor(obs / 2)
             });

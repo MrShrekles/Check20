@@ -20,6 +20,7 @@ const ITEM_ICONS = {
     'Musical Instruments': '🎵',
     'Fashion':             '👒',
     'Communication':       '📡',
+    'Potions & Salves':    '🧪',
     'Miscellaneous':       '⭐',
 };
 
@@ -60,11 +61,9 @@ function damageGroup(score) {
     return 'Powerful  (avg 15+)';
 }
 
-function normalizeRarity(r) { return (r || 'common').toLowerCase().trim(); }
-
-function rarityOrder(r) {
-    return { common: 1, uncommon: 2, rare: 3, 'very rare': 4, legendary: 5 }[normalizeRarity(r)] ?? 99;
-}
+// Ladder lives in data/vocab.json - see scripts/arc-vocab.js
+function normalizeRarity(r) { return ARC_VOCAB.normalizeRarity(r); }
+function rarityOrder(r)     { return ARC_VOCAB.rarityRank(r); }
 
 function highlightText(text, term) {
     if (!term || !text) return text || '';
@@ -468,22 +467,30 @@ function renderItems() {
 
 function buildItemRow(it, term) {
     const icon = ITEM_ICONS[it.category] || '📦';
+    const rarityNorm = normalizeRarity(it.rarity);
     const headHTML = `
         <span class="gear-row-icon-wrap gear-row-icon--emoji">${icon}</span>
         <span class="spell-row-name">${highlightText(it.name, term)}</span>
         <span class="spell-row-tags">
             <span class="gear-tag gear-tag--cat">${it.category}</span>
+            <span class="gear-tag gear-tag--rarity gear-rarity--${rarityNorm.replace(' ', '-')}">${ARC_VOCAB.rarityLabel(it.rarity)}</span>
         </span>
         <span class="spell-row-cost">${it.cost != null ? `${it.cost} <span class="gear-gp">gp</span>` : '-'}</span>`;
 
+    // effect is the rules text, description is flavour - separate fields in
+    // items.json so the sheet can read the mechanics without parsing prose.
+    const mods = [it.checkBonus, it.checkPenalty].filter(Boolean).join(' · ');
     const detailHTML = `
         <div class="gear-detail-block">
             ${it.bulk ? `<div class="gear-stat-row"><span><strong>Bulk</strong> ${it.bulk}</span></div>` : ''}
+            ${mods ? `<div class="gear-stat-row"><span><strong>Checks</strong> ${mods}</span></div>` : ''}
+            ${it.effect ? `<p class="gear-effect">${highlightText(it.effect, term)}</p>` : ''}
             ${it.description ? `<p class="gear-desc">${highlightText(it.description, term)}</p>` : ''}
         </div>`;
 
     return makeRow(headHTML, detailHTML, btn => {
-        const text = `**${it.name}** (${it.category})\nCost: ${it.cost || '-'} gp\n${it.description || ''}`.trim();
+        const text = [`**${it.name}** (${it.category})`, `Cost: ${it.cost || '-'} gp`,
+                      it.effect, it.description].filter(Boolean).join('\n');
         navigator.clipboard.writeText(text).then(() => flashButton(btn, 'Copied!'));
     });
 }

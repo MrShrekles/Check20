@@ -585,18 +585,20 @@ function calculateDerivedStats() {
     const agiInput = document.getElementById("agilityTotal");
     const strInput = document.getElementById("strengthTotal");
     const obsInput = document.getElementById("observationTotal");
+    const surInput = document.getElementById("survivalTotal");
 
     const agility = agiInput ? parseInt(agiInput.value, 10) || 0 : 0;
     const strength = strInput ? parseInt(strInput.value, 10) || 0 : 0;
     const observation = obsInput ? parseInt(obsInput.value, 10) || 0 : 0;
+    const survival = surInput ? parseInt(surInput.value, 10) || 0 : 0;
 
     const woundsTotal = document.getElementById("wounds");
     const moveTotal = document.getElementById("movement");
     const llvTotal = document.getElementById("llv");
 
-    // Wounds = Agi + Str【turn9file1†charsheet.html†L11-L13】
+    // Wounds = Agi + Str + Sur
     if (woundsTotal) {
-        woundsTotal.value = agility + strength;
+        woundsTotal.value = agility + strength + survival;
     }
 
     // Movement = 30 + 5 per 2 Agi【turn9file8†charsheet.html†L8-L10】
@@ -624,7 +626,7 @@ function calculateDerivedStats() {
         llvCurrent.value = llvTotal ? llvTotal.value : "";
     }
 
-    // Keep the Total Checks box updated when Agi/Str/Obs move
+    // Keep the Total Checks box updated when Agi/Str/Obs/Sur move
     updateTotalChecksSum();
 }
 

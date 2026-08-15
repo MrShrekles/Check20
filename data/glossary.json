@@ -188,7 +188,7 @@
     "term": "Survival",
     "type": "check",
     "category": "Physical",
-    "definition": "Primal instinct for navigating danger and enduring harsh environments. Governs breath-holding: 3 rounds + Survival."
+    "definition": "Primal instinct for navigating danger and enduring harsh environments. Each point increases Wounds. Governs breath-holding: 3 rounds + Survival."
   },
   {
     "term": "Influence",
@@ -224,7 +224,7 @@
     "term": "Wounds",
     "type": "resource",
     "category": "Character",
-    "definition": "Your total hit capacity. Equal to Agility + Strength (minimum 1). Reaching 0 applies the Injured condition."
+    "definition": "Your total hit capacity. Equal to Agility + Strength + Survival (minimum 1). Reaching 0 applies the Injured condition."
   },
   {
     "term": "Armor",

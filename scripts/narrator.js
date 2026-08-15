@@ -3755,8 +3755,7 @@ function generateMundane() {
     return { id: crypto.randomUUID(), ...item };
 }
 
-const ENCH_RARITIES      = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
-const ENCH_RARITY_COLORS = { Common:'#888', Uncommon:'#55aa55', Rare:'#5588cc', Epic:'#aa55cc', Legendary:'#cc8822' };
+// Rarity ladder + colours live in data/vocab.json - see scripts/arc-vocab.js
 
 // Full port of the worldbuilding.html enchanted generator: the base item is a real
 // weapon/armor/item (so it carries genuine stats), filtered by the type + rarity
@@ -3774,7 +3773,7 @@ function generateEnchanted() {
     const pool       = tp === 'any' ? fullPool : fullPool.filter(x => x.cat === tp);
     const chosen     = pick(pool.length ? pool : fullPool) || { name: 'Item', kind: 'item', cat: 'Item' };
 
-    const rarity  = rp === 'any' ? pick(ENCH_RARITIES) : rp.charAt(0).toUpperCase() + rp.slice(1);
+    const rarity  = rp === 'any' ? pick(ARC_VOCAB.ladder()) : ARC_VOCAB.normalizeRarity(rp);
     const dmgType = pick(GEN_ENCHGEN.damageTypes);
     const check   = pick(GEN_ENCHGEN.checks);
 
@@ -3805,6 +3804,9 @@ function generateEnchanted() {
         check:        chosen.check        || '',
         properties:   chosen.properties   || '',
         description:  chosen.description  || '',
+        // The base item's own rules text. `effect` above is the rolled
+        // enchantment, so the base item's effect needs its own key.
+        baseEffect:   chosen.effect       || '',
         armor:        chosen.armor ?? null,
         movePenalty:  chosen.movePenalty  || '',
         checkPenalty: chosen.checkPenalty || '',
@@ -3847,7 +3849,10 @@ function enchantedStatRows(it) {
         ];
     }
     return [
-        ...(it.description ? [['Desc', it.description]] : []),
+        ...(it.baseEffect   ? [['Effect',      it.baseEffect]]   : []),
+        ...(it.checkBonus   ? [['Check Bonus', it.checkBonus]]   : []),
+        ...(it.checkPenalty ? [['Check Pen',   it.checkPenalty]] : []),
+        ...(it.description  ? [['Desc',        it.description]]  : []),
         costBulk,
     ];
 }
@@ -3982,14 +3987,14 @@ function renderGenEnchantedList() {
     }
 
     el.innerHTML = nar.genEnchanted.map(it => {
-        const col  = ENCH_RARITY_COLORS[it.rarity] || '#888';
+        const col  = ARC_VOCAB.rarityColor(it.rarity);
         const sub  = [it.catLabel, it.baseItem].filter(Boolean).join(' · ');
         const rows = enchantedStatRows(it);
         return `
         <div class="gen-quest-card gen-ench-card" style="--ench-col:${col}">
             <div class="gen-ench-head">
                 <span class="gen-ench-name">${it.name}</span>
-                ${it.rarity ? `<span class="gen-ench-rarity">${it.rarity}</span>` : ''}
+                ${it.rarity ? `<span class="gen-ench-rarity">${ARC_VOCAB.rarityLabel(it.rarity)}</span>` : ''}
             </div>
             ${sub ? `<div class="gen-ench-sub">${sub}</div>` : ''}
             <div class="gen-quest-rows">

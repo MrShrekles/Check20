@@ -21,16 +21,16 @@
           "description": "Hefty; Armor: 20; Bulk: 4"
         },
         {
-          "name": "Shiv",
-          "description": "1d4 Piercing; Agility, Strength; Melee; 1 hand, Light; Bulk: 1"
-        },
-        {
           "name": "Heavy Sword",
           "description": "4d6 Slashing; Agility, Strength; 2 Hand, Hefty; Bulk: 3"
         },
         {
           "name": "Heavy Crossbow",
           "description": "4d6 Piercing; Strength; Medium; 2 hand, Hefty; Bulk: 2"
+        },
+        {
+          "name": "Healing Potion",
+          "description": "receive 1d6 healing"
         }
       ]
     },

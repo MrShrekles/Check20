@@ -3,11 +3,8 @@
    State, constants, data fetching & normalization
    ========================= */
 
-const RARITY_ORDER = ["common", "uncommon", "rare", "very rare", "legendary", "mythic"];
-const rarityRank = r => {
-    const i = RARITY_ORDER.indexOf(String(r || '').toLowerCase());
-    return i === -1 ? 999 : i;
-};
+// Ladder lives in data/vocab.json - see scripts/arc-vocab.js
+const rarityRank = r => ARC_VOCAB.rarityRank(r);
 const slug = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 let SPECIES = [];

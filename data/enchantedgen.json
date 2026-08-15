@@ -553,5 +553,10 @@
     "type": "effect",
     "text": "This item is possessed by a spirit",
     "prefix": "Haunted"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, the first attack against you until the end of your next turn has disadvantage.",
+    "prefix": "Displacing"
   }
 ]

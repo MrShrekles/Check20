@@ -4367,10 +4367,11 @@ on("change:character_class", function() {
 // ============================================================
 // WOUNDS
 // ============================================================
-on("change:agility change:strength change:class_bonus change:global_wounds", function() {
-    getAttrs(["agility", "strength", "class_bonus", "global_wounds"], function(values) {
+on("change:agility change:strength change:survival change:class_bonus change:global_wounds", function() {
+    getAttrs(["agility", "strength", "survival", "class_bonus", "global_wounds"], function(values) {
         let wounds = (parseInt(values.agility, 10) || 0)
                    + (parseInt(values.strength, 10) || 0)
+                   + (parseInt(values.survival, 10) || 0)
                    + (parseInt(values.class_bonus, 10) || 0)
                    + (parseInt(values.global_wounds, 10) || 0);
         setAttrs({ wounds: wounds, wounds_max: wounds });

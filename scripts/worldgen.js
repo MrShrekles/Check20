@@ -381,7 +381,11 @@
             genPanel?.querySelectorAll('.carousel-pane').forEach(p => p.classList.remove('is-active'));
             genPanel?.querySelectorAll('.carousel-tab').forEach(b => b.classList.remove('is-active'));
             cpane.classList.add('is-active');
-            genPanel?.querySelector('.carousel-tab')?.classList.add('is-active');
+            // Target the tab that actually points at the quest pane. Falling back
+            // to the first tab only worked while Quests happened to be first.
+            const questTab = genPanel?.querySelector('.carousel-tab[data-pane="cpane-quest"]')
+                          || genPanel?.querySelector('.carousel-tab');
+            questTab?.classList.add('is-active');
         }
         document.getElementById('generate-quest')?.click();
         setTimeout(() => cpane?.closest('details.gen-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
@@ -576,8 +580,7 @@
         bindClear('clear-quests', 'quest-output', STORE.quest);
 
         // ── Enchanted Item ─────────────────────────────────────────────────────
-        const RARITIES      = ['Common','Uncommon','Rare','Epic','Legendary'];
-        const RARITY_COLORS = { Common:'#888', Uncommon:'#55aa55', Rare:'#5588cc', Epic:'#aa55cc', Legendary:'#cc8822' };
+        // Rarity ladder + colours live in data/vocab.json - see scripts/arc-vocab.js
 
         document.getElementById('generate-item')?.addEventListener('click', () => {
             const tp  = document.getElementById('item-type-pick')?.value   || 'any';
@@ -594,7 +597,8 @@
             const pool       = tp === 'any' ? fullPool : fullPool.filter(x => x.cat === tp);
             const chosen     = wbPick(pool.length ? pool : fullPool) || { name: 'Item', kind: 'item', cat: 'Item' };
 
-            const rar          = rp === 'any' ? wbPick(RARITIES) : rp.charAt(0).toUpperCase() + rp.slice(1);
+            const rar          = rp === 'any' ? wbPick(ARC_VOCAB.ladder()) : ARC_VOCAB.normalizeRarity(rp);
+            const rarLabel     = ARC_VOCAB.rarityLabel(rar);
             const dmgType      = pickTxt(enchantData, 'damageType');
             const check        = pickTxt(enchantData, 'check');
             // Prefix is linked to the specific effect (set per-effect in the Forge)
@@ -610,7 +614,7 @@
                 .replace('{manner}', pickTxt(enchantData, 'manner'))
                 .replace('{transmission}', pickTxt(enchantData, 'transmission'));
             const prefix        = effectEntry?.prefix || pickTxt(enchantData, 'prefix');
-            const rarCol       = RARITY_COLORS[rar] || '#888';
+            const rarCol       = ARC_VOCAB.rarityColor(rar);
             const catLabel     = (chosen.cat || 'Item').replace(/\b\w/g, c => c.toUpperCase());
 
             // Base item's own real stats, shown before the enchantment - what
@@ -635,7 +639,10 @@
                     { key: 'Cost/Bulk', val: `${chosen.cost ?? '-'}g · ${chosen.bulk ?? '-'} bulk`, muted: true },
                   ]
                 : [
-                    ...(chosen.description ? [{ key: 'Desc', val: chosen.description, muted: true }] : []),
+                    ...(chosen.effect       ? [{ key: 'Effect',      val: chosen.effect }] : []),
+                    ...(chosen.checkBonus   ? [{ key: 'Check Bonus', val: chosen.checkBonus }] : []),
+                    ...(chosen.checkPenalty ? [{ key: 'Check Pen',   val: chosen.checkPenalty }] : []),
+                    ...(chosen.description  ? [{ key: 'Desc', val: chosen.description, muted: true }] : []),
                     { key: 'Cost/Bulk', val: `${chosen.cost ?? '-'}g · ${chosen.bulk != null ? chosen.bulk : '-'} bulk`, muted: true },
                   ];
 
@@ -658,12 +665,15 @@
                 cost: chosen.cost ?? null,
                 bulk: chosen.bulk ?? null,
                 description: chosen.description || '',
+                // The base item's own rules text. Kept distinct from enchantEffect,
+                // which is the rolled enchantment - they are two different things.
+                baseEffect: chosen.effect || '',
                 enchantEffect: `This item ${effect}.`,
             };
 
             const data = {
                 theme:  'enchanted',
-                header: `${catLabel} · <span style="color:${rarCol}">${rar}</span>`,
+                header: `${catLabel} · <span style="color:${rarCol}">${rarLabel}</span>`,
                 title:  `${prefix} ${chosen.name}`,
                 rows: [
                     ...baseRows,
@@ -671,7 +681,7 @@
                 ],
                 tags: [
                     { text: dmgType, cls: 'gc-tag--element' },
-                    { text: rar,     cls: `gc-tag--${rar.toLowerCase()}` },
+                    { text: rarLabel, cls: `gc-tag--${rar.replace(/ /g, '-')}` },
                 ],
                 roll20,
             };

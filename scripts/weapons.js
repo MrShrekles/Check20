@@ -9,7 +9,6 @@ const state = {
         properties: new Set(),
     },
 };
-const RARITY_ORDER = ["common", "uncommon", "rare", "very rare", "legendary", "mythic"];
 // top-level (anywhere above applyFilters)
 const CATEGORY_ORDER = ["melee", "ranged", "firearm", "magic"];
 const categoryRank = c => {
@@ -94,10 +93,8 @@ function dicePower(expr) {
     const n = +m[1], d = +m[2], bang = !!m[3];
     return n * (d + 1) / 2 + (bang ? n * 0.5 : 0);
 }
-function rarityRank(r) {
-    const i = RARITY_ORDER.indexOf((r || '').toLowerCase());
-    return i === -1 ? 999 : i;
-}
+// Ladder lives in data/vocab.json - see scripts/arc-vocab.js
+function rarityRank(r) { return ARC_VOCAB.rarityRank(r); }
 function debounce(fn, ms) { let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn.apply(null, args), ms); }; }
 
 /* ===== Filter buttons ===== */

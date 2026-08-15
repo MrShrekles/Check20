@@ -96,10 +96,13 @@ function tmGetSort(type) {
     return TM[type]?.sort || { col: null, dir: 1 };
 }
 
+// Mirrors the ladder in data/vocab.json. Data is stored lowercase; the lookup
+// below lowercases anyway so legacy Title-Case entries still sort correctly
+// (the old map was missing 'Very Rare' entirely, ranking it as unknown).
 const TM_RARITY_ORDER = {
     '': -1, common: 0, uncommon: 1, rare: 2, 'very rare': 3, legendary: 4,
-    Common: 0, Uncommon: 1, Rare: 2, Epic: 3, Legendary: 4,
 };
+const tmRarityRank = v => TM_RARITY_ORDER[String(v ?? '').toLowerCase().trim()] ?? -1;
 
 function tmSortedRows(type, entries, numericKeys, rarityKeys) {
     const nKeys = numericKeys || [];
@@ -108,7 +111,7 @@ function tmSortedRows(type, entries, numericKeys, rarityKeys) {
     if (!col) return entries;
     return [...entries].sort((a, b) => {
         if (nKeys.includes(col)) return dir * ((a[col] ?? 0) - (b[col] ?? 0));
-        if (rKeys.includes(col)) return dir * ((TM_RARITY_ORDER[a[col] ?? ''] ?? -1) - (TM_RARITY_ORDER[b[col] ?? ''] ?? -1));
+        if (rKeys.includes(col)) return dir * (tmRarityRank(a[col]) - tmRarityRank(b[col]));
         return dir * String(a[col] ?? '').toLowerCase().localeCompare(String(b[col] ?? '').toLowerCase());
     });
 }
