@@ -1,0 +1,77 @@
+{
+  "$comment": "Machine vocabulary ONLY - the facts a glossary cannot express: rank order, display colour, and short keys. Rulebook TERMS live in glossary.json (checks, conditions, ranges, actions, sizes, resources) and must not be duplicated here. The checks list below is an index over glossary.json entries of type \"check\", adding the short key the sheets use.",
+  "rarity": {
+    "$comment": "No glossary entries exist for rarity tiers - they are labels, not defined terms. Array order IS the rank; do not reorder.",
+    "ladder": [
+      "common",
+      "uncommon",
+      "rare",
+      "very rare",
+      "legendary"
+    ],
+    "colors": {
+      "common": "#888888",
+      "uncommon": "#55aa55",
+      "rare": "#5588cc",
+      "very rare": "#aa55cc",
+      "legendary": "#cc8822"
+    },
+    "retired": {
+      "epic": "very rare",
+      "mythic": "legendary",
+      "unique": "legendary"
+    }
+  },
+  "checks": [
+    {
+      "key": "agi",
+      "label": "Agility",
+      "category": "Physical"
+    },
+    {
+      "key": "cra",
+      "label": "Crafting",
+      "category": "Physical"
+    },
+    {
+      "key": "ste",
+      "label": "Stealth",
+      "category": "Physical"
+    },
+    {
+      "key": "str",
+      "label": "Strength",
+      "category": "Physical"
+    },
+    {
+      "key": "sur",
+      "label": "Survival",
+      "category": "Physical"
+    },
+    {
+      "key": "inf",
+      "label": "Influence",
+      "category": "Mental"
+    },
+    {
+      "key": "int",
+      "label": "Intellect",
+      "category": "Mental"
+    },
+    {
+      "key": "lck",
+      "label": "Luck",
+      "category": "Mental"
+    },
+    {
+      "key": "obs",
+      "label": "Observation",
+      "category": "Mental"
+    },
+    {
+      "key": "spi",
+      "label": "Spirit",
+      "category": "Mental"
+    }
+  ]
+}
