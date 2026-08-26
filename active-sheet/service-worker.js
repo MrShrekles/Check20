@@ -2,7 +2,7 @@
 // every cache whose key differs, so a bump is what clears stale entries; without
 // it, newly added files have no cached copy to fall back on when the network is
 // flaky - which is exactly how the enchanted generator died on mobile.
-const CACHE = 'arc20-v35';
+const CACHE = 'arc20-v36';
 
 // Everything network-first during active development.
 // When data is stable, data/*.json can be moved back to cache-first for offline use.
@@ -57,6 +57,26 @@ const PRECACHE = [
     '../data/damage.json',
     '../data/progression.json',
     '../data/worldbuilding.json',
+
+    // Icons. These are cache-first, but cache-first only helps if the file is
+    // already in the cache - offline, an un-warmed icon 503s and renders as a
+    // broken image. The nav bar is the visible casualty.
+    './manifest.json',
+    '../assets/icons/check20-app.png',
+    '../assets/icons/favicon.png',
+    '../assets/icons/chat.png',
+    '../assets/icons/play.png',
+    '../assets/icons/features.png',
+    '../assets/icons/wax-tablet.png',
+    '../assets/icons/reference.png',
+    '../assets/icons/progression.png',
+    '../assets/icons/roll.png',
+    '../assets/icons/weapon.png',
+    '../assets/icons/monster.png',
+    '../assets/icons/worldbuilding.png',
+
+    // Tooltips fetch this on every page
+    '../data/glossary.json',
 
     // Data shared with the narrator tools
     '../data/vocab.json',
