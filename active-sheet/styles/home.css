@@ -579,4 +579,26 @@ body {
     color: var(--muted);
 }
 
-.home-dialog-input { margin: 12px 0; width: 100%; }
+/* Deliberately NOT .home-join-input - that one is styled for 6-character room
+   codes (centered, letter-spaced, uppercase), which mangles a person's name. */
+.home-dialog-input {
+    width: 100%;
+    margin: 12px 0;
+    height: 44px;
+    border-radius: 10px;
+    border: 1px solid rgba(70, 100, 100, 0.45);
+    background: var(--panel-2);
+    color: var(--text);
+    padding: 0 12px;
+    font-size: 16px;
+    font-family: inherit;
+    text-align: left;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.home-dialog-input:focus {
+    outline: none;
+    border-color: var(--teal-light);
+    box-shadow: 0 0 0 2px rgba(70, 100, 100, 0.20);
+}

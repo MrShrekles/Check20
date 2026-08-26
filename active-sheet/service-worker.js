@@ -2,7 +2,7 @@
 // every cache whose key differs, so a bump is what clears stale entries; without
 // it, newly added files have no cached copy to fall back on when the network is
 // flaky - which is exactly how the enchanted generator died on mobile.
-const CACHE = 'arc20-v34';
+const CACHE = 'arc20-v35';
 
 // Everything network-first during active development.
 // When data is stable, data/*.json can be moved back to cache-first for offline use.
