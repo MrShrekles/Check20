@@ -2517,6 +2517,16 @@ document.addEventListener('arc:firebase-ready', () => {
     const room = localStorage.getItem('arc-room');
     if (!room) return;
 
+    // Rooms need an account. A signed-out player holding a room code is a
+    // leftover from the old anonymous sessions - drop the pointer rather than
+    // attaching listeners that can only fail. isSignedIn() reads the local
+    // flag, so this stays correct offline.
+    if (!window.ArcAuth?.isSignedIn()) {
+        localStorage.removeItem('arc-room');
+        localStorage.removeItem('arc-room-name');
+        return;
+    }
+
     const arc = window.__arc;
     const badgeEl = document.getElementById('player-room-badge');
     if (badgeEl) badgeEl.textContent = room;

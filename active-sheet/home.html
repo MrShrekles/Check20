@@ -31,6 +31,31 @@
             <div class="home-subtitle">Companion Playsheet</div>
         </div>
 
+        <!-- Account. Signing in is an upgrade, not a wall: everything solo works
+             signed out. This unlocks rooms, shared chat and cloud saves. -->
+        <div class="home-account" id="home-account">
+            <div id="home-account-out">
+                <button id="btn-sign-in" class="home-btn home-btn--signin" type="button">
+                    Sign in with Google
+                </button>
+                <p class="home-account-note">
+                    Optional. Sign in to play with others and reach your characters from any device.
+                    We store your display name and nothing else.
+                </p>
+                <p class="home-account-msg" id="sign-in-msg" hidden></p>
+            </div>
+
+            <div id="home-account-in" hidden>
+                <div class="home-account-row">
+                    <span class="home-account-who">Signed in as <strong id="home-account-name">-</strong></span>
+                    <div class="home-account-actions">
+                        <button id="btn-account-rename" class="home-btn-sm" type="button">Rename</button>
+                        <button id="btn-sign-out" class="home-btn-sm" type="button">Sign out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Active character -->
         <div class="home-section" id="home-current" hidden>
             <div class="home-section-label">Active Character</div>
@@ -124,6 +149,18 @@
             <button id="btn-enter-room" class="home-btn home-btn--primary home-entry-btn" type="button">Enter</button>
         </div>
     </div>
+
+
+    <!-- Display name: the only profile field stored anywhere -->
+    <dialog id="displayname-dialog" class="home-dialog">
+        <div class="home-dialog-inner">
+            <p class="home-dialog-title">What should people call you?</p>
+            <p class="home-dialog-hint">Shown to your table. Your characters keep their own names.</p>
+            <input id="displayname-input" class="home-join-input home-dialog-input" type="text"
+                maxlength="40" autocomplete="off" placeholder="Display name…" />
+            <button id="btn-displayname-save" class="home-btn home-btn--primary" type="button">Save</button>
+        </div>
+    </dialog>
 
 </body>
 

@@ -4804,7 +4804,14 @@ let roomUnsubscribe   = null;
 let chatUnsubscribe   = null;
 
 document.addEventListener('arc:firebase-ready', () => {
-    if (currentRoomCode) restoreRoom(currentRoomCode);
+    if (!currentRoomCode) return;
+    // Leftover pointer from an old anonymous session - it can never reconnect.
+    if (!window.ArcAuth?.isSignedIn()) {
+        currentRoomCode = null;
+        localStorage.removeItem('arc-narrator-room');
+        return;
+    }
+    restoreRoom(currentRoomCode);
 });
 
 function genRoomCode() {
@@ -4814,6 +4821,10 @@ function genRoomCode() {
 
 async function createRoom(name = '', welcomeMsg = '') {
     const arc = window.__arc;
+    // Running a table for other people needs an account. Prep work - the
+    // journal, generators, the monster book - does not, so the gate sits here
+    // rather than on the page.
+    if (!window.ArcAuth?.require('run a room')) return;
     if (!arc?.db || !arc?.uid) { alert('Still connecting - try again in a moment.'); return; }
 
     const code = genRoomCode();

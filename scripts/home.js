@@ -165,10 +165,12 @@ function syncSessionSection() {
     } else {
         activeEl.hidden   = true;
         joinWrapEl.hidden = false;
+        // Left enabled whether or not you are signed in: the handlers explain
+        // what is needed, which teaches more than a button that does nothing.
         const joinBtn   = document.getElementById('btn-join-session');
         const createBtn = document.getElementById('btn-create-room');
-        if (joinBtn)   joinBtn.disabled   = !window.__arc?.uid;
-        if (createBtn) createBtn.disabled = !window.__arc?.uid;
+        if (joinBtn)   joinBtn.disabled   = false;
+        if (createBtn) createBtn.disabled = false;
     }
 }
 
@@ -226,6 +228,7 @@ async function doCreateRoom() {
 }
 
 document.getElementById('btn-create-room')?.addEventListener('click', () => {
+    if (!requireAccount('create a room')) return;
     const existing = localStorage.getItem('arc-room');
     if (existing) {
         document.getElementById('confirm-room-code').textContent = existing;
@@ -278,7 +281,7 @@ document.getElementById('btn-leave-session')?.addEventListener('click', async ()
     document.getElementById('home-active-session').hidden   = true;
     document.getElementById('home-join-form-wrap').hidden   = false;
     const btn = document.getElementById('btn-join-session');
-    if (btn) btn.disabled = !arc?.uid;
+    if (btn) btn.disabled = false;
     showJoinStatus('Left session.', 'info');
 });
 
@@ -327,6 +330,7 @@ async function completeJoin(code, roomName) {
 }
 
 document.getElementById('btn-join-session')?.addEventListener('click', async () => {
+    if (!requireAccount('join a room')) return;
     const input = document.getElementById('join-code-input');
     const code  = (input?.value || '').trim().toUpperCase();
     if (code.length !== 6) { showJoinStatus('Enter the 6-character room code.', 'error'); return; }
@@ -463,4 +467,152 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+});
+
+
+/* ── ACCOUNT ──────────────────────────────────────────────────────────────────
+ * Sign-in is an upgrade, not a wall. Solo play - building a character, running
+ * a sheet, the reference panels - never comes through here. Only the things
+ * that touch other people do: rooms, shared chat, cloud saves.
+ *
+ * Sign-in executes on this page and nowhere else. On iOS PWAs the flow is a
+ * redirect, which reloads the page; doing that from a live sheet would drop a
+ * player out of a fight, so other pages send you here with ?next= and we send
+ * you back afterwards.
+ */
+
+function accountMsg(text, isError) {
+    const el = document.getElementById('sign-in-msg');
+    if (!el) return;
+    el.textContent = text || '';
+    el.className   = 'home-account-msg' + (isError ? ' home-account-msg--error' : '');
+    el.hidden      = !text;
+}
+
+function renderAccount() {
+    const outEl = document.getElementById('home-account-out');
+    const inEl  = document.getElementById('home-account-in');
+    if (!outEl || !inEl) return;
+
+    const signedIn = window.ArcAuth?.isSignedIn();
+    outEl.hidden = !!signedIn;
+    inEl.hidden  = !signedIn;
+
+    if (signedIn) {
+        const nameEl = document.getElementById('home-account-name');
+        if (nameEl) nameEl.textContent = window.ArcAuth.displayName() || 'you';
+    }
+}
+
+/* Called by the room actions. Returns true to proceed. */
+function requireAccount(action) {
+    if (window.ArcAuth?.isSignedIn()) return true;
+    accountMsg(`Sign in to ${action}. Everything you do on your own works without an account.`, false);
+    document.getElementById('home-account')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return false;
+}
+
+document.getElementById('btn-sign-in')?.addEventListener('click', async () => {
+    // Signing in is the one thing here that genuinely cannot work offline.
+    if (navigator.onLine === false) {
+        accountMsg('Signing in needs a connection. Everything solo works offline - come back when you have signal.', true);
+        return;
+    }
+    if (!window.__arc?.auth) {
+        accountMsg('Still connecting - try again in a moment.', true);
+        return;
+    }
+
+    accountMsg('Opening Google…', false);
+    try {
+        const user = await window.ArcAuth.signInWithGoogle();
+        if (!user) return;                    // redirect flow - page is navigating away
+        accountMsg('', false);
+        renderAccount();
+        await afterSignIn();
+    } catch (e) {
+        console.error('[ARC] sign-in failed:', e);
+        accountMsg(e?.code === 'auth/popup-closed-by-user'
+            ? 'Sign-in cancelled.'
+            : 'Sign-in failed - try again.', true);
+    }
+});
+
+document.getElementById('btn-sign-out')?.addEventListener('click', async () => {
+    if (!confirm('Sign out? Characters saved on this device stay here.')) return;
+    await window.ArcAuth.signOutNow();
+    renderAccount();
+    syncSessionSection();
+    accountMsg('Signed out.', false);
+});
+
+// ── DISPLAY NAME ─────────────────────────────────────────────────────────────
+
+function openDisplayNameDialog(prefill) {
+    const dlg   = document.getElementById('displayname-dialog');
+    const input = document.getElementById('displayname-input');
+    if (!dlg || !input || dlg.open) return;
+    input.value = prefill || window.ArcAuth?.displayName() || '';
+    dlg.showModal();
+    input.focus();
+}
+
+document.getElementById('btn-account-rename')?.addEventListener('click', () => openDisplayNameDialog());
+
+document.getElementById('btn-displayname-save')?.addEventListener('click', async () => {
+    const input = document.getElementById('displayname-input');
+    const ok    = await window.ArcAuth.setDisplayName(input?.value);
+    if (!ok) { input?.focus(); return; }
+    document.getElementById('displayname-dialog')?.close();
+    renderAccount();
+});
+
+document.getElementById('displayname-input')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('btn-displayname-save')?.click();
+});
+
+/* Runs once after a successful sign-in, whichever flow got us here. The popup
+ * flow reaches this from the click handler AND from arc:auth-changed, so the
+ * latch matters: showModal() on an already-open dialog throws. */
+let _afterSignInDone = false;
+async function afterSignIn() {
+    if (_afterSignInDone) return;
+    _afterSignInDone = true;
+    renderAccount();
+    syncSessionSection();
+
+    if (window.ArcAuth.needsDisplayName()) {
+        openDisplayNameDialog(window.__arc?.user?.displayName || '');
+        return;                                // ?next= is handled after they name themselves
+    }
+    returnToNext();
+}
+
+/* Send the player back to whatever page bounced them here. */
+function returnToNext() {
+    const next = new URLSearchParams(location.search).get('next');
+    if (!next) return;
+    // Same-directory pages only - never bounce to an arbitrary URL.
+    if (!/^[\w.-]+\.html([?#].*)?$/.test(next)) return;
+    location.href = next;
+}
+
+document.getElementById('displayname-dialog')?.addEventListener('close', returnToNext);
+
+// A page that needed an account sent us here - say which, so the ask makes sense.
+(function () {
+    const why = new URLSearchParams(location.search).get('why');
+    if (why) accountMsg(`Sign in to ${why}. Everything you do on your own works without an account.`, false);
+})();
+
+document.addEventListener('arc:sign-in-required', e => requireAccount(e.detail?.reason || 'do that'));
+
+// Paint from the local flag immediately - no waiting on Firebase, so this is
+// correct offline too. Firebase confirms or corrects it when it resolves.
+renderAccount();
+
+document.addEventListener('arc:auth-changed', ({ detail }) => {
+    renderAccount();
+    // A redirect sign-in lands here rather than in the click handler.
+    if (detail?.signedIn && new URLSearchParams(location.search).has('next')) afterSignIn();
 });
