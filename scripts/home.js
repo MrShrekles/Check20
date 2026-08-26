@@ -49,6 +49,9 @@ function saveCurrentToSlot(existingId = null) {
             savedAt:  Date.now(),
         });
         setSaves(saves);
+        // Cloud sync rides on deliberate saves, not on every debounce - the free
+        // tier's write budget is small and a save is the natural checkpoint.
+        window.ArcCloud?.push(id, raw, Date.now());
         return id;
     } catch { return null; }
 }
@@ -66,6 +69,7 @@ function loadSave(id) {
 // ── DELETE A SAVE SLOT ────────────────────────────────────────────────────────
 
 function deleteSave(id) {
+    window.ArcCloud?.remove(id);
     localStorage.removeItem(`arc-save-${id}`);
     setSaves(getSaves().filter(s => s.id !== id));
     if (localStorage.getItem(ACTIVE_SAVE_ID_KEY) === id) {
@@ -98,26 +102,45 @@ function renderCurrent() {
     metaEl.textContent = parts.join(' · ');
 }
 
+// What the cloud holds that this device does not, refreshed after sign-in.
+let cloudState = { cloudOnly: [], localOnly: [], newerInCloud: [] };
+
 function renderSaves() {
     const saves   = getSaves();
     const section = document.getElementById('home-saves-section');
     const list    = document.getElementById('saves-list');
     const moreBtn = document.getElementById('saves-show-more');
 
-    if (!saves.length) { section.hidden = true; return; }
+    const cloudOnly = cloudState.cloudOnly;
+    if (!saves.length && !cloudOnly.length) { section.hidden = true; return; }
 
     section.hidden = false;
     const visible = showAllSaves ? saves : saves.slice(0, SAVES_VISIBLE_LIMIT);
+    const newerIds = new Set(cloudState.newerInCloud.map(c => c.id));
 
     list.innerHTML = visible.map(s => `
         <div class="save-entry">
             <div class="save-info">
                 <span class="save-name">${s.name}</span>
                 <span class="save-meta">${[s.classKey, fmtDate(s.savedAt)].filter(Boolean).join(' · ')}</span>
+                ${newerIds.has(s.id) ? `<span class="save-conflict">A newer copy is in your account.
+                    <button class="save-link-btn" data-cloud-load="${s.id}" type="button">Use that one</button></span>` : ''}
             </div>
             <div class="save-actions">
                 <button class="save-btn save-btn--load" data-load="${s.id}" type="button">Load</button>
                 <button class="save-btn save-btn--del"  data-del="${s.id}"  type="button">✕</button>
+            </div>
+        </div>`).join('')
+        // Characters that exist in the account but not on this device - the
+        // whole point of signing in.
+        + cloudOnly.map(c => `
+        <div class="save-entry save-entry--cloud">
+            <div class="save-info">
+                <span class="save-name">☁ ${c.name}</span>
+                <span class="save-meta">${[c.classKey, fmtDate(c.savedAt), 'in your account'].filter(Boolean).join(' · ')}</span>
+            </div>
+            <div class="save-actions">
+                <button class="save-btn save-btn--load" data-cloud-load="${c.id}" type="button">Download</button>
             </div>
         </div>`).join('');
 
@@ -447,6 +470,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Saves list - load or delete
     document.getElementById('saves-list')?.addEventListener('click', e => {
+        const cloudBtn = e.target.closest('[data-cloud-load]');
+        if (cloudBtn) { downloadFromCloud(cloudBtn.dataset.cloudLoad); return; }
+
         const loadBtn = e.target.closest('[data-load]');
         if (loadBtn) {
             const data = getActive();
@@ -615,4 +641,76 @@ document.addEventListener('arc:auth-changed', ({ detail }) => {
     renderAccount();
     // A redirect sign-in lands here rather than in the click handler.
     if (detail?.signedIn && new URLSearchParams(location.search).has('next')) afterSignIn();
+});
+
+
+/* ── CLOUD CHARACTERS ─────────────────────────────────────────────────────────
+ * localStorage remains the source of truth for the live sheet. This only adds
+ * reach: characters saved on one device show up on another. Signed out or
+ * offline, every call is a no-op and the page behaves exactly as before.
+ */
+
+async function refreshCloud() {
+    if (!window.ArcCloud?.available()) {
+        cloudState = { cloudOnly: [], localOnly: [], newerInCloud: [] };
+        renderSaves();
+        return;
+    }
+    cloudState = await window.ArcCloud.diff();
+    renderSaves();
+}
+
+/* Pull a character down. Never silently replaces a local copy - if one exists
+ * and differs, the player is asked, because a character quietly rolled back is
+ * the fastest way to lose trust in the whole feature. */
+async function downloadFromCloud(id) {
+    if (!id) return;
+
+    const existing = getSaves().find(s => s.id === id);
+    if (existing && !confirm(
+        `Replace this device's copy of "${existing.name}" with the one from your account?`)) return;
+
+    const raw = await window.ArcCloud.get(id);
+    if (!raw) { alert('Could not reach your account - try again when you have a connection.'); return; }
+
+    let meta;
+    try { meta = JSON.parse(raw); } catch { alert('That saved character could not be read.'); return; }
+
+    localStorage.setItem(`arc-save-${id}`, raw);
+    const saves = getSaves().filter(x => x.id !== id);
+    saves.unshift({
+        id,
+        name:     meta.char?.name     || 'Unnamed',
+        classKey: meta.char?.classKey || '',
+        savedAt:  Date.now(),
+    });
+    setSaves(saves);
+
+    await refreshCloud();
+    renderAll();
+}
+
+/* First sign-in: offer to lift what is already on this device into the account.
+ * Local -> cloud only. Nothing is overwritten, nothing is reconciled. */
+async function offerLocalUpload() {
+    if (!window.ArcCloud?.available()) return;
+
+    const localOnly = cloudState.localOnly;
+    if (!localOnly.length) return;
+
+    const n = localOnly.length;
+    if (!confirm(`Add ${n} character${n === 1 ? '' : 's'} from this device to your account?`)) return;
+
+    const { pushed, failed } = await window.ArcCloud.uploadAllLocal();
+    accountMsg(failed
+        ? `Added ${pushed}. ${failed} could not be uploaded - they are still safe on this device.`
+        : `Added ${pushed} character${pushed === 1 ? '' : 's'} to your account.`, !!failed);
+    await refreshCloud();
+}
+
+document.addEventListener('arc:auth-changed', async ({ detail }) => {
+    if (!detail?.signedIn) { await refreshCloud(); return; }
+    window.ArcCloud?.ensureUserDoc(detail.displayName);
+    await refreshCloud();
+    await offerLocalUpload();
 });

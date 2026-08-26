@@ -602,3 +602,29 @@ body {
     border-color: var(--teal-light);
     box-shadow: 0 0 0 2px rgba(70, 100, 100, 0.20);
 }
+
+/* ── CLOUD SAVES ──────────────────────────────────────────────────────────── */
+
+.save-entry--cloud {
+    border-style: dashed;
+    opacity: 0.92;
+}
+
+.save-conflict {
+    display: block;
+    margin-top: 3px;
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--gold);
+}
+
+.save-link-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-size: 11px;
+    color: var(--cream);
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -2331,6 +2331,35 @@ function renderChat() {
 
 const STORAGE_KEY = 'arc-active-sheet';
 
+// ── CLOUD SAVE ────────────────────────────────────────────────────────────────
+// Deliberately NOT on every saveState - that fires on every HP tick and would
+// burn the free tier's daily write budget in an afternoon. A slow heartbeat
+// plus a push when the page is backgrounded covers the player who plays for
+// three hours and never thinks to tap Save.
+
+const CLOUD_SAVE_INTERVAL = 120000;   // 2 minutes
+let _lastCloudSave = 0;
+
+function pushCharacterToCloud() {
+    if (!window.ArcCloud?.available()) return;
+    const id  = localStorage.getItem('arc-active-save-id');
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!id || !raw) return;            // unsaved character has no slot to sync to
+    _lastCloudSave = Date.now();
+    window.ArcCloud.push(id, raw, Date.now());
+}
+
+function throttledCloudSave() {
+    if (Date.now() - _lastCloudSave < CLOUD_SAVE_INTERVAL) return;
+    pushCharacterToCloud();
+}
+
+// Backgrounding the app is the last reliable moment to capture a session.
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') pushCharacterToCloud();
+});
+
+
 function saveState() {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
@@ -2344,7 +2373,9 @@ function saveState() {
         }));
     } catch (_) { }
     debouncedRoomSync();
+    throttledCloudSave();
 }
+
 
 // ── FIREBASE: PARTY SESSION ───────────────────────────────────────────────────
 
