@@ -35,6 +35,8 @@ function fmtTime(ts) {
 document.addEventListener('arc:firebase-ready', async ({ detail }) => {
     const arc = window.__arc;
     document.getElementById('mod-loading').hidden = true;
+    // Signed out entirely - there is no uid to look up, so go straight to the gate
+    if (!detail?.uid) { showGate(); return; }
     try {
         const snap = await arc.getDoc(arc.doc(arc.db, 'admins', detail.uid));
         if (snap.exists()) {
@@ -72,6 +74,11 @@ document.getElementById('gate-btn')?.addEventListener('click', async () => {
     err.hidden = true;
 
     const arc = window.__arc;
+    if (!arc?.uid) {
+        err.textContent = "Sign in with Google first - the passcode needs an account to attach to.";
+        err.hidden = false;
+        return;
+    }
     try {
         await arc.setDoc(arc.doc(arc.db, 'admins', arc.uid), {
             role: 'seven', addedAt: arc.serverTimestamp(), addedBy: 'self', linkedGoogle: false, label: null,

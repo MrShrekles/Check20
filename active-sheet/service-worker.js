@@ -2,7 +2,7 @@
 // every cache whose key differs, so a bump is what clears stale entries; without
 // it, newly added files have no cached copy to fall back on when the network is
 // flaky - which is exactly how the enchanted generator died on mobile.
-const CACHE = 'arc20-v32';
+const CACHE = 'arc20-v33';
 
 // Everything network-first during active development.
 // When data is stable, data/*.json can be moved back to cache-first for offline use.
@@ -31,7 +31,15 @@ const PRECACHE = [
     '../scripts/create-char.js',
     '../scripts/active-sheet.js',
     '../scripts/narrator.js',
+    '../scripts/auth-gate.js',
     '../scripts/arc-shared.js',
+
+    // Firebase SDK is vendored so the worker can cache it - a gstatic copy is
+    // cross-origin and gets skipped, which would break auth offline.
+    '../scripts/firebase.js',
+    '../scripts/vendor/firebase/firebase-app.js',
+    '../scripts/vendor/firebase/firebase-auth.js',
+    '../scripts/vendor/firebase/firebase-firestore.js',
     '../scripts/arc-vocab.js',
     '../scripts/chat-cards.js',
     '../scripts/chat-watch.js',
