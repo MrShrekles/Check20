@@ -1,0 +1,84 @@
+// ─── Shared Codex UI - size buttons for expandable-row pages ─────────────────
+// Usage: call initCodexSize() in DOMContentLoaded on any page that has
+//   #codex-size-btns and loads codex-ui.css (which owns the --codex-* variables).
+
+const CODEX_SIZE = {
+    small:  { '--codex-min': '220px', '--codex-name-size': '0.8rem',  '--codex-tag-size': '0.58rem', '--codex-cost-size': '0.68rem', '--codex-intent-size': '0.74rem', '--codex-effect-size': '0.76rem', '--codex-meta-size': '0.63rem', '--codex-row-pad': '.35rem .5rem',  '--codex-lh': '1.45', '--codex-icon-size': '14px', '--codex-arrow-size': '0.55rem' },
+    medium: { '--codex-min': '460px', '--codex-name-size': '0.92rem', '--codex-tag-size': '0.68rem', '--codex-cost-size': '0.78rem', '--codex-intent-size': '0.86rem', '--codex-effect-size': '0.88rem', '--codex-meta-size': '0.73rem', '--codex-row-pad': '.55rem .65rem', '--codex-lh': '1.55', '--codex-icon-size': '18px', '--codex-arrow-size': '0.65rem' },
+    large:  { '--codex-min': '760px', '--codex-name-size': '1.2rem',  '--codex-tag-size': '0.85rem', '--codex-cost-size': '1rem',    '--codex-intent-size': '1.08rem', '--codex-effect-size': '1.12rem', '--codex-meta-size': '0.92rem', '--codex-row-pad': '.9rem 1.05rem', '--codex-lh': '1.7',  '--codex-icon-size': '24px', '--codex-arrow-size': '0.8rem' },
+};
+
+function applyCodexSize(key) {
+    const vars = CODEX_SIZE[key] || CODEX_SIZE.medium;
+    Object.entries(vars).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+}
+
+function initCodexSize() {
+    const btns = document.querySelectorAll('#codex-size-btns .codex-size-btn');
+    if (!btns.length) return;
+    const saved = localStorage.getItem('codex_card_size') || 'medium';
+    applyCodexSize(saved);
+    btns.forEach(b => b.classList.toggle('active', b.dataset.size === saved));
+    btns.forEach(b => b.addEventListener('click', () => {
+        const s = b.dataset.size;
+        applyCodexSize(s);
+        localStorage.setItem('codex_card_size', s);
+        btns.forEach(x => x.classList.toggle('active', x === b));
+    }));
+}
+
+// ─── Deep-link: ?open=ItemName ────────────────────────────────────────────────
+// Navigating from search results appends ?open=Name. Once the target page
+// renders its rows, this finds the matching .spell-row, opens it, and scrolls.
+function handleCodexDeepLink() {
+    const target = new URLSearchParams(window.location.search).get('open');
+    if (!target) return;
+    const targetLower = target.toLowerCase();
+
+    function tryExpand() {
+        for (const row of document.querySelectorAll('.spell-row')) {
+            const nameEl = row.querySelector('.spell-row-name');
+            if (!nameEl) continue;
+            if (nameEl.textContent.trim().toLowerCase() === targetLower) {
+                row.classList.add('open');
+                const arrow = row.querySelector('.spell-row-arrow');
+                if (arrow) arrow.textContent = '▼';
+                row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return true;
+            }
+        }
+        return false;
+    }
+
+    if (tryExpand()) return;
+
+    // Rows render async - watch for them
+    const observer = new MutationObserver(() => {
+        if (tryExpand()) observer.disconnect();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    setTimeout(() => observer.disconnect(), 8000);
+}
+
+document.addEventListener('DOMContentLoaded', handleCodexDeepLink);
+
+// ─── Image helper ─────────────────────────────────────────────────────────────
+// Creates an <img> that hides itself on error instead of showing a broken icon.
+// Pass cls = 'codex-cover' for full-width 16/9 banner (species style).
+// Pass cls = 'codex-cover codex-cover--pixel' for small pixel-art items.
+function makeCodexImage(src, alt, cls) {
+    const img = document.createElement('img');
+    img.className = cls || 'codex-cover';
+    img.alt = alt || '';
+    img.loading = 'lazy';
+    img.src = src || '';
+    img.onerror = () => { img.style.display = 'none'; img.onerror = null; };
+    return img;
+}
+
+// Slugify a display name to a filename-safe lowercase string.
+function codexSlug(name) {
+    return String(name || '').toLowerCase().trim()
+        .replace(/[^a-z0-9]+/g, '_')
+        .replace(/^_+|_+$/g, '');
+}

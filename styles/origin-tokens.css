@@ -1,0 +1,110 @@
+/* ─── origin-tokens.css ──────────────────────────────────────────────────────
+   THE single definition of the origin colour standard. Nothing else in the
+   project should hardcode an origin colour.
+
+   Both the rulebook site (via codex-ui.css) and Shek-Forge (via forge-codex.css)
+   @import this file, and scripts/origin-colors.js reads these custom properties
+   back out at runtime — so the JS palette and the CSS pills cannot drift apart
+   the way the six separate copies used to.
+
+   Adding an origin: add its --origin-* token, add the matching .origin-tag rule,
+   and add its key to ORIGINS in scripts/origin-colors.js. Nothing else.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+:root {
+    --origin-pure: grey;
+    --origin-arcane: darkcyan;
+    --origin-tech: darkblue;
+    --origin-crystal: red;
+    --origin-nature: darkgreen;
+    --origin-vozian: #502379;
+    --origin-chrono: rgb(158, 134, 0);
+    --origin-chaos: #331f0e;
+    --origin-life: #af4b89;
+    --origin-elemental: darkred;
+    --origin-dragon: #ff5500;
+    --origin-divine: rgb(250, 234, 146);
+    --origin-malform: #7eaa44;
+    --origin-death: rgb(23, 23, 41);
+    --origin-void: black;
+    --origin-fey: #aa44aa;
+    --origin-all: #ffffff;
+    --origin-none: #999999;
+}
+
+.origin-tag.pure {
+    background-color: var(--origin-pure);
+}
+
+.origin-tag.malform {
+    background-color: var(--origin-malform);
+}
+
+.origin-tag.death {
+    background-color: var(--origin-death);
+}
+
+.origin-tag.arcane {
+    background-color: var(--origin-arcane);
+}
+
+.origin-tag.tech {
+    background-color: var(--origin-tech);
+}
+
+.origin-tag.crystal {
+    background-color: var(--origin-crystal);
+}
+
+.origin-tag.nature {
+    background-color: var(--origin-nature);
+}
+
+.origin-tag.vozian {
+    background-color: var(--origin-vozian);
+}
+
+.origin-tag.chrono {
+    background-color: var(--origin-chrono);
+}
+
+.origin-tag.chaos {
+    background-color: var(--origin-chaos);
+}
+
+.origin-tag.life {
+    background-color: var(--origin-life);
+}
+
+.origin-tag.elemental {
+    background-color: var(--origin-elemental);
+}
+
+.origin-tag.dragon {
+    background-color: var(--origin-dragon);
+}
+
+.origin-tag.divine {
+    background-color: var(--origin-divine);
+}
+
+.origin-tag.void {
+    background-color: var(--origin-void);
+}
+
+/* fey is not a class origin - one monster (Gloomwing Siren) still carries it,
+   so the tag keeps a colour of its own rather than falling through to none. */
+.origin-tag.fey {
+    background-color: var(--origin-fey);
+}
+
+/* "all" is a light chip, so it needs dark text rather than the usual cream. */
+.origin-tag.all {
+    background-color: var(--origin-all);
+    color: rgb(0, 0, 0);
+    text-shadow: none;
+}
+
+.origin-tag.none {
+    background-color: var(--origin-none);
+}

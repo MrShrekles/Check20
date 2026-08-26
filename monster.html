@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monster</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/codex-ui.css">
+    <link rel="stylesheet" href="styles/spells.css">
+    <link rel="stylesheet" href="styles/monster.css">
+    <link rel="stylesheet" href="styles/toolbar-mobile.css">
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+    <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/almanac.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/codex-ui.js"></script>
+    <script src="scripts/origin-colors.js"></script>
+    <script src="scripts/monster-builder.js"></script>
+    <script src="scripts/monsterbook.js"></script>
+    <script src="scripts/toolbar-mobile.js" defer></script>
+    <script src="scripts/footer.js" defer></script>
+</head>
+
+<body data-page-title="Monsters">
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
+    <main>
+        <div id="monster-tabs">
+            <button class="tab-btn" data-tab="generator" onclick="showTab('generator')">Generator</button>
+            <button class="tab-btn active" data-tab="monsterbook" onclick="showTab('monsterbook')">Monster Book</button>
+        </div>
+
+        <!-- ===== Generator Tab ===== -->
+        <div id="tab-generator" hidden>
+            <section>
+                <div class="box-button">
+                    <button class="button" id="btnGenerate">Generate Monster</button>
+                </div>
+                <button id="btnClearAll">Clear All</button>
+
+                <details>
+                    <summary>Settings</summary>
+
+                    <p><strong>Base</strong></p>
+                    <div>
+                        <label><input type="checkbox" id="chkRandomBase" checked> Randomize</label>
+                        &nbsp;
+                        <select id="selBase" disabled></select>
+                    </div>
+                    <div style="margin-top:6px">
+                        <label>Rarity: <select id="filterRarity"><option value="">Any</option></select></label>
+                        &nbsp;
+                        <label>Size: <select id="filterSize"><option value="">Any</option></select></label>
+                        &nbsp;
+                        <label>Origin: <select id="filterBaseOrigin"><option value="">Any</option></select></label>
+                    </div>
+
+                    <p><strong>Mod</strong></p>
+                    <div>
+                        <label><input type="checkbox" id="chkRandomMod" checked> Randomize</label>
+                        &nbsp;
+                        <select id="selMod" disabled></select>
+                    </div>
+                    <div style="margin-top:6px">
+                        <label>Mod Origin: <select id="filterModOrigin"><option value="">Any</option></select></label>
+                    </div>
+
+                    <p><strong>Compose</strong></p>
+                    <div>
+                        <label><input type="checkbox" id="chkConcatName" checked> Title uses "Mod + Base"</label>
+                    </div>
+                </details>
+            </section>
+
+            <section>
+                <div id="monsterOutput" class="monster-grid"></div>
+            </section>
+        </div>
+
+        <!-- ===== Monster Book Tab ===== -->
+        <div id="tab-monsterbook">
+            <div class="book-top-bar">
+                <button class="toolbar-toggle-btn" aria-label="Toggle filters">
+                    <span class="toolbar-toggle-left">
+                        <span class="toolbar-toggle-pip"></span>
+                        Filters
+                    </span>
+                    <span class="toolbar-toggle-chevron">▼</span>
+                </button>
+                <div class="toolbar-collapsible">
+                    <input type="text" id="bookSearch" class="book-search-full" placeholder="Search monsters…" oninput="filterBook()">
+                    <div class="book-toolbar-grid">
+                        <div class="book-controls-col">
+                            <div class="book-dropdowns-row">
+                                <select id="filterBookOrigin" onchange="filterBook()"><option value="">All Origins</option></select>
+                                <select id="filterBookSize" onchange="filterBook()"><option value="">Any Size</option></select>
+                                <select id="filterBookRarity" onchange="filterBook()"><option value="">Any Rarity</option></select>
+                            </div>
+                            <div class="book-actions-row">
+                                <button class="book-bar-btn" onclick="clearBookFilters()">Clear</button>
+                                <button class="book-bar-btn" id="btnCollapseAll" onclick="toggleCollapseAll()">Collapse All</button>
+                                <button class="book-bar-btn" onclick="exportMonsterBook()">↓ JSON</button>
+                                <div class="codex-size-btns" id="codex-size-btns">
+                                    <button class="codex-size-btn" data-size="small">S</button>
+                                    <button class="codex-size-btn active" data-size="medium">M</button>
+                                    <button class="codex-size-btn" data-size="large">L</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="filterBookGroup" class="book-group-pills"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bookOutput" class="monster-grid" style="padding:8px"></div>
+        </div>
+    </main>
+    <div id="footer-placeholder"></div>
+
+
+</body>
+</html>

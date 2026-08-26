@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Narrator - ARC20</title>
+    <link rel="icon" href="../assets/icons/check20-app.png" type="image/png" />
+    <link rel="apple-touch-icon" href="../assets/icons/check20-app.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#1b2c2c" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="ARC20 Narrator" />
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
+    <link rel="stylesheet" href="styles/active-sheet.css" />
+    <link rel="stylesheet" href="styles/narrator.css" />
+    <link rel="stylesheet" href="styles/chat-toast.css" />
+    <script src="../scripts/notifications.js" defer></script>
+    <script src="../scripts/automod-wordlist.js" defer></script>
+    <script src="../scripts/arc-shared.js" defer></script>
+    <script src="../scripts/chat-cards.js" defer></script>
+    <script src="../scripts/chat-watch.js" defer></script>
+    <script type="module" src="../scripts/firebase.js"></script>
+    <script src="../scripts/arc-vocab.js" defer></script>
+    <script src="../scripts/narrator.js" defer></script>
+</head>
+
+<body data-page-title="Narrator">
+    <main class="app" id="app">
+        <div class="app-topbar">
+            <a href="home.html" class="topbar-home" aria-label="Home">⌂</a>
+            <span class="topbar-name">Narrator</span>
+            <a href="../../index.html" class="topbar-settings-btn topbar-settings-btn--link" aria-label="Main Site">Site↗</a>
+            <button class="topbar-settings-btn" id="btn-settings" type="button" aria-label="Settings">⚙</button>
+        </div>
+
+        <section class="panel-stack" id="panel-stack">
+
+            <!-- CHAT -->
+            <section class="panel" id="panel-chat" role="region" aria-label="Chat">
+                <!-- Chat / Initiative sub-tabs -->
+                <div class="chat-sub-tabs">
+                    <button class="chat-sub-tab is-active" data-chat-sub="messages" type="button">Messages</button>
+                    <button class="chat-sub-tab" data-chat-sub="initiative" type="button">Initiative</button>
+                </div>
+
+                <!-- Messages sub-panel -->
+                <div class="chat-sub-content" id="chat-sub-messages">
+                    <div class="section">
+                        <ol class="nar-chat-log" id="nar-chat-log">
+                            <li class="empty-hint">Create a session to see the shared feed.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Initiative sub-panel -->
+                <div class="chat-sub-content" id="chat-sub-initiative" hidden>
+                    <div class="section">
+                        <div class="init-stats-row">
+                            <div class="init-stat">
+                                <span class="init-stat-label">Round</span>
+                                <span class="init-stat-val" id="enc-round">1</span>
+                            </div>
+                            <div class="init-stat">
+                                <span class="init-stat-label">Minutes</span>
+                                <span class="init-stat-val" id="enc-time">0.00</span>
+                            </div>
+                            <div class="init-actions-row">
+                                <button class="ghost-btn" id="btn-call-init" type="button" title="Ask players to roll initiative">🎲 Init</button>
+                                <button class="ghost-btn" id="btn-add-party-init" type="button" title="Add all party members to initiative">Party +</button>
+                                <button class="ghost-btn" id="btn-next-turn" type="button">Next →</button>
+                                <button class="ghost-btn ghost-btn--danger" id="btn-clear-encounter" type="button">End</button>
+                            </div>
+                        </div>
+                        <div class="enc-turn-bar" id="enc-turn-bar" hidden>
+                            <span><span id="enc-active-name">-</span>'s turn</span>
+                            <button class="ghost-btn enc-turn-next-btn" id="btn-enc-turn-next" type="button">Next →</button>
+                        </div>
+                        <div id="encounter-list">
+                            <p class="empty-hint">No one in initiative. Add combatants below.</p>
+                        </div>
+                        <details class="nar-add-form u-mt-12">
+                            <summary class="nar-add-summary">+ Add to Initiative</summary>
+                            <div class="nar-form">
+                                <label class="nar-form-field"><span class="nar-form-label">Type</span>
+                                    <select id="enc-type-select">
+                                        <option value="enemy">Enemy / Monster</option>
+                                        <option value="player">Player</option>
+                                        <option value="event">Event</option>
+                                    </select></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Name</span>
+                                    <input id="enc-name-input" type="text" placeholder="Name…" autocomplete="off" /></label>
+                                <label class="nar-form-field" id="enc-subtype-field" hidden><span class="nar-form-label">Event Type</span>
+                                    <select id="enc-subtype-select">
+                                        <option value="environmental">Environmental</option>
+                                        <option value="reinforcements">Reinforcements</option>
+                                        <option value="hazard">Hazard</option>
+                                        <option value="npc">NPC Action</option>
+                                        <option value="custom">Custom</option>
+                                    </select></label>
+                                <label class="nar-form-field" id="enc-note-field" hidden><span class="nar-form-label">Note</span>
+                                    <input id="enc-note-input" type="text" placeholder="What happens…" autocomplete="off" /></label>
+                                <label class="nar-form-field nar-form-field--row" id="enc-hidden-field" hidden>
+                                    <input type="checkbox" id="enc-hidden-check" class="enc-hidden-checkbox" />
+                                    <span class="nar-form-label">Hidden from players</span></label>
+                                <div class="nar-stat-row">
+                                    <label class="nar-form-field" id="enc-hp-field"><span class="nar-form-label">Max HP</span>
+                                        <input id="enc-hp-input" type="number" inputmode="numeric" value="10" /></label>
+                                    <label class="nar-form-field"><span class="nar-form-label">Initiative</span>
+                                        <div class="enc-init-input-row">
+                                            <input id="enc-init-input" type="number" inputmode="numeric" value="0" />
+                                            <button class="ghost-btn enc-init-roll-btn" id="btn-enc-roll-init" type="button" title="Roll initiative">🎲</button>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <button class="done-btn" id="btn-add-creature" type="button">+ Add</button>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Toolbar - outside scroll areas, always visible at bottom of chat panel -->
+                <div class="chat-sticky-bottom">
+                    <!-- Dice panel (toggleable) -->
+                    <div class="nar-tool-panel" id="nar-dice-panel" hidden>
+                        <div class="dice-roller">
+                            <div class="dice-top-row">
+                                <label class="dice-count-field">
+                                    <span class="dice-mult-label">×</span>
+                                    <input class="dice-count-input" id="nar-dice-count" type="number" inputmode="numeric" min="1" max="20" value="1" />
+                                </label>
+                                <select class="dice-type-select" id="nar-dice-type">
+                                    <option value="4">d4</option>
+                                    <option value="6">d6</option>
+                                    <option value="8">d8</option>
+                                    <option value="10">d10</option>
+                                    <option value="12">d12</option>
+                                    <option value="20" selected>d20</option>
+                                    <option value="100">d%</option>
+                                </select>
+                                <label class="dice-bonus-field">
+                                    <span class="dice-bonus-label">+</span>
+                                    <input class="dice-bonus-input" id="nar-dice-bonus" type="number" inputmode="numeric" value="0" />
+                                </label>
+                                <button class="dice-roll-btn" id="btn-nar-dice-roll" type="button">Roll</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Emoji panel -->
+                    <div class="emoji-panel" id="nar-emoji-panel" hidden></div>
+                    <!-- Poll form -->
+                    <div class="poll-form" id="nar-poll-form" hidden>
+                        <input class="poll-q-input" id="poll-question" type="text" placeholder="Question…" maxlength="100" autocomplete="off" />
+                        <div class="poll-opts-list">
+                            <input class="poll-opt-input" type="text" placeholder="Option 1" maxlength="40" autocomplete="off" />
+                            <input class="poll-opt-input" type="text" placeholder="Option 2" maxlength="40" autocomplete="off" />
+                            <input class="poll-opt-input" type="text" placeholder="Option 3 (optional)" maxlength="40" autocomplete="off" />
+                            <input class="poll-opt-input" type="text" placeholder="Option 4 (optional)" maxlength="40" autocomplete="off" />
+                        </div>
+                        <div class="poll-form-btns">
+                            <button class="chat-send-btn" id="btn-poll-submit" type="button">Post Poll</button>
+                            <button class="ghost-btn" id="btn-poll-cancel" type="button">Cancel</button>
+                        </div>
+                    </div>
+                    <!-- Voice panel -->
+                    <div class="nar-tool-panel" id="nar-voice-panel" hidden>
+                        <div class="voice-list" id="nar-voice-list"></div>
+                        <input class="poll-q-input" id="nar-voice-custom" type="text" placeholder="Custom name…" maxlength="40" autocomplete="off" />
+                    </div>
+                    <!-- Target panel -->
+                    <div class="nar-tool-panel" id="nar-target-panel" hidden>
+                        <div class="voice-list" id="nar-target-list"></div>
+                    </div>
+                    <!-- Two-row input: icons on top, message + send below -->
+                    <div class="chat-input-row" id="chat-input-row">
+                        <div class="chat-tool-btns">
+                            <button class="chat-tool-btn" id="nar-dice-btn" type="button" aria-label="Dice roller" title="Dice roller">🎲</button>
+                            <button class="chat-tool-btn" id="nar-emoji-btn" type="button" aria-label="Emoji">😊</button>
+                            <button class="chat-tool-btn" id="nar-poll-btn" type="button" aria-label="Poll" title="Create poll">📊</button>
+                            <button class="chat-tool-btn" id="nar-voice-btn" type="button" aria-label="Speaking as" title="Speaking as…">🎭</button>
+                            <button class="chat-tool-btn" id="nar-target-btn" type="button" aria-label="Target" title="Set target">🎯</button>
+                        </div>
+                        <div class="chat-msg-row">
+                            <input type="text" id="nar-chat-input" placeholder="Message the party…" autocomplete="off" />
+                            <button class="chat-send-btn" id="btn-nar-send" type="button">Send</button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- PARTY -->
+            <section class="panel is-active" id="panel-party" role="region" aria-label="Party">
+
+                <!-- Party View -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Party View</h2>
+                        <div class="section-head-actions">
+                            <button class="room-code-badge" id="room-code-badge" hidden title="Tap to copy code">
+                                <span class="room-badge-name" id="room-badge-name"></span><span class="room-badge-code" id="room-badge-code"></span>
+                            </button>
+                            <button class="ghost-btn privacy-btn" id="btn-privacy-mode" type="button" title="Privacy mode - hides room code for streaming" hidden>👁</button>
+                            <button class="ghost-btn" id="btn-invite" type="button">Manage Rooms</button>
+                        </div>
+                    </div>
+
+                    <div class="prow-header">
+                        <span></span>
+                        <span>Name</span>
+                        <span>Arm</span>
+                        <span>Wounds</span>
+                        <span>XP</span>
+                        <span></span>
+                    </div>
+
+                    <div id="party-list">
+                        <p class="empty-hint">No saved characters found.</p>
+                    </div>
+
+                    <details class="nar-add-form u-mt-8">
+                        <summary class="nar-add-summary">+ Add Player Manually</summary>
+                        <div class="nar-form">
+                            <label class="nar-form-field"><span class="nar-form-label">Character Name</span>
+                                <input id="pp-name" type="text" placeholder="Name…" autocomplete="off" /></label>
+                            <div class="nar-stat-row">
+                                <label class="nar-form-field"><span class="nar-form-label">Armor</span>
+                                    <input id="pp-armor" type="number" inputmode="numeric" value="0" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Wounds</span>
+                                    <input id="pp-wounds-cur" type="number" inputmode="numeric" placeholder="cur" value="10" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">/ Max</span>
+                                    <input id="pp-wounds-max" type="number" inputmode="numeric" placeholder="max" value="10" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">MN</span>
+                                    <input id="pp-mn-cur" type="number" inputmode="numeric" placeholder="cur" value="0" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">/ Max</span>
+                                    <input id="pp-mn-max" type="number" inputmode="numeric" placeholder="max" value="0" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Gold</span>
+                                    <input id="pp-gold" type="number" inputmode="numeric" value="0" /></label>
+                            </div>
+                        </div>
+                        <button class="done-btn" id="btn-add-player" type="button">+ Add to Party</button>
+                    </details>
+                </div>
+
+                <!-- Characters (NPCs / Minions / Companions) -->
+                <div class="section party-subsection">
+                    <div class="section-head">
+                        <h2 class="section-title">Characters</h2>
+                    </div>
+                    <div id="character-list">
+                        <p class="empty-hint">No characters added.</p>
+                    </div>
+                    <details class="nar-add-form u-mt-8">
+                        <summary class="nar-add-summary">+ Add Character</summary>
+                        <div class="nar-form">
+                            <div class="gen-seg u-mb-6" role="group" id="char-role-seg">
+                                <button class="gen-seg-btn is-sel" data-char-role="npc" type="button">NPC</button>
+                                <button class="gen-seg-btn" data-char-role="minion" type="button">Minion</button>
+                            </div>
+                            <input type="hidden" id="char-role" value="npc" />
+                            <label class="nar-form-field"><span class="nar-form-label">Name</span>
+                                <input id="char-name" type="text" placeholder="Name…" autocomplete="off" /></label>
+                            <div id="char-npc-fields">
+                                <div class="nar-stat-row">
+                                    <label class="nar-form-field"><span class="nar-form-label">PL</span>
+                                        <input id="char-pl" type="number" inputmode="numeric" placeholder="-" /></label>
+                                    <label class="nar-form-field"><span class="nar-form-label">Phys</span>
+                                        <input id="char-phys" type="number" inputmode="numeric" placeholder="-" /></label>
+                                    <label class="nar-form-field"><span class="nar-form-label">Ment</span>
+                                        <input id="char-ment" type="number" inputmode="numeric" placeholder="-" /></label>
+                                    <label class="nar-form-field"><span class="nar-form-label">HP</span>
+                                        <input id="char-hp-npc" type="number" inputmode="numeric" placeholder="-" /></label>
+                                </div>
+                                <label class="nar-form-field"><span class="nar-form-label">Notes</span>
+                                    <input id="char-notes" type="text" placeholder="Species, faction…" autocomplete="off" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Equipment</span>
+                                    <input id="char-equip" type="text" placeholder="Signature item…" autocomplete="off" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Narrator Notes</span>
+                                    <input id="char-nar" type="text" placeholder="Secret motivation, loyalty…" autocomplete="off" /></label>
+                            </div>
+                            <div id="char-minion-fields" hidden>
+                                <div class="nar-stat-row">
+                                    <label class="nar-form-field"><span class="nar-form-label">PL</span>
+                                        <input id="char-mn-pl" type="number" inputmode="numeric" min="1" value="3" /></label>
+                                    <label class="nar-form-field"><span class="nar-form-label">Origin</span>
+                                        <input id="char-mn-origin" type="text" placeholder="Nature, Arcane…" autocomplete="off" /></label>
+                                </div>
+                                <p class="field-hint field-hint--tight" id="char-hp-preview">HP: 9 (PL² = 3×3)</p>
+                            </div>
+                        </div>
+                        <button class="done-btn" id="btn-add-character" type="button">+ Add</button>
+                    </details>
+                </div>
+
+                <!-- Party Inventory -->
+                <div class="section party-subsection">
+                    <div class="section-head">
+                        <h2 class="section-title">Party Inventory</h2>
+                    </div>
+
+                    <!-- Gold tracker - shown when room is active -->
+                    <div class="party-gold-row" id="party-gold-row" hidden>
+                        <span class="party-gold-label">⬡ Gold</span>
+                        <div class="party-gold-ctrl">
+                            <button class="step-action-btn" data-gold="-10">−10</button>
+                            <button class="step-action-btn" data-gold="-1">−1</button>
+                            <span class="party-gold-val" id="party-gold-val">0</span>
+                            <button class="step-action-btn" data-gold="1">+1</button>
+                            <button class="step-action-btn" data-gold="10">+10</button>
+                        </div>
+                    </div>
+
+                    <div id="inventory-list">
+                        <p class="empty-hint">No items in party inventory.</p>
+                    </div>
+
+                    <details class="nar-add-form u-mt-8">
+                        <summary class="nar-add-summary">+ Add Item</summary>
+                        <div class="nar-form">
+                            <div class="equip-type-toggle" id="inv-type-toggle">
+                                <button class="equip-type-btn is-sel" data-inv-cat="gear" type="button">Item</button>
+                                <button class="equip-type-btn" data-inv-cat="weapon" type="button">Weapon</button>
+                                <button class="equip-type-btn" data-inv-cat="armor" type="button">Armor</button>
+                            </div>
+                            <label class="nar-form-field"><span class="nar-form-label">Item Name</span>
+                                <input id="inv-name" type="text" placeholder="Name…" autocomplete="off" /></label>
+
+                            <!-- Weapon-specific fields -->
+                            <div id="inv-weapon-fields" hidden>
+                                <div class="nar-stat-row">
+                                    <label class="nar-form-field"><span class="nar-form-label">Damage</span>
+                                        <input id="inv-w-damage" type="text" placeholder="1d6" autocomplete="off" /></label>
+                                    <label class="nar-form-field"><span class="nar-form-label">Damage Type</span>
+                                        <select id="inv-w-dmg-type" class="sheet-select"></select></label>
+                                </div>
+                                <div class="nar-stat-row">
+                                    <label class="nar-form-field"><span class="nar-form-label">Range</span>
+                                        <select id="inv-w-range" class="sheet-select"></select></label>
+                                    <label class="nar-form-field"><span class="nar-form-label">Properties</span>
+                                        <input id="inv-w-props" type="text" placeholder="Light, Hefty…" autocomplete="off" /></label>
+                                </div>
+                                <label class="nar-form-field"><span class="nar-form-label">Check</span>
+                                    <select id="inv-w-check" class="sheet-select">
+                                        <option value="">- any -</option>
+                                        <option>Agility</option>
+                                        <option>Crafting</option>
+                                        <option>Influence</option>
+                                        <option>Intellect</option>
+                                        <option>Luck</option>
+                                        <option>Observation</option>
+                                        <option>Spirit</option>
+                                        <option>Stealth</option>
+                                        <option>Strength</option>
+                                        <option>Survival</option>
+                                    </select></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Attack Bonus</span>
+                                    <div class="ae-stepper">
+                                        <button class="ae-step-btn" data-ae-step="-1" data-ae-target="inv-w-atk" type="button">−</button>
+                                        <output id="inv-w-atk" class="ae-step-val" data-val="0">0</output>
+                                        <button class="ae-step-btn" data-ae-step="1" data-ae-target="inv-w-atk" type="button">+</button>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <!-- Armor-specific fields -->
+                            <div id="inv-armor-fields" hidden>
+                                <label class="nar-form-field"><span class="nar-form-label">Notes</span>
+                                    <input id="inv-a-notes" type="text" placeholder="Stealth −1, Agility −1…" autocomplete="off" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Armor Rating</span>
+                                    <div class="ae-stepper">
+                                        <button class="ae-step-btn" data-ae-step="-1" data-ae-target="inv-a-rating" type="button">−</button>
+                                        <output id="inv-a-rating" class="ae-step-val" data-val="0">0</output>
+                                        <button class="ae-step-btn" data-ae-step="1" data-ae-target="inv-a-rating" type="button">+</button>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <label class="nar-form-field"><span class="nar-form-label">Description</span>
+                                <input id="inv-desc" type="text" placeholder="Brief description…" autocomplete="off" /></label>
+                            <div class="nar-stat-row">
+                                <label class="nar-form-field"><span class="nar-form-label">Amount</span>
+                                    <input id="inv-amount" type="number" inputmode="numeric" value="1" /></label>
+                                <label class="nar-form-field"><span class="nar-form-label">Bulk / item</span>
+                                    <input id="inv-bulk" type="number" inputmode="numeric" value="1" step="0.5" /></label>
+                            </div>
+                        </div>
+                        <button class="done-btn" id="btn-add-inventory" type="button">+ Add Item</button>
+                    </details>
+                </div>
+
+                <!-- Handouts -->
+                <div class="section party-subsection" id="nar-handouts-section" hidden>
+                    <div class="section-head">
+                        <h2 class="section-title">Handouts</h2>
+                    </div>
+                    <div id="nar-handouts-list">
+                        <p class="empty-hint">No handouts posted.</p>
+                    </div>
+                    <details class="nar-add-form u-mt-8">
+                        <summary class="nar-add-summary">+ Add Handout</summary>
+                        <div class="nar-form">
+                            <label class="nar-form-field"><span class="nar-form-label">Title</span>
+                                <input id="handout-title" type="text" placeholder="Handout title…" autocomplete="off" /></label>
+                            <label class="nar-form-field"><span class="nar-form-label">Body</span>
+                                <textarea id="handout-body" rows="4" placeholder="Text shown to players…"></textarea></label>
+                        </div>
+                        <button class="done-btn" id="btn-add-handout" type="button">+ Post</button>
+                    </details>
+                </div>
+
+
+                <!-- Quest Log -->
+                <div class="section party-subsection">
+                    <div class="section-head">
+                        <h2 class="section-title">Quest Log</h2>
+                    </div>
+                    <div id="journal-quest-list"></div>
+                    <details class="nar-add-form u-mt-8">
+                        <summary class="nar-add-summary">+ Add Quest</summary>
+                        <div class="nar-form">
+                            <label class="nar-form-field"><span class="nar-form-label">Quest</span>
+                                <input id="jquest-text" type="text" placeholder="Quest description…" autocomplete="off" /></label>
+                        </div>
+                        <button class="done-btn" id="btn-add-jquest" type="button">+ Add</button>
+                    </details>
+                </div>
+
+                <!-- Session Notes -->
+                <div class="section party-subsection">
+                    <div class="section-head">
+                        <h2 class="section-title">Session Notes</h2>
+                    </div>
+                    <div id="journal-session-list"></div>
+                    <details class="nar-add-form u-mt-8">
+                        <summary class="nar-add-summary">+ Add Session</summary>
+                        <div class="nar-form">
+                            <label class="nar-form-field"><span class="nar-form-label">Session Title</span>
+                                <input id="jsess-title" type="text" placeholder="Session 1 - The Beginning…" autocomplete="off" /></label>
+                            <label class="nar-form-field"><span class="nar-form-label">Date</span>
+                                <input id="jsess-date" type="date" /></label>
+                            <label class="nar-form-field"><span class="nar-form-label">Notes</span>
+                                <textarea id="jsess-notes" rows="4" placeholder="What happened this session…"></textarea></label>
+                        </div>
+                        <button class="done-btn" id="btn-add-jsess" type="button">+ Add Session</button>
+                    </details>
+                </div>
+
+            </section>
+
+            <!-- GENERATORS -->
+            <section class="panel" id="panel-generators" role="region" aria-label="Generators">
+
+                <!-- Loot -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Loot</h2>
+                        <div class="loot-pl-row">
+                            <button class="step-action-btn" id="loot-pl-dec" type="button">−</button>
+                            <span id="loot-pl-val" class="loot-pl-val">5</span>
+                            <button class="step-action-btn" id="loot-pl-inc" type="button">+</button>
+                            <button class="ghost-btn u-ml-4" id="btn-gen-loot" type="button">Roll</button>
+                        </div>
+                    </div>
+                    <div id="gen-loot-list">
+                        <p class="empty-hint">Set PL and tap Roll.</p>
+                    </div>
+                </div>
+
+                <!-- God -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">God</h2>
+                        <button class="ghost-btn" id="btn-gen-god" type="button">Random</button>
+                    </div>
+                    <div id="gen-god-list">
+                        <p class="empty-hint">Tap Random to roll a god.</p>
+                    </div>
+                </div>
+
+                <!-- NPC Gen -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">NPC Gen</h2>
+                        <button class="ghost-btn" id="btn-gen-npc" type="button">Generate</button>
+                    </div>
+                    <div class="gen-seg" role="group" id="npc-gen-seg">
+                        <button class="gen-seg-btn is-sel" data-npc-tab="npc" type="button">NPC Gen</button>
+                        <button class="gen-seg-btn" data-npc-tab="location" type="button">Location Gen</button>
+                    </div>
+                    <div id="gen-npc-panel">
+                        <div id="gen-npc-list">
+                            <p class="empty-hint">Tap Generate to create an NPC.</p>
+                        </div>
+                    </div>
+                    <div id="gen-loc-panel" hidden>
+                        <div id="gen-loc-list">
+                            <p class="empty-hint">Tap Generate to create a location.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quest Gen -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Quest Gen</h2>
+                        <button class="ghost-btn" id="btn-gen-quest" type="button">Generate</button>
+                    </div>
+                    <div class="gen-seg" role="group" id="quest-gen-seg">
+                        <button class="gen-seg-btn is-sel" data-quest-tab="quest" type="button">Quest</button>
+                        <button class="gen-seg-btn" data-quest-tab="dungeon" type="button">Doors &amp; Traps</button>
+                        <button class="gen-seg-btn" data-quest-tab="rooms" type="button">Rooms</button>
+                    </div>
+                    <div id="gen-quest-panel">
+                        <div id="gen-quest-list">
+                            <p class="empty-hint">Tap Generate to create a quest.</p>
+                        </div>
+                    </div>
+                    <div id="gen-dungeon-panel" hidden>
+                        <div id="gen-dungeon-list">
+                            <p class="empty-hint">Tap Generate for a door / trap element.</p>
+                        </div>
+                    </div>
+                    <div id="gen-rooms-panel" hidden>
+                        <div id="gen-rooms-list">
+                            <p class="empty-hint">Tap Generate to describe a room.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Commerce -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Commerce</h2>
+                        <button class="ghost-btn" id="btn-gen-commerce" type="button">Generate</button>
+                    </div>
+                    <div class="gen-seg" role="group" id="commerce-gen-seg">
+                        <button class="gen-seg-btn is-sel" data-com-tab="mundane" type="button">Mundane</button>
+                        <button class="gen-seg-btn" data-com-tab="enchanted" type="button">Enchanted</button>
+                        <button class="gen-seg-btn" data-com-tab="medicine" type="button">Medicine</button>
+                    </div>
+                    <div id="gen-mundane-panel">
+                        <div id="gen-mundane-list">
+                            <p class="empty-hint">Tap Generate to roll an item.</p>
+                        </div>
+                    </div>
+                    <div id="gen-enchanted-panel" hidden>
+                        <div class="gen-filter-row">
+                            <select id="ench-type-pick" class="sheet-select">
+                                <option value="any">Any Item</option>
+                                <option value="melee">Melee Weapon</option>
+                                <option value="ranged">Ranged Weapon</option>
+                                <option value="firearm">Firearm</option>
+                                <option value="magic">Magic Weapon</option>
+                                <option value="armor">Armor</option>
+                                <option value="shield">Shield</option>
+                                <option value="Food &amp; Drink">Food &amp; Drink</option>
+                                <option value="Tools &amp; Equipment">Tools &amp; Equipment</option>
+                                <option value="Musical Instruments">Musical Instruments</option>
+                                <option value="Fashion">Fashion</option>
+                                <option value="Communication">Communication</option>
+                                <option value="Potions &amp; Salves">Potions &amp; Salves</option>
+                                <option value="Miscellaneous">Miscellaneous</option>
+                            </select>
+                            <select id="ench-rarity-pick" class="sheet-select">
+                                <option value="any">Any Rarity</option>
+                                <option value="common">Common</option>
+                                <option value="uncommon">Uncommon</option>
+                                <option value="rare">Rare</option>
+                                <option value="epic">Epic</option>
+                                <option value="legendary">Legendary</option>
+                            </select>
+                        </div>
+                        <div id="gen-enchanted-list">
+                            <p class="empty-hint">Tap Generate to roll an enchanted item.</p>
+                        </div>
+                    </div>
+                    <div id="gen-medicine-panel" hidden>
+                        <div id="gen-medicine-list">
+                            <p class="empty-hint">Tap Generate to roll a medicine item.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hex Gen -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Hex Gen</h2>
+                        <button class="ghost-btn" id="btn-gen-hex" type="button">Roll Hex</button>
+                    </div>
+                    <div class="gen-seg" role="group" id="hex-terrain-seg">
+                        <button class="gen-seg-btn is-sel" data-terrain="all" type="button">Any</button>
+                        <button class="gen-seg-btn" data-terrain="desert" type="button">Desert</button>
+                        <button class="gen-seg-btn" data-terrain="mountain" type="button">Mountain</button>
+                        <button class="gen-seg-btn" data-terrain="city" type="button">City</button>
+                    </div>
+                    <div id="gen-hex-list">
+                        <p class="empty-hint">Tap Roll Hex to generate a hex tile.</p>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- MONSTERS -->
+            <section class="panel" id="panel-monsters" role="region" aria-label="Monsters">
+
+                <!-- Encounter tools -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Encounter</h2>
+                        <button class="ghost-btn" id="btn-monsters-open-initiative" type="button">Open Initiative</button>
+                    </div>
+                    <div id="monsters-enc-summary">
+                        <p class="empty-hint">No one in initiative.</p>
+                    </div>
+                </div>
+
+                <!-- Browse the whole catalogue: filter down, then pin to the book -->
+                <details class="section mon-browse" id="mon-browse">
+                    <summary class="section-head mon-browse-head">
+                        <h2 class="section-title">Browse Monsters</h2>
+                        <span class="mon-browse-count" id="mon-browse-count"></span>
+                    </summary>
+                    <div class="gen-search-row">
+                        <input type="text" id="gen-mon-search" class="gen-search-input" placeholder="Search name, group, environment…" autocomplete="off" />
+                        <button class="ghost-btn" id="btn-gen-mon-random" type="button">Random</button>
+                    </div>
+                    <div class="mon-filter-row">
+                        <select id="mon-filter-group" class="mon-filter"><option value="">All groups</option></select>
+                        <select id="mon-filter-pl" class="mon-filter">
+                            <option value="">Any PL</option>
+                            <option value="1-3">PL 1-3</option>
+                            <option value="4-6">PL 4-6</option>
+                            <option value="7-10">PL 7-10</option>
+                            <option value="11-99">PL 11+</option>
+                        </select>
+                        <select id="mon-filter-env" class="mon-filter"><option value="">Any environment</option></select>
+                    </div>
+                    <div class="mon-browse-list" id="mon-browse-list"></div>
+                </details>
+
+                <!-- Monster Book -->
+                <details class="section" id="mon-book" open>
+                    <summary class="section-head mon-browse-head">
+                        <h2 class="section-title">Monster Book</h2>
+                        <span class="mon-browse-count" id="mon-book-count"></span>
+                    </summary>
+                    <div class="gen-search-results" id="gen-mon-results" hidden></div>
+                    <div id="gen-mon-list">
+                        <p class="empty-hint">No monsters pinned. Browse above to add some.</p>
+                    </div>
+                </details>
+
+            </section>
+
+            <!-- JOURNAL -->
+            <!-- REFERENCE -->
+            <section class="panel" id="panel-ref" role="region" aria-label="Reference">
+                <div class="ref-tab-row">
+                    <button class="ref-tab is-active" data-ref-tab="tables" type="button">Damage Tables</button>
+                    <button class="ref-tab" data-ref-tab="conditions" type="button">Conditions</button>
+                    <button class="ref-tab" data-ref-tab="actions" type="button">Actions</button>
+                    <button class="ref-tab" data-ref-tab="gear" type="button">Gear</button>
+                </div>
+                <div class="ref-tab-content is-active" id="ref-tab-tables">
+                    <div class="ref-tables-grid" id="ref-tables-grid"></div>
+                </div>
+                <div class="ref-tab-content" id="ref-tab-conditions">
+                    <div class="ref-conditions-list" id="ref-conditions-list"></div>
+                </div>
+                <div class="ref-tab-content" id="ref-tab-actions">
+                    <div class="ref-actions-list" id="ref-actions-list"></div>
+                </div>
+                <div class="ref-tab-content" id="ref-tab-gear">
+                    <div class="gen-search-row">
+                        <input type="text" id="ref-gear-search" class="gen-search-input" placeholder="Search weapons &amp; armor…" autocomplete="off" />
+                    </div>
+                    <div class="mon-filter-row">
+                        <select id="ref-gear-cat" class="mon-filter">
+                            <option value="">All gear</option>
+                            <option value="melee">Melee</option>
+                            <option value="ranged">Ranged</option>
+                            <option value="firearm">Firearm</option>
+                            <option value="magic">Magic</option>
+                            <option value="armor">Armor</option>
+                        </select>
+                        <span class="mon-browse-count" id="ref-gear-count"></span>
+                    </div>
+                    <div class="ref-gear-list" id="ref-gear-list"></div>
+                </div>
+            </section>
+
+        </section>
+
+    </main>
+
+    <!-- Settings Modal -->
+    <div class="settings-modal" id="settings-modal" hidden>
+        <div class="settings-scrim" id="settings-scrim"></div>
+        <div class="settings-sheet">
+            <div class="drawer-handle" aria-hidden="true"></div>
+            <div class="wm-head">
+                <div class="wm-name">Settings</div>
+                <button class="icon-btn" id="settings-close" type="button" aria-label="Close">✕</button>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title">Theme</div>
+                <p class="settings-hint">Two-color theme for the narrator interface.</p>
+                <div class="theme-swatches" id="theme-swatches"></div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title">Session</div>
+                <button class="settings-action-btn" id="btn-manage-rooms" type="button">Manage Rooms</button>
+                <button class="settings-action-btn settings-action-btn--danger" id="btn-end-session" type="button">End Active Session</button>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title">Table Rules</div>
+                <p class="settings-hint">Turn off Provoke when the table is clowning. Players still see that a roll could provoke - the button just stops working.</p>
+                <label class="settings-toggle">
+                    <input type="checkbox" id="toggle-provoke-lock" />
+                    <span>Disable Provoke for players</span>
+                </label>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title">Narrator</div>
+                <button class="settings-action-btn settings-action-btn--danger" id="btn-reset-nar" type="button">Reset Narrator Data</button>
+                <div class="settings-reset-confirm" id="nar-reset-confirm" hidden>
+                    <p class="settings-hint settings-hint--danger">Clears party, minions, inventory, encounter, and generator lists. Journal and theme are kept.</p>
+                    <div class="step-edit-btns u-mt-8">
+                        <button class="step-edit-btn step-edit-btn--danger" id="btn-nar-reset-confirm" type="button">Yes, Reset</button>
+                        <button class="step-edit-btn step-edit-btn--cancel" id="btn-nar-reset-cancel" type="button">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Monster Cast Dialog: who is casting, and at whom -->
+    <dialog id="mon-cast-dialog" class="nar-dialog">
+        <div class="nar-dialog-inner">
+            <div class="nar-ced-head">
+                <div class="wm-name" id="mon-cast-title">Cast Spell</div>
+                <button class="icon-btn" id="mon-cast-close" type="button" aria-label="Close">✕</button>
+            </div>
+            <p class="settings-hint" id="mon-cast-sub"></p>
+            <label class="nar-form-field"><span class="nar-form-label">Cast by</span>
+                <select id="mon-cast-by"></select></label>
+            <label class="nar-form-field"><span class="nar-form-label">Target</span>
+                <select id="mon-cast-target"></select></label>
+            <div class="step-edit-btns u-mt-8">
+                <button class="done-btn" id="mon-cast-go" type="button">✨ Cast</button>
+                <button class="step-edit-btn step-edit-btn--cancel" id="mon-cast-cancel" type="button">Cancel</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Character Edit Dialog -->
+    <dialog id="char-edit-dialog" class="nar-dialog nar-dialog--tall">
+        <div class="nar-dialog-inner nar-dialog-inner--scroll">
+            <div class="nar-ced-head">
+                <p class="nar-dialog-name" id="char-edit-title">Edit</p>
+                <button class="icon-btn" id="btn-char-edit-close" type="button" aria-label="Close">✕</button>
+            </div>
+
+            <div class="nar-form">
+                <label class="nar-form-field"><span class="nar-form-label">Name</span>
+                    <input id="ced-name" type="text" autocomplete="off" /></label>
+
+                <div id="ced-npc-fields">
+                    <div class="nar-stat-row">
+                        <label class="nar-form-field"><span class="nar-form-label">PL</span>
+                            <input id="ced-pl" type="number" inputmode="numeric" placeholder="–" /></label>
+                        <label class="nar-form-field"><span class="nar-form-label">Phys</span>
+                            <input id="ced-phys" type="number" inputmode="numeric" placeholder="–" /></label>
+                        <label class="nar-form-field"><span class="nar-form-label">Ment</span>
+                            <input id="ced-ment" type="number" inputmode="numeric" placeholder="–" /></label>
+                        <label class="nar-form-field"><span class="nar-form-label">HP</span>
+                            <input id="ced-hp" type="number" inputmode="numeric" placeholder="–" /></label>
+                    </div>
+                    <p class="field-hint field-hint--tight" id="ced-pl-hint" hidden></p>
+                    <label class="nar-form-field"><span class="nar-form-label">Notes</span>
+                        <input id="ced-notes" type="text" autocomplete="off" /></label>
+                    <label class="nar-form-field"><span class="nar-form-label">Equipment</span>
+                        <input id="ced-equip" type="text" autocomplete="off" list="ced-equip-list" />
+                        <datalist id="ced-equip-list"></datalist></label>
+                    <label class="nar-form-field"><span class="nar-form-label">Narrator Notes</span>
+                        <input id="ced-nar" type="text" autocomplete="off" /></label>
+                </div>
+
+                <div id="ced-minion-fields" hidden>
+                    <div class="nar-stat-row">
+                        <label class="nar-form-field"><span class="nar-form-label">PL</span>
+                            <input id="ced-mn-pl" type="number" inputmode="numeric" min="1" /></label>
+                        <label class="nar-form-field"><span class="nar-form-label">HP (now)</span>
+                            <input id="ced-mn-hp" type="number" inputmode="numeric" /></label>
+                    </div>
+                    <p class="field-hint field-hint--tight" id="ced-mn-pl-hint" hidden></p>
+                    <label class="nar-form-field"><span class="nar-form-label">Origin</span>
+                        <input id="ced-mn-origin" type="text" autocomplete="off" /></label>
+                </div>
+            </div>
+
+            <div class="ced-inv-section">
+                <div class="ced-inv-section-head">Personal Items</div>
+                <div id="ced-inv-list"></div>
+                <div class="ced-inv-add-form">
+                    <div class="ced-inv-add-row">
+                        <input id="ced-inv-name" type="text" class="ced-inv-input" placeholder="Item name…" autocomplete="off" list="ced-inv-name-list" />
+                        <datalist id="ced-inv-name-list"></datalist>
+                        <input id="ced-inv-desc" type="text" class="ced-inv-input ced-inv-input--desc" placeholder="Note (optional)" autocomplete="off" />
+                        <button class="ghost-btn" id="btn-ced-inv-add" type="button">+ Add</button>
+                    </div>
+                    <div class="ced-inv-weapon-fields" id="ced-inv-weapon-fields" hidden>
+                        <div class="nar-stat-row">
+                            <label class="nar-form-field"><span class="nar-form-label">Damage</span>
+                                <input id="ced-inv-damage" type="text" placeholder="1d6" autocomplete="off" /></label>
+                            <label class="nar-form-field"><span class="nar-form-label">Type</span>
+                                <input id="ced-inv-dmg-type" type="text" placeholder="Piercing…" autocomplete="off" /></label>
+                            <label class="nar-form-field"><span class="nar-form-label">Range</span>
+                                <input id="ced-inv-range" type="text" placeholder="Close…" autocomplete="off" /></label>
+                            <label class="nar-form-field"><span class="nar-form-label">Check</span>
+                                <input id="ced-inv-check" type="text" placeholder="Agility…" autocomplete="off" /></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="nar-dialog-action" id="btn-char-edit-save" type="button">✓ Save</button>
+            <button class="nar-dialog-action nar-dialog-action--cancel" id="btn-char-edit-cancel" type="button">Cancel</button>
+        </div>
+    </dialog>
+
+    <!-- Award Item Dialog: narrator picks which player receives a party-inventory item -->
+    <dialog id="award-item-dialog" class="arc-modal give-dialog" style="--modal-w:380px">
+        <div class="arc-modal-inner give-dialog-inner">
+            <div class="give-head">
+                <span class="give-kicker">Award Item</span>
+                <button class="icon-btn" id="award-close" type="button" aria-label="Close">✕</button>
+            </div>
+            <p class="give-item-name" id="award-item-name"></p>
+            <p class="give-hint" id="award-hint">Choose who receives it. It lands straight on their sheet.</p>
+            <div class="give-target-list" id="award-target-list"></div>
+            <button class="give-cancel-btn" id="award-cancel" type="button">Cancel</button>
+        </div>
+    </dialog>
+
+    <!-- Player Edit Dialog -->
+    <dialog id="player-edit-dialog" class="nar-dialog">
+        <div class="nar-dialog-inner">
+            <p class="nar-dialog-name" id="player-edit-name">Player</p>
+            <button class="nar-dialog-action" id="btn-ped-archive" type="button">Archive Character</button>
+            <button class="nar-dialog-action nar-dialog-action--danger" id="btn-ped-remove" type="button">Remove from Party</button>
+            <button class="nar-dialog-action nar-dialog-action--cancel" id="btn-ped-cancel" type="button">Cancel</button>
+        </div>
+    </dialog>
+
+    <!-- Rooms Manager: switch between campaigns, rename them, close them -->
+    <dialog id="rooms-dialog" class="arc-modal rooms-dialog" style="--modal-w:480px">
+        <div class="arc-modal-inner rooms-dialog-inner">
+            <div class="rooms-head">
+                <span class="rooms-kicker">My Rooms</span>
+                <button class="icon-btn" id="rooms-close" type="button" aria-label="Close">✕</button>
+            </div>
+            <p class="rooms-hint">Switch between campaigns, rename them, or close one down.</p>
+            <div class="rooms-list" id="rooms-list"></div>
+            <div class="rooms-actions">
+                <button class="room-btn room-btn--primary" id="rooms-new" type="button">+ New Room</button>
+                <button class="room-btn" id="rooms-done" type="button">Done</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Room Creation Dialog -->
+    <dialog id="room-create-dialog" class="nar-dialog">
+        <div class="nar-dialog-inner">
+            <p class="nar-dialog-name">Name Your Campaign</p>
+            <input id="room-name-input" class="nar-dialog-input" type="text" placeholder="e.g. The Velvet Circuit…" maxlength="40" autocomplete="off" />
+            <div id="room-name-suggestions" class="nar-dialog-suggestions"></div>
+            <textarea id="room-welcome-input" class="nar-dialog-textarea" placeholder="Welcome message for players… (optional)" rows="3" maxlength="200"></textarea>
+            <button class="nar-dialog-action" id="btn-create-room-confirm" type="button">Create Session</button>
+            <button class="nar-dialog-action nar-dialog-action--cancel" id="btn-create-room-cancel" type="button">Cancel</button>
+        </div>
+    </dialog>
+
+    <!-- Defeat Confirmation Dialog -->
+    <dialog id="defeated-confirm-dialog" class="nar-dialog">
+        <div class="nar-dialog-inner">
+            <p class="nar-dialog-name">Has <strong id="defeated-confirm-name"></strong> been defeated?</p>
+            <button class="nar-dialog-action nar-dialog-action--danger" id="defeated-confirm-yes" type="button">Defeated</button>
+            <button class="nar-dialog-action nar-dialog-action--cancel" id="defeated-confirm-no" type="button">Not yet</button>
+        </div>
+    </dialog>
+
+    <!-- Global context bar: speaking-as / target - visible on all panels -->
+    <div class="global-ctx-bar" id="nar-context-bar" hidden>
+        <span class="chat-ctx-chip" id="nar-voice-chip" hidden>
+            <span class="chat-ctx-label" id="nar-voice-chip-label"></span>
+            <button class="chat-ctx-dismiss" id="nar-voice-dismiss" type="button">×</button>
+        </span>
+        <span class="chat-ctx-chip chat-ctx-chip--target" id="nar-target-chip" hidden>
+            <span class="chat-ctx-label" id="nar-target-chip-label"></span>
+            <button class="chat-ctx-dismiss" id="nar-target-dismiss" type="button">×</button>
+        </span>
+    </div>
+
+    <!-- Bottom navigation (6 tabs) -->
+    <nav class="bottom-nav nar-nav" aria-label="Bottom navigation">
+        <button class="nav-btn" data-nav="chat" data-tip="Session Chat" type="button" aria-controls="panel-chat">
+            <span class="nav-icon-wrap">
+                <img class="nav-icon" src="../assets/icons/chat.png" alt="" aria-hidden="true" />
+                <span class="nav-notif" id="chat-notif" hidden></span>
+            </span>
+            <span class="nav-label">Chat</span>
+        </button>
+        <button class="nav-btn is-active" data-nav="party" type="button" aria-controls="panel-party">
+            <img class="nav-icon" src="../assets/icons/wax-tablet.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Party</span>
+        </button>
+        <button class="nav-btn" data-nav="generators" type="button" aria-controls="panel-generators">
+            <img class="nav-icon" src="../assets/icons/worldbuilding.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Generators</span>
+        </button>
+        <button class="nav-btn" data-nav="monsters" type="button" aria-controls="panel-monsters">
+            <img class="nav-icon" src="../assets/icons/monster.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Monsters</span>
+        </button>
+        <button class="nav-btn" data-nav="initiative" type="button" aria-controls="panel-chat">
+            <img class="nav-icon" src="../assets/icons/weapon.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Initiative</span>
+        </button>
+        <button class="nav-btn" data-nav="ref" type="button" aria-controls="panel-ref">
+            <img class="nav-icon" src="../assets/icons/reference.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Ref</span>
+        </button>
+    </nav>
+</body>
+
+</html>

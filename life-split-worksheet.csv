@@ -1,0 +1,87 @@
+﻿decision,suggested,confidence,name,file,kind,origin_raw,death_score,malform_score,excerpt
+,?,REVIEW,Lifeweaver,class-new.json,,life,7,6,"With hands that can both heal and harm, Lifeweavers are revered for their unique ability to manipulate the very essence of life. Drawing upon the inte"
+,?,REVIEW,Luminary,class-new.json,,life,1,1,"The Luminary is a living beacon of bioluminescent power and reactive evolution, embodying the raw potential of life itself. Whether inspiring allies w"
+,?,REVIEW,Vampiric Fever,curses.json,disease,Life,7,8,Blood isn't just sustenance for vampires; it's a transformative essence. The Vampiric Fever is transmitted through the envenomed fangs of true vampire
+,?,REVIEW,Beggar,gods.json,,life,0,0,"Beggar, often depicted as a humble figure with a cloak woven from the stories of the downtrodden, is the god who champions the cause of the weak, the "
+,?,REVIEW,Enou,gods.json,,life,0,0,"Enou is the vibrant essence of celebration, the force behind every dance, feast, and joyous occasion in Shek. He manifests as a shimmering, ethereal f"
+,?,REVIEW,Soul Harvester,monsterbase.json,Leech,life,4,3,A spectral leech feeding not on flesh but on souls.
+,?,REVIEW,Tristeţe (Arm),monsterbase.json,Vampire,life,3,2,"In the spectral hierarchy of strigoi, the Tristeţe are the outcasts, the forsaken. Their name, translating to 'sadness', poignantly mirrors their exis"
+,?,REVIEW,Tristeţe (Brain Sacs),monsterbase.json,Vampire,life,3,2,"In the spectral hierarchy of strigoi, the Tristeţe are the outcasts, the forsaken. Their name, translating to 'sadness', poignantly mirrors their exis"
+,?,REVIEW,Tristeţe (Second Heart),monsterbase.json,Vampire,life,3,2,"In the spectral hierarchy of strigoi, the Tristeţe are the outcasts, the forsaken. Their name, translating to 'sadness', poignantly mirrors their exis"
+,?,REVIEW,Tristeţe (Stench),monsterbase.json,Vampire,life,3,2,"In the spectral hierarchy of strigoi, the Tristeţe are the outcasts, the forsaken. Their name, translating to 'sadness', poignantly mirrors their exis"
+,?,REVIEW,Vampire (Tristeţe),monsterbook.json,Undead,Life,7,9,"Vampires started in the Kingslands, 3 powerful tribes formed from undead lords of necromantic magic. Powerful as it made them they were cursed by the "
+,?,REVIEW,Shadow,species.json,,life,0,0,"{'physical': 'Shadow Elves are enigmatic beings born in the Eclipse, a shadowy realm that lies between worlds. Their smoky, ethereal appearance reflec"
+,?,REVIEW,Tărie,species.json,,life,1,1,"{'physical': 'The Tărie, the embodiment of raw, unyielding strength, are a formidable sight to behold. These Dravin-kin are the epitome of physical pr"
+,?,REVIEW,Exsanguinate,spells.json,spell,Life,0,0,
+,?,REVIEW,Suppress Menstruation,spells.json,spell,Life,0,0,
+,?,REVIEW,Sustenance ,spells.json,spell,Life,0,0,
+,Death,high,Boneclad,class-new.json,,life,49,2,"As a Boneclad, you walk a delicate line between life and death, channeling the powers of the afterlife to heal and protect your allies while siphoning"
+,Death,high,Ghostborn,class-new.json,,life,11,0,"As a Ghostborn, you exist between the mortal and ethereal planes. You have the ability to phase through objects, move unseen and unheard, and are prac"
+,Death,high,Ghostgrifter,class-new.json,,life,17,0,"Ghostgrifters are sly manipulators of the veil between life and death. They move like whispers, vanish with flair, and cheat fate with uncanny ease. W"
+,Death,med,Incantatore,class-new.json,,life,2,1,"In the shadows of grandeur and the limelight of intrigue, you've navigated the treacherous waters of ambition and desire. Known to many as the Incanta"
+,Death,high,Occultist,class-new.json,,life,13,1,"Whether it be your life or another’s, you wield it as a power of your own. This can be your blood or the plants and animals around you. After you cast"
+,Malform,high,Plaguebringer,class-new.json,,life,3,22,"The Plaguebringer is a master of disease, decay, and the darker aspects of nature. They understand the delicate balance between life and death and can"
+,Death,high,Savage,class-new.json,,life,4,0,"The Savage is a primal force of nature, unshackled by civilization and driven by raw instinct. Whether forged in the untamed wilds or drawn to its fer"
+,Death,high,Undertaker,class-new.json,,life,27,0,"The Undertaker is a master of tragic relics and supernatural connections, trading not only in goods but also in memories, spirits, and stories that li"
+,Death,high,Strigoi Curse,curses.json,curse,Life,27,3,"The March of Mortality is a perilous journey, one that transcends the very laws of life and death. Awakened to a form steeped in the bleak beauty of u"
+,Malform,high,Yeeshnu's Plague,curses.json,disease,Life,0,15,"Yeeshnu, the god of plague and pestilence, spreads its influence through disease. Yeeshnu's Plague is a horrifying affliction contracted from bites of"
+,Death,high,Beinvinger,gods.json,,"nature, life",5,1,"In the twilight realm where bone fairies flutter and blood sprites dance, Beinvinger reigns supreme. This deity, with a crown made of intricately carv"
+,Malform,high,Bhaal,gods.json,,life,0,2,"From the realm where dreams become nightmares and reality blurs with fantasy, Bhaal, the Lord of Deformation, reigns supreme. With eyes that pierce th"
+,Death,high,Felsmoke,gods.json,,life,2,0,"In the caverns that stretch into infinity, Felsmoke, the Dracolich, rests atop the largest hoard any dragon has ever amassed. Not only is his treasure"
+,Malform,high,Son of Fenris,gods.json,,life,0,1,"The Son of Fenris began as one of the great wolf’s natural brood, born from Fenris dividing its own essence in a moment of loneliness. He was taken be"
+,Death,high,Undying,gods.json,,life,8,0,"In the eclipse, where souls wander and time loses meaning, Undying sits upon a humble throne. Unlike most deities of his domain, his power does not li"
+,Malform,high,Yeeshnu,gods.json,,life,1,5,"The lord of plague and disease, was once the king of gnolls, formed a bond with the lord of rats and became Yeeshnu. Later absorbed the queen of vultu"
+,Death,high,Avuţie ,monsterbase.json,Vampire,life,3,0,the Avuţie stand as the epitome of vampire nobility. They are the embodiment of the timeless allure and chilling dread that has become synonymous with
+,Death,high,Calcium,monsterbase.json,Fairy,life,4,0,A bone-collecting fey who steals teeth and nails to build its skeletal wings.
+,Death,high,Death Song,monsterbase.json,Siren,life,2,0,A siren-like predator that lures prey with its deadly song and crustacean armor.
+,Death,high,Deathmancer,monsterbase.json,Lich,life,7,0,A lich focused on death magic and reanimation of the fallen.
+,Death,high,Ghost,monsterbase.json,Undead,life,6,0,"A hollow echo of a soul that never moved on. It phases in and out of reality, clinging to regrets."
+,Death,high,Ghoul,monsterbase.json,Undead,life,9,0,"Rot-hungry corpse that moves in twitching bursts, always biting"
+,Malform,high,Gloomspawn (devour),monsterbase.json,Ooze,life,0,3,Parasitic Symbiotes are a mysterious and ancient species that have evolved to form powerful and aggressive symbiotic relationships with various hosts.
+,Malform,high,Gloomspawn (passenger),monsterbase.json,Ooze,life,0,3,Parasitic Symbiotes are a mysterious and ancient species that have evolved to form powerful and aggressive symbiotic relationships with various hosts.
+,Malform,high,Gloomspawn (symbiosis),monsterbase.json,Ooze,life,0,3,Parasitic Symbiotes are a mysterious and ancient species that have evolved to form powerful and aggressive symbiotic relationships with various hosts.
+,Malform,high,Gloomspawn (un-hosted),monsterbase.json,Ooze,life,0,3,Parasitic Symbiotes are a mysterious and ancient species that have evolved to form powerful and aggressive symbiotic relationships with various hosts.
+,Death,high,Phoenix,monsterbase.json,Mythic,life,1,0,"An immortal bird of flame, reborn from its ashes."
+,Death,high,Skeleton,monsterbase.json,Undead,life,9,0,"Common Undead Soldier, animated bones bound by dark memory"
+,Death,high,Soul Shepherd,monsterbase.json,Siren,life,2,0,A gentle siren guiding souls but consuming strays in secret.
+,Death,high,Soul Siphon,monsterbase.json,Vampire,life,5,0,An ultimate vampire form that drinks souls rather than blood.
+,Death,high,Tărie,monsterbase.json,Vampire,life,1,0,"The Tărie, the embodiment of raw, unyielding strength, are a formidable sight to behold. These Dravin-kin are the epitome of physical prowess among th"
+,Death,high,Undead Part (Arm),monsterbase.json,Undead,life,7,0,"A severed arm still clutching its weapon, dragged by rage and undeath."
+,Death,high,Undead Part (Finger),monsterbase.json,Undead,life,7,0,A blackened finger that snakes toward warm bodies and slips inside wounds to disrupt nerves.
+,Death,high,Undead Part (Foot),monsterbase.json,Undead,life,9,0,"A cracked, rotting foot that lurches and stomps erratically, drawn to tremors and vibrations."
+,Death,high,Undead Part (Hand),monsterbase.json,Undead,life,8,0,"A twitching, skeletal hand that skitters along walls and ceilings, strangling victims in their sleep."
+,Death,high,Undead Part (Jaw),monsterbase.json,Undead,life,7,0,A chattering jawbone on spindly tendons that whispers your name in a loved one's voice before screaming in your face.
+,Death,high,Undead Part (Leg),monsterbase.json,Undead,life,6,0,"A leg that sprints and bounds with disturbing speed, leaving clawed tracks through dust and blood."
+,Death,high,Undead Part (Ribcage),monsterbase.json,Undead,life,7,0,"A loose rib cage that rattles from shadows, snapping shut around prey to trap them in a prison of bone."
+,Death,high,Undead Part (Skull),monsterbase.json,Undead,life,8,0,A cracked skull with glowing eyes that floats or rolls until it finds a corpse to animate.
+,Death,high,Undead Part (Spine),monsterbase.json,Undead,life,7,0,"A serpent of vertebrae that slithers along walls, whispering through bone."
+,Death,high,Zeiţă,monsterbase.json,Vampire,life,6,0,"A radiant, terrifying vampire deity who feeds not on blood, but the essence of existence itself."
+,Death,high,Zombie,monsterbase.json,Undead,life,7,0,"Slow, heavy corpse animated by stubborn refusal to rest"
+,Death,med,Ghost,monsterbook.json,Undead,Life,12,6,"Has the Intangible condition. Your attacks deal half damage to non-Intangible targets, and you may move through solid materials and objects."
+,Death,high,Ghoul,monsterbook.json,Undead,Life,11,1,Gain +1 to checks and damage per ally within reach of a target
+,Malform,high,GloOmspawn (Devourer),monsterbook.json,oOze,Life,1,4,"As an Action, leap onto a Medium-sized creature and attempt to burrow into their body. Both of you make contested Physical checks. If you began this a"
+,Malform,high,GloOmspawn (Hollowhost),monsterbook.json,oOze,Life,0,8,"As an Action, attempt to infest a sleeping, unaware, or willing Medium-sized creature within melee range. Make a Stealth check contested by the target"
+,Malform,high,GloOmspawn (Nightvein),monsterbook.json,oOze,Life,0,4,"As an Action, leap onto a Medium-sized creature and attempt to burrow into their body. Both of you make contested Physical checks. If you began this a"
+,Death,high,Lich,monsterbook.json,Undead,Life,32,8,"You possess a hidden and protected Soul Jar that anchors your existence. You may travel any distance from the Soul Jar without penalty. When you die, "
+,Death,high,Living Crypt,monsterbook.json,Undead,Life,7,0,A graveyard crypt made living that summons undead
+,Death,high,Necro-Brute,monsterbook.json,Brute,Life,11,1,Charge up to your full movement speed in a straight line. Each creature in its path must succeed on a Physical check or be knocked Prone and take [[1+
+,Death,high,Necromancer,monsterbook.json,Undead,Life,32,1,"When you would take damage and you have Undead at your command within reach, they take the damage instead"
+,Death,high,Skeleton,monsterbook.json,Undead,Life,8,0,"Most creatures have bones, and many powerful mages and magical effects can cause skeletons to return and serve a great power."
+,Death,high,Tar Ghoul,monsterbook.json,oOze,Life,8,2,Gain +1 to checks and damage per ally within reach of a target
+,Death,high,Vampire (Avuţie),monsterbook.json,Undead,Life,10,3,"Vampires started in the Kingslands, 3 powerful tribes formed from undead lords of necromantic magic. Powerful as it made them they were cursed by the "
+,Death,med,Vampire (Tărie),monsterbook.json,Undead,Life,8,3,"Vampires started in the Kingslands, 3 powerful tribes formed from undead lords of necromantic magic. Powerful as it made them they were cursed by the "
+,Death,high,Zombie,monsterbook.json,Undead,Life,11,0,"Most creatures have bones, and many powerful mages and magical effects can cause skeletons to return and serve a great power."
+,Death,high,Life Surge,monstermod.json,,life,3,0,
+,Malform,high,Plague Sigil,progression.json,Weapon,Life,1,24,"Life magic is not always healing. Sometimes it is the wet, patient spread of something that has decided to grow where it was not invited. The Plaguebr"
+,Death,high,The Surgeon's Last Cut,progression.json,Weapon,Life,2,0,"A weapon from a healer who ran out of options. Life magic is not gentle - it is imperative, driving, relentless. It does not prefer death or birth. It"
+,Death,high,Avuţie,species.json,,life,7,1,"{'physical': 'In the shadowy realm of the undead, the Avuţie stand as the epitome of vampire nobility. They are the embodiment of the timeless allure "
+,Malform,high,Clothari,species.json,,life,0,1,"{'physical': 'The Clothari are an insectoid people shaped in the image of their creator, Clotho. Standing slightly taller than humans on average, they"
+,Malform,high,Hollowhost,species.json,,life,0,4,"{'physical': 'Hollowhosts possess no permanent form of their own. Instead, they reshape themselves into convincing humanoid disguises, most often rese"
+,Malform,high,Nightvein,species.json,,life,0,6,"{'physical': ""Nightveins are among the most recognizable Gloomspawn, appearing as masses of dark living biomass wrapped around a host body like a seco"
+,Death,med,Tristeţe,species.json,,life,12,5,"{'physical': ""In the spectral hierarchy of strigoi, the Tristeţe are the outcasts, the forsaken. Their name, translating to 'sadness', poignantly mirr"
+,Death,high,Înviere,species.json,,life,12,3,"{'physical': ""The Înviere are a haunting testament to the power of the undying, a species born from failed resurrections and ancient, mystical connect"
+,Death,high,Bone Bunker,spells.json,spell,Life,3,0,
+,Malform,high,Cleanse,spells.json,spell,Life,0,1,
+,Death,high,Dark Revival,spells.json,spell,Life,13,0,
+,Malform,high,Sickness,spells.json,spell,Life,0,5,
+,Death,high,Weakness,spells.json,spell,Life,4,1,

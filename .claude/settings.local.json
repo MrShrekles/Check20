@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const d = require\\('./data/monstertype.json'\\); const a = d.add[0]; console.log\\('add sample:', JSON.stringify\\(a, null, 2\\)\\); const b = d.base[0]; console.log\\('base sample:', JSON.stringify\\(b, null, 2\\)\\);\")",
+      "Bash(node -e ':*)",
+      "PowerShell(Copy-Item \"C:\\\\Users\\\\Shrek\\\\Dropbox\\\\TTRPG\\\\CODEMONKEY\\\\Rulebook Project\\\\shek-forge\\\\Roll20\\\\ARC20 Charsheet v8.html\" \"C:\\\\Users\\\\Shrek\\\\Dropbox\\\\TTRPG\\\\CODEMONKEY\\\\Rulebook Project\\\\downloads\\\\roll20\\\\ARC20 Charsheet v8.html\" -Force)",
+      "PowerShell(Copy-Item \"C:\\\\Users\\\\Shrek\\\\Dropbox\\\\TTRPG\\\\CODEMONKEY\\\\Rulebook Project\\\\shek-forge\\\\Roll20\\\\ARC20 Style v8.css\" \"C:\\\\Users\\\\Shrek\\\\Dropbox\\\\TTRPG\\\\CODEMONKEY\\\\Rulebook Project\\\\downloads\\\\roll20\\\\ARC20 Style v8.css\" -Force)"
+    ]
+  }
+}

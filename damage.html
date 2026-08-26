@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Damage & Damage Tables</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/damage.css">
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+    <script src="scripts/main.js" defer></script>
+    <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/footer.js" defer></script>
+</head>
+
+<body data-page-title="Damage">
+    <div id="header-placeholder"></div>
+    <main>
+
+        <section class="damage-intro">
+            <h1>Damage & Damage Types</h1>
+            <p>Numerous damage types exist, each with unique properties. When a character rolls a <strong>success+</strong> (20 or above on damage), roll once on the appropriate damage table. Every 5 above 20 grants an additional roll (25 = 2 rolls, 30 = 3 rolls). Types are grouped as <strong>Physical</strong>, <strong>Elemental</strong>, or <strong>Realm</strong> - these categories describe what conditions and effects they cause, not how much damage they deal.</p>
+            <p>A weapon can only have one damage type. If an ability adds damage, it doesn't change the type unless specified. When you roll repeated non-stacking conditions, deal <strong>+1 damage</strong> instead.</p>
+            <div class="special-values">
+                <span><strong>Cleave</strong> - Deal half damage to other creatures within melee range.</span>
+                <span><strong>Siphon</strong> - Heal yourself for the amount listed.</span>
+            </div>
+        </section>
+
+        <!-- Physical Damage -->
+        <section>
+            <h2>Physical Damage</h2>
+            <div class="damage-grid">
+
+                <div class="damage-card">
+                    <h3>✊ Impact</h3>
+                    <p>The raw force of blunt weapons such as hammers, maces, and clubs delivers bone-crushing blows. Shatters defenses and can leave foes dazed and reeling.</p>
+                    <ol>
+                        <li>Broken</li>
+                        <li>Concussion</li>
+                        <li>Coughing</li>
+                        <li>Dislocation</li>
+                        <li>Prone</li>
+                        <li>Knockback (10ft)</li>
+                    </ol>
+                </div>
+
+                <div class="damage-card">
+                    <h3>🎯 Piercing</h3>
+                    <p>Sharp and precise, piercing damage comes from arrows, spears, and daggers - designed to penetrate armor and flesh alike, targeting vital points.</p>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Additional +3</li>
+                        <li>Additional +4</li>
+                        <li>Additional +5</li>
+                        <li>Pinned</li>
+                    </ol>
+                </div>
+
+                <div class="damage-card">
+                    <h3>⚔️ Slashing</h3>
+                    <p>Swords, axes, and claws cut through flesh and armor with sweeping motions, leaving open wounds and bleeding gashes.</p>
+                    <ol>
+                        <li>Additional +2</li>
+                        <li>Additional +3</li>
+                        <li>Bleeding</li>
+                        <li>Cleave</li>
+                        <li>Disarm</li>
+                        <li>Feint (Take Stance)</li>
+                    </ol>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Elemental Damage -->
+        <section>
+            <h2>Elemental Damage</h2>
+            <div class="damage-grid">
+
+                <div class="damage-card">
+                    <h3>🧪 Acid</h3>
+                    <p>Corrosive substances eat away at armor and flesh. Represents alchemical concoctions, venomous creatures, and spells that dissolve whatever they touch.</p>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Additional +3</li>
+                        <li>Exposed</li>
+                        <li>Slowed</li>
+                        <li>Coughing</li>
+                    </ol>
+                </div>
+
+                <div class="damage-card">
+                    <h3>🌑 Eclipse</h3>
+                    <p>Drawing power from shadows and dark magic, eclipse damage drains the essence of life and light. Encompasses necromancy, suffocating smoke, and the chill of pure darkness.</p>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Blind</li>
+                        <li>Deaf</li>
+                        <li>Raise upon Death</li>
+                        <li>Fear</li>
+                    </ol>
+                </div>
+
+                <div class="damage-card">
+                    <h3>🔥 Fire</h3>
+                    <p>Flames and explosions unleash intense heat, burning everything in their path - the fiery fury of fireballs, molten lava, and blazing infernos.</p>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Additional +3</li>
+                        <li>Exposed</li>
+                        <li>Blind</li>
+                        <li>Coughing</li>
+                    </ol>
+                </div>
+
+                <div class="damage-card">
+                    <h3>💧 Fluid</h3>
+                    <p>Water, blood, oil, and other liquids can overwhelm and suffocate. Includes tidal waves, boiling liquids, and asphyxiation from being engulfed.</p>
+                    <ol>
+                        <li>Blind</li>
+                        <li>Coughing</li>
+                        <li>Deaf</li>
+                        <li>Broken</li>
+                        <li>Concussion</li>
+                        <li>Prone</li>
+                    </ol>
+                </div>
+
+                <div class="damage-card">
+                    <h3>❄️ Ice</h3>
+                    <p>Biting cold freezes the air and ground, numbing flesh and slowing movement. Can encase enemies in frost, rendering them brittle and vulnerable.</p>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Constrained</li>
+                        <li>Dislocation</li>
+                        <li>Slowed (End Next)</li>
+                        <li>Pinned</li>
+                    </ol>
+                </div>
+
+                <div class="damage-card">
+                    <h3>⚡ Lightning</h3>
+                    <p>Electricity arcs through the air delivering shocking force - the power of storms, crackling with speed and precision.</p>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Additional +3</li>
+                        <li>Blind</li>
+                        <li>Confusion</li>
+                        <li>Pinned</li>
+                    </ol>
+                </div>
+
+                <div class="damage-card">
+                    <h3>☀️ Solar</h3>
+                    <p>Brilliant light and divine radiance smite the unholy and cleanse the corrupt. Channels the power of the sun and holy magic to banish darkness and purify evil.</p>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Additional +3</li>
+                        <li>Blind</li>
+                        <li>Pinned</li>
+                        <li>Evil Banishment</li>
+                    </ol>
+                </div>
+
+                <div class="damage-card">
+                    <h3>🌩️ Thunder</h3>
+                    <p>Concussive force from loud, resonant sounds capable of shaking the earth and shattering eardrums - roaring booms, shockwaves, and the wrath of the skies.</p>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Cleave</li>
+                        <li>Confusion</li>
+                        <li>Deaf</li>
+                        <li>Disarm</li>
+                        <li>Knockback (20ft)</li>
+                    </ol>
+                </div>
+
+                <div class="damage-card">
+                    <h3>☣️ Toxic</h3>
+                    <p>Poison and radiation seep into the body and corrupt it from within - the slow, insidious nature of venomous creatures and noxious fumes.</p>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Additional +2</li>
+                        <li>Blind</li>
+                        <li>Confusion</li>
+                        <li>Coughing</li>
+                        <li>Fear</li>
+                    </ol>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Realm Damage -->
+        <section>
+            <h2>Realm Damage</h2>
+            <div class="damage-grid">
+
+                <div class="damage-card">
+                    <h3>🌿 Nature</h3>
+                    <p>Harnesses the primal forces of the natural world - plants, animals, and the elements. Manifests as thorny vines, swarming insects, or relentless wind and rain.</p>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Constrained</li>
+                        <li>Confusion</li>
+                        <li>Coughing</li>
+                        <li>Disease (Verdant Fever)</li>
+                        <li>Pinned</li>
+                    </ol>
+                </div>
+
+                <div class="damage-card">
+                    <h3>✨ Psychic</h3>
+                    <p>Delves into the mind, bypassing physical defenses to inflict mental torment. Represents telepathic attacks, illusions, and the twisting of thoughts.</p>
+                    <ol>
+                        <li>Additional +1</li>
+                        <li>Blind</li>
+                        <li>Charmed</li>
+                        <li>Concussion</li>
+                        <li>Confusion</li>
+                        <li>Fear</li>
+                    </ol>
+                </div>
+
+                <div class="damage-card">
+                    <h3>☠️ Vozian</h3>
+                    <p>Born from decay, hate, and chaos, Vozian damage embodies corrupting disorder and malevolence. Spreads disease and rot, unraveling order and leaving a lingering taint on the soul.</p>
+                    <ol>
+                        <li>Siphon (Half Damage)</li>
+                        <li>Blind</li>
+                        <li>Coughing</li>
+                        <li>Disease (Infernal Skritches)</li>
+                        <li>Intangible (1 round)</li>
+                        <li>Double Damage</li>
+                    </ol>
+                </div>
+
+                <div class="damage-card damage-card--healing">
+                    <h3>❤️‍🩹 Healing</h3>
+                    <p>Unlike other damage types, healing repairs and restores, mending wounds and revitalizing the body. Draws upon positive energy and restorative magic. Cannot cure conditions or ailments without special intervention.</p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <div id="sidebar-placeholder"></div>
+    <div id="footer-placeholder"></div>
+
+</body>
+
+</html>

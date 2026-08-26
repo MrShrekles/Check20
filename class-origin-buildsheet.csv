@@ -1,0 +1,141 @@
+﻿class,kind,origin,entry,status,note
+tank,path,pure,Titanblood,keep,
+tank,path,arcane,Aberrant,keep,
+tank,path,tech,Centurion,keep,
+tank,path,crystal,Mirror Monk,keep,
+tank,path,nature,Plaguebringer,MOVED,was life
+tank,path,vozian,Skellbund,keep,
+tank,path,chrono,Judicator,keep,
+tank,path,chaos,Child of Fenrir,MOVED,was nature
+tank,path,elemental,Elevant,keep,
+tank,path,dragon,Hoardmarked,keep,
+tank,path,divine,Conviction,keep,
+tank,path,malform,(Bane),NEW - needs writing,juiced-up bane type
+tank,path,death,(Lich Brute),NEW - needs writing,"keep what you kill, lord of the undead"
+tank,path,void,Forsaken,MOVED,was chaos
+tank,talent,pure,Detective,keep,
+tank,talent,arcane,Bannerlord,keep,
+tank,talent,tech,Ironclad,keep,
+tank,talent,crystal,Resonant,keep,
+tank,talent,nature,Tide Sentinel,keep,
+tank,talent,vozian,Damnation,keep,
+tank,talent,chrono,Pugilist,keep,
+tank,talent,chaos,Skinwalker,keep,
+tank,talent,elemental,Firestorm,keep,
+tank,talent,dragon,Cavalier,keep,
+tank,talent,divine,Virtuoso,keep,
+tank,talent,malform,Savage,MOVED,was life
+tank,talent,death,(Zealot),NEW - needs writing,unkillable nightmare; death does not stop pursuit
+tank,talent,void,(Spellbreak),NEW - needs writing,
+support,path,pure,Tactician,keep,
+support,path,arcane,Careward,keep,
+support,path,tech,Mutaneer,keep,
+support,path,crystal,Cryptarch,keep,
+support,path,nature,Gutterkin,keep,
+support,path,vozian,Pactmaker,keep,
+support,path,chrono,Siphon,keep,
+support,path,chaos,Dreamweaver,keep,
+support,path,elemental,Mistcaller,keep,
+support,path,dragon,Ashscale,keep,
+support,path,divine,Shepherd,keep,
+support,path,malform,(Witcher-brewer),NEW - needs writing,"bio-brewer x witcher, virus held within, a little gross"
+support,path,death,Boneclad,MOVED,was life
+support,path,void,(Prevention),NEW - needs writing,"negate harm, prevention not barriers"
+support,talent,pure,Medic,keep,
+support,talent,arcane,Puppeteer,keep,
+support,talent,tech,Alchemystic,keep,
+support,talent,crystal,Manasmith,keep,
+support,talent,nature,Mossheart,keep,
+support,talent,vozian,Barber,keep,
+support,talent,chrono,Harmonizer,keep,
+support,talent,chaos,Billy Boy,keep,
+support,talent,elemental,Flapper,keep,
+support,talent,dragon,Chiropractor,keep,
+support,talent,divine,Tender,keep,
+support,talent,malform,Lifeweaver,MOVED,was life
+support,talent,death,(Helping Hand),NEW - needs writing,"not full minion-lich, a helping hand"
+support,talent,void,(Living Vault),NEW - needs writing,party stores gear in your void - see Careward overlap
+professional,path,pure,Exiled Inquisitor,keep,
+professional,path,arcane,Witch Hunter,keep,
+professional,path,tech,High Executor,keep,
+professional,path,crystal,Mentalist,keep,
+professional,path,nature,Tlamatini,keep,
+professional,path,vozian,Demonologist,keep,
+professional,path,chrono,Strider,keep,
+professional,path,chaos,Chimeric Monk,keep,
+professional,path,elemental,Ashwalker,keep,
+professional,path,dragon,Scaleveil,keep,
+professional,path,divine,(Paladin),NEW - needs writing,High Executor but oath-based; smite as opener
+professional,path,malform,Luminary,MOVED,was life
+professional,path,death,Reaper,MOVED,was divine
+professional,path,void,(Planeswalker),NEW - needs writing,"no reality is real; teleport, pull demons/elementals"
+professional,talent,pure,Gunslinger,keep,
+professional,talent,arcane,Runebinder,keep,
+professional,talent,tech,Futurist,keep,
+professional,talent,crystal,Claimbreaker,keep,
+professional,talent,nature,Thornweaver,keep,
+professional,talent,vozian,Abyssal Translator,keep,
+professional,talent,chrono,Investigator,keep,
+professional,talent,chaos,Soulblade,keep,
+professional,talent,elemental,Steadfast,keep,
+professional,talent,dragon,Dragonkeeper,keep,
+professional,talent,divine,Banished God,keep,
+professional,talent,malform,(Prototype),NEW - needs writing,evolved/shapeshift to suit the need
+professional,talent,death,Ghostborn,MOVED,was life
+professional,talent,void,(Void Cartographer),NEW - needs writing,always knows the way by knowing what is not there
+merchant,path,pure,Warlord,keep,
+merchant,path,arcane,Instructor,keep,
+merchant,path,tech,Bio-Brewer,keep,
+merchant,path,crystal,Glasshand,keep,
+merchant,path,nature,Sovereign,keep,
+merchant,path,vozian,Kingpin,keep,
+merchant,path,chrono,Bureaucrat,keep,
+merchant,path,chaos,Gambler,keep,
+merchant,path,elemental,Musafir ,keep,
+merchant,path,dragon,Nightshade,keep,
+merchant,path,divine,Equilibrist ,keep,
+merchant,path,malform,Incantatore,MOVED,was life
+merchant,path,death,(Reaper-dealer),NEW - needs writing,card given to a creature; death condition pays a resource
+merchant,path,void,(Conductor),NEW - needs writing,realm-travel that grows into a train; creates industry
+merchant,talent,pure,Silvertongue,keep,
+merchant,talent,arcane,Forger,keep,
+merchant,talent,tech,Smith,keep,
+merchant,talent,crystal,Showman,keep,
+merchant,talent,nature,Chef,keep,
+merchant,talent,vozian,Cursed,keep,
+merchant,talent,chrono,Bibliotaph,keep,
+merchant,talent,chaos,Witch,keep,
+merchant,talent,elemental,Lapidary,keep,
+merchant,talent,dragon,Caravan Leader,keep,
+merchant,talent,divine,Godtouched,keep,
+merchant,talent,malform,(Biologist),NEW - needs writing,study of the form - how do they change it
+merchant,talent,death,Undertaker,MOVED,was life
+merchant,talent,void,(Lorekeeper),NEW - needs writing,"write history, or your version of it"
+mage,path,pure,Mystic,keep,
+mage,path,arcane,Wizard,keep,
+mage,path,tech,Engineer,keep,
+mage,path,crystal,Glasswrite,keep,
+mage,path,nature,Warden,keep,
+mage,path,vozian,Warlock,keep,
+mage,path,chrono,Chronomancer,keep,
+mage,path,chaos,Entropic,keep,
+mage,path,elemental,Avatar,keep,
+mage,path,dragon,Dracomancer ,keep,
+mage,path,divine,Cardinal,keep,
+mage,path,malform,(Colossus),NEW - needs writing,a mage built for big
+mage,path,death,Occultist,MOVED,was life
+mage,path,void,(Psionic),NEW - needs writing,see Mentalist overlap
+mage,talent,pure,Hypnarch,keep,
+mage,talent,arcane,Tattooist,keep,
+mage,talent,tech,Vaulthexer,keep,
+mage,talent,crystal,Chrysoracle,keep,
+mage,talent,nature,Glimrunner,keep,
+mage,talent,vozian,Kusari,keep,
+mage,talent,chrono,Chronospore,keep,
+mage,talent,chaos,Blinkjack,keep,
+mage,talent,elemental,Moonshiver,keep,
+mage,talent,dragon,Dragonbound,keep,
+mage,talent,divine,Chainbinder,keep,
+mage,talent,malform,(Monster Maker),NEW - needs writing,
+mage,talent,death,Ghostgrifter,MOVED,was life
+mage,talent,void,(Spellnegate),NEW - needs writing,negate spell words + origins

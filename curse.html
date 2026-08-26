@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curses &amp; Diseases | Armored Noir - Check20</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/codex-ui.css">
+    <link rel="stylesheet" href="styles/spells.css">
+    <link rel="stylesheet" href="styles/species.css">
+    <link rel="stylesheet" href="styles/curse.css">
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+    <script src="scripts/main.js" defer></script>
+    <script src="scripts/codex-ui.js" defer></script>
+    <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/origin-colors.js" defer></script>
+    <script src="scripts/curses-data.js" defer></script>
+    <script src="scripts/curses-render.js" defer></script>
+    <script src="scripts/curses-ui.js" defer></script>
+    <script src="scripts/footer.js" defer></script>
+</head>
+
+<body data-page-title="Curses &amp; Diseases">
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
+    <main>
+        <div class="species-sticky-header">
+            <div class="species-toolbar-main">
+                <button class="species-filter-toggle" id="curse-filter-toggle">
+                    <span class="filter-pip"></span>
+                    Filters
+                    <span class="filter-chevron">▼</span>
+                </button>
+                <input id="curse-search" type="search" placeholder="Search curses &amp; diseases…" autocomplete="off" spellcheck="false">
+                <div class="codex-size-wrap">
+                    <span>Size</span>
+                    <div class="codex-size-btns" id="codex-size-btns">
+                        <button class="codex-size-btn" data-size="small">S</button>
+                        <button class="codex-size-btn active" data-size="medium">M</button>
+                        <button class="codex-size-btn" data-size="large">L</button>
+                    </div>
+                </div>
+                <span id="curse-count"></span>
+            </div>
+            <nav id="lineage-tabs" class="lineage-tabs"></nav>
+        </div>
+
+        <div class="species-filter-panel" id="curse-filter-panel">
+            <div class="species-filter-actions">
+                <button id="curse-clear">Clear</button>
+                <button id="curse-collapse-all">Collapse all</button>
+                <button id="curse-expand-all">Expand all</button>
+            </div>
+            <div class="filter-group" data-key="source">
+                <h4>Source</h4>
+            </div>
+        </div>
+
+        <!-- ── Intro panel ── -->
+        <details class="curse-intro-panel">
+            <summary>About Curses &amp; Diseases</summary>
+            <div class="curse-intro-body">
+                <div class="two-col">
+                    <div>
+                        <h3>Curses as Character Expression</h3>
+                        <p>Curses are not just penalties. In Check20, they are powerful tools for customizing your character and unlocking new options. A curse might change how you approach combat, interact with NPCs, or explore the world. They introduce a tradeoff: you gain a unique advantage or power, but it comes with a cost that alters your gameplay or roleplay. Instead of thinking of curses as negative status effects, treat them as alternative talents built to deepen your choices, not punish them.</p>
+                        <p>Curses may come from gods, spirits, forbidden tech, or alien realms. Some curses evolve with you, growing stronger or changing over time.</p>
+                    </div>
+                    <div>
+                        <h3>Curses as Progression</h3>
+                        <p>Just like classes, paths, and talents, curses can progress. A curse begins with a single quirk or ability, but as you lean into its effects, it can develop through additional tiers. Curses follow a similar structure to talents: up to 10 steps, each one advancing your bond with the force that cursed you. This makes curses a third track of character growth alongside path and talent progression.</p>
+                        <h3>Diseases</h3>
+                        <p>Diseases in Check20 are not simple conditions - they are living narratives. Each disease evolves over time, growing more severe as it spreads through the body or soul. While curses can be wielded, diseases consume. Most require rare remedies, spiritual intervention, or surgical removal if they can be cured at all.</p>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <p class="curse-no-results" id="curse-no-results">No results found.</p>
+
+        <section id="curse-sections" class="species-sections"></section>
+    </main>
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

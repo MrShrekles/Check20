@@ -1,0 +1,10 @@
+.display {
+    padding: 10px;
+    background: var(--medium, #2e2e2e);
+    border: 1px solid var(--theme, #5c8a8a);
+    border-radius: 8px;
+    margin: 0.75rem 0;
+    padding: 0.5rem 1rem;
+    transition: all 0.25s ease;
+    overflow: hidden;
+}

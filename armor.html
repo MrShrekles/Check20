@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armor and Defense</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/armor.css">
+    <link rel="stylesheet" href="styles/sidebar.css">
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+    <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/armor.js" defer></script>
+    <script src="scripts/footer.js" defer></script>
+</head>
+
+<body data-page-title="Armor">
+    <div id="header-placeholder"></div>
+
+    <main>
+
+        <section id="armor">
+            <div class="two-column">
+                <div class="column">
+                    <h1>Armor</h1>
+
+                    <p>
+                        When adventuring, armor is your primary line of defense. It's essential to ally with a
+                        blacksmith who can repair and upgrade your gear. In combat, armor absorbs hits before they
+                        affect your health. Remember, armor is not destroyed when its protection points are
+                        depleted; it
+                        simply can't offer protection until repaired.
+                    </p>
+                    <p>
+                        Armor also shields against poison, as venom requires direct contact with the skin to be
+                        effective. Be cautious, as wearing too much heavy gear can impose the 'pinned' condition,
+                        hindering your movement.
+                    </p>
+                    <ul>
+                        <li><strong>One Set Only:</strong> You can only wear one set of armor at a time. Armor does not stack with another full set.</li>
+                        <li><strong>Mix & Match:</strong> You may swap individual pieces (such as gloves, helmet, or jacket) with another set, but you always use the Armor Value of your primary set until the replacement piece outweighs or overrides it.</li>
+                        <li><strong>Primary Set:</strong> The armor with the highest overall protection counts as your active set.</li>
+                        <li><strong>Shields:</strong> Only apply while equipped and in use; they do not count as part of a set.</li>
+                        <li><strong>Limits:</strong> Stacking armor for extra defense is not allowed unless a special feature or rule explicitly says so.</li>
+                    </ul>
+                    <h1>Types of Mundane Armor</h1>
+                    <p><strong>Armor Penalties: </strong> If a check's modifier is negative, it is considered a penalty.
+                        Features that negate penalties can remove these effects.
+                    </p>
+                    <p><strong>Magic Penalty:</strong> This is in reference to your spellcasting check, whatever it
+                        might be for
+                        your Class, Path, Talent, and so on</p>
+
+                    <!-- Shield Bash -->
+                    <h4>Shield Bash</h4>
+                    <p>
+                        Use your shield as a weapon. Make a Strength check as an off-action to deal
+                        <code> [[1d4]] </code>
+                        impact damage to an enemy.
+                    </p>
+                </div>
+                <div class="column" id="smith">
+                    <!-- Repair Methods -->
+                    <div class="features">
+                        <h4>Repair Methods</h4>
+                        <ul class="repair-methods">
+                            <li>
+                                <strong>Quick Repair:</strong> Characters must succeed in a Crafting check once per
+                                hour
+                                to repair [[1d6]] + Crafting points of armor integrity. This represents quick fixes
+                                using whatever materials are at hand.
+                            </li>
+                            <li>
+                                <strong>Standard Repair:</strong> Utilizing a workbench, characters can repair
+                                armor,
+                                restoring half the total armor value + Crafting points per successful check per
+                                hour.
+                                This involves physical repairs like patching holes or replacing segments.
+                            </li>
+                            <li>
+                                <strong>Magical Repair:</strong> Using Mana, repair [[1d6]] per Mana.
+                                This is an action requiring 1 Mana.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <!-- Filter/Sort Controls -->
+        <section>
+            <div class="armor-controls">
+                <select id="armor-sort-options" style="width: 300px;">
+                    <option value="name">Sort by Name</option>
+                    <option value="armor">Sort by Armor</option>
+                    <option value="bulk">Sort by Bulk</option>
+                    <option value="cost">Sort by Cost</option>
+                </select>
+                <input type="text" id="armor-search" style="width: 300px;" placeholder="Search armor..." />
+            </div>
+        </section>
+
+        <!-- Armor Grid Container -->
+        <div id="armor-grid" class="armor-grid"></div>
+
+    </main>
+
+
+    <div id="sidebar-placeholder"></div>
+    <div id="footer-placeholder"></div>
+
+</body>
+
+</html>

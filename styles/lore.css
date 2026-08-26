@@ -1,0 +1,35 @@
+.moment-card {
+  background: var(--theme-1);
+  border: 1px solid var(--theme-3);
+  border-radius: var(--border-radius);
+  padding: var(--padding);
+  box-shadow: var(--bow-shadow);
+}
+
+.card-image {
+  max-width: 25vw;
+  margin-left: 1rem;
+  border-radius: 8px;
+}
+
+.card-points ul {
+  margin-left: 1rem;
+}
+
+.magic-eyes-list li {
+  margin-bottom: 0.3rem;
+}
+
+.card-holder {
+  display: grid;
+  grid-template-columns: auto 40vw;
+  grid-auto-flow: dense;
+  padding: var(--padding);
+  gap: var(--padding);
+}
+
+#demons {
+background-image: url('../assets/images/Ordealis2.png');
+background-size: 100% 100%;
+background-color: rgb(65, 10, 27);
+}

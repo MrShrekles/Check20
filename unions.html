@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unions | Armored Noir - Check20</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/codex-ui.css">
+    <link rel="stylesheet" href="styles/spells.css">
+    <link rel="stylesheet" href="styles/unions.css">
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+    <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/codex-ui.js"></script>
+    <script src="scripts/unions-data.js" defer></script>
+    <script src="scripts/unions-render.js" defer></script>
+    <script src="scripts/unions-ui.js" defer></script>
+    <script src="scripts/footer.js" defer></script>
+</head>
+
+<body data-page-title="Unions">
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
+    <main>
+        <div class="unions-sticky-header">
+            <div class="unions-toolbar">
+                <input id="unions-search" type="search" placeholder="Search unions, goods, features…" autocomplete="off" spellcheck="false" />
+                <select id="unions-sort">
+                    <option value="name">Sort: Name (A–Z)</option>
+                    <option value="opposition">Sort: Opposition</option>
+                </select>
+                <div class="codex-size-wrap">
+                    <span>Size</span>
+                    <div class="codex-size-btns" id="codex-size-btns">
+                        <button class="codex-size-btn" data-size="small">S</button>
+                        <button class="codex-size-btn active" data-size="medium">M</button>
+                        <button class="codex-size-btn" data-size="large">L</button>
+                    </div>
+                </div>
+                <div class="unions-actions">
+                    <button id="unions-expand-all">Expand all</button>
+                    <button id="unions-collapse-all">Collapse all</button>
+                </div>
+                <span id="unions-count" class="unions-count"></span>
+            </div>
+        </div>
+
+        <p class="unions-no-results" id="unions-no-results">No unions found.</p>
+
+        <section id="unions-sections" class="spell-grid"></section>
+    </main>
+    <div id="footer-placeholder"></div>
+
+
+</body>
+</html>

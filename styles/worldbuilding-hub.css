@@ -1,0 +1,504 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   WORLDBUILDING HUB
+   ---------------------------------------------------------------------------
+   Three stacked zones:  Session Board / Generator Hub / Hex Generator.
+   Every generator shares one control bar:
+
+       [ Primary ]  [ ×N ] [ setting ] ...................... [ Clear ]
+
+   Loaded LAST, and it declares properties defensively, because several legacy
+   element-level rules reach into this page:
+
+       main.css     summary { background-color: var(--theme) }
+       main.css     select  { width: 100% }
+       main.css     nav     { display:flex; flex-direction:column; background }
+       main.css     button:hover { transform: scale(1.1) }
+       monster.css  #generate-* { width:100%; font-size:2rem }   <- ids, so a
+                    class can never win; the primary styling below is restated
+                    on those ids instead of fighting them.
+
+   Anything left undeclared here loses to those. Add properties, don't assume.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Page rhythm ───────────────────────────────────────────────────────── */
+/* Surface stack. body is var(--dark) = rgb(30,30,30), which is the SAME colour
+   as var(--dark-2) - so cards painted with --dark-2 vanish into the page. These
+   lift off it instead, with a hint of the teal family so it reads as the theme
+   rather than neutral grey. Tune the whole page from these four values. */
+.wb-main {
+    --surface:      #252c2c;   /* card body            */
+    --surface-head: #2c3535;   /* card header, lifted  */
+    --surface-sunk: #1a1f1f;   /* inputs, recessed     */
+    --hairline:     rgba(255, 255, 255, .09);
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.wb-main details { margin: 0; }
+.wb-main button:hover { transform: none; }
+
+.wb-card,
+.wb-card.gen-panel {
+    display: block;
+    padding: 0;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 18px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .35);
+    overflow: hidden;
+}
+
+/* Header. `summary` is styled globally in main.css, so every visual property
+   has to be restated - background especially. */
+.wb-card > summary,
+.wb-card > summary.gen-panel-summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 15px 18px;
+    text-align: left;
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--surface-head);
+    background-color: var(--surface-head);
+    border: none;
+    border-bottom: 1px solid var(--hairline);
+    border-radius: 0;
+    box-shadow: none;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+}
+.wb-card > summary:hover { background-color: #333d3d; color: var(--text-plain); }
+.wb-card > summary::-webkit-details-marker { display: none; }
+.wb-card > summary::after,
+.wb-card > summary.gen-panel-summary::after {
+    content: '⌄';
+    margin-left: auto;
+    font-size: 1.15rem;
+    line-height: 1;
+    opacity: .4;
+    transition: transform .2s ease;
+}
+.wb-card[open] > summary::after { transform: rotate(180deg); }
+.wb-card:not([open]) > summary { border-bottom-color: transparent; }
+
+.wb-count {
+    padding: 2px 9px;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: var(--dark-1);
+    background: var(--gold-2);
+    border-radius: 20px;
+}
+.wb-count:empty { display: none; }
+
+/* ── 2. Bubble switcher ───────────────────────────────────────────────────── */
+.hub-bubbles {
+    display: flex;
+    flex-direction: row;          /* main.css sets column on <nav> and friends */
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 4px;
+    margin: 0;
+    padding: 14px 14px 16px;
+    background: transparent;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+.hub-bubble {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 88px;
+    padding: 6px 2px;
+    font-size: inherit;
+    background: transparent;
+    background-color: transparent;
+    border: none;
+    border-radius: 12px;
+    box-shadow: none;
+    cursor: pointer;
+    transition: background-color .16s ease;
+}
+.hub-bubble:hover { background-color: rgba(255, 255, 255, .035); }
+
+.hub-bubble-ring {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    font-size: 1.4rem;
+    line-height: 1;
+    background: var(--surface-sunk);
+    border: 2px solid rgba(255, 255, 255, .10);
+    border-radius: 50%;
+    filter: grayscale(.5);
+    opacity: .8;
+    transition: border-color .18s ease, background .18s ease,
+                transform .18s ease, filter .18s ease, opacity .18s ease;
+}
+.hub-bubble:hover .hub-bubble-ring {
+    border-color: rgba(255, 215, 0, .4);
+    transform: translateY(-2px);
+    filter: grayscale(0);
+    opacity: 1;
+}
+
+.hub-bubble-label {
+    font-size: .71rem;
+    line-height: 1.2;
+    letter-spacing: .02em;
+    text-align: center;
+    color: var(--cream);
+    opacity: .5;
+    transition: opacity .18s ease, color .18s ease;
+}
+.hub-bubble:hover .hub-bubble-label { opacity: .9; }
+
+.hub-bubble.is-active .hub-bubble-ring {
+    background: var(--theme-2);
+    border-color: var(--gold-3);
+    box-shadow: 0 0 0 4px rgba(255, 215, 0, .10);
+    filter: grayscale(0);
+    opacity: 1;
+}
+.hub-bubble.is-active .hub-bubble-label {
+    opacity: 1;
+    font-weight: 700;
+    color: var(--text-gold);
+}
+.hub-bubble:focus-visible .hub-bubble-ring { outline: 2px solid var(--gold-3); outline-offset: 3px; }
+
+/* ── Arranging ────────────────────────────────────────────────────────────── */
+/* touch-action stops the browser scrolling the page instead of starting a drag */
+.hub-bubble { touch-action: none; }
+
+.hub-bubbles.is-arranging { cursor: grabbing; }
+.hub-bubbles.is-arranging .hub-bubble { transition: transform .16s ease; }
+.hub-bubbles.is-arranging .hub-bubble:not(.is-dragging) { opacity: .55; }
+
+.hub-bubble.is-dragging { cursor: grabbing; }
+.hub-bubble.is-dragging .hub-bubble-ring {
+    transform: scale(1.12);
+    border-color: var(--gold-3);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .5);
+    filter: grayscale(0);
+    opacity: 1;
+}
+.hub-bubble.is-dragging .hub-bubble-label { opacity: 1; color: var(--text-gold); }
+
+.hub-arrange {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0 14px 14px;
+    font-size: .7rem;
+    letter-spacing: .04em;
+    color: var(--cream);
+    opacity: .3;
+    transition: opacity .16s ease;
+}
+.hub-arrange:hover { opacity: .65; }
+
+/* Reset only appears once there is a custom order to reset. */
+#hub-reset-order { display: none; }
+.hub-arrange[data-custom] #hub-reset-order {
+    display: inline;
+    padding: 0;
+    font-size: inherit;
+    letter-spacing: inherit;
+    color: var(--warm-3);
+    background: none;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    text-decoration: underline;
+    cursor: pointer;
+}
+#hub-reset-order:hover { color: var(--gold-3); background-color: transparent; }
+
+/* ── 3. Stage ─────────────────────────────────────────────────────────────── */
+.hub-stage {
+    border-top: 1px solid var(--hairline);
+    background: transparent;
+}
+.hub-pane { display: none; }
+.hub-pane.is-active { display: block; animation: hub-fade .22s ease; }
+@keyframes hub-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.hub-pane-title {
+    padding: 16px 18px 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-gold);
+}
+.hub-pane-note {
+    padding: 4px 18px 0;
+    font-size: .8rem;
+    line-height: 1.45;
+    color: var(--cream);
+    opacity: .5;
+}
+
+/* ── 4. The one control bar ───────────────────────────────────────────────── */
+.gen-bar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 18px;
+}
+
+/* Primary. Restated on monster.css's ids because an id always beats a class -
+   without this the ids keep width:100% / font-size:2rem. */
+#generate-npc,
+#generate-business,
+#generate-quest,
+#generate-trap,
+#generate-item,
+#roll-hex-btn,
+#roll-travel-btn,
+#go,
+.gen-primary {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 150px;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: .92rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+    text-align: center;
+    color: var(--dark-1);
+    background: var(--gold-2);
+    background-color: var(--gold-2);
+    border: none;
+    border-radius: 10px;
+    box-shadow: none;
+    cursor: pointer;
+    transition: background-color .16s ease, transform .12s ease;
+}
+#generate-npc:hover, #generate-business:hover, #generate-quest:hover,
+#generate-trap:hover, #generate-item:hover, #roll-hex-btn:hover, #go:hover,
+.gen-primary:hover { background-color: var(--gold-3); filter: none; }
+.gen-primary:active { transform: translateY(1px); }
+
+/* Co-equal second action - Hex's Journey. It is in the geometry list above so it
+   loses monster.css's width:100%/font-size:2rem; this block comes later and at
+   equal id specificity, so only the colours are swapped. */
+#roll-travel-btn,
+.gen-primary--alt {
+    color: var(--text-plain);
+    background: var(--theme-3);
+    background-color: var(--theme-3);
+}
+#roll-travel-btn:hover,
+.gen-primary--alt:hover { background-color: var(--theme-alt); }
+
+.gen-opts {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 7px;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* main.css gives every <select> width:100%, which stacks them. */
+.gen-select {
+    appearance: none;
+    width: auto;
+    max-width: 100%;
+    margin: 0;
+    padding: 9px 30px 9px 12px;
+    font-size: .84rem;
+    color: var(--cream);
+    background-color: var(--surface-sunk);
+    background-image: linear-gradient(45deg, transparent 50%, var(--cream) 50%),
+                      linear-gradient(135deg, var(--cream) 50%, transparent 50%);
+    background-position: calc(100% - 16px) 53%, calc(100% - 11px) 53%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    border: 1px solid var(--hairline);
+    border-radius: 9px;
+    box-shadow: none;
+    cursor: pointer;
+    transition: border-color .15s ease, color .15s ease;
+}
+.gen-select:hover { border-color: rgba(255, 215, 0, .4); color: var(--text-plain); }
+.gen-select:focus,
+.gen-select:focus-visible { outline: 2px solid var(--gold-3); outline-offset: 1px; border-color: var(--gold-3); }
+
+.gen-select--batch {
+    min-width: 64px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-gold);
+}
+
+.gen-stepper {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    overflow: hidden;
+    background: var(--surface-sunk);
+    border: 1px solid var(--hairline);
+    border-radius: 9px;
+}
+.gen-stepper-label {
+    padding: 0 10px;
+    font-size: .68rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--cream);
+    opacity: .6;
+}
+.gen-stepper button {
+    width: 32px;
+    margin: 0;
+    padding: 8px 0;
+    font-size: 1.05rem;
+    line-height: 1;
+    color: var(--cream);
+    background: rgba(255, 255, 255, .05);
+    background-color: rgba(255, 255, 255, .05);
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    cursor: pointer;
+}
+.gen-stepper button:hover { background-color: var(--theme-3); color: var(--text-plain); }
+.gen-stepper-val {
+    min-width: 34px;
+    padding: 0 2px;
+    text-align: center;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-gold);
+}
+.gen-stepper input[type="number"] {
+    width: 52px;
+    margin: 0;
+    padding: 8px 6px;
+    text-align: center;
+    font-size: .9rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-gold);
+    background: transparent;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+.gen-stepper input[type="number"]:focus { outline: none; }
+
+/* Clear is destructive and rarely wanted - quiet, and always last. */
+.gen-clear {
+    flex: 0 0 auto;
+    width: auto;
+    margin: 0 0 0 auto;
+    padding: 8px 14px;
+    font-size: .73rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: transparent;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    box-shadow: none;
+    opacity: .45;
+    cursor: pointer;
+    transition: opacity .15s ease, color .15s ease, border-color .15s ease;
+}
+.gen-clear:hover {
+    opacity: 1;
+    color: var(--warm-3);
+    background-color: transparent;
+    border-color: rgba(217, 179, 130, .35);
+}
+
+/* ── 5. Output - no space until there is something to show ────────────────── */
+.gen-output { padding: 0 18px 18px; }
+.gen-output:empty { padding: 0; }
+.gen-output:empty::before {
+    content: attr(data-empty);
+    display: block;
+    padding: 10px 18px 26px;
+    text-align: center;
+    font-size: .82rem;
+    font-style: italic;
+    color: var(--cream);
+    opacity: .3;
+}
+
+/* Session Board has no primary action, so its lone Clear reads better inline. */
+#session-board .gen-bar { padding: 12px 18px 0; }
+#session-board .board-empty {
+    margin: 0;
+    padding: 4px 18px 16px;
+    font-size: .82rem;
+    font-style: italic;
+    color: var(--cream);
+    opacity: .4;
+}
+
+/* ── 6. Hex - its own generator, its own shape ────────────────────────────── */
+.hex-card .gen-primary-group { display: inline-flex; flex-direction: row; gap: 7px; flex: 0 0 auto; }
+.hex-card .gen-primary,
+.hex-card #roll-hex-btn,
+.hex-card #roll-travel-btn { min-width: 122px; }
+
+/* ── 7. Inline reference disclosure ───────────────────────────────────────── */
+.hub-ref { margin: 0 18px 18px; box-shadow: none; }
+.hub-ref > summary {
+    display: block;
+    padding: 9px 0;
+    text-align: left;
+    font-size: .78rem;
+    letter-spacing: .05em;
+    color: var(--cream);
+    background: transparent;
+    background-color: transparent;
+    border-radius: 0;
+    opacity: .55;
+    cursor: pointer;
+    list-style: none;
+}
+.hub-ref > summary:hover { opacity: 1; background-color: transparent; box-shadow: none; }
+.hub-ref .two-column { font-size: .8rem; margin-top: 4px; }
+.hub-ref ul { padding-left: 1.1em; margin: 4px 0; }
+.hub-ref li { margin-bottom: 3px; line-height: 1.45; }
+
+/* ── 8. Mobile ────────────────────────────────────────────────────────────── */
+@media (max-width: 750px) {
+    .wb-main { gap: 12px; }
+    .hub-bubbles { gap: 2px; padding: 10px 6px 12px; }
+    .hub-bubble { width: 74px; }
+    .hub-bubble-ring { width: 46px; height: 46px; font-size: 1.15rem; }
+    .hub-bubble-label { font-size: .64rem; }
+    .gen-bar { padding: 12px; }
+    #generate-npc, #generate-business, #generate-quest, #generate-trap,
+    #generate-item, #roll-hex-btn, #go, .gen-primary { flex: 1 1 100%; min-width: 0; }
+    .hex-card .gen-primary-group { flex: 1 1 100%; }
+    .hex-card #roll-hex-btn, .hex-card #roll-travel-btn { flex: 1 1 0; min-width: 0; }
+    .gen-clear { margin-left: 0; }
+    .gen-output { padding: 0 12px 12px; max-height: 500px; overflow-y: auto; }
+}

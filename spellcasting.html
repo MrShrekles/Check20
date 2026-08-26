@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spellcasting | Armored Noir - Check20</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/codex-ui.css">
+    <link rel="stylesheet" href="styles/spells.css">
+    <link rel="stylesheet" href="styles/toolbar-mobile.css">
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+    <script src="scripts/main.js" defer></script>
+    <script src="scripts/codex-ui.js"></script>
+    <script src="scripts/origin-colors.js"></script>
+    <script src="scripts/spells.js"></script>
+    <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/spellcraft.js" defer></script>
+    <script src="scripts/toolbar-mobile.js" defer></script>
+    <script src="scripts/footer.js" defer></script>
+</head>
+
+<body data-page-title="Spellcasting">
+    <div id="header-placeholder"></div>
+    <main>
+
+        <!-- Tab Navigation -->
+        <div id="spell-tabs">
+            <button class="tab-btn" data-tab="spellcraft">Spellcraft</button>
+            <button class="tab-btn active" data-tab="spellbook">Spellbook</button>
+        </div>
+
+        <!-- ===================== SPELLCRAFT TAB ===================== -->
+        <div id="tab-spellcraft" class="tab-content">
+
+            <!-- Quick Rules Reference -->
+            <details class="craft-rules-panel">
+                <summary>📜 Spellcasting Rules Reference</summary>
+                <div class="craft-rules-grid">
+                    <div class="craft-rule">
+                        <strong>Requirements</strong>
+                        <p>Spellcasting requires voice and gesture. Restraints or silence hinders magic.</p>
+                    </div>
+                    <div class="craft-rule">
+                        <strong>Casting</strong>
+                        <p>Make a Spellcasting check (or Spirit). Default cost is 1 Action. Double MN for Half/Off-Action. Add +1 MN to no-cast spells.</p>
+                    </div>
+                    <div class="craft-rule">
+                        <strong>Targeting</strong>
+                        <p>Requires sensory perception of the target.</p>
+                    </div>
+                    <div class="craft-rule">
+                        <strong>Mana</strong>
+                        <p>Recover 1 on Press On. Recover all on Long Rest. Requires Spirit 2+ to cast (grants 1 MN).</p>
+                    </div>
+                    <div class="craft-rule">
+                        <strong>Summoning</strong>
+                        <p>Cannot summon more creatures than half your Spellcasting check.</p>
+                    </div>
+                    <div class="craft-rule">
+                        <strong>Conjure Location</strong>
+                        <p>Manifest spells must target unoccupied space. No conjuring mid-air unless the creature flies.</p>
+                    </div>+
+                </div>
+            </details>
+
+            <!-- Spell Construction Flow -->
+            <div id="spellcraft-flow">
+
+                <!-- Step 1: Manner -->
+                <div class="craft-step craft-step--revealed" id="step-manner">
+                    <div class="craft-step-header">
+                        <span class="step-number">1</span>
+                        <h3>Choose a Manner</h3>
+                        <p class="step-sub">How does your will shape the world?</p>
+                    </div>
+                    <div class="card-row" id="manner-cards">
+                        <div class="craft-card manner-card" data-value="Decay">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="card-glyph">☠</span>
+                                    <h4>Decay</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Decay</h4>
+                                    <p>Pain · Damage · Erode · Deteriorate · Weaken · Disintegrate · Corrode</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="craft-card manner-card" data-value="Discern">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="card-glyph">👁</span>
+                                    <h4>Discern</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Discern</h4>
+                                    <p>Sense · Perceive · Detect · Insight · Awareness</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="craft-card manner-card" data-value="Domineer">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="card-glyph">Ω</span>
+                                    <h4>Domineer</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Domineer</h4>
+                                    <p>Control · Influence · Command · Dominate · Overpower</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="craft-card manner-card" data-value="Manifest">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="card-glyph">✦</span>
+                                    <h4>Manifest</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Manifest</h4>
+                                    <p>Create · Craft · Summon · Shape · Build</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Transmission -->
+                <div class="craft-step craft-step--locked" id="step-transmission">
+                    <div class="craft-step-header">
+                        <span class="step-number">2</span>
+                        <h3>Choose a Transmission</h3>
+                        <p class="step-sub">What force or element carries your intent?</p>
+                    </div>
+                    <div class="card-row card-row--wide" id="transmission-cards">
+                        <div class="craft-card transmission-card" data-value="Aether">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="card-glyph">✨</span>
+                                    <h4>Aether</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Aether</h4>
+                                    <p>Light · Spirit · Music · Vibration · Noise · Radiation · Solar · Vision · Shadows</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="craft-card transmission-card" data-value="Astral">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="card-glyph">⟳</span>
+                                    <h4>Astral</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Astral</h4>
+                                    <p>Time · Portal · Speed · Slow · Chronology · Distance · Space · Teleportation</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="craft-card transmission-card" data-value="Corpus">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="card-glyph">♥</span>
+                                    <h4>Corpus</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Corpus</h4>
+                                    <p>Life · Harm · Blood · Emotion · Thought · Perception · Influence · Vitality · Soul</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="craft-card transmission-card" data-value="Elemental">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="card-glyph">🜂</span>
+                                    <h4>Elemental</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Elemental</h4>
+                                    <p>Fire · Heat · Cold · Frost · Water · Ice · Steam · Acid · Poison · Earth · Lava · Wind</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="craft-card transmission-card" data-value="Material">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="card-glyph">⚙</span>
+                                    <h4>Material</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Material</h4>
+                                    <p>Metal · Wood · Stone · Clay · Tools · Weapons · Structures · Minerals · Constructs · Gears</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="craft-card transmission-card" data-value="Verdance">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="card-glyph">🌿</span>
+                                    <h4>Verdance</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Verdance</h4>
+                                    <p>Growth · Crops · Plants · Roots · Vines · Fungi · Terrain · Seasons · Animals · Mold</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Intent -->
+                <div class="craft-step craft-step--locked" id="step-intent">
+                    <div class="craft-step-header">
+                        <span class="step-number">3</span>
+                        <h3>Choose a Base Intent</h3>
+                        <p class="step-sub">How much power do you pour in? Range, duration, and target will add to this cost.</p>
+                    </div>
+                    <div class="card-row card-row--intent" id="intent-cards">
+                        <div class="craft-card intent-card" data-value="Light Whisper" data-MN="0" data-level="0">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="MN-badge">0 MN</span>
+                                    <h4>Light Whisper</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Light Whisper</h4>
+                                    <p>Tiny effects, cantrips, basic sensory tricks.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="craft-card intent-card" data-value="Whisper" data-MN="1" data-level="1">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="MN-badge">1 MN</span>
+                                    <h4>Whisper</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Whisper</h4>
+                                    <p>1d6+1 dmg. Small elemental effects, minor illusions.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="craft-card intent-card" data-value="Surge" data-MN="3" data-level="3">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="MN-badge">3 MN</span>
+                                    <h4>Surge</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Surge</h4>
+                                    <p>3d6+3 dmg. Move medium objects, enhance abilities.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="craft-card intent-card" data-value="Shout" data-MN="6" data-level="6">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="MN-badge">6 MN</span>
+                                    <h4>Shout</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Shout</h4>
+                                    <p>6d6+6 dmg. Break barriers, moderate healing or protection.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="craft-card intent-card" data-value="Roar" data-MN="9" data-level="9">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="MN-badge">9 MN</span>
+                                    <h4>Roar</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Roar</h4>
+                                    <p>9d6+9 dmg. Devastate battlefields, topple walls.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="craft-card intent-card" data-value="Storm" data-MN="12" data-level="12">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="MN-badge">12 MN</span>
+                                    <h4>Storm</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Storm</h4>
+                                    <p>12d6+12 dmg. Collapse buildings, large-scale destruction.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="craft-card intent-card" data-value="Cataclysm" data-MN="24" data-level="24">
+                            <div class="card-inner">
+                                <div class="card-front"><span class="MN-badge">24 MN</span>
+                                    <h4>Cataclysm</h4>
+                                </div>
+                                <div class="card-back">
+                                    <h4>Cataclysm</h4>
+                                    <p>24d6+24 dmg. Reshape terrain, raise dead, grant wishes.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Details + Cost -->
+                <div class="craft-step craft-step--locked" id="step-details">
+                    <div class="craft-step-header">
+                        <span class="step-number">4</span>
+                        <h3>Define Your Spell</h3>
+                        <p class="step-sub">Range, duration, and target shape the final cost.</p>
+                    </div>
+
+                    <div class="craft-details-grid">
+                        <div class="craft-details-left">
+
+                            <!-- Live formula bar -->
+                            <div id="craft-summary">
+                                <div class="summary-formula">
+                                    <span id="sum-manner" class="sum-pill sum-manner">-</span>
+                                    <span class="sum-plus">+</span>
+                                    <span id="sum-transmission" class="sum-pill sum-transmission">-</span>
+                                    <span class="sum-plus">+</span>
+                                    <span id="sum-intent" class="sum-pill sum-intent">-</span>
+                                </div>
+                                <p id="sum-damage" class="sum-damage"></p>
+                            </div>
+
+                            <!-- Range toggles -->
+                            <div class="toggle-group">
+                                <div class="toggle-group-header">
+                                    <label>Range</label>
+                                    <span class="toggle-cost-hint">Short +1 · Medium +2 · Long/Visible/Known +3</span>
+                                </div>
+                                <div class="toggle-row" id="toggle-range">
+                                    <button class="MN-toggle" data-value="Self">Self</button>
+                                    <button class="MN-toggle" data-value="Touch">Touch</button>
+                                    <button class="MN-toggle" data-value="Reach">Reach</button>
+                                    <button class="MN-toggle" data-value="Melee">Melee</button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="Short">Short <em>+1</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="Medium">Medium <em>+2</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="Long">Long <em>+3</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="Visible">Visible <em>+3</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="Known">Known <em>+3</em></button>
+                                </div>
+                            </div>
+
+                            <!-- Duration toggles -->
+                            <div class="toggle-group">
+                                <div class="toggle-group-header">
+                                    <label>Duration</label>
+                                    <span class="toggle-cost-hint">1 Min +1 · 1 Hr +2 · 8 Hr +3 · 1 Day/Long Rest +4 · Permanent min 12 MN</span>
+                                </div>
+                                <div class="toggle-row" id="toggle-duration">
+                                    <button class="MN-toggle" data-value="Instant">Instant</button>
+                                    <button class="MN-toggle" data-value="End of Next Turn">End of Next Turn</button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="1 Minute">1 Minute <em>+1</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="1 Hour">1 Hour <em>+2</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="8 Hours">8 Hours <em>+3</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="1 Day">1 Day <em>+4</em></button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="Until Long Rest">Until Long Rest <em>+4</em></button>
+                                    <button class="MN-toggle MN-toggle--cost toggle-locked" data-value="Permanent" title="Requires Storm or Cataclysm base">Permanent <em>min 12</em></button>
+                                </div>
+                            </div>
+
+                            <!-- Target toggles -->
+                            <div class="toggle-group">
+                                <div class="toggle-group-header">
+                                    <label>Target</label>
+                                    <span class="toggle-cost-hint">Area = same range as spell +2 MN</span>
+                                </div>
+                                <div class="toggle-row" id="toggle-target">
+                                    <button class="MN-toggle" data-value="Creature">Creature</button>
+                                    <button class="MN-toggle" data-value="Object">Object</button>
+                                    <button class="MN-toggle MN-toggle--cost" data-value="Area">Area <em>+2</em></button>
+                                </div>
+                                <span id="area-range-note" class="area-note" style="display:none;"></span>
+                            </div>
+
+                            <!-- MN Counter -->
+                            <div id="MN-counter">
+                                <div class="MN-counter-left">
+                                    <span id="MN-total" class="MN-total-number tier-0">0</span>
+                                    <span class="MN-counter-label">MN</span>
+                                </div>
+                                <div class="MN-counter-right">
+                                    <span id="MN-intent-label" class="MN-intent-label">Light Whisper</span>
+                                    <span id="MN-breakdown" class="MN-breakdown">0 base</span>
+                                </div>
+                            </div>
+
+                            <!-- Name + Effect -->
+                            <div class="detail-fields">
+                                <div class="builder-field">
+                                    <label for="builder-name">Spell Name <span class="optional">(optional)</span></label>
+                                    <input type="text" id="builder-name" placeholder="e.g. Thornwall, Voidpulse..." />
+                                </div>
+                                <div class="builder-field builder-field--full">
+                                    <label for="builder-effect">Effect Description</label>
+                                    <textarea id="builder-effect" rows="3" placeholder="Describe what the spell does..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="builder-actions">
+                                <button id="builder-generate">Build Spell</button>
+                                <button id="builder-clear" class="secondary">Start Over</button>
+                            </div>
+                        </div>
+
+                        <!-- Preview -->
+                        <div class="builder-preview" id="builder-preview">
+                            <div class="preview-placeholder">
+                                <p>Your spell preview will appear here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- end #spellcraft-flow -->
+
+        </div>
+        <!-- end #tab-spellcraft -->
+
+        <!-- ===================== SPELLBOOK TAB ===================== -->
+        <div id="tab-spellbook" class="tab-content active">
+
+            <!-- Sticky control toolbar -->
+            <div id="spellbook-toolbar">
+                <div class="spellbook-toolbar-main">
+                    <button class="spellbook-filter-toggle" id="spellbook-filter-toggle">
+                        <span class="filter-pip"></span>
+                        Filters
+                        <span class="filter-chevron">▼</span>
+                    </button>
+                    <input id="spell-search" type="search" placeholder="Search spells…" autocomplete="off" spellcheck="false">
+                    <div class="codex-size-wrap">
+                        <span>Size</span>
+                        <div class="codex-size-btns" id="codex-size-btns">
+                            <button class="codex-size-btn" data-size="small">S</button>
+                            <button class="codex-size-btn active" data-size="medium">M</button>
+                            <button class="codex-size-btn" data-size="large">L</button>
+                        </div>
+                    </div>
+                    <span id="spell-count" class="spell-count"></span>
+                </div>
+
+                <div class="spellbook-filter-panel" id="spellbook-filter-panel">
+                    <div class="filter-row">
+                        <span class="control-label">Sort</span>
+                        <div id="sort-toggles">
+                            <button data-sort="name">Name</button>
+                            <button data-sort="range">Range</button>
+                            <button data-sort="duration">Duration</button>
+                            <button data-sort="origin" class="active">Origin</button>
+                        </div>
+                    </div>
+                    <div class="filter-row">
+                        <span class="control-label">Intent</span>
+                        <div id="intent-toggles">
+                            <button data-intent="Light Whisper">Light Whisper</button>
+                            <button data-intent="Whisper">Whisper</button>
+                            <button data-intent="Surge">Surge</button>
+                            <button data-intent="Shout">Shout</button>
+                            <button data-intent="Roar">Roar</button>
+                            <button data-intent="Storm">Storm</button>
+                            <button data-intent="Cataclysm">Cataclysm</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Built from ORIGINS in scripts/origin-colors.js by buildOriginTabs(). -->
+                <nav id="origin-toggles" class="origin-tabs"></nav>
+
+                <div class="spellbook-actions-row">
+                    <div class="spellbook-actions">
+                        <button id="spellbook-clear">Clear</button>
+                        <button id="expand-all">Expand All</button>
+                        <button id="collapse-all">Collapse All</button>
+                    </div>
+                </div>
+            </div>
+
+            <section id="spells">
+                <div class="spell-grid" id="spell-grid"></div>
+            </section>
+
+        </div>
+        <!-- end #tab-spellbook -->
+
+    </main>
+    <div id="sidebar-placeholder"></div>
+    <div id="footer-placeholder"></div>
+
+
+</body>
+
+</html>

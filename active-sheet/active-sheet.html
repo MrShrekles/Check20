@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Active Sheet</title>
+
+    <link rel="icon" href="../assets/icons/check20-app.png" type="image/png" />
+    <link rel="apple-touch-icon" href="../assets/icons/check20-app.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#1b2c2c" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="ARC20" />
+    <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
+    <link rel="stylesheet" href="styles/active-sheet.css" />
+    <link rel="stylesheet" href="styles/chat-toast.css" />
+
+    <script src="../scripts/tooltips.js" defer></script>
+
+    <!-- page logic -->
+    <script src="../scripts/notifications.js" defer></script>
+    <script src="../scripts/automod-wordlist.js" defer></script>
+    <script src="../scripts/arc-shared.js" defer></script>
+    <script src="../scripts/chat-cards.js" defer></script>
+    <script src="../scripts/chat-watch.js" defer></script>
+    <script type="module" src="../scripts/firebase.js"></script>
+    <script src="../scripts/analytics.js" defer></script>
+    <script src="../scripts/active-sheet.js" defer></script>
+</head>
+
+<body data-page-title="Active-Sheet">
+    <main class="app" id="app">
+        <div class="app-topbar">
+            <a href="home.html" class="topbar-home" aria-label="Character Home">⌂</a>
+            <span class="topbar-name" id="topbar-name"></span>
+            <button class="topbar-init-btn js-roll-initiative" type="button" title="Roll Initiative" aria-label="Roll Initiative">⚡ Init</button>
+            <a href="../../index.html" class="topbar-settings-btn topbar-settings-btn--link" aria-label="Main Site">Site↗</a>
+            <button class="topbar-settings-btn" id="btn-settings" type="button" aria-label="Settings">⚙</button>
+        </div>
+
+        <!-- Page panels (switch via bottom nav) -->
+        <section class="panel-stack" id="panel-stack">
+            <!-- PLAY -->
+            <section class="panel is-active" id="panel-play" role="region" aria-label="Play">
+
+                <!-- Play / Bio tab row -->
+                <div class="play-tab-row">
+                    <button class="play-tab is-active" data-play-tab="play" type="button">Play</button>
+                    <button class="play-tab" data-play-tab="bio" type="button">Bio</button>
+                </div>
+
+                <!-- Play tab content -->
+                <div class="play-tab-content is-active" id="play-tab-play">
+
+                <!-- Quick Checks -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Checks</h2>
+                        <button class="gear-btn" data-editor="checks-editor" type="button" aria-label="Edit check modifiers" title="Edit check modifiers">⚙</button>
+                    </div>
+                    <div class="section-editor" id="checks-editor">
+                        <div class="cet">
+                            <div class="cet-header">
+                                <span></span>
+                                <span>Check</span>
+                                <span class="cet-bon-hdr">Bonus</span>
+                            </div>
+                            <div class="cet-group">Physical</div>
+                            <div class="cet-row"><span class="cet-name">Agility</span>    <input id="edit-mod-agi" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-agi" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Crafting</span>   <input id="edit-mod-cra" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-cra" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Stealth</span>    <input id="edit-mod-ste" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-ste" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Strength</span>   <input id="edit-mod-str" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-str" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Survival</span>   <input id="edit-mod-sur" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-sur" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-group">Mental</div>
+                            <div class="cet-row"><span class="cet-name">Influence</span>  <input id="edit-mod-inf" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-inf" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Intellect</span>  <input id="edit-mod-int" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-int" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Luck</span>       <input id="edit-mod-lck" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-lck" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Observation</span><input id="edit-mod-obs" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-obs" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                            <div class="cet-row"><span class="cet-name">Spirit</span>     <input id="edit-mod-spi" type="number" inputmode="numeric" step="1" value="0" /><input id="edit-bon-spi" type="number" inputmode="numeric" step="1" value="0" class="cet-bon" /></div>
+                        </div>
+                        <button class="done-btn" data-save="checks" type="button">✓ Save</button>
+                    </div>
+                    <div id="quick-checks"><!-- injected by JS --></div>
+                </div>
+
+                <!-- Health -->
+                <div class="section" aria-label="Resources">
+                    <div class="section-head">
+                        <h2 class="section-title">Health</h2>
+                        <button class="gear-btn" data-editor="health-editor" type="button" aria-label="Edit health maximums" title="Edit wound bonus & movement">⚙</button>
+                    </div>
+                    <div class="section-editor" id="health-editor">
+                        <div class="editor-grid">
+                            <label class="field"><span class="field-label">Wound Bonus</span><input id="hp-bonus-input" type="number" inputmode="numeric" min="0" value="0" /></label>
+                            <label class="field"><span class="field-label">Move Mod</span><input id="move-mod-input" type="number" inputmode="numeric" step="1" value="0" /></label>
+                            <label class="field"><span class="field-label">Low Light Mod</span><input id="lowlight-mod-input" type="number" inputmode="numeric" step="1" value="0" /></label>
+                        </div>
+                        <p class="field-hint">Wound Bonus adds to Agi + Str + Sur. Armor is auto-calculated from equipped armor. Move/Low Light Mod add flat bonuses to derived values.</p>
+                        <button class="done-btn" data-save="health" type="button">✓ Save</button>
+                    </div>
+                    <div class="resource-grid">
+                        <div class="resource-pill" data-resource="armor">
+                            <span class="pill-label">Armor</span>
+                            <div class="pill-value">
+                                <button class="pill-btn pill-btn--5" data-action="dec5" aria-label="−5 Armor">−5</button>
+                                <button class="pill-btn" data-action="dec" aria-label="−1 Armor">−</button>
+                                <output class="pill-num" id="armor-current">0</output>
+                                <span class="pill-sep">/</span>
+                                <output class="pill-num pill-max" id="armor-max">0</output>
+                                <button class="pill-btn" data-action="inc" aria-label="+2 Armor">+</button>
+                                <button class="pill-btn pill-btn--5" data-action="inc5" aria-label="+5 Armor">+5</button>
+                            </div>
+                        </div>
+                        <div class="resource-pill" data-resource="hp">
+                            <span class="pill-label">Wounds</span>
+                            <div class="pill-value">
+                                <button class="pill-btn pill-btn--5" data-action="dec5" aria-label="−5 Wounds">−5</button>
+                                <button class="pill-btn" data-action="dec" aria-label="−1 Wounds">−</button>
+                                <output class="pill-num" id="hp-current">0</output>
+                                <span class="pill-sep">/</span>
+                                <output class="pill-num pill-max" id="hp-max">0</output>
+                                <button class="pill-btn" data-action="inc" aria-label="+2 Wounds">+</button>
+                                <button class="pill-btn pill-btn--5" data-action="inc5" aria-label="+5 Wounds">+5</button>
+                            </div>
+                        </div>
+                        <!-- Damage lands on armor first, then wounds - doing that by hand
+                             across two pills was the most error-prone thing on the sheet -->
+                        <div class="take-dmg-row">
+                            <span class="take-dmg-label">Take Damage</span>
+                            <input class="take-dmg-input" id="take-dmg-input" type="number" inputmode="numeric" min="0" placeholder="0" />
+                            <button class="take-dmg-btn" id="take-dmg-btn" type="button">Apply</button>
+                        </div>
+                        <p class="take-dmg-hint" id="take-dmg-hint" hidden></p>
+                    </div>
+                    <!-- Derived stats - auto-calculated from checks -->
+                    <div class="derived-stats" id="derived-stats">
+                        <div class="derived-item">
+                            <span class="derived-label">Movement</span>
+                            <span class="derived-val" id="derived-speed">30 ft</span>
+                        </div>
+                        <div class="derived-item">
+                            <span class="derived-label">Low Light</span>
+                            <span class="derived-val" id="derived-lowlight">30 ft</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Press On / Long Rest -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Recovery</h2>
+                        <button class="ghost-btn" id="btn-reset-recovery" type="button">Reset Day</button>
+                    </div>
+
+                    <!-- Press On -->
+                    <div class="recovery-block" id="press-on-block">
+                        <div class="recovery-head">
+                            <span class="recovery-name">Press On</span>
+                            <div class="recovery-checks" id="press-on-checks"><!-- filled by JS --></div>
+                            <button class="spell-cast-btn" id="btn-press-on" type="button">Use</button>
+                            <button class="rec-toggle" id="po-toggle" type="button" aria-label="Settings">▾</button>
+                        </div>
+                        <div class="recovery-body" id="press-on-body">
+                            <div class="rec-grid">
+                                <label class="rec-field">
+                                    <span class="rec-label">Uses/day</span>
+                                    <input class="rec-input" id="po-uses-max" type="number" inputmode="numeric" min="1" max="9" value="2" />
+                                </label>
+                                <label class="rec-field">
+                                    <span class="rec-label">Resource</span>
+                                    <input class="rec-input" id="po-resource" type="number" inputmode="numeric" min="0" value="1" />
+                                </label>
+                                <label class="rec-field">
+                                    <span class="rec-label">MN Recover</span>
+                                    <input class="rec-input" id="po-mana" type="number" inputmode="numeric" min="0" value="1" />
+                                </label>
+                                <label class="rec-field">
+                                    <span class="rec-label">Repair</span>
+                                    <input class="rec-input" id="po-armor" type="text" autocomplete="off" value="d6" />
+                                </label>
+                                <label class="rec-field">
+                                    <span class="rec-label">Healing</span>
+                                    <input class="rec-input" id="po-healing" type="text" autocomplete="off" value="d6" />
+                                </label>
+                            </div>
+                            <textarea class="rec-desc" id="po-desc" rows="3"
+                                placeholder="Press On description…">Remove all conditions and effects lasting for 1 minute or less. This option can be used twice per day, but not consecutively without engaging in another combat</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Long Rest -->
+                    <div class="recovery-block u-mt-8" id="long-rest-block">
+                        <div class="recovery-head">
+                            <span class="recovery-name lr-name">Long Rest</span>
+                            <div class="recovery-checks" id="long-rest-checks">
+                                <input type="checkbox" class="rec-use-cb" id="long-rest-1" disabled />
+                            </div>
+                            <button class="spell-cast-btn" id="btn-long-rest" type="button">Rest</button>
+                            <button class="rec-toggle" id="lr-toggle" type="button" aria-label="Settings">▾</button>
+                        </div>
+                        <div class="recovery-body" id="long-rest-body">
+                            <textarea class="rec-desc" id="lr-desc" rows="3"
+                                placeholder="Long Rest description…">A long rest requires 10 hours of uninterrupted downtime, fully restoring all wounds, recharging class resources, repairing all armor to at least half, and removing any conditions that last one day or less. Characters can only take a long rest once per day and must be in a safe environment.</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conditions -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Conditions</h2>
+                        <button class="ghost-btn" id="btn-clear-conditions" type="button">Clear</button>
+                    </div>
+                    <div class="chip-row" id="conditions-row" aria-label="Condition chips">
+                        <!-- chips injected by JS -->
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- FEATURES -->
+            <section class="panel" id="panel-actions" role="region" aria-label="Features">
+
+                <!-- Tab row: Class | Equipment - at top -->
+                <div class="feat-tab-row">
+                    <button class="feat-tab is-active" data-feat-tab="class"  type="button">Class</button>
+                    <button class="feat-tab"           data-feat-tab="equip"  type="button">Equipment</button>
+                    <button class="feat-tab"           data-feat-tab="spells" type="button">Spells</button>
+                </div>
+
+                <!-- Resources -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Resources</h2>
+                        <button class="gear-btn" data-editor="res-editor" type="button" aria-label="Edit resources" title="Edit mana & class resources">⚙</button>
+                    </div>
+                    <div class="section-editor" id="res-editor">
+                        <p class="field-hint u-mb-8">Mana max is calculated automatically from your class features.</p>
+                        <div class="editor-grid">
+                            <label class="field"><span class="field-label">Label</span><input id="class-res-label-input" type="text" placeholder="Resource" autocomplete="off" /></label>
+                            <label class="field"><span class="field-label">Max</span><input id="class-res-max-input" type="number" inputmode="numeric" min="0" /></label>
+                        </div>
+                        <button class="done-btn" data-save="classres" type="button">✓ Save</button>
+                        <hr class="res-divider" />
+                        <p class="field-hint u-mt-0 u-mb-6">Add custom resource:</p>
+                        <div class="editor-grid">
+                            <label class="field"><span class="field-label">Label</span><input id="custom-res-label-input" type="text" placeholder="Rage, Ki…" autocomplete="off" /></label>
+                            <label class="field"><span class="field-label">Max</span><input id="custom-res-max-input" type="number" inputmode="numeric" min="0" /></label>
+                        </div>
+                        <button type="button" id="btn-add-custom-res" class="done-btn">+ Add Resource</button>
+                        <div id="custom-res-editor-list"></div>
+                    </div>
+                    <div class="resource-grid">
+                        <div class="resource-pill" data-resource="MN">
+                            <span class="pill-label">Mana</span>
+                            <div class="pill-value">
+                                <button class="pill-btn" data-action="dec" aria-label="Decrease MN">−</button>
+                                <output class="pill-num pill-num--edit" id="MN-current" title="Tap to set">0</output>
+                                <span class="pill-sep">/</span>
+                                <output class="pill-num pill-max" id="MN-max">0</output>
+                                <button class="pill-btn" data-action="inc" aria-label="Increase MN">+</button>
+                                <button class="pill-btn pill-recover-btn" id="btn-recover-mn"
+                                    type="button" aria-label="Recover Mana" title="Recover MN (roll spellcasting check)" hidden>⟳</button>
+                            </div>
+                        </div>
+                        <div class="resource-pill" data-resource="classRes">
+                            <span class="pill-label" id="class-res-label-display">Resource</span>
+                            <div class="pill-value">
+                                <button class="pill-btn" data-action="dec" aria-label="Decrease">−</button>
+                                <output class="pill-num pill-num--edit" id="classRes-current" title="Tap to set">0</output>
+                                <span class="pill-sep">/</span>
+                                <output class="pill-num pill-max" id="classRes-max">0</output>
+                                <button class="pill-btn" data-action="inc" aria-label="Increase">+</button>
+                            </div>
+                        </div>
+                        <div id="custom-res-pills"></div>
+                    </div>
+                </div>
+
+                <!-- Class tab -->
+                <div class="feat-tab-content is-active" id="feat-tab-class">
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Class & Path</h2>
+                            <button class="gear-btn" data-editor="class-editor" type="button" aria-label="Edit class">⚙</button>
+                        </div>
+                        <div class="section-editor" id="class-editor">
+                            <label class="field"><span class="field-label">Class</span><select id="class-select" class="sheet-select"><option value="">- Select Class -</option></select></label>
+                            <label class="field"><span class="field-label">Path</span><select id="path-select" class="sheet-select"><option value="">- Select Path -</option></select></label>
+                            <label class="field"><span class="field-label">Talent</span><select id="talent-select" class="sheet-select"><option value="">- Select Talent -</option></select></label>
+                            <button class="done-btn" data-save="class" type="button">✓ Save</button>
+                        </div>
+                        <div id="class-view"><p class="empty-hint">Tap ⚙ to select your class, path & talent</p></div>
+                    </div>
+                    <div class="section">
+                        <div id="species-view"><p class="empty-hint">Species features appear here after character creation.</p></div>
+                    </div>
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Other Gains</h2>
+                            <button class="gear-btn" data-editor="gains-editor" type="button">⚙</button>
+                        </div>
+                        <div class="section-editor" id="gains-editor">
+                            <label class="field"><span class="field-label">Item gained</span><input id="gain-input" type="text" placeholder="Ability, item, or note…" autocomplete="off" /></label>
+                            <button class="done-btn" data-save="gain" type="button">+ Add</button>
+                        </div>
+                        <div class="list" id="other-gains-list"><p class="empty-hint">Items gained during play</p></div>
+                    </div>
+                </div>
+
+                <!-- Equipment tab -->
+                <div class="feat-tab-content" id="feat-tab-equip">
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Equipment</h2>
+                            <button class="gear-btn gear-btn--add" id="btn-open-add-equip" type="button" aria-label="Add equipment" title="Add equipment">+</button>
+                        </div>
+                        <div class="equip-tab-row">
+                            <button class="equip-tab is-active" data-equip-tab="all"    type="button">All</button>
+                            <button class="equip-tab"           data-equip-tab="weapon" type="button">Weapons</button>
+                            <button class="equip-tab"           data-equip-tab="armor"  type="button">Armor</button>
+                        </div>
+                        <div class="list" id="equip-list"><p class="empty-hint">No equipment added</p></div>
+                    </div>
+
+                    <!-- Inventory - stacked below equipment -->
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Inventory</h2>
+                            <button class="gear-btn gear-btn--add" data-editor="inventory-editor" type="button" aria-label="Add item" title="Add item">+</button>
+                        </div>
+                        <div class="section-editor" id="inventory-editor">
+                            <label class="field"><span class="field-label">Name</span><input id="inv-name-input" type="text" placeholder="Item name…" autocomplete="off" /></label>
+                            <label class="field"><span class="field-label">Notes</span><input id="inv-notes-input" type="text" placeholder="Description…" autocomplete="off" /></label>
+                            <div class="editor-grid">
+                                <label class="field"><span class="field-label">Move Bonus</span><input id="inv-move-input" type="number" inputmode="numeric" step="1" value="0" placeholder="0" /></label>
+                                <label class="field"><span class="field-label">Low Light Bonus</span><input id="inv-lowlight-input" type="number" inputmode="numeric" step="1" value="0" placeholder="0" /></label>
+                            </div>
+                            <button class="done-btn" data-save="inventory" type="button">+ Add Item</button>
+                        </div>
+                        <div class="list" id="inventory-list"><p class="empty-hint">No items in inventory</p></div>
+                    </div>
+                </div>
+
+                <!-- Spells tab -->
+                <div class="feat-tab-content" id="feat-tab-spells">
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Spells</h2>
+                            <div class="spell-mn-display">
+                                <span class="spell-mn-label">MN</span>
+                                <span class="spell-mn-current" id="spell-mn-current">0</span>
+                                <span class="spell-mn-sep">/</span>
+                                <span class="spell-mn-max" id="spell-mn-max">0</span>
+                            </div>
+                        </div>
+                        <div class="spell-search-bar">
+                            <input class="spell-search-input" id="spell-search" type="search"
+                                placeholder="Search spells…" autocomplete="off" />
+                        </div>
+                        <div class="spell-filters" id="spell-filters"></div>
+                        <div class="spell-list" id="spell-list">
+                            <p class="empty-hint">Loading spells…</p>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+                </div><!-- /play-tab-play -->
+
+                <!-- Bio tab content (inside Play panel) -->
+                <div class="play-tab-content" id="play-tab-bio">
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Character</h2>
+                            <button class="ghost-btn" id="btn-bio-edit" type="button">&#9998; Edit</button>
+                        </div>
+
+                        <!-- Compact read-only display -->
+                        <div class="bio-display" id="bio-display">
+                            <div class="bio-display-name" id="bio-display-name">-</div>
+                            <div class="bio-display-species">
+                                <span id="bio-species-name">-</span><span id="bio-species-sub" class="bio-display-sub"></span>
+                            </div>
+                            <div class="bio-display-grid">
+                                <div class="bio-display-item"><span class="bio-display-label">Size</span><span id="bio-display-size">-</span></div>
+                                <div class="bio-display-item"><span class="bio-display-label">Age</span><span id="bio-display-age">-</span></div>
+                                <div class="bio-display-item"><span class="bio-display-label">Diet</span><span id="bio-display-diet">-</span></div>
+                                <div class="bio-display-item"><span class="bio-display-label">Language</span><span id="bio-display-lang">-</span></div>
+                            </div>
+                            <div class="bio-display-full"><span class="bio-display-label">Motivation</span><p id="bio-display-motivation">-</p></div>
+                            <div class="bio-display-full"><span class="bio-display-label">Trinket</span><p id="bio-display-trinket">-</p></div>
+                        </div>
+
+                        <!-- Edit form -->
+                        <div class="bio-edit-form" id="bio-edit-form" hidden>
+                            <div class="field">
+                                <span class="field-label">Species</span>
+                                <div class="species-locked">
+                                    <div class="species-locked-info">
+                                        <span class="species-locked-name" id="bio-species-name-edit">-</span>
+                                        <span class="species-locked-sub"  id="bio-species-sub-edit"></span>
+                                    </div>
+                                    <button class="species-change-btn" id="btn-species-edit" type="button">&#9998; Change</button>
+                                </div>
+                            </div>
+                            <label class="field"><span class="field-label">Name</span>
+                                <input id="char-name" type="text" inputmode="text" autocomplete="off" />
+                            </label>
+                            <div class="bio-row">
+                                <label class="field"><span class="field-label">Level</span><input id="char-level" type="number" inputmode="numeric" min="1" value="1" /></label>
+                                <label class="field"><span class="field-label">Size</span><input id="char-size" type="text" autocomplete="off" /></label>
+                                <label class="field"><span class="field-label">Age</span><input id="char-age" type="text" autocomplete="off" /></label>
+                                <label class="field"><span class="field-label">Diet</span><input id="char-diet" type="text" autocomplete="off" /></label>
+                            </div>
+                            <label class="field"><span class="field-label">Language</span><input id="char-language" type="text" autocomplete="off" /></label>
+                            <label class="field"><span class="field-label">Motivation</span>
+                                <textarea id="char-motivation" rows="3"></textarea>
+                            </label>
+                            <label class="field"><span class="field-label">Trinket</span>
+                                <textarea id="char-trinket" rows="2"></textarea>
+                            </label>
+                            <div class="bio-edit-btns">
+                                <button class="primary-btn" id="btn-save-bio" type="button">✓ Save</button>
+                                <button class="ghost-btn" id="btn-export" type="button">Export</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Notes</h2>
+                            <button class="ghost-btn" id="btn-save-notes" type="button">✓ Save</button>
+                        </div>
+                        <textarea class="bio-notes-input" id="char-notes" rows="6"
+                            placeholder="Session notes, reminders, secrets…"></textarea>
+                    </div>
+
+                    <!-- Loyalty / NPCs -->
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Loyalty &amp; NPCs</h2>
+                            <button class="ghost-btn" id="btn-add-npc" type="button">+ Add</button>
+                        </div>
+                        <div id="npc-list"><p class="empty-hint">No contacts added yet.</p></div>
+                        <!-- Add NPC form (hidden until + Add is tapped) -->
+                        <div class="npc-add-form" id="npc-add-form" hidden>
+                            <label class="field"><span class="field-label">Name</span>
+                                <input id="npc-name-input" type="text" autocomplete="off" placeholder="Contact name" /></label>
+                            <div class="field">
+                                <span class="field-label">Loyalty</span>
+                                <div class="loyalty-stepper">
+                                    <button class="loyalty-adj" id="npc-loyalty-dec" type="button">−</button>
+                                    <span class="loyalty-stepper-label">
+                                        <span id="npc-loyalty-display">Neutral</span>
+                                        <span class="loyalty-stepper-num" id="npc-loyalty-num">(0)</span>
+                                    </span>
+                                    <button class="loyalty-adj" id="npc-loyalty-inc" type="button">+</button>
+                                </div>
+                            </div>
+                            <label class="field"><span class="field-label">Notes</span>
+                                <input id="npc-notes-input" type="text" autocomplete="off" placeholder="Role, location, info…" /></label>
+                            <div class="step-edit-btns">
+                                <button class="step-edit-btn step-edit-btn--save" id="btn-npc-save" type="button">+ Add</button>
+                                <button class="step-edit-btn step-edit-btn--cancel" id="btn-npc-cancel" type="button">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /play-tab-bio -->
+
+            </section><!-- /panel-play -->
+
+            <!-- REFERENCE -->
+            <section class="panel" id="panel-ref" role="region" aria-label="Reference">
+                <div class="ref-tab-row">
+                    <button class="ref-tab is-active" data-ref-tab="tables" type="button">Damage Tables</button>
+                    <button class="ref-tab" data-ref-tab="conditions" type="button">Conditions</button>
+                    <button class="ref-tab" data-ref-tab="actions" type="button">Actions</button>
+                </div>
+
+                <!-- Damage Tables -->
+                <div class="ref-tab-content is-active" id="ref-tab-tables">
+                    <div class="ref-tables-grid" id="ref-tables-grid"></div>
+                </div>
+
+                <!-- Conditions -->
+                <div class="ref-tab-content" id="ref-tab-conditions">
+                    <div class="ref-conditions-list" id="ref-conditions-list"></div>
+                </div>
+
+                <!-- Actions -->
+                <div class="ref-tab-content" id="ref-tab-actions">
+                    <div class="ref-actions-list" id="ref-actions-list"></div>
+                </div>
+            </section>
+
+            <!-- PROGRESSION -->
+            <section class="panel" id="panel-progression" role="region" aria-label="Progression">
+
+                <!-- XP Tracker -->
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Experience</h2>
+                    </div>
+
+                    <!-- Direct input flanked by ± buttons -->
+                    <div class="xp-controls">
+                        <div class="xp-stepper">
+                            <div class="xp-side xp-side--neg">
+                                <button class="xp-quick-btn" type="button" data-xp-add="-5">−5</button>
+                                <button class="xp-quick-btn" type="button" data-xp-add="-1">−1</button>
+                            </div>
+                            <input id="xp-total-input" type="number" inputmode="numeric"
+                                min="0" value="0" class="xp-total-field" />
+                            <div class="xp-side xp-side--pos">
+                                <button class="xp-quick-btn xp-quick-btn--add" type="button" data-xp-add="1">+1</button>
+                                <button class="xp-quick-btn xp-quick-btn--add" type="button" data-xp-add="5">+5</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary bar -->
+                    <div class="xp-display">
+                        <div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div>
+                        <div class="xp-row">
+                            <span class="xp-stat"><span class="xp-num" id="xp-total-el">0</span><span class="xp-lbl"> total</span></span>
+                            <span class="xp-stat"><span class="xp-num xp-num--spent" id="xp-spent-el">0</span><span class="xp-lbl"> spent</span></span>
+                            <span class="xp-stat"><span class="xp-num xp-num--avail" id="xp-avail-el">0</span><span class="xp-lbl"> available</span></span>
+                        </div>
+                        <p class="xp-cost-hint">Each step costs <strong>20 XP</strong></p>
+                        <p class="xp-error" id="xp-error" hidden>Not enough XP to unlock this step.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-head"><h2 class="section-title">Path</h2></div>
+                    <div id="path-progression-list"><p class="empty-hint">Select a path in Features</p></div>
+                </div>
+                <div class="section">
+                    <div class="section-head"><h2 class="section-title">Talent</h2></div>
+                    <div id="talent-progression-list"><p class="empty-hint">Select a talent in Features</p></div>
+                </div>
+                <div class="section">
+                    <div class="section-head">
+                        <h2 class="section-title">Custom Gains</h2>
+                        <button class="gear-btn" data-editor="prog-gains-editor" type="button" aria-label="Add custom gain">⚙</button>
+                    </div>
+                    <div class="section-editor" id="prog-gains-editor">
+                        <label class="field"><span class="field-label">Item gained</span><input id="prog-gain-input" type="text" placeholder="Ability, item, or note…" autocomplete="off" /></label>
+                        <button class="done-btn" data-save="prog-gain" type="button">+ Add</button>
+                    </div>
+                    <div class="list" id="prog-other-gains-list"><p class="empty-hint">Items gained during play</p></div>
+                </div>
+            </section>
+            <!-- CHAT -->
+            <section class="panel" id="panel-chat" role="region" aria-label="Chat">
+
+                <!-- Chat / Initiative sub-tabs -->
+                <div class="chat-sub-tabs">
+                    <button class="chat-sub-tab is-active" data-chat-sub="messages" type="button">Messages</button>
+                    <button class="chat-sub-tab" data-chat-sub="initiative" type="button">Initiative</button>
+                </div>
+
+                <!-- Messages sub-panel -->
+                <div class="chat-sub-content" id="chat-sub-messages">
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title" id="chat-panel-title">Session Chat</h2>
+                        </div>
+                        <ol class="chat-log" id="chat-log" aria-label="Session chat">
+                            <!-- entries injected by JS -->
+                        </ol>
+                        <div id="typing-indicator" class="typing-indicator" hidden>
+                            <span class="typing-dots"><span></span><span></span><span></span></span>
+                            <span class="typing-label">Narrator is typing…</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Initiative sub-panel (read-only, synced from room) -->
+                <div class="chat-sub-content" id="chat-sub-initiative" hidden>
+                    <div class="section">
+                        <div class="init-stats-row">
+                            <div class="init-stat">
+                                <span class="init-stat-label">Round</span>
+                                <span class="init-stat-val" id="player-enc-round">-</span>
+                            </div>
+                            <div class="init-stat">
+                                <span class="init-stat-label">Minutes</span>
+                                <span class="init-stat-val" id="player-enc-time">0.00</span>
+                            </div>
+                        </div>
+                        <div class="enc-turn-bar" id="player-enc-turn-bar" hidden>
+                            <span id="player-enc-active-name">-</span>'s turn
+                        </div>
+                        <button class="done-btn" id="player-next-turn-btn" type="button" hidden>End My Turn</button>
+                        <div id="player-encounter-list">
+                            <p class="empty-hint">No encounter in progress.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Toolbar - outside scroll areas, always visible at bottom of chat panel -->
+                <div class="chat-sticky-bottom">
+                    <!-- Dice panel (toggleable) -->
+                    <div class="nar-tool-panel" id="player-dice-panel" hidden>
+                        <div class="dice-roller" id="dice-roller">
+                            <div class="dice-top-row">
+                                <label class="dice-count-field">
+                                    <span class="dice-mult-label">×</span>
+                                    <input class="dice-count-input" id="dice-count" type="number" inputmode="numeric" min="1" max="20" value="1" />
+                                </label>
+                                <select class="dice-type-select" id="dice-type">
+                                    <option value="4">d4</option>
+                                    <option value="6">d6</option>
+                                    <option value="8">d8</option>
+                                    <option value="10">d10</option>
+                                    <option value="12">d12</option>
+                                    <option value="20" selected>d20</option>
+                                    <option value="100">d%</option>
+                                </select>
+                                <label class="dice-bonus-field">
+                                    <span class="dice-bonus-label">+</span>
+                                    <input class="dice-bonus-input" id="dice-bonus" type="number" inputmode="numeric" value="0" />
+                                </label>
+                                <button class="dice-roll-btn" id="btn-dice-roll" type="button">Roll</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Emoji panel -->
+                    <div class="emoji-panel" id="emoji-panel" hidden></div>
+                    <!-- Target panel -->
+                    <div class="nar-tool-panel" id="player-target-panel" hidden>
+                        <div class="voice-list" id="player-target-list"></div>
+                    </div>
+                    <div class="chat-input-row" id="chat-input-row">
+                        <div class="chat-tool-btns">
+                            <button class="chat-tool-btn" id="player-dice-btn" type="button" aria-label="Dice roller" title="Dice roller">🎲</button>
+                            <button class="chat-tool-btn" id="emoji-btn" type="button" aria-label="Emoji">😊</button>
+                            <button class="chat-tool-btn" id="player-target-btn" type="button" aria-label="Target" title="Set target">🎯</button>
+                        </div>
+                        <div class="chat-msg-row">
+                            <input id="chat-msg-input" type="text" placeholder="Say something…" autocomplete="off" />
+                            <button class="chat-send-btn" id="btn-send-msg" type="button">Send</button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- JOURNAL -->
+            <section class="panel" id="panel-journal" role="region" aria-label="Journal">
+                <div id="journal-empty" class="section">
+                    <p class="empty-hint">Join a session (Settings → Join Session) to see your party, handouts, and shared inventory here.</p>
+                </div>
+
+                <div id="journal-session" hidden>
+                    <!-- Party roster -->
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Party</h2>
+                            <span class="party-room-code" id="player-room-badge"></span>
+                        </div>
+                        <div id="player-party-list"><p class="empty-hint">Connecting to session…</p></div>
+                    </div>
+
+                    <!-- NPCs / Minions the narrator has revealed -->
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Cast</h2>
+                        </div>
+                        <div id="player-cast-list"><p class="empty-hint">No one else around right now.</p></div>
+                    </div>
+
+                    <!-- Handouts -->
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Handouts</h2>
+                        </div>
+                        <div id="player-handouts-list"><p class="empty-hint">No handouts yet.</p></div>
+                    </div>
+
+                    <!-- Claimable party inventory -->
+                    <div class="section">
+                        <div class="section-head">
+                            <h2 class="section-title">Party Inventory</h2>
+                            <span class="player-gold-chip">⬡ <span id="player-gold-val">0</span></span>
+                        </div>
+                        <div id="player-loot-list"><p class="empty-hint">No items in party inventory.</p></div>
+                    </div>
+                </div>
+            </section>
+
+        </section>
+
+        <!-- Roll Drawer (bottom sheet) -->
+        <section class="drawer" id="roll-drawer" aria-hidden="true" inert>
+            <div class="drawer-scrim" data-drawer-close></div>
+
+            <div class="drawer-sheet" role="dialog" aria-modal="true" aria-label="Roll">
+                <div class="drawer-handle" aria-hidden="true"></div>
+
+                <div class="drawer-head">
+                    <div class="drawer-title" id="drawer-title">Roll</div>
+                    <button class="icon-btn" type="button" data-drawer-close aria-label="Close roll drawer">✕</button>
+                </div>
+
+                <div class="drawer-body">
+
+                    <!-- Label + Mod compact row -->
+                    <div class="roll-compact-row">
+                        <label class="field roll-label-field">
+                            <span class="field-label">Check</span>
+                            <input id="roll-label" type="text" placeholder="Agility Check" autocomplete="off" />
+                        </label>
+                        <label class="field roll-mod-field">
+                            <span class="field-label">Mod</span>
+                            <input id="roll-mod" type="number" inputmode="numeric" value="0" step="1" />
+                        </label>
+                    </div>
+
+                    <!-- Check chips - shown when feature has associated checks -->
+                    <div class="drawer-check-select" id="drawer-check-select" hidden>
+                        <div class="drawer-check-chips" id="drawer-check-chips"></div>
+                    </div>
+
+                    <!-- Segmented roll type - mutually exclusive -->
+                    <div class="roll-seg" role="group" aria-label="Roll type">
+                        <button class="roll-seg-btn is-sel" type="button" data-seg="flat">Flat</button>
+                        <button class="roll-seg-btn" type="button" data-seg="adv">Advantage</button>
+                        <button class="roll-seg-btn" type="button" data-seg="dis">Disadvantage</button>
+                    </div>
+
+                    <!-- Active conditions with effects -->
+                    <div class="drawer-conditions" id="drawer-conditions" hidden>
+                        <div class="drawer-cond-label">⚠ Active Conditions</div>
+                        <div class="drawer-cond-list" id="drawer-cond-chips"></div>
+                    </div>
+
+                    <button class="primary-btn roll-primary-btn" id="btn-roll" type="button">Roll d20</button>
+
+                    <!-- Hidden inputs kept for JS compat -->
+                    <ol id="mini-roll-log" hidden></ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add Equipment Drawer -->
+        <section class="drawer" id="add-equip-drawer" aria-hidden="true" inert>
+            <div class="drawer-scrim" data-ae-close></div>
+            <div class="drawer-sheet" role="dialog" aria-modal="true" aria-label="Add Equipment">
+                <div class="drawer-handle" aria-hidden="true"></div>
+                <div class="drawer-head">
+                    <div class="drawer-title" id="ae-drawer-title">Add Equipment</div>
+                    <button class="icon-btn" id="ae-give" type="button" title="Give to another player or the party" hidden>📤</button>
+                    <button class="wm-save-btn" id="ae-save-top" type="button">✓ Save</button>
+                    <button class="icon-btn" type="button" data-ae-close aria-label="Close">✕</button>
+                </div>
+                <div class="drawer-body">
+
+                    <!-- Optional search -->
+                    <div class="ae-search-wrap">
+                        <input id="ae-search" type="text" class="ae-search-input" placeholder="Search weapons &amp; armor…" autocomplete="off" />
+                        <div id="ae-search-results" class="ae-search-results" hidden></div>
+                    </div>
+
+                    <!-- Type toggle -->
+                    <div class="equip-type-toggle ae-type-toggle">
+                        <button class="equip-type-btn is-sel" data-ae-cat="weapon" type="button">Weapon</button>
+                        <button class="equip-type-btn"        data-ae-cat="armor"  type="button">Armor</button>
+                        <button class="equip-type-btn"        data-ae-cat="gear"   type="button">Item</button>
+                    </div>
+
+                    <!-- Weapon fields -->
+                    <div id="ae-weapon-fields">
+                        <label class="field"><span class="field-label">Name</span>
+                            <input id="ae-w-name" type="text" placeholder="Weapon name…" autocomplete="off" />
+                        </label>
+                        <div class="ae-row">
+                            <label class="field"><span class="field-label">Damage</span>
+                                <input id="ae-w-damage" type="text" list="ae-damage-list"
+                                    placeholder="1d6" autocomplete="off" class="ae-search-input" />
+                                <datalist id="ae-damage-list">
+                                    <option value="1d4"/>
+                                    <option value="1d6"/>
+                                    <option value="2d6"/>
+                                    <option value="3d6"/>
+                                    <option value="2d4!"/>
+                                </datalist>
+                            </label>
+                            <label class="field"><span class="field-label">Damage Type</span>
+                                <select id="ae-w-dmg-type" class="sheet-select"></select>
+                            </label>
+                        </div>
+                        <div class="ae-row">
+                            <label class="field"><span class="field-label">Range</span>
+                                <select id="ae-w-range" class="sheet-select"></select>
+                            </label>
+                            <label class="field"><span class="field-label">Properties</span>
+                                <select id="ae-w-props" class="sheet-select">
+                                    <option value="">-</option>
+                                    <option>Light</option><option>Hefty</option>
+                                </select>
+                            </label>
+                        </div>
+                        <label class="field"><span class="field-label">Check</span>
+                            <select id="ae-w-check" class="sheet-select">
+                                <option value="">- any -</option>
+                                <option>Agility</option><option>Crafting</option><option>Influence</option>
+                                <option>Intellect</option><option>Luck</option><option>Observation</option>
+                                <option>Spirit</option><option>Stealth</option><option>Strength</option><option>Survival</option>
+                            </select>
+                        </label>
+                        <label class="field"><span class="field-label">Attack Bonus</span>
+                            <div class="ae-stepper">
+                                <button class="ae-step-btn" data-ae-step="-1" data-ae-target="ae-w-atk" type="button">−</button>
+                                <output id="ae-w-atk" class="ae-step-val" data-val="0">0</output>
+                                <button class="ae-step-btn" data-ae-step="1" data-ae-target="ae-w-atk" type="button">+</button>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Armor fields -->
+                    <div id="ae-armor-fields" hidden>
+                        <label class="field"><span class="field-label">Name</span>
+                            <input id="ae-a-name" type="text" placeholder="Armor name…" autocomplete="off" />
+                        </label>
+                        <label class="field"><span class="field-label">Notes</span>
+                            <input id="ae-a-notes" type="text" placeholder="Stealth −1, Agility −1…" autocomplete="off" />
+                        </label>
+                        <label class="field"><span class="field-label">Armor Rating</span>
+                            <div class="ae-stepper">
+                                <button class="ae-step-btn" data-ae-step="-1" data-ae-target="ae-a-rating" type="button">−</button>
+                                <output id="ae-a-rating" class="ae-step-val" data-val="0">0</output>
+                                <button class="ae-step-btn" data-ae-step="1" data-ae-target="ae-a-rating" type="button">+</button>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Item / gear fields -->
+                    <div id="ae-gear-fields" hidden>
+                        <label class="field"><span class="field-label">Name</span>
+                            <input id="ae-g-name" type="text" placeholder="Item name…" autocomplete="off" />
+                        </label>
+                        <label class="field"><span class="field-label">Notes</span>
+                            <input id="ae-g-notes" type="text" placeholder="Quantity, condition, use…" autocomplete="off" />
+                        </label>
+                    </div>
+
+                    <!-- Description (magic items, special effects, etc.) -->
+                    <label class="field">
+                        <span class="field-label">Description</span>
+                        <textarea id="ae-desc" class="ae-desc-input" rows="2" placeholder="Magic properties, special effects, flavor…"></textarea>
+                    </label>
+
+                    <!-- Shared bonuses -->
+                    <div class="ae-bonuses">
+                        <label class="field"><span class="field-label">Move Bonus</span>
+                            <div class="ae-stepper">
+                                <button class="ae-step-btn" data-ae-step="-5" data-ae-target="ae-move" type="button">−</button>
+                                <output id="ae-move" class="ae-step-val" data-val="0">0</output>
+                                <button class="ae-step-btn" data-ae-step="5" data-ae-target="ae-move" type="button">+</button>
+                            </div>
+                        </label>
+                        <label class="field"><span class="field-label">Low Light Bonus</span>
+                            <div class="ae-stepper">
+                                <button class="ae-step-btn" data-ae-step="-5" data-ae-target="ae-lowlight" type="button">−</button>
+                                <output id="ae-lowlight" class="ae-step-val" data-val="0">0</output>
+                                <button class="ae-step-btn" data-ae-step="5" data-ae-target="ae-lowlight" type="button">+</button>
+                            </div>
+                        </label>
+                    </div>
+
+                    <button class="primary-btn ae-add-btn" id="ae-add-btn" type="button">+ Add Item</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Floating Roll button (thumb friendly) -->
+    </main>
+
+    <!-- Give Item Dialog -->
+    <dialog id="give-item-dialog" class="arc-modal give-dialog" style="--modal-w:380px">
+        <div class="arc-modal-inner give-dialog-inner">
+            <div class="give-head">
+                <span class="give-kicker">Give Item</span>
+                <button class="icon-btn" id="give-close" type="button" aria-label="Close">✕</button>
+            </div>
+            <p class="give-item-name" id="give-item-name"></p>
+            <p class="give-hint" id="give-hint">Choose where it goes. The item leaves your sheet.</p>
+            <div class="give-target-list" id="give-target-list"></div>
+            <button class="give-cancel-btn" id="give-cancel" type="button">Cancel</button>
+        </div>
+    </dialog>
+
+    <!-- Weapon Attack Modal -->
+    <div class="weapon-modal" id="weapon-modal" hidden>
+        <div class="weapon-modal-scrim" id="wm-scrim"></div>
+        <div class="weapon-modal-sheet">
+            <div class="drawer-handle" aria-hidden="true"></div>
+            <div class="wm-head">
+                <input class="wm-name-input" id="wm-name-input" type="text" placeholder="Weapon name…" autocomplete="off" />
+                <button class="icon-btn" id="wm-give" type="button" title="Give to another player or the party" hidden>📤</button>
+                <button class="wm-save-btn" id="wm-save" type="button">✓ Save</button>
+                <button class="icon-btn" id="wm-close" type="button" aria-label="Close">✕</button>
+            </div>
+
+            <!-- Editable stat grid -->
+            <div class="wm-edit-grid">
+                <label class="wm-edit-field">
+                    <span class="wm-stat-label">Damage</span>
+                    <input id="wm-damage-input" class="wm-edit-input" type="text" placeholder="1d6" autocomplete="off" />
+                </label>
+                <label class="wm-edit-field">
+                    <span class="wm-stat-label">Type</span>
+                    <select id="wm-dmg-type-input" class="wm-edit-input"></select>
+                </label>
+                <label class="wm-edit-field">
+                    <span class="wm-stat-label">Range</span>
+                    <select id="wm-range-input" class="wm-edit-input"></select>
+                </label>
+                <label class="wm-edit-field">
+                    <span class="wm-stat-label">Properties</span>
+                    <select id="wm-weight-input" class="wm-edit-input">
+                        <option value="-">-</option>
+                        <option value="Light">Light</option>
+                        <option value="Hefty">Hefty</option>
+                    </select>
+                </label>
+                <label class="wm-edit-field wm-edit-field--wide">
+                    <span class="wm-stat-label">Check</span>
+                    <select id="wm-check-stat-input" class="wm-edit-input"></select>
+                </label>
+                <label class="wm-edit-field wm-edit-field--wide">
+                    <span class="wm-stat-label">Crit Range</span>
+                    <input id="wm-crit" class="wm-edit-input" type="number" value="20" min="1" max="20" />
+                </label>
+                <label class="wm-edit-field wm-edit-field--wide">
+                    <span class="wm-stat-label">Attack Bonus</span>
+                    <input id="wm-bonus" class="wm-edit-input" type="number" value="0" />
+                </label>
+            </div>
+
+            <!-- Description / flavor -->
+            <label class="wm-edit-field wm-edit-field--wide u-mb-10">
+                <span class="wm-stat-label">Description</span>
+                <textarea id="wm-flavor-input" class="wm-edit-input" rows="2"
+                    placeholder="Magic properties, flavor…"></textarea>
+            </label>
+
+            <!-- Check chips (for rolling - updated by check stat select) -->
+            <div class="wm-section">
+                <div class="wm-label">Roll with</div>
+                <div class="wm-check-chips" id="wm-check-chips"></div>
+            </div>
+
+            <!-- Roll type -->
+            <div class="roll-seg" id="wm-roll-seg" role="group" aria-label="Roll type">
+                <button class="roll-seg-btn is-sel" type="button" data-seg="flat">Flat</button>
+                <button class="roll-seg-btn" type="button" data-seg="adv">Advantage</button>
+                <button class="roll-seg-btn" type="button" data-seg="dis">Disadvantage</button>
+            </div>
+
+            <button class="primary-btn" id="wm-roll" type="button">Roll Check</button>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="settings-modal" id="settings-modal" hidden>
+        <div class="settings-scrim" id="settings-scrim"></div>
+        <div class="settings-sheet">
+            <div class="drawer-handle" aria-hidden="true"></div>
+            <div class="wm-head">
+                <div class="wm-name">Settings</div>
+                <button class="icon-btn" id="settings-close" type="button" aria-label="Close">✕</button>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title">Theme</div>
+                <p class="settings-hint">Two-color theme - saved per character. Primary drives the UI chrome, secondary drives data and labels.</p>
+                <div class="theme-swatches" id="theme-swatches"></div>
+            </div>
+
+            <div class="settings-section" id="settings-session-section" hidden>
+                <div class="settings-section-title">Session</div>
+                <p class="settings-hint" id="settings-session-label"></p>
+                <button class="settings-action-btn settings-action-btn--danger" id="btn-leave-session-sheet" type="button">Leave Session</button>
+            </div>
+
+            <div class="settings-section" id="settings-app-section">
+                <div class="settings-section-title">App</div>
+                <div id="settings-app-installed" hidden>
+                    <p class="settings-hint">Running as installed app. To uninstall: find the ARC20 icon on your home screen or app drawer, long-press it, and choose <strong>Uninstall</strong> or <strong>Remove</strong>.</p>
+                </div>
+                <div id="settings-app-installable" hidden>
+                    <p class="settings-hint">Install ARC20 as an app for offline use and a faster experience.</p>
+                    <button class="settings-action-btn" id="btn-install-app" type="button">⬇ Install App</button>
+                </div>
+                <div id="settings-app-unavailable" hidden>
+                    <p class="settings-hint">To install: open this page in Chrome or Safari, tap the browser menu, and choose <strong>Add to Home Screen</strong> or <strong>Install App</strong>.</p>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title">Character</div>
+                <button class="settings-action-btn" id="btn-export-settings" type="button">Export Save File</button>
+                <button class="settings-action-btn settings-action-btn--danger" id="btn-reset-char" type="button">Reset Character</button>
+                <div class="settings-reset-confirm" id="reset-confirm" hidden>
+                    <p class="settings-hint settings-hint--danger">All progress will be lost. Are you sure?</p>
+                    <div class="step-edit-btns u-mt-8">
+                        <button class="step-edit-btn step-edit-btn--danger"
+                            id="btn-reset-confirm" type="button">Yes, Reset</button>
+                        <button class="step-edit-btn step-edit-btn--cancel" id="btn-reset-cancel" type="button">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Spell Roll Modal -->
+    <div class="feat-roll-modal" id="spell-roll-modal" hidden>
+        <div class="feat-rm-scrim" id="srm-scrim"></div>
+        <div class="feat-rm-sheet">
+            <div class="drawer-handle" aria-hidden="true"></div>
+            <div class="wm-head">
+                <div class="wm-name-block">
+                    <div class="wm-name" id="srm-name">Spell</div>
+                    <div class="wm-sub"  id="srm-sub"></div>
+                </div>
+                <button class="icon-btn" id="srm-close" type="button" aria-label="Close">✕</button>
+            </div>
+
+            <!-- Check chips - primary spellcasting stat + Spirit fallback -->
+            <div class="wm-section">
+                <div class="wm-label">Check</div>
+                <div class="wm-check-chips" id="srm-check-chips"></div>
+            </div>
+
+            <!-- Stat row: Damage / Transmission / Manner / Range / Duration -->
+            <div class="wm-stats" id="srm-stats">
+                <div class="wm-stat"><div class="wm-stat-label">Damage</div><div class="wm-stat-val" id="srm-damage">-</div></div>
+                <div class="wm-stat"><div class="wm-stat-label">Transmission</div><div class="wm-stat-val" id="srm-dmg-type">-</div></div>
+                <div class="wm-stat"><div class="wm-stat-label">Manner</div><div class="wm-stat-val" id="srm-manner">-</div></div>
+                <div class="wm-stat"><div class="wm-stat-label">Range</div><div class="wm-stat-val" id="srm-range">-</div></div>
+                <div class="wm-stat"><div class="wm-stat-label">Duration</div><div class="wm-stat-val" id="srm-duration">-</div></div>
+            </div>
+
+            <!-- Description -->
+            <div class="wm-desc-edit u-mb-10" id="srm-desc"></div>
+
+            <!-- Roll type -->
+            <div class="roll-seg" id="srm-roll-seg" role="group" aria-label="Roll type">
+                <button class="roll-seg-btn is-sel" type="button" data-seg="flat">Flat</button>
+                <button class="roll-seg-btn" type="button" data-seg="adv">Advantage</button>
+                <button class="roll-seg-btn" type="button" data-seg="dis">Disadvantage</button>
+            </div>
+
+            <!-- Check bonus -->
+            <label class="field u-mt-10">
+                <span class="field-label">Check Bonus</span>
+                <input id="srm-bonus" type="number" inputmode="numeric" step="1" value="0"
+                    class="u-input-full" />
+            </label>
+
+            <!-- Low mana warning -->
+            <div class="srm-mana-warn" id="srm-mana-warn" hidden>⚠ Not enough mana</div>
+
+            <!-- Actions -->
+            <div class="frm-btn-row">
+                <button class="primary-btn" id="srm-roll-mana" type="button">Roll + Spend MN</button>
+                <button class="frm-roll-btn frm-roll-btn--dmg" id="srm-roll-free" type="button">No Mana</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Roll Modal -->
+    <div class="feat-roll-modal" id="feat-roll-modal" hidden>
+        <div class="feat-rm-scrim" id="frm-scrim"></div>
+        <div class="feat-rm-sheet">
+            <div class="drawer-handle" aria-hidden="true"></div>
+            <div class="wm-head">
+                <div class="wm-name-block">
+                    <div class="wm-name" id="frm-name">Feature</div>
+                    <div class="wm-sub"  id="frm-tags-display"></div>
+                </div>
+                <button class="icon-btn" id="frm-close" type="button" aria-label="Close">✕</button>
+            </div>
+
+            <!-- Check chips -->
+            <div class="wm-section">
+                <div class="wm-label">Check</div>
+                <div class="wm-check-chips" id="frm-check-chips"></div>
+            </div>
+
+            <!-- Damage (editable) -->
+            <div class="wm-section" id="frm-damage-section">
+                <div class="wm-label">Damage</div>
+                <div class="frm-damage-inputs">
+                    <input class="frm-dmg-field" id="frm-dmg-notation" type="text" placeholder="e.g. 2d6" autocomplete="off" />
+                    <input class="frm-dmg-field frm-dmg-type" id="frm-dmg-type" type="text" placeholder="Type" autocomplete="off" />
+                </div>
+            </div>
+
+            <!-- Description (editable) -->
+            <div class="wm-section">
+                <div class="wm-label">Description</div>
+                <textarea class="frm-desc-input" id="frm-desc-input" rows="3"></textarea>
+            </div>
+
+            <!-- Roll type -->
+            <div class="roll-seg" id="frm-roll-seg" role="group" aria-label="Roll type">
+                <button class="roll-seg-btn is-sel" type="button" data-seg="flat">Flat</button>
+                <button class="roll-seg-btn" type="button" data-seg="adv">Advantage</button>
+                <button class="roll-seg-btn" type="button" data-seg="dis">Disadvantage</button>
+            </div>
+
+            <!-- Bonus -->
+            <details class="wm-advanced">
+                <summary>Bonus</summary>
+                <div class="wm-advanced-grid wm-advanced-grid--single">
+                    <label class="field"><span class="field-label">Modifier Bonus</span><input id="frm-bonus" type="number" value="0" /></label>
+                </div>
+            </details>
+
+            <!-- Roll buttons - each sends directly to chat and closes -->
+            <div class="frm-results" id="frm-results" hidden></div>
+            <div id="frm-send" hidden></div>
+            <div class="frm-btn-row">
+                <button class="primary-btn" id="frm-roll-check" type="button">Roll &amp; Send to Chat</button>
+                <button class="frm-roll-btn frm-roll-btn--dmg" id="frm-roll-dmg" type="button" hidden>Roll Dmg Only</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Species Picker Modal -->
+    <div class="sp-overlay" id="species-picker" hidden>
+        <div class="sp-scrim" id="sp-scrim"></div>
+        <div class="sp-sheet">
+            <div class="sp-head">
+                <button class="sp-back" id="sp-back" type="button" hidden>← Back</button>
+                <span class="sp-title" id="sp-title">Choose Lineage</span>
+                <button class="icon-btn" id="sp-close" type="button" aria-label="Close">✕</button>
+            </div>
+            <div class="sp-body">
+                <!-- Level 1: Lineage -->
+                <div id="sp-lv-lineage">
+                    <div class="sp-grid" id="sp-lineage-grid"></div>
+                </div>
+                <!-- Level 2: Option -->
+                <div id="sp-lv-option" hidden>
+                    <div class="sp-grid" id="sp-option-grid"></div>
+                </div>
+                <!-- Level 3: Species cards + detail -->
+                <div id="sp-lv-species" hidden>
+                    <div class="sp-species-grid" id="sp-species-grid"></div>
+                    <div class="sp-species-detail" id="sp-species-detail" hidden></div>
+                </div>
+            </div>
+            <div class="sp-footer">
+                <button class="primary-btn" id="sp-confirm" type="button" disabled>Select Species</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Persistent conditions bar - always visible above nav when conditions active -->
+    <div class="conditions-bar" id="conditions-bar"></div>
+
+    <!-- Bottom navigation - outside <main> so no container can trap fixed positioning -->
+    <!-- Global context bar: target - visible on all panels -->
+    <div class="global-ctx-bar" id="player-context-bar" hidden>
+        <span class="chat-ctx-chip chat-ctx-chip--target" id="player-target-chip" hidden>
+            <span class="chat-ctx-label" id="player-target-chip-label"></span>
+            <button class="chat-ctx-dismiss" id="player-target-dismiss" type="button">×</button>
+        </span>
+    </div>
+
+    <nav class="bottom-nav" aria-label="Bottom navigation">
+        <button class="nav-btn" data-nav="chat" data-tip="Session Chat" type="button" aria-controls="panel-chat">
+            <span class="nav-icon-wrap">
+                <img class="nav-icon" src="../assets/icons/chat.png" alt="" aria-hidden="true" />
+                <span class="nav-notif" id="chat-notif" hidden></span>
+            </span>
+            <span class="nav-label">Chat</span>
+        </button>
+        <button class="nav-btn is-active" data-nav="play" data-tip="Play" type="button" aria-controls="panel-play">
+            <img class="nav-icon" src="../assets/icons/play.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Play</span>
+        </button>
+        <button class="nav-btn" data-nav="actions" data-tip="Features & Equipment" type="button" aria-controls="panel-actions">
+            <img class="nav-icon" src="../assets/icons/features.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Features</span>
+        </button>
+        <button class="nav-btn" data-nav="journal" data-tip="Journal" type="button" aria-controls="panel-journal">
+            <img class="nav-icon" src="../assets/icons/wax-tablet.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Journal</span>
+        </button>
+        <button class="nav-btn" data-nav="ref" data-tip="Reference Tables" type="button" aria-controls="panel-ref">
+            <img class="nav-icon" src="../assets/icons/reference.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Ref</span>
+        </button>
+        <button class="nav-btn" data-nav="progression" data-tip="XP & Progression" type="button" aria-controls="panel-progression">
+            <img class="nav-icon" src="../assets/icons/progression.png" alt="" aria-hidden="true" />
+            <span class="nav-label">Progress</span>
+        </button>
+    </nav>
+</body>
+
+</html>

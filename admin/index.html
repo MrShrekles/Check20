@@ -1,0 +1,14 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Editor</title>
+<script>
+    window.CMS_MANUAL_INIT = true;
+</script>
+<script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+<script>
+    // Load external config.yaml instead of default config.yml
+    fetch('/admin/config.yaml')
+        .then(r => r.text())
+        .then(yaml => CMS.init({ config: jsyaml.load(yaml), load_config_file: false }));
+</script>
+<script src="https://unpkg.com/js-yaml/dist/js-yaml.min.js"></script>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weapons</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/weapons.css">
+    <link rel="stylesheet" href="styles/sidebar.css">
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+    <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/arc-vocab.js" defer></script>
+    <script src="scripts/weapons.js" defer></script>
+    <script src="scripts/footer.js" defer></script>
+</head>
+
+<body data-page-title="Weapons">
+    <div id="header-placeholder"></div>
+    <main>
+        <section>
+            <div class="two-column">
+                <div class="column">
+                    <h1> Weapons </h1>
+                    <h3> Weapons and Customization </h3>
+                    <p>
+                        Weapons in Check20 are intentionally non-specific. They represent categories of combat tools
+                        rather than
+                        fixed items. This gives players creative freedom to describe and flavor their weapons while
+                        keeping the
+                        mechanics streamlined. Work with your Narrator to define what your weapon looks like, sounds
+                        like, and
+                        how it fits into your character’s story.
+                    </p>
+                    <p>Once you’ve chosen a weapon, assign it to the proper category, and lock in its damage type based
+                        on what
+                        it is. A longsword would be a Standard Melee weapon with Slashing damage. A warhammer would be
+                        Impact,
+                        and a pick would deal Piercing. This applies across the board.
+                    </p>
+
+                    <div class="weapon-note">
+                        <h3>Additional Information</h3>
+                        <p>
+                            <strong>Check Damage:</strong>
+                            If a weapon lists <code>Check</code> for damage, deal damage equal to your total in the specified check instead of rolling dice.
+                        </p>
+                        <p>
+                            If a weapon's damage includes an exclamation mark (e.g., <code>4d4!</code>), it uses <strong>exploding dice</strong>.
+                            This means that for every die rolled at its maximum value, you roll an additional die of the same type and add it to the total.
+                            This can repeat indefinitely as long as max values keep being rolled.
+                        </p>
+                    </div>
+
+                </div>
+                <div class="column">
+                    <h4>Weapon Examples</h4>
+                    <ul>
+                        <li><strong>Small Weapons:</strong> Daggers, hatchets, handaxes. Light, concealable, and quick
+                            to draw. Great for backups or stealthy strikes.</li>
+                        <li><strong>Standard Melee:</strong> Longswords, battleaxes, warhammers, war picks. One-handed
+                            martial weapons with solid, balanced design.</li>
+                        <li><strong>Standard Hefty:</strong> Greatswords, mauls, heavy flails. Massive two-handed
+                            weapons built for raw damage.</li>
+                        <li><strong>Reach Weapons:</strong> Polearms, spears, glaives, whips, chains. Melee weapons that
+                            extend your attack range.</li>
+                        <li><strong>Ranged Weapons:</strong> Bows, crossbows, revolvers, rifles, shotguns. Any weapon
+                            that fires a projectile, mundane or magical.</li>
+                        <li><strong>Thrown Weapons:</strong> Javelins, throwing axes, chakrams, heavy knives. Designed
+                            for short-range impact.</li>
+                        <li><strong>Exotic or Magical:</strong> Gut-powered sawblades, spectral revolvers, alchemical
+                            sprayers. These are stylized weapons that still follow category rules but may have unique
+                            properties or flair.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="two-column">
+                <div class="column">
+                    <h3>Weapon Categories</h3>
+                    <ul>
+                        <li><strong>Firearm</strong>
+                            <p>Weapons that fire high-speed projectiles, usually Tech in origin. Firearms roll damage with <code>1d4</code> exploding dice; when a die rolls its maximum, roll another and add it. This can repeat as long as maximums are rolled.</p>
+                        </li>
+                        <li><strong>Magic</strong>
+                            <p>Weapons imbued with magical properties. They often include a unique feature or special effect in addition to their base damage.</p>
+                        </li>
+                        <li><strong>Melee</strong>
+                            <p>Close-combat weapons used within reach (about 5 ft). Includes blades, blunt weapons, and other hand-to-hand implements.</p>
+                        </li>
+                        <li><strong>Ranged</strong>
+                            <p>Weapons that fire projectiles without firearms, such as bows or crossbows. Many creatures favor these for their silence and reliability.</p>
+                        </li>
+                    </ul>
+
+                    <h4>Basic Weapons</h4>
+                    <p>All of these are natural weapons and use either an Agility or Strength check. Unless otherwise stated, they are considered Light, 1-handed weapons.</p>
+                    <ul>
+                        <li><strong>Unarmed Strike</strong> A basic punch, kick, or shove. Deals [[1]] Impact damage.</li>
+                        <li><strong>Claws</strong> Sharp natural weapons that slash or rake. Deals [[1]] Slashing damage.</li>
+                        <li><strong>Bite</strong> A tearing bite. Deals [[1]] Piercing damage. On a success+, you may choose to grapple the target instead of rolling on the success table.</li>
+                        <li><strong>Tail</strong> A bludgeoning lash or sweep. Deals [[1]] Slashing damage. On a success+, you may knock the target Prone instead of rolling on the success table.</li>
+                    </ul>
+
+                </div>
+
+                <div class="column">
+                    <h3>Weapon Properties</h3>
+                    <ul>
+                        <li><strong>1-Hand (or foot)</strong> Wielded using only one appendage.</li>
+                        <li><strong>2-Hand</strong> Requires two hands to use.</li>
+                        <li><strong>Attached</strong> Built into or fixed onto armor or gear, does not require a free hand.</li>
+                        <li><strong>Close Range Disadvantage</strong> Ranged or reach attacks suffer Disadvantage against adjacent targets.</li>
+                        <li><strong>Free Hands</strong> Does not restrict use of your hands. You can still use objects or cast spells without stowing the weapon.</li>
+                        <li><strong>Hefty ⚒️</strong> You can only carry two Hefty items at a time before gaining the Pinned condition. These are large, powerful weapons.</li>
+                        <li><strong>Hidden</strong> Can be concealed easily on your person.</li>
+                        <li id="light"><strong>Light ⚔️</strong> Can be used as both an Action and an Off-action attack.</li>
+                        <li><strong>Reach </strong> Extends beyond normal melee range.</li>
+                        <li><strong>Reload</strong> Must be reloaded after a certain number of attacks.</li>
+                        <li><strong>Return🪃</strong> Comes back after being thrown, based on the specified action type (Action, Half-action, Off-action, or Free action).</li>
+                        <li><strong>Surprise</strong> If the target is unaware, the weapon can trigger Finisher or similar effects.</li>
+                        <li><strong>Tech ⚙️</strong> Uses mechanical or technological design rather than purely physical or magical means.</li>
+                        <li><strong>Thrown</strong> Can be thrown as a ranged attack.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="weapons-controls">
+                <input type="text" id="weapons-search" style="width:260px" placeholder="Search weapons." />
+                <select id="weapons-sort-options" style="width:220px">
+                    <option value="name">Sort by Name</option>
+                    <option value="category">Sort by Category</option>
+                    <option value="damageNum">Sort by Damage</option>
+                    <option value="cost">Sort by Cost</option>
+                    <option value="bulk">Sort by Bulk</option>
+                    <option value="rarity">Sort by Rarity</option>
+                </select>
+
+            </div>
+            <div class="filters">
+                <div class="filter-group" data-key="category" data-mode="solo" aria-label="Category"></div>
+                <div class="filter-group" data-key="range" aria-label="Range"></div>
+                <div class="filter-group" data-key="properties" data-multi="1" aria-label="Properties"></div>
+                <div class="filter-group" data-key="rarity" aria-label="Rarity"></div>
+                <button id="clearFilters" class="ghost-btn" type="button">Clear filters</button>
+            </div>
+            <span id="weapons-count"></span>
+            <div id="weapons-grid" class="weapons-grid"></div>
+
+    </main>
+    <div id="sidebar-placeholder"></div>
+    <div id="footer-placeholder"></div>
+
+</body>
+
+</html>

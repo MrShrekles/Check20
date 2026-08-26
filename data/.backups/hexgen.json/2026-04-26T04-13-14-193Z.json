@@ -1,0 +1,820 @@
+{
+  "lords": [
+    {
+      "name": "Salt Lord",
+      "weight": 6
+    },
+    {
+      "name": "Blood Lord",
+      "weight": 1
+    },
+    {
+      "name": "Glass Lord",
+      "weight": 4
+    },
+    {
+      "name": "Star Lord",
+      "weight": 2
+    },
+    {
+      "name": "Bone Lord",
+      "weight": 2
+    },
+    {
+      "name": "Gold Lord",
+      "weight": 5
+    },
+    {
+      "name": "Ink Lord",
+      "weight": 4
+    },
+    {
+      "name": "Spice Lord",
+      "weight": 4
+    },
+    {
+      "name": "Ivory Lord",
+      "weight": 2
+    },
+    {
+      "name": "No Scarab Influence",
+      "weight": 4
+    }
+  ],
+  "environments": {
+    "desert": [
+      {
+        "name": "Open Desert",
+        "weight": 4
+      },
+      {
+        "name": "Salt Fields",
+        "weight": 2
+      },
+      {
+        "name": "Salt Spires",
+        "weight": 1
+      },
+      {
+        "name": "Oasis (Lush)",
+        "weight": 1
+      },
+      {
+        "name": "Oasis (Dying)",
+        "weight": 2
+      },
+      {
+        "name": "High Desert",
+        "weight": 2
+      },
+      {
+        "name": "Dry Riverbed",
+        "weight": 2
+      },
+      {
+        "name": "Termite Mounds",
+        "weight": 1
+      },
+      {
+        "name": "Volcanic Lakes",
+        "weight": 1
+      },
+      {
+        "name": "Volcanic Peaks",
+        "weight": 1
+      },
+      {
+        "name": "Limestone Forest",
+        "weight": 1
+      },
+      {
+        "name": "Baobab Forest",
+        "weight": 1
+      },
+      {
+        "name": "Mirage Zone",
+        "weight": 1
+      },
+      {
+        "name": "Salt Marsh",
+        "weight": 1
+      },
+      {
+        "name": "Badlands",
+        "weight": 2
+      },
+      {
+        "name": "Sandstone Arches",
+        "weight": 1
+      },
+      {
+        "name": "Sandstone Cliffs",
+        "weight": 1
+      },
+      {
+        "name": "Ancient Ruins",
+        "weight": 1
+      },
+      {
+        "name": "Boiling Sand Lake",
+        "weight": 1
+      },
+      {
+        "name": "Boiling Sand River",
+        "weight": 1
+      },
+      {
+        "name": "Tar Field",
+        "weight": 1
+      }
+    ],
+    "mountain": [
+      {
+        "name": "High Peaks",
+        "weight": 3
+      },
+      {
+        "name": "Deep Caves",
+        "weight": 2
+      },
+      {
+        "name": "Mountain Pass",
+        "weight": 2
+      },
+      {
+        "name": "Gulch",
+        "weight": 2
+      },
+      {
+        "name": "Plateau",
+        "weight": 2
+      },
+      {
+        "name": "Volcanic Lakes",
+        "weight": 1
+      },
+      {
+        "name": "Volcanic Peaks",
+        "weight": 1
+      },
+      {
+        "name": "Ancient Ruins",
+        "weight": 1
+      },
+      {
+        "name": "Limestone Caves",
+        "weight": 1
+      },
+      {
+        "name": "Deep Ravine",
+        "weight": 2
+      }
+    ],
+    "city": [
+      {
+        "name": "Oasis City",
+        "weight": 2
+      },
+      {
+        "name": "Trade Hub",
+        "weight": 2
+      },
+      {
+        "name": "Salt Spires Settlement",
+        "weight": 1
+      },
+      {
+        "name": "Plateau City",
+        "weight": 1
+      },
+      {
+        "name": "Ruins Settlement",
+        "weight": 1
+      },
+      {
+        "name": "Gulch Town",
+        "weight": 1
+      },
+      {
+        "name": "Mountain Stronghold",
+        "weight": 1
+      },
+      {
+        "name": "Riverside Port",
+        "weight": 1
+      }
+    ],
+    "all": [
+      {
+        "name": "Open Desert",
+        "weight": 4
+      },
+      {
+        "name": "Salt Fields",
+        "weight": 2
+      },
+      {
+        "name": "Oasis (Lush)",
+        "weight": 1
+      },
+      {
+        "name": "Oasis (Dying)",
+        "weight": 2
+      },
+      {
+        "name": "High Desert",
+        "weight": 2
+      },
+      {
+        "name": "Dry Riverbed",
+        "weight": 2
+      },
+      {
+        "name": "Caves",
+        "weight": 2
+      },
+      {
+        "name": "Mountain Pass",
+        "weight": 2
+      },
+      {
+        "name": "Gulch",
+        "weight": 2
+      },
+      {
+        "name": "Plateau",
+        "weight": 1
+      },
+      {
+        "name": "Volcanic Lakes",
+        "weight": 1
+      },
+      {
+        "name": "Badlands",
+        "weight": 2
+      },
+      {
+        "name": "Sandstone Cliffs",
+        "weight": 1
+      },
+      {
+        "name": "Ancient Ruins",
+        "weight": 1
+      },
+      {
+        "name": "Boiling Sand Lake",
+        "weight": 1
+      },
+      {
+        "name": "Salt Marsh",
+        "weight": 1
+      },
+      {
+        "name": "Termite Mounds",
+        "weight": 1
+      },
+      {
+        "name": "Baobab Forest",
+        "weight": 1
+      },
+      {
+        "name": "Tar Field",
+        "weight": 1
+      },
+      {
+        "name": "Trade Hub",
+        "weight": 1
+      },
+      {
+        "name": "Oasis City",
+        "weight": 1
+      }
+    ]
+  },
+  "enemies": [
+    {
+      "name": "None",
+      "weight": 4
+    },
+    {
+      "name": "Termite Packs",
+      "weight": 2
+    },
+    {
+      "name": "Bandits",
+      "weight": 3
+    },
+    {
+      "name": "Pirates",
+      "weight": 1
+    },
+    {
+      "name": "The Vessels",
+      "weight": 1
+    },
+    {
+      "name": "Demons",
+      "weight": 1
+    },
+    {
+      "name": "Undead",
+      "weight": 2
+    },
+    {
+      "name": "Tar Ooze",
+      "weight": 1
+    },
+    {
+      "name": "Poachers",
+      "weight": 2
+    },
+    {
+      "name": "Slavers",
+      "weight": 1
+    },
+    {
+      "name": "Blight",
+      "weight": 1
+    },
+    {
+      "name": "Carrion Feeders",
+      "weight": 2
+    },
+    {
+      "name": "Sandworm",
+      "weight": 1
+    },
+    {
+      "name": "Dune Dogs",
+      "weight": 2
+    }
+  ],
+  "populations": [
+    {
+      "name": "Barren",
+      "tier": 0,
+      "weight": 8
+    },
+    {
+      "name": "Nomads",
+      "tier": 1,
+      "weight": 5
+    },
+    {
+      "name": "Single Home",
+      "tier": 1,
+      "weight": 5
+    },
+    {
+      "name": "Homestead",
+      "tier": 2,
+      "weight": 5
+    },
+    {
+      "name": "Hamlet",
+      "tier": 2,
+      "weight": 5
+    },
+    {
+      "name": "Village",
+      "tier": 4,
+      "weight": 4
+    },
+    {
+      "name": "Tribe",
+      "tier": 3,
+      "weight": 4
+    },
+    {
+      "name": "Town",
+      "tier": 6,
+      "weight": 3
+    },
+    {
+      "name": "City",
+      "tier": 8,
+      "weight": 2
+    },
+    {
+      "name": "Metropolis",
+      "tier": 10,
+      "weight": 1
+    }
+  ],
+  "temperaments": [
+    {
+      "name": "Peaceful",
+      "weight": 1
+    },
+    {
+      "name": "Quiet Tension",
+      "weight": 1
+    },
+    {
+      "name": "Bickering",
+      "weight": 1
+    },
+    {
+      "name": "Skirmishes",
+      "weight": 1
+    },
+    {
+      "name": "Raiding",
+      "weight": 1
+    },
+    {
+      "name": "At War",
+      "weight": 1
+    },
+    {
+      "name": "Occupied",
+      "weight": 1
+    },
+    {
+      "name": "Boring",
+      "weight": 1
+    }
+  ],
+  "features": [
+    {
+      "name": "Small Dungeon",
+      "weight": 2
+    },
+    {
+      "name": "Large Dungeon",
+      "weight": 1
+    },
+    {
+      "name": "Bazaar",
+      "weight": 2
+    },
+    {
+      "name": "Laboratory",
+      "weight": 1
+    },
+    {
+      "name": "Factory",
+      "weight": 1
+    },
+    {
+      "name": "Ruined Fortress",
+      "weight": 2
+    },
+    {
+      "name": "Cave System",
+      "weight": 2
+    },
+    {
+      "name": "Sunken Ruins",
+      "weight": 1
+    },
+    {
+      "name": "Tomb Complex",
+      "weight": 2
+    },
+    {
+      "name": "Bandit Camp",
+      "weight": 2
+    },
+    {
+      "name": "Enemy Stronghold",
+      "weight": 1
+    },
+    {
+      "name": "Tavern/Inn",
+      "weight": 2
+    },
+    {
+      "name": "Caravan Stop",
+      "weight": 2
+    },
+    {
+      "name": "Port/Harbor",
+      "weight": 1
+    },
+    {
+      "name": "City District",
+      "weight": 1
+    },
+    {
+      "name": "Thieves Guild",
+      "weight": 1
+    },
+    {
+      "name": "Temple/Shrine",
+      "weight": 2
+    },
+    {
+      "name": "Library/Archive",
+      "weight": 1
+    },
+    {
+      "name": "Cult Compound",
+      "weight": 1
+    },
+    {
+      "name": "Sealed Vault",
+      "weight": 1
+    },
+    {
+      "name": "Abandoned Settlement",
+      "weight": 2
+    },
+    {
+      "name": "Mine",
+      "weight": 2
+    },
+    {
+      "name": "Quarry",
+      "weight": 1
+    },
+    {
+      "name": "Refinery",
+      "weight": 1
+    },
+    {
+      "name": "Slave Camp",
+      "weight": 1
+    },
+    {
+      "name": "Farmstead/Plantation",
+      "weight": 1
+    },
+    {
+      "name": "Way Station",
+      "weight": 2
+    },
+    {
+      "name": "Undead Barrow",
+      "weight": 1
+    },
+    {
+      "name": "Corrupted Zone",
+      "weight": 1
+    },
+    {
+      "name": "Rift/Planar Tear",
+      "weight": 1
+    },
+    {
+      "name": "Ancient Sealed Prison",
+      "weight": 1
+    }
+  ],
+  "foods": [
+    {
+      "name": "Insect",
+      "weight": 3
+    },
+    {
+      "name": "Reptile",
+      "weight": 3
+    },
+    {
+      "name": "Rodent",
+      "weight": 3
+    },
+    {
+      "name": "Birds",
+      "weight": 2
+    },
+    {
+      "name": "Cactus",
+      "weight": 2
+    },
+    {
+      "name": "Fruits",
+      "weight": 2
+    },
+    {
+      "name": "Tubers",
+      "weight": 2
+    },
+    {
+      "name": "Lichen",
+      "weight": 1
+    },
+    {
+      "name": "Sandfish",
+      "weight": 2
+    },
+    {
+      "name": "Boilbugs",
+      "weight": 1
+    },
+    {
+      "name": "Carrion",
+      "weight": 2
+    }
+  ],
+  "resources": [
+    {
+      "name": "Salt",
+      "weight": 3
+    },
+    {
+      "name": "Soil",
+      "weight": 2
+    },
+    {
+      "name": "Spices",
+      "weight": 2
+    },
+    {
+      "name": "Iron",
+      "weight": 2
+    },
+    {
+      "name": "Copper",
+      "weight": 2
+    },
+    {
+      "name": "Tin",
+      "weight": 1
+    },
+    {
+      "name": "Silver",
+      "weight": 1
+    },
+    {
+      "name": "Sulfur",
+      "weight": 1
+    },
+    {
+      "name": "Nitrates",
+      "weight": 1
+    },
+    {
+      "name": "Borax",
+      "weight": 1
+    },
+    {
+      "name": "Gemstones",
+      "weight": 1
+    },
+    {
+      "name": "Obsidian",
+      "weight": 1
+    },
+    {
+      "name": "Flint",
+      "weight": 2
+    },
+    {
+      "name": "Deadfall",
+      "weight": 2
+    },
+    {
+      "name": "Drywood",
+      "weight": 2
+    },
+    {
+      "name": "Dry Dung",
+      "weight": 2
+    },
+    {
+      "name": "Peat",
+      "weight": 1
+    },
+    {
+      "name": "Oil",
+      "weight": 1
+    },
+    {
+      "name": "Tar",
+      "weight": 1
+    },
+    {
+      "name": "Coal",
+      "weight": 1
+    },
+    {
+      "name": "Medicinal Plants",
+      "weight": 2
+    },
+    {
+      "name": "Dyes",
+      "weight": 1
+    },
+    {
+      "name": "Plant Fiber",
+      "weight": 2
+    },
+    {
+      "name": "Resin",
+      "weight": 1
+    },
+    {
+      "name": "Exotic Animals",
+      "weight": 1
+    },
+    {
+      "name": "Stone",
+      "weight": 2
+    }
+  ],
+  "powerLevels": [
+    {
+      "pl": 1,
+      "weight": 1
+    },
+    {
+      "pl": 2,
+      "weight": 2
+    },
+    {
+      "pl": 3,
+      "weight": 3
+    },
+    {
+      "pl": 4,
+      "weight": 4
+    },
+    {
+      "pl": 5,
+      "weight": 5
+    },
+    {
+      "pl": 6,
+      "weight": 6
+    },
+    {
+      "pl": 7,
+      "weight": 7
+    },
+    {
+      "pl": 8,
+      "weight": 7
+    },
+    {
+      "pl": 9,
+      "weight": 6
+    },
+    {
+      "pl": 10,
+      "weight": 5
+    },
+    {
+      "pl": 11,
+      "weight": 4
+    },
+    {
+      "pl": 12,
+      "weight": 3
+    },
+    {
+      "pl": 13,
+      "weight": 2
+    },
+    {
+      "pl": 14,
+      "weight": 1
+    },
+    {
+      "pl": 15,
+      "weight": 1
+    },
+    {
+      "pl": 16,
+      "weight": 1
+    },
+    {
+      "pl": 17,
+      "weight": 1
+    },
+    {
+      "pl": 18,
+      "weight": 1
+    },
+    {
+      "pl": 19,
+      "weight": 1
+    },
+    {
+      "pl": 20,
+      "weight": 1
+    }
+  ],
+  "travelConnectors": [
+    "The route ahead is open but the heat builds steadily.",
+    "Fresh tracks cross the path. Something large passed recently.",
+    "A wrecked skiff sits half-buried in the sand. The cargo is gone.",
+    "The horizon shimmers. Could be a mirage. Could be smoke.",
+    "An old way marker stands here, pointing three directions.",
+    "The wind picks up. Dust on the eastern edge.",
+    "Bones of a large animal. Picked clean. Recent.",
+    "A dry riverbed cuts across the path. Crossable but slow.",
+    "Distant fire at night. Origin unclear.",
+    "The road narrows to a single track through loose sand.",
+    "Evidence of a camp, abandoned in a hurry.",
+    "A stretch of ancient paved road surfaces briefly, then vanishes.",
+    "Vultures circling something ahead and to the north.",
+    "The temperature drops sharply. The terrain is shifting.",
+    "A lone figure on the ridge. Gone by the time you look again.",
+    "Salt crust underfoot. The ground here is hollow.",
+    "Storm debris scattered across the route. Recent passage was rough.",
+    "A Camelon trail marker. Someone knows this path.",
+    "Silence. No insects, no wind. Uncomfortable quiet.",
+    "The sand here has an unusual color. Red-orange, almost rust."
+  ]
+}

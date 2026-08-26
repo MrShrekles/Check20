@@ -1,0 +1,457 @@
+[
+  {
+    "type": "prefix",
+    "text": "Ancient"
+  },
+  {
+    "type": "prefix",
+    "text": "Blessed"
+  },
+  {
+    "type": "effect",
+    "text": "As an off-action once per day, immune to {type} damage until the end of your next turn",
+    "prefix": "Goatskin"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, whispers warnings before creatures attack",
+    "prefix": "Warning"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, you speak {language} language",
+    "prefix": "Crowfeather"
+  },
+  {
+    "type": "effect",
+    "text": "As an off-action once per day, grants advantage on a {check} check to a creature within short range",
+    "prefix": "Abetting "
+  },
+  {
+    "type": "effect",
+    "text": "As an off-action once per day, when hit with {type} damage heal for that amount or repair armor",
+    "prefix": "Absorbing"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, you cannot be tracked by magical means",
+    "prefix": "Untracking"
+  },
+  {
+    "type": "effect",
+    "text": "As an action, reveals invisible creatures within short range until the end of your next turn",
+    "prefix": "Revealing"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, glows in the presence of {origin}",
+    "prefix": "Tuning"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, you leave no footprints in any terrain",
+    "prefix": "Lightfoot"
+  },
+  {
+    "type": "effect",
+    "text": "Deal double damage to creatures and objects with {origin} origin",
+    "prefix": "Obsession"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, you take no fall damage from a long or shorter height",
+    "prefix": "Feathered"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand you understand any written language",
+    "prefix": "Babbler's"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand you have no shadow",
+    "prefix": "Un-void"
+  },
+  {
+    "type": "damageType",
+    "text": "Fire"
+  },
+  {
+    "type": "damageType",
+    "text": "Ice"
+  },
+  {
+    "type": "damageType",
+    "text": "Lightning"
+  },
+  {
+    "type": "damageType",
+    "text": "Solar"
+  },
+  {
+    "type": "damageType",
+    "text": "Eclipse"
+  },
+  {
+    "type": "damageType",
+    "text": "Vozian"
+  },
+  {
+    "type": "damageType",
+    "text": "Nature"
+  },
+  {
+    "type": "damageType",
+    "text": "Psychic"
+  },
+  {
+    "type": "damageType",
+    "text": "Acid"
+  },
+  {
+    "type": "damageType",
+    "text": "Thunder"
+  },
+  {
+    "type": "damageType",
+    "text": "Slashing"
+  },
+  {
+    "type": "damageType",
+    "text": "Impact"
+  },
+  {
+    "type": "check",
+    "text": "Agility"
+  },
+  {
+    "type": "check",
+    "text": "Strength"
+  },
+  {
+    "type": "check",
+    "text": "Intellect"
+  },
+  {
+    "type": "check",
+    "text": "Observation"
+  },
+  {
+    "type": "check",
+    "text": "Stealth"
+  },
+  {
+    "type": "check",
+    "text": "Influence"
+  },
+  {
+    "type": "check",
+    "text": "Luck"
+  },
+  {
+    "type": "check",
+    "text": "Spirit"
+  },
+  {
+    "type": "check",
+    "text": "Crafting"
+  },
+  {
+    "type": "check",
+    "text": "Survival"
+  },
+  {
+    "type": "effect",
+    "text": "As an Off-Action, recall the weapon, dealing +1 damage to all creatures in the line it returns through",
+    "prefix": "Chained"
+  },
+  {
+    "type": "effect",
+    "text": "Deals +2 additional {type} damage",
+    "prefix": "Imbued"
+  },
+  {
+    "type": "effect",
+    "text": "Grants +1 bonus to {check}",
+    "prefix": "Accurate"
+  },
+  {
+    "type": "origin",
+    "text": "Celestial"
+  },
+  {
+    "type": "origin",
+    "text": "Vozian"
+  },
+  {
+    "type": "origin",
+    "text": "Nature"
+  },
+  {
+    "type": "origin",
+    "text": "Dragon"
+  },
+  {
+    "type": "origin",
+    "text": "Arcane"
+  },
+  {
+    "type": "origin",
+    "text": "Chaos"
+  },
+  {
+    "type": "origin",
+    "text": "Basic"
+  },
+  {
+    "type": "origin",
+    "text": "Chrono"
+  },
+  {
+    "type": "origin",
+    "text": "Life"
+  },
+  {
+    "type": "origin",
+    "text": "Tech"
+  },
+  {
+    "type": "origin",
+    "text": "Crystal"
+  },
+  {
+    "type": "origin",
+    "text": "Elemental"
+  },
+  {
+    "type": "language",
+    "text": "Imperial"
+  },
+  {
+    "type": "language",
+    "text": "Orcish/Elvish"
+  },
+  {
+    "type": "language",
+    "text": "Naech"
+  },
+  {
+    "type": "language",
+    "text": "Dealig"
+  },
+  {
+    "type": "language",
+    "text": "Etheros"
+  },
+  {
+    "type": "language",
+    "text": "Night"
+  },
+  {
+    "type": "language",
+    "text": "Clunk"
+  },
+  {
+    "type": "language",
+    "text": "Yar"
+  },
+  {
+    "type": "language",
+    "text": "Drak"
+  },
+  {
+    "type": "language",
+    "text": "Holy"
+  },
+  {
+    "type": "language",
+    "text": "Jotun"
+  },
+  {
+    "type": "prefix",
+    "text": "Modern"
+  },
+  {
+    "type": "prefix",
+    "text": "Enhanced"
+  },
+  {
+    "type": "effect",
+    "text": "As an action once per day, reveal links and portals to other realms, if they exist",
+    "prefix": "Phantom Eye"
+  },
+  {
+    "type": "effect",
+    "text": "When you deal damage with this item, the creature must make a Mental check or take the fear and coughing conditions, preventing one per success.",
+    "prefix": "Rotiron"
+  },
+  {
+    "type": "effect",
+    "text": "When you hit with a Success+ cause the {condition} condition instead of rolling on the table",
+    "prefix": "Runed"
+  },
+  {
+    "type": "condition",
+    "text": "Bleeding"
+  },
+  {
+    "type": "condition",
+    "text": "Broken"
+  },
+  {
+    "type": "condition",
+    "text": "Concussion"
+  },
+  {
+    "type": "condition",
+    "text": "Coughing"
+  },
+  {
+    "type": "condition",
+    "text": "Dislocation"
+  },
+  {
+    "type": "condition",
+    "text": "Pinned"
+  },
+  {
+    "type": "condition",
+    "text": "Prone"
+  },
+  {
+    "type": "condition",
+    "text": "Slowed"
+  },
+  {
+    "type": "condition",
+    "text": "Blind"
+  },
+  {
+    "type": "condition",
+    "text": "Charmed"
+  },
+  {
+    "type": "condition",
+    "text": "Confused"
+  },
+  {
+    "type": "condition",
+    "text": "Deaf"
+  },
+  {
+    "type": "condition",
+    "text": "Fear"
+  },
+  {
+    "type": "condition",
+    "text": "Intangible"
+  },
+  {
+    "type": "condition",
+    "text": "Invisible"
+  },
+  {
+    "type": "condition",
+    "text": "Constrained"
+  },
+  {
+    "type": "condition",
+    "text": "Exhaustion"
+  },
+  {
+    "type": "condition",
+    "text": "Exhausted"
+  },
+  {
+    "type": "condition",
+    "text": "Exposed"
+  },
+  {
+    "type": "condition",
+    "text": "Stunned"
+  },
+  {
+    "type": "condition",
+    "text": "Unconscious"
+  },
+  {
+    "type": "effect",
+    "text": "When you deal damage with this item, it deals half the damage again at the end of the damaged creature's next turn.",
+    "prefix": "Lingering"
+  },
+  {
+    "type": "effect",
+    "text": "Cast a spell into this item, it will be stored until the end of the next day before it fades away",
+    "prefix": "Bespelled"
+  },
+  {
+    "type": "effect",
+    "text": "When you cause a Success+ with this item, choose the effect from the success table",
+    "prefix": "Controlled"
+  },
+  {
+    "type": "effect",
+    "text": "This item ignores immunity",
+    "prefix": "Obsidian"
+  },
+  {
+    "type": "effect",
+    "text": "This item cannot be used until a chosen target dies",
+    "prefix": "CryptLocked"
+  },
+  {
+    "type": "effect",
+    "text": "Cannot be used until unlocked with the matching rune sequence",
+    "prefix": "Codex Locked"
+  },
+  {
+    "type": "effect",
+    "text": "Deal double damage to creature's with a Corpus condition",
+    "prefix": "Executioner’s"
+  },
+  {
+    "type": "effect",
+    "text": "Deal double damage to creatures with the {condition} condition",
+    "prefix": "Seeker's"
+  },
+  {
+    "type": "effect",
+    "text": "As an off-action once per day cause a large or smaller creature to fall Prone",
+    "prefix": "Hooked"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, Silver-vulnerable beings have disadvantage on checks made against you",
+    "prefix": "Silver"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, you are immune to the Charm condition",
+    "prefix": "Jade"
+  },
+  {
+    "type": "effect",
+    "text": "Can be used as an off action to double fire damage",
+    "prefix": "Brimstone"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, glows in the presence of shapeshifters, doppelgangers, mimics, and other creatures that appear false. ",
+    "prefix": "Dragonscale"
+  },
+  {
+    "type": "effect",
+    "text": "Critical hits deal triple damage, but the item is destroyed on critical failures",
+    "prefix": "Volatile "
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, spells that use Astral Transmission are denied within short range",
+    "prefix": "Forbiddance"
+  },
+  {
+    "type": "effect",
+    "text": "While in hand, spells that use Astral Transmission are denied within short range",
+    "prefix": "Flourishing"
+  }
+]

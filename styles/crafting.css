@@ -1,0 +1,199 @@
+/* ══════════════════════════════════════════════════════════════════
+   CRAFTING - styles/crafting.css
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Toolbar ── */
+.craft-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .45rem var(--padding, 1rem);
+    background: var(--dark-1, #0d0d0d);
+    border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+.craft-toolbar button { font-size: .75rem; padding: 3px 10px; }
+
+/* ── Grid ── */
+.craft-grid {
+    padding: var(--padding, 1rem);
+    gap: .5rem var(--padding, 1rem);
+}
+
+/* ── Group headers span full width ── */
+.craft-group-header {
+    margin-top: .5rem;
+}
+
+/* ── Section / workbench open state ── */
+.craft-section .spell-row-detail,
+.craft-workbench .spell-row-detail {
+    display: none;
+    background: var(--dark-2, #1a1a1a);
+    padding: .9rem 1rem 1.1rem 1.4rem;
+}
+
+.craft-section.open .spell-row-detail,
+.craft-workbench.open .spell-row-detail {
+    display: block;
+}
+
+/* ── Workbench emoji icon in row head ── */
+.craft-wb-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+/* ── Category tag ── */
+.craft-tag {
+    font-size: var(--codex-tag-size, .65rem);
+    padding: 2px 7px;
+    border-radius: 3px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    color: rgba(255,255,255,.45);
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    white-space: nowrap;
+}
+
+/* ── Section body text ── */
+.craft-section-body p {
+    font-size: var(--codex-effect-size, .85rem);
+    line-height: var(--codex-lh, 1.6);
+    color: var(--text-cream, #e8dfc8);
+    margin: 0 0 .5rem;
+}
+
+.craft-section-body h3 {
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--gold-2, #a87820);
+    margin: .75rem 0 .3rem;
+    padding-bottom: .2rem;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.craft-section-body h3:first-child { margin-top: 0; }
+
+.craft-section-body h4 {
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--text-muted, #888);
+    margin: .5rem 0 .2rem;
+}
+
+.craft-section-body ul {
+    padding-left: 1.2rem;
+    margin: .2rem 0 .5rem;
+}
+
+.craft-section-body li {
+    font-size: var(--codex-meta-size, .73rem);
+    color: var(--text-cream, #e8dfc8);
+    line-height: 1.55;
+    margin-bottom: .15rem;
+}
+
+.craft-section-body strong { color: var(--text-cream, #e8dfc8); }
+
+/* ── Tables ── */
+.craft-section-body table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--codex-meta-size, .73rem);
+    margin: .3rem 0 .6rem;
+}
+
+.craft-section-body th {
+    font-size: .62rem;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--text-muted, #888);
+    padding: .28rem .4rem;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    text-align: left;
+    font-weight: 600;
+}
+
+.craft-section-body td {
+    padding: .28rem .4rem;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    color: var(--text-cream, #e8dfc8);
+    vertical-align: top;
+}
+
+.craft-section-body tr:last-child td { border-bottom: none; }
+
+/* ── Two-column layout inside sections ── */
+.craft-section-body .two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: .4rem;
+}
+
+@media (max-width: 560px) {
+    .craft-section-body .two-column { grid-template-columns: 1fr; }
+}
+
+/* ── Workbench stations ── */
+.craft-stations {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+    margin: .4rem 0 .6rem;
+}
+
+.craft-station {
+    flex: 1;
+    min-width: 130px;
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-left: 3px solid var(--row-accent, transparent);
+    border-radius: var(--border-radius, 4px);
+    padding: .4rem .55rem;
+    font-size: var(--codex-meta-size, .73rem);
+}
+
+.craft-station-icon { font-size: 1.1rem; line-height: 1; }
+.craft-station strong { color: var(--text-cream, #e8dfc8); }
+.craft-station span   { color: var(--text-muted, #888); }
+
+/* ── Workbench feature list ── */
+.craft-features {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: .35rem;
+}
+
+.craft-feature {
+    display: flex;
+    gap: .5rem;
+    align-items: baseline;
+    font-size: var(--codex-meta-size, .73rem);
+    padding: .25rem 0;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    line-height: 1.5;
+}
+
+.craft-feature:last-child { border-bottom: none; }
+
+.craft-feature strong {
+    flex-shrink: 0;
+    min-width: 130px;
+    color: var(--text-cream, #e8dfc8);
+    font-weight: 700;
+}
+
+.craft-feature span { color: var(--text-muted, #999); }

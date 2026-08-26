@@ -1,0 +1,342 @@
+/* Weapons - warm/red/orange theme using root vars only */
+
+.weapons-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+/* Cards */
+.weapon-card {
+  background: var(--dark-2);
+  border: 1px solid var(--warm-2);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  color: var(--text-plain);
+  transition: transform .2s ease, border-color .25s ease, box-shadow .25s ease;
+  padding: 3px;
+  width: 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Category tints */
+.weapon-card[data-category="melee"] {
+  background: linear-gradient(160deg, rgba(139, 74, 47, 0.2), transparent 60%), var(--dark-2);
+  border-color: var(--warm-2);
+}
+.weapon-card[data-category="melee"] h4 { color: var(--warm-3); }
+
+.weapon-card[data-category="ranged"] {
+  background: linear-gradient(160deg, rgba(175, 128, 0, 0.18), transparent 60%), var(--dark-2);
+  border-color: var(--gold-2);
+}
+.weapon-card[data-category="ranged"] h4 { color: var(--gold-3); }
+
+.weapon-card[data-category="firearm"] {
+  background: linear-gradient(160deg, rgba(255, 100, 100, 0.15), transparent 60%), var(--dark-2);
+  border-color: var(--red-2);
+}
+.weapon-card[data-category="firearm"] h4 { color: var(--red-2); }
+
+.weapon-card[data-category="magic"] {
+  background: linear-gradient(160deg, rgba(58, 95, 58, 0.25), transparent 60%), var(--dark-2);
+  border-color: var(--green-2);
+}
+.weapon-card[data-category="magic"] h4 { color: var(--green-3); }
+
+@media (max-width:690px) {
+  .weapon-card {
+    width: 45%;
+  }
+}
+
+.weapon-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold-2);
+  box-shadow: 0 6px 18px rgba(175, 128, 0, 0.25);
+  /* glow from --gold-2 */
+}
+
+.weapon-card h4 {
+  font-size: 1rem;
+  margin-bottom: .25rem;
+  color: var(--gold-3);
+}
+
+/* Tags */
+.weapon-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.weapon-tags span {
+  display: inline-block;
+  padding: 5px 7px;
+  font-size: .7rem;
+  color: var(--white);
+  border-radius: var(--border-radius);
+  text-transform: uppercase;
+}
+
+/* Category / property chips - warm palette */
+.melee {
+  background-color: var(--warm-2);
+}
+
+.ranged {
+  background-color: var(--gold-1);
+}
+
+.firearm {
+  background-color: var(--red-2);
+}
+
+.magic {
+  background-color: var(--green-2);
+}
+
+.hefty {
+  background-color: var(--rust);
+}
+
+.reload {
+  background-color: var(--gold-2);
+}
+
+.thrown {
+  background-color: var(--red-1);
+}
+
+/* Info list */
+.weapon-info {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.weapon-card p {
+  color: var(--text-cream);
+  margin: .5rem 0;
+  line-height: 1.3;
+}
+
+/* Buttons */
+.weapon-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.copy-weapon,
+.copy-addweapon {
+  flex: 1;
+  padding: var(--padding);
+  border-radius: var(--border-radius);
+  color: var(--white);
+  border: 1px solid var(--gold-1);
+  cursor: pointer;
+  transition: background-color .2s ease, transform .05s ease, border-color .2s ease;
+  background-color: var(--theme-2);
+}
+
+.copy-weapon:hover,
+.copy-addweapon:hover {
+  background-color: var(--warm-1);
+  border-color: var(--gold-2);
+}
+
+.copy-weapon:active,
+.copy-addweapon:active {
+  transform: translateY(1px);
+}
+
+/* Header block */
+#weapons {
+  position: relative;
+  padding: var(--padding);
+  background-color: var(--dark-1);
+  background-image: url('./assets/images/Armory.png');
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-size: 25%;
+  border-radius: var(--border-radius);
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  background: var(--dark-2);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.toggle-btn {
+  padding: 4px 8px;
+  border: 1px solid var(--theme-2);
+  background: var(--dark);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.toggle-btn.active {
+  background: var(--theme-2);
+  color: var(--white);
+}
+
+/* read label from aria-label (matches your HTML) */
+.filter-group::before {
+  content: attr(aria-label) ":";
+  font-weight: 600;
+  margin-right: .25rem;
+  opacity: .9;
+  color: var(--gold-3);
+}
+
+/* Toggle buttons */
+.toggle-btn {
+  border: 1px solid var(--gold-2);
+  padding: .4rem .65rem;
+  border-radius: 999px;
+  font-size: .9rem;
+  line-height: 1;
+  background: linear-gradient(180deg, #262626, #1b1b1b);
+  color: #ccc;
+  box-shadow: inset 0 0 0 0 rgba(0, 0, 0, 0);
+  transition: .15s ease;
+}
+
+.toggle-btn.active {
+  color: #fff;
+  border-color: var(--gold-2);
+  /* warm radial highlight */
+  background:
+    radial-gradient(60% 100% at 50% 0%, rgba(255, 165, 0, 0.18), rgba(255, 130, 0, .06)),
+    #141414;
+  box-shadow:
+    0 0 12px rgba(175, 128, 0, .35),
+    inset 0 0 0 1px rgba(175, 128, 0, .35);
+}
+
+.toggle-btn:focus-visible {
+  outline: 2px solid var(--gold-3);
+  outline-offset: 2px;
+}
+
+/* Category filter as tabs */
+.filter-group[data-key="category"] {
+  gap: 0;
+  padding: 0;
+  background: var(--dark-3);
+  border: 1px solid var(--gold-1);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.filter-group[data-key="category"] .toggle-btn {
+  flex: 1;
+  text-align: center;
+  border-radius: 0;
+  border: none;
+  border-right: 1px solid var(--dark-1);
+  background: transparent;
+  color: #aaa;
+  padding: .5rem .75rem;
+  font-size: .85rem;
+}
+
+.filter-group[data-key="category"] .toggle-btn:last-child {
+  border-right: none;
+}
+
+/* Tab active states match the category colours */
+.filter-group[data-key="category"] .toggle-btn[data-value="melee"].active {
+  background: var(--warm-2);
+  color: var(--white);
+  box-shadow: none;
+}
+.filter-group[data-key="category"] .toggle-btn[data-value="ranged"].active {
+  background: var(--gold-1);
+  color: var(--white);
+  box-shadow: none;
+}
+.filter-group[data-key="category"] .toggle-btn[data-value="firearm"].active {
+  background: var(--red-2);
+  color: var(--white);
+  box-shadow: none;
+}
+.filter-group[data-key="category"] .toggle-btn[data-value="magic"].active {
+  background: var(--green-2);
+  color: var(--white);
+  box-shadow: none;
+}
+
+/* Clear filters */
+.ghost-btn {
+  margin-left: auto;
+  border: 1px dashed var(--dark-3);
+  color: #bbb;
+  background: #101010;
+  border-radius: 8px;
+  padding: .4rem .6rem;
+}
+
+.ghost-btn:hover {
+  border-color: var(--gold-2);
+  color: var(--text-cream);
+}
+
+/* Small screens: wrap filter label */
+@media (max-width:800px) {
+  .filter-group::before {
+    flex-basis: 100%;
+  }
+}
+
+.damage {
+  background-color: var(--warm-1);
+  border-radius: 40px;
+  padding: 4px;
+}
+
+.damage strong {
+  color: var(--gold-3);
+}
+
+.two-column h3 {
+  border-bottom: 2px solid var(--gold-1);
+  font-size: 1.2rem;
+}
+
+.two-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 0;
+}
+
+.two-column li {
+  margin-bottom: 5px;
+  background-color: var(--theme-1);
+  border-radius: var(--border-radius);
+  padding: 5px;
+}
+
+.two-column li strong {
+  display: block;
+  font-weight: bold;
+}
+
+#light {
+  background-color: var(--theme-3);
+}

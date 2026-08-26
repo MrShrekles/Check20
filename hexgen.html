@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check20: Hex Generator</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/hexgen.css">
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+    <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/hexgen.js"></script>
+    <script src="scripts/footer.js" defer></script>
+</head>
+
+<body data-page-title="Hex Generator">
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
+    <main>
+
+        <!-- ROLLER -->
+        <details open>
+            <summary>Hex Roller</summary>
+            <section>
+                <div class="hexgen-controls">
+                    <select id="terrain-pick">
+                        <option value="all">All Terrains</option>
+                        <option value="desert">Desert</option>
+                        <option value="mountain">Mountain</option>
+                        <option value="city">City</option>
+                    </select>
+                    <button class="button" id="roll-hex-btn">Roll Hex</button>
+                    <span class="ctrl-label" style="margin-left:.5vw;">Travel:</span>
+                    <input type="number" id="travel-hexes" value="4" min="1" max="12" title="Number of hexes">
+                    <button class="button" id="roll-travel-btn">Generate Journey</button>
+                    <button id="clear-hexes">Clear</button>
+                </div>
+                <div id="hex-history"></div>
+            </section>
+        </details>
+
+        <!-- REFERENCE TABLES -->
+        <details>
+            <summary>Reference Tables</summary>
+            <section>
+                <div class="raw-tabs">
+                    <button class="raw-tab active" onclick="showTab('lords',this)">Lords</button>
+                    <button class="raw-tab" onclick="showTab('enemies',this)">Enemies</button>
+                    <button class="raw-tab" onclick="showTab('pops',this)">Population</button>
+                    <button class="raw-tab" onclick="showTab('temps',this)">Temperament</button>
+                    <button class="raw-tab" onclick="showTab('features',this)">Features</button>
+                    <button class="raw-tab" onclick="showTab('foods',this)">Food</button>
+                    <button class="raw-tab" onclick="showTab('resources',this)">Resources</button>
+                    <button class="raw-tab" onclick="showTab('species',this)">Species</button>
+                    <button class="raw-tab" onclick="showTab('pl',this)">Power Level</button>
+                </div>
+
+                <div id="tab-lords" class="raw-panel active">
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Lord</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-lords"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-enemies" class="raw-panel">
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Enemy</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-enemies"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-pops" class="raw-panel">
+                    <p style="color:var(--cream);font-size:.85rem;margin-bottom:.5vw;">
+                        Tier drives how many features, resources, and species are rolled. Tier 0 = barren. Tier 10 = metropolis. Collapsed state locks temperament.
+                    </p>
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Population</th>
+                                <th>Tier</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-pops"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-temps" class="raw-panel">
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Temperament</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-temps"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-features" class="raw-panel">
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-features"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-foods" class="raw-panel">
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Food Source</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-foods"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-resources" class="raw-panel">
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Resource</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-resources"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-species" class="raw-panel">
+                    <p style="color:var(--cream);font-size:.85rem;margin-bottom:.5vw;">
+                        Pulled from species.json. Weighted by rarity - Common rolls ~4x more often than Very Rare.
+                    </p>
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>Species</th>
+                                <th>Rarity</th>
+                                <th>Origin</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-species"></tbody>
+                    </table>
+                </div>
+
+                <div id="tab-pl" class="raw-panel">
+                    <p style="color:var(--cream);font-size:.85rem;margin-bottom:.5vw;">
+                        Power Level indicates the strength of monsters and threats found in the area. PL 1 is weakest, PL 10 is most dangerous. Lower PLs roll more frequently.
+                    </p>
+                    <table class="hex-table">
+                        <thead>
+                            <tr>
+                                <th>PL</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="t-pl"></tbody>
+                    </table>
+                </div>
+
+            </section>
+        </details>
+
+    </main>
+    <div id="footer-placeholder"></div>
+
+
+</body>
+
+</html>

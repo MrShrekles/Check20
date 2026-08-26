@@ -1,0 +1,75 @@
+/* chat-toast.css - the incoming-message banner.
+   Loaded by every ARC20 app page, including ones with no theme variables of
+   their own, so every var here carries a fallback. */
+
+.chat-toast {
+    position: fixed;
+    font-family: "Candara", "Gill Sans", "Optima", sans-serif;
+    left: 50%;
+    top: calc(10px + var(--safe-t, 0px));
+    transform: translate(-50%, -140%);
+    z-index: 900;
+    width: min(94vw, 460px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--panel, #282828);
+    border: 1px solid var(--gold, goldenrod);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.chat-toast.is-open {
+    transform: translate(-50%, 0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.chat-toast-body { flex: 1; min-width: 0; }
+
+.chat-toast-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--gold, goldenrod);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chat-toast-text {
+    font-size: 13px;
+    color: var(--muted, rgba(220, 205, 185, 0.70));
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chat-toast-view {
+    flex-shrink: 0;
+    background: var(--gold-dim, rgba(218, 165, 32, 0.15));
+    border: 1px solid var(--gold, goldenrod);
+    border-radius: 999px;
+    color: var(--gold, goldenrod);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 5px 12px;
+    cursor: pointer;
+}
+
+.chat-toast-view:active { background: var(--gold-glow, rgba(218, 165, 32, 0.30)); }
+
+.chat-toast-x {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--muted, rgba(220, 205, 185, 0.70));
+    font-size: 13px;
+    line-height: 1;
+    padding: 4px 2px;
+    cursor: pointer;
+}

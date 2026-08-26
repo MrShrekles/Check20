@@ -1,0 +1,5607 @@
+﻿/* Narrator companion - ARC20 */
+
+// ── SPEAKING AS + TARGET state (declared early to avoid TDZ) ──────────────────
+let narSpeakingAs = null;
+let narTarget     = null;
+
+// ── PANELS ────────────────────────────────────────────────────────────────────
+
+const PANEL_IDS = ['chat', 'party', 'generators', 'monsters', 'ref'];
+
+function setActivePanel(key) {
+    // Initiative lives inside the chat panel as a sub-tab, but it earns its own
+    // nav button - route the key and let openInitiative do the rest.
+    if (key === 'initiative') {
+        PANEL_IDS.forEach(id => {
+            const el = document.getElementById(`panel-${id}`);
+            if (el) el.classList.toggle('is-active', id === 'chat');
+        });
+        document.querySelectorAll('.nav-btn[data-nav]').forEach(btn => {
+            btn.classList.toggle('is-active', btn.dataset.nav === 'initiative');
+        });
+        const notif = document.getElementById('chat-notif');
+        if (notif) notif.hidden = true;
+        setNarChatSubTab('initiative');
+        return;
+    }
+
+    // On desktop (≥1100px) chat is always pinned to the left column - don't clear the right panel
+    if (key === 'chat' && window.innerWidth >= 1100) {
+        const notif = document.getElementById('chat-notif');
+        if (notif) notif.hidden = true;
+        setNarChatSubTab('messages');
+        return;
+    }
+    PANEL_IDS.forEach(id => {
+        const el = document.getElementById(`panel-${id}`);
+        if (el) el.classList.toggle('is-active', id === key);
+    });
+    document.querySelectorAll('.nav-btn[data-nav]').forEach(btn => {
+        btn.classList.toggle('is-active', btn.dataset.nav === key);
+    });
+    if (key === 'generators') { ensureWorld(); ensureQuest(); ensureCommerce(); ensureHex(); ensureGods(); ensureLoot(); }
+    if (key === 'party')      { ensureMonsters(); }
+    if (key === 'monsters')   { ensureMonsters(); renderMonstersEncSummary(); renderMonBrowse(); }
+    if (key === 'chat') {
+        const notif = document.getElementById('chat-notif');
+        if (notif) notif.hidden = true;
+        // Always land on Messages. Anything that wants Initiative (openInitiative)
+        // calls setNarChatSubTab after this and wins.
+        setNarChatSubTab('messages');
+        // scroll to newest (top) when opening chat
+        const scroller = document.getElementById('chat-sub-messages');
+        if (scroller) scroller.scrollTop = 0;
+    }
+}
+
+document.querySelectorAll('.nav-btn[data-nav]').forEach(btn => {
+    btn.addEventListener('click', () => setActivePanel(btn.dataset.nav));
+});
+
+fetch('../data/damage.json').then(r => r.json()).then(dj => {
+    window.damageData = dj?.types || {};
+    renderNarRefTables();
+}).catch(() => {});
+
+let narCondGroups = {}, narCondEffects = {}, narCondDurations = {};
+fetch('../data/conditions.json').then(r => r.json()).then(data => {
+    narCondGroups = {}; narCondEffects = {}; narCondDurations = {};
+    data.forEach(c => {
+        (narCondGroups[c.category] = narCondGroups[c.category] || []).push(c.name);
+        narCondEffects[c.name]   = c.effect   || '';
+        narCondDurations[c.name] = c.duration || '';
+    });
+    renderNarRefConditions();
+}).catch(() => {});
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+
+const nar = {
+    encounter:   [],  // { id, name, hp, maxHp, initiative }
+    notes:       '',
+    round:       1,
+    turnIndex:   0,
+    characters:  [],  // { id, role:'npc'|'minion'|'companion', name, ... }
+    inventory:   [],  // { id, name, desc, amount, bulk }
+    partyManual: [],  // { id, name, armor, woundsCur, woundsMax, mnCur, mnMax, gold }
+    archived:    [],  // character IDs hidden from party view
+    genMonsters:  [],  // monster names pinned to the generator tab
+    genNpcs:      [],  // generated NPC objects
+    genLocations: [],  // generated location objects
+    genQuests:    [],  // generated quests
+    genDungeons:  [],  // generated door/trap elements
+    genRooms:     [],  // generated room descriptions
+    genMundane:   [],  // generated mundane items
+    genEnchanted: [],  // generated enchanted items
+    genMedicine:  [],  // generated medicine items
+    genHexes:        [],  // generated hex tiles
+    genGods:         [],  // rolled god objects
+    monPlOverrides:  {},  // name → overridden PL
+    genLoot:         [],  // rolled loot results
+    journalNpcs:     [],  // legacy - migrated to characters on load
+    monFavorites:    [],  // monster names pinned in generator
+    questLog:        [],  // { id, text, done }
+    sessions:        [],  // { id, title, date, notes }
+    theme:        {},  // { a1, a2 }
+};
+
+function closeForm(btn) {
+    const d = btn?.closest('details');
+    if (d) d.open = false;
+}
+
+// Scroll the done-btn into view when any <details> form opens
+document.querySelectorAll('details.nar-add-form').forEach(det => {
+    det.addEventListener('toggle', () => {
+        if (det.open) {
+            const btn = det.querySelector('.done-btn');
+            if (btn) setTimeout(() => btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+        }
+    });
+});
+
+function loadNar() {
+    try {
+        const saved = localStorage.getItem('arc-narrator');
+        if (saved) Object.assign(nar, JSON.parse(saved));
+    } catch {}
+}
+
+function saveNar() {
+    localStorage.setItem('arc-narrator', JSON.stringify(nar));
+}
+
+function migrateCharacters() {
+    let changed = false;
+    if (nar.journalNpcs?.length) {
+        nar.journalNpcs.forEach(n => nar.characters.push({ ...n, role: 'npc' }));
+        nar.journalNpcs = [];
+        changed = true;
+    }
+    if (nar.minions?.length) {
+        nar.minions.forEach(m => nar.characters.push({ ...m, role: 'minion' }));
+        nar.minions = [];
+        changed = true;
+    }
+    // Fold legacy companion role into minion
+    nar.characters.forEach(c => { if (c.role === 'companion') { c.role = 'minion'; changed = true; } });
+    if (changed) saveNar();
+}
+
+// ── PARTY ─────────────────────────────────────────────────────────────────────
+
+function renderParty() {
+    const el = document.getElementById('party-list');
+    if (!el) return;
+
+    // Merge Firebase live players + manually-added players
+    const liveRows = fbPlayers
+        .filter(p => !nar.archived.includes(p.id))
+        .map(p => ({
+            id:         p.id,
+            source:     'firebase',
+            name:       p.name       || 'Player',
+            armor:      p.armor      ?? '-',
+            woundsCur:  p.woundsCur  ?? '-',
+            woundsMax:  p.woundsMax  ?? '-',
+            mnCur:      p.mnCur      ?? null,
+            mnMax:      p.mnMax      ?? null,
+            gold:       p.gold       ?? null,
+            xp:         p.xp         ?? null,
+            species:    p.species    || '',
+            classKey:   p.classKey   || '',
+            pathName:   p.pathName   || '',
+            talentName: p.talentName || '',
+        }));
+
+    const manualRows = nar.partyManual
+        .filter(p => !nar.archived.includes(p.id))
+        .map(p => ({ ...p, source: 'manual' }));
+
+    const rows = [...liveRows, ...manualRows];
+
+    if (!rows.length) {
+        const hint = currentRoomCode
+            ? `Room <strong>${currentRoomCode}</strong> - waiting for players to join.`
+            : 'No players connected. Tap <strong>Invite</strong> to create a session.';
+        el.innerHTML = `<p class="empty-hint">${hint}</p>`;
+        return;
+    }
+
+    el.innerHTML = rows.map((row, i) => {
+        const liveDot  = row.source === 'firebase' ? '<span class="prow-live">●</span>' : '';
+        const xpVal    = row.xp    != null ? row.xp    : '-';
+        const mnVal    = row.mnMax ? `${row.mnCur}/${row.mnMax}` : '-';
+        const goldVal  = row.gold  != null ? row.gold  : '-';
+
+        const details = [
+            row.species    && `<span class="prow-dl">Species</span><span>${row.species}</span>`,
+            row.classKey   && `<span class="prow-dl">Class</span><span>${row.classKey}</span>`,
+            row.pathName   && `<span class="prow-dl">Path</span><span>${row.pathName}</span>`,
+            row.talentName && `<span class="prow-dl">Talent</span><span>${row.talentName}</span>`,
+            `<span class="prow-dl">MN</span><span>${mnVal}</span>`,
+            `<span class="prow-dl">Gold</span><span>${goldVal}</span>`,
+        ].filter(Boolean).join('');
+
+        return `<div class="prow-wrap">
+            <div class="prow prow--expandable" data-id="${row.id}">
+                <span class="prow-num">P${i + 1}</span>
+                <span class="prow-name">${liveDot}${row.name}</span>
+                <span class="prow-stat">${row.armor}</span>
+                <span class="prow-stat prow-stat--wounds">${row.woundsCur}/${row.woundsMax}</span>
+                <span class="prow-stat prow-stat--xp">${xpVal}</span>
+                <button class="prow-edit-btn" data-id="${row.id}" data-name="${row.name}" data-source="${row.source}" aria-label="Edit ${row.name}">⋮</button>
+            </div>
+            <div class="prow-detail" hidden><div class="prow-detail-grid">${details}</div></div>
+        </div>`;
+    }).join('');
+
+    el.querySelectorAll('.prow--expandable').forEach(prow => {
+        prow.addEventListener('click', e => {
+            if (e.target.closest('.prow-edit-btn')) return;
+            const detail = prow.closest('.prow-wrap')?.querySelector('.prow-detail');
+            if (!detail) return;
+            detail.hidden = !detail.hidden;
+            prow.classList.toggle('prow--open', !detail.hidden);
+        });
+    });
+    el.querySelectorAll('.prow-edit-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            openPlayerEdit(btn.dataset.id, btn.dataset.name, btn.dataset.source);
+        });
+    });
+}
+
+// Creating a room is one thing you can do with rooms, not the only one. This now
+// opens the manager - where + New Room sits beside switch, rename and close - so
+// starting a new campaign no longer means closing the current one behind a
+// confirm() prompt.
+document.getElementById('btn-invite')?.addEventListener('click', openRoomsDialog);
+
+document.getElementById('btn-add-player')?.addEventListener('click', function() {
+    const name      = document.getElementById('pp-name')?.value.trim();
+    if (!name) return;
+    const armor     = parseInt(document.getElementById('pp-armor')?.value     || '0', 10);
+    const woundsCur = parseInt(document.getElementById('pp-wounds-cur')?.value || '10', 10);
+    const woundsMax = parseInt(document.getElementById('pp-wounds-max')?.value || '10', 10);
+    const mnCur     = parseInt(document.getElementById('pp-mn-cur')?.value    || '0', 10);
+    const mnMax     = parseInt(document.getElementById('pp-mn-max')?.value    || '0', 10);
+    const gold      = parseInt(document.getElementById('pp-gold')?.value      || '0', 10);
+
+    nar.partyManual.push({
+        id: crypto.randomUUID(),
+        name, armor, woundsCur, woundsMax,
+        mnCur, mnMax: mnMax || null, gold,
+    });
+
+    document.getElementById('pp-name').value       = '';
+    document.getElementById('pp-armor').value      = '0';
+    document.getElementById('pp-wounds-cur').value = '10';
+    document.getElementById('pp-wounds-max').value = '10';
+    document.getElementById('pp-mn-cur').value     = '0';
+    document.getElementById('pp-mn-max').value     = '0';
+    document.getElementById('pp-gold').value       = '0';
+
+    saveNar(); renderParty(); closeForm(this);
+});
+
+// ── PLAYER EDIT DIALOG ────────────────────────────────────────────────────────
+
+let editingId     = null;
+let editingSource = null;
+
+function openPlayerEdit(id, name, source) {
+    editingId     = id;
+    editingSource = source;
+    const nameEl    = document.getElementById('player-edit-name');
+    const removeBtn = document.getElementById('btn-ped-remove');
+    if (nameEl)    nameEl.textContent  = name;
+    if (removeBtn) removeBtn.hidden = source !== 'manual';
+    document.getElementById('player-edit-dialog')?.showModal();
+}
+
+function closePlayerEdit() {
+    editingId     = null;
+    editingSource = null;
+    document.getElementById('player-edit-dialog')?.close();
+}
+
+document.getElementById('btn-ped-archive')?.addEventListener('click', () => {
+    if (!editingId) return;
+    if (!nar.archived.includes(editingId)) nar.archived.push(editingId);
+    saveNar(); renderParty(); closePlayerEdit();
+});
+
+document.getElementById('btn-ped-remove')?.addEventListener('click', () => {
+    if (!editingId || editingSource !== 'manual') return;
+    nar.partyManual = nar.partyManual.filter(p => p.id !== editingId);
+    saveNar(); renderParty(); closePlayerEdit();
+});
+
+document.getElementById('btn-ped-cancel')?.addEventListener('click', closePlayerEdit);
+
+// ── CHARACTERS (NPCs / Minions / Companions) ──────────────────────────────────
+
+function buildMinionCardHtml(m) {
+    const pct    = m.maxHp > 0 ? Math.round((m.hp / m.maxHp) * 100) : 0;
+    const barClr = pct > 60 ? '#4ca859' : pct > 25 ? '#d4922a' : '#e05555';
+    const mon    = getMonster(m.name);
+    const meleeA  = mon?.melee_attack  || mon?.melee  || null;
+    const rangedA = mon?.ranged_attack || mon?.ranged || null;
+
+    const fmtAtk = (atk, label) => {
+        if (!atk?.name) return '';
+        const dmg = [atk.damage, atk.damage_type || atk.type].filter(Boolean).join(' ');
+        return `<div class="gen-mon-atk">
+            <span class="gen-mon-atk-label">${label}</span>
+            <span>${atk.name}${dmg ? ' - ' + dmg : ''}</span>
+            <button class="step-action-btn mn-roll-btn" type="button"
+                data-mn-mon="${mon.name}" data-atk-type="${label.toLowerCase()}">
+                <img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>
+        </div>`;
+    };
+
+    const monFeats = [];
+    if (mon?.feature_name) monFeats.push({ name: mon.feature_name, type: mon.feature_type || '', range: mon.feature_range || '', effect: mon.feature_effect || '' });
+    if (Array.isArray(mon?.features)) mon.features.forEach(f => {
+        if (f.name && f.name !== mon.feature_name) monFeats.push({ name: f.name, type: f.type || '', range: f.range || '', effect: f.effect || '' });
+    });
+    const featsHtml = monFeats.map((f, fi) => `
+        <div class="gen-mon-feature">
+            <div class="gen-mon-feature-head">
+                <span class="gen-mon-feature-name">${f.name}</span>
+                <span class="gen-mon-feature-type">${[f.type, f.range].filter(Boolean).join(' · ')}</span>
+                <button class="step-action-btn mn-roll-btn" data-mn-mon="${mon.name}" data-feat-idx="${fi}">
+                    <img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
+            </div>
+            <p class="gen-mon-feature-effect">${subPL(f.effect, mon.pl)}</p>
+        </div>`).join('');
+
+    const spellMn = (mon?.check_mental || 0) * 2;
+    const spellsHtml = Array.isArray(mon?.spells) && mon.spells.length ? `
+        <div class="gen-mon-spells">
+            <div class="gen-mon-spells-header">SPELLS <span class="gen-mon-spells-mn">· MN: ${spellMn}</span></div>
+            ${mon.spells.map((sp, si) => `
+                <details class="gen-mon-spell">
+                    <summary class="gen-mon-spell-row">
+                        <span class="gen-mon-spell-name">${sp.name}</span>
+                        <span class="gen-mon-spell-tags">${[sp.manner, sp.transmission].filter(Boolean).join(' · ')}</span>
+                    </summary>
+                    <div class="gen-mon-spell-effects">
+                        ${sp.effects.map((ef, ei) => `
+                            <div class="gen-mon-spell-effect">
+                                <span class="gen-mon-spell-intent">${ef.intent}</span>
+                                <span class="gen-mon-spell-cost">${ef.cost} MN</span>
+                                ${ef.range ? `<span class="gen-mon-spell-range">${ef.range}</span>` : ''}
+                                <button class="step-action-btn mn-roll-btn"
+                                    data-mn-mon="${mon.name}" data-spell-idx="${si}" data-effect-idx="${ei}">
+                                    <img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>
+                            </div>`).join('')}
+                    </div>
+                </details>`).join('')}
+        </div>` : '';
+
+    const ms = mon ? effectiveStats(mon) : null;
+    const checksHtml = ms
+        ? `<span class="enc-mon-checks">PL<strong>${ms.pl ?? '-'}</strong> Ph<strong>${ms.ph}</strong> Mt<strong>${ms.mt}</strong></span>`
+        : `<span class="minion-pl">PL ${m.pl ?? '?'}</span>`;
+    const roleBadge = `<span class="char-role-badge char-role-badge--${m.role}">${m.role}</span>`;
+
+    const row = (hasAbilities) => `<div class="minion-row">
+        <div class="minion-info">
+            <div class="name-badge-row">
+                <span class="minion-name">${m.name}</span>${roleBadge}
+            </div>
+            ${m.origin ? `<span class="minion-origin">${m.origin}</span>` : ''}
+            ${checksHtml}
+        </div>
+        ${hasAbilities ? `<span class="minion-chevron">›</span>` : `<span></span>`}
+        <div class="minion-hp-ctrl">
+            <button class="step-action-btn" data-mn-action="dec" data-mn-id="${m.id}">−</button>
+            <span class="minion-hp">${m.hp}<span class="minion-hp-max">/${m.maxHp}</span></span>
+            <button class="step-action-btn" data-mn-action="inc" data-mn-id="${m.id}">+</button>
+        </div>
+        <div class="minion-ctrl-btns">
+            <button class="step-action-btn" data-mn-action="init" data-mn-id="${m.id}" title="Add to initiative"><img src="../assets/icons/weapon.png" class="btn-icon" alt="initiative"></button>
+            <button class="step-action-btn" data-mn-action="hide" data-mn-id="${m.id}" title="${m.hidden ? 'Hidden from players - click to reveal' : 'Visible to players - click to hide'}">${m.hidden ? '🙈' : '👁'}</button>
+            <button class="step-action-btn step-action-btn--danger" data-mn-action="remove" data-mn-id="${m.id}">✕</button>
+        </div>
+    </div>
+    <div class="minion-hp-bar-track"><div class="minion-hp-bar-fill" style="width:${pct}%;background:${barClr}"></div></div>`;
+
+    const hasAbilities = !!(mon && (meleeA?.name || rangedA?.name || monFeats.length || mon.spells?.length));
+    const charInv      = m.inventory || [];
+    const invHtml      = charInv.length ? `
+        <div class="char-inv-section">
+            <div class="char-inv-label">Items</div>
+            ${charInv.map(item => `<div class="char-inv-row">
+                <div class="char-inv-info">
+                    <span class="char-inv-name">${item.name}</span>
+                    ${item.damage ? `<span class="char-inv-desc">${item.damage}${item.damageType ? ' ' + item.damageType : ''}${item.range ? ' · ' + item.range : ''}</span>` : (item.desc ? `<span class="char-inv-desc">${item.desc}</span>` : '')}
+                </div>
+                ${item.damage ? `<button class="step-action-btn" data-char-inv-roll="${m.id}" data-inv-item-id="${item.id}" title="Roll attack">🎲</button>` : ''}
+            </div>`).join('')}
+        </div>` : '';
+    const isExpandable = hasAbilities || charInv.length > 0;
+    const rowHtml = row(isExpandable);
+    if (isExpandable) {
+        return `<details class="minion-card">
+            <summary class="minion-summary">${rowHtml}</summary>
+            <div class="minion-expanded">
+                ${(meleeA?.name || rangedA?.name) ? `<div class="gen-mon-attacks">${fmtAtk(meleeA,'Melee')}${fmtAtk(rangedA,'Ranged')}</div>` : ''}
+                ${featsHtml}
+                ${spellsHtml}
+                ${invHtml}
+                <button class="ghost-btn char-edit-body-btn" data-mn-action="edit" data-mn-id="${m.id}" type="button">✎ Edit</button>
+            </div>
+        </details>`;
+    }
+    return `<div class="minion-card">${rowHtml}</div>`;
+}
+
+function buildNpcCardHtml(n) {
+    const stats = [
+        n.pl   ? `PL<strong>${n.pl}</strong>`   : '',
+        n.phys ? `Ph<strong>${n.phys}</strong>` : '',
+        n.ment ? `Mt<strong>${n.ment}</strong>` : '',
+        n.hp   ? `HP<strong>${n.hp}</strong>`   : '',
+    ].filter(Boolean).join(' ');
+    const nConds  = n.conditions || [];
+    const condTags = nConds.map(cd =>
+        `<span class="enc-cond-tag" data-char-rm-cond="${n.id}" data-cond="${cd}">${condChip(cd)} ×</span>`
+    ).join('');
+    const picker = conditionGroups().map(([group, names]) => `
+        <div class="enc-cond-group">
+            <div class="enc-cond-group-label">${group}</div>
+            <div class="enc-cond-group-picks">${names.map(cd =>
+                `<button class="enc-cond-pick${nConds.includes(cd) ? ' is-on' : ''}" data-char-cond="${n.id}" data-cond="${cd}">${condChip(cd)}</button>`
+            ).join('')}</div>
+        </div>`).join('');
+    const charInv  = n.inventory || [];
+    const invHtml  = charInv.length ? `
+        <div class="char-inv-section">
+            <div class="char-inv-label">Items</div>
+            ${charInv.map(item => `<div class="char-inv-row">
+                <div class="char-inv-info">
+                    <span class="char-inv-name">${item.name}</span>
+                    ${item.damage ? `<span class="char-inv-desc">${item.damage}${item.damageType ? ' ' + item.damageType : ''}${item.range ? ' · ' + item.range : ''}</span>` : (item.desc ? `<span class="char-inv-desc">${item.desc}</span>` : '')}
+                </div>
+                ${item.damage ? `<button class="step-action-btn" data-char-inv-roll="${n.id}" data-inv-item-id="${item.id}" title="Roll attack">🎲</button>` : ''}
+            </div>`).join('')}
+        </div>` : '';
+    return `<details class="npc-card">
+        <summary class="npc-card-head">
+            <div class="enc-mon-info">
+                <div class="name-badge-row">
+                    <span class="enc-name">${n.name}</span>
+                    <span class="char-role-badge char-role-badge--npc">npc</span>
+                </div>
+                ${stats ? `<span class="enc-mon-checks">${stats}</span>` : ''}
+            </div>
+            <div class="enc-card-ctrl">
+                <button class="step-action-btn" data-char-init="${n.id}" title="Add to initiative"><img src="../assets/icons/weapon.png" class="btn-icon" alt="initiative"></button>
+                <button class="step-action-btn" data-char-hide="${n.id}" title="${n.hidden ? 'Hidden from players - click to reveal' : 'Visible to players - click to hide'}">${n.hidden ? '🙈' : '👁'}</button>
+                <button class="step-action-btn step-action-btn--danger" data-char-remove="${n.id}">✕</button>
+            </div>
+        </summary>
+        <div class="npc-card-body">
+            ${n.notes         ? `<div class="npc-det-row"><span class="npc-det-label">Notes</span><span>${n.notes}</span></div>` : ''}
+            ${n.equipment     ? `<div class="npc-det-row">
+                <span class="npc-det-label">Equipment</span>
+                <span>${n.equipment}</span>
+                <button class="step-action-btn" data-npc-roll-equip="${n.id}" title="Roll attack">🎲</button>
+            </div>` : ''}
+            ${n.narratorNotes ? `<div class="npc-det-row"><span class="npc-det-label">Narrator</span><span class="npc-det-nar">${n.narratorNotes}</span></div>` : ''}
+            ${invHtml}
+            <div class="char-body-actions">
+                <button class="ghost-btn char-edit-body-btn" data-char-edit="${n.id}" type="button">✎ Edit</button>
+                <button class="ghost-btn char-edit-body-btn" data-char-chat="${n.id}" type="button"><img src="../assets/icons/chat.png" class="btn-icon" alt=""> Post to Chat</button>
+            </div>
+            <details class="enc-cond-details">
+                <summary class="enc-cond-summary">+C${nConds.length ? ` <span class="enc-cond-count">${nConds.length}</span>` : ''}</summary>
+                ${nConds.length ? `<div class="enc-cond-tags">${condTags}</div>` : ''}
+                <div class="enc-cond-picker">${picker}</div>
+            </details>
+        </div>
+    </details>`;
+}
+
+function renderCharacters() {
+    const el = document.getElementById('character-list');
+    if (!el) return;
+    if (!nar.characters.length) { el.innerHTML = '<p class="empty-hint">No characters added.</p>'; return; }
+
+    el.innerHTML = nar.characters.map(c =>
+        c.role === 'minion' ? buildMinionCardHtml(c) : buildNpcCardHtml(c)
+    ).join('');
+
+    el.querySelectorAll('[data-char-edit]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            openCharEdit(btn.dataset.charEdit);
+        });
+    });
+    el.querySelectorAll('[data-npc-roll-equip]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const n = nar.characters.find(x => x.id === btn.dataset.npcRollEquip);
+            if (!n?.equipment) return;
+            postToSharedChat(npcEquipEntry(n)); setActivePanel('chat');
+        });
+    });
+    el.querySelectorAll('[data-char-inv-roll]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const c    = nar.characters.find(x => x.id === btn.dataset.charInvRoll);
+            const item = c?.inventory?.find(x => x.id === btn.dataset.invItemId);
+            if (!item?.damage) return;
+            postToSharedChat(charItemRollEntry(c, item)); setActivePanel('chat');
+        });
+    });
+    el.querySelectorAll('[data-char-remove]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            nar.characters = nar.characters.filter(x => x.id !== btn.dataset.charRemove);
+            saveNar(); renderCharacters();
+        });
+    });
+    el.querySelectorAll('[data-char-chat]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const n = nar.characters.find(x => x.id === btn.dataset.charChat);
+            if (!n) return;
+            const tags = [n.phys && `Ph +${n.phys}`, n.ment && `Mt +${n.ment}`, n.pl && `PL ${n.pl}`].filter(Boolean);
+            postToSharedChat({ type: 'feature', name: n.name, tags, desc: [n.notes, n.equipment].filter(Boolean).join(' · '), time: chatTimestamp(), diceRolls: [] });
+            setActivePanel('chat');
+        });
+    });
+    el.querySelectorAll('[data-char-init]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const n = nar.characters.find(x => x.id === btn.dataset.charInit);
+            if (!n) return;
+            const hp  = parseInt(n.hp, 10) || 10;
+            const ini = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
+            nar.encounter.push({ id: crypto.randomUUID(), name: n.name, type: 'npc', hp, maxHp: hp, initiative: ini });
+            saveNar(); renderEncounter(); openInitiative();
+        });
+    });
+    el.querySelectorAll('[data-char-hide]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const n = nar.characters.find(x => x.id === btn.dataset.charHide);
+            if (!n) return;
+            n.hidden = !n.hidden;
+            saveNar(); renderCharacters();
+        });
+    });
+    el.querySelectorAll('[data-char-cond]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const n = nar.characters.find(x => x.id === btn.dataset.charCond);
+            if (!n) return;
+            if (!n.conditions) n.conditions = [];
+            const cond = btn.dataset.cond;
+            const idx  = n.conditions.indexOf(cond);
+            if (idx === -1) n.conditions.push(cond); else n.conditions.splice(idx, 1);
+            saveNar(); renderCharacters();
+        });
+    });
+    el.querySelectorAll('[data-char-rm-cond]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const n = nar.characters.find(x => x.id === btn.dataset.charRmCond);
+            if (!n) return;
+            n.conditions = (n.conditions || []).filter(cd => cd !== btn.dataset.cond);
+            saveNar(); renderCharacters();
+        });
+    });
+
+    el.querySelectorAll('[data-mn-action]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const id = btn.dataset.mnId;
+            const action = btn.dataset.mnAction;
+            const m = nar.characters.find(x => x.id === id);
+            if (!m && action !== 'remove') return;
+            if (action === 'edit') { openCharEdit(id); return; }
+            if (action === 'init') {
+                const ini = Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
+                nar.encounter.push({ id: crypto.randomUUID(), name: m.name, type: 'npc', hp: m.hp, maxHp: m.maxHp, initiative: ini });
+                saveNar(); renderEncounter(); openInitiative(); return;
+            }
+            if (action === 'dec')    m.hp = Math.max(0, m.hp - 1);
+            if (action === 'inc')    m.hp = Math.min(m.maxHp, m.hp + 1);
+            if (action === 'hide')   m.hidden = !m.hidden;
+            if (action === 'remove') nar.characters = nar.characters.filter(x => x.id !== id);
+            saveNar(); renderCharacters();
+        });
+    });
+
+    el.querySelectorAll('.mn-roll-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const mon = getMonster(btn.dataset.mnMon);
+            if (!mon) return;
+            let entry;
+            if (btn.dataset.atkType) {
+                const isM = btn.dataset.atkType === 'melee';
+                const atk = isM ? (mon.melee_attack || mon.melee) : (mon.ranged_attack || mon.ranged);
+                if (!atk?.name) return;
+                entry = monsterAttackEntry(mon, atk, btn.dataset.atkType);
+            } else if (btn.dataset.featIdx !== undefined) {
+                const feats = [];
+                if (mon.feature_name) feats.push({ name: mon.feature_name, type: mon.feature_type || '', range: mon.feature_range || '', effect: mon.feature_effect || '' });
+                if (Array.isArray(mon.features)) mon.features.forEach(f => {
+                    if (f.name && f.name !== mon.feature_name) feats.push({ name: f.name, type: f.type || '', range: f.range || '', effect: f.effect || '' });
+                });
+                const f = feats[parseInt(btn.dataset.featIdx, 10)];
+                if (!f) return;
+                entry = { type: 'feature', name: f.name, tags: [f.type, f.range].filter(Boolean), desc: subPL(f.effect, mon.pl), time: chatTimestamp(), diceRolls: [] };
+            } else if (btn.dataset.spellIdx !== undefined) {
+                const sp = mon.spells?.[parseInt(btn.dataset.spellIdx, 10)];
+                const ef = sp?.effects?.[parseInt(btn.dataset.effectIdx, 10)];
+                if (!sp || !ef) return;
+                // Same cast dialog as the Monsters page - who casts it, at whom
+                openMonsterCastModal(mon, sp, ef);
+                return;
+            }
+            if (entry) { postToSharedChat(entry); setActivePanel('chat'); }
+        });
+    });
+
+    syncCharacters();
+}
+
+document.getElementById('char-role-seg')?.querySelectorAll('[data-char-role]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.getElementById('char-role-seg').querySelectorAll('.gen-seg-btn').forEach(b => b.classList.remove('is-sel'));
+        btn.classList.add('is-sel');
+        document.getElementById('char-role').value = btn.dataset.charRole;
+        const isMinion = btn.dataset.charRole === 'minion';
+        document.getElementById('char-npc-fields').hidden   = isMinion;
+        document.getElementById('char-minion-fields').hidden = !isMinion;
+    });
+});
+
+document.getElementById('char-mn-pl')?.addEventListener('input', e => {
+    const pl = Math.max(1, parseInt(e.target.value, 10) || 1);
+    const prev = document.getElementById('char-hp-preview');
+    if (prev) prev.textContent = `HP: ${pl * pl} (PL² = ${pl}×${pl})`;
+});
+
+document.getElementById('btn-add-character')?.addEventListener('click', function() {
+    const name = document.getElementById('char-name')?.value.trim();
+    if (!name) return;
+    const role = document.getElementById('char-role')?.value || 'npc';
+    let entry;
+    if (role === 'npc') {
+        entry = {
+            id: crypto.randomUUID(), role: 'npc', name,
+            pl:   document.getElementById('char-pl')?.value   || '',
+            phys: document.getElementById('char-phys')?.value || '',
+            ment: document.getElementById('char-ment')?.value || '',
+            hp:   document.getElementById('char-hp-npc')?.value || '',
+            notes:         document.getElementById('char-notes')?.value.trim() || '',
+            equipment:     document.getElementById('char-equip')?.value.trim() || '',
+            narratorNotes: document.getElementById('char-nar')?.value.trim()   || '',
+        };
+        ['char-name','char-pl','char-phys','char-ment','char-hp-npc','char-notes','char-equip','char-nar'].forEach(id => {
+            const el = document.getElementById(id); if (el) el.value = '';
+        });
+    } else {
+        const pl    = Math.max(1, parseInt(document.getElementById('char-mn-pl')?.value || '3', 10));
+        const maxHp = pl * pl;
+        entry = {
+            id: crypto.randomUUID(), role, name,
+            pl, plPhys: pl, plMent: pl,
+            origin: document.getElementById('char-mn-origin')?.value.trim() || '',
+            hp: maxHp, maxHp,
+        };
+        document.getElementById('char-name').value = '';
+        document.getElementById('char-mn-pl').value = '3';
+        document.getElementById('char-mn-origin').value = '';
+        const prev = document.getElementById('char-hp-preview');
+        if (prev) prev.textContent = 'HP: 9 (PL² = 3×3)';
+    }
+    nar.characters.push(entry);
+    saveNar(); renderCharacters(); closeForm(this);
+});
+
+// ── INVENTORY ─────────────────────────────────────────────────────────────────
+
+function renderInventory() {
+    const el = document.getElementById('inventory-list');
+    if (!el) return;
+
+    const items = currentRoomCode ? fbLoot : nar.inventory;
+
+    if (!items.length) {
+        el.innerHTML = '<p class="empty-hint">No items in party inventory.</p>';
+        return;
+    }
+
+    el.innerHTML = items.map(item => {
+        const bulkTotal = ((item.bulk || 0) * (item.amount || 1)).toFixed(1).replace(/\.0$/, '');
+        const cat = item.category && item.category !== 'gear'
+            ? `<span class="equip-cat-badge equip-cat-${item.category}">${item.category}</span>` : '';
+        return `<div class="inv-row">
+            <div class="inv-name-col">
+                <span class="inv-name">${item.name}${cat}</span>
+                ${item.desc ? `<span class="inv-desc">${item.desc}</span>` : ''}
+            </div>
+            <span class="inv-amount">×${item.amount}</span>
+            <span class="inv-bulk">${bulkTotal} bulk</span>
+            <button class="inv-claim-btn" data-inv-award="${item.id}">Award →</button>
+            <button class="gen-mon-remove" data-inv-remove="${item.id}" title="Remove from inventory">✕</button>
+        </div>`;
+    }).join('');
+
+    el.querySelectorAll('[data-inv-award]').forEach(btn => {
+        btn.addEventListener('click', () => openAwardDialog(btn.dataset.invAward));
+    });
+
+    el.querySelectorAll('[data-inv-remove]').forEach(btn => {
+        btn.addEventListener('click', () => removeLootItem(btn.dataset.invRemove));
+    });
+}
+
+// Drops one of an item without giving it to anyone (spent, destroyed, mis-added).
+async function removeLootItem(id) {
+    if (!currentRoomCode) {
+        const item = nar.inventory.find(x => x.id === id);
+        if (!item) return;
+        item.amount = Math.max(0, (item.amount || 1) - 1);
+        if (item.amount === 0) nar.inventory = nar.inventory.filter(x => x.id !== id);
+        saveNar(); renderInventory();
+        return;
+    }
+    const arc  = window.__arc;
+    if (!arc?.db) return;
+    const item = fbLoot.find(x => x.id === id);
+    if (!item) return;
+    try {
+        if ((item.amount || 1) <= 1) {
+            await arc.deleteDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', id));
+        } else {
+            await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', id), { amount: item.amount - 1 });
+        }
+    } catch(e) { console.error('[ARC] removeLoot failed:', e); }
+}
+
+// ── AWARDING ITEMS TO A SPECIFIC PLAYER ───────────────────────────────────────
+
+let awardItemId = null;
+
+// Normalised to what the player sheet's equipmentFromPayload() reads back.
+// Firestore rejects undefined, so every field gets a concrete fallback.
+function lootToGiftPayload(item) {
+    return {
+        name:        item.name        || 'Item',
+        desc:        item.desc        || '',
+        category:    item.category    || 'gear',
+        notes:       item.notes       || '',
+        flavor:      item.flavor      || '',
+        damage:      item.damage      || '',
+        damageType:  item.damageType  || '',
+        range:       item.range       || '',
+        check:       item.check       || '',
+        properties:  item.properties  || '',
+        attackBonus: item.attackBonus || 0,
+        critRange:   item.critRange   || 20,
+        armorRating: item.armorRating || 0,
+        moveMod:     item.moveMod     || 0,
+        lowlightMod: item.lowlightMod || 0,
+        bulk:        item.bulk ?? 1,
+    };
+}
+
+function openAwardDialog(id) {
+    const dlg  = document.getElementById('award-item-dialog');
+    const list = document.getElementById('award-target-list');
+    const hint = document.getElementById('award-hint');
+    if (!dlg || !list) return;
+
+    const item = currentRoomCode ? fbLoot.find(x => x.id === id) : nar.inventory.find(x => x.id === id);
+    if (!item) return;
+
+    awardItemId = id;
+    document.getElementById('award-item-name').textContent = item.name || 'Item';
+
+    if (!currentRoomCode) {
+        hint.textContent = 'Create a session to award items to players.';
+        list.innerHTML = '';
+        dlg.showModal();
+        return;
+    }
+
+    const players = fbPlayers.filter(p => !nar.archived.includes(p.id));
+    hint.textContent = 'Choose who receives it. It lands straight on their sheet.';
+    list.innerHTML = players.length
+        ? players.map(p => `
+            <button class="give-target" type="button" data-award-uid="${escAttr(p.id)}" data-award-name="${escAttr(p.name || 'Player')}">
+                <span class="give-target-name">${p.name || 'Player'}</span>
+                <span class="give-target-sub">Send to their sheet</span>
+            </button>`).join('')
+        : '<p class="empty-hint">No players have joined the session yet.</p>';
+
+    dlg.showModal();
+}
+
+function closeAwardDialog() {
+    document.getElementById('award-item-dialog')?.close();
+    awardItemId = null;
+}
+
+async function awardItemTo(uid, playerName) {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode || !awardItemId) return closeAwardDialog();
+
+    const id   = awardItemId;
+    const item = fbLoot.find(x => x.id === id);
+    if (!item) return closeAwardDialog();
+
+    const payload = lootToGiftPayload(item);
+
+    try {
+        await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'gifts', crypto.randomUUID()), {
+            ...payload,
+            toUid:    uid,
+            fromUid:  arc.uid || '',
+            fromName: 'Narrator',
+            sentAt:   arc.serverTimestamp(),
+        });
+    } catch(e) {
+        console.error('[ARC] awardItem failed:', e);
+        return closeAwardDialog();
+    }
+
+    // Only leaves party inventory once the gift write succeeded
+    await removeLootItem(id);
+
+    postToSharedChat({
+        type: 'feature', name: payload.name,
+        tags: [`Awarded to ${playerName}`],
+        desc: payload.desc,
+        time: chatTimestamp(), diceRolls: [],
+    });
+
+    closeAwardDialog();
+}
+
+document.getElementById('award-close')?.addEventListener('click', closeAwardDialog);
+document.getElementById('award-cancel')?.addEventListener('click', closeAwardDialog);
+document.getElementById('award-target-list')?.addEventListener('click', e => {
+    const btn = e.target.closest('[data-award-uid]');
+    if (btn) awardItemTo(btn.dataset.awardUid, btn.dataset.awardName);
+});
+
+// "+ Add Item" type toggle (Item / Weapon / Armor)
+let invCategory = 'gear';
+
+function setInvCategory(cat) {
+    invCategory = cat;
+    document.querySelectorAll('#inv-type-toggle [data-inv-cat]').forEach(b =>
+        b.classList.toggle('is-sel', b.dataset.invCat === cat));
+    document.getElementById('inv-weapon-fields').hidden = cat !== 'weapon';
+    document.getElementById('inv-armor-fields').hidden  = cat !== 'armor';
+}
+
+document.getElementById('inv-type-toggle')?.addEventListener('click', e => {
+    const btn = e.target.closest('[data-inv-cat]');
+    if (btn) setInvCategory(btn.dataset.invCat);
+});
+
+// Populate weapon damage-type / range selects from the shared lists
+(() => {
+    const dtSel = document.getElementById('inv-w-dmg-type');
+    if (dtSel && !dtSel.options.length) {
+        dtSel.innerHTML = `<option value="">-</option>` +
+            DAMAGE_TYPES.map(t => `<option>${t}</option>`).join('');
+    }
+    const rangeSel = document.getElementById('inv-w-range');
+    if (rangeSel && !rangeSel.options.length) {
+        rangeSel.innerHTML = RANGES.map(r => `<option>${r}</option>`).join('');
+    }
+})();
+
+// Steppers (Attack Bonus / Armor Rating)
+document.querySelectorAll('#inv-weapon-fields .ae-step-btn, #inv-armor-fields .ae-step-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const out = document.getElementById(btn.dataset.aeTarget);
+        if (!out) return;
+        const next = parseInt(out.dataset.val || '0', 10) + parseInt(btn.dataset.aeStep, 10);
+        out.dataset.val = next;
+        out.textContent = next;
+    });
+});
+
+function resetInvForm() {
+    setInvCategory('gear');
+    ['inv-w-damage', 'inv-w-dmg-type', 'inv-w-range', 'inv-w-props', 'inv-w-check', 'inv-a-notes'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+    ['inv-w-atk', 'inv-a-rating'].forEach(id => {
+        const out = document.getElementById(id);
+        if (out) { out.dataset.val = '0'; out.textContent = '0'; }
+    });
+}
+
+document.getElementById('btn-add-inventory')?.addEventListener('click', async function() {
+    const name = document.getElementById('inv-name')?.value.trim();
+    if (!name) return;
+    const desc   = document.getElementById('inv-desc')?.value.trim()   || '';
+    const amount = parseInt(document.getElementById('inv-amount')?.value || '1', 10);
+    const bulk   = parseFloat(document.getElementById('inv-bulk')?.value || '1');
+
+    const entry = { name, desc, amount, bulk, category: invCategory };
+    if (invCategory === 'weapon') {
+        Object.assign(entry, {
+            damage:      document.getElementById('inv-w-damage')?.value.trim()  || '',
+            damageType:  document.getElementById('inv-w-dmg-type')?.value       || '',
+            range:       document.getElementById('inv-w-range')?.value          || '',
+            properties:  document.getElementById('inv-w-props')?.value.trim()   || '',
+            check:       document.getElementById('inv-w-check')?.value          || '',
+            attackBonus: parseInt(document.getElementById('inv-w-atk')?.dataset.val || '0', 10),
+        });
+    } else if (invCategory === 'armor') {
+        Object.assign(entry, {
+            notes:       document.getElementById('inv-a-notes')?.value.trim() || '',
+            armorRating: parseInt(document.getElementById('inv-a-rating')?.dataset.val || '0', 10),
+        });
+    }
+
+    if (currentRoomCode) {
+        const arc = window.__arc;
+        if (arc?.db) {
+            try {
+                const id = crypto.randomUUID();
+                await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', id), {
+                    ...entry, addedAt: arc.serverTimestamp(),
+                });
+            } catch(e) { console.error('[ARC] addLoot failed:', e); }
+        }
+    } else {
+        nar.inventory.push({ id: crypto.randomUUID(), ...entry });
+        saveNar(); renderInventory();
+    }
+
+    document.getElementById('inv-name').value   = '';
+    document.getElementById('inv-desc').value   = '';
+    document.getElementById('inv-amount').value = '1';
+    document.getElementById('inv-bulk').value   = '1';
+    resetInvForm();
+
+    closeForm(this);
+});
+
+// ── HANDOUTS ──────────────────────────────────────────────────────────────────
+
+function renderNarHandouts() {
+    const el = document.getElementById('nar-handouts-list');
+    if (!el) return;
+
+    if (!fbHandouts.length) {
+        el.innerHTML = '<p class="empty-hint">No handouts posted.</p>';
+        return;
+    }
+
+    const sorted = [...fbHandouts].sort((a, b) => (b.postedAt?.toMillis?.() || 0) - (a.postedAt?.toMillis?.() || 0));
+    el.innerHTML = sorted.map(h => {
+        const shown = h.revealed === true;
+        return `
+        <div class="handout-card${shown ? '' : ' handout-card--hidden'}">
+            <div class="handout-head">
+                <div class="handout-title">${h.title}</div>
+                <button class="handout-toggle" data-cid="handout-${h.id}" type="button">▾</button>
+                <button class="handout-edit" data-handout-edit="${h.id}" type="button">✎</button>
+                <button class="gen-mon-remove" data-handout-remove="${h.id}">✕</button>
+            </div>
+            <div class="handout-reveal-row">
+                <span class="handout-state${shown ? ' handout-state--shown' : ''}">${shown ? '👁 Visible to players' : '🔒 Hidden from players'}</span>
+                <button class="handout-reveal-btn" data-handout-reveal="${h.id}" type="button">${shown ? 'Hide' : 'Reveal'}</button>
+                <button class="handout-popup-btn" data-handout-popup="${h.id}" type="button" title="Pop this up on everyone's screen">📢 Show All</button>
+            </div>
+            <div class="handout-body" id="handout-${h.id}-exp" hidden>${parseHandoutMarkdown(h.body || '')}</div>
+        </div>`;
+    }).join('');
+
+    el.querySelectorAll('.handout-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const exp = document.getElementById(btn.dataset.cid + '-exp');
+            if (!exp) return;
+            exp.hidden = !exp.hidden;
+            btn.textContent = exp.hidden ? '▾' : '▴';
+        });
+    });
+
+    el.querySelectorAll('[data-handout-edit]').forEach(btn => {
+        btn.addEventListener('click', () => startEditHandout(btn.dataset.handoutEdit));
+    });
+
+    el.querySelectorAll('[data-handout-remove]').forEach(btn => {
+        btn.addEventListener('click', () => removeHandout(btn.dataset.handoutRemove));
+    });
+
+    el.querySelectorAll('[data-handout-reveal]').forEach(btn => {
+        btn.addEventListener('click', () => toggleHandoutRevealed(btn.dataset.handoutReveal));
+    });
+
+    el.querySelectorAll('[data-handout-popup]').forEach(btn => {
+        btn.addEventListener('click', () => showHandoutToPlayers(btn.dataset.handoutPopup));
+    });
+}
+
+// Persistent visibility: whether the handout appears in the players' Journal at all.
+async function toggleHandoutRevealed(id) {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    const h = fbHandouts.find(x => x.id === id);
+    if (!h) return;
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'handouts', id), { revealed: h.revealed !== true });
+    } catch(e) { console.error('[ARC] toggleHandoutRevealed failed:', e); }
+}
+
+// Reveal + broadcast: pops the handout up on every screen in the room.
+async function showHandoutToPlayers(id) {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    const h = fbHandouts.find(x => x.id === id);
+    if (!h) return;
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'handouts', id), { revealed: true });
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), {
+            handoutPopup: { id, title: h.title || '', body: h.body || '', at: arc.serverTimestamp() },
+        });
+    } catch(e) { console.error('[ARC] showHandoutToPlayers failed:', e); }
+    openHandoutPopup(h.title, h.body);
+}
+
+async function removeHandout(id) {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    try {
+        await arc.deleteDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'handouts', id));
+    } catch(e) { console.error('[ARC] removeHandout failed:', e); }
+}
+
+let editingHandoutId = null;
+
+function startEditHandout(id) {
+    const h = fbHandouts.find(x => x.id === id);
+    if (!h) return;
+
+    editingHandoutId = id;
+
+    const titleEl = document.getElementById('handout-title');
+    const bodyEl  = document.getElementById('handout-body');
+    const addBtn  = document.getElementById('btn-add-handout');
+    const details = addBtn?.closest('details');
+
+    if (titleEl) titleEl.value = h.title || '';
+    if (bodyEl)  bodyEl.value  = h.body  || '';
+    if (addBtn)  addBtn.textContent = '✓ Save';
+    if (details) details.open = true;
+}
+
+document.getElementById('btn-add-handout')?.addEventListener('click', async function() {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+
+    const title = document.getElementById('handout-title')?.value.trim();
+    const body  = document.getElementById('handout-body')?.value.trim() || '';
+    if (!title) return;
+
+    try {
+        if (editingHandoutId) {
+            await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'handouts', editingHandoutId), { title, body });
+        } else {
+            await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'handouts', crypto.randomUUID()), {
+                title, body, revealed: false, postedAt: arc.serverTimestamp(),
+            });
+        }
+    } catch(e) { console.error('[ARC] addHandout failed:', e); }
+
+    editingHandoutId = null;
+    this.textContent = '+ Post';
+    document.getElementById('handout-title').value = '';
+    document.getElementById('handout-body').value  = '';
+
+    closeForm(this);
+});
+
+// Reset edit state if the form is closed (e.g. via summary click) without saving
+document.getElementById('btn-add-handout')?.closest('details')?.addEventListener('toggle', function() {
+    if (!this.open && editingHandoutId) {
+        editingHandoutId = null;
+        const addBtn = document.getElementById('btn-add-handout');
+        if (addBtn) addBtn.textContent = '+ Post';
+        document.getElementById('handout-title').value = '';
+        document.getElementById('handout-body').value  = '';
+    }
+});
+
+// ── INITIATIVE ────────────────────────────────────────────────────────────────
+
+const EVENT_SUBTYPES = {
+    environmental:  { label: 'Env',     color: '#4dba94' },
+    reinforcements: { label: 'Reinf',   color: '#c9a227' },
+    hazard:         { label: 'Hazard',  color: '#c43250' },
+    npc:            { label: 'NPC',     color: '#9b72cf' },
+    custom:         { label: 'Event',   color: '#7fc4d4' },
+};
+
+function sortedEncounter() {
+    return [...nar.encounter].sort((a, b) => b.initiative - a.initiative);
+}
+
+// groupedTurnOrder(encounter) now lives in chat-cards.js (shared with active-sheet.js).
+
+const QUICK_CONDITIONS = ['Bleeding','Broken','Stunned','Prone','Exposed','Injured','Concussion','Exhaustion'];
+
+// conditions.json groups everything under Corpus / Cognition / Major / Special.
+// Keep that order - it runs body, mind, then the ones that end a turn.
+const COND_GROUP_ORDER = ['Corpus', 'Cognition', 'Major', 'Special'];
+
+function conditionGroups() {
+    const keys = Object.keys(narCondGroups);
+    if (!keys.length) return [['Common', QUICK_CONDITIONS]];
+    const ordered = [
+        ...COND_GROUP_ORDER.filter(g => narCondGroups[g]?.length),
+        ...keys.filter(g => !COND_GROUP_ORDER.includes(g)),
+    ];
+    return ordered.map(g => [g, narCondGroups[g]]);
+}
+
+// Picker with a heading per group, so a long list stays findable.
+function condPickerHtml(entryId, conds) {
+    return conditionGroups().map(([group, names]) => `
+        <div class="enc-cond-group">
+            <div class="enc-cond-group-label">${group}</div>
+            <div class="enc-cond-group-picks">${names.map(cd =>
+                `<button class="enc-cond-pick${conds.includes(cd) ? ' is-on' : ''}" data-enc-action="toggle-cond" data-enc-id="${entryId}" data-cond="${cd}">${condChip(cd)}</button>`
+            ).join('')}</div>
+        </div>`).join('');
+}
+
+// A condition should be obvious from the collapsed row, not something you find by
+// expanding. Major conditions shout louder than the rest.
+function condBadgeHtml(conds) {
+    if (!conds?.length) return '';
+    const major = conds.filter(c => (narCondGroups.Major || []).includes(c));
+    const cls   = major.length ? ' enc-cond-badge--major' : '';
+    return `<span class="enc-cond-badge${cls}" title="${conds.join(', ')}">${conds.map(condChip).join('')}</span>`;
+}
+
+// Actions are a function of Power Level: one per 4 PL, minimum one. Nothing to
+// set by hand - it moves when the narrator adjusts PL.
+function monsterActions(e) {
+    return Math.max(1, Math.ceil((entryStats(e).pl || 1) / 4));
+}
+
+function actionPipsHtml(e) {
+    const n = monsterActions(e);
+    if (n <= 1) return '';
+    return `<span class="enc-action-pips" title="${n} actions per round (1 per 4 PL)">${'◆'.repeat(Math.min(n, 6))}</span>`;
+}
+
+function renderEnemyMonster(e, label) {
+    label = label || e.name;
+    const pct    = (e.maxHp || 0) > 0 ? Math.round(((e.hp ?? e.maxHp) / e.maxHp) * 100) : 0;
+    const hp     = e.hp ?? e.maxHp ?? 0;
+    const barClr = pct > 60 ? '#4ca859' : pct > 25 ? '#d4922a' : '#e05555';
+    const mon    = getMonster(e.name);
+    const conds     = e.conditions || [];
+    const condTags  = conds.map(cd =>
+        `<span class="enc-cond-tag" data-enc-action="rm-cond" data-enc-id="${e.id}" data-cond="${cd}">${condChip(cd)} ×</span>`
+    ).join('');
+    const picker    = condPickerHtml(e.id, conds);
+
+    return `<details class="enc-enemy-row${e.defeated ? ' enc-enemy-row--defeated' : ''}">
+        <summary class="enc-enemy-summary">
+            <div class="enc-card-row enc-card-row--tight">
+                <span class="enc-init-mini">${e.initiative}</span>
+                <div class="enc-mon-info">
+                    <span class="enc-name">${label}</span>${actionPipsHtml(e)}${threatPipsHtml(e)}
+                    ${condBadgeHtml(conds)}
+                    ${mon ? (() => { const es = entryStats(e); return `<span class="enc-mon-checks${e.pl ? ' is-tuned' : ''}">PL<strong>${es.pl ?? '-'}</strong> Ph<strong>${es.ph}</strong> Mt<strong>${es.mt}</strong>${es.mt>0?` MN<strong>${es.mt*2}</strong>`:''}</span>`; })() : ''}
+                </div>
+                <div class="enc-card-ctrl">
+                    ${mon ? `<button class="step-action-btn enc-link-btn" data-enc-action="link-mon" data-enc-name="${e.name}">↗</button>` : ''}
+                    <button class="step-action-btn step-action-btn--danger" data-enc-action="remove" data-enc-id="${e.id}">✕</button>
+                </div>
+            </div>
+            <div class="enc-hp-controls">
+                <button class="step-action-btn" data-enc-action="dec5" data-enc-id="${e.id}">−5</button>
+                <button class="step-action-btn" data-enc-action="dec"  data-enc-id="${e.id}">−</button>
+                <span class="enc-hp">${hp}<span class="enc-hp-max">/${e.maxHp ?? 0}</span></span>
+                <button class="step-action-btn" data-enc-action="inc"  data-enc-id="${e.id}">+</button>
+                <div class="enc-hp-bar-track enc-hp-bar-inline"><div class="enc-hp-bar-fill" style="width:${pct}%;background:${barClr}"></div></div>
+            </div>
+            <input class="enc-note-input" type="text" placeholder="Note…" value="${(e.note||'').replace(/"/g,'&quot;')}" data-enc-note="${e.id}" />
+        </summary>
+        <div class="enc-enemy-detail">
+            ${entryPlRowHtml(e)}
+            ${threatRowHtml(e)}
+            ${mon ? `<div class="enc-statblock">${monsterStatblockHtml(mon)}</div>` : ''}
+            <details class="enc-cond-details">
+                <summary class="enc-cond-summary">+C${conds.length ? ` <span class="enc-cond-count">${conds.length}</span>` : ''}</summary>
+                ${conds.length ? `<div class="enc-cond-tags">${condTags}</div>` : ''}
+                <div class="enc-cond-picker">${picker}</div>
+            </details>
+        </div>
+    </details>`;
+}
+
+// Shared renderer for the "Enemy Turn" / "NPC Turn" pseudo-entries produced by groupedTurnOrder()
+function renderEncounterGroupCard(group, isActive, kind) {
+    const nameCounts = {};
+    const nameIndex  = {};
+    group.enemies.forEach(e => { nameCounts[e.name] = (nameCounts[e.name] || 0) + 1; });
+    const rows = group.enemies.map(e => {
+        let label = e.name;
+        if (nameCounts[e.name] > 1) {
+            nameIndex[e.name] = (nameIndex[e.name] || 0) + 1;
+            label = `${e.name} ${nameIndex[e.name]}`;
+        }
+        return renderEnemyMonster(e, label);
+    }).join('');
+    const label = kind === 'npc' ? 'NPC TURN' : 'ENEMY TURN';
+    const count = group.enemies.length;
+    const noun  = kind === 'npc' ? (count === 1 ? 'character' : 'characters') : (count === 1 ? 'monster' : 'monsters');
+    return `<div class="enc-card enc-enemy-group${isActive ? ' enc-card--active' : ''}">
+        <div class="enc-group-header enc-group-header--${kind}">
+            <span class="enc-init-badge enc-init-badge--${kind}">${group.initiative}</span>
+            <span class="enc-group-label">${label}</span>
+            <span class="enc-group-count">${count} ${noun}</span>
+        </div>
+        ${rows}
+    </div>`;
+}
+
+function syncEncounter() {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    const payload = {
+        encounter: nar.encounter.map(e => ({
+            id: e.id, name: e.name, type: e.type || 'enemy',
+            hp: e.hp ?? e.maxHp ?? 0, maxHp: e.maxHp ?? 0,
+            initiative: e.initiative || 0,
+            actions: monsterActions(e),
+            pl: entryStats(e).pl,
+            hidden: e.hidden || false,
+            conditions: e.conditions || [],
+            defeated: e.defeated || false,
+        })),
+        encounterRound: nar.round,
+        encounterTurnIndex: nar.turnIndex,
+    };
+    arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), payload).catch(() => {});
+}
+
+// Read-only "Cast" summary of NPCs/Minions, synced so players can see who's
+// around even outside combat. Hidden entries (GM secrets) are omitted entirely.
+function syncCharacters() {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    const payload = {
+        characters: nar.characters.filter(c => !c.hidden).map(c => ({
+            id: c.id, name: c.name, role: c.role,
+            hp: c.hp ?? null, maxHp: c.maxHp ?? null,
+            conditions: c.conditions || [],
+        })),
+    };
+    arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), payload).catch(() => {});
+}
+
+function renderEncounter() {
+    const listEl   = document.getElementById('encounter-list');
+    const turnBar  = document.getElementById('enc-turn-bar');
+    const roundEl  = document.getElementById('enc-round');
+    const timeEl   = document.getElementById('enc-time');
+    const activeEl = document.getElementById('enc-active-name');
+    if (!listEl) return;
+
+    const sorted = groupedTurnOrder(nar.encounter);
+
+    if (!sorted.length) {
+        listEl.innerHTML = '<p class="empty-hint">No one in initiative. Add combatants below.</p>';
+        if (turnBar) turnBar.hidden = true;
+        if (roundEl) roundEl.textContent = nar.round;
+        if (timeEl)  timeEl.textContent  = encTime(nar.round);
+        renderMonstersEncSummary();
+        return;
+    }
+
+    const activeTurn = nar.turnIndex % sorted.length;
+    const active     = sorted[activeTurn];
+    const activeName = active?.hidden ? '???' : (active?._isEnemyGroup ? 'Enemy Turn' : (active?.name || '-'));
+    const activeType = active?._isEnemyGroup ? 'enemy' : active?._isNpcGroup ? 'npc' : (active?.type || 'enemy');
+    if (turnBar) {
+        turnBar.hidden = false;
+        turnBar.className = `enc-turn-bar enc-turn-bar--${activeType}`;
+    }
+    if (roundEl)  roundEl.textContent = nar.round;
+    if (timeEl)   timeEl.textContent  = encTime(nar.round);
+    if (activeEl) activeEl.textContent = activeName;
+
+    // Whose turn it is belongs at the top. The order still cycles - it just
+    // scrolls under the current turn instead of the reader hunting for it.
+    const rotated = [...sorted.slice(activeTurn), ...sorted.slice(0, activeTurn)];
+
+    listEl.innerHTML = rotated.map((c, i) => {
+        const isActive = i === 0;
+
+        // ── Enemy / NPC Group ──────────────────────────────────────────
+        if (c._isEnemyGroup) return renderEncounterGroupCard(c, isActive, 'enemy');
+        if (c._isNpcGroup)   return renderEncounterGroupCard(c, isActive, 'npc');
+
+        const type = c.type || 'enemy';
+
+        // ── Player ──────────────────────────────────────────────────
+        if (type === 'player') {
+            const fbP    = fbPlayers.find(p => p.name === c.name);
+            const hpCur  = fbP?.woundsCur ?? null;
+            const hpMax  = fbP?.woundsMax ?? null;
+            const mnCur  = fbP?.mnCur     ?? null;
+            const hpPct  = (hpCur !== null && hpMax) ? Math.round((hpCur / hpMax) * 100) : null;
+            const barClr = hpPct > 60 ? '#4ca859' : hpPct > 25 ? '#d4922a' : '#e05555';
+            const conds  = c.conditions || [];
+            const condTags = conds.map(cd =>
+                `<span class="enc-cond-tag" data-enc-action="rm-cond" data-enc-id="${c.id}" data-cond="${cd}">${condChip(cd)} ×</span>`
+            ).join('');
+            const picker = condPickerHtml(c.id, conds);
+            return `<div class="enc-card enc-card--player${isActive ? ' enc-card--active' : ''}">
+                <div class="enc-card-row">
+                    <span class="enc-init-badge enc-init-badge--player">${c.initiative}</span>
+                    ${condBadgeHtml(conds)}
+                    <div class="enc-mon-info">
+                        <span class="enc-name">${c.name}</span>
+                        ${fbP ? `<span class="enc-mon-checks enc-mon-checks--player">HP<strong>${hpCur ?? '?'}</strong>/${hpMax ?? '?'} MN<strong>${mnCur ?? '?'}</strong></span>` : ''}
+                    </div>
+                    <div class="enc-card-ctrl">
+                        <button class="step-action-btn enc-target-btn${narTarget === c.name ? ' is-on' : ''}" data-enc-action="set-target" data-enc-name="${c.name}" title="Set target">🎯</button>
+                        <button class="step-action-btn step-action-btn--danger" data-enc-action="remove" data-enc-id="${c.id}">✕</button>
+                    </div>
+                </div>
+                ${hpPct !== null ? `<div class="enc-hp-controls">
+                    <span class="enc-hp enc-hp--player">${hpCur}<span class="enc-hp-max">/${hpMax}</span></span>
+                    <div class="enc-hp-bar-track enc-hp-bar-inline"><div class="enc-hp-bar-fill" style="width:${hpPct}%;background:${barClr}"></div></div>
+                </div>` : ''}
+                <input class="enc-note-input" type="text" placeholder="Note…" value="${(c.note||'').replace(/"/g,'&quot;')}" data-enc-note="${c.id}" />
+                <details class="enc-cond-details">
+                    <summary class="enc-cond-summary">+C${conds.length ? ` <span class="enc-cond-count">${conds.length}</span>` : ''}</summary>
+                    ${conds.length ? `<div class="enc-cond-tags">${condTags}</div>` : ''}
+                    <div class="enc-cond-picker">${picker}</div>
+                </details>
+            </div>`;
+        }
+
+        // ── Event ────────────────────────────────────────────────────
+        if (type === 'event') {
+            const sub = EVENT_SUBTYPES[c.subType] || EVENT_SUBTYPES.custom;
+            const display = c.hidden
+                ? `<span class="enc-type-badge enc-type-badge--hidden">🔒 Hidden</span><span class="enc-name enc-name--hidden">???</span>`
+                : `<span class="enc-type-badge" style="background:${sub.color}22;color:${sub.color}">${sub.label}</span><span class="enc-name">${c.name}</span>`;
+            return `<div class="enc-card enc-card--event${isActive ? ' enc-card--active' : ''}">
+                <div class="enc-card-row">
+                    <span class="enc-init-badge">${c.initiative}</span>
+                    ${display}
+                    <button class="step-action-btn step-action-btn--danger u-ml-auto" data-enc-action="remove" data-enc-id="${c.id}">✕</button>
+                </div>
+                ${c.note && !c.hidden ? `<div class="enc-event-note">${c.note}</div>` : ''}
+                ${c.hidden ? `<div class="enc-event-note enc-event-note--hidden">🔒 ${c.name}${c.note ? ' - ' + c.note : ''}</div>` : ''}
+            </div>`;
+        }
+
+        return '';
+    }).join('');
+
+    listEl.querySelectorAll('.enc-enemy-summary button, .enc-enemy-summary .enc-hp-controls, .enc-enemy-summary .enc-note-input').forEach(el => {
+        el.addEventListener('click', e => e.stopPropagation());
+    });
+
+    listEl.querySelectorAll('[data-enc-note]').forEach(input => {
+        input.addEventListener('click', e => e.stopPropagation());
+        input.addEventListener('blur', () => {
+            const c = nar.encounter.find(x => x.id === input.dataset.encNote);
+            if (c) { c.note = input.value.trim(); saveNar(); }
+        });
+    });
+
+
+    listEl.querySelectorAll('[data-enc-action]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id     = btn.dataset.encId;
+            const action = btn.dataset.encAction;
+            const c = nar.encounter.find(x => x.id === id);
+            if (!c && action !== 'remove' && action !== 'link-mon' && action !== 'set-target') return;
+            if (action === 'set-target') {
+                const name = btn.dataset.encName;
+                narTarget = narTarget === name ? null : name;
+                updateNarContextBar(); renderEncounter(); return;
+            }
+            if (action === 'threat-spend')  { spendThreat(c, btn.dataset.threat); return; }
+            if (action === 'threat-inc')    { c.threat = Math.min(threatMax(c), threatNow(c) + 1); saveNar(); renderEncounter(); syncEncounter(); return; }
+            if (action === 'threat-dec')    { c.threat = Math.max(0, threatNow(c) - 1); saveNar(); renderEncounter(); syncEncounter(); return; }
+            if (action === 'threat-reset')  { c.threat = threatMax(c); saveNar(); renderEncounter(); syncEncounter(); return; }
+            if (action === 'threat-toggle') { c.noThreat = !c.noThreat; if (!c.noThreat) c.threat = threatMax(c); saveNar(); renderEncounter(); syncEncounter(); return; }
+            if (action === 'pl-inc' || action === 'pl-dec') {
+                setEntryPl(c, entryStats(c).pl + (action === 'pl-inc' ? 1 : -1));
+                saveNar(); renderEncounter(); syncEncounter(); return;
+            }
+            if (action === 'toggle-cond') {
+                if (!c.conditions) c.conditions = [];
+                const cond = btn.dataset.cond;
+                const idx  = c.conditions.indexOf(cond);
+                if (idx === -1) c.conditions.push(cond); else c.conditions.splice(idx, 1);
+                saveNar(); renderEncounter(); return;
+            }
+            if (action === 'rm-cond') {
+                if (c.conditions) { c.conditions = c.conditions.filter(cd => cd !== btn.dataset.cond); saveNar(); renderEncounter(); }
+                return;
+            }
+            if (action === 'link-mon') {
+                const name = btn.dataset.encName;
+                if (!nar.genMonsters.includes(name)) { nar.genMonsters.push(name); saveNar(); }
+                pendingMonsterFocus = name;
+                setActivePanel('monsters');
+                if (monstersLoaded) renderGenMonsterList();
+                return;
+            }
+            const prevHp = c?.hp ?? c?.maxHp;
+            if (action === 'dec')    c.hp = Math.max(0, prevHp - 1);
+            if (action === 'dec5')   c.hp = Math.max(0, prevHp - 5);
+            if (action === 'inc') {
+                c.hp = Math.min(c.maxHp, prevHp + 1);
+                if (c.hp > 0) c.defeated = false;
+            }
+            if (action === 'remove') nar.encounter = nar.encounter.filter(x => x.id !== id);
+            saveNar(); renderEncounter();
+            if ((action === 'dec' || action === 'dec5') && prevHp > 0 && c.hp === 0 && !c.defeated) {
+                openDefeatedConfirm(c);
+            }
+        });
+    });
+
+    syncEncounter();
+    renderMonstersEncSummary();
+}
+
+// Live "Encounter" summary shown on the Monsters tab
+function renderMonstersEncSummary() {
+    const el = document.getElementById('monsters-enc-summary');
+    if (!el) return;
+
+    const sorted = groupedTurnOrder(nar.encounter);
+    if (!sorted.length) {
+        el.innerHTML = '<p class="empty-hint">No one in initiative.</p>';
+        return;
+    }
+
+    const activeTurn = nar.turnIndex % sorted.length;
+    el.innerHTML = sorted.map((c, i) => {
+        const isActive = i === activeTurn;
+        const mark = isActive ? '▶ ' : '';
+        if (c._isEnemyGroup || c._isNpcGroup) {
+            const count = c.enemies.length;
+            const noun  = c._isNpcGroup ? (count === 1 ? 'character' : 'characters') : (count === 1 ? 'monster' : 'monsters');
+            return `<div class="monsters-enc-row${isActive ? ' is-active' : ''}">
+                <span class="monsters-enc-name">${mark}${c.name}</span>
+                <span class="monsters-enc-hp">${count} ${noun}</span>
+            </div>`;
+        }
+        const hpText = (c.hp ?? null) !== null && (c.maxHp ?? null) !== null ? `${c.hp}/${c.maxHp}` : '';
+        return `<div class="monsters-enc-row${isActive ? ' is-active' : ''}">
+            <span class="monsters-enc-name">${mark}${c.hidden ? '???' : c.name}</span>
+            <span class="monsters-enc-hp">${hpText}</span>
+        </div>`;
+    }).join('');
+}
+
+// Defeat confirmation - prompted when an encounter entry's HP drops to 0
+function openDefeatedConfirm(c) {
+    const dlg = document.getElementById('defeated-confirm-dialog');
+    if (!dlg) return;
+    document.getElementById('defeated-confirm-name').textContent = c.name;
+    dlg.dataset.encId = c.id;
+    dlg.showModal();
+}
+
+document.getElementById('defeated-confirm-yes')?.addEventListener('click', () => {
+    const dlg = document.getElementById('defeated-confirm-dialog');
+    const c = nar.encounter.find(x => x.id === dlg.dataset.encId);
+    if (c) {
+        c.defeated = true;
+        saveNar(); renderEncounter();
+        postToSharedChat({ type: 'system', text: `${c.name} has been defeated!`, time: chatTimestamp() });
+    }
+    dlg.close();
+});
+
+document.getElementById('defeated-confirm-no')?.addEventListener('click', () => {
+    document.getElementById('defeated-confirm-dialog')?.close();
+});
+
+// Type select: show/hide relevant fields
+document.getElementById('enc-type-select')?.addEventListener('change', function () {
+    const type = this.value;
+    document.getElementById('enc-subtype-field').hidden  = type !== 'event';
+    document.getElementById('enc-hp-field').hidden       = type !== 'enemy';
+    document.getElementById('enc-note-field').hidden     = type !== 'event';
+    document.getElementById('enc-hidden-field').hidden   = type !== 'event';
+});
+
+document.getElementById('btn-add-creature')?.addEventListener('click', function() {
+    const name = document.getElementById('enc-name-input')?.value.trim();
+    if (!name) return;
+    const type    = document.getElementById('enc-type-select')?.value || 'enemy';
+    const init    = parseInt(document.getElementById('enc-init-input')?.value || '0', 10);
+    const entry   = { id: crypto.randomUUID(), name, type, initiative: init };
+
+    if (type === 'enemy') {
+        const hp = parseInt(document.getElementById('enc-hp-input')?.value || '10', 10);
+        entry.hp = hp; entry.maxHp = hp;
+    }
+    if (type === 'event') {
+        entry.subType = document.getElementById('enc-subtype-select')?.value || 'custom';
+        entry.note    = document.getElementById('enc-note-input')?.value.trim() || '';
+        entry.hidden  = document.getElementById('enc-hidden-check')?.checked || false;
+    }
+
+    nar.encounter.push(entry);
+    document.getElementById('enc-name-input').value  = '';
+    document.getElementById('enc-hp-input').value    = '10';
+    document.getElementById('enc-init-input').value  = '0';
+    document.getElementById('enc-note-input').value  = '';
+    if (document.getElementById('enc-hidden-check')) document.getElementById('enc-hidden-check').checked = false;
+    saveNar(); renderEncounter(); closeForm(this);
+});
+
+document.getElementById('btn-next-turn')?.addEventListener('click', () => {
+    const sorted = groupedTurnOrder(nar.encounter);
+    if (!sorted.length) return;
+    nar.turnIndex++;
+    if (nar.turnIndex >= sorted.length) { nar.turnIndex = 0; nar.round++; }
+    saveNar(); renderEncounter();
+    const active = sorted[nar.turnIndex % sorted.length];
+    if (active && !active.hidden) {
+        const name = active._isEnemyGroup ? 'Enemy Turn' : active.name;
+        postToSharedChat({ type: 'turn', name, round: nar.round, time: chatTimestamp() });
+    }
+});
+
+document.getElementById('btn-call-init')?.addEventListener('click', () => {
+    postToSharedChat({ type: 'initiative-call', time: chatTimestamp() });
+});
+
+document.getElementById('btn-add-party-init')?.addEventListener('click', () => {
+    const existing = new Set(nar.encounter.map(e => e.name));
+    const allPlayers = [
+        ...fbPlayers.map(p => ({ name: p.name })),
+        ...nar.partyManual.map(p => ({ name: p.name })),
+    ];
+    let added = 0;
+    allPlayers.forEach(({ name }) => {
+        if (!name || existing.has(name)) return;
+        nar.encounter.push({ id: crypto.randomUUID(), name, type: 'player', initiative: Math.ceil(Math.random() * 20) });
+        existing.add(name);
+        added++;
+    });
+    if (added > 0) { saveNar(); renderEncounter(); }
+});
+
+document.getElementById('btn-enc-turn-next')?.addEventListener('click', () => {
+    document.getElementById('btn-next-turn')?.click();
+});
+
+document.getElementById('btn-enc-roll-init')?.addEventListener('click', () => {
+    const input = document.getElementById('enc-init-input');
+    if (input) input.value = Math.ceil(Math.random() * 20);
+});
+
+document.getElementById('btn-clear-encounter')?.addEventListener('click', () => {
+    nar.encounter = []; nar.turnIndex = 0; nar.round = 1;
+    saveNar(); renderEncounter();
+});
+
+// ── CHARACTER EDIT DIALOG ────────────────────────────────────────────────────
+
+let charEditId = null;
+
+function openCharEdit(id) {
+    const c = nar.characters.find(x => x.id === id);
+    if (!c) return;
+    charEditId = id;
+
+    const isMinion = c.role === 'minion';
+    document.getElementById('char-edit-title').textContent  = c.name;
+    document.getElementById('ced-npc-fields').hidden        = isMinion;
+    document.getElementById('ced-minion-fields').hidden     = !isMinion;
+    document.getElementById('ced-name').value               = c.name || '';
+
+    if (!isMinion) {
+        document.getElementById('ced-pl').value    = c.pl    || '';
+        document.getElementById('ced-phys').value  = c.phys  || '';
+        document.getElementById('ced-ment').value  = c.ment  || '';
+        document.getElementById('ced-hp').value    = c.hp    || '';
+        document.getElementById('ced-notes').value = c.notes || '';
+        document.getElementById('ced-equip').value = c.equipment     || '';
+        document.getElementById('ced-nar').value   = c.narratorNotes || '';
+    } else {
+        document.getElementById('ced-mn-pl').value     = c.pl     || 3;
+        document.getElementById('ced-mn-hp').value     = c.hp     || '';
+        document.getElementById('ced-mn-origin').value = c.origin || '';
+    }
+
+    renderCedInv(c);
+    populateCedEquipList();
+    populateCedItemNameList();
+    updateCedPlHint();
+    updateCedMnPlHint();
+    document.getElementById('char-edit-dialog')?.showModal();
+}
+
+function closeCharEdit() {
+    charEditId = null;
+    document.getElementById('char-edit-dialog')?.close();
+}
+
+function updateCedPlHint() {
+    const pl   = parseInt(document.getElementById('ced-pl')?.value, 10);
+    const hint = document.getElementById('ced-pl-hint');
+    if (!hint) return;
+    if (!pl || pl < 1) { hint.hidden = true; return; }
+    const hp   = pl * pl;
+    const phys = Math.ceil(pl / 2);
+    const ment = pl - phys;
+    hint.hidden = false;
+    hint.innerHTML = `HP <strong>${hp}</strong> (PL²) · Phys + Ment = <strong>${pl}</strong> (e.g. ${phys}/${ment})
+        <button class="ced-pl-apply-btn" id="btn-ced-pl-apply" type="button">Apply</button>`;
+    document.getElementById('btn-ced-pl-apply')?.addEventListener('click', () => {
+        document.getElementById('ced-phys').value = phys;
+        document.getElementById('ced-ment').value = ment;
+        document.getElementById('ced-hp').value   = hp;
+    });
+}
+
+// When Phys changes, auto-set Ment = PL - Phys (and vice versa) if PL is filled
+document.getElementById('ced-phys')?.addEventListener('input', () => {
+    const pl   = parseInt(document.getElementById('ced-pl')?.value, 10);
+    const phys = parseInt(document.getElementById('ced-phys')?.value, 10);
+    if (pl > 0 && !isNaN(phys)) document.getElementById('ced-ment').value = Math.max(0, pl - phys);
+});
+document.getElementById('ced-ment')?.addEventListener('input', () => {
+    const pl   = parseInt(document.getElementById('ced-pl')?.value, 10);
+    const ment = parseInt(document.getElementById('ced-ment')?.value, 10);
+    if (pl > 0 && !isNaN(ment)) document.getElementById('ced-phys').value = Math.max(0, pl - ment);
+});
+
+function updateCedMnPlHint() {
+    const pl   = parseInt(document.getElementById('ced-mn-pl')?.value, 10);
+    const hint = document.getElementById('ced-mn-pl-hint');
+    if (!hint) return;
+    if (!pl || pl < 1) { hint.hidden = true; return; }
+    hint.hidden = false;
+    hint.textContent = `Max HP: ${pl * pl} (PL² = ${pl}×${pl})`;
+}
+
+function populateCedItemNameList() {
+    const dl = document.getElementById('ced-inv-name-list');
+    if (!dl) return;
+    dl.innerHTML = '';
+    const seen = new Set();
+    const add  = v => { if (!v || seen.has(v)) return; seen.add(v); dl.appendChild(Object.assign(document.createElement('option'), { value: v })); };
+    if (LOOT_DATA) {
+        LOOT_DATA.weapons.forEach(w => add(w.name));
+        LOOT_DATA.armor.forEach(a => add(a.name));
+        LOOT_DATA.items.forEach(i => add(i.name));
+    }
+}
+
+function populateCedEquipList() {
+    const dl = document.getElementById('ced-equip-list');
+    if (!dl) return;
+    const seen = new Set();
+    const add  = v => {
+        if (!v || seen.has(v)) return;
+        seen.add(v);
+        dl.appendChild(Object.assign(document.createElement('option'), { value: v }));
+    };
+    dl.innerHTML = '';
+
+    const fill = () => {
+        if (LOOT_DATA) {
+            LOOT_DATA.weapons.forEach(w => add(w.name));
+            LOOT_DATA.armor.forEach(a => add(a.name));
+            LOOT_DATA.items.forEach(i => add(i.name));
+        }
+        // Also surface anything already in the session
+        nar.inventory.forEach(i => add(i.name));
+        nar.characters.forEach(c => { if (c.equipment) add(c.equipment); c.inventory?.forEach(i => add(i.name)); });
+    };
+
+    if (lootLoaded) {
+        fill();
+    } else {
+        ensureLoot().then(fill);
+    }
+}
+
+document.getElementById('ced-pl')?.addEventListener('input', updateCedPlHint);
+document.getElementById('ced-mn-pl')?.addEventListener('input', updateCedMnPlHint);
+
+function renderCedInv(c) {
+    const list  = document.getElementById('ced-inv-list');
+    if (!list) return;
+    const items = c.inventory || [];
+    if (!items.length) {
+        list.innerHTML = '<p class="empty-hint" style="font-size:12px;margin:4px 0 8px">No items yet.</p>';
+        return;
+    }
+    list.innerHTML = items.map((item, i) => {
+        const weaponMeta = item.damage
+            ? `<span class="ced-inv-item-desc">${item.damage}${item.damageType ? ' ' + item.damageType : ''}${item.range ? ' · ' + item.range : ''}</span>`
+            : '';
+        return `<div class="ced-inv-row">
+            <div class="ced-inv-item-info">
+                <span class="ced-inv-item-name">${item.name}</span>
+                ${weaponMeta}
+                ${item.desc && !weaponMeta ? `<span class="ced-inv-item-desc">${item.desc}</span>` : ''}
+            </div>
+            <button class="step-action-btn step-action-btn--danger" data-ced-rm="${i}" type="button">✕</button>
+        </div>`;
+    }).join('');
+
+    list.querySelectorAll('[data-ced-rm]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const c = nar.characters.find(x => x.id === charEditId);
+            if (!c?.inventory) return;
+            c.inventory.splice(parseInt(btn.dataset.cedRm, 10), 1);
+            saveNar(); renderCedInv(c);
+        });
+    });
+}
+
+document.getElementById('btn-char-edit-save')?.addEventListener('click', () => {
+    const c = nar.characters.find(x => x.id === charEditId);
+    if (!c) return;
+
+    c.name = document.getElementById('ced-name')?.value.trim() || c.name;
+
+    if (c.role !== 'minion') {
+        c.pl    = document.getElementById('ced-pl')?.value    || '';
+        c.phys  = document.getElementById('ced-phys')?.value  || '';
+        c.ment  = document.getElementById('ced-ment')?.value  || '';
+        c.hp    = document.getElementById('ced-hp')?.value    || '';
+        c.notes         = document.getElementById('ced-notes')?.value.trim() || '';
+        c.equipment     = document.getElementById('ced-equip')?.value.trim() || '';
+        c.narratorNotes = document.getElementById('ced-nar')?.value.trim()   || '';
+    } else {
+        const pl = Math.max(1, parseInt(document.getElementById('ced-mn-pl')?.value || c.pl || '3', 10));
+        c.pl     = pl; c.plPhys = pl; c.plMent = pl;
+        c.maxHp  = pl * pl;
+        c.hp     = Math.min(parseInt(document.getElementById('ced-mn-hp')?.value || c.hp || c.maxHp, 10), c.maxHp);
+        c.origin = document.getElementById('ced-mn-origin')?.value.trim() || '';
+    }
+
+    saveNar(); renderCharacters(); closeCharEdit();
+});
+
+document.getElementById('ced-inv-name')?.addEventListener('input', () => {
+    const name   = document.getElementById('ced-inv-name')?.value.trim();
+    const weapon = LOOT_DATA?.weapons?.find(w => w.name === name);
+    const fields = document.getElementById('ced-inv-weapon-fields');
+    if (weapon) {
+        if (fields) fields.hidden = false;
+        const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+        set('ced-inv-damage',   weapon.damage     || '');
+        set('ced-inv-dmg-type', weapon.damageType || '');
+        set('ced-inv-range',    weapon.range      || '');
+        set('ced-inv-check',    weapon.check?.split(',')[0]?.trim() || '');
+    } else {
+        if (fields) fields.hidden = !document.getElementById('ced-inv-damage')?.value;
+    }
+});
+
+document.getElementById('ced-inv-name')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('btn-ced-inv-add')?.click();
+});
+
+document.getElementById('btn-ced-inv-add')?.addEventListener('click', () => {
+    const nameEl   = document.getElementById('ced-inv-name');
+    const descEl   = document.getElementById('ced-inv-desc');
+    const name     = nameEl?.value.trim();
+    if (!name) return;
+    const c = nar.characters.find(x => x.id === charEditId);
+    if (!c) return;
+    if (!c.inventory) c.inventory = [];
+
+    const damage   = document.getElementById('ced-inv-damage')?.value.trim();
+    const item = {
+        id: crypto.randomUUID(), name,
+        desc:      descEl?.value.trim() || '',
+        category:  damage ? 'weapon' : 'gear',
+        damage:    damage || '',
+        damageType:document.getElementById('ced-inv-dmg-type')?.value.trim() || '',
+        range:     document.getElementById('ced-inv-range')?.value.trim()    || '',
+        check:     document.getElementById('ced-inv-check')?.value.trim()    || '',
+    };
+    c.inventory.push(item);
+
+    ['ced-inv-name','ced-inv-desc','ced-inv-damage','ced-inv-dmg-type','ced-inv-range','ced-inv-check'].forEach(id => {
+        const el = document.getElementById(id); if (el) el.value = '';
+    });
+    const fields = document.getElementById('ced-inv-weapon-fields');
+    if (fields) fields.hidden = true;
+
+    saveNar(); renderCedInv(c);
+});
+
+document.getElementById('btn-char-edit-cancel')?.addEventListener('click', closeCharEdit);
+document.getElementById('btn-char-edit-close')?.addEventListener('click',  closeCharEdit);
+
+document.getElementById('char-edit-dialog')?.addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeCharEdit();
+});
+
+// ── END SESSION ───────────────────────────────────────────────────────────────
+
+async function endSession() {
+    const arc  = window.__arc;
+    const code = currentRoomCode;
+    if (!code || !arc?.db) return;
+
+    if (!confirm(`End session ${code}? This removes all players from the room.`)) return;
+
+    try {
+        // Mark room closed
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', code), { status: 'closed' });
+
+        // Delete all player docs in batch
+        const playerSnap = await arc.getDocs(arc.collection(arc.db, 'rooms', code, 'players'));
+        if (!playerSnap.empty) {
+            const batch = arc.writeBatch(arc.db);
+            playerSnap.docs.forEach(d => batch.delete(d.ref));
+            await batch.commit();
+        }
+    } catch(e) { console.error('[ARC] endSession failed:', e); }
+
+    // Clean up narrator side
+    detachRoomListeners();
+
+
+    currentRoomCode = null;
+    localStorage.removeItem('arc-narrator-room');
+    fbPlayers = []; fbLoot = []; fbGold = 0; fbSharedChat = []; fbHandouts = [];
+    updateChatInputState();
+
+    // Reset UI
+    const badge      = document.getElementById('room-code-badge');
+    const privacyBtn = document.getElementById('btn-privacy-mode');
+    const goldRow    = document.getElementById('party-gold-row');
+    const invite     = document.getElementById('btn-invite');
+    const handoutsSection = document.getElementById('nar-handouts-section');
+    if (badge)      { badge.hidden = true; setBadgeContent('', ''); }
+    if (privacyBtn) privacyBtn.hidden = true;
+    if (goldRow)    goldRow.hidden = true;
+    if (invite)     invite.textContent = 'Manage Rooms';
+    if (handoutsSection) handoutsSection.hidden = true;
+
+    renderParty(); renderInventory(); renderNarHandouts(); renderNarChat();
+}
+
+// ── JOURNAL ───────────────────────────────────────────────────────────────────
+
+function migrateOldNotes() {
+    if (nar.notes && nar.sessions.length === 0) {
+        nar.sessions.push({ id: crypto.randomUUID(), title: 'Previous Notes', date: '', notes: nar.notes });
+        nar.notes = '';
+    }
+}
+
+function stat(val) { return val != null && val !== '' ? val : '-'; }
+
+// ── Journal: Quest Log ──
+
+function renderQuestLog() {
+    const el = document.getElementById('journal-quest-list');
+    if (!el) return;
+    if (!nar.questLog.length) { el.innerHTML = '<p class="empty-hint">No quests tracked.</p>'; return; }
+    el.innerHTML = nar.questLog.map(q => `
+        <div class="jquest-row">
+            <input type="checkbox" class="jquest-check" data-qid="${q.id}" ${q.done ? 'checked' : ''} />
+            <span class="jquest-text${q.done ? ' jquest-done' : ''}">${q.text}</span>
+            <button class="gen-mon-remove" data-quest-remove="${q.id}">✕</button>
+        </div>`).join('');
+
+    el.querySelectorAll('.jquest-check').forEach(cb => {
+        cb.addEventListener('change', () => {
+            const q = nar.questLog.find(x => x.id === cb.dataset.qid);
+            if (q) { q.done = cb.checked; saveNar(); renderQuestLog(); }
+        });
+    });
+    el.querySelectorAll('[data-quest-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            nar.questLog = nar.questLog.filter(x => x.id !== btn.dataset.questRemove);
+            saveNar(); renderQuestLog();
+        });
+    });
+}
+
+document.getElementById('btn-add-jquest')?.addEventListener('click', function() {
+    const text = document.getElementById('jquest-text')?.value.trim();
+    if (!text) return;
+    nar.questLog.push({ id: crypto.randomUUID(), text, done: false });
+    document.getElementById('jquest-text').value = '';
+    saveNar(); renderQuestLog(); closeForm(this);
+});
+
+// ── Journal: Sessions ──
+
+function renderSessions() {
+    const el = document.getElementById('journal-session-list');
+    if (!el) return;
+    if (!nar.sessions.length) { el.innerHTML = '<p class="empty-hint">No sessions recorded.</p>'; return; }
+    el.innerHTML = nar.sessions.map(s => `
+        <div class="jsess-card">
+            <div class="jsess-head">
+                <span class="jsess-title" contenteditable="true" data-sess-title="${s.id}">${s.title || 'Untitled'}</span>
+                <span class="jsess-date">${s.date || ''}</span>
+                <button class="jrow-view-btn" data-sess-toggle="${s.id}">▾</button>
+                <button class="gen-mon-remove" data-sess-remove="${s.id}">✕</button>
+            </div>
+            <textarea class="jsess-notes-edit" data-sess-notes="${s.id}" hidden rows="5">${s.notes || ''}</textarea>
+        </div>`).join('');
+
+    el.querySelectorAll('[data-sess-toggle]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const ta = el.querySelector(`[data-sess-notes="${btn.dataset.sessToggle}"]`);
+            if (!ta) return;
+            ta.hidden = !ta.hidden;
+            btn.textContent = ta.hidden ? '▾' : '▴';
+            if (!ta.hidden) ta.focus();
+        });
+    });
+    el.querySelectorAll('[data-sess-title]').forEach(span => {
+        span.addEventListener('blur', () => {
+            const s = nar.sessions.find(x => x.id === span.dataset.sessTitle);
+            if (s) { s.title = span.textContent.trim() || 'Untitled'; saveNar(); }
+        });
+    });
+    el.querySelectorAll('[data-sess-notes]').forEach(ta => {
+        ta.addEventListener('input', () => {
+            const s = nar.sessions.find(x => x.id === ta.dataset.sessNotes);
+            if (s) { s.notes = ta.value; saveNar(); }
+        });
+    });
+    el.querySelectorAll('[data-sess-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            nar.sessions = nar.sessions.filter(x => x.id !== btn.dataset.sessRemove);
+            saveNar(); renderSessions();
+        });
+    });
+}
+
+document.getElementById('btn-add-jsess')?.addEventListener('click', function() {
+    const title = document.getElementById('jsess-title')?.value.trim() || 'Untitled Session';
+    const date  = document.getElementById('jsess-date')?.value  || '';
+    const notes = document.getElementById('jsess-notes')?.value || '';
+    nar.sessions.push({ id: crypto.randomUUID(), title, date, notes });
+    ['jsess-title','jsess-date','jsess-notes'].forEach(id => {
+        const el = document.getElementById(id); if (el) el.value = '';
+    });
+    saveNar(); renderSessions(); closeForm(this);
+});
+
+// ── STICKY ROLL BAR ───────────────────────────────────────────────────────────
+
+function rollD20(mod, type) {
+    const r1 = Math.ceil(Math.random() * 20);
+    let roll = r1;
+    if (type === 'adv') { const r2 = Math.ceil(Math.random() * 20); roll = Math.max(r1, r2); }
+    if (type === 'dis') { const r2 = Math.ceil(Math.random() * 20); roll = Math.min(r1, r2); }
+    return { roll, total: roll + mod };
+}
+
+
+// Dice roll button
+document.getElementById('btn-nar-dice-roll')?.addEventListener('click', () => {
+    const sides = parseInt(document.getElementById('nar-dice-type')?.value  || '20', 10);
+    const count = Math.max(1, parseInt(document.getElementById('nar-dice-count')?.value || '1', 10));
+    const bonus = parseInt(document.getElementById('nar-dice-bonus')?.value || '0', 10);
+    const rolls  = Array.from({ length: count }, () => Math.ceil(Math.random() * sides));
+    const total  = rolls.reduce((s, r) => s + r, 0) + bonus;
+    const sidesLabel = sides === 100 ? '%' : sides;
+    const label  = `${count}d${sidesLabel}${bonus !== 0 ? (bonus > 0 ? '+' + bonus : bonus) : ''}`;
+    // The roll lands in the chat feed directly below the dice panel, so there is
+    // no separate local readout (the old #nar-roll-result element no longer exists).
+    postToSharedChat({ type: 'dice', label, total, rolls, bonus: 0, notation: label });
+});
+
+// ── GENERATORS: MONSTER ───────────────────────────────────────────────────────
+
+// rollDiceNotation is defined in chat-cards.js
+
+function extractAndRollDice(text) {
+    const matches = [...(text || '').matchAll(/\[\[(\d*d\d+!?(?:\s*[+-]\s*\d*d?\d+!?)*)\]\]/gi)];
+    if (matches.length) return matches.map(m => rollDiceNotation(m[1])).filter(Boolean);
+    // Plenty of monster spells write "4d6 lightning damage" in prose instead of
+    // bracketing it - those used to roll nothing at all.
+    const bare = effectDiceNotation(text);
+    const roll = bare ? rollDiceNotation(bare) : null;
+    return roll ? [roll] : [];
+}
+
+function subPL(text, pl) {
+    return (text || '').replace(/\bPL\b/g, pl ?? '?');
+}
+
+// autoTableRolls is defined in chat-cards.js
+
+function npcEquipEntry(n) {
+    const weapon    = LOOT_DATA?.weapons?.find(w => w.name === n.equipment);
+    const checkMod  = parseInt(n.phys, 10) || 0;
+    const d20       = Math.ceil(Math.random() * 20);
+    const d20Total  = d20 + checkMod;
+    if (weapon?.damage) {
+        const damageType = weapon.damageType || '';
+        return {
+            type: 'weapon-attack', charName: n.name, monsterName: n.name,
+            weaponName: weapon.name,
+            checkLabel: weapon.check?.split(',')[0]?.trim() || 'Physical',
+            checkMod, attackBonus: weapon.attackBonus || 0,
+            rollNote: `d20(${d20})`, d20Total, rollType: 'flat',
+            damageRoll: rollDiceNotation(weapon.damage),
+            damageType, range: weapon.range || '',
+            tableRolls: autoTableRolls(d20Total, damageType),
+            conditions: [], time: chatTimestamp(),
+        };
+    }
+    // Non-weapon equipment — post as a feature card
+    return {
+        type: 'feature', name: n.name,
+        tags: [n.equipment], desc: '',
+        time: chatTimestamp(), diceRolls: [],
+    };
+}
+
+function charItemRollEntry(c, item) {
+    const checkMod = parseInt(c.phys, 10) || parseInt(c.plPhys, 10) || 0;
+    const d20      = Math.ceil(Math.random() * 20);
+    const d20Total = d20 + checkMod;
+    const damageType = item.damageType || '';
+    return {
+        type: 'weapon-attack', charName: c.name, monsterName: c.name,
+        weaponName: item.name,
+        checkLabel: item.check || 'Physical', checkMod, attackBonus: 0,
+        rollNote: `d20(${d20})`, d20Total, rollType: 'flat',
+        damageRoll: rollDiceNotation(item.damage),
+        damageType, range: item.range || '',
+        tableRolls: autoTableRolls(d20Total, damageType),
+        conditions: [], time: chatTimestamp(),
+    };
+}
+
+function monsterAttackEntry(m, atk, atkType) {
+    const checkMod = m.check_physical || 0;
+    const d20 = Math.ceil(Math.random() * 20);
+    const d20Total = d20 + checkMod;
+    const damageType = atk.damage_type || atk.type || '';
+    return {
+        type: 'weapon-attack', monsterName: m.name, charName: m.name,
+        weaponName: atk.name,
+        checkLabel: 'PHYSICAL', checkMod, attackBonus: 0,
+        rollNote: `d20(${d20})`, d20Total, rollType: 'flat',
+        damageRoll: rollDiceNotation(atk.damage),
+        damageType, range: atkType === 'melee' ? 'Melee' : 'Ranged',
+        tableRolls: autoTableRolls(d20Total, damageType),
+        conditions: [], time: chatTimestamp(),
+    };
+}
+
+function monsterSpellEntry(m, sp, ef) {
+    const checkMod = m.check_mental || 0;
+    const pl = m.pl || 0;
+    const d20 = Math.ceil(Math.random() * 20);
+    const d20Total = d20 + checkMod;
+    const desc = subPL(ef.effect, pl);
+    const diceRolls = extractAndRollDice(desc);
+    const damageType = ef.type || '';
+    return {
+        type: 'weapon-attack', monsterName: m.name, charName: m.name,
+        weaponName: `✨ ${sp.name} - ${ef.intent}`,
+        checkLabel: 'MENTAL', checkMod, attackBonus: 0,
+        rollNote: `d20(${d20})`, d20Total, rollType: 'flat',
+        damageRoll: diceRolls[0] || null,
+        damageType, range: ef.range || '', properties: ef.area || '',
+        desc, tableRolls: autoTableRolls(d20Total, damageType),
+        conditions: [], time: chatTimestamp(),
+    };
+}
+
+let GEN_MONSTERS    = [];
+let monstersLoaded  = false;
+
+let pendingMonsterFocus = null;
+
+async function ensureMonsters() {
+    if (monstersLoaded) return;
+    try {
+        const res = await fetch('../data/monsterbook.json');
+        GEN_MONSTERS = await res.json();
+        monstersLoaded = true;
+        renderGenMonsterList();
+        renderMonBrowse();
+        renderEncounter();
+        renderCharacters();
+    } catch(e) { console.error('Failed to load monsterbook.json', e); }
+}
+
+// ── MONSTER SPELLCASTING ──────────────────────────────────────────────────────
+// A spell used to post as the bare monster name with no target. With several
+// copies of a monster in initiative that told the table nothing, so casting now
+// asks who is casting it and at whom.
+
+let _castCtx = null;
+
+// Everyone in the encounter, labelled the way the tracker labels them
+// (Goblin 1, Goblin 2, …) so the chat card matches what the narrator sees.
+function encounterLabels() {
+    const counts = {};
+    nar.encounter.forEach(e => { counts[e.name] = (counts[e.name] || 0) + 1; });
+    const seen = {};
+    return nar.encounter.map(e => {
+        let label = e.name;
+        if (counts[e.name] > 1) {
+            seen[e.name] = (seen[e.name] || 0) + 1;
+            label = `${e.name} ${seen[e.name]}`;
+        }
+        return { id: e.id, label, name: e.name, type: e.type || 'enemy', hidden: !!e.hidden };
+    });
+}
+
+// Anyone who could cast this: copies already in the fight first, then minions or
+// NPCs of the same creature, then the book entry as a fallback so the Monsters
+// page still works with no encounter running.
+function castCasterOptions(m) {
+    const opts = [];
+    encounterLabels().filter(x => x.name === m.name)
+        .forEach(x => opts.push({ value: x.id, label: x.label, group: 'In initiative' }));
+    nar.characters.filter(c => c.name === m.name)
+        .forEach(c => opts.push({ value: `char:${c.id}`, label: `${c.name} (${c.role})`, group: 'Characters' }));
+    if (!opts.length) opts.push({ value: '', label: m.name, group: '' });
+    return opts;
+}
+
+// Targets are not limited to the encounter - the narrator may be lining a spell
+// up against a player before anyone has rolled initiative.
+function castTargetOptions(m) {
+    const opts  = [];
+    const seen  = new Set();
+    const push  = (label, group) => {
+        if (!label || seen.has(label)) return;
+        seen.add(label);
+        opts.push({ value: label, label, group });
+    };
+    encounterLabels().filter(x => !x.hidden && x.name !== m.name)
+        .forEach(x => push(x.label, 'In initiative'));
+    fbPlayers.filter(p => !nar.archived.includes(p.id)).forEach(p => push(p.name || 'Player', 'Players'));
+    nar.partyManual.filter(p => !nar.archived.includes(p.id)).forEach(p => push(p.name, 'Players'));
+    nar.characters.filter(c => !c.hidden && c.name !== m.name).forEach(c => push(c.name, 'Characters'));
+    return opts;
+}
+
+// <optgroup>s keep a long list readable
+function castOptionsHtml(opts, { placeholder } = {}) {
+    let html = placeholder ? `<option value="">${placeholder}</option>` : '';
+    const groups = [...new Set(opts.map(o => o.group))];
+    for (const g of groups) {
+        const rows = opts.filter(o => o.group === g)
+            .map(o => `<option value="${escAttr(o.value)}">${o.label}</option>`).join('');
+        html += g ? `<optgroup label="${escAttr(g)}">${rows}</optgroup>` : rows;
+    }
+    return html;
+}
+
+function openMonsterCastModal(m, sp, ef) {
+    const dlg = document.getElementById('mon-cast-dialog');
+    if (!dlg) { postToSharedChat(monsterSpellEntry(m, sp, ef)); setActivePanel('chat'); return; }
+
+    _castCtx = { m, sp, ef };
+    document.getElementById('mon-cast-title').textContent = `${sp.name} - ${ef.intent}`;
+    document.getElementById('mon-cast-sub').textContent =
+        [ef.cost != null ? `${ef.cost} MN` : '', ef.range, ef.area].filter(Boolean).join(' · ');
+
+    document.getElementById('mon-cast-by').innerHTML = castOptionsHtml(castCasterOptions(m));
+
+    const tgtSel = document.getElementById('mon-cast-target');
+    tgtSel.innerHTML = castOptionsHtml(castTargetOptions(m), { placeholder: 'No target' });
+    // Whatever the narrator already had targeted is the likely answer
+    if (narTarget && [...tgtSel.options].some(o => o.value === narTarget)) tgtSel.value = narTarget;
+
+    dlg.showModal();
+}
+
+function closeMonsterCastModal() {
+    _castCtx = null;
+    document.getElementById('mon-cast-dialog')?.close();
+}
+
+document.getElementById('mon-cast-close')?.addEventListener('click', closeMonsterCastModal);
+document.getElementById('mon-cast-cancel')?.addEventListener('click', closeMonsterCastModal);
+
+document.getElementById('mon-cast-go')?.addEventListener('click', () => {
+    if (!_castCtx) return closeMonsterCastModal();
+    const { m, sp, ef } = _castCtx;
+    const casterId    = document.getElementById('mon-cast-by')?.value || '';
+    const casterLabel = document.getElementById('mon-cast-by')?.selectedOptions?.[0]?.textContent || m.name;
+    const target      = document.getElementById('mon-cast-target')?.value || '';
+
+    const entry = monsterSpellEntry(m, sp, ef);
+    // The caster's own numbers drive the roll, not the book default - a tuned
+    // copy in initiative, or a minion/NPC of the same creature.
+    const caster = casterId.startsWith('char:')
+        ? nar.characters.find(c => c.id === casterId.slice(5))
+        : casterId ? nar.encounter.find(e => e.id === casterId) : null;
+    if (caster) {
+        const mt = caster.role
+            ? (parseInt(caster.plMent, 10) || parseInt(caster.ment, 10) || 0)
+            : entryStats(caster).mt;
+        const d20 = parseInt((entry.rollNote.match(/\((\d+)\)/) || [])[1] || '0', 10);
+        entry.checkMod   = mt;
+        entry.d20Total   = d20 + mt;
+        entry.tableRolls = autoTableRolls(entry.d20Total, entry.damageType);
+    }
+    entry.charName = casterLabel;
+    if (target) entry.target = target;
+
+    postToSharedChat(entry);
+    closeMonsterCastModal();
+    setActivePanel('chat');
+});
+
+// ── MONSTER STAT BLOCK ────────────────────────────────────────────────────────
+// One renderer, two homes: the Monsters page and, expanded, each combatant in the
+// initiative tracker - so the narrator never has to swap pages mid-fight.
+// The buttons inside are handled by a delegated listener, so it works anywhere.
+
+function monsterFeatureList(m) {
+    const feats = [];
+    if (m.feature_name) feats.push({ name: m.feature_name, type: m.feature_type || '', range: m.feature_range || '', effect: m.feature_effect || '' });
+    if (Array.isArray(m.features)) m.features.forEach(f => {
+        if (f.name && f.name !== m.feature_name) feats.push({ name: f.name, type: f.type || '', range: f.range || '', effect: f.effect || '' });
+    });
+    return feats;
+}
+
+function monsterStatblockHtml(m) {
+    if (!m) return '';
+    const moveParts = [
+        m.walk  && `Walk ${m.walk}`,
+        m.fly   && `Fly ${m.fly}`,
+        m.swim  && `Swim ${m.swim}`,
+        m.climb && `Climb ${m.climb}`,
+    ].filter(Boolean);
+
+    const meleeAtk  = m.melee_attack  || m.melee  || null;
+    const rangedAtk = m.ranged_attack || m.ranged || null;
+    const fmtAtk = (atk, label) => {
+        if (!atk?.name) return '';
+        const dmg = [atk.damage, atk.damage_type || atk.type].filter(Boolean).join(' ');
+        return `<div class="gen-mon-atk">
+            <span class="gen-mon-atk-label">${label}</span>
+            <span>${atk.name}${dmg ? ' - ' + dmg : ''}</span>
+            <button class="step-action-btn mon-chat-btn" type="button" title="Roll &amp; send"
+                data-mon-name="${m.name}" data-atk-type="${label.toLowerCase()}">
+                <img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>
+        </div>`;
+    };
+
+    const spellMn = (m.check_mental || 0) * 2;
+    const spellsHtml = Array.isArray(m.spells) && m.spells.length
+        ? `<div class="gen-mon-spells">
+            <div class="gen-mon-spells-header">SPELLS <span class="gen-mon-spells-mn">· MN: ${spellMn}</span></div>
+            ${m.spells.map((sp, si) => `
+                <details class="gen-mon-spell">
+                    <summary class="gen-mon-spell-row">
+                        <span class="gen-mon-spell-name">${sp.name}</span>
+                        <span class="gen-mon-spell-tags">${[sp.manner, sp.transmission].filter(Boolean).join(' · ')}</span>
+                    </summary>
+                    <div class="gen-mon-spell-effects">
+                        ${sp.effects.map((ef, ei) => `
+                            <div class="gen-mon-spell-effect">
+                                <span class="gen-mon-spell-intent">${ef.intent}</span>
+                                <span class="gen-mon-spell-cost">${ef.cost} MN</span>
+                                ${ef.range ? `<span class="gen-mon-spell-range">${ef.range}</span>` : ''}
+                                <button class="step-action-btn mon-chat-btn" type="button" title="Roll &amp; send"
+                                    data-mon-name="${m.name}" data-spell-idx="${si}" data-effect-idx="${ei}">
+                                    <img src="../assets/icons/roll.png" class="btn-icon" alt="roll"></button>
+                            </div>`).join('')}
+                    </div>
+                </details>`).join('')}
+        </div>` : '';
+
+    const featsHtml = monsterFeatureList(m).map((f, fi) => `
+        <div class="gen-mon-feature">
+            <div class="gen-mon-feature-head">
+                <span class="gen-mon-feature-name">${f.name}</span>
+                <span class="gen-mon-feature-type">${[f.type, f.range].filter(Boolean).join(' · ')}</span>
+                <button class="step-action-btn mon-chat-btn" type="button" title="Send to chat"
+                    data-mon-name="${m.name}" data-feat-idx="${fi}">
+                    <img src="../assets/icons/chat.png" class="btn-icon" alt="chat"></button>
+            </div>
+            <p class="gen-mon-feature-effect">${f.effect}</p>
+        </div>`).join('');
+
+    return `<div class="gen-mon-meta">${[m.size, m.origin, m.rarity, m.environment, m.behavior, m.silver ? '🜛 Silver-vulnerable' : ''].filter(Boolean).join(' · ')}</div>
+        ${m.motivation ? `<div class="gen-mon-motivation">Motif: ${m.motivation}</div>` : ''}
+        ${moveParts.length ? `<div class="gen-mon-move">${moveParts.join(' / ')}</div>` : ''}
+        ${m.description ? `<div class="gen-mon-desc">${m.description}</div>` : ''}
+        <div class="gen-mon-attacks">${fmtAtk(meleeAtk, 'Melee')}${fmtAtk(rangedAtk, 'Ranged')}</div>
+        ${featsHtml}
+        ${spellsHtml}`;
+}
+
+// Delegated so the stat block's roll/chat buttons work on the Monsters page and
+// inside the initiative tracker alike.
+document.addEventListener('click', e => {
+    const btn = e.target.closest('.mon-chat-btn');
+    if (!btn) return;
+    const m = getMonster(btn.dataset.monName);
+    if (!m) return;
+
+    let entry;
+    if (btn.dataset.featIdx !== undefined) {
+        const f = monsterFeatureList(m)[parseInt(btn.dataset.featIdx, 10)];
+        if (!f) return;
+        entry = { type: 'feature', monsterName: m.name, name: f.name, tags: [f.type, f.range].filter(Boolean), desc: subPL(f.effect, m.pl), time: chatTimestamp(), diceRolls: [] };
+    } else if (btn.dataset.atkType) {
+        const isM = btn.dataset.atkType === 'melee';
+        const atk = isM ? (m.melee_attack || m.melee) : (m.ranged_attack || m.ranged);
+        if (!atk?.name) return;
+        entry = monsterAttackEntry(m, atk, btn.dataset.atkType);
+    } else if (btn.dataset.spellIdx !== undefined) {
+        const sp = m.spells?.[parseInt(btn.dataset.spellIdx, 10)];
+        const ef = sp?.effects?.[parseInt(btn.dataset.effectIdx, 10)];
+        if (!sp || !ef) return;
+        openMonsterCastModal(m, sp, ef);   // asks who casts it and at whom
+        return;
+    }
+    if (entry) { postToSharedChat(entry); setActivePanel('chat'); }
+});
+
+function effectiveStats(m, plOverride) {
+    const pl      = (plOverride ?? nar.monPlOverrides?.[m.name] ?? m.pl ?? 1);
+    const base    = m.pl || 1;
+    const phFrac  = (m.check_physical ?? 0) / base;
+    const ph      = Math.max(0, Math.min(pl, Math.round(pl * phFrac)));
+    return { pl, hp: pl * pl, ph, mt: pl - ph };
+}
+
+// monPlOverrides is keyed by monster name, so every copy of a Goblin shared one
+// PL. An encounter entry carries its own `pl` when the narrator tunes it, which
+// wins over the name-wide override - so the wounded runt and the champion in the
+// same group can differ.
+function entryStats(e) {
+    const mon = getMonster(e?.name);
+    if (!mon) {
+        const pl = e?.pl ?? 1;
+        return { pl, hp: pl * pl, ph: 0, mt: 0 };
+    }
+    return effectiveStats(mon, e?.pl);
+}
+
+// PL drives HP (PL²), the check split, and the action count, so the stepper
+// keeps the current HP proportional rather than snapping it to full.
+function setEntryPl(e, next) {
+    const pl = Math.max(1, Math.min(30, next));
+    const oldMax = e.maxHp || 1;
+    const frac   = oldMax > 0 ? (e.hp ?? oldMax) / oldMax : 1;
+    e.pl    = pl;
+    e.maxHp = pl * pl;
+    e.hp    = Math.max(0, Math.min(e.maxHp, Math.round(e.maxHp * frac)));
+    if (e.hp > 0) e.defeated = false;
+}
+
+function entryPlRowHtml(e) {
+    const st = entryStats(e);
+    return `<div class="enc-pl-row">
+        <span class="enc-pl-label">PL</span>
+        <button class="step-action-btn" data-enc-action="pl-dec" data-enc-id="${e.id}">−</button>
+        <span class="enc-pl-val">${st.pl}</span>
+        <button class="step-action-btn" data-enc-action="pl-inc" data-enc-id="${e.id}">+</button>
+        <span class="enc-pl-derived">HP <strong>${st.hp}</strong> · Ph <strong>${st.ph}</strong> · Mt <strong>${st.mt}</strong>${st.mt > 0 ? ` · MN <strong>${st.mt * 2}</strong>` : ''}</span>
+    </div>`;
+}
+
+// ── THREAT ────────────────────────────────────────────────────────────────────
+// Per the Roll20 sheet (v8): a creature's reserve of extra effort - provokes and
+// dramatic manoeuvres. It does NOT replace their Action; it is spent to react
+// outside their turn, or to take an extra Action on it. Pool is floor(PL/2), so
+// PL 1-2 creatures get none at all, and the narrator can switch it off for
+// anything that shouldn't have a reserve.
+
+const THREAT_ACTIONS = [
+    { key: 'attack',      name: 'Attack',            cost: 1, desc: 'Make an additional attack immediately.' },
+    { key: 'remove',      name: 'Remove Condition',  cost: 1, desc: 'End one condition currently affecting this creature.' },
+    { key: 'disengage',   name: 'Disengage',         cost: 1, desc: 'Move without provoking opportunity attacks.' },
+    { key: 'reduce',      name: 'Reduce Damage',     cost: 1, desc: 'Reduce incoming damage by half.' },
+    { key: 'environment', name: 'Environment Shift', cost: 2, desc: 'Add or remove an environmental element such as cover, difficult terrain, hazards, or line-of-sight blockers within Short range. Narrator adjudicates impact.' },
+    { key: 'flee',        name: 'Flee',              cost: 1, variable: true, desc: 'Attempt to escape the scene. Initiate a chase or skill contest: the party must achieve a number of successes equal to the Threat spent to prevent escape. On failure, this creature escapes; on success, the chase continues or the creature is cornered.' },
+];
+
+function threatMax(e) {
+    if (e?.noThreat) return 0;
+    return Math.floor((entryStats(e).pl || 0) / 2);
+}
+
+// Current threat, clamped to the pool PL currently allows
+function threatNow(e) {
+    const max = threatMax(e);
+    return Math.max(0, Math.min(max, e.threat ?? max));
+}
+
+function threatPipsHtml(e) {
+    const max = threatMax(e);
+    if (!max) return '';
+    const now = threatNow(e);
+    const pips = Array.from({ length: Math.min(max, 8) },
+        (_, i) => `<span class="enc-threat-pip${i < now ? ' is-full' : ''}"></span>`).join('');
+    return `<span class="enc-threat-badge" title="Threat ${now}/${max}">${pips}</span>`;
+}
+
+function threatRowHtml(e) {
+    const max = threatMax(e);
+    const canHave = Math.floor((entryStats(e).pl || 0) / 2) > 0;
+    if (!canHave && !e.noThreat) {
+        return `<div class="enc-threat-row enc-threat-row--none">
+            <span class="enc-threat-label">Threat</span>
+            <span class="enc-threat-hint">None at PL ${entryStats(e).pl} (needs PL 2+)</span>
+        </div>`;
+    }
+    const now = threatNow(e);
+    const actions = max ? THREAT_ACTIONS.map(a => {
+        const afford = now >= a.cost;
+        return `<button class="enc-threat-act${afford ? '' : ' is-spent'}" type="button"
+            data-enc-action="threat-spend" data-enc-id="${e.id}" data-threat="${a.key}"
+            title="${escAttr(a.desc)}">${a.name} <span class="enc-threat-cost">${a.variable ? '1+' : a.cost}</span></button>`;
+    }).join('') : '';
+
+    return `<div class="enc-threat-row">
+        <span class="enc-threat-label">Threat</span>
+        <button class="step-action-btn" data-enc-action="threat-dec" data-enc-id="${e.id}">−</button>
+        <span class="enc-threat-val">${now}<span class="enc-threat-max">/${max}</span></span>
+        <button class="step-action-btn" data-enc-action="threat-inc" data-enc-id="${e.id}">+</button>
+        <button class="step-action-btn" data-enc-action="threat-reset" data-enc-id="${e.id}" title="Refill the reserve">↺</button>
+        <label class="enc-threat-off" title="Some creatures have no reserve to draw on">
+            <input type="checkbox" data-enc-action="threat-toggle" data-enc-id="${e.id}"${e.noThreat ? ' checked' : ''} /> off
+        </label>
+        ${actions ? `<div class="enc-threat-acts">${actions}</div>` : ''}
+    </div>`;
+}
+
+// Spending announces itself - the table needs to know a reaction just happened
+function spendThreat(e, key) {
+    const a = THREAT_ACTIONS.find(x => x.key === key);
+    if (!a) return;
+    const now = threatNow(e);
+    if (now < a.cost) return;
+    e.threat = now - a.cost;
+    saveNar(); renderEncounter(); syncEncounter();
+
+    postToSharedChat({
+        type: 'feature',
+        name: `⚡ ${e.name} - ${a.name}`,
+        tags: [`${a.variable ? a.cost + '+' : a.cost} Threat`, `${e.threat}/${threatMax(e)} left`],
+        desc: a.desc,
+        time: chatTimestamp(), diceRolls: [],
+    });
+}
+
+function monsterHp(m) { return (nar.monPlOverrides?.[m?.name] ?? m?.pl ?? 1) ** 2; }
+
+function getMonster(name) { return GEN_MONSTERS.find(m => m.name === name) || null; }
+
+function addGenMonster(name) {
+    if (!name) return;
+    if (!nar.genMonsters.includes(name)) nar.genMonsters.push(name);
+    saveNar(); renderGenMonsterList();
+}
+
+function removeGenMonster(name) {
+    nar.genMonsters  = nar.genMonsters.filter(n => n !== name);
+    nar.monFavorites = nar.monFavorites.filter(n => n !== name);
+    saveNar(); renderGenMonsterList();
+}
+
+function renderGenMonsterList() {
+    const bookCount = document.getElementById('mon-book-count');
+    if (bookCount) bookCount.textContent = nar.genMonsters.length ? `${nar.genMonsters.length} pinned` : '';
+
+    const el = document.getElementById('gen-mon-list');
+    if (!el) return;
+
+    const favHeader = nar.monFavorites.length
+        ? `<div class="gen-mon-section-label">★ Favorites</div>`
+        : '';
+    const workingNames = nar.genMonsters.filter(n => !nar.monFavorites.includes(n));
+    const workingHeader = (nar.monFavorites.length && workingNames.length)
+        ? `<div class="gen-mon-section-label u-mt-8">Working List</div>`
+        : '';
+
+    const allNames = [...nar.monFavorites, ...workingNames];
+    if (!allNames.length) {
+        el.innerHTML = '<p class="empty-hint">No monsters added. Search or tap Random.</p>';
+        return;
+    }
+
+    el.innerHTML = favHeader + allNames.map((name, i) => {
+        const isWorkingStart = nar.monFavorites.length && name === workingNames[0];
+        const prefix = isWorkingStart ? workingHeader : '';
+        const m = getMonster(name);
+        if (!m) return prefix + `<div class="gen-mon-card">
+            <div class="gen-mon-head">
+                <div class="gen-mon-info"><span class="gen-mon-name">${name}</span></div>
+                <button class="gen-mon-remove" data-remove="${name}">✕</button>
+            </div></div>`;
+
+        const stats = effectiveStats(m);
+        const cid   = `gmc-${i}`;
+
+        const card = `<div class="gen-mon-card" id="${cid}">
+            <div class="gen-mon-head">
+                <div class="gen-mon-info">
+                    <span class="gen-mon-name" data-cid="${cid}">${m.name}</span>${m.spells?.length ? `<span class="gen-mon-spell-badge" title="${m.spells.length} spell${m.spells.length === 1 ? '' : 's'}">✨${m.spells.length}</span>` : ''}
+                    <span class="gen-mon-group">${m._group || m.origin || ''}</span>
+                </div>
+                <div class="gen-mon-stats">
+                    <span>PL <strong id="${cid}-s-pl">${stats.pl ?? '-'}</strong></span>
+                    <span>HP <strong id="${cid}-s-hp">${stats.hp}</strong></span>
+                    <span>Ph <strong id="${cid}-s-ph">${stats.ph}</strong></span>
+                    <span>Mt <strong id="${cid}-s-mt">${stats.mt}</strong></span>
+                </div>
+                <div class="gen-mon-card-btns">
+                    <button class="gen-mon-fav${nar.monFavorites.includes(m.name) ? ' is-fav' : ''}" data-fav="${m.name}" title="Favorite">★</button>
+                    <button class="gen-mon-toggle" data-cid="${cid}">▾</button>
+                    <button class="gen-mon-remove" data-remove="${m.name}">✕</button>
+                </div>
+            </div>
+            <div class="gen-mon-expanded" id="${cid}-exp" hidden>
+                <div class="gen-mon-pl-adj">
+                    <span class="gen-mon-pl-label">PL</span>
+                    <button class="step-action-btn gen-pl-btn" data-pl-delta="-1" data-pl-mon="${m.name}" data-pl-cid="${cid}">−</button>
+                    <span class="gen-pl-val" id="${cid}-pl-val">${stats.pl}</span>
+                    <button class="step-action-btn gen-pl-btn" data-pl-delta="1" data-pl-mon="${m.name}" data-pl-cid="${cid}">+</button>
+                    <span class="gen-pl-derived">HP <strong id="${cid}-pl-hp">${stats.hp}</strong> · Ph <strong id="${cid}-pl-ph">${stats.ph}</strong> · Mt <strong id="${cid}-pl-mt">${stats.mt}</strong></span>
+                </div>
+                ${monsterStatblockHtml(m)}
+                <div class="gen-mon-card-actions">
+                    <button class="done-btn gen-mon-init-btn" data-add-init="${m.name}" data-hp="${stats.hp}" id="${cid}-init-btn">+ Init</button>
+                    <button class="gen-mon-action-btn" data-mon-minion="${m.name}">+ Minion</button>
+                    <button class="gen-mon-action-btn" data-mon-chat="${m.name}">+ Chat</button>
+                    <button class="gen-mon-action-btn gen-mon-action-btn--roll" data-mon-roll="${m.name}">◎ Roll20</button>
+                </div>
+            </div>
+        </div>`;
+        return prefix + card;
+    }).join('');
+
+    el.querySelectorAll('.gen-mon-fav').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const name = btn.dataset.fav;
+            const idx  = nar.monFavorites.indexOf(name);
+            if (idx === -1) {
+                nar.monFavorites.push(name);
+                if (!nar.genMonsters.includes(name)) nar.genMonsters.push(name);
+            } else {
+                nar.monFavorites.splice(idx, 1);
+            }
+            saveNar(); renderGenMonsterList();
+        });
+    });
+
+    el.querySelectorAll('.gen-mon-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const exp = document.getElementById(btn.dataset.cid + '-exp');
+            if (!exp) return;
+            exp.hidden = !exp.hidden;
+            btn.textContent = exp.hidden ? '▾' : '▴';
+        });
+    });
+
+    el.querySelectorAll('.gen-pl-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const monName = btn.dataset.plMon;
+            const cid     = btn.dataset.plCid;
+            const m       = getMonster(monName);
+            if (!m) return;
+            if (!nar.monPlOverrides) nar.monPlOverrides = {};
+            const cur  = nar.monPlOverrides[monName] ?? m.pl ?? 1;
+            const next = Math.max(1, cur + parseInt(btn.dataset.plDelta, 10));
+            nar.monPlOverrides[monName] = next;
+            saveNar();
+            const s   = effectiveStats(m);
+            const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+            set(`${cid}-s-pl`,  s.pl);
+            set(`${cid}-s-hp`,  s.hp);
+            set(`${cid}-s-ph`,  s.ph);
+            set(`${cid}-s-mt`,  s.mt);
+            set(`${cid}-pl-val`, s.pl);
+            set(`${cid}-pl-hp`,  s.hp);
+            set(`${cid}-pl-ph`,  s.ph);
+            set(`${cid}-pl-mt`,  s.mt);
+            const initBtn = document.getElementById(`${cid}-init-btn`);
+            if (initBtn) initBtn.dataset.hp = s.hp;
+        });
+    });
+
+    el.querySelectorAll('.gen-mon-name[data-cid]').forEach(nameEl => {
+        nameEl.addEventListener('click', () => {
+            const cid = nameEl.dataset.cid;
+            const exp = document.getElementById(cid + '-exp');
+            const togBtn = el.querySelector(`.gen-mon-toggle[data-cid="${cid}"]`);
+            if (!exp) return;
+            exp.hidden = !exp.hidden;
+            if (togBtn) togBtn.textContent = exp.hidden ? '▾' : '▴';
+        });
+    });
+
+    el.querySelectorAll('.gen-mon-remove').forEach(btn => {
+        btn.addEventListener('click', () => removeGenMonster(btn.dataset.remove));
+    });
+
+    // Adding a monster no longer yanks the narrator to the initiative page - tap
+    // "+ Init" as many times as you want monsters and the toast keeps the tally,
+    // with a button to jump over once the group is built.
+    el.querySelectorAll('[data-add-init]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const name = btn.dataset.addInit;
+            const hp   = parseInt(btn.dataset.hp, 10);
+            // Monsters of a kind act together, so a second copy joins the first's
+            // initiative rather than rolling its own.
+            const twin = nar.encounter.find(e => e.name === name && e.type === 'enemy');
+            const initiative = twin ? twin.initiative
+                : Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
+            const mon = getMonster(name);
+            nar.encounter.push({
+                id: crypto.randomUUID(), name, hp, maxHp: hp,
+                initiative, type: 'enemy',
+                pl: mon ? effectiveStats(mon).pl : 1,
+            });
+            saveNar(); renderEncounter(); syncEncounter();
+
+            const n = nar.encounter.filter(e => e.name === name && e.type === 'enemy').length;
+            showChatToast(`${name} ×${n}`,
+                `In initiative at ${initiative}${n > 1 ? ' (acting as a group)' : ''}`,
+                () => openInitiative(), 'Go to initiative');
+        });
+    });
+
+    el.querySelectorAll('[data-mon-chat]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const m = getMonster(btn.dataset.monChat);
+            if (!m) return;
+            postToSharedChat({
+                type: 'feature',
+                name: m.name,
+                tags: [m.size, m.origin, m.rarity, `PL ${m.pl}`, `Ph +${m.check_physical}`, `Mt +${m.check_mental}`, m.silver ? '🜛 Silver' : ''].filter(Boolean),
+                desc: m.description || m.motivation || '',
+                time: chatTimestamp(),
+                diceRolls: [],
+            });
+            setActivePanel('chat');
+        });
+    });
+
+    el.querySelectorAll('[data-mon-roll]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const m = getMonster(btn.dataset.monRoll);
+            if (!m) return;
+            const checkMod = m.check_physical || 0;
+            const d20 = Math.ceil(Math.random() * 20);
+            const d20Total = d20 + checkMod;
+            postToSharedChat({
+                type: 'roll',
+                charName: m.name,
+                label: 'Physical',
+                mod: checkMod,
+                rollNote: `d20(${d20})`,
+                d20Total,
+                rollType: 'flat',
+                conditions: [],
+                time: chatTimestamp(),
+            });
+            setActivePanel('chat');
+        });
+    });
+
+    el.querySelectorAll('[data-mon-minion]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const m = getMonster(btn.dataset.monMinion);
+            if (!m) return;
+            const hp = monsterHp(m);
+            nar.characters.push({
+                id: crypto.randomUUID(), role: 'minion',
+                name: m.name, pl: m.pl ?? 1,
+                plPhys: m.check_physical ?? 0, plMent: m.check_mental ?? 0,
+                origin: m.origin || m._group || '',
+                hp, maxHp: hp,
+            });
+            saveNar(); renderCharacters(); setActivePanel('party');
+        });
+    });
+
+    if (pendingMonsterFocus) {
+        const focusName = pendingMonsterFocus;
+        pendingMonsterFocus = null;
+        const idx = nar.genMonsters.indexOf(focusName);
+        if (idx >= 0) {
+            const cid    = `gmc-${idx}`;
+            const expEl  = document.getElementById(cid + '-exp');
+            const togBtn = document.querySelector(`.gen-mon-toggle[data-cid="${cid}"]`);
+            if (expEl?.hidden) { expEl.hidden = false; if (togBtn) togBtn.textContent = '▴'; }
+            document.getElementById(cid)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+}
+
+// Search
+// ── MONSTER BROWSER ───────────────────────────────────────────────────────────
+// The old search showed 8 name matches and nothing else, which made a 98-monster
+// book effectively unbrowsable unless you already knew what you wanted. This
+// filters the whole catalogue by group, PL band and environment, and pins to the
+// book from the result row.
+
+function monBrowseFilters() {
+    return {
+        q:     (document.getElementById('gen-mon-search')?.value || '').trim().toLowerCase(),
+        group: document.getElementById('mon-filter-group')?.value || '',
+        pl:    document.getElementById('mon-filter-pl')?.value || '',
+        env:   document.getElementById('mon-filter-env')?.value || '',
+    };
+}
+
+function monMatchesFilters(m, f) {
+    if (f.group && (m._group || m.origin || '') !== f.group) return false;
+    if (f.env   && (m.environment || '') !== f.env) return false;
+    if (f.pl) {
+        const [lo, hi] = f.pl.split('-').map(Number);
+        const pl = effectiveStats(m).pl;
+        if (pl < lo || pl > hi) return false;
+    }
+    if (f.q) {
+        const hay = [m.name, m._group, m.origin, m.environment, m.behavior, m.size, m.rarity]
+            .filter(Boolean).join(' ').toLowerCase();
+        if (!hay.includes(f.q)) return false;
+    }
+    return true;
+}
+
+function populateMonFilterOptions() {
+    const groupSel = document.getElementById('mon-filter-group');
+    const envSel   = document.getElementById('mon-filter-env');
+    if (!groupSel || !GEN_MONSTERS.length) return;
+    if (groupSel.options.length > 1) return;   // already filled
+
+    const groups = [...new Set(GEN_MONSTERS.map(m => m._group || m.origin).filter(Boolean))].sort();
+    groupSel.innerHTML = `<option value="">All groups</option>` +
+        groups.map(g => `<option>${g}</option>`).join('');
+
+    const envs = [...new Set(GEN_MONSTERS.map(m => m.environment).filter(Boolean))].sort();
+    if (envSel) envSel.innerHTML = `<option value="">Any environment</option>` +
+        envs.map(e => `<option>${e}</option>`).join('');
+}
+
+function renderMonBrowse() {
+    const el = document.getElementById('mon-browse-list');
+    if (!el) return;
+    if (!GEN_MONSTERS.length) { el.innerHTML = '<p class="empty-hint">Loading monsters…</p>'; return; }
+
+    populateMonFilterOptions();
+    const f = monBrowseFilters();
+    const matches = GEN_MONSTERS.filter(m => monMatchesFilters(m, f))
+        .sort((a, b) => effectiveStats(a).pl - effectiveStats(b).pl || a.name.localeCompare(b.name));
+
+    const countEl = document.getElementById('mon-browse-count');
+    if (countEl) countEl.textContent = `${matches.length} of ${GEN_MONSTERS.length}`;
+
+    if (!matches.length) { el.innerHTML = '<p class="empty-hint">Nothing matches those filters.</p>'; return; }
+
+    el.innerHTML = matches.map(m => {
+        const st     = effectiveStats(m);
+        const pinned = nar.genMonsters.includes(m.name);
+        const meta   = [m._group || m.origin, m.size, m.environment].filter(Boolean).join(' · ');
+        return `<div class="mon-browse-row${pinned ? ' is-pinned' : ''}">
+            <div class="mon-browse-info">
+                <span class="mon-browse-name">${m.name}${m.spells?.length ? ` <span class="gen-mon-spell-badge">✨${m.spells.length}</span>` : ''}</span>
+                <span class="mon-browse-meta">${meta}</span>
+            </div>
+            <span class="mon-browse-stats">PL<strong>${st.pl}</strong> HP<strong>${st.hp}</strong></span>
+            <button class="step-action-btn mon-browse-init" data-browse-init="${escAttr(m.name)}" title="Straight into initiative">⚔</button>
+            <button class="step-action-btn mon-browse-pin" data-browse-pin="${escAttr(m.name)}" title="${pinned ? 'In your book' : 'Pin to your book'}">${pinned ? '★' : '☆'}</button>
+        </div>`;
+    }).join('');
+}
+
+['gen-mon-search', 'mon-filter-group', 'mon-filter-pl', 'mon-filter-env'].forEach(id => {
+    const el = document.getElementById(id);
+    el?.addEventListener(id === 'gen-mon-search' ? 'input' : 'change', renderMonBrowse);
+});
+
+document.getElementById('mon-browse-list')?.addEventListener('click', e => {
+    const pin = e.target.closest('[data-browse-pin]');
+    if (pin) {
+        const name = pin.dataset.browsePin;
+        if (nar.genMonsters.includes(name)) {
+            nar.genMonsters = nar.genMonsters.filter(n => n !== name);
+            nar.monFavorites = nar.monFavorites.filter(n => n !== name);
+            saveNar(); renderGenMonsterList();
+        } else {
+            addGenMonster(name);
+        }
+        renderMonBrowse();
+        return;
+    }
+    const init = e.target.closest('[data-browse-init]');
+    if (init) {
+        const name = init.dataset.browseInit;
+        const m = getMonster(name);
+        if (!m) return;
+        const st   = effectiveStats(m);
+        const twin = nar.encounter.find(x => x.name === name && x.type === 'enemy');
+        const initiative = twin ? twin.initiative
+            : Math.ceil(Math.random() * 20) + Math.ceil(Math.random() * 6);
+        nar.encounter.push({
+            id: crypto.randomUUID(), name, hp: st.hp, maxHp: st.hp,
+            initiative, type: 'enemy', pl: st.pl,
+        });
+        saveNar(); renderEncounter(); syncEncounter();
+        const n = nar.encounter.filter(x => x.name === name && x.type === 'enemy').length;
+        showChatToast(`${name} ×${n}`,
+            `In initiative at ${initiative}${n > 1 ? ' (acting as a group)' : ''}`,
+            () => openInitiative(), 'Go to initiative');
+    }
+});
+document.getElementById('btn-gen-mon-random')?.addEventListener('click', () => {
+    if (!GEN_MONSTERS.length) { ensureMonsters(); return; }
+    // Respect the filters - a random pick from "Undead, PL 4-6" is the useful kind
+    const f    = monBrowseFilters();
+    const pool = GEN_MONSTERS.filter(m => monMatchesFilters(m, f));
+    const list = pool.length ? pool : GEN_MONSTERS;
+    const m    = list[Math.floor(Math.random() * list.length)];
+    addGenMonster(m.name);
+    renderMonBrowse();
+    showChatToast(m.name, `Pinned to your book · PL ${effectiveStats(m).pl}`, () => {
+        document.getElementById('mon-book')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 'Show');
+});
+
+// ── GENERATORS: NPC & LOCATION ────────────────────────────────────────────────
+
+let GEN_WORLD    = null;
+let GEN_SPECIES  = null;
+let worldLoaded  = false;
+
+const LOYALTY_TABLE = ['Loyal', 'Friendly', 'Neutral', 'Wary', 'Suspicious', 'Hostile', 'Conflicted', 'Opportunistic'];
+
+async function ensureWorld() {
+    if (worldLoaded) return;
+    try {
+        const [world, species] = await Promise.all([
+            fetch('../data/worldbuilding.json').then(r => r.json()),
+            fetch('../data/species.json').then(r => r.json()),
+        ]);
+        GEN_WORLD   = world;
+        GEN_SPECIES = species;
+        worldLoaded = true;
+        renderGenNpcList();
+        renderGenLocList();
+    } catch(e) { console.error('Failed to load world data', e); }
+}
+
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function rarityWeight(s) {
+    switch ((s.rarity || '').toLowerCase()) {
+        case 'common':    return 30;
+        case 'uncommon':  return 16;
+        case 'rare':      return 8;
+        case 'very rare': return 4;
+        case 'legendary': return 2;
+        case 'unique':    return 1;
+        default:          return 5;
+    }
+}
+
+function weightedPick(list, weightFn) {
+    const pool = [];
+    list.forEach(item => { for (let i = 0; i < Math.floor(weightFn(item) * 10); i++) pool.push(item); });
+    return pool.length ? pool[Math.floor(Math.random() * pool.length)] : pick(list);
+}
+
+function genNpcName() {
+    const n = GEN_WORLD.names;
+    const first = pick(n['fantasy-start']);
+    const last  = pick(n['fantasy-end']);
+    let   core  = pick(n['fantasy-core']);
+    // Avoid doubled letters where the syllables meet
+    if (core && first.endsWith(core[0])) core = core.slice(1);
+    if (core && core.endsWith(last[0]))  core = core.slice(0, -1);
+    const name = first + core + last;
+    return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
+function formatSpeciesName(s) {
+    const tc = str => str ? str.charAt(0).toUpperCase() + str.slice(1).replace(/ \w/g, c => c.toUpperCase()) : '';
+    const name   = tc(s.name    || 'Unknown');
+    const lineage = s.lineage || '';
+    const option  = s.option  || '';
+    if (option && lineage) return `${tc(option)} ${name}`;
+    if (lineage && lineage.toLowerCase() !== name.toLowerCase()) return `${tc(lineage)} ${name}`;
+    return name;
+}
+
+function generateNpc() {
+    if (!GEN_WORLD || !GEN_SPECIES) return null;
+    const species = weightedPick(GEN_SPECIES.species, rarityWeight);
+    let speciesName = formatSpeciesName(species);
+    if (['kobari','drakonari'].includes(species.name?.toLowerCase()) && GEN_SPECIES.dragonTypes?.length) {
+        speciesName += ` (${pick(GEN_SPECIES.dragonTypes).name})`;
+    }
+    const affinity = pick(GEN_WORLD.affinities);
+    const habitat  = pick(GEN_WORLD.habitats);
+    return {
+        id:         crypto.randomUUID(),
+        name:       genNpcName(),
+        species:    speciesName,
+        faction:    affinity,
+        habitat,
+        religion:   pick(GEN_WORLD.gods),
+        item:       pick(GEN_WORLD.signatureItems),
+        motivation: pick(GEN_WORLD.motivations),
+        loyalty:    pick(LOYALTY_TABLE),
+    };
+}
+
+function generateLocation() {
+    if (!GEN_WORLD) return null;
+    return {
+        id:       crypto.randomUUID(),
+        location: pick(GEN_WORLD.locations),
+        area:     pick(GEN_WORLD.habitats),
+        person:   pick(GEN_WORLD.people),
+        conflict: pick(GEN_WORLD.conflicts),
+        object:   pick(GEN_WORLD.objects),
+    };
+}
+
+function npcToJournalText(n) {
+    return `\n--- NPC: ${n.name} ---\nSpecies: ${n.species}\nFaction: ${n.faction} from ${n.habitat}\nReligion: ${n.religion}\nItem: ${n.item}\nMotivation: ${n.motivation}\nLoyalty: ${n.loyalty}\n`;
+}
+
+function locationToJournalText(l) {
+    return `\n--- Location: ${l.location} ---\nArea: ${l.area}\nPerson: ${l.person}\nConflict: ${l.conflict}\nObject: ${l.object}\n`;
+}
+
+function saveNpcToJournal(n) {
+    nar.characters.push({
+        id: crypto.randomUUID(), role: 'npc',
+        name:          n.name,
+        pl: '', phys: '', ment: '', hp: '',
+        notes:         `${n.species} · ${n.faction}`,
+        equipment:     n.item || '',
+        narratorNotes: `${n.motivation} · ${n.loyalty}`,
+    });
+    saveNar(); renderCharacters();
+    setActivePanel('party');
+}
+
+function appendToJournal(text, title = 'Generator Note') {
+    nar.sessions.unshift({ id: crypto.randomUUID(), title, date: '', notes: text.trim() });
+    saveNar(); renderSessions();
+    setActivePanel('party');
+    setTimeout(() => document.querySelector('#journal-session-list .jsess-card')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+}
+
+function escAttr(s) {
+    return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+}
+
+// Source table behind each editable NPC field. Loyalty keeps its table order
+// (Loyal → Hostile); the rest are deduped + sorted so they're scannable.
+function npcFieldPool(field) {
+    if (field === 'loyalty') return LOYALTY_TABLE;
+    if (!GEN_WORLD) return [];
+    const raw =
+        field === 'species'    ? (GEN_SPECIES?.species || []).map(formatSpeciesName) :
+        field === 'faction'    ? GEN_WORLD.affinities   :
+        field === 'religion'   ? GEN_WORLD.gods         :
+        field === 'habitat'    ? GEN_WORLD.habitats     :
+        field === 'item'       ? GEN_WORLD.signatureItems :
+        field === 'motivation' ? GEN_WORLD.motivations  : [];
+    return [...new Set(raw)].sort((a, b) => String(a).localeCompare(String(b)));
+}
+
+// Options are filled on first focus - some pools run to 500+ entries and there
+// can be many cards on screen, so we don't want them all in the DOM up front.
+function fillNpcSelect(sel) {
+    if (sel.dataset.filled === '1') return;
+    const cur  = sel.dataset.value || '';
+    const pool = npcFieldPool(sel.dataset.field);
+    const opts = pool.includes(cur) || !cur ? pool : [cur, ...pool];
+    sel.innerHTML = opts.map(v =>
+        `<option value="${escAttr(v)}"${v === cur ? ' selected' : ''}>${escAttr(v)}</option>`).join('');
+    sel.dataset.filled = '1';
+}
+
+function refreshNpcHead(n) {
+    const card = document.getElementById(`gnpc-${n.id}`);
+    if (!card) return;
+    card.querySelector('.gen-npc-name').textContent    = n.name    || '';
+    card.querySelector('.gen-npc-species').textContent = n.species || '';
+    card.querySelector('.gen-npc-faction').textContent = n.faction || '';
+    const loy = card.querySelector('.gen-npc-loyalty');
+    if (loy) { loy.textContent = n.loyalty || ''; loy.dataset.loyalty = (n.loyalty || '').toLowerCase(); }
+}
+
+function renderGenNpcList() {
+    const el = document.getElementById('gen-npc-list');
+    if (!el) return;
+    if (!nar.genNpcs.length) {
+        el.innerHTML = '<p class="empty-hint">Tap Generate to create an NPC.</p>';
+        return;
+    }
+
+    // Dropdown-backed field: current value is the only option until it's focused.
+    const dropdown = (npcId, field, value) => `
+        <span class="gen-npc-ctrl">
+            <select class="gen-npc-select" data-npc-id="${npcId}" data-field="${field}" data-value="${escAttr(value)}">
+                <option value="${escAttr(value)}" selected>${escAttr(value)}</option>
+            </select>
+            <button class="gen-npc-reroll" data-npc-id="${npcId}" data-field="${field}" type="button" title="Reroll">🎲</button>
+        </span>`;
+
+    const textField = (npcId, field, value) => `
+        <span class="gen-npc-ctrl">
+            <input class="gen-npc-input" type="text" value="${escAttr(value)}"
+                   data-npc-id="${npcId}" data-field="${field}" autocomplete="off" />
+            <button class="gen-npc-reroll" data-npc-id="${npcId}" data-field="${field}" type="button" title="Reroll">🎲</button>
+        </span>`;
+
+    const ROWS = [
+        ['Species',    'species'],
+        ['Faction',    'faction'],
+        ['Loyalty',    'loyalty'],
+        ['Religion',   'religion'],
+        ['From',       'habitat'],
+        ['Item',       'item'],
+        ['Motivation', 'motivation'],
+    ];
+
+    el.innerHTML = nar.genNpcs.map(n => `
+        <details class="gen-npc-card" id="gnpc-${n.id}">
+            <summary class="gen-npc-head">
+                <div class="gen-npc-info">
+                    <span class="gen-npc-name">${n.name}</span>
+                    <span class="gen-npc-species">${n.species}</span>
+                </div>
+                <div class="gen-npc-tags">
+                    <span class="gen-npc-faction">${n.faction}</span>
+                    <span class="gen-npc-loyalty" data-loyalty="${(n.loyalty||'').toLowerCase()}">${n.loyalty}</span>
+                </div>
+                <div class="gen-npc-btns">
+                    <button class="gen-npc-save" data-npc-id="${n.id}">+ Party</button>
+                    <button class="gen-mon-remove" data-npc-remove="${n.id}">✕</button>
+                </div>
+            </summary>
+            <div class="gen-npc-expanded">
+                <div class="gen-npc-row"><span class="gen-npc-label">Name</span>${textField(n.id, 'name', n.name)}</div>
+                ${ROWS.map(([label, field]) =>
+                    `<div class="gen-npc-row"><span class="gen-npc-label">${label}</span>${dropdown(n.id, field, n[field])}</div>`
+                ).join('')}
+            </div>
+        </details>`).join('');
+
+    el.querySelectorAll('.gen-npc-head button').forEach(btn =>
+        btn.addEventListener('click', e => e.stopPropagation())
+    );
+
+    el.querySelectorAll('.gen-npc-select').forEach(sel => {
+        // Native pickers open on pointerdown, so options must exist by then
+        ['focus', 'pointerdown'].forEach(ev => sel.addEventListener(ev, () => fillNpcSelect(sel)));
+        sel.addEventListener('change', () => {
+            const n = nar.genNpcs.find(x => x.id === sel.dataset.npcId);
+            if (!n) return;
+            n[sel.dataset.field] = sel.value;
+            sel.dataset.value = sel.value;
+            saveNar(); refreshNpcHead(n);
+        });
+    });
+
+    el.querySelectorAll('.gen-npc-input').forEach(inp => {
+        inp.addEventListener('change', () => {
+            const n = nar.genNpcs.find(x => x.id === inp.dataset.npcId);
+            if (!n) return;
+            n[inp.dataset.field] = inp.value.trim();
+            saveNar(); refreshNpcHead(n);
+        });
+    });
+
+    el.querySelectorAll('.gen-npc-reroll').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const n = nar.genNpcs.find(x => x.id === btn.dataset.npcId);
+            if (!n) return;
+            const field = btn.dataset.field;
+            if (field === 'name') {
+                if (!GEN_WORLD) return;
+                n.name = genNpcName();
+            } else {
+                const pool = npcFieldPool(field);
+                if (!pool.length) return;
+                n[field] = pick(pool);
+            }
+            saveNar();
+            const row  = btn.closest('.gen-npc-row');
+            const ctrl = row?.querySelector('.gen-npc-select, .gen-npc-input');
+            if (ctrl?.classList.contains('gen-npc-select')) {
+                ctrl.dataset.filled = '';
+                ctrl.dataset.value  = n[field];
+                ctrl.innerHTML = `<option value="${escAttr(n[field])}" selected>${escAttr(n[field])}</option>`;
+            } else if (ctrl) {
+                ctrl.value = n[field];
+            }
+            refreshNpcHead(n);
+        });
+    });
+
+    el.querySelectorAll('.gen-npc-save').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const n = nar.genNpcs.find(x => x.id === btn.dataset.npcId);
+            if (n) saveNpcToJournal(n);
+        });
+    });
+    el.querySelectorAll('[data-npc-remove]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            nar.genNpcs = nar.genNpcs.filter(x => x.id !== btn.dataset.npcRemove);
+            saveNar(); renderGenNpcList();
+        });
+    });
+}
+
+function renderGenLocList() {
+    const el = document.getElementById('gen-loc-list');
+    if (!el) return;
+    if (!nar.genLocations.length) {
+        el.innerHTML = '<p class="empty-hint">Tap Generate to create a location.</p>';
+        return;
+    }
+
+    const editable = (locId, field, value) =>
+        `<span class="gen-npc-edit" contenteditable="true" data-loc-id="${locId}" data-field="${field}">${value ?? ''}</span>`;
+
+    el.innerHTML = nar.genLocations.map(l => `
+        <details class="gen-npc-card">
+            <summary class="gen-npc-head">
+                <div class="gen-npc-info">
+                    <span class="gen-npc-name">${l.location}</span>
+                    <span class="gen-npc-species">${l.area}</span>
+                </div>
+                <div class="gen-npc-btns">
+                    <button class="gen-npc-journal" data-loc-journal="${l.id}">＋J</button>
+                    <button class="gen-mon-remove" data-loc-remove="${l.id}">✕</button>
+                </div>
+            </summary>
+            <div class="gen-npc-expanded">
+                <div class="gen-npc-row"><span class="gen-npc-label">Location</span>${editable(l.id,'location',l.location)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Area</span>${editable(l.id,'area',l.area)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Person</span>${editable(l.id,'person',l.person)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Conflict</span>${editable(l.id,'conflict',l.conflict)}</div>
+                <div class="gen-npc-row"><span class="gen-npc-label">Object</span>${editable(l.id,'object',l.object)}</div>
+            </div>
+        </details>`).join('');
+
+    el.querySelectorAll('.gen-npc-head button').forEach(btn =>
+        btn.addEventListener('click', e => e.stopPropagation())
+    );
+    el.querySelectorAll('[data-loc-journal]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const l = nar.genLocations.find(x => x.id === btn.dataset.locJournal);
+            if (l) appendToJournal(locationToJournalText(l), 'Location');
+        });
+    });
+    el.querySelectorAll('[data-loc-id][contenteditable]').forEach(span => {
+        span.addEventListener('click', e => e.stopPropagation());
+        span.addEventListener('blur', () => {
+            const l = nar.genLocations.find(x => x.id === span.dataset.locId);
+            if (l) { l[span.dataset.field] = span.textContent.trim(); saveNar(); }
+        });
+    });
+    el.querySelectorAll('[data-loc-remove]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            nar.genLocations = nar.genLocations.filter(x => x.id !== btn.dataset.locRemove);
+            saveNar(); renderGenLocList();
+        });
+    });
+}
+
+// NPC Gen sub-tabs
+let npcActiveTab = 'npc';
+document.getElementById('npc-gen-seg')?.querySelectorAll('[data-npc-tab]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        npcActiveTab = btn.dataset.npcTab;
+        document.getElementById('npc-gen-seg').querySelectorAll('[data-npc-tab]').forEach(b =>
+            b.classList.toggle('is-sel', b === btn));
+        document.getElementById('gen-npc-panel').hidden = (npcActiveTab !== 'npc');
+        document.getElementById('gen-loc-panel').hidden = (npcActiveTab !== 'location');
+    });
+});
+
+// ── GENERATORS: LOOT ─────────────────────────────────────────────────────────
+
+let LOOT_DATA   = null;
+let lootLoaded  = false;
+let lootPl      = 5;
+
+async function ensureLoot() {
+    if (lootLoaded) return;
+    try {
+        const [lootCfg, items, weapons, armor, enchanted, medicine, enchGenRaw] = await Promise.all([
+            fetch('../data/loot.json').then(r => r.json()),
+            fetch('../data/items.json').then(r => r.json()),
+            fetch('../data/weapons.json').then(r => r.json()),
+            fetch('../data/armor.json').then(r => r.json()),
+            fetch('../data/enchanted.json').then(r => r.json()),
+            fetch('../data/medicine.json').then(r => r.json()),
+            fetch('../data/enchantedgen.json').then(r => r.json()),
+        ]);
+        LOOT_DATA = {
+            config: lootCfg, items, weapons, armor, enchanted,
+            medData: {
+                prefixes:  medicine.filter(x => x.category === 'prefix').map(x => x.value),
+                bases:     medicine.filter(x => x.category === 'base').map(x => x.value),
+                suffixes:  medicine.filter(x => x.category === 'suffix').map(x => x.value),
+                effects:   medicine.filter(x => x.category === 'effects').map(x => x.value),
+            },
+            enchGen: {
+                prefixes:    enchGenRaw.filter(x => x.type === 'prefix').map(x => x.text),
+                effects:     enchGenRaw.filter(x => x.type === 'effect').map(x => x.text),
+                effectObjs:  enchGenRaw.filter(x => x.type === 'effect'), // {text, prefix} - prefix is linked per-effect
+                damageTypes: enchGenRaw.filter(x => x.type === 'damageType').map(x => x.text),
+                checks:      enchGenRaw.filter(x => x.type === 'check').map(x => x.text),
+                origins:     enchGenRaw.filter(x => x.type === 'origin').map(x => x.text),
+                languages:   enchGenRaw.filter(x => x.type === 'language').map(x => x.text),
+                conditions:  enchGenRaw.filter(x => x.type === 'condition').map(x => x.text),
+                manners:      enchGenRaw.filter(x => x.type === 'manner').map(x => x.text),
+                transmissions: enchGenRaw.filter(x => x.type === 'transmission').map(x => x.text),
+            },
+        };
+        lootLoaded = true;
+        renderGenLootList();
+    } catch(e) { console.error('Failed to load loot data', e); }
+}
+
+function rollLoot(pl) {
+    const { config, items, weapons, armor, enchanted, medData, enchGen } = LOOT_DATA;
+    const tier  = config.tiers.find(t => pl >= t.min && pl <= t.max) || config.tiers[config.tiers.length - 1];
+    const gold  = Math.floor((tier.goldMin + Math.random() * (tier.goldMax - tier.goldMin)) * pl);
+    const count = tier.rolls + (Math.random() < tier.bonus ? 1 : 0);
+    const rarities = tier.rarities || null;
+    const wP = arr => arr[Math.floor(Math.random() * arr.length)];
+    const byR = arr => {
+        if (!rarities) return arr;
+        const f = arr.filter(x => rarities.includes((x.rarity || 'common').toLowerCase()));
+        return f.length ? f : arr;
+    };
+    const picks = [];
+    for (let i = 0; i < count; i++) {
+        const cat = tier.pools[Math.floor(Math.random() * tier.pools.length)];
+        let res = null;
+        if (cat === 'item') {
+            const it = wP(items);
+            if (it) res = { cat, name: it.name, desc: it.description || '', meta: it.category || '' };
+        } else if (cat === 'medicine') {
+            const name   = `${wP(medData.prefixes)} ${wP(medData.bases)} ${wP(medData.suffixes)}`;
+            res = { cat, name, desc: wP(medData.effects), meta: 'Medicine' };
+        } else if (cat === 'weapon') {
+            const w = wP(byR(weapons));
+            if (w) res = { cat, name: w.name, desc: [w.damage, w.damageType].filter(Boolean).join(' '), meta: [w.category, w.rarity].filter(Boolean).join(' · ') };
+        } else if (cat === 'armor') {
+            const a = wP(byR(armor));
+            if (a) res = { cat, name: a.name, desc: a.description || `+${a.armor} Armor Rating`, meta: a.rarity || '' };
+        } else if (cat === 'enchanted') {
+            if (Math.random() < 0.5 && enchanted.length) {
+                const e = wP(enchanted);
+                res = { cat, name: e.name, desc: e.effect || e.description || '', meta: e.type || 'Enchanted' };
+            } else {
+                const base        = wP([...weapons, ...armor, ...items]);
+                const effectEntry = wP(enchGen.effectObjs);
+                const prefix      = effectEntry?.prefix || wP(enchGen.prefixes);
+                const effect      = (effectEntry?.text || '')
+                    .replace('{type}', wP(enchGen.damageTypes))
+                    .replace('{check}', wP(enchGen.checks))
+                    .replace('{origin}', wP(enchGen.origins))
+                    .replace('{language}', wP(enchGen.languages))
+                    .replace('{condition}', wP(enchGen.conditions))
+                    .replace('{manner}', wP(enchGen.manners))
+                    .replace('{transmission}', wP(enchGen.transmissions));
+                res = { cat, name: `${prefix} ${base?.name || 'Item'}`, desc: effect, meta: 'Enchanted' };
+            }
+        }
+        if (res) picks.push(res);
+    }
+    return { id: crypto.randomUUID(), pl, tier: tier.label, gold, items: picks };
+}
+
+function renderGenLootList() {
+    const el = document.getElementById('gen-loot-list');
+    if (!el) return;
+    if (!nar.genLoot?.length) { el.innerHTML = '<p class="empty-hint">Set PL and tap Roll.</p>'; return; }
+
+    const CAT_COLOR = { item:'#8899aa', medicine:'#44bb88', weapon:'#cc5544', armor:'#aa7744', enchanted:'#aa77cc' };
+    const CAT_LABEL = { item:'Item', medicine:'Medicine', weapon:'Weapon', armor:'Armor', enchanted:'Enchanted' };
+
+    el.innerHTML = nar.genLoot.map((r, i) => `
+        <div class="gen-quest-card">
+            <div class="gen-npc-row u-mb-4">
+                <span class="gen-mini-label">PL ${r.pl} · ${r.tier}</span>
+                <button class="gen-mon-remove u-ml-auto" data-loot-remove="${r.id}">✕</button>
+            </div>
+            <div class="gen-npc-row u-mb-6">
+                <span class="gen-npc-label">Gold</span>
+                <span class="gen-loot-gold">⬡ ${r.gold} GP</span>
+            </div>
+            <div class="gen-quest-rows">
+                ${r.items.map(it => `
+                <div class="gen-npc-row gen-npc-row--item">
+                    <span class="gen-npc-label" style="color:${CAT_COLOR[it.cat]||'#888'}">${CAT_LABEL[it.cat]||it.cat}</span>
+                    <span class="gen-loot-item-info">
+                        <span class="gen-loot-item-name">${it.name}</span>
+                        ${it.desc ? `<span class="gen-loot-item-desc">${it.desc}</span>` : ''}
+                        ${it.meta ? `<span class="gen-loot-item-meta">${it.meta}</span>` : ''}
+                    </span>
+                </div>`).join('')}
+            </div>
+            <div class="gen-quest-actions">
+                <button class="gen-npc-journal" data-loot-inv="${r.id}">＋Inv</button>
+            </div>
+        </div>`).join('');
+
+    el.querySelectorAll('[data-loot-inv]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const r = nar.genLoot.find(x => x.id === btn.dataset.lootInv);
+            if (!r) return;
+            if (currentRoomCode) {
+                const arc = window.__arc;
+                if (arc?.db) {
+                    try {
+                        for (const it of r.items) {
+                            await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', crypto.randomUUID()), {
+                                name: it.text.split(' - ')[0], desc: it.text, amount: 1, bulk: 1, addedAt: arc.serverTimestamp(),
+                            });
+                        }
+                    } catch(e) { console.error('[ARC] loot inv failed:', e); }
+                }
+            } else {
+                r.items.forEach(it => {
+                    nar.inventory.push({ id: crypto.randomUUID(), name: it.text.split(' - ')[0], desc: it.text, amount: 1, bulk: 1 });
+                });
+                saveNar(); renderInventory();
+            }
+            setActivePanel('party');
+            setTimeout(() => document.getElementById('inventory-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+        });
+    });
+
+    el.querySelectorAll('[data-loot-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            nar.genLoot = nar.genLoot.filter(x => x.id !== btn.dataset.lootRemove);
+            saveNar(); renderGenLootList();
+        });
+    });
+}
+
+// PL stepper
+document.getElementById('loot-pl-dec')?.addEventListener('click', () => {
+    lootPl = Math.max(1, lootPl - 1);
+    const el = document.getElementById('loot-pl-val');
+    if (el) el.textContent = lootPl;
+});
+document.getElementById('loot-pl-inc')?.addEventListener('click', () => {
+    lootPl++;
+    const el = document.getElementById('loot-pl-val');
+    if (el) el.textContent = lootPl;
+});
+
+document.getElementById('btn-gen-loot')?.addEventListener('click', () => {
+    if (!lootLoaded) { ensureLoot(); return; }
+    if (!nar.genLoot) nar.genLoot = [];
+    nar.genLoot.unshift(rollLoot(lootPl));
+    if (nar.genLoot.length > 10) nar.genLoot.length = 10;
+    saveNar(); renderGenLootList();
+});
+
+// ── GENERATORS: GOD ──────────────────────────────────────────────────────────
+
+let GEN_GODS     = [];
+let godsLoaded   = false;
+
+async function ensureGods() {
+    if (godsLoaded) return;
+    try {
+        const res = await fetch('../data/gods.json');
+        GEN_GODS = await res.json();
+        godsLoaded = true;
+        renderGenGodList();
+    } catch(e) { console.error('Failed to load gods.json', e); }
+}
+
+function renderGenGodList() {
+    const el = document.getElementById('gen-god-list');
+    if (!el) return;
+    if (!nar.genGods.length) {
+        el.innerHTML = '<p class="empty-hint">Tap Random to roll a god.</p>';
+        return;
+    }
+
+    el.innerHTML = nar.genGods.map((g, i) => {
+        const cid     = `ggc-${i}`;
+        const words   = (g.words || '').split(',').map(w => w.trim()).filter(Boolean);
+        const excerpt = g.desc ? (g.desc.length > 160 ? g.desc.slice(0, 157) + '…' : g.desc) : '';
+        return `<div class="gen-mon-card" id="${cid}">
+            <div class="gen-mon-head">
+                <div class="gen-mon-info">
+                    <span class="gen-mon-name" data-cid="${cid}">${g.name}</span>
+                    <span class="gen-mon-group">${words.slice(0, 3).join(' · ')}</span>
+                </div>
+                <div class="gen-mon-stats">
+                    <span>Rank <strong>${g.rank ?? '-'}</strong></span>
+                </div>
+                <div class="gen-mon-card-btns">
+                    <button class="gen-mon-toggle" data-cid="${cid}">▾</button>
+                    <button class="gen-mon-remove" data-god-remove="${i}">✕</button>
+                </div>
+            </div>
+            <div class="gen-mon-expanded" id="${cid}-exp" hidden>
+                ${g.location ? `<div class="gen-mon-meta">${g.location}</div>` : ''}
+                ${excerpt    ? `<div class="gen-mon-desc">${excerpt}</div>` : ''}
+                ${g.blessFeature ? `<div class="gen-mon-motivation">Blessing: ${g.blessFeature}</div>` : ''}
+                <div class="gen-mon-card-actions">
+                    <button class="gen-mon-action-btn" data-god-chat="${i}">+ Chat</button>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+
+    el.querySelectorAll('.gen-mon-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const exp = document.getElementById(btn.dataset.cid + '-exp');
+            if (!exp) return;
+            exp.hidden = !exp.hidden;
+            btn.textContent = exp.hidden ? '▾' : '▴';
+        });
+    });
+
+    el.querySelectorAll('.gen-mon-name[data-cid]').forEach(nameEl => {
+        nameEl.addEventListener('click', () => {
+            const exp    = document.getElementById(nameEl.dataset.cid + '-exp');
+            const togBtn = el.querySelector(`.gen-mon-toggle[data-cid="${nameEl.dataset.cid}"]`);
+            if (!exp) return;
+            exp.hidden = !exp.hidden;
+            if (togBtn) togBtn.textContent = exp.hidden ? '▾' : '▴';
+        });
+    });
+
+    el.querySelectorAll('[data-god-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            nar.genGods.splice(parseInt(btn.dataset.godRemove, 10), 1);
+            saveNar(); renderGenGodList();
+        });
+    });
+
+    el.querySelectorAll('[data-god-chat]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const g = nar.genGods[parseInt(btn.dataset.godChat, 10)];
+            if (!g) return;
+            const words = (g.words || '').split(',').map(w => w.trim()).filter(Boolean);
+            postToSharedChat({
+                type: 'feature', name: g.name,
+                tags: [`Rank ${g.rank ?? '-'}`, ...(g.location ? [g.location] : []), ...words.slice(0, 3)],
+                desc: g.desc || '',
+                time: chatTimestamp(), diceRolls: [],
+            });
+            setActivePanel('chat');
+        });
+    });
+}
+
+document.getElementById('btn-gen-god')?.addEventListener('click', () => {
+    if (!godsLoaded) { ensureGods(); return; }
+    if (!GEN_GODS.length) return;
+    const g = GEN_GODS[Math.floor(Math.random() * GEN_GODS.length)];
+    nar.genGods.unshift({ name: g.name, words: g.words || '', desc: g.desc || '', rank: g.rank ?? null, blessName: g.blessName || '', blessFeature: g.blessFeature || '', location: g.location || '' });
+    if (nar.genGods.length > 5) nar.genGods.length = 5;
+    saveNar(); renderGenGodList();
+    // Auto-expand the new card
+    const exp    = document.getElementById('ggc-0-exp');
+    const togBtn = document.querySelector('.gen-mon-toggle[data-cid="ggc-0"]');
+    if (exp) { exp.hidden = false; if (togBtn) togBtn.textContent = '▴'; }
+});
+
+document.getElementById('btn-gen-npc')?.addEventListener('click', () => {
+    if (!worldLoaded) { ensureWorld(); return; }
+    if (npcActiveTab === 'npc') {
+        const npc = generateNpc();
+        if (npc) { nar.genNpcs.unshift(npc); saveNar(); renderGenNpcList(); }
+    } else {
+        const loc = generateLocation();
+        if (loc) { nar.genLocations.unshift(loc); saveNar(); renderGenLocList(); }
+    }
+});
+
+// ── GENERATORS: QUEST ─────────────────────────────────────────────────────────
+
+let GEN_QUEST  = null;
+let GEN_TRAPS  = null;
+let questLoaded = false;
+
+async function ensureQuest() {
+    if (questLoaded) return;
+    try {
+        const [quest, traps] = await Promise.all([
+            fetch('../data/quest.json').then(r => r.json()),
+            fetch('../data/traps.json').then(r => r.json()),
+        ]);
+        const byType = (arr, type) => arr.filter(x => x.type === type);
+        GEN_QUEST = {
+            givers:  byType(quest, 'giver'),
+            targets: byType(quest, 'target'),
+            twists:  byType(quest, 'twist'),
+            rewards: byType(quest, 'reward'),
+        };
+        GEN_TRAPS = {
+            doors: byType(traps, 'door'),
+            locks: byType(traps, 'lock'),
+            traps: byType(traps, 'trap'),
+        };
+        questLoaded = true;
+        renderGenQuestList(); renderGenDungeonList(); renderGenRoomsList();
+    } catch(e) { console.error('Failed to load quest/traps data', e); }
+}
+
+function generateQuest() {
+    if (!GEN_QUEST) return null;
+    return {
+        id:     crypto.randomUUID(),
+        giver:  pick(GEN_QUEST.givers).text,
+        target: pick(GEN_QUEST.targets).text,
+        twist:  pick(GEN_QUEST.twists).text,
+        reward: pick(GEN_QUEST.rewards).text,
+    };
+}
+
+function generateDungeon() {
+    if (!GEN_TRAPS) return null;
+    const door = pick(GEN_TRAPS.doors);
+    const lock = pick(GEN_TRAPS.locks);
+    const trap = Math.random() < 0.6 ? pick(GEN_TRAPS.traps) : null;
+    return { id: crypto.randomUUID(), door: door.text, lockName: lock.name, lockKey: lock.key, lockHint: lock.hint, trap };
+}
+
+function generateRoom() {
+    if (!GEN_WORLD) return null;
+    return {
+        id:       crypto.randomUUID(),
+        location: pick(GEN_WORLD.locations),
+        object:   pick(GEN_WORLD.objects),
+        person:   pick(GEN_WORLD.people),
+        conflict: pick(GEN_WORLD.conflicts),
+    };
+}
+
+function questToJournalText(q) {
+    return `\n--- Quest ---\nGiver: ${q.giver}\nTarget: ${q.target}\nTwist: ${q.twist}\nReward: ${q.reward}\n`;
+}
+
+function dungeonToJournalText(d) {
+    const trap = d.trap ? `\nTrap: ${d.trap.name} (${d.trap.dmg})\nEffect: ${d.trap.effect}` : '';
+    return `\n--- Door & Trap ---\nDoor: ${d.door}\nLock: ${d.lockName} - ${d.lockKey}\nHint: ${d.lockHint}${trap}\n`;
+}
+
+function hexToJournalText(h) {
+    return `\n--- Hex Tile ---\nEnvironment: ${h.env}\nLord: ${h.lord}\nPopulation: ${h.population} · ${h.temperament}\nEnemy: ${h.enemy} (PL ${h.pl})\nFeatures: ${h.features.join(', ') || 'None'}\nResources: ${h.resources.join(', ') || 'None'}\nSpecies: ${h.species.join(', ') || 'None'}\n`;
+}
+
+function makeGenCard(rows, onRemove, onJournal) {
+    const id = crypto.randomUUID();
+    return { id, rows, onRemove, onJournal };
+}
+
+function renderQuestCards(listId, items, rowsFn, journalFn, journalTitle = 'Generator Note') {
+    const el = document.getElementById(listId);
+    if (!el) return;
+    if (!items.length) {
+        el.innerHTML = '<p class="empty-hint">Tap Generate.</p>';
+        return;
+    }
+    el.innerHTML = items.map(item => {
+        const rows = rowsFn(item);
+        return `<div class="gen-quest-card">
+            <div class="gen-quest-rows">
+                ${rows.map(([label, val]) => `
+                <div class="gen-npc-row">
+                    <span class="gen-npc-label">${label}</span>
+                    <span>${val}</span>
+                </div>`).join('')}
+            </div>
+            <div class="gen-quest-actions">
+                ${journalFn ? `<button class="gen-npc-journal" data-item-id="${item.id}" data-journal="1">＋J</button>` : ''}
+                <button class="gen-mon-remove" data-item-remove="${item.id}">✕</button>
+            </div>
+        </div>`;
+    }).join('');
+
+    if (journalFn) {
+        el.querySelectorAll('[data-journal]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = items.find(x => x.id === btn.dataset.itemId);
+                if (item) appendToJournal(journalFn(item), journalTitle);
+            });
+        });
+    }
+    el.querySelectorAll('[data-item-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.dataset.itemRemove;
+            if (listId === 'gen-quest-list')   { nar.genQuests   = nar.genQuests.filter(x => x.id !== id);   saveNar(); renderGenQuestList(); }
+            if (listId === 'gen-dungeon-list') { nar.genDungeons = nar.genDungeons.filter(x => x.id !== id); saveNar(); renderGenDungeonList(); }
+            if (listId === 'gen-rooms-list')   { nar.genRooms    = nar.genRooms.filter(x => x.id !== id);    saveNar(); renderGenRoomsList(); }
+        });
+    });
+}
+
+function renderGenQuestList() {
+    renderQuestCards('gen-quest-list', nar.genQuests,
+        q => [['Giver', q.giver], ['Target', q.target], ['Twist', q.twist], ['Reward', q.reward]],
+        questToJournalText, 'Quest');
+}
+
+function renderGenDungeonList() {
+    renderQuestCards('gen-dungeon-list', nar.genDungeons,
+        d => [
+            ['Door', d.door],
+            ['Lock', `${d.lockName} - ${d.lockKey}`],
+            ['Hint', d.lockHint],
+            ...(d.trap ? [['Trap', `${d.trap.name} (${d.trap.dmg})`], ['Effect', d.trap.effect]] : []),
+        ],
+        dungeonToJournalText, 'Door & Trap');
+}
+
+function renderGenRoomsList() {
+    renderQuestCards('gen-rooms-list', nar.genRooms,
+        r => [['Room', r.location], ['Object', r.object], ['Person', r.person], ['Hook', r.conflict]],
+        r => `\n--- Room ---\n${r.location}\nObject: ${r.object}\nPerson: ${r.person}\nHook: ${r.conflict}\n`,
+        'Room');
+}
+
+// Quest sub-tab switching
+let questActiveTab = 'quest';
+document.getElementById('quest-gen-seg')?.querySelectorAll('[data-quest-tab]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        questActiveTab = btn.dataset.questTab;
+        document.getElementById('quest-gen-seg').querySelectorAll('[data-quest-tab]').forEach(b =>
+            b.classList.toggle('is-sel', b === btn));
+        document.getElementById('gen-quest-panel').hidden   = questActiveTab !== 'quest';
+        document.getElementById('gen-dungeon-panel').hidden = questActiveTab !== 'dungeon';
+        document.getElementById('gen-rooms-panel').hidden   = questActiveTab !== 'rooms';
+    });
+});
+
+document.getElementById('btn-gen-quest')?.addEventListener('click', () => {
+    if (questActiveTab === 'quest') {
+        if (!questLoaded) { ensureQuest(); return; }
+        const q = generateQuest();
+        if (q) { nar.genQuests.unshift(q); saveNar(); renderGenQuestList(); }
+    } else if (questActiveTab === 'dungeon') {
+        if (!questLoaded) { ensureQuest(); return; }
+        const d = generateDungeon();
+        if (d) { nar.genDungeons.unshift(d); saveNar(); renderGenDungeonList(); }
+    } else {
+        if (!worldLoaded) { ensureWorld(); return; }
+        const r = generateRoom();
+        if (r) { nar.genRooms.unshift(r); saveNar(); renderGenRoomsList(); }
+    }
+});
+
+// ── GENERATORS: COMMERCE ─────────────────────────────────────────────────────
+
+let GEN_ITEMS    = null;
+let GEN_ENCHGEN  = null;
+let GEN_MEDICINE = null;
+let GEN_WEAPONS = null;
+let GEN_ARMOR = null;
+let commerceLoaded = false;
+
+async function ensureCommerce() {
+    if (commerceLoaded) return;
+    try {
+        const [items, weapons, armor, enchgen, medicine] = await Promise.all([
+            fetch('../data/items.json').then(r => r.json()),
+            fetch('../data/weapons.json').then(r => r.json()),
+            fetch('../data/armor.json').then(r => r.json()),
+            fetch('../data/enchantedgen.json').then(r => r.json()),
+            fetch('../data/medicine.json').then(r => r.json()),
+        ]);
+        GEN_ITEMS = items;
+        GEN_WEAPONS = weapons;
+        GEN_ARMOR = armor;
+        const byType = (arr, key, val) => arr.filter(x => (x.type || x.category) === val);
+        GEN_ENCHGEN = {
+            prefixes:    enchgen.filter(x => x.type === 'prefix').map(x => x.text),
+            effects:     enchgen.filter(x => x.type === 'effect').map(x => x.text),
+            effectObjs:  enchgen.filter(x => x.type === 'effect'), // {text, prefix} - prefix is linked per-effect
+            damageTypes: enchgen.filter(x => x.type === 'damageType').map(x => x.text),
+            checks:      enchgen.filter(x => x.type === 'check').map(x => x.text),
+            origins:     enchgen.filter(x => x.type === 'origin').map(x => x.text),
+            languages:   enchgen.filter(x => x.type === 'language').map(x => x.text),
+            conditions:  enchgen.filter(x => x.type === 'condition').map(x => x.text),
+            manners:      enchgen.filter(x => x.type === 'manner').map(x => x.text),
+            transmissions: enchgen.filter(x => x.type === 'transmission').map(x => x.text),
+        };
+        GEN_MEDICINE = {
+            prefixes:   medicine.filter(x => x.category === 'prefix').map(x => x.value),
+            bases:      medicine.filter(x => x.category === 'base').map(x => x.value),
+            suffixes:   medicine.filter(x => x.category === 'suffix').map(x => x.value),
+            templates:  medicine.filter(x => x.category === 'desc_templates').map(x => x.value),
+            flavors:    medicine.filter(x => x.category === 'flavor').map(x => x.value),
+            makers:     medicine.filter(x => x.category === 'maker').map(x => x.value),
+            places:     medicine.filter(x => x.category === 'place').map(x => x.value),
+            symbols:    medicine.filter(x => x.category === 'symbol').map(x => x.value),
+            effects:    medicine.filter(x => x.category === 'effects').map(x => x.value),
+        };
+        commerceLoaded = true;
+        renderGenMundaneList(); renderGenEnchantedList(); renderGenMedicineList();
+    } catch(e) { console.error('Failed to load commerce data', e); }
+}
+
+function generateMundane() {
+    if (!GEN_ITEMS) return null;
+    const item = pick(GEN_ITEMS);
+    return { id: crypto.randomUUID(), ...item };
+}
+
+// Rarity ladder + colours live in data/vocab.json - see scripts/arc-vocab.js
+
+// Full port of the worldbuilding.html enchanted generator: the base item is a real
+// weapon/armor/item (so it carries genuine stats), filtered by the type + rarity
+// pickers, and the naming prefix is the one linked to the rolled effect.
+function generateEnchanted() {
+    // Bailing silently here meant a failed data load looked like a dead button.
+    // The toast is called through a guard on purpose: this branch exists because
+    // a script failed to load, and chat-watch.js could be the one that failed.
+    const warn = (log, msg) => {
+        console.warn('[enchanted] ' + log);
+        if (typeof showChatToast === 'function') showChatToast(msg, 'Check your connection and reload');
+        return null;
+    };
+    if (!GEN_ENCHGEN) return warn('commerce data not loaded - see ensureCommerce()', 'Item data not loaded');
+    if (typeof ARC_VOCAB === 'undefined') return warn('arc-vocab.js did not load', 'Rarity data not loaded');
+
+    const tp = document.getElementById('ench-type-pick')?.value   || 'any';
+    const rp = document.getElementById('ench-rarity-pick')?.value || 'any';
+
+    const weaponPool = (GEN_WEAPONS || []).map(w => ({ ...w, kind: 'weapon', cat: w.category }));
+    const armorPool  = (GEN_ARMOR   || []).map(a => ({ ...a, kind: 'armor',  cat: a.category }));
+    const itemPool   = (GEN_ITEMS   || []).map(i => ({ ...i, kind: 'item',   cat: i.category }));
+    const fullPool   = [...weaponPool, ...armorPool, ...itemPool];
+    const pool       = tp === 'any' ? fullPool : fullPool.filter(x => x.cat === tp);
+    const chosen     = pick(pool.length ? pool : fullPool) || { name: 'Item', kind: 'item', cat: 'Item' };
+
+    const rarity  = rp === 'any' ? pick(ARC_VOCAB.ladder()) : ARC_VOCAB.normalizeRarity(rp);
+    const dmgType = pick(GEN_ENCHGEN.damageTypes);
+    const check   = pick(GEN_ENCHGEN.checks);
+
+    const effectEntry = pick(GEN_ENCHGEN.effectObjs);
+    const effect = (effectEntry?.text || '-')
+        .replace('{type}',         dmgType)
+        .replace('{check}',        check)
+        .replace('{origin}',       pick(GEN_ENCHGEN.origins))
+        .replace('{language}',     pick(GEN_ENCHGEN.languages))
+        .replace('{condition}',    pick(GEN_ENCHGEN.conditions))
+        .replace('{manner}',       pick(GEN_ENCHGEN.manners))
+        .replace('{transmission}', pick(GEN_ENCHGEN.transmissions))
+        .trim();
+    const prefix = effectEntry?.prefix || pick(GEN_ENCHGEN.prefixes);
+
+    return {
+        id:           crypto.randomUUID(),
+        name:         `${prefix} ${chosen.name}`,
+        baseItem:     chosen.name,
+        kind:         chosen.kind,
+        category:     chosen.cat || 'Item',
+        catLabel:     String(chosen.cat || 'Item').replace(/\b\w/g, c => c.toUpperCase()),
+        rarity,
+        effect,
+        damage:       chosen.damage       || '',
+        damageType:   chosen.damageType   || dmgType || '',
+        range:        chosen.range        || '',
+        check:        chosen.check        || '',
+        properties:   chosen.properties   || '',
+        description:  chosen.description  || '',
+        // The base item's own rules text. `effect` above is the rolled
+        // enchantment, so the base item's effect needs its own key.
+        baseEffect:   chosen.effect       || '',
+        armor:        chosen.armor ?? null,
+        movePenalty:  chosen.movePenalty  || '',
+        checkPenalty: chosen.checkPenalty || '',
+        checkBonus:   chosen.checkBonus   || '',
+        cost:         chosen.cost ?? null,
+        bulk:         chosen.bulk ?? null,
+    };
+}
+
+// Enchantment as a finished sentence - some source effects already end in punctuation.
+function enchantEffectText(it) {
+    const e = String(it.effect || '').trim();
+    if (!e) return '';
+    return /[.!?]$/.test(e) ? e : `${e}.`;
+}
+
+// Base-item stat rows, matching what the main site shows before the enchantment.
+function enchantedStatRows(it) {
+    if (!it.kind) return [];   // legacy card saved before the full port
+    const costBulk = ['Cost/Bulk', `${it.cost ?? '-'}g · ${it.bulk ?? '-'} bulk`];
+    if (it.kind === 'weapon') {
+        return [
+            ['Damage', [it.damage, it.damageType].filter(Boolean).join(' ') || '-'],
+            ['Range',  it.range || '-'],
+            ['Check',  it.check || '-'],
+            ...(it.properties  ? [['Props', it.properties]] : []),
+            ...(it.description ? [['Desc',  it.description]] : []),
+            costBulk,
+        ];
+    }
+    if (it.kind === 'armor') {
+        return [
+            ['Armor', it.armor != null ? `+${it.armor}` : '-'],
+            ...(it.movePenalty  ? [['Move Pen',   it.movePenalty]]  : []),
+            ...(it.checkPenalty ? [['Check Pen',  it.checkPenalty]] : []),
+            ...(it.checkBonus   ? [['Check Bonus', it.checkBonus]]  : []),
+            ...(it.properties   ? [['Props', it.properties]] : []),
+            ...(it.description  ? [['Desc',  it.description]] : []),
+            costBulk,
+        ];
+    }
+    return [
+        ...(it.baseEffect   ? [['Effect',      it.baseEffect]]   : []),
+        ...(it.checkBonus   ? [['Check Bonus', it.checkBonus]]   : []),
+        ...(it.checkPenalty ? [['Check Pen',   it.checkPenalty]] : []),
+        ...(it.description  ? [['Desc',        it.description]]  : []),
+        costBulk,
+    ];
+}
+
+// Pushes a generated enchanted item into the party inventory with its full stat
+// block, so a player claiming it lands a working weapon/armor on their sheet.
+async function giveEnchantedToParty(it) {
+    const equipCat = it.kind === 'weapon' ? 'weapon' : it.kind === 'armor' ? 'armor' : 'gear';
+    const payload = {
+        name:         it.name,
+        desc:         [enchantEffectText(it), it.description].filter(Boolean).join(' '),
+        amount:       1,
+        bulk:         it.bulk ?? 1,
+        category:     equipCat,
+        rarity:       it.rarity || '',
+        enchanted:    true,
+        damage:       it.damage       || '',
+        damageType:   it.damageType   || '',
+        range:        it.range        || '',
+        check:        it.check        || '',
+        properties:   it.properties   || '',
+        attackBonus:  0,
+        armorRating:  it.armor ?? 0,
+        notes:        [it.movePenalty, it.checkPenalty, it.checkBonus].filter(Boolean).join(', '),
+    };
+
+    if (currentRoomCode) {
+        const arc = window.__arc;
+        if (arc?.db) {
+            try {
+                await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', crypto.randomUUID()), {
+                    ...payload, addedAt: arc.serverTimestamp(),
+                });
+                postToSharedChat({
+                    type: 'feature', name: it.name,
+                    tags: [it.rarity, it.catLabel, 'Added to Party Inventory'].filter(Boolean),
+                    desc: payload.desc,
+                    time: chatTimestamp(), diceRolls: [],
+                });
+            } catch(e) { console.error('[ARC] giveEnchantedToParty failed:', e); }
+        }
+    } else {
+        nar.inventory.push({ id: crypto.randomUUID(), ...payload });
+        saveNar(); renderInventory();
+    }
+
+    setActivePanel('party');
+    setTimeout(() => document.getElementById('inventory-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+}
+
+function generateMedicine() {
+    if (!GEN_MEDICINE) return null;
+    const name = `${pick(GEN_MEDICINE.prefixes)} ${pick(GEN_MEDICINE.bases)} ${pick(GEN_MEDICINE.suffixes)}`;
+    let desc = pick(GEN_MEDICINE.templates)
+        .replace('{flavor}',  pick(GEN_MEDICINE.flavors))
+        .replace('{maker}',   pick(GEN_MEDICINE.makers))
+        .replace('{place}',   pick(GEN_MEDICINE.places))
+        .replace('{symbol}',  pick(GEN_MEDICINE.symbols));
+    const effect = pick(GEN_MEDICINE.effects);
+    return { id: crypto.randomUUID(), name, desc, effect };
+}
+
+function renderCommerceList(listId, items, rowsFn, removeKey) {
+    const el = document.getElementById(listId);
+    if (!el) return;
+    if (!items.length) { el.innerHTML = '<p class="empty-hint">Tap Generate to roll an item.</p>'; return; }
+    el.innerHTML = items.map(item => `
+        <div class="gen-quest-card">
+            <div class="gen-quest-rows">${rowsFn(item).map(([label, val]) => `
+                <div class="gen-npc-row">
+                    <span class="gen-npc-label">${label}</span>
+                    <span>${val}</span>
+                </div>`).join('')}
+            </div>
+            <div class="gen-quest-actions">
+                <button class="gen-npc-journal" data-com-inv="${item.id}" data-com-list="${removeKey}">＋Inv</button>
+                <button class="gen-mon-remove" data-com-remove="${item.id}" data-com-list="${removeKey}">✕</button>
+            </div>
+        </div>`).join('');
+    el.querySelectorAll('[data-com-inv]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const id   = btn.dataset.comInv;
+            const list = btn.dataset.comList;
+            const src  = list === 'mundane' ? nar.genMundane : list === 'enchanted' ? nar.genEnchanted : nar.genMedicine;
+            const item = src.find(x => x.id === id);
+            if (!item) return;
+            const desc    = item.description || item.effect || item.desc || '';
+            const invItem = { id: crypto.randomUUID(), name: item.name, desc, amount: 1, bulk: item.bulk ?? 1 };
+            if (currentRoomCode) {
+                const arc = window.__arc;
+                if (arc?.db) {
+                    try {
+                        await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', invItem.id), {
+                            name: invItem.name, desc: invItem.desc, amount: invItem.amount, bulk: invItem.bulk, addedAt: arc.serverTimestamp(),
+                        });
+                    } catch(e) { console.error('[ARC] addLoot failed:', e); }
+                }
+            } else {
+                nar.inventory.push(invItem);
+                saveNar(); renderInventory();
+            }
+            setActivePanel('party');
+            setTimeout(() => document.getElementById('inventory-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+        });
+    });
+    el.querySelectorAll('[data-com-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.dataset.comRemove;
+            if (btn.dataset.comList === 'mundane')   { nar.genMundane   = nar.genMundane.filter(x => x.id !== id);   saveNar(); renderGenMundaneList(); }
+            if (btn.dataset.comList === 'enchanted') { nar.genEnchanted = nar.genEnchanted.filter(x => x.id !== id); saveNar(); renderGenEnchantedList(); }
+            if (btn.dataset.comList === 'medicine')  { nar.genMedicine  = nar.genMedicine.filter(x => x.id !== id);  saveNar(); renderGenMedicineList(); }
+        });
+    });
+}
+
+function renderGenMundaneList() {
+    renderCommerceList('gen-mundane-list', nar.genMundane, item => [
+        ['Item', item.name],
+        ['Type', item.category],
+        ...(item.description ? [['Desc', item.description]] : []),
+        ...(item.cost != null ? [['Cost', `${item.cost}g`]] : []),
+        ...(item.bulk != null ? [['Bulk', item.bulk]] : []),
+    ], 'mundane');
+}
+
+function renderGenEnchantedList() {
+    const el = document.getElementById('gen-enchanted-list');
+    if (!el) return;
+    if (!nar.genEnchanted.length) {
+        el.innerHTML = '<p class="empty-hint">Tap Generate to roll an enchanted item.</p>';
+        return;
+    }
+
+    el.innerHTML = nar.genEnchanted.map(it => {
+        const col  = ARC_VOCAB.rarityColor(it.rarity);
+        const sub  = [it.catLabel, it.baseItem].filter(Boolean).join(' · ');
+        const rows = enchantedStatRows(it);
+        return `
+        <div class="gen-quest-card gen-ench-card" style="--ench-col:${col}">
+            <div class="gen-ench-head">
+                <span class="gen-ench-name">${it.name}</span>
+                ${it.rarity ? `<span class="gen-ench-rarity">${ARC_VOCAB.rarityLabel(it.rarity)}</span>` : ''}
+            </div>
+            ${sub ? `<div class="gen-ench-sub">${sub}</div>` : ''}
+            <div class="gen-quest-rows">
+                ${rows.map(([l, v]) => `
+                <div class="gen-npc-row">
+                    <span class="gen-npc-label">${l}</span>
+                    <span>${v}</span>
+                </div>`).join('')}
+                <div class="gen-npc-row gen-ench-effect-row">
+                    <span class="gen-npc-label">Enchant</span>
+                    <span class="gen-ench-effect">${enchantEffectText(it)}</span>
+                </div>
+            </div>
+            <div class="gen-quest-actions">
+                <button class="gen-npc-journal" data-ench-give="${it.id}">🎁 Give to Party</button>
+                <button class="gen-mon-remove" data-ench-remove="${it.id}">✕</button>
+            </div>
+        </div>`;
+    }).join('');
+
+    el.querySelectorAll('[data-ench-give]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const it = nar.genEnchanted.find(x => x.id === btn.dataset.enchGive);
+            if (it) giveEnchantedToParty(it);
+        });
+    });
+    el.querySelectorAll('[data-ench-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            nar.genEnchanted = nar.genEnchanted.filter(x => x.id !== btn.dataset.enchRemove);
+            saveNar(); renderGenEnchantedList();
+        });
+    });
+}
+
+function renderGenMedicineList() {
+    renderCommerceList('gen-medicine-list', nar.genMedicine, item => [
+        ['Item', item.name],
+        ['Desc', item.desc],
+        ['Effect', item.effect],
+    ], 'medicine');
+}
+
+// Commerce sub-tab switching
+let commerceActiveTab = 'mundane';
+document.getElementById('commerce-gen-seg')?.querySelectorAll('[data-com-tab]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        commerceActiveTab = btn.dataset.comTab;
+        document.getElementById('commerce-gen-seg').querySelectorAll('[data-com-tab]').forEach(b =>
+            b.classList.toggle('is-sel', b === btn));
+        document.getElementById('gen-mundane-panel').hidden   = commerceActiveTab !== 'mundane';
+        document.getElementById('gen-enchanted-panel').hidden = commerceActiveTab !== 'enchanted';
+        document.getElementById('gen-medicine-panel').hidden  = commerceActiveTab !== 'medicine';
+    });
+});
+
+document.getElementById('btn-gen-commerce')?.addEventListener('click', () => {
+    if (!commerceLoaded) { ensureCommerce(); return; }
+    if (commerceActiveTab === 'mundane') {
+        const i = generateMundane();
+        if (i) { nar.genMundane.unshift(i); saveNar(); renderGenMundaneList(); }
+    } else if (commerceActiveTab === 'enchanted') {
+        const i = generateEnchanted();
+        if (i) { nar.genEnchanted.unshift(i); saveNar(); renderGenEnchantedList(); }
+    } else {
+        const i = generateMedicine();
+        if (i) { nar.genMedicine.unshift(i); saveNar(); renderGenMedicineList(); }
+    }
+});
+
+// ── GENERATORS: HEX ──────────────────────────────────────────────────────────
+
+let GEN_HEX      = null;
+let HEX_SPECIES  = null;
+let hexLoaded    = false;
+
+async function ensureHex() {
+    if (hexLoaded) return;
+    try {
+        const [hex, sp] = await Promise.all([
+            fetch('../data/hexgen.json').then(r => r.json()),
+            fetch('../data/species.json').then(r => r.json()),
+        ]);
+        GEN_HEX     = hex;
+        HEX_SPECIES = sp.species || [];
+        hexLoaded   = true;
+        renderGenHexList();
+    } catch(e) { console.error('Failed to load hex data', e); }
+}
+
+const HEX_RARITY = { 'now':100,'common':30,'common below ground':20,'uncommon':16,'rare':8,'very rare':4,'legendary':2,'unique':1 };
+function hexRarityW(s) { return HEX_RARITY[(s.rarity||'').toLowerCase()] || 5; }
+
+function hexWeightedPick(arr, wFn) {
+    const pool = [];
+    arr.forEach(item => { const w = Math.floor((wFn ? wFn(item) : (item.weight||1)) * 10); for (let i=0;i<w;i++) pool.push(item); });
+    return pool.length ? pool[Math.floor(Math.random()*pool.length)] : arr[Math.floor(Math.random()*arr.length)];
+}
+
+function hexPickUnique(arr, count) {
+    const results = [], used = new Set();
+    let tries = 0;
+    while (results.length < count && tries < 50) {
+        const p = hexWeightedPick(arr, i => i.weight || 1);
+        if (!used.has(p.name)) { used.add(p.name); results.push(p.name); }
+        tries++;
+    }
+    return results;
+}
+
+function hexPopCounts(pop) {
+    if (pop.collapsed) return { features:2, resources:2, species:2, forceTemperament:'Collapsed' };
+    const t = pop.tier || 0;
+    const F=[0,1,1,2,2,3,3,4,4,5,5], R=[0,1,1,2,2,2,3,3,4,4,5], S=[0,1,1,2,2,3,3,4,4,5,5];
+    const idx = Math.min(Math.max(t,0),10);
+    return { features:F[idx], resources:R[idx], species:S[idx], forceTemperament: t===0?'Uninhabited':null };
+}
+
+function hexFormatSpecies(s) {
+    const name=s.name||'Unknown', lineage=s.lineage||'', option=s.option||'';
+    if (option && lineage) return `${option.charAt(0).toUpperCase()+option.slice(1)} ${name}`;
+    if (lineage && lineage.toLowerCase()!==name.toLowerCase()) return `${lineage.charAt(0).toUpperCase()+lineage.slice(1)} ${name}`;
+    return name;
+}
+
+function generateHex(terrain) {
+    if (!GEN_HEX) return null;
+    const t = (!terrain || terrain==='all') ? 'all' : terrain;
+    const envTable = GEN_HEX.environments[t] || GEN_HEX.environments.all;
+
+    const lord       = hexWeightedPick(GEN_HEX.lords,       i=>i.weight).name;
+    const env        = hexWeightedPick(envTable,             i=>i.weight).name;
+    const enemy      = hexWeightedPick(GEN_HEX.enemies,     i=>i.weight).name;
+    const population = hexWeightedPick(GEN_HEX.populations, i=>i.weight);
+    const counts     = hexPopCounts(population);
+    const temperament= counts.forceTemperament || hexWeightedPick(GEN_HEX.temperaments, i=>i.weight).name;
+    const pl         = hexWeightedPick(GEN_HEX.powerLevels, i=>i.weight).pl;
+
+    const features  = counts.features  > 0 ? hexPickUnique(GEN_HEX.features,  counts.features)  : [];
+    const resources = counts.resources > 0 ? hexPickUnique(GEN_HEX.resources, counts.resources) : [];
+    const species   = counts.species   > 0
+        ? Array.from({length: counts.species}, () => hexFormatSpecies(hexWeightedPick(HEX_SPECIES, hexRarityW)))
+        : [];
+
+    return { id: crypto.randomUUID(), lord, env, enemy, population: population.name, temperament, pl, features, resources, species, terrain: t };
+}
+
+function renderGenHexList() {
+    const el = document.getElementById('gen-hex-list');
+    if (!el) return;
+    if (!nar.genHexes.length) { el.innerHTML = '<p class="empty-hint">Tap Roll Hex to generate a hex tile.</p>'; return; }
+
+    el.innerHTML = nar.genHexes.map((h, i) => {
+        const featStr = h.features.length  ? h.features.join(', ')  : 'None';
+        const resStr  = h.resources.length ? h.resources.join(', ') : 'None';
+        const spStr   = h.species.length   ? h.species.join(', ')   : 'None';
+        const rows = [
+            ['Env', h.env],
+            ['Lord', h.lord],
+            ['Pop', `${h.population} · ${h.temperament}`],
+            ...(h.enemy !== 'None' ? [['Enemy', `${h.enemy} (PL ${h.pl})`]] : [['PL', h.pl]]),
+            ['Features', featStr],
+            ['Resources', resStr],
+            ['Species', spStr],
+        ];
+        return `<div class="gen-quest-card">
+            <div class="gen-npc-row u-mb-4">
+                <span class="gen-mini-label">Hex ${nar.genHexes.length - i}</span>
+            </div>
+            <div class="gen-quest-rows">${rows.map(([label, val]) => `
+                <div class="gen-npc-row">
+                    <span class="gen-npc-label">${label}</span>
+                    <span>${val}</span>
+                </div>`).join('')}
+            </div>
+            <div class="gen-quest-actions">
+                <button class="gen-npc-journal" data-hex-journal="${h.id}">＋J</button>
+                <button class="gen-mon-remove" data-hex-remove="${h.id}">✕</button>
+            </div>
+        </div>`;
+    }).join('');
+
+    el.querySelectorAll('[data-hex-journal]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const h = nar.genHexes.find(x => x.id === btn.dataset.hexJournal);
+            if (h) appendToJournal(hexToJournalText(h), 'Hex Tile');
+        });
+    });
+    el.querySelectorAll('[data-hex-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            nar.genHexes = nar.genHexes.filter(x => x.id !== btn.dataset.hexRemove);
+            saveNar(); renderGenHexList();
+        });
+    });
+}
+
+// Terrain seg
+let hexTerrain = 'all';
+document.getElementById('hex-terrain-seg')?.querySelectorAll('[data-terrain]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        hexTerrain = btn.dataset.terrain;
+        document.getElementById('hex-terrain-seg').querySelectorAll('[data-terrain]').forEach(b =>
+            b.classList.toggle('is-sel', b === btn));
+    });
+});
+
+document.getElementById('btn-gen-hex')?.addEventListener('click', () => {
+    if (!hexLoaded) { ensureHex(); return; }
+    const h = generateHex(hexTerrain);
+    if (h) { nar.genHexes.unshift(h); saveNar(); renderGenHexList(); }
+});
+
+// ── FIREBASE: SHARED CHAT ─────────────────────────────────────────────────────
+
+
+function listenToSharedChat(code) {
+    if (chatUnsubscribe) chatUnsubscribe();
+    const arc = window.__arc;
+    const q   = arc.query(
+        arc.collection(arc.db, 'rooms', code, 'chat'),
+        arc.orderBy('postedAt', 'desc'),
+        arc.limit(60)
+    );
+    // The query keeps only the newest 60, so once a room passes 60 messages
+    // snap.docs.length stops growing and a count comparison never fires again -
+    // which silently killed the badge, the toast and the OS notification.
+    // Gate on "have we seen the first snapshot yet" instead.
+    let primed = false;
+    chatUnsubscribe = arc.onSnapshot(q, snap => {
+        fbSharedChat = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderNarChat();
+
+        const wasPrimed = primed;
+        primed = true;
+
+        if (wasPrimed) {
+            // Incoming player messages only - the narrator's own posts aren't news
+            const incoming = snap.docChanges()
+                .filter(c => c.type === 'added')
+                .map(c => c.doc.data())
+                .filter(m => !['system', 'turn'].includes(m.type) && !m.removed && !m.isNarrator);
+
+            if (incoming.length) {
+                const onChat = document.getElementById('panel-chat')?.classList.contains('is-active');
+                if (!onChat) {
+                    const notif = document.getElementById('chat-notif');
+                    if (notif) notif.hidden = false;
+                }
+                incoming.forEach(m => ArcNotify.show(
+                    m.author ? `${m.author} - ${currentRoomCode || 'ARC20'}` : (currentRoomCode || 'ARC20'),
+                    chatNotifyBody(m)));
+                // ArcNotify no-ops while the page is focused; the toast covers that.
+                // Only the newest gets a toast - there is one toast element to share.
+                if (!onChat) {
+                    const last = incoming[incoming.length - 1];
+                    showChatToast(last.author || 'New message', chatNotifyBody(last),
+                        () => setActivePanel('chat'));
+                }
+            }
+        }
+
+        // Auto-add players who rolled initiative
+        snap.docChanges().forEach(change => {
+            if (change.type !== 'added') return;
+            const m = change.doc.data();
+            if (m.type !== 'roll' || m.label !== 'Initiative' || m.isNarrator || !m.charName || m.total == null) return;
+            const existing = nar.encounter.find(e => e.name === m.charName && e.type === 'player');
+            if (existing) {
+                existing.initiative = m.total;
+            } else {
+                nar.encounter.push({ id: crypto.randomUUID(), name: m.charName, type: 'player', hp: 0, maxHp: 0, initiative: m.total });
+            }
+            saveNar(); renderEncounter();
+        });
+    }, err => console.error('[ARC] chat listener:', err));
+}
+
+// Broadcast emoji reactions - stored on the room doc (no new security rule needed)
+document.addEventListener('emoji-react', async ({ detail }) => {
+    const arc = window.__arc;
+    if (!arc?.db || !arc?.uid || !currentRoomCode) return;
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), {
+            lastReaction: { chatMsgId: detail.chatMsgId, anim: detail.anim, by: arc.uid, at: arc.serverTimestamp() },
+        });
+    } catch(e) { console.error('[ARC] emoji-react write failed:', e); }
+});
+
+// Message reporting - write a denormalized snapshot for The Seven to review
+document.addEventListener('chat-report', async ({ detail }) => {
+    const arc = window.__arc;
+    if (!arc?.db || !arc?.uid || !currentRoomCode) return;
+    const { chatMsgId, reason, reasonNote } = detail;
+    const msg = fbSharedChat.find(m => m.id === chatMsgId);
+    if (!msg) return;
+    try {
+        await arc.setDoc(arc.doc(arc.db, 'reports', crypto.randomUUID()), {
+            status:        'open',
+            reason,
+            reasonNote:    reasonNote || null,
+            chatRoom:      currentRoomCode,
+            chatMsgId,
+            chatMsgText:   msg.text ?? null,
+            chatMsgAuthor: msg.author ?? null,
+            chatMsgUid:    msg.uid ?? null,
+            chatMsgType:   msg.type ?? null,
+            reportedBy:    arc.uid,
+            reportedAt:    arc.serverTimestamp(),
+            resolvedBy:    null,
+            resolvedAt:    null,
+            resolutionNote: null,
+        });
+    } catch(e) { console.error('[ARC] report failed:', e); }
+});
+
+async function postToSharedChat(entry) {
+    if (entry.type !== 'msg' && !arcRateLimitOk()) { console.warn('[ARC] rate-limited, not broadcasting:', entry.type); return; }
+    const arc = window.__arc;
+    if (!arc?.db || !arc?.uid || !currentRoomCode) return;
+    try {
+        const doc = {
+            ...entry,
+            author:     'Narrator',
+            uid:        arc.uid,
+            isNarrator: true,
+            postedAt:   arc.serverTimestamp(),
+        };
+        if (narSpeakingAs) doc.speakingAs = narSpeakingAs;
+        if (narTarget)     doc.target     = narTarget;
+        await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'chat', crypto.randomUUID()), doc);
+    } catch(e) { console.error('[ARC] postChat failed:', e); }
+}
+
+function renderNarChat() {
+    const el       = document.getElementById('nar-chat-log');
+    const scroller = document.getElementById('chat-sub-messages');
+    if (!el) return;
+    const wasAtTop = !scroller || scroller.scrollTop <= 60;
+    if (!fbSharedChat.length) {
+        el.innerHTML = '<li class="empty-hint">No messages yet.</li>';
+        return;
+    }
+    el.innerHTML = fbSharedChat.map(m => buildSharedChatCard(m)).join('');
+    if (wasAtTop && scroller) scroller.scrollTop = 0;
+}
+
+function rollNarDamageTable(damageType, count) {
+    const table = window.damageData?.[damageType];
+    if (!table) return;
+    for (let i = 0; i < count; i++) {
+        const roll   = Math.ceil(Math.random() * 6);
+        const result = table.entries[roll - 1] || '-';
+        postToSharedChat({ type: 'dmg-table', damageType, roll, result, time: chatTimestamp() });
+    }
+}
+
+document.getElementById('nar-chat-log')?.addEventListener('click', async e => {
+    // Reaction add button (open/close picker)
+    const reactionAddBtn = e.target.closest('.reaction-add-btn');
+    if (reactionAddBtn) {
+        e.stopPropagation();
+        const picker = reactionAddBtn.closest('.chat-reactions')?.querySelector('.reaction-picker');
+        if (picker) picker.hidden = !picker.hidden;
+        return;
+    }
+    // Reaction picker button (select emoji)
+    const reactionPickBtn = e.target.closest('.reaction-pick-btn');
+    if (reactionPickBtn) {
+        const bar = reactionPickBtn.closest('.chat-reactions');
+        if (bar) { toggleNarReaction(bar.dataset.msgId, reactionPickBtn.dataset.emoji); bar.querySelector('.reaction-picker').hidden = true; }
+        return;
+    }
+    // Reaction chip (toggle existing reaction)
+    const reactionChip = e.target.closest('.reaction-chip');
+    if (reactionChip) {
+        const bar = reactionChip.closest('.chat-reactions');
+        if (bar) toggleNarReaction(bar.dataset.msgId, reactionChip.dataset.emoji);
+        return;
+    }
+    // Poll vote
+    const pollOptBtn = e.target.closest('.poll-opt-btn');
+    if (pollOptBtn && window.__arc && currentRoomCode) {
+        const arc    = window.__arc;
+        const pollId = pollOptBtn.dataset.pollId;
+        const choice = pollOptBtn.dataset.choice;
+        if (pollId) await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'chat', pollId), { [`votes.${arc.uid}`]: choice }).catch(() => {});
+        return;
+    }
+    // Remove message - marks removed:true, snapshot re-renders for everyone
+    const deleteBtn = e.target.closest('.chat-delete-btn');
+    if (deleteBtn && window.__arc && currentRoomCode) {
+        const id = deleteBtn.dataset.chatId;
+        if (id) {
+            const arc = window.__arc;
+            await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'chat', id), { removed: true });
+        }
+        return;
+    }
+    // Undo remove
+    const undoBtn = e.target.closest('.chat-undo-btn');
+    if (undoBtn && window.__arc && currentRoomCode) {
+        const id = undoBtn.dataset.chatId;
+        if (id) {
+            const arc = window.__arc;
+            await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'chat', id), { removed: false });
+        }
+        return;
+    }
+    // Expand/collapse description
+    const expandBtn = e.target.closest('.chat-expand-btn');
+    if (expandBtn) {
+        const body = expandBtn.previousElementSibling;
+        if (body) {
+            const collapsed = body.classList.toggle('is-clamped');
+            expandBtn.textContent = collapsed ? '▼ Show more' : '▲ Show less';
+        }
+        return;
+    }
+    // Damage table roll
+    const tableBtn = e.target.closest('.dmg-table-btn');
+    if (tableBtn) {
+        const rolls = parseInt(tableBtn.dataset.rolls, 10) || 1;
+        rollNarDamageTable(tableBtn.dataset.dmgType, rolls);
+        setActivePanel('chat');
+    }
+});
+
+function buildSharedChatCard(m) {
+    if (m.removed) {
+        const undoBtn = m.id ? `<button class="chat-undo-btn" data-chat-id="${m.id}" title="Restore message" type="button">↩ Undo</button>` : '';
+        return `<li class="chat-msg-wrap chat-msg--removed" data-chat-id="${m.id || ''}">${undoBtn}<span class="chat-removed-text">- removed -</span></li>`;
+    }
+    if (m.type === 'system') {
+        return `<li class="chat-msg-wrap chat-system-msg" data-chat-id="${m.id || ''}"><span class="chat-sys-text">- ${m.text || ''} -</span></li>`;
+    }
+    if (m.type === 'poll') {
+        const deleteBtn = m.id ? `<button class="chat-delete-btn" data-chat-id="${m.id}" title="Delete poll" type="button">✕</button>` : '';
+        return `<li class="chat-msg-wrap" data-chat-id="${m.id || ''}">${deleteBtn}<div class="shared-author shared-author--nar">◆ Poll</div>${renderPollCard(m, window.__arc?.uid)}</li>`;
+    }
+    const isNar  = m.isNarrator;
+    const isRoll = ['roll','dice','weapon-attack'].includes(m.type);
+    const badge  = authorBadge(m);
+
+    // Narrator cards get tinted class based on type
+    const narClass = isNar ? (isRoll ? ' scard--nar-roll' : ' scard--nar-text') : '';
+
+    let cardHtml = '';
+    if (m.type === 'weapon-attack') {
+        cardHtml = renderWeaponAttackEntry(m);
+    } else if (m.type === 'roll' && m.total !== undefined) {
+        cardHtml = renderRollEntry(m);
+    } else if (m.type === 'feature') {
+        cardHtml = renderFeatureEntry(m);
+    } else if (m.type === 'dmg-table') {
+        cardHtml = renderDmgTableEntry(m);
+    } else if (m.type === 'dice') {
+        cardHtml = renderDiceEntry(m);
+    } else if (m.type === 'recovery') {
+        cardHtml = renderRecoveryEntry(m);
+    } else if (m.type === 'initiative-call') {
+        cardHtml = renderInitiativeCallEntry(m);
+    } else if (m.type === 'turn') {
+        cardHtml = renderTurnEntry(m);
+    } else {
+        const emojiOnly = isEmojiOnly(m.text);
+        cardHtml = emojiOnly
+            ? `<div class="chat-entry--msg"><span class="chat-time">${m.time || ''}</span><div class="chat-emoji-block"><span class="chat-text chat-emoji-big">${parseInline(m.text)}</span>${EMOJI_REACTIONS_HTML}</div></div>`
+            : `<div class="chat-entry--msg"><span class="chat-time">${m.time || ''}</span>${renderChatText(m.text)}</div>`;
+    }
+
+    const deleteBtn = m.id
+        ? `<button class="chat-delete-btn" data-chat-id="${m.id}" title="Delete message" type="button">✕</button>`
+        : '';
+    const reactionBar = (m.id && m.type !== 'turn')
+        ? buildReactionBar(m, window.__arc?.uid)
+        : '';
+    return `<li class="chat-msg-wrap ${narClass.trim()}" data-chat-id="${m.id || ''}">${deleteBtn}${badge}${cardHtml}${reactionBar}</li>`;
+}
+
+async function toggleNarReaction(msgId, emoji) {
+    const arc = window.__arc;
+    const uid = arc?.uid;
+    if (!arc?.db || !currentRoomCode || !uid || !msgId) return;
+    const msg  = fbSharedChat.find(m => m.id === msgId);
+    const uids = msg?.reactions?.[emoji] || [];
+    const op   = uids.includes(uid) ? arc.arrayRemove(uid) : arc.arrayUnion(uid);
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'chat', msgId), { [`reactions.${emoji}`]: op });
+    } catch(e) { console.error('[ARC] toggleNarReaction:', e); }
+}
+
+// Typing indicator - write timestamp to room doc while narrator types
+let _typingTimer = null;
+function _writeTyping() {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    clearTimeout(_typingTimer);
+    arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), { typingNar: arc.serverTimestamp() }).catch(() => {});
+    _typingTimer = setTimeout(() => _clearTyping(), 4000);
+}
+function _clearTyping() {
+    clearTimeout(_typingTimer);
+    const arc = window.__arc;
+    if (arc?.db && currentRoomCode)
+        arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), { typingNar: null }).catch(() => {});
+}
+document.getElementById('nar-chat-input')?.addEventListener('input', _writeTyping);
+
+// Narrator chat input
+async function sendNarChatMsg() {
+    _clearTyping();
+    const input = document.getElementById('nar-chat-input');
+    const text  = input?.value.trim();
+    if (!text) return;
+    if (!arcCanSendChat()) return;
+    if (!(await arcAutomodGate(text, currentRoomCode, narSpeakingAs || 'Narrator'))) { input.value = ''; return; }
+    if (!arcRateLimitOk()) { alert('You are sending messages too fast - wait a few seconds and try again.'); return; }
+    if (!currentRoomCode) {
+        const el = document.getElementById('nar-chat-log');
+        if (el) el.innerHTML = '<li class="empty-hint empty-hint--danger">No active session - create one from the Party tab.</li>';
+        return;
+    }
+    postToSharedChat({ type: 'msg', text, time: chatTimestamp() });
+    if (input) input.value = '';
+}
+document.getElementById('btn-nar-send')?.addEventListener('click', sendNarChatMsg);
+document.getElementById('nar-chat-input')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendNarChatMsg();
+});
+arcInitBanNotice('chat-input-row');
+
+// Chat toolbar - emoji, dice, poll panels (one open at a time)
+(function () {
+    const dicePanel  = document.getElementById('nar-dice-panel');
+    const emojiPanel = document.getElementById('nar-emoji-panel');
+    const pollForm   = document.getElementById('nar-poll-form');
+    const panels     = [dicePanel, emojiPanel, pollForm].filter(Boolean);
+
+    function closeAll() { panels.forEach(p => { p.hidden = true; }); }
+
+    function toggle(panel) {
+        const wasHidden = panel.hidden;
+        closeAll();
+        panel.hidden = !wasHidden;
+    }
+
+    // Dice
+    const narEmojiBtn  = document.getElementById('nar-emoji-btn');
+    if (emojiPanel) {
+        emojiPanel.innerHTML = buildEmojiPanel();
+        narEmojiBtn?.addEventListener('click', () => toggle(emojiPanel));
+        emojiPanel.addEventListener('click', e => {
+            const em = e.target.closest('.emoji-pick');
+            if (!em) return;
+            const input = document.getElementById('nar-chat-input');
+            if (input) {
+                const pos = input.selectionStart || input.value.length;
+                input.value = input.value.slice(0, pos) + em.textContent + input.value.slice(pos);
+                input.focus();
+                input.setSelectionRange(pos + em.textContent.length, pos + em.textContent.length);
+            }
+            emojiPanel.hidden = true;
+        });
+    }
+
+    document.getElementById('nar-dice-btn')?.addEventListener('click', () => toggle(dicePanel));
+
+    document.addEventListener('click', e => {
+        if (panels.some(p => !p.hidden) &&
+            !e.target.closest('.chat-tool-btn') &&
+            !e.target.closest('.nar-tool-panel') &&
+            !e.target.closest('.emoji-panel') &&
+            !e.target.closest('.poll-form')) {
+            closeAll();
+        }
+    });
+
+    // Expose for poll creation block
+    window._narTogglePoll = () => toggle(pollForm);
+})();
+
+// ── SETTINGS & THEME ─────────────────────────────────────────────────────────
+
+const NAR_DEFAULT_A1 = '#4c6e6e';  // teal-light
+const NAR_DEFAULT_A2 = '#b8860b';  // dark goldenrod
+
+function applyTheme() {
+    const t  = nar.theme || {};
+    const a1 = t.a1 || NAR_DEFAULT_A1;
+    const a2 = t.a2 || NAR_DEFAULT_A2;
+    const c1 = hexToRgb(a1), c2 = hexToRgb(a2);
+    const root = document.documentElement;
+    root.style.setProperty('--accent',      a1);
+    root.style.setProperty('--accent-dim',  `rgba(${c1.r},${c1.g},${c1.b},0.18)`);
+    root.style.setProperty('--accent-mid',  `rgba(${c1.r},${c1.g},${c1.b},0.38)`);
+    root.style.setProperty('--accent2',     a2);
+    root.style.setProperty('--accent2-dim', `rgba(${c2.r},${c2.g},${c2.b},0.18)`);
+    root.style.setProperty('--accent2-mid', `rgba(${c2.r},${c2.g},${c2.b},0.38)`);
+}
+
+function setTheme(a1, a2) {
+    nar.theme = { a1, a2 };
+    applyTheme();
+    saveNar();
+}
+
+function openSettings() {
+    const container = document.getElementById('theme-swatches');
+    if (container) {
+        const a1 = nar.theme?.a1 || NAR_DEFAULT_A1;
+        const a2 = nar.theme?.a2 || NAR_DEFAULT_A2;
+        const sl1 = hexToSL(a1), sl2 = hexToSL(a2);
+        const sliderRow = (key, hex, sl) => `
+            <div class="theme-slider-row">
+                <span class="theme-slider-label">H</span>
+                <input type="range" class="hue-slider" id="hue-${key}" min="0" max="359" value="${hexToHue(hex)}" />
+            </div>
+            <div class="theme-slider-row">
+                <span class="theme-slider-label">S</span>
+                <input type="range" class="hue-slider" id="sat-${key}" min="0" max="100" value="${sl.s}" />
+            </div>
+            <div class="theme-slider-row">
+                <span class="theme-slider-label">L</span>
+                <input type="range" class="hue-slider" id="lit-${key}" min="0" max="100" value="${sl.l}" />
+                <span class="hue-preview" id="prev-${key}" style="background:${hex}"></span>
+            </div>`;
+        container.innerHTML = `
+            <div class="wm-label">Primary</div>
+            ${sliderRow('a1', a1, sl1)}
+            <div class="wm-label u-mt-12">Secondary</div>
+            ${sliderRow('a2', a2, sl2)}
+            <button id="btn-reset-theme" class="settings-action-btn settings-action-btn--reset-theme">↺ Reset to Default Theme</button>`;
+
+        function updateNarColor(key) {
+            const h = parseInt(document.getElementById(`hue-${key}`)?.value || '210', 10);
+            const s = parseInt(document.getElementById(`sat-${key}`)?.value || '65', 10);
+            const l = parseInt(document.getElementById(`lit-${key}`)?.value || '60', 10);
+            const hex = hslToHex(h, s, l);
+            const prev = document.getElementById(`prev-${key}`);
+            if (prev) prev.style.background = hex;
+            const cur1 = nar.theme?.a1 || NAR_DEFAULT_A1;
+            const cur2 = nar.theme?.a2 || NAR_DEFAULT_A2;
+            setTheme(key === 'a1' ? hex : cur1, key === 'a2' ? hex : cur2);
+        }
+        ['a1', 'a2'].forEach(key => {
+            ['hue','sat','lit'].forEach(prefix => {
+                document.getElementById(`${prefix}-${key}`)?.addEventListener('input', () => updateNarColor(key));
+            });
+        });
+        document.getElementById('btn-reset-theme')?.addEventListener('click', () => {
+            setTheme(NAR_DEFAULT_A1, NAR_DEFAULT_A2);
+            openSettings();
+        });
+    }
+    document.getElementById('nar-reset-confirm').hidden = true;
+    document.getElementById('btn-reset-nar').hidden     = false;
+    document.getElementById('settings-modal').hidden    = false;
+}
+
+function closeSettings() {
+    document.getElementById('settings-modal').hidden = true;
+}
+
+document.getElementById('btn-end-session')?.addEventListener('click', () => { closeSettings(); endSession(); });
+document.getElementById('btn-settings')?.addEventListener('click', openSettings);
+document.getElementById('settings-close')?.addEventListener('click', closeSettings);
+document.getElementById('settings-scrim')?.addEventListener('click', closeSettings);
+
+document.getElementById('btn-reset-nar')?.addEventListener('click', () => {
+    document.getElementById('btn-reset-nar').hidden     = true;
+    document.getElementById('nar-reset-confirm').hidden = false;
+});
+
+document.getElementById('btn-nar-reset-cancel')?.addEventListener('click', () => {
+    document.getElementById('nar-reset-confirm').hidden = true;
+    document.getElementById('btn-reset-nar').hidden     = false;
+});
+
+document.getElementById('btn-nar-reset-confirm')?.addEventListener('click', () => {
+    nar.encounter     = [];
+    nar.round         = 1;
+    nar.turnIndex     = 0;
+    nar.characters    = [];
+    nar.inventory     = [];
+    nar.partyManual   = [];
+    nar.archived      = [];
+    nar.genMonsters   = [];
+    nar.genNpcs       = [];
+    nar.genLocations  = [];
+    nar.genQuests     = [];
+    nar.genDungeons   = [];
+    nar.genRooms      = [];
+    nar.genMundane    = [];
+    nar.genEnchanted  = [];
+    nar.genMedicine   = [];
+    nar.genHexes      = [];
+    nar.questLog      = [];
+    nar.sessions      = [];
+    saveNar();
+    renderParty(); renderCharacters(); renderInventory(); renderEncounter();
+    renderGenMonsterList(); renderGenNpcList(); renderGenLocList();
+    renderGenQuestList(); renderGenDungeonList(); renderGenRoomsList();
+    renderGenMundaneList(); renderGenEnchantedList(); renderGenMedicineList();
+    renderGenHexList();
+    renderQuestLog(); renderSessions();
+    closeSettings();
+});
+
+// ── ROOM CREATION DIALOG ─────────────────────────────────────────────────────
+
+const NOIR_NAMES = [
+    'The Obsidian Parlor', "Blackwell's Den", 'The Velvet Circuit',
+    'Iron Meridian', 'The Crimson Exchange', 'Thornfield Station',
+    'The Copper Casket', 'Red District', 'The Gilded Wreck',
+    'Ashmore & Associates', 'The Ironclad Suite', 'Dust & Gunpowder',
+];
+
+function openCreateRoomDialog() {
+    const nameInput = document.getElementById('room-name-input');
+    const msgInput  = document.getElementById('room-welcome-input');
+    const sugEl     = document.getElementById('room-name-suggestions');
+    if (nameInput) nameInput.value = '';
+    if (msgInput)  msgInput.value  = '';
+    if (sugEl) {
+        sugEl.innerHTML = NOIR_NAMES.map(n =>
+            `<button class="nar-name-suggestion" type="button">${n}</button>`
+        ).join('');
+        sugEl.querySelectorAll('.nar-name-suggestion').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (nameInput) { nameInput.value = btn.textContent; nameInput.focus(); }
+            });
+        });
+    }
+    document.getElementById('room-create-dialog')?.showModal();
+}
+
+document.getElementById('btn-create-room-confirm')?.addEventListener('click', () => {
+    const name       = document.getElementById('room-name-input')?.value.trim()    || '';
+    const welcomeMsg = document.getElementById('room-welcome-input')?.value.trim() || '';
+    document.getElementById('room-create-dialog')?.close();
+    createRoom(name, welcomeMsg);
+});
+
+document.getElementById('btn-create-room-cancel')?.addEventListener('click', () => {
+    document.getElementById('room-create-dialog')?.close();
+});
+
+// ── PRIVACY / STREAMER MODE ───────────────────────────────────────────────────
+
+let privacyMode = localStorage.getItem('arc-privacy-mode') === 'true';
+
+function applyPrivacyMode() {
+    document.body.classList.toggle('privacy-mode', privacyMode);
+    const btn = document.getElementById('btn-privacy-mode');
+    if (btn) {
+        btn.textContent = privacyMode ? '🙈' : '👁';
+        btn.title       = privacyMode ? 'Privacy mode ON - tap to show' : 'Privacy mode - hides room code for streaming';
+        btn.classList.toggle('privacy-btn--active', privacyMode);
+    }
+}
+
+document.getElementById('btn-privacy-mode')?.addEventListener('click', () => {
+    privacyMode = !privacyMode;
+    localStorage.setItem('arc-privacy-mode', privacyMode);
+    applyPrivacyMode();
+});
+
+applyPrivacyMode();
+
+// ── KEYBOARD SHORTCUTS ────────────────────────────────────────────────────────
+
+const KB_NAV = { '1': 'chat', '2': 'party', '3': 'generators', '4': 'monsters', '5': 'initiative', '6': 'ref' };
+
+document.addEventListener('keydown', e => {
+    if (e.target.closest('input, textarea, [contenteditable]')) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+    if (KB_NAV[e.key]) { setActivePanel(KB_NAV[e.key]); return; }
+
+    if (e.key === '`') {
+        privacyMode = !privacyMode;
+        localStorage.setItem('arc-privacy-mode', privacyMode);
+        applyPrivacyMode();
+    }
+});
+
+// ── FIREBASE: ROOM ────────────────────────────────────────────────────────────
+
+let fbPlayers        = [];
+let fbLoot           = [];
+let fbGold           = 0;
+let fbSharedChat     = [];
+let fbHandouts       = [];
+let currentRoomCode   = localStorage.getItem('arc-narrator-room') || null;
+let partyUnsubscribe  = null;
+let lootUnsubscribe   = null;
+let handoutsUnsubscribe = null;
+let roomUnsubscribe   = null;
+let chatUnsubscribe   = null;
+
+document.addEventListener('arc:firebase-ready', () => {
+    if (currentRoomCode) restoreRoom(currentRoomCode);
+});
+
+function genRoomCode() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    return Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
+
+async function createRoom(name = '', welcomeMsg = '') {
+    const arc = window.__arc;
+    if (!arc?.db || !arc?.uid) { alert('Still connecting - try again in a moment.'); return; }
+
+    const code = genRoomCode();
+    try {
+        await arc.setDoc(arc.doc(arc.db, 'rooms', code), {
+            narratorUid:    arc.uid,
+            name:           name || '',
+            welcomeMsg:     welcomeMsg || '',
+            createdAt:      arc.serverTimestamp(),
+            lastActivityAt: arc.serverTimestamp(),
+            status:         'active',
+        });
+        currentRoomCode = code;
+        localStorage.setItem('arc-narrator-room', code);
+        showRoomBadge(code, name);
+        attachRoomListeners(code);
+        updateChatInputState();
+    } catch(e) { console.error('[ARC] createRoom failed:', e); alert('Failed to create room.'); }
+}
+
+// ── ROOM LISTENER PLUMBING ────────────────────────────────────────────────────
+// Shared by create / restore / switch so every entry point wires the same set.
+
+function attachRoomListeners(code) {
+    listenToPlayers(code);
+    listenToLoot(code);
+    listenToHandouts(code);
+    listenToRoomDoc(code);
+    listenToSharedChat(code);
+    ArcNotify.requestPermission().then(() => ArcNotify.registerPushToken(code));
+}
+
+function detachRoomListeners() {
+    if (partyUnsubscribe)    { partyUnsubscribe();    partyUnsubscribe    = null; }
+    if (lootUnsubscribe)     { lootUnsubscribe();     lootUnsubscribe     = null; }
+    if (handoutsUnsubscribe) { handoutsUnsubscribe(); handoutsUnsubscribe = null; }
+    if (roomUnsubscribe)     { roomUnsubscribe();     roomUnsubscribe     = null; }
+    if (chatUnsubscribe)     { chatUnsubscribe();     chatUnsubscribe     = null; }
+}
+
+async function restoreRoom(code) {
+    const arc = window.__arc;
+    if (!arc?.db) return;
+    try {
+        const snap = await arc.getDoc(arc.doc(arc.db, 'rooms', code));
+        if (snap.exists() && snap.data().status === 'active') {
+            showRoomBadge(code, snap.data().name || '');
+            attachRoomListeners(code);
+        } else {
+            localStorage.removeItem('arc-narrator-room');
+            currentRoomCode = null;
+        }
+    } catch(e) { console.error('[ARC] restoreRoom failed:', e); }
+}
+
+function listenToPlayers(code) {
+    if (partyUnsubscribe) partyUnsubscribe();
+    const arc = window.__arc;
+    partyUnsubscribe = arc.onSnapshot(
+        arc.collection(arc.db, 'rooms', code, 'players'),
+        snap => { fbPlayers = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderParty(); renderEncounter(); },
+        err => console.error('[ARC] players listener error:', err)
+    );
+}
+
+function listenToLoot(code) {
+    if (lootUnsubscribe) lootUnsubscribe();
+    const arc = window.__arc;
+    lootUnsubscribe = arc.onSnapshot(
+        arc.collection(arc.db, 'rooms', code, 'loot'),
+        snap => { fbLoot = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderInventory(); },
+        err => console.error('[ARC] loot listener error:', err)
+    );
+}
+
+function listenToHandouts(code) {
+    if (handoutsUnsubscribe) handoutsUnsubscribe();
+    const arc = window.__arc;
+    handoutsUnsubscribe = arc.onSnapshot(
+        arc.collection(arc.db, 'rooms', code, 'handouts'),
+        snap => { fbHandouts = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderNarHandouts(); },
+        err => console.error('[ARC] handouts listener error:', err)
+    );
+}
+
+function listenToRoomDoc(code) {
+    if (roomUnsubscribe) roomUnsubscribe();
+    const arc = window.__arc;
+    roomUnsubscribe = arc.onSnapshot(
+        arc.doc(arc.db, 'rooms', code),
+        snap => {
+            const data = snap.data() || {};
+            fbGold = data.gold ?? 0;
+            const valEl = document.getElementById('party-gold-val');
+            if (valEl) valEl.textContent = fbGold;
+
+            // Adopt turn/round advances pushed by a player's "End My Turn" action
+            if (typeof data.encounterTurnIndex === 'number' && typeof data.encounterRound === 'number'
+                && (data.encounterTurnIndex !== nar.turnIndex || data.encounterRound !== nar.round)) {
+                nar.turnIndex = data.encounterTurnIndex;
+                nar.round     = data.encounterRound;
+                saveNar(); renderEncounter();
+            }
+
+            const provokeBox = document.getElementById('toggle-provoke-lock');
+            if (provokeBox) provokeBox.checked = !!data.provokeLocked;
+
+            // Keep badge in sync if campaign name ever changes
+            const badge = document.getElementById('room-code-badge');
+            if (badge && !badge.hidden) setBadgeContent(code, data.name || '');
+
+            const r = data.lastReaction;
+            if (r?.at && r?.chatMsgId && r?.anim && r.by !== arc.uid) {
+                const ageMs = Date.now() - r.at.toMillis();
+                if (ageMs <= 4000) triggerEmojiReaction(r.chatMsgId, r.anim);
+            }
+        },
+        err => console.error('[ARC] room doc listener error:', err)
+    );
+}
+
+async function adjustGold(delta) {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    const newGold = Math.max(0, fbGold + delta);
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), { gold: newGold });
+    } catch(e) { console.error('[ARC] adjustGold failed:', e); }
+}
+
+// Gold controls
+document.getElementById('party-gold-row')?.addEventListener('click', e => {
+    const btn = e.target.closest('[data-gold]');
+    if (btn) adjustGold(parseInt(btn.dataset.gold, 10));
+});
+
+function setBadgeContent(code, name) {
+    const nameEl = document.getElementById('room-badge-name');
+    const codeEl = document.getElementById('room-badge-code');
+    if (nameEl) nameEl.textContent = name ? `${name} ` : '';
+    if (codeEl) codeEl.textContent = name ? `· ${code}` : code;
+}
+
+// ── MULTI-ROOM MANAGEMENT ─────────────────────────────────────────────────────
+// A narrator can run several campaigns. Rooms are owned via narratorUid, so the
+// list is a single-equality query (no composite index needed); status is
+// filtered client-side.
+
+let roomsCache = [];
+let editingRoomCode = null;
+
+async function fetchMyRooms() {
+    const arc = window.__arc;
+    if (!arc?.db || !arc?.uid) return [];
+    try {
+        const snap = await arc.getDocs(arc.query(
+            arc.collection(arc.db, 'rooms'),
+            arc.where('narratorUid', '==', arc.uid)
+        ));
+        const when = r => r.lastActivityAt?.toMillis?.() || r.createdAt?.toMillis?.() || 0;
+        return snap.docs
+            .map(d => ({ code: d.id, ...d.data() }))
+            .filter(r => r.status !== 'closed')
+            .sort((a, b) => when(b) - when(a));
+    } catch (e) { console.error('[ARC] fetchMyRooms failed:', e); return []; }
+}
+
+async function switchRoom(code) {
+    const arc = window.__arc;
+    if (!arc?.db || code === currentRoomCode) return;
+
+    let name = '';
+    try {
+        const snap = await arc.getDoc(arc.doc(arc.db, 'rooms', code));
+        if (!snap.exists()) return;
+        name = snap.data().name || '';
+    } catch (e) { console.error('[ARC] switchRoom failed:', e); return; }
+
+    detachRoomListeners();
+    fbPlayers = []; fbLoot = []; fbGold = 0; fbSharedChat = []; fbHandouts = [];
+
+    currentRoomCode = code;
+    localStorage.setItem('arc-narrator-room', code);
+    showRoomBadge(code, name);
+    attachRoomListeners(code);
+    updateChatInputState();
+    renderParty(); renderInventory(); renderNarHandouts(); renderNarChat();
+}
+
+async function saveRoomEdits(code) {
+    const arc  = window.__arc;
+    const name = document.getElementById('room-edit-name')?.value.trim() || '';
+    const msg  = document.getElementById('room-edit-welcome')?.value.trim() || '';
+    if (!arc?.db) return;
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', code), { name, welcomeMsg: msg });
+    } catch (e) { console.error('[ARC] saveRoomEdits failed:', e); return; }
+    if (code === currentRoomCode) setBadgeContent(code, name);
+    editingRoomCode = null;
+}
+
+async function closeRoom(code) {
+    const arc = window.__arc;
+    if (!arc?.db) return;
+    if (!confirm(`Close room ${code}? Players will no longer be able to use it.`)) return;
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', code), { status: 'closed' });
+    } catch (e) { console.error('[ARC] closeRoom failed:', e); return; }
+
+    // Closing the room you're running tears the live session down too
+    if (code === currentRoomCode) {
+        detachRoomListeners();
+        currentRoomCode = null;
+        localStorage.removeItem('arc-narrator-room');
+        fbPlayers = []; fbLoot = []; fbGold = 0; fbSharedChat = []; fbHandouts = [];
+        const badge = document.getElementById('room-code-badge');
+        if (badge) { badge.hidden = true; setBadgeContent('', ''); }
+        const privacyBtn = document.getElementById('btn-privacy-mode');
+        const goldRow    = document.getElementById('party-gold-row');
+        const handouts   = document.getElementById('nar-handouts-section');
+        const invite     = document.getElementById('btn-invite');
+        if (privacyBtn) privacyBtn.hidden = true;
+        if (goldRow)    goldRow.hidden = true;
+        if (handouts)   handouts.hidden = true;
+        if (invite)     invite.textContent = 'Manage Rooms';
+        updateChatInputState();
+        renderParty(); renderInventory(); renderNarHandouts(); renderNarChat();
+    }
+    await refreshRoomsList();
+}
+
+function renderRoomsList() {
+    const el = document.getElementById('rooms-list');
+    if (!el) return;
+    if (!roomsCache.length) {
+        el.innerHTML = '<p class="empty-hint">No rooms yet. Tap <strong>+ New Room</strong> below to start your first campaign.</p>';
+        return;
+    }
+    el.innerHTML = roomsCache.map(r => {
+        const isCur = r.code === currentRoomCode;
+
+        if (r.code === editingRoomCode) {
+            return `
+            <div class="room-row room-row--editing">
+                <label class="nar-form-field"><span class="nar-form-label">Campaign Name</span>
+                    <input id="room-edit-name" type="text" maxlength="40" value="${escAttr(r.name || '')}" autocomplete="off" /></label>
+                <label class="nar-form-field"><span class="nar-form-label">Welcome Message</span>
+                    <textarea id="room-edit-welcome" rows="2" maxlength="200">${escAttr(r.welcomeMsg || '')}</textarea></label>
+                <div class="room-row-actions">
+                    <button class="room-btn room-btn--primary" data-room-save="${r.code}" type="button">✓ Save</button>
+                    <button class="room-btn" data-room-cancel type="button">Cancel</button>
+                </div>
+            </div>`;
+        }
+
+        return `
+        <div class="room-row${isCur ? ' room-row--current' : ''}">
+            <div class="room-row-info">
+                <span class="room-row-name">${r.name || 'Untitled Campaign'}${isCur ? ' <span class="room-row-live">active</span>' : ''}</span>
+                <span class="room-row-code">${r.code}</span>
+            </div>
+            <div class="room-row-actions">
+                ${isCur ? '' : `<button class="room-btn room-btn--primary" data-room-switch="${r.code}" type="button">Switch</button>`}
+                <button class="room-btn" data-room-edit="${r.code}" type="button">✎ Edit</button>
+                <button class="room-btn room-btn--danger" data-room-close="${r.code}" type="button">Close</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+async function refreshRoomsList() {
+    const el = document.getElementById('rooms-list');
+    if (el) el.innerHTML = '<p class="empty-hint">Loading rooms…</p>';
+    roomsCache = await fetchMyRooms();
+    renderRoomsList();
+}
+
+async function openRoomsDialog() {
+    editingRoomCode = null;
+    document.getElementById('rooms-dialog')?.showModal();
+    await refreshRoomsList();
+}
+
+document.getElementById('toggle-provoke-lock')?.addEventListener('change', async e => {
+    const arc = window.__arc;
+    if (!arc?.db || !currentRoomCode) return;
+    try {
+        await arc.updateDoc(arc.doc(arc.db, 'rooms', currentRoomCode), { provokeLocked: e.target.checked });
+    } catch (err) { console.error('[ARC] provoke lock failed:', err); }
+});
+
+document.getElementById('btn-manage-rooms')?.addEventListener('click', () => {
+    closeSettings();
+    openRoomsDialog();
+});
+document.getElementById('rooms-close')?.addEventListener('click', () => document.getElementById('rooms-dialog')?.close());
+document.getElementById('rooms-done')?.addEventListener('click', () => document.getElementById('rooms-dialog')?.close());
+document.getElementById('rooms-new')?.addEventListener('click', () => {
+    document.getElementById('rooms-dialog')?.close();
+    document.getElementById('room-create-dialog')?.showModal();
+});
+
+document.getElementById('rooms-list')?.addEventListener('click', async e => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    if (btn.dataset.roomSwitch) {
+        await switchRoom(btn.dataset.roomSwitch);
+        document.getElementById('rooms-dialog')?.close();
+    } else if (btn.dataset.roomEdit) {
+        editingRoomCode = btn.dataset.roomEdit;
+        renderRoomsList();
+    } else if (btn.dataset.roomSave) {
+        await saveRoomEdits(btn.dataset.roomSave);
+        await refreshRoomsList();
+    } else if (btn.hasAttribute('data-room-cancel')) {
+        editingRoomCode = null;
+        renderRoomsList();
+    } else if (btn.dataset.roomClose) {
+        await closeRoom(btn.dataset.roomClose);
+    }
+});
+
+function showRoomBadge(code, name) {
+    const badge      = document.getElementById('room-code-badge');
+    const privacyBtn = document.getElementById('btn-privacy-mode');
+    const inviteBtn  = document.getElementById('btn-invite');
+    const goldRow    = document.getElementById('party-gold-row');
+    const handoutsSection = document.getElementById('nar-handouts-section');
+    if (badge) {
+        setBadgeContent(code, name);
+        badge.title  = `Room code: ${code} - tap to copy`;
+        badge.hidden = false;
+    }
+    if (privacyBtn) privacyBtn.hidden = false;
+    if (inviteBtn)  inviteBtn.textContent = 'Manage Rooms';
+    if (goldRow)    goldRow.hidden = false;
+    if (handoutsSection) handoutsSection.hidden = false;
+    const chatInput = document.getElementById('nar-chat-input');
+    if (chatInput) chatInput.placeholder = 'Message the party…';
+}
+
+function updateChatInputState() {
+    const chatInput = document.getElementById('nar-chat-input');
+    const sendBtn   = document.getElementById('btn-nar-send');
+    const hasRoom   = !!currentRoomCode;
+    if (chatInput) {
+        chatInput.placeholder = hasRoom ? 'Message the party…' : 'Create a session to chat…';
+        chatInput.disabled = !hasRoom;
+    }
+    if (sendBtn) sendBtn.disabled = !hasRoom;
+}
+
+document.getElementById('room-code-badge')?.addEventListener('click', () => {
+    if (!currentRoomCode) return;
+    navigator.clipboard.writeText(currentRoomCode).then(() => {
+        const badge = document.getElementById('room-code-badge');
+        const orig  = badge.textContent;
+        badge.textContent = 'Copied!';
+        setTimeout(() => { badge.textContent = orig; }, 1500);
+    });
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+
+loadNar();
+migrateCharacters();
+migrateOldNotes();
+applyTheme();
+ensureMonsters();
+updateChatInputState();
+renderParty();
+renderCharacters();
+renderInventory();
+renderEncounter();
+renderGenNpcList();
+renderGenLocList();
+renderGenQuestList();
+renderGenDungeonList();
+renderGenRoomsList();
+renderGenMundaneList();
+renderGenEnchantedList();
+renderGenMedicineList();
+renderGenHexList();
+renderQuestLog();
+renderSessions();
+renderNarRefActions();
+bindNarRefPanel();
+
+// ── REFERENCE PANEL ──────────────────────────────────────────────────────────
+
+function renderNarRefTables() {
+    const grid = document.getElementById('ref-tables-grid');
+    if (!grid || !window.damageData) return;
+    const groups = {};
+    Object.entries(window.damageData).forEach(([type, table]) => {
+        const cat = table.category || 'Other';
+        (groups[cat] = groups[cat] || []).push([type, table]);
+    });
+    const CAT_ORDER = ['Physical', 'Elemental', 'Realm', 'Other'];
+    grid.innerHTML = CAT_ORDER.filter(c => groups[c]).map(cat =>
+        `<div class="spell-origin-header">${cat}</div>` +
+        groups[cat].map(([type, table]) => {
+            const rows = (table.entries || []).map((e, i) =>
+                `<div class="ref-table-row"><span class="ref-table-num">${i + 1}</span><span class="ref-table-entry">${e}</span></div>`
+            ).join('');
+            return `<div class="ref-table-card">
+                <div class="ref-table-head" data-roll-table="${type}" role="button" tabindex="0">
+                    <span class="ref-table-title">${table.icon || ''} ${type}</span>
+                    <button class="ref-expand-btn" type="button" data-expand-table="${type}">▾</button>
+                </div>
+                <div class="ref-table-entries" id="ref-entries-${type}" hidden>${rows}</div>
+            </div>`;
+        }).join('')
+    ).join('');
+}
+
+function renderNarRefConditions() {
+    const el = document.getElementById('ref-conditions-list');
+    if (!el) return;
+    el.innerHTML = Object.entries(narCondGroups).map(([group, names]) =>
+        `<div class="spell-origin-header">${group}</div>` +
+        names.map(name => `
+            <div class="ref-condition-row">
+                <span class="ref-condition-name">${condChip(name)}</span>
+                <span class="ref-condition-effect">${narCondEffects[name] || ''}</span>
+                ${narCondDurations[name] ? `<span class="ref-condition-duration">${narCondDurations[name]}</span>` : ''}
+            </div>`).join('')
+    ).join('');
+}
+
+function renderNarRefActions() {
+    const el = document.getElementById('ref-actions-list');
+    if (!el) return;
+    el.innerHTML = REF_ACTIONS.map(a => {
+        if (a.group) return `<div class="spell-origin-header">${a.group}</div>`;
+        return `<div class="ref-action-card">
+            <div class="ref-action-head"><span class="ref-action-name">${a.name}</span></div>
+            <div class="ref-action-desc">${a.desc}</div>
+        </div>`;
+    }).join('');
+}
+
+function bindNarRefPanel() {
+    document.querySelector('#panel-ref .ref-tab-row')?.addEventListener('click', e => {
+        const tab = e.target.closest('.ref-tab');
+        if (!tab) return;
+        const target = tab.dataset.refTab;
+        document.querySelectorAll('#panel-ref .ref-tab').forEach(t => t.classList.toggle('is-active', t === tab));
+        if (target === 'gear') ensureRefGear();
+        document.querySelectorAll('#panel-ref .ref-tab-content').forEach(c =>
+            c.classList.toggle('is-active', c.id === `ref-tab-${target}`));
+    });
+
+    document.getElementById('ref-tables-grid')?.addEventListener('click', e => {
+        const expandBtn = e.target.closest('[data-expand-table]');
+        if (expandBtn) {
+            e.stopPropagation();
+            const el = document.getElementById(`ref-entries-${expandBtn.dataset.expandTable}`);
+            if (el) { el.hidden = !el.hidden; expandBtn.textContent = el.hidden ? '▾' : '▴'; }
+            return;
+        }
+        const head = e.target.closest('[data-roll-table]');
+        if (head) { rollNarDamageTable(head.dataset.rollTable, 1); setActivePanel('chat'); }
+    });
+}
+
+// Poll creation
+(function () {
+    const pollBtn  = document.getElementById('nar-poll-btn');
+    const pollForm = document.getElementById('nar-poll-form');
+    if (!pollBtn || !pollForm) return;
+
+    function clearPollForm() {
+        document.getElementById('poll-question').value = '';
+        document.querySelectorAll('.poll-opt-input').forEach(i => i.value = '');
+    }
+
+    pollBtn.addEventListener('click', () => {
+        window._narTogglePoll?.();
+        if (!pollForm.hidden) document.getElementById('poll-question')?.focus();
+    });
+
+    document.getElementById('btn-poll-cancel')?.addEventListener('click', () => {
+        pollForm.hidden = true;
+        clearPollForm();
+    });
+
+    document.getElementById('btn-poll-submit')?.addEventListener('click', async () => {
+        const arc = window.__arc;
+        if (!arc?.db || !currentRoomCode) return;
+        const question = document.getElementById('poll-question')?.value.trim();
+        if (!question) { document.getElementById('poll-question')?.focus(); return; }
+        const opts = [...document.querySelectorAll('.poll-opt-input')]
+            .map(i => i.value.trim()).filter(Boolean);
+        if (opts.length < 2) { alert('Add at least 2 options.'); return; }
+        if (!arcRateLimitOk()) { console.warn('[ARC] rate-limited, not posting poll'); return; }
+        try {
+            await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'chat', crypto.randomUUID()), {
+                type: 'poll', text: question, options: opts, votes: {},
+                isNarrator: true, time: chatTimestamp(), postedAt: arc.serverTimestamp(),
+            });
+            pollForm.hidden = true;
+            clearPollForm();
+        } catch(e) { console.error('[ARC] post poll:', e); }
+    });
+})();
+
+// Generator sections - collapsible, start closed
+(function bindGenCollapse() {
+    document.querySelectorAll('#panel-generators .section').forEach(sec => {
+        sec.setAttribute('data-collapse', '');
+        sec.addEventListener('click', e => {
+            const head = e.target.closest('.section-head');
+            if (!head) return;
+            if (e.target.closest('button')) {
+                // Auto-expand when tapping an action button while collapsed
+                if (!sec.classList.contains('is-open')) sec.classList.add('is-open');
+                return;
+            }
+            sec.classList.toggle('is-open');
+        });
+    });
+})();
+
+// ── CHAT SUB-TABS (Messages / Initiative) ─────────────────────────────────────
+function setNarChatSubTab(key) {
+    document.querySelectorAll('.chat-sub-tab').forEach(btn => {
+        btn.classList.toggle('is-active', btn.dataset.chatSub === key);
+    });
+    document.querySelectorAll('.chat-sub-content').forEach(el => {
+        el.hidden = el.id !== `chat-sub-${key}`;
+    });
+}
+
+document.querySelectorAll('.chat-sub-tab').forEach(btn => {
+    btn.addEventListener('click', () => setNarChatSubTab(btn.dataset.chatSub));
+});
+
+// ── REFERENCE: GEAR ───────────────────────────────────────────────────────────
+// The narrator had no way to look up a weapon mid-session without leaving the
+// app. Rolls straight to chat, and drops into the party inventory in one tap.
+
+let REF_GEAR = null;
+
+async function ensureRefGear() {
+    if (REF_GEAR) return;
+    try {
+        const [w, a] = await Promise.all([
+            fetch('../data/weapons.json').then(r => r.json()),
+            fetch('../data/armor.json').then(r => r.json()),
+        ]);
+        REF_GEAR = [
+            ...w.map(x => ({ ...x, _kind: 'weapon' })),
+            ...a.map(x => ({ ...x, _kind: 'armor', category: 'armor' })),
+        ];
+        renderRefGear();
+    } catch (e) { console.error('[ARC] gear reference failed to load:', e); }
+}
+
+function renderRefGear() {
+    const el = document.getElementById('ref-gear-list');
+    if (!el) return;
+    if (!REF_GEAR) { el.innerHTML = '<p class="empty-hint">Loading gear…</p>'; ensureRefGear(); return; }
+
+    const q   = (document.getElementById('ref-gear-search')?.value || '').trim().toLowerCase();
+    const cat = document.getElementById('ref-gear-cat')?.value || '';
+
+    const rows = REF_GEAR.filter(g => {
+        if (cat && (g.category || '') !== cat) return false;
+        if (!q) return true;
+        return [g.name, g.category, g.damageType, g.range, g.properties, g.rarity]
+            .filter(Boolean).join(' ').toLowerCase().includes(q);
+    });
+
+    const count = document.getElementById('ref-gear-count');
+    if (count) count.textContent = `${rows.length} of ${REF_GEAR.length}`;
+    if (!rows.length) { el.innerHTML = '<p class="empty-hint">Nothing matches.</p>'; return; }
+
+    el.innerHTML = rows.map(g => {
+        const stat = g._kind === 'armor'
+            ? [g.armor != null ? `AR +${g.armor}` : '', g.movePenalty ? `Move ${g.movePenalty}` : '', g.checkPenalty ? `Check ${g.checkPenalty}` : '']
+                .filter(Boolean).join(' · ')
+            : [g.damage, g.damageType, g.range].filter(Boolean).join(' · ');
+        const sub = [g.category, g.rarity, g.cost != null ? `${g.cost}g` : '', g.properties]
+            .filter(Boolean).join(' · ');
+        return `<details class="ref-gear-row">
+            <summary class="ref-gear-head">
+                <div class="ref-gear-info">
+                    <span class="ref-gear-name">${g.name}</span>
+                    <span class="ref-gear-sub">${sub}</span>
+                </div>
+                <span class="ref-gear-stat">${stat}</span>
+            </summary>
+            <div class="ref-gear-body">
+                ${g.description ? `<p class="ref-gear-desc">${g.description}</p>` : ''}
+                ${g.featureName ? `<p class="ref-gear-feat"><strong>${g.featureName}</strong> ${g.featureEffect || ''}</p>` : ''}
+                <div class="ref-gear-acts">
+                    ${g.damage ? `<button class="ghost-btn" data-gear-roll="${escAttr(g.name)}" type="button">🎲 Roll damage</button>` : ''}
+                    <button class="ghost-btn" data-gear-chat="${escAttr(g.name)}" type="button">Post to chat</button>
+                    <button class="ghost-btn" data-gear-loot="${escAttr(g.name)}" type="button">+ Party inventory</button>
+                </div>
+            </div>
+        </details>`;
+    }).join('');
+}
+
+function refGearByName(name) { return REF_GEAR?.find(g => g.name === name) || null; }
+
+document.getElementById('ref-gear-search')?.addEventListener('input', renderRefGear);
+document.getElementById('ref-gear-cat')?.addEventListener('change', renderRefGear);
+
+document.getElementById('ref-gear-list')?.addEventListener('click', async e => {
+    const rollBtn = e.target.closest('[data-gear-roll]');
+    if (rollBtn) {
+        const g = refGearByName(rollBtn.dataset.gearRoll);
+        if (!g) return;
+        const roll = rollDiceNotation(g.damage);
+        postToSharedChat({
+            type: 'dice', charName: narSpeakingAs || 'Narrator',
+            notation: g.damage, rolls: roll?.rolls || [], bonus: roll?.bonus || 0,
+            total: roll?.total ?? 0, time: chatTimestamp(),
+        });
+        setActivePanel('chat');
+        return;
+    }
+    const chatBtn = e.target.closest('[data-gear-chat]');
+    if (chatBtn) {
+        const g = refGearByName(chatBtn.dataset.gearChat);
+        if (!g) return;
+        postToSharedChat({
+            type: 'feature', name: g.name,
+            tags: [g.category, g.damage, g.damageType, g.range, g.rarity].filter(Boolean),
+            desc: [g.description, g.featureName && `${g.featureName}: ${g.featureEffect || ''}`].filter(Boolean).join('\n'),
+            time: chatTimestamp(), diceRolls: [],
+        });
+        setActivePanel('chat');
+        return;
+    }
+    const lootBtn = e.target.closest('[data-gear-loot]');
+    if (lootBtn) {
+        const g = refGearByName(lootBtn.dataset.gearLoot);
+        if (!g) return;
+        const entry = {
+            name: g.name, desc: g.description || '', amount: 1, bulk: g.bulk ?? 1,
+            category: g._kind === 'armor' ? 'armor' : 'weapon',
+            damage: g.damage || '', damageType: g.damageType || '', range: g.range || '',
+            properties: g.properties || '', check: g.check || '',
+            armorRating: g.armor || 0,
+        };
+        const arc = window.__arc;
+        if (currentRoomCode && arc?.db) {
+            try {
+                await arc.setDoc(arc.doc(arc.db, 'rooms', currentRoomCode, 'loot', crypto.randomUUID()),
+                    { ...entry, addedAt: arc.serverTimestamp() });
+            } catch (err) { console.error('[ARC] gear -> loot failed:', err); }
+        } else {
+            nar.inventory.push({ id: crypto.randomUUID(), ...entry });
+            saveNar(); renderInventory();
+        }
+        showChatToast(g.name, 'Added to party inventory', () => setActivePanel('party'), 'Show');
+    }
+});
+
+function openInitiative() {
+    setActivePanel('initiative');
+}
+
+document.getElementById('btn-monsters-open-initiative')?.addEventListener('click', openInitiative);
+
+// ── SPEAKING AS + TARGET ──────────────────────────────────────────────────────
+
+function updateNarContextBar() {
+    const bar         = document.getElementById('nar-context-bar');
+    const voiceChip   = document.getElementById('nar-voice-chip');
+    const voiceLabel  = document.getElementById('nar-voice-chip-label');
+    const targetChip  = document.getElementById('nar-target-chip');
+    const targetLabel = document.getElementById('nar-target-chip-label');
+    if (!bar) return;
+    if (voiceChip && voiceLabel) {
+        voiceChip.hidden  = !narSpeakingAs;
+        voiceLabel.textContent = narSpeakingAs ? `🎭 ${narSpeakingAs}` : '';
+    }
+    if (targetChip && targetLabel) {
+        targetChip.hidden  = !narTarget;
+        targetLabel.textContent = narTarget ? `🎯 ${narTarget}` : '';
+    }
+    bar.hidden = !narSpeakingAs && !narTarget;
+}
+
+function buildNarVoicePanel() {
+    const list = document.getElementById('nar-voice-list');
+    if (!list) return;
+    const npcs   = nar.characters.filter(c => c.role === 'npc').map(n => n.name).filter(Boolean);
+    const party  = nar.partyManual.map(p => p.name).filter(Boolean);
+    const voices = ['◆ Narrator', ...party, ...npcs];
+    list.innerHTML = voices.map(v =>
+        `<button class="voice-pick-btn${v === (narSpeakingAs ? `🎭 ${narSpeakingAs}` : '◆ Narrator') ? ' is-active' : ''}" data-voice="${v}" type="button">${v}</button>`
+    ).join('');
+    list.querySelectorAll('.voice-pick-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            narSpeakingAs = btn.dataset.voice === '◆ Narrator' ? null : btn.dataset.voice;
+            document.getElementById('nar-voice-panel').hidden = true;
+            updateNarContextBar();
+        });
+    });
+}
+
+function buildNarTargetPanel() {
+    const list = document.getElementById('nar-target-list');
+    if (!list) return;
+    const targets = nar.encounter.filter(e => !e.hidden).map(e => e.name);
+    nar.partyManual.forEach(p => { if (!targets.includes(p.name)) targets.push(p.name); });
+    if (!targets.length) { list.innerHTML = '<p class="empty-hint empty-hint--pad8">No combatants yet.</p>'; return; }
+    list.innerHTML = targets.map(t =>
+        `<button class="voice-pick-btn${narTarget === t ? ' is-active' : ''}" data-target="${t}" type="button">🎯 ${t}</button>`
+    ).join('');
+    list.querySelectorAll('.voice-pick-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            narTarget = btn.dataset.target;
+            document.getElementById('nar-target-panel').hidden = true;
+            updateNarContextBar();
+        });
+    });
+}
+
+// Toolbar integration for voice and target
+(function() {
+    const panels = { voice: 'nar-voice-panel', target: 'nar-target-panel' };
+    function closeSpeakTargetPanels() {
+        Object.values(panels).forEach(id => { const el = document.getElementById(id); if (el) el.hidden = true; });
+    }
+
+    document.getElementById('nar-voice-btn')?.addEventListener('click', e => {
+        e.stopPropagation();
+        const panel = document.getElementById('nar-voice-panel');
+        const isHidden = panel.hidden;
+        closeSpeakTargetPanels();
+        if (isHidden) { buildNarVoicePanel(); panel.hidden = false; }
+    });
+
+    document.getElementById('nar-target-btn')?.addEventListener('click', e => {
+        e.stopPropagation();
+        const panel = document.getElementById('nar-target-panel');
+        const isHidden = panel.hidden;
+        closeSpeakTargetPanels();
+        if (isHidden) { buildNarTargetPanel(); panel.hidden = false; }
+    });
+
+    // Custom voice on Enter
+    document.getElementById('nar-voice-custom')?.addEventListener('keydown', e => {
+        if (e.key !== 'Enter') return;
+        const val = e.target.value.trim();
+        if (!val) return;
+        narSpeakingAs = val;
+        e.target.value = '';
+        document.getElementById('nar-voice-panel').hidden = true;
+        updateNarContextBar();
+    });
+
+    document.getElementById('nar-voice-dismiss')?.addEventListener('click', () => { narSpeakingAs = null; updateNarContextBar(); });
+    document.getElementById('nar-target-dismiss')?.addEventListener('click', () => { narTarget = null; updateNarContextBar(); });
+
+    // Close panels on outside click - but not when clicking inside the panels themselves
+    document.addEventListener('click', e => {
+        if (e.target.closest('#nar-voice-panel, #nar-voice-btn, #nar-target-panel, #nar-target-btn')) return;
+        closeSpeakTargetPanels();
+    });
+})();
+
+// Mobile swipe left/right to cycle panels
+(function () {
+    const ORDER = ['chat', 'party', 'generators', 'monsters', 'initiative', 'ref'];
+    let sx = 0, sy = 0, live = false;
+    document.addEventListener('touchstart', e => {
+        if (e.target.closest('input, select, textarea, button, [role="slider"]')) { live = false; return; }
+        sx = e.touches[0].clientX; sy = e.touches[0].clientY; live = true;
+    }, { passive: true });
+    document.addEventListener('touchend', e => {
+        if (!live) return; live = false;
+        const dx = e.changedTouches[0].clientX - sx;
+        const dy = e.changedTouches[0].clientY - sy;
+        if (Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx)) return;
+        const cur = document.querySelector('.nav-btn.is-active')?.dataset.nav;
+        const idx = ORDER.indexOf(cur);
+        if (idx === -1) return;
+        const next = ORDER[idx + (dx < 0 ? 1 : -1)];
+        if (next) setActivePanel(next);
+    }, { passive: true });
+})();

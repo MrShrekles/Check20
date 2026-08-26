@@ -1,0 +1,192 @@
+/* ═══════════════════════════════════════════════════════════
+   GLOSSARY PAGE
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Toolbar ── */
+.gloss-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--dark-1);
+    border-bottom: 1px solid var(--theme-2);
+    padding: 0.5rem var(--padding);
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.gloss-type-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.gloss-tab {
+    padding: 0.3rem 0.85rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--dark-2);
+    color: var(--text-cream);
+    border: 1px solid var(--theme-2);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background .12s, color .12s, border-color .12s;
+}
+
+.gloss-tab:hover  { background: var(--theme-1); color: var(--gold); border-color: var(--gold); }
+.gloss-tab.active { background: var(--theme-2); color: var(--gold); border-color: var(--gold); }
+
+.gloss-search-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+#gloss-search {
+    flex: 1;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.82rem;
+    background: var(--theme-1);
+    color: var(--white);
+    border: 1px solid var(--theme-2);
+    border-radius: 3px;
+    outline: none;
+    transition: border-color .15s;
+}
+
+#gloss-search:focus { border-color: var(--theme-3); }
+
+.gloss-count {
+    font-size: 0.72rem;
+    color: var(--gold);
+    font-family: monospace;
+    white-space: nowrap;
+}
+
+/* ── Card grid ── */
+#gloss-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+    gap: 0.55rem;
+    padding: 0.75rem var(--padding) 2rem;
+    align-items: start;
+}
+
+/* ── Group header (spans full grid width) ── */
+.gloss-group-header {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.3rem 0 0.2rem;
+    margin-top: 0.4rem;
+    border-bottom: 1px solid var(--theme-2);
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-cream);
+    opacity: .6;
+}
+
+.gloss-group-header:first-child { margin-top: 0; }
+
+.gloss-group-count {
+    font-size: 0.62rem;
+    font-family: monospace;
+    color: var(--gold);
+    opacity: .8;
+}
+
+.gloss-no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-cream);
+    opacity: .45;
+    padding: 3rem 0;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+/* ── Individual card ── */
+.gloss-card {
+    --gc: var(--theme-2);
+    background: var(--theme-1);
+    border: 1px solid var(--theme-2);
+    border-left: 3px solid var(--gc);
+    border-radius: 4px;
+    padding: 0.55rem 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    transition: border-color .12s;
+}
+
+.gloss-card:hover {
+    border-color: var(--theme-3);
+    border-left-color: var(--gc);
+}
+
+.gloss-card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.gloss-term {
+    font-size: 0.88rem;
+    font-weight: bold;
+    color: var(--gold);
+    line-height: 1.25;
+}
+
+.gloss-badge {
+    font-size: 0.56rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--white);
+    background: var(--gc);
+    padding: 2px 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    align-self: flex-start;
+    opacity: .9;
+}
+
+.gloss-category {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--text-cream);
+    opacity: .45;
+    line-height: 1;
+}
+
+.gloss-def {
+    font-size: 0.78rem;
+    color: var(--text-cream);
+    line-height: 1.55;
+    margin: 0.1rem 0 0;
+}
+
+.gloss-duration {
+    font-size: 0.67rem;
+    font-style: italic;
+    color: var(--text-cream);
+    opacity: .55;
+    margin-top: 0.1rem;
+    padding-top: 0.2rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ── Search highlight ── */
+.gloss-card mark {
+    background: rgba(200,160,40,0.3);
+    color: var(--gold);
+    border-radius: 2px;
+}

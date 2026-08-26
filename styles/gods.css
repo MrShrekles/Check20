@@ -1,0 +1,382 @@
+:root {
+    --dark: #1e1e1e;
+    --ink: #eee;
+    --theme: #466464;
+    --theme-2: #2b3a3a;
+
+    --card-bg: #1d2425;
+    --card-bd: #2a3b3d;
+    --head-bg1: #2a3a3d;
+    --head-bg2: #203133;
+    --head-bd: #203033;
+
+    --chip-bg: #273629;
+    --chip-bd: #6a7b55;
+    --chip-ink: #e9f0d8;
+}
+
+body {
+    margin: 0;
+    background: var(--dark);
+    color: var(--ink);
+    font: 14px/1.45 system-ui, sans-serif;
+}
+
+/* Toolbar */
+.bar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #000;
+    background: linear-gradient(#111, #191c1c);
+}
+
+input,
+select,
+button {
+    background: #222;
+    color: #eee;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+button {
+    background: var(--theme);
+    border-color: #1c3f3f;
+    cursor: pointer
+}
+
+button:hover {
+    filter: brightness(1.05)
+}
+
+.muted {
+    opacity: .7
+}
+
+/* Grid */
+#wrap {
+    padding: 12px
+}
+
+#list {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+}
+
+/* Group headers (realm bars) */
+.group-head {
+    grid-column: 1/-1;
+    margin: 8px 0 0;
+    padding: 6px 10px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    background: linear-gradient(180deg, #314244, #273435);
+    border: 1px solid #253133;
+    border-radius: 10px;
+    color: #d9d7b9;
+}
+
+/* Card shell */
+.card {
+    position: relative;
+    overflow: hidden;
+    background: var(--card-bg);
+    border: 1px solid var(--card-bd);
+    border-radius: 14px;
+}
+
+/* Header strip (title left, origin pills right) */
+.card .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 10px;
+    background: linear-gradient(180deg, var(--head-bg1), var(--head-bg2));
+    border-bottom: 1px solid var(--head-bd);
+}
+
+.head .title {
+    font-size: 18px;
+    font-weight: 800
+}
+
+/* Cover banner */
+.cover {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid #243537;
+}
+
+/* Rows */
+.row {
+    padding: 8px 10px
+}
+
+.meta {
+    opacity: .8;
+    font-size: 12px;
+    margin-top: 2px
+}
+
+/* Chips */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px
+}
+
+.chip {
+    padding: 2px 8px;
+    font-size: 11px;
+    border-radius: 999px;
+    background: var(--chip-bg);
+    color: var(--chip-ink);
+    border: 1px solid var(--chip-bd);
+}
+
+.chip-child {
+    background: var(--warm-1);
+}
+
+.chip-lineage {
+    background: var(--gold-2);
+}
+
+.chip-lineage,
+.chip-child {
+    text-decoration: none
+}
+
+/* Origin pills (top-right in header) */
+.origin-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end
+}
+
+.origin-tag {
+    padding: 2px 8px;
+    font-size: 11px;
+    color: #eee;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .15);
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+/* Read-full clamp (standard + -webkit) */
+.god-body.collapsed {
+    display: -webkit-box;
+    display: box;
+    display: -moz-box;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    overflow: hidden;
+    line-clamp: 4;
+    -webkit-line-clamp: 4;
+}
+
+.read-more {
+    display: inline-block;
+    margin: 6px 10px 0;
+    font-size: 12px;
+    opacity: .9;
+    cursor: pointer
+}
+
+/* Tools */
+.tools {
+    display: flex;
+    gap: 8px;
+    padding: 8px 10px 12px
+}
+
+.tools button {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #2f4446;
+    background: #244044;
+    color: #eee;
+    cursor: pointer;
+}
+
+/* ── View toggle ── */
+#view-toggle {
+    display: flex;
+    gap: 2px;
+    border: 1px solid #2f4446;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.view-btn {
+    background: #1e2e30;
+    border: none;
+    border-radius: 0;
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.view-btn.active {
+    background: var(--theme);
+    color: #eee;
+}
+
+/* ── Realm tabs ── */
+#realm-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 12px;
+    background: #161c1c;
+    border-bottom: 1px solid #1e2c2e;
+}
+
+.realm-tab {
+    padding: 4px 14px;
+    font-size: 12px;
+    border-radius: 999px;
+    border: 1px solid #2a3f42;
+    background: #1a2829;
+    color: #aac;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+}
+
+.realm-tab:hover {
+    background: #243535;
+    color: #eee;
+}
+
+.realm-tab.active {
+    background: var(--theme);
+    border-color: #2d5555;
+    color: #eee;
+    font-weight: 600;
+}
+
+/* ── Children heading ── */
+.children-head {
+    margin: 4px 10px 0;
+    font-size: 12px;
+    opacity: .6;
+    font-weight: 600;
+}
+
+/* ── Tree view ── */
+#tree-wrap {
+    padding: 16px;
+}
+
+.tree-container {
+    max-width: 960px;
+}
+
+.tree-empty {
+    opacity: .6;
+    padding: 20px;
+}
+
+.tree-orphan-head {
+    margin: 24px 0 8px;
+    font-size: 12px;
+    opacity: .5;
+    letter-spacing: .5px;
+    text-align: center;
+}
+
+/* Reset list styles for tree */
+.tree, .tree ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
+
+.tree-root {
+    padding-left: 0;
+}
+
+/* Indent child trees */
+.tree .tree {
+    padding-left: 28px;
+    position: relative;
+}
+
+/* Vertical line down the left of each child group */
+.tree .tree::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 8px;
+    width: 1px;
+    background: var(--theme);
+    opacity: .5;
+}
+
+.tree-item {
+    position: relative;
+    padding: 4px 0;
+}
+
+/* Horizontal branch line from vertical trunk to node */
+.tree .tree-item::before {
+    content: '';
+    position: absolute;
+    left: -18px;
+    top: 16px;
+    width: 18px;
+    height: 1px;
+    background: var(--theme);
+    opacity: .5;
+}
+
+.tree-node {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 5px 10px;
+    border: 1px solid #2a3b3d;
+    border-radius: 10px;
+    cursor: default;
+    max-width: 600px;
+    transition: border-color .15s;
+}
+
+.tree-node:hover {
+    border-color: var(--theme);
+}
+
+.tree-name {
+    font-weight: 700;
+    font-size: 13px;
+    color: #eef;
+    text-decoration: none;
+}
+
+.tree-name:hover {
+    text-decoration: underline;
+    color: #adf;
+}
+
+.tree-rank {
+    font-size: 11px;
+    opacity: .55;
+    white-space: nowrap;
+}

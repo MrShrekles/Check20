@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Species of Shek</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/codex-ui.css">
+    <link rel="stylesheet" href="styles/spells.css">
+    <link rel="stylesheet" href="styles/species.css">
+    <link rel="icon" href="/assets/icons/favicon.png" type="image/png">
+    <script src="scripts/sidebar.js" defer></script>
+    <script src="scripts/header.js" defer></script>
+    <script src="scripts/tooltips.js" defer></script>
+    <script src="scripts/codex-ui.js" defer></script>
+    <script src="scripts/arc-vocab.js" defer></script>
+    <script src="scripts/species-data.js" defer></script>
+    <script src="scripts/species-codex-render.js" defer></script>
+    <script src="scripts/species-ui.js" defer></script>
+    <script src="scripts/footer.js" defer></script>
+</head>
+
+<body data-page-title="Species">
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
+    <main>
+        <div class="species-sticky-header">
+            <div class="species-toolbar-main">
+                <button class="species-filter-toggle" id="species-filter-toggle">
+                    <span class="filter-pip"></span>
+                    Filters
+                    <span class="filter-chevron">▼</span>
+                </button>
+                <input id="species-search" type="search" placeholder="Search name, traits…" />
+                <select id="species-sort">
+                    <option value="name">Sort: Name</option>
+                    <option value="rarity">Sort: Rarity</option>
+                    <option value="lineage">Sort: Lineage</option>
+                </select>
+                <div class="codex-size-wrap">
+                    <span>Size</span>
+                    <div class="codex-size-btns" id="codex-size-btns">
+                        <button class="codex-size-btn" data-size="small">S</button>
+                        <button class="codex-size-btn active" data-size="medium">M</button>
+                        <button class="codex-size-btn" data-size="large">L</button>
+                    </div>
+                </div>
+                <span id="species-count"></span>
+            </div>
+            <nav id="lineage-tabs" class="lineage-tabs"></nav>
+        </div>
+
+        <div class="species-filter-panel" id="species-filter-panel">
+            <div class="species-filter-actions">
+                <button id="species-clear">Clear</button>
+                <button id="collapse-all">Collapse all</button>
+                <button id="expand-all">Expand all</button>
+            </div>
+            <div class="filter-group" data-key="option">
+                <h4>Option</h4>
+            </div>
+        </div>
+
+        <section id="species-sections" class="species-sections"></section>
+
+        <dialog id="species-lightbox">
+            <button class="close" aria-label="Close">×</button>
+            <img id="lightbox-img" alt="">
+            <div id="lightbox-caption"></div>
+            <nav>
+                <button id="lb-prev">‹</button>
+                <button id="lb-next">›</button>
+            </nav>
+        </dialog>
+    </main>
+    <div id="footer-placeholder"></div>
+
+
+</body>
+</html>

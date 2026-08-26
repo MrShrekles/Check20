@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Photoshop sources - large binaries git cannot delta-compress.
+# Dropbox already versions these; the exported web assets are tracked.
+*.psd
+*.psb
+
+# OS / editor cruft
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp
+*~
+
+# Local env
+.env
+.env.local
+
+# Shek-Forge is its own git repository with its own history
+shek-forge/
