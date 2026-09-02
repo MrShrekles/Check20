@@ -24,8 +24,11 @@ service cloud.firestore {
     function isSignedIn() { return request.auth != null; }
     function isAdmin() { return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
     function isOwner(uid) { return isSignedIn() && request.auth.uid == uid; }
+    // Old rooms created from home.js carry hostUid and no narratorUid, so a bare
+    // .narratorUid lookup returns null and silently denies the real narrator.
     function roomNarrator(roomCode) {
-      return get(/databases/$(database)/documents/rooms/$(roomCode)).data.narratorUid;
+      return get(/databases/$(database)/documents/rooms/$(roomCode)).data
+        .get('narratorUid', get(/databases/$(database)/documents/rooms/$(roomCode)).data.get('hostUid', ''));
     }
 
     // ── ACCOUNTS ─────────────────────────────────────────────────────────────
@@ -85,13 +88,24 @@ service cloud.firestore {
       // Reading is how a player checks a code before joining, so it cannot be
       // narrator-only. It does now require an account.
       allow read: if isSignedIn();
-      allow create: if isSignedIn() && request.resource.data.narratorUid == request.auth.uid;
+      // Accepts either ownership field on purpose. The deployed site still
+      // writes hostUid from home.js; only the undeployed branch writes
+      // narratorUid everywhere. Rules apply to the project, not to a deploy, so
+      // requiring narratorUid here would break Create Room on the live site the
+      // moment this is published. Drop the hostUid arm once the new code ships.
+      allow create: if isSignedIn() && (
+        request.resource.data.get('narratorUid', '') == request.auth.uid
+        || request.resource.data.get('hostUid', '') == request.auth.uid
+      );
 
       // Players legitimately write to the room doc: lastActivityAt on join,
       // emoji reactions, encounter sync. Narrowing this to the narrator would
       // break joining outright.
       allow update: if isSignedIn();
-      allow delete: if isSignedIn() && resource.data.narratorUid == request.auth.uid;
+      allow delete: if isSignedIn() && (
+        resource.data.get('narratorUid', '') == request.auth.uid
+        || resource.data.get('hostUid', '') == request.auth.uid
+      );
 
       match /players/{uid} {
         allow read: if isSignedIn();
