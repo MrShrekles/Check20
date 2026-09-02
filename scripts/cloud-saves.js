@@ -173,8 +173,56 @@
         };
     }
 
+    // ── ACCOUNT DELETION ──────────────────────────────────────────────────────
+
+    /* Removes everything this account owns, then the account itself.
+     *
+     * Chat messages are deliberately left in place. They live inside other
+     * people's session logs, and scrubbing them would tear holes in a shared
+     * record that is not solely this user's to edit. What goes is the identity
+     * behind them: the users doc, the characters, and the auth account. Rooms
+     * this account ran are closed rather than deleted, for the same reason.
+     *
+     * Characters saved on the device stay on the device - deleting an account
+     * is not the same as asking to lose your characters. */
+    async function deleteAccount() {
+        if (!available()) return { ok: false, reason: 'unavailable' };
+        const a = arc();
+        const uid = a.uid;
+
+        try {
+            const chars = await a.getDocs(a.collection(a.db, 'users', uid, 'characters'));
+            for (const d of chars.docs) {
+                await a.deleteDoc(a.doc(a.db, 'users', uid, 'characters', d.id));
+            }
+
+            // Close rooms rather than delete them - players may still want the log.
+            const rooms = await a.getDocs(a.query(
+                a.collection(a.db, 'rooms'), a.where('narratorUid', '==', uid)));
+            for (const d of rooms.docs) {
+                await a.updateDoc(a.doc(a.db, 'rooms', d.id), { status: 'closed' }).catch(() => {});
+            }
+
+            await a.deleteDoc(a.doc(a.db, 'users', uid)).catch(() => {});
+        } catch (e) {
+            console.error('[ARC] account data delete failed:', e);
+            return { ok: false, reason: 'data' };
+        }
+
+        // Firebase refuses this on a stale session; the caller re-authenticates
+        // and retries rather than leaving a half-deleted account behind.
+        try {
+            await a.deleteUser(a.auth.currentUser);
+            return { ok: true };
+        } catch (e) {
+            if (e?.code === 'auth/requires-recent-login') return { ok: false, reason: 'recent-login' };
+            console.error('[ARC] account delete failed:', e);
+            return { ok: false, reason: 'auth' };
+        }
+    }
+
     window.ArcCloud = {
         available, push, remove, list, get, diff,
-        uploadAllLocal, ensureUserDoc, stripForCloud,
+        uploadAllLocal, ensureUserDoc, stripForCloud, deleteAccount,
     };
 })();

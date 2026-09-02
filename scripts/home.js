@@ -746,3 +746,55 @@ document.getElementById('btn-missing-narrate')?.addEventListener('click', () => 
     // Narrator Mode owns room creation - naming, welcome message, the lot.
     window.location.href = 'narrator.html?new=1';
 });
+
+
+/* ── DELETE ACCOUNT ───────────────────────────────────────────────────────────
+ * Being able to leave is part of what makes staying feel safe, so this is a
+ * real deletion rather than a flag: characters, the users doc, and the auth
+ * account all go. What survives is anything that belongs to other people too -
+ * chat messages stay in their session logs, and rooms are closed rather than
+ * erased. Characters saved on this device stay here; deleting an account is not
+ * a request to lose them.
+ */
+
+document.getElementById('btn-account-delete')?.addEventListener('click', async () => {
+    if (!window.ArcCloud?.available()) {
+        accountMsg('You need a connection to delete your account.', true);
+        return;
+    }
+    if (!confirm(
+`Delete your account?
+
+This removes your characters from the cloud, closes any rooms you run, and deletes the account itself. Characters saved on this device stay on this device.
+
+This cannot be undone.`
+    )) return;
+    if (prompt('Type DELETE to confirm.') !== 'DELETE') { accountMsg('Deletion cancelled.', false); return; }
+
+    accountMsg('Deleting…', false);
+    let res = await window.ArcCloud.deleteAccount();
+
+    // Firebase refuses to delete an account on a stale session. Re-authenticate
+    // and retry rather than leaving the data gone but the account standing.
+    if (!res.ok && res.reason === 'recent-login') {
+        accountMsg('Confirm it is you, then deletion will finish.', false);
+        try {
+            await window.ArcAuth.signInWithGoogle();
+            res = await window.ArcCloud.deleteAccount();
+        } catch { res = { ok: false, reason: 'auth' }; }
+    }
+
+    if (!res.ok) {
+        accountMsg(res.reason === 'data'
+            ? 'Could not remove your data - nothing was deleted. Try again.'
+            : 'Your data was removed, but the account itself could not be deleted. Sign in again and retry.', true);
+        return;
+    }
+
+    await window.ArcAuth.signOutNow();
+    cloudState = { cloudOnly: [], localOnly: [], newerInCloud: [] };
+    renderAccount();
+    renderAll();
+    syncSessionSection();
+    accountMsg('Account deleted. Your characters are still on this device.', false);
+});

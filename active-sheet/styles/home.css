@@ -628,3 +628,8 @@ body {
     text-decoration: underline;
     cursor: pointer;
 }
+
+.home-btn-sm--danger {
+    border-color: rgba(224, 138, 138, 0.45);
+    color: #e08a8a;
+}

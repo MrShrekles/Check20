@@ -2,8 +2,47 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // ─────────────────────────────────────────────────────────────────────────
+    // STAGE 1 of 2.
+    //
+    // This pass closes the two biggest holes without an all-or-nothing rewrite:
+    //   1. users/{uid}/** (character data) becomes owner-only. It was world
+    //      readable and writable by anyone who knew a uid.
+    //   2. The catch-all stops allowing unauthenticated access. Every path now
+    //      requires a signed-in account at minimum.
+    //
+    // It deliberately does NOT lock every room subcollection down to its owner
+    // yet. Room membership is not modelled anywhere in the data - a player has
+    // no server-visible claim on a room - so per-member rules would need a
+    // members list written first. Stage 2 is that work. Tightening it here,
+    // blind, would break live sessions with no way to tell in advance.
+    //
+    // Rules deploys are global and instant. Save the currently published
+    // ruleset before publishing this one - that is the rollback.
+    // ─────────────────────────────────────────────────────────────────────────
+
     function isSignedIn() { return request.auth != null; }
     function isAdmin() { return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
+    function isOwner(uid) { return isSignedIn() && request.auth.uid == uid; }
+    function roomNarrator(roomCode) {
+      return get(/databases/$(database)/documents/rooms/$(roomCode)).data.narratorUid;
+    }
+
+    // ── ACCOUNTS ─────────────────────────────────────────────────────────────
+    // Characters live here. Nobody but the owner touches them - not other
+    // players, not narrators. Sharing, when it is built, will need its own rule
+    // rather than a loophole in this one.
+
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+
+      match /characters/{charId} {
+        allow read, write: if isOwner(uid);
+      }
+    }
+
+    // ── MODERATION ───────────────────────────────────────────────────────────
+    // Unchanged from the published ruleset. These work; leave them alone.
 
     match /admins/{uid} {
       allow read: if isSignedIn();
@@ -28,50 +67,88 @@ service cloud.firestore {
       allow read: if isSignedIn() && (request.auth.uid == uid || isAdmin());
       allow create, update: if isSignedIn() && request.auth.uid == uid
         && request.resource.data.keys().hasOnly(['count','lastStrikeAt','lastReason']);
+      allow delete: if isAdmin();          // lifting an appeal clears the strikes
     }
 
     match /reports/{reportId} {
+      // Covers user reports, auto-mod self-reports, and ban appeals - all three
+      // are created by the reporting user with status 'open'.
       allow create: if isSignedIn()
                     && request.resource.data.reportedBy == request.auth.uid
                     && request.resource.data.status == 'open';
       allow read, update, delete: if isAdmin();
     }
 
-    // Real server-side ban enforcement, layered on top of the client-side chat-cards.js gate.
-    // An expired temporary ban (expiresAt < now) no longer blocks sends.
-    match /rooms/{roomCode}/chat/{msgId} {
-      allow create: if isSignedIn() && (
-        !exists(/databases/$(database)/documents/bans/$(request.auth.uid))
-        || (
-          get(/databases/$(database)/documents/bans/$(request.auth.uid)).data.expiresAt is number
-          && get(/databases/$(database)/documents/bans/$(request.auth.uid)).data.expiresAt < request.time.toMillis()
-        )
-      );
-      allow read: if true;
+    // ── ROOMS ────────────────────────────────────────────────────────────────
+
+    match /rooms/{roomCode} {
+      // Reading is how a player checks a code before joining, so it cannot be
+      // narrator-only. It does now require an account.
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && request.resource.data.narratorUid == request.auth.uid;
+
+      // Players legitimately write to the room doc: lastActivityAt on join,
+      // emoji reactions, encounter sync. Narrowing this to the narrator would
+      // break joining outright.
       allow update: if isSignedIn();
+      allow delete: if isSignedIn() && resource.data.narratorUid == request.auth.uid;
+
+      match /players/{uid} {
+        allow read: if isSignedIn();
+        allow write: if isOwner(uid) || roomNarrator(roomCode) == request.auth.uid;
+      }
+
+      match /chat/{msgId} {
+        // Server-side ban enforcement, layered over the chat-cards.js gate.
+        // An expired temporary ban no longer blocks sends.
+        allow create: if isSignedIn() && (
+          !exists(/databases/$(database)/documents/bans/$(request.auth.uid))
+          || (
+            get(/databases/$(database)/documents/bans/$(request.auth.uid)).data.expiresAt is number
+            && get(/databases/$(database)/documents/bans/$(request.auth.uid)).data.expiresAt < request.time.toMillis()
+          )
+        );
+        allow read: if isSignedIn();
+        allow update: if isSignedIn();     // reactions, poll votes, soft-delete
+        allow delete: if isSignedIn() && roomNarrator(roomCode) == request.auth.uid;
+      }
+
+      // Handouts stay secret until the narrator reveals them. Players query with
+      // where('revealed','==',true); the narrator reads the whole collection.
+      match /handouts/{handoutId} {
+        allow read: if resource.data.revealed == true
+                    || (isSignedIn() && request.auth.uid == roomNarrator(roomCode));
+        allow write: if isSignedIn();
+      }
+
+      // Direct player-to-player item handoffs. Only the recipient reads or
+      // clears their own gifts; any signed-in member can send one.
+      match /gifts/{giftId} {
+        allow read, delete: if isSignedIn() && request.auth.uid == resource.data.toUid;
+        allow create: if isSignedIn() && request.resource.data.fromUid == request.auth.uid;
+      }
+
+      match /loot/{lootId} {
+        allow read, write: if isSignedIn();
+      }
     }
 
-    // Handouts stay secret until the narrator reveals them. Players query with
-    // where('revealed','==',true); the narrator reads the whole collection via narratorUid.
-    match /rooms/{roomCode}/handouts/{handoutId} {
-      allow read: if resource.data.revealed == true
-                  || (isSignedIn()
-                      && request.auth.uid == get(/databases/$(database)/documents/rooms/$(roomCode)).data.narratorUid);
-      allow write: if isSignedIn();
+    // ── ANALYTICS ────────────────────────────────────────────────────────────
+    // Write-only from the client. Only The Seven read it back.
+
+    match /analytics/{eventId} {
+      allow create: if isSignedIn();
+      allow read, update, delete: if isAdmin();
     }
 
-    // Direct player-to-player item handoffs. Only the recipient can read or clear
-    // their own gifts; any signed-in member of the room can send one.
-    match /rooms/{roomCode}/gifts/{giftId} {
-      allow read, delete: if isSignedIn() && request.auth.uid == resource.data.toUid;
-      allow create: if isSignedIn() && request.resource.data.fromUid == request.auth.uid;
-    }
+    // ── EVERYTHING ELSE ──────────────────────────────────────────────────────
+    // Previously `if true`, which allowed unauthenticated read and write to any
+    // path in the project. Requiring an account is a real improvement and is
+    // safe against paths this inventory missed. Stage 2 replaces this with a
+    // deny once room membership is modelled.
 
-    // PRESERVES CURRENT OPEN BEHAVIOR for every other path (rooms/*, players, presence,
-    // analytics, etc.). REVIEW your current Console rules before deploying this file — if your
-    // project's existing rules differ from "allow everything", adjust this catch-all to match.
     match /{document=**} {
-      allow read, write: if true;
+      allow read, write: if isSignedIn();
     }
   }
 }

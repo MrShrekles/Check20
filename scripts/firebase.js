@@ -17,7 +17,7 @@ import {
 import {
     getAuth, onAuthStateChanged, signInAnonymously,
     GoogleAuthProvider, linkWithPopup, signInWithPopup,
-    signInWithRedirect, getRedirectResult, signOut, updateProfile,
+    signInWithRedirect, getRedirectResult, signOut, updateProfile, deleteUser,
 } from './vendor/firebase/firebase-auth.js';
 
 const firebaseConfig = {
@@ -40,7 +40,7 @@ window.__arc = {
     query, orderBy, limit, getDocs, writeBatch, where, arrayUnion, arrayRemove,
     auth, GoogleAuthProvider, linkWithPopup, signInWithPopup,
     signInWithRedirect, getRedirectResult, signInAnonymously, signOut,
-    onAuthStateChanged, updateProfile,
+    onAuthStateChanged, updateProfile, deleteUser,
 
     // A real account, not a leftover anonymous session. Anything that touches
     // other people (rooms, chat, cloud saves) gates on this; solo play does not.
