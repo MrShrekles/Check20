@@ -119,6 +119,18 @@
                 </div>
                 <button id="btn-create-room" class="home-btn" type="button" disabled>+ Create Room</button>
 
+                <!-- Code matched no room. Not a dead end - offer them their own table. -->
+                <div id="home-room-missing" class="home-confirm-box" hidden>
+                    <p class="home-confirm-text">
+                        No room called <strong id="missing-room-code"></strong>. Double-check the code
+                        with your group — or start your own table.
+                    </p>
+                    <div class="home-confirm-actions">
+                        <button id="btn-missing-narrate" class="home-btn home-btn--primary" type="button">Start one as Narrator</button>
+                        <button id="btn-missing-dismiss" class="home-btn home-btn--ghost" type="button">Try again</button>
+                    </div>
+                </div>
+
                 <!-- Are you sure confirm (shown before creating when already in a room) -->
                 <div id="home-create-confirm" class="home-confirm-box" hidden>
                     <p class="home-confirm-text">You're already in room <strong id="confirm-room-code"></strong>. Creating a new room means you'll need a new code. Are you sure?</p>

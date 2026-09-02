@@ -373,7 +373,22 @@ function arcInitBanNotice(containerId) {
 
     const update = () => {
         if (!arcCanSendChat()) {
-            notice.textContent = arcBanMessage();
+            notice.innerHTML = '';
+            const text = document.createElement('span');
+            text.textContent = arcBanMessage();
+            notice.appendChild(text);
+
+            // An auto-mod sanction is a word-list match, not a judgement. With
+            // durable accounts, being wrongly flagged costs someone their
+            // characters and their table - so there has to be a way to say so.
+            if (_arcBanStatus?.createdBy === 'auto-mod' && !arcAppealSent()) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'chat-appeal-btn';
+                btn.textContent = 'Ask The Seven to review this';
+                btn.addEventListener('click', () => arcRequestReview(btn));
+                notice.appendChild(btn);
+            }
             notice.hidden = false;
         } else {
             notice.hidden = true;
@@ -382,6 +397,39 @@ function arcInitBanNotice(containerId) {
     update();
     document.addEventListener('arc:ban-status-changed', update);
     setInterval(update, 30000);
+}
+
+// ── APPEALS ──────────────────────────────────────────────────────────────────
+
+function arcAppealSent() {
+    try { return !!localStorage.getItem('arc-appeal-sent'); } catch { return false; }
+}
+
+async function arcRequestReview(btn) {
+    const arc = window.__arc;
+    if (!arc?.db || !arc?.uid) { alert('You need a connection to send this.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    try {
+        // Same reports collection The Seven already work from, so an appeal
+        // lands in the queue they actually read rather than somewhere new.
+        await arc.setDoc(arc.doc(arc.db, 'reports', crypto.randomUUID()), {
+            status: 'open', reason: 'appeal',
+            reasonNote: `Appeal against: ${_arcBanStatus?.reason || 'unknown sanction'}`,
+            chatRoom: null, chatMsgId: null, chatMsgText: null,
+            chatMsgAuthor: null, chatMsgUid: arc.uid, chatMsgType: null,
+            reportedBy: arc.uid, reportedAt: arc.serverTimestamp(),
+            resolvedBy: null, resolvedAt: null, resolutionNote: null,
+        });
+        try { localStorage.setItem('arc-appeal-sent', String(Date.now())); } catch {}
+        btn.textContent = 'Review requested';
+    } catch (e) {
+        console.error('[ARC] appeal failed:', e);
+        btn.disabled = false;
+        btn.textContent = 'Ask The Seven to review this';
+        alert('Could not send that - try again.');
+    }
 }
 
 // ── AUTO-MODERATION: WORD FILTER, STRIKES, TIMED BANS ────────────────────────
@@ -413,11 +461,13 @@ function automodScan(text) {
     return null;
 }
 
-const AUTOMOD_DURATIONS = [10 * 60 * 1000, 10 * 60 * 60 * 1000, null]; // strike 1,2,3 -> 10min,10hr,perma
+const AUTOMOD_LONG_BAN   = 30 * 24 * 60 * 60 * 1000;   // 30 days
+const AUTOMOD_DURATIONS  = [10 * 60 * 1000, 10 * 60 * 60 * 1000, AUTOMOD_LONG_BAN]; // strike 1,2,3
 
 function automodAlertText(hit, status, expiresAt) {
-    if (hit === 'severe') return 'Your message contained language that is not tolerated here. You have been permanently banned.';
-    if (status === 'banned') return 'That was your 3rd strike for inappropriate language - you have been permanently banned.';
+    const days = Math.ceil((expiresAt - Date.now()) / 86400000);
+    if (hit === 'severe') return `Your message contained language that is not tolerated here. You are banned for ${days} days. If this was a mistake, you can ask The Seven to review it.`;
+    if (status === 'banned') return `That was your 3rd strike for inappropriate language - you are banned for ${days} days. If this was a mistake, you can ask The Seven to review it.`;
     const mins = Math.ceil((expiresAt - Date.now()) / 60000);
     const time = mins >= 60 ? `${Math.ceil(mins / 60)} hour(s)` : `${mins} minute(s)`;
     return `Your message was blocked for inappropriate language (strike). You are muted for ${time}.`;
@@ -435,7 +485,7 @@ async function arcAutomodGate(text, room, author) {
 
     let status, reason, expiresAt;
     if (hit === 'severe') {
-        status = 'banned'; expiresAt = null; reason = 'auto-mod: severe language';
+        status = 'banned'; expiresAt = Date.now() + AUTOMOD_LONG_BAN; reason = 'auto-mod: severe language';
     } else {
         const strikeRef = arc.doc(arc.db, 'automodStrikes', arc.uid);
         let count = 1;

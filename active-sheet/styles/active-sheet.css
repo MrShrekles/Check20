@@ -6844,3 +6844,18 @@ body[data-page-title="Active-Sheet"] #site-header {
     font-size: 10px;
     font-weight: 900;
 }
+
+/* Appeal against an auto-mod sanction, shown inside the ban notice */
+.chat-appeal-btn {
+    display: block;
+    margin-top: 8px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+.chat-appeal-btn:disabled { opacity: 0.6; cursor: default; }

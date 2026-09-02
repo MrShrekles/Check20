@@ -224,7 +224,7 @@ async function doCreateRoom() {
     const code = genRoomCode();
     try {
         await arc.setDoc(arc.doc(arc.db, 'rooms', code), {
-            hostUid:        arc.uid,
+            narratorUid:    arc.uid,
             createdAt:      arc.serverTimestamp(),
             lastActivityAt: arc.serverTimestamp(),
             status:         'active',
@@ -364,13 +364,24 @@ document.getElementById('btn-join-session')?.addEventListener('click', async () 
     showJoinStatus('Checking room…', 'info');
     try {
         const snap = await arc.getDoc(arc.doc(arc.db, 'rooms', code));
-        if (!snap.exists() || snap.data().status !== 'active') {
-            showJoinStatus('Room not found. Check the code.', 'error');
+
+        if (!snap.exists()) {
+            offerToStartRoom(code);
+            return;
+        }
+        if (snap.data().status === 'closed') {
+            showJoinStatus('That campaign has been closed by its narrator.', 'error');
             return;
         }
 
         const roomName   = snap.data().name       || '';
         const welcomeMsg = snap.data().welcomeMsg || '';
+
+        // The room is real and open, it just has nobody running it yet. Let them
+        // in to wait rather than turning them away.
+        if (!snap.data().narratorUid) {
+            showJoinStatus('Room found - no narrator is connected yet. Joining anyway.', 'info');
+        }
 
         if (roomName || welcomeMsg) {
             _pendingJoin = { code, roomName };
@@ -713,4 +724,25 @@ document.addEventListener('arc:auth-changed', async ({ detail }) => {
     window.ArcCloud?.ensureUserDoc(detail.displayName);
     await refreshCloud();
     await offerLocalUpload();
+});
+
+
+/* A code that matches no room. Rather than a dead end, offer the thing the
+ * player probably wants next - their own table. */
+function offerToStartRoom(code) {
+    const box = document.getElementById('home-room-missing');
+    if (!box) { showJoinStatus('That room does not exist. Check the code.', 'error'); return; }
+    document.getElementById('missing-room-code').textContent = code;
+    box.hidden = false;
+    showJoinStatus('', 'info');
+    document.getElementById('join-status').hidden = true;
+}
+
+document.getElementById('btn-missing-dismiss')?.addEventListener('click', () => {
+    document.getElementById('home-room-missing').hidden = true;
+});
+
+document.getElementById('btn-missing-narrate')?.addEventListener('click', () => {
+    // Narrator Mode owns room creation - naming, welcome message, the lot.
+    window.location.href = 'narrator.html?new=1';
 });

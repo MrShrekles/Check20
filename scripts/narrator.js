@@ -4803,6 +4803,14 @@ let handoutsUnsubscribe = null;
 let roomUnsubscribe   = null;
 let chatUnsubscribe   = null;
 
+// Arriving from home's "that room doesn't exist - start one as Narrator?" offer.
+// Waits for auth so the gate inside createRoom() can make a real decision.
+document.addEventListener('arc:firebase-ready', () => {
+    if (new URLSearchParams(location.search).get('new') !== '1') return;
+    history.replaceState(null, '', location.pathname);   // don't re-fire on reload
+    if (window.ArcAuth?.require('run a room')) openCreateRoomDialog();
+});
+
 document.addEventListener('arc:firebase-ready', () => {
     if (!currentRoomCode) return;
     // Leftover pointer from an old anonymous session - it can never reconnect.

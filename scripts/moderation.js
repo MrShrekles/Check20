@@ -7,6 +7,7 @@ const REASON_LABELS = {
     spam:       'Spam',
     minors:     'Inappropriate for minors',
     automod:    'Auto-Mod',
+    appeal:     '⚖ Appeal',
     other:      'Other',
 };
 
@@ -160,16 +161,21 @@ function renderReports() {
                 <span class="mod-time">${fmtTime(r.reportedAt)}</span>
             </div>
             ${r.reasonNote ? `<div class="mod-note">"${escapeHtml(r.reasonNote)}"</div>` : ''}
-            <div class="mod-msg-snapshot">
+            ${r.reason === 'appeal' ? '' : `<div class="mod-msg-snapshot">
                 <div class="mod-msg-author">${escapeHtml(r.chatMsgAuthor || 'Unknown')} · room ${escapeHtml(r.chatRoom || '?')} · ${escapeHtml(r.chatMsgType || 'msg')}</div>
                 <div class="mod-msg-text">${escapeHtml(r.chatMsgText || '(no text)')}</div>
-            </div>
+            </div>`}
             <div class="mod-meta">Reported by ${truncUid(r.reportedBy)}</div>
             <div class="mod-actions">
-                ${r.chatMsgId ? '<button class="mod-btn mod-btn--danger" data-action="remove" type="button">Remove Message</button>' : ''}
-                <button class="mod-btn mod-btn--warn" data-action="mute" type="button">Mute User</button>
-                <button class="mod-btn mod-btn--danger" data-action="ban" type="button">Ban User</button>
-                <button class="mod-btn" data-action="dismiss" type="button">Dismiss</button>
+                ${r.reason === 'appeal' ? `
+                    <button class="mod-btn mod-btn--warn" data-action="lift" type="button">Lift Sanction</button>
+                    <button class="mod-btn" data-action="dismiss" type="button">Uphold</button>
+                ` : `
+                    ${r.chatMsgId ? '<button class="mod-btn mod-btn--danger" data-action="remove" type="button">Remove Message</button>' : ''}
+                    <button class="mod-btn mod-btn--warn" data-action="mute" type="button">Mute User</button>
+                    <button class="mod-btn mod-btn--danger" data-action="ban" type="button">Ban User</button>
+                    <button class="mod-btn" data-action="dismiss" type="button">Dismiss</button>
+                `}
             </div>
         </div>
     `).join('');
@@ -204,6 +210,14 @@ document.getElementById('reports-list')?.addEventListener('click', async e => {
                 createdAt: arc.serverTimestamp(), createdBy: arc.uid, expiresAt: null,
             });
             await setReportStatus(report.id, 'resolved', `User ${status}`);
+        } else if (action === 'lift') {
+            // Clear the sanction AND the strike count - a lifted appeal that
+            // left the strikes standing would re-ban them on the next hit.
+            if (report.chatMsgUid) {
+                await arc.deleteDoc(arc.doc(arc.db, 'bans', report.chatMsgUid)).catch(() => {});
+                await arc.deleteDoc(arc.doc(arc.db, 'automodStrikes', report.chatMsgUid)).catch(() => {});
+            }
+            await setReportStatus(report.id, 'resolved', 'Appeal upheld - sanction lifted');
         } else if (action === 'dismiss') {
             await setReportStatus(report.id, 'dismissed', null);
         }
