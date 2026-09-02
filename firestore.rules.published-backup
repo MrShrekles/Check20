@@ -1,0 +1,66 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// ROLLBACK COPY - the ruleset published on check20-77406 as of 2026-08-28,
+// captured from the Firebase Console before the stage-1 hardening in
+// firestore.rules was published.
+//
+// To roll back: Firestore -> Rules -> Develop & Test -> paste this -> Publish.
+// ─────────────────────────────────────────────────────────────────────────────
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() { return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
+
+    match /admins/{uid} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && request.auth.uid == uid;   // app-side passcode is the real gate
+      allow update: if isSignedIn() && (request.auth.uid == uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /bans/{uid} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+      allow create: if isSignedIn() && request.auth.uid == uid
+        && request.resource.data.createdBy == 'auto-mod'
+        && request.resource.data.keys().hasOnly(['status','reason','reportId','createdAt','createdBy','expiresAt']);
+      allow update: if isSignedIn() && request.auth.uid == uid
+        && resource.data.createdBy == 'auto-mod'
+        && request.resource.data.createdBy == 'auto-mod'
+        && request.resource.data.keys().hasOnly(['status','reason','reportId','createdAt','createdBy','expiresAt']);
+    }
+
+    match /automodStrikes/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || isAdmin());
+      allow create, update: if isSignedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['count','lastStrikeAt','lastReason']);
+    }
+
+    match /reports/{reportId} {
+      allow create: if isSignedIn()
+                    && request.resource.data.reportedBy == request.auth.uid
+                    && request.resource.data.status == 'open';
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Real server-side ban enforcement, layered on top of the client-side chat-cards.js gate.
+    // An expired temporary ban (expiresAt < now) no longer blocks sends.
+    match /rooms/{roomCode}/chat/{msgId} {
+      allow create: if isSignedIn() && (
+        !exists(/databases/$(database)/documents/bans/$(request.auth.uid))
+        || (
+          get(/databases/$(database)/documents/bans/$(request.auth.uid)).data.expiresAt is number
+          && get(/databases/$(database)/documents/bans/$(request.auth.uid)).data.expiresAt < request.time.toMillis()
+        )
+      );
+      allow read: if true;
+      allow update: if isSignedIn();
+    }
+
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
