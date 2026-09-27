@@ -1,0 +1,500 @@
+/* ============ the narrator's panels ============
+   The monster book and the generators. They were a slide-out rail down the left
+   edge with tabs; they are two windows now, so how they sit and move lives in
+   styles/dock.css and what is inside them lives here. */
+
+/* ============ monster book ============ */
+
+.monfilters {
+  display: grid;
+  gap: 6px
+}
+
+.monselects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 5px
+}
+
+.monselects select {
+  font-size: calc(12px * var(--fs));
+  min-width: 0
+}
+
+.moncount {
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  color: var(--theme-3);
+  padding: 0 2px
+}
+
+.moncard {
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-radius: 6px;
+  padding: 7px 9px;
+  margin-bottom: 5px
+}
+
+.moncard.collapsible .monhead {
+  cursor: pointer
+}
+
+.moncard.collapsible:hover {
+  border-color: var(--theme-3)
+}
+
+.monhead {
+  display: flex;
+  align-items: center;
+  gap: 7px
+}
+
+.monhead b {
+  font-family: var(--serif);
+  font-size: calc(13.5px * var(--fs));
+  color: var(--gold-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.monpl {
+  flex: none;
+  font-family: var(--mono);
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: .5px;
+  padding: 1px 6px;
+  border-radius: 9px;
+  background: var(--theme-1);
+  border: 1px solid var(--theme-2);
+  color: var(--cream)
+}
+
+/* The star keeps to the right edge whether or not a summary sits beside it. */
+.monhead .favstar {
+  margin-left: auto
+}
+
+/* PL, and the narrator's hand on it */
+.plset {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 3px
+}
+
+.plbtn {
+  width: 19px;
+  height: 19px;
+  flex: none;
+  font-family: var(--mono);
+  font-size: calc(12px * var(--fs));
+  line-height: 1;
+  color: var(--cream);
+  background: var(--theme-1);
+  border: 1px solid var(--theme-2);
+  border-radius: 5px
+}
+
+.plbtn:hover {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+.plset.adj .monpl {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+.plreset {
+  font-size: calc(11px * var(--fs))
+}
+
+.monsum {
+  flex: 1;
+  text-align: right;
+  font-size: calc(10px * var(--fs));
+  color: var(--theme-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.monbody {
+  margin-top: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px
+}
+
+.montags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px
+}
+
+.montags span {
+  font-size: calc(8.5px * var(--fs));
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 9px;
+  background: var(--theme-1);
+  color: var(--cream)
+}
+
+.monstats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: calc(10px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.monstats b {
+  font-family: var(--mono);
+  font-size: calc(13px * var(--fs));
+  color: var(--gold-3);
+  margin-left: 3px
+}
+
+/* Stats and damage are editable in place: the number in play, the book's in
+   the tooltip. Rust means the narrator has moved it off what is written. */
+.statedit {
+  display: flex;
+  align-items: center;
+  gap: 5px
+}
+
+.statedit input {
+  width: 46px;
+  padding: 2px 4px;
+  font-family: var(--mono);
+  font-size: calc(13px * var(--fs));
+  text-align: center;
+  color: var(--gold-3);
+  background: var(--dark-2);
+  border: 1px solid var(--theme-1);
+  border-radius: 5px
+}
+
+.dmgedit {
+  width: 74px;
+  padding: 2px 5px;
+  font-family: var(--mono);
+  font-size: calc(11.5px * var(--fs));
+  letter-spacing: 0;
+  text-align: center;
+  color: var(--text-cream);
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-radius: 5px
+}
+
+.statedit input:focus,
+.dmgedit:focus {
+  border-color: var(--gold-2);
+  outline: none
+}
+
+.statedit.adj input,
+.dmgedit.adj {
+  color: var(--rust);
+  border-color: var(--rust)
+}
+
+.monmove {
+  font-family: var(--mono);
+  font-size: calc(11px * var(--fs));
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--theme-3)
+}
+
+.monmotive {
+  font-size: calc(11.5px * var(--fs));
+  font-style: italic;
+  color: var(--text-cream);
+  opacity: .85
+}
+
+.monattack {
+  background: var(--dark-2);
+  border: 1px solid var(--theme-1);
+  border-left: 2px solid var(--rust);
+  border-radius: 5px;
+  padding: 5px 8px
+}
+
+.monattackhead {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap
+}
+
+.monattackhead b {
+  font-size: calc(12.5px * var(--fs));
+  color: var(--text-cream)
+}
+
+.monslot {
+  font-size: calc(8.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.monattack .gearacts {
+  margin-top: 5px
+}
+
+/* put a monster on the map */
+.montoken {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  font-size: calc(10px * var(--fs));
+  letter-spacing: .5px;
+  text-transform: none
+}
+
+.montoken svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.7
+}
+
+/* send-to-chat, on anything written on a monster */
+.sendbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px
+}
+
+.sendbtn svg {
+  width: 11px;
+  height: 11px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linejoin: round
+}
+
+.lorepart .gearacts {
+  margin-top: 6px
+}
+
+/* which check an attack rolls against */
+.chkpick {
+  display: flex;
+  gap: 2px;
+  margin-left: auto
+}
+
+.chkpick button {
+  padding: 1px 6px;
+  font-family: var(--mono);
+  font-size: calc(8.5px * var(--fs));
+  letter-spacing: .8px;
+  color: var(--cream);
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-radius: 4px
+}
+
+.chkpick button:hover {
+  color: var(--gold-3)
+}
+
+.chkpick button.on {
+  color: var(--gold-3);
+  border-color: var(--gold-2);
+  background: var(--theme-2)
+}
+
+/* a spell's effects, by intent */
+.speffect {
+  margin-top: 6px;
+  padding-left: 7px;
+  border-left: 1px solid var(--theme-1)
+}
+
+.speffhead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  font-size: calc(9px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.speffhead b {
+  font-size: calc(11.5px * var(--fs));
+  letter-spacing: .5px;
+  text-transform: none;
+  color: var(--text-cream)
+}
+
+.spcost {
+  font-family: var(--mono);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--gold-2)
+}
+
+.speffect p {
+  margin-top: 3px;
+  font-size: calc(11.5px * var(--fs));
+  line-height: 1.45;
+  color: var(--text-cream)
+}
+
+.monspells {
+  font-size: calc(11.5px * var(--fs));
+  color: var(--text-cream)
+}
+
+.monspells span {
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-right: 6px
+}
+
+
+/* ============ generators ============
+   A roll bar at the top, newest result first underneath. Results are for the
+   session; Send puts one in the chat log, which is saved. */
+
+.genbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap
+}
+
+/* An NPC's pinned-down choices. They wrap onto their own line in the rail
+   rather than squeezing the Roll button. */
+.genopt {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: calc(10px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.genopt select {
+  max-width: 116px;
+  padding: 2px 4px;
+  font-size: calc(11px * var(--fs));
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-cream);
+  background: var(--dark-1);
+  border: 1px solid var(--dark-3);
+  border-radius: 5px
+}
+
+.genpl {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: calc(10px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.genpl input {
+  width: 52px;
+  padding: 3px 5px;
+  font-family: var(--mono);
+  font-size: calc(13px * var(--fs));
+  text-align: center;
+  color: var(--gold-3);
+  background: var(--dark-2);
+  border: 1px solid var(--theme-1);
+  border-radius: 5px
+}
+
+.genroll {
+  flex: 1
+}
+
+.genlist {
+  display: flex;
+  flex-direction: column;
+  gap: 6px
+}
+
+.gencard {
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-left: 2px solid var(--gold-2);
+  border-radius: 6px;
+  padding: 7px 9px
+}
+
+.genhead {
+  display: flex;
+  align-items: baseline;
+  gap: 7px
+}
+
+.genhead b {
+  font-family: var(--serif);
+  font-size: calc(13.5px * var(--fs));
+  color: var(--gold-3)
+}
+
+.gensub {
+  flex: 1;
+  font-size: calc(10px * var(--fs));
+  letter-spacing: .5px;
+  color: var(--theme-3)
+}
+
+.genhead .icobtn {
+  flex: none;
+  margin-left: auto
+}
+
+.genrow {
+  display: flex;
+  gap: 8px;
+  margin-top: 5px
+}
+
+.genrow span {
+  flex: none;
+  width: 84px;
+  font-size: calc(9px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream);
+  padding-top: 2px
+}
+
+.genrow p {
+  flex: 1;
+  font-size: calc(12px * var(--fs));
+  line-height: 1.45;
+  color: var(--text-cream)
+}
+
+.gencard .gearacts {
+  margin-top: 7px
+}

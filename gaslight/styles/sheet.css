@@ -1,0 +1,3232 @@
+/* ============ character rail ============ */
+
+/* Floats over the map. The container itself never takes the pointer, so the
+   map stays fully live around the tabs and any open panel: you can aim, drag
+   and target with the sheet on screen. */
+.edgerail[hidden] {
+  display: none
+}
+
+/* A row: the open panel on the left, the tab column on the right. The panel
+   is beside the tabs rather than between them, so the column never splits. */
+.edgerail {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  z-index: 20;
+  pointer-events: none
+}
+
+.edgetabs {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: none
+}
+
+/* Tabs are icon buttons in the toolbar's own idiom: dark-1 surface, dark-3
+   hairline, currentColor stroke so the glyph tints with state. No rotated text
+   and no backdrop-filter on the tab, both of which softened the lettering. */
+.edgetab {
+  width: 34px;
+  height: 38px;
+  flex: none;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cream);
+  background: var(--dark-1);
+  border: 1px solid var(--dark-3);
+  border-right: none;
+  border-radius: var(--radius) 0 0 var(--radius);
+  box-shadow: -5px 3px 14px rgba(0, 0, 0, .5), inset 2px 0 0 var(--gold-1);
+  transition: color .12s, background .12s, box-shadow .12s
+}
+
+.edgetab svg {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round
+}
+
+.edgetab:hover {
+  color: var(--gold-3);
+  background: var(--theme-1);
+  box-shadow: -5px 3px 14px rgba(0, 0, 0, .55), inset 2px 0 0 var(--gold-2)
+}
+
+.edgetab.on {
+  color: var(--gold-3);
+  background: var(--theme-2);
+  box-shadow: inset 0 0 0 1px var(--theme-3), inset 3px 0 0 var(--gold-3),
+    -5px 3px 16px rgba(0, 0, 0, .6)
+}
+
+.edgepanel[hidden] {
+  display: none
+}
+
+.edgepanel {
+  pointer-events: auto;
+  width: min(470px, 46vw);
+  max-height: 100%;
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--theme-2);
+  border-right: none;
+  border-radius: var(--radius) 0 0 var(--radius);
+  box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(5px);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transform-origin: right center;
+  animation: edgeslide .16s ease-out
+}
+
+@keyframes edgeslide {
+  from {
+    opacity: 0;
+    transform: translateX(14px)
+  }
+
+  to {
+    opacity: 1;
+    transform: none
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edgepanel {
+    animation: none
+  }
+}
+
+.edgepanelhead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--theme-2)
+}
+
+.edgepanelhead .sheetdot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, .6);
+  flex: none
+}
+
+.edgepanelhead .sectionname {
+  font-family: var(--serif);
+  font-size: calc(10px * var(--fs));
+  font-weight: 700;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--gold-2);
+  flex: none
+}
+
+.edgepanelhead .sep {
+  color: var(--theme-3);
+  flex: none
+}
+
+.edgepanelhead h3 {
+  flex: 1;
+  font-family: var(--serif);
+  font-size: calc(14px * var(--fs));
+  font-weight: 700;
+  letter-spacing: .8px;
+  color: var(--gold-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.edgepanelhead .sheetsub {
+  flex: none;
+  font-size: calc(10.5px * var(--fs));
+  color: var(--cream);
+  opacity: .8
+}
+
+/* A titled block inside a panel. */
+.sblock {
+  background: var(--dark-2);
+  border: 1px solid var(--theme-1);
+  border-radius: var(--radius);
+  padding: 9px
+}
+
+.sblock > h4 {
+  font-family: var(--serif);
+  font-size: calc(10px * var(--fs));
+  font-weight: 700;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: var(--gold-2);
+  margin-bottom: 7px
+}
+
+.sempty {
+  text-align: center;
+  padding: 22px 8px;
+  font-size: calc(12px * var(--fs));
+  color: var(--cream);
+  opacity: .65
+}
+
+/* ============ party roster (sidebar) ============ */
+
+.rosterrow {
+  display: grid;
+  grid-template-columns: 13px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  border-bottom: 1px solid var(--dark-3);
+  cursor: pointer
+}
+
+.rosterrow:hover {
+  background: var(--theme-1)
+}
+
+.rosterrow .rdot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, .6)
+}
+
+.rosterrow .rname {
+  font-size: calc(13px * var(--fs));
+  color: var(--text-plain);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.rosterrow .rhp {
+  font-family: var(--mono);
+  font-size: calc(11.5px * var(--fs));
+  color: var(--gold-3)
+}
+
+.rosterrow .rhp.hurt {
+  color: var(--rust)
+}
+
+.rosterrow .rhp.down {
+  color: var(--red-2)
+}
+
+/* wound bar + condition pips share the second row of the grid */
+.rosterrow .rmeta {
+  grid-column: 2 / -1;
+  display: flex;
+  align-items: center;
+  gap: 6px
+}
+
+.rosterrow .rbar {
+  flex: 1;
+  height: 5px;
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-radius: 3px;
+  overflow: hidden
+}
+
+.rosterrow .rbar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--rust), var(--gold-2));
+  transition: width .2s
+}
+
+.rosterrow .rconds {
+  display: flex;
+  gap: 3px
+}
+
+.cpip {
+  font-size: calc(8.5px * var(--fs));
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  padding: 1px 5px;
+  border-radius: 9px;
+  background: var(--dark-1);
+  border: 1px solid var(--rust);
+  color: var(--cream);
+  white-space: nowrap
+}
+
+.cpip.major {
+  border-color: var(--red-2);
+  color: var(--red-2)
+}
+
+/* ============ token quick card ============ */
+
+.tokencard {
+  position: absolute;
+  display: none;
+  width: 212px;
+  z-index: 25;
+  background: var(--panel-solid);
+  border: 1px solid var(--gold-2);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(4px);
+  padding: 9px
+}
+
+.tokencard.on {
+  display: block
+}
+
+.tokencard .tchead {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px
+}
+
+.tokencard .tchead .rdot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex: none
+}
+
+.tokencard .tchead b {
+  flex: 1;
+  font-family: var(--serif);
+  font-size: calc(13px * var(--fs));
+  color: var(--gold-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.tcrow {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 5px
+}
+
+.tcrow .tclbl {
+  width: 46px;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.tcrow .tcval {
+  flex: 1;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: calc(13px * var(--fs));
+  color: var(--text-plain)
+}
+
+.tcstep {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  border: 1px solid var(--theme-2);
+  border-radius: 4px;
+  background: var(--dark-1);
+  color: var(--gold-3);
+  font-size: calc(13px * var(--fs));
+  line-height: 1
+}
+
+.tcstep:hover {
+  border-color: var(--gold-2);
+  background: var(--theme-1)
+}
+
+.tcbtns {
+  display: flex;
+  gap: 5px;
+  margin-top: 8px
+}
+
+.tcbtns .tbbtn {
+  flex: 1;
+  text-align: center
+}
+
+/* The second row: what you do *to* a token rather than with it. Quieter than
+   the attacks above it, so a crowded card still reads at a glance. */
+.tcbtns.util {
+  margin-top: 5px
+}
+
+.tcbtns.util .tbbtn {
+  padding: 3px 8px;
+  font-size: calc(10px * var(--fs));
+  opacity: .82
+}
+
+.tcbtns.util .tbbtn:hover {
+  opacity: 1
+}
+
+/* ---- sheet: identity ---- */
+.sidrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap
+}
+
+.sidrow .full {
+  flex: 1;
+  min-width: 160px
+}
+
+.sidrow input[type=color] {
+  width: 34px;
+  flex: none;
+  height: 26px;
+  padding: 1px
+}
+
+/* ---- sheet: checks ---- */
+.scheckcols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px
+}
+
+@media (max-width: 1100px) {
+  .scheckcols {
+    grid-template-columns: 1fr
+  }
+}
+
+.scheckcols h5 {
+  font-family: var(--serif);
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-2);
+  margin-bottom: 5px;
+  text-align: center
+}
+
+.scheck {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 4px;
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-radius: 5px;
+  padding: 2px 5px 2px 2px
+}
+
+.scheck.dis {
+  border-color: var(--rust)
+}
+
+.sckroll {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 6px;
+  font-size: calc(12px * var(--fs));
+  color: var(--text-cream);
+  text-align: left;
+  border-radius: 4px
+}
+
+.sckroll:hover {
+  background: var(--theme-2);
+  color: var(--gold-3)
+}
+
+.disflag {
+  font-size: calc(8px * var(--fs));
+  letter-spacing: .6px;
+  padding: 1px 4px;
+  border-radius: 8px;
+  background: var(--rust);
+  color: var(--text-plain)
+}
+
+.sckparts {
+  display: flex;
+  align-items: center;
+  gap: 3px
+}
+
+.sckparts input {
+  width: 34px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: calc(11px * var(--fs));
+  padding: 1px 2px
+}
+
+.sckparts input[data-bonus] {
+  border-style: dashed;
+  opacity: .8
+}
+
+.ckarmor {
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  color: var(--theme-3)
+}
+
+.scktotal {
+  width: 32px;
+  text-align: right;
+  font-family: var(--mono);
+  font-size: calc(13px * var(--fs));
+  color: var(--gold-3)
+}
+
+/* ---- sheet: health ---- */
+.sresgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 6px
+}
+
+.srestile {
+  background: var(--dark-1);
+  border: 1px solid var(--theme-2);
+  border-radius: 6px;
+  padding: 5px 4px;
+  text-align: center
+}
+
+.srestile .rl {
+  font-size: calc(8.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 3px
+}
+
+.srestile .rv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-family: var(--mono)
+}
+
+.srestile input {
+  width: 30px;
+  border: none;
+  background: none;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: calc(13px * var(--fs));
+  padding: 0
+}
+
+.srestile .rmax {
+  color: var(--cream);
+  font-size: calc(12px * var(--fs))
+}
+
+.sdamagerow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap
+}
+
+.sdamagerow label {
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.sdamagerow input {
+  width: 58px;
+  text-align: center;
+  font-family: var(--mono)
+}
+
+.sdamagehint {
+  margin-top: 6px;
+  font-size: calc(11px * var(--fs));
+  font-family: var(--mono);
+  color: var(--rust)
+}
+
+/* ---- sheet: conditions ---- */
+.scondgroup {
+  margin-bottom: 9px
+}
+
+.scondgroup h5 {
+  font-family: var(--serif);
+  font-size: calc(9px * var(--fs));
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-2);
+  margin-bottom: 5px
+}
+
+.scondchips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px
+}
+
+.scond {
+  font-size: calc(11px * var(--fs));
+  padding: 3px 9px;
+  border-radius: 11px;
+  border: 1px solid var(--theme-2);
+  background: var(--dark-1);
+  color: var(--cream)
+}
+
+.scond:hover {
+  border-color: var(--theme-3);
+  color: var(--text-plain)
+}
+
+.scond.on {
+  background: var(--rust);
+  border-color: var(--rust);
+  color: var(--text-plain)
+}
+
+.scond.major.on {
+  background: var(--danger-bg-strong);
+  border-color: var(--red-2);
+  color: var(--text-plain)
+}
+
+/* the character currently set in the rail */
+.rosterrow.set {
+  background: var(--theme-1);
+  box-shadow: inset 3px 0 0 var(--gold-3)
+}
+
+/* ---- rail: Ref cards ---- */
+.srefcard {
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-left: 2px solid var(--rust);
+  border-radius: 5px;
+  padding: 7px 9px;
+  margin-bottom: 6px
+}
+
+.srefcard b {
+  font-family: var(--serif);
+  font-size: calc(12.5px * var(--fs));
+  color: var(--gold-3)
+}
+
+.srefcard p {
+  font-size: calc(11.5px * var(--fs));
+  color: var(--text-cream);
+  margin-top: 3px
+}
+
+/* ============ features panel ============ */
+
+/* origin dot: the colour coding the website uses for paths, talents, species */
+.opip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .55)
+}
+
+.idlist {
+  display: flex;
+  flex-direction: column;
+  gap: 5px
+}
+
+.idrow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  text-align: left;
+  padding: 6px 8px;
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-radius: 5px;
+  transition: border-color .12s
+}
+
+.idrow:hover:not(:disabled) {
+  border-color: var(--theme-3)
+}
+
+.idrow:disabled {
+  opacity: .45;
+  cursor: default
+}
+
+.idlbl {
+  width: 58px;
+  flex: none;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.idval {
+  flex: 1;
+  font-size: calc(12.5px * var(--fs));
+  color: var(--text-plain);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.idval.none {
+  color: var(--theme-3);
+  font-style: italic
+}
+
+.idsub {
+  flex: none;
+  font-size: calc(10px * var(--fs));
+  color: var(--cream);
+  opacity: .7
+}
+
+/* ---- feature cards ---- */
+
+.featgrouphead {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0 6px;
+  font-family: var(--serif);
+  font-size: calc(12px * var(--fs));
+  color: var(--gold-3)
+}
+
+.featgrouphead small {
+  font-family: var(--body);
+  font-size: calc(10px * var(--fs));
+  color: var(--cream);
+  opacity: .7
+}
+
+.featcard {
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-left: 2px solid var(--theme-2);
+  border-radius: 5px;
+  padding: 6px 9px;
+  margin-bottom: 5px
+}
+
+.featcard.taken {
+  border-left-color: var(--gold-3)
+}
+
+.feathead {
+  display: flex;
+  align-items: center;
+  gap: 6px
+}
+
+.feathead b {
+  flex: 1;
+  font-size: calc(12.5px * var(--fs));
+  color: var(--text-cream)
+}
+
+.featstep {
+  flex: none;
+  min-width: 17px;
+  height: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background: var(--theme-1);
+  border: 1px solid var(--theme-2);
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  color: var(--gold-2)
+}
+
+.feattag {
+  flex: none;
+  font-size: calc(8.5px * var(--fs));
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  padding: 1px 5px;
+  border-radius: 8px;
+  background: var(--theme-1);
+  color: var(--cream)
+}
+
+.feattag.passive {
+  background: transparent;
+  border: 1px solid var(--theme-2)
+}
+
+.feattags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px
+}
+
+.feattags span {
+  font-family: var(--mono);
+  font-size: calc(9.5px * var(--fs));
+  color: var(--theme-3)
+}
+
+.featcard p {
+  margin-top: 4px;
+  font-size: calc(11.5px * var(--fs));
+  line-height: 1.4;
+  color: var(--text-cream);
+  opacity: .92
+}
+
+/* ---- pickers ---- */
+
+.pickerhead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px
+}
+
+.pickerhead h4 {
+  flex: 1;
+  font-family: var(--serif);
+  font-size: calc(11px * var(--fs));
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-2)
+}
+
+.pickgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 5px
+}
+
+.pickopt {
+  --opt-accent: var(--theme-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+  padding: 7px 9px;
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-left: 3px solid var(--opt-accent);
+  border-radius: 5px;
+  transition: border-color .12s, background .12s
+}
+
+.pickopt:hover {
+  background: var(--theme-1);
+  border-color: var(--theme-3);
+  border-left-color: var(--opt-accent)
+}
+
+.pickopt.on {
+  background: var(--theme-2);
+  border-color: var(--gold-3);
+  border-left-color: var(--opt-accent)
+}
+
+.pickname {
+  font-size: calc(12.5px * var(--fs));
+  color: var(--text-plain)
+}
+
+.picksub {
+  font-size: calc(9.5px * var(--fs));
+  color: var(--cream);
+  opacity: .75
+}
+
+/* ============ gear panel ============ */
+
+.gearhead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px
+}
+
+.bulkread {
+  font-size: calc(10px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.bulkread b {
+  font-family: var(--mono);
+  font-size: calc(12px * var(--fs));
+  color: var(--gold-3)
+}
+
+.bulkread.warn b {
+  color: var(--rust)
+}
+
+.bulkread.bad b {
+  color: var(--red-2)
+}
+
+.bulkwarn {
+  flex: 1;
+  font-size: calc(10.5px * var(--fs));
+  color: var(--rust)
+}
+
+.gearrow {
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-radius: 5px;
+  padding: 7px 9px;
+  margin-bottom: 5px
+}
+
+.gearmain {
+  display: flex;
+  align-items: center;
+  gap: 6px
+}
+
+.gearmain b {
+  flex: 1;
+  font-size: calc(12.5px * var(--fs));
+  color: var(--text-cream)
+}
+
+.geardesc {
+  margin-top: 4px;
+  font-size: calc(11px * var(--fs));
+  line-height: 1.35;
+  color: var(--text-cream);
+  opacity: .8
+}
+
+.gearacts {
+  display: flex;
+  gap: 5px;
+  margin-top: 6px
+}
+
+.gearacts .tbbtn {
+  padding: 2px 9px
+}
+
+.gearacts .icobtn {
+  margin-left: auto
+}
+
+.gearsrc {
+  display: flex;
+  gap: 2px;
+  background: var(--dark-1);
+  border: 1px solid var(--dark-3);
+  border-radius: var(--radius);
+  padding: 2px;
+  margin-bottom: 7px
+}
+
+.gearsrc .tool {
+  flex: 1;
+  justify-content: center;
+  font-size: calc(11px * var(--fs))
+}
+
+.gearsrc .tool.on {
+  background: var(--theme-2);
+  color: var(--gold-3);
+  box-shadow: inset 0 0 0 1px var(--theme-3)
+}
+
+.gearsearch {
+  width: 100%;
+  margin-bottom: 7px
+}
+
+.gearresults {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  max-height: 46vh;
+  overflow-y: auto
+}
+
+/* ============ spells panel ============ */
+
+.spellfilters {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 7px
+}
+
+.spellfilters .gearsearch {
+  flex: 1;
+  margin: 0
+}
+
+.spellcard {
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-radius: 5px;
+  padding: 7px 9px;
+  margin-bottom: 6px
+}
+
+.spellhead {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px
+}
+
+.spellhead b {
+  flex: 1;
+  font-family: var(--serif);
+  font-size: calc(13px * var(--fs));
+  color: var(--gold-3)
+}
+
+.spelltier {
+  border-top: 1px solid var(--theme-1);
+  padding: 6px 0 2px
+}
+
+.tierhead {
+  display: flex;
+  align-items: baseline;
+  gap: 7px
+}
+
+.tiername {
+  font-size: calc(11.5px * var(--fs));
+  color: var(--text-cream)
+}
+
+.tiercost {
+  font-family: var(--mono);
+  font-size: calc(10.5px * var(--fs));
+  color: var(--gold-2)
+}
+
+.tiermeta {
+  flex: 1;
+  text-align: right;
+  font-size: calc(9.5px * var(--fs));
+  color: var(--theme-3)
+}
+
+.spelltier p {
+  margin: 4px 0;
+  font-size: calc(11.5px * var(--fs));
+  line-height: 1.4;
+  color: var(--text-cream);
+  opacity: .9
+}
+
+/* ============ progression panel ============ */
+
+.xprow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap
+}
+
+.xprow label {
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.xprow input {
+  width: 74px;
+  text-align: center;
+  font-family: var(--mono)
+}
+
+.xpstat {
+  font-size: calc(10px * var(--fs));
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.xpstat b {
+  font-family: var(--mono);
+  font-size: calc(12px * var(--fs));
+  color: var(--text-plain)
+}
+
+.xpstat.ready b {
+  color: var(--gold-3)
+}
+
+.xpstat.over b {
+  color: var(--red-2)
+}
+
+.progstep {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-radius: 5px;
+  padding: 6px 8px;
+  margin-bottom: 5px
+}
+
+.progstep.on {
+  border-color: var(--gold-2)
+}
+
+.progstep.locked {
+  opacity: .5
+}
+
+.progtick {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border: 1px solid var(--theme-2);
+  border-radius: 4px;
+  background: var(--dark-2);
+  color: var(--cream);
+  font-family: var(--mono);
+  font-size: calc(12px * var(--fs))
+}
+
+.progtick:hover:not(:disabled) {
+  border-color: var(--gold-2);
+  color: var(--gold-3)
+}
+
+.progstep.on .progtick {
+  background: var(--theme-2);
+  border-color: var(--gold-3);
+  color: var(--gold-3)
+}
+
+.progbody {
+  flex: 1
+}
+
+.progbody b {
+  font-size: calc(12.5px * var(--fs));
+  color: var(--text-cream);
+  margin-right: 5px
+}
+
+.progbody p {
+  margin-top: 4px;
+  font-size: calc(11.5px * var(--fs));
+  line-height: 1.4;
+  color: var(--text-cream);
+  opacity: .9
+}
+
+/* ============ bio panel ============ */
+
+.biogrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 6px
+}
+
+.biofield {
+  display: flex;
+  flex-direction: column;
+  gap: 3px
+}
+
+.biofield span {
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.bionotes {
+  width: 100%;
+  min-height: 110px;
+  resize: vertical;
+  font-size: calc(12px * var(--fs));
+  line-height: 1.45
+}
+
+.lorepart {
+  border-top: 1px solid var(--theme-1);
+  padding: 5px 0
+}
+
+.lorepart summary {
+  cursor: pointer;
+  font-size: calc(10px * var(--fs));
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--gold-2)
+}
+
+.lorepart p {
+  margin-top: 5px;
+  font-size: calc(11.5px * var(--fs));
+  line-height: 1.5;
+  color: var(--text-cream);
+  opacity: .9;
+  white-space: pre-wrap
+}
+
+/* ============ character creation ============ */
+
+.wizsteps {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 3px
+}
+
+.wizstep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 5px 2px;
+  font-size: calc(9px * var(--fs));
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--theme-3);
+  border-bottom: 2px solid var(--dark-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.wizstep span {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--theme-2);
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs))
+}
+
+.wizstep.done {
+  color: var(--cream);
+  border-bottom-color: var(--gold-1)
+}
+
+.wizstep.done span {
+  background: var(--theme-2);
+  color: var(--gold-3)
+}
+
+.wizstep.on {
+  color: var(--gold-3);
+  border-bottom-color: var(--gold-3)
+}
+
+.wizstep.on span {
+  border-color: var(--gold-3);
+  color: var(--gold-3)
+}
+
+.wizstep:disabled {
+  cursor: default
+}
+
+.wizbody {
+  display: flex;
+  flex-direction: column;
+  gap: 10px
+}
+
+.wizerr {
+  font-size: calc(12px * var(--fs));
+  color: var(--red-2);
+  padding: 0 2px
+}
+
+.wiznav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 8px;
+  border-top: 1px solid var(--theme-2)
+}
+
+.wiznav .wizgo {
+  background: var(--theme-2);
+  color: var(--gold-3);
+  border-color: var(--theme-3)
+}
+
+.wizprose {
+  margin: 7px 0;
+  font-size: calc(12px * var(--fs));
+  line-height: 1.5;
+  color: var(--text-cream);
+  opacity: .9
+}
+
+.wizkit {
+  margin-top: 5px;
+  font-size: calc(11.5px * var(--fs));
+  color: var(--text-cream)
+}
+
+.wizkit span {
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-right: 6px
+}
+
+.wizskip {
+  font-size: calc(11.5px * var(--fs));
+  color: var(--cream);
+  opacity: .8;
+  text-align: left;
+  padding: 2px
+}
+
+.wizskip:hover {
+  color: var(--gold-3);
+  opacity: 1
+}
+
+.wizsteplist {
+  margin-top: 6px
+}
+
+.wizsteplist summary {
+  cursor: pointer;
+  font-size: calc(10px * var(--fs));
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--gold-2);
+  margin-bottom: 5px
+}
+
+.wizcrumb {
+  font-size: calc(11.5px * var(--fs));
+  color: var(--cream);
+  margin-bottom: 7px
+}
+
+.wizcrumb:hover {
+  color: var(--gold-3)
+}
+
+/* ---- stats ---- */
+
+.wizpoints {
+  font-size: calc(12px * var(--fs));
+  color: var(--cream);
+  margin-bottom: 8px
+}
+
+.wizpoints b {
+  font-family: var(--mono);
+  font-size: calc(16px * var(--fs));
+  color: var(--gold-3)
+}
+
+.wizpoints.done b {
+  color: var(--theme-3)
+}
+
+.wizpoints.over b {
+  color: var(--red-2)
+}
+
+.wizstat .tcstep:disabled {
+  opacity: .35;
+  cursor: default
+}
+
+.wizstat.wanted {
+  border-color: var(--gold-1)
+}
+
+.wantflag {
+  font-family: var(--mono);
+  font-size: calc(9px * var(--fs));
+  padding: 0 5px;
+  border-radius: 8px;
+  background: var(--gold-1);
+  color: var(--gold-3)
+}
+
+.guidehead {
+  margin: 8px 0 4px;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--gold-2)
+}
+
+.guidehead.enemy {
+  color: var(--theme-3)
+}
+
+.guiderow {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 3px 0;
+  border-bottom: 1px solid var(--theme-1);
+  font-size: calc(11.5px * var(--fs));
+  color: var(--text-cream)
+}
+
+.guiderow span {
+  flex: 1
+}
+
+.guiderow small {
+  font-size: calc(9.5px * var(--fs));
+  color: var(--theme-3)
+}
+
+.guiderow b {
+  font-size: calc(11px * var(--fs));
+  color: var(--gold-3)
+}
+
+/* ---- details and review ---- */
+
+.wizfields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px
+}
+
+.wizfields label {
+  display: grid;
+  gap: 3px;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.wizfields label small {
+  text-transform: none;
+  letter-spacing: 0;
+  opacity: .7
+}
+
+.wizfields label.wide {
+  grid-column: 1 / -1
+}
+
+.wizfields input,
+.wizfields select,
+.wizfields textarea {
+  font-size: calc(12.5px * var(--fs));
+  letter-spacing: 0;
+  text-transform: none
+}
+
+.wizinline {
+  display: flex;
+  gap: 5px;
+  align-items: center
+}
+
+.wizinline input {
+  flex: 1;
+  min-width: 0
+}
+
+.reviewrow {
+  display: flex;
+  gap: 10px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--theme-1);
+  font-size: calc(12px * var(--fs))
+}
+
+.reviewrow span {
+  width: 76px;
+  flex: none;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream);
+  padding-top: 2px
+}
+
+.reviewrow b {
+  font-weight: 400;
+  color: var(--text-plain)
+}
+
+.rosterrow .rhp.creating {
+  font-family: var(--body);
+  font-style: italic;
+  color: var(--theme-3)
+}
+
+
+/* ---- sub-tabs inside a panel (Features / Gear, Favourites / All, ...) ---- */
+
+.subtabs {
+  display: flex;
+  gap: 2px;
+  background: var(--dark-1);
+  border: 1px solid var(--dark-3);
+  border-radius: var(--radius);
+  padding: 2px;
+  flex: none
+}
+
+.subtabs button {
+  flex: 1;
+  padding: 5px 6px;
+  border-radius: 6px;
+  font-size: calc(11.5px * var(--fs));
+  letter-spacing: .4px;
+  color: var(--cream);
+  white-space: nowrap
+}
+
+.subtabs button:hover {
+  color: var(--gold-3)
+}
+
+.subtabs button.on {
+  background: var(--theme-2);
+  color: var(--gold-3);
+  box-shadow: inset 0 0 0 1px var(--theme-3)
+}
+
+.subtabs button b {
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  font-weight: 400;
+  color: var(--theme-3);
+  margin-left: 4px
+}
+
+.subtabs button.on b {
+  color: var(--gold-2)
+}
+
+/* ============ spells: favourites and all ============ */
+
+.manaline {
+  display: flex;
+  align-items: center;
+  padding: 0 2px
+}
+
+.spellcard.collapsible .spellhead {
+  cursor: pointer;
+  margin-bottom: 0
+}
+
+.spellcard.collapsible.open .spellhead {
+  margin-bottom: 5px
+}
+
+.spellcard.collapsible:hover {
+  border-color: var(--theme-3)
+}
+
+.spellsum {
+  font-family: var(--mono);
+  font-size: calc(9.5px * var(--fs));
+  color: var(--theme-3);
+  white-space: nowrap
+}
+
+.favstar {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  font-size: calc(16px * var(--fs));
+  line-height: 1;
+  color: var(--theme-3);
+  border-radius: 4px
+}
+
+.favstar:hover {
+  color: var(--gold-3);
+  background: var(--theme-1)
+}
+
+.favstar.on {
+  color: var(--gold-3);
+  text-shadow: 0 0 6px rgba(255, 215, 0, .5)
+}
+
+/* ============ reference ============ */
+
+.refrule {
+  font-size: calc(11.5px * var(--fs));
+  line-height: 1.45;
+  color: var(--cream);
+  font-style: italic;
+  padding: 0 2px
+}
+
+.refgroup {
+  margin: 4px 0 -4px;
+  font-family: var(--serif);
+  font-size: calc(10px * var(--fs));
+  font-weight: 700;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--gold-2)
+}
+
+.reftable {
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-radius: 5px;
+  padding: 5px 8px
+}
+
+.reftable summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  list-style: none
+}
+
+.reftable summary::-webkit-details-marker {
+  display: none
+}
+
+.reftable summary b {
+  flex: 1;
+  font-size: calc(12.5px * var(--fs));
+  color: var(--text-plain)
+}
+
+.reftable[open] summary b {
+  color: var(--gold-3)
+}
+
+.reficon {
+  width: 18px;
+  text-align: center
+}
+
+.refdesc {
+  margin: 5px 0 3px;
+  font-size: calc(11px * var(--fs));
+  color: var(--text-cream);
+  opacity: .85
+}
+
+.reftable ol {
+  margin: 4px 0 2px 22px;
+  font-size: calc(11.5px * var(--fs));
+  color: var(--text-cream);
+  columns: 2;
+  column-gap: 16px
+}
+
+.reftable li {
+  padding: 1px 0
+}
+
+.reftable li::marker {
+  font-family: var(--mono);
+  color: var(--gold-2)
+}
+
+.refcond {
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-left: 2px solid var(--theme-2);
+  border-radius: 5px;
+  padding: 6px 9px
+}
+
+.refcond.on {
+  border-left-color: var(--rust);
+  background: rgba(164, 94, 59, .08)
+}
+
+.refcond.major.on {
+  border-left-color: var(--red-2)
+}
+
+.refcondhead {
+  display: flex;
+  align-items: center;
+  gap: 6px
+}
+
+.refcondhead b {
+  flex: 1;
+  font-family: var(--serif);
+  font-size: calc(12.5px * var(--fs));
+  color: var(--gold-3)
+}
+
+.refcondhead .tbbtn {
+  padding: 2px 9px
+}
+
+.refcond p {
+  margin-top: 3px;
+  font-size: calc(11.5px * var(--fs));
+  line-height: 1.4;
+  color: var(--text-cream)
+}
+
+.refeff {
+  margin-top: 3px;
+  font-size: calc(10.5px * var(--fs));
+  color: var(--rust)
+}
+
+/* ---- progression: unlocks ---- */
+
+.unlocktitle {
+  font-family: var(--serif);
+  font-size: calc(10px * var(--fs));
+  font-weight: 700;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: var(--gold-2);
+  margin: 2px 0 -4px
+}
+
+.unlockhead {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 7px
+}
+
+.unlockhead h4 {
+  flex: 1;
+  margin: 0;
+  font-family: var(--serif);
+  font-size: calc(10px * var(--fs));
+  font-weight: 700;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--gold-2)
+}
+
+.unlockcount {
+  font-family: var(--mono);
+  font-size: calc(14px * var(--fs));
+  color: var(--gold-3)
+}
+
+.unlockcount small {
+  font-size: calc(10px * var(--fs));
+  color: var(--theme-3)
+}
+
+.unlockgroup {
+  margin-bottom: 6px
+}
+
+.unlockgroup summary {
+  cursor: pointer;
+  padding: 3px 0;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.unlockgroup summary b {
+  font-family: var(--mono);
+  font-weight: 400;
+  color: var(--theme-3)
+}
+
+.unlockgroup.next summary {
+  color: var(--gold-3)
+}
+
+.unlockgroup.locked summary {
+  color: var(--theme-3)
+}
+
+/* the damage box is a two-digit field, not a full row */
+.tcrow .tcdmg {
+  flex: none;
+  width: 56px;
+  text-align: center;
+  font-family: var(--mono)
+}
+
+
+/* A monster token's own wounds: the number this one was given, beside the
+   tally. Empty means the narrator is just counting up. */
+.tcrow .tcmax {
+  flex: none;
+  width: 52px;
+  font-family: var(--mono);
+  font-size: calc(11px * var(--fs));
+  text-align: center
+}
+
+.tcrow .tcval.out {
+  color: var(--red-2)
+}
+
+/* ── conditions on a card ──────────────────────────────────────────
+   The same picker serves a character's card and a monster's: what is on
+   now as removable pips, then a search over everything else. */
+
+.condbox {
+  margin-top: 8px;
+  border-top: 1px solid var(--theme-2);
+  padding-top: 7px
+}
+
+.condrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center
+}
+
+.condrow .cnone {
+  font-size: calc(11px * var(--fs));
+  color: var(--text-dim, #8a8a8a);
+  letter-spacing: .5px
+}
+
+.condbox .cpip {
+  cursor: pointer;
+  border: 1px solid transparent
+}
+
+.condbox .cpip:hover {
+  border-color: var(--rust, #a45e3b);
+  color: var(--rust, #a45e3b)
+}
+
+.condadd {
+  margin-top: 6px;
+  width: 100%;
+  font-size: calc(11px * var(--fs));
+  padding: 3px 8px;
+  opacity: .85
+}
+
+.condadd:hover {
+  opacity: 1
+}
+
+.condsearch {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-top: 6px
+}
+
+.condsearch input {
+  flex: 1;
+  min-width: 0;
+  padding: 3px 7px;
+  font-size: calc(12px * var(--fs));
+  color: var(--text-cream);
+  background: var(--dark-1);
+  border: 1px solid var(--dark-3);
+  border-radius: 5px
+}
+
+.condsearch input:focus {
+  outline: none;
+  border-color: var(--gold-2)
+}
+
+.condhits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+  max-height: 148px;
+  overflow-y: auto
+}
+
+.condhit {
+  font-size: calc(11px * var(--fs));
+  padding: 3px 7px;
+  border-radius: 999px;
+  color: var(--text-cream);
+  background: var(--dark-1);
+  border: 1px solid var(--dark-3);
+  cursor: pointer
+}
+
+.condhit:hover {
+  border-color: var(--gold-2);
+  color: var(--gold-3)
+}
+
+.condhit.on {
+  border-color: var(--gold-3);
+  background: var(--theme-2);
+  color: var(--gold-3)
+}
+
+/* ── condition categories ─────────────────────────────────────────
+   Corpus red, Cognition blue, Special yellow, Major black. The same four
+   colours as the pips on the token, so the map and the card agree. */
+
+.cat-corpus    { --cat: #c0392b }
+.cat-cognition { --cat: #3d7ea6 }
+.cat-special   { --cat: #c9a227 }
+.cat-major     { --cat: #6d7480 }
+
+.condbox .cpip {
+  border-color: var(--cat, var(--rust));
+  color: var(--cat, var(--cream))
+}
+
+.condbox .cpip.cat-major {
+  background: #111418;
+  color: #e1d7c3;
+  border-color: #6d7480
+}
+
+.condcat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 7px 0 3px;
+  font-size: calc(9px * var(--fs));
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--cat, var(--cream))
+}
+
+.condcatdot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--cat, var(--cream))
+}
+
+.condlist {
+  margin-top: 4px;
+  max-height: 190px;
+  overflow-y: auto
+}
+
+.condhit {
+  border-color: color-mix(in srgb, var(--cat, #333) 55%, transparent)
+}
+
+.condhit:hover {
+  border-color: var(--cat, var(--gold-2));
+  color: var(--cat, var(--gold-3))
+}
+
+.condhit.on {
+  background: color-mix(in srgb, var(--cat, #333) 26%, transparent);
+  border-color: var(--cat, var(--gold-3));
+  color: #fffaf0
+}
+
+/* ── card buttons, by what they do ────────────────────────────────
+   Attacks red, Initiative orange, the book yellow, Style green. Desaturated
+   so a card is not a set of traffic lights. */
+
+.tbbtn.tb-atk   { --tb: #a8564b }
+.tbbtn.tb-init  { --tb: #b3763f }
+.tbbtn.tb-book  { --tb: #a8912f }
+.tbbtn.tb-style { --tb: #5f8a5f }
+
+.tbbtn.tb-atk,
+.tbbtn.tb-init,
+.tbbtn.tb-book,
+.tbbtn.tb-style {
+  border-color: color-mix(in srgb, var(--tb) 62%, transparent);
+  color: color-mix(in srgb, var(--tb) 88%, #fffaf0)
+}
+
+.tbbtn.tb-atk:hover,
+.tbbtn.tb-init:hover,
+.tbbtn.tb-book:hover,
+.tbbtn.tb-style:hover {
+  border-color: var(--tb);
+  color: #fffaf0;
+  background: color-mix(in srgb, var(--tb) 22%, transparent);
+  box-shadow: 0 0 7px color-mix(in srgb, var(--tb) 34%, transparent)
+}
+
+/* ── rename in place ──────────────────────────────────────────────
+   The token's name on the card is the field. No trip into Style to change it. */
+
+.tcname {
+  border-radius: 4px;
+  padding: 1px 4px;
+  margin: -1px -4px;
+  outline: none;
+  cursor: text;
+  border: 1px solid transparent
+}
+
+.tcname:hover {
+  border-color: var(--theme-3)
+}
+
+.tcname:focus {
+  border-color: var(--gold-2);
+  background: var(--dark-1);
+  color: var(--text-cream)
+}
+
+/* Small steppers beside a check on the monster card. */
+.mcchecks .tcstep.sm {
+  width: 16px;
+  height: 16px;
+  font-size: calc(11px * var(--fs));
+  border-radius: 3px
+}
+
+.mcchecks span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px
+}
+
+/* ── a block's setup drawer ───────────────────────────────────────
+   Behind a cog, so the panel stays about play. The fields here feed the
+   derived values rather than being read directly. */
+
+.sblockhead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px
+}
+
+.sblockhead h4 {
+  flex: 1;
+  margin-bottom: 0
+}
+
+.cogbtn {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  line-height: 1;
+  font-size: calc(12px * var(--fs));
+  border-radius: 4px;
+  color: var(--cream);
+  background: var(--dark-1);
+  border: 1px solid var(--dark-3);
+  cursor: pointer
+}
+
+.cogbtn:hover {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+.smods {
+  margin-bottom: 9px;
+  padding: 8px;
+  background: var(--dark-1);
+  border: 1px solid var(--theme-2);
+  border-radius: var(--radius)
+}
+
+.smods[hidden] {
+  display: none
+}
+
+.smodgrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px
+}
+
+.smodgrid label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.smodgrid input {
+  padding: 3px 6px;
+  font-size: calc(12px * var(--fs));
+  color: var(--text-cream);
+  background: var(--dark-2);
+  border: 1px solid var(--dark-3);
+  border-radius: 5px
+}
+
+.smodgrid input:focus {
+  outline: none;
+  border-color: var(--gold-2)
+}
+
+.smods .hint {
+  margin-top: 7px
+}
+
+/* ── recovery ─────────────────────────────────────────────────────
+   Press On's remaining uses as pips, the long rest as a single state. */
+
+.recrow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 6px
+}
+
+.recrow:last-child {
+  margin-bottom: 0
+}
+
+.reclbl {
+  flex: none;
+  width: 68px;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.recpips {
+  display: flex;
+  gap: 3px;
+  flex: none
+}
+
+.recpip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--theme-3);
+  background: var(--dark-1)
+}
+
+.recpip.on {
+  background: var(--gold-2);
+  border-color: var(--gold-3)
+}
+
+.recleft,
+.recnote {
+  flex: 1;
+  font-family: var(--mono);
+  font-size: calc(10.5px * var(--fs));
+  color: var(--cream);
+  opacity: .8
+}
+
+.recnote {
+  font-family: inherit
+}
+
+.recrow .tbbtn {
+  flex: none
+}
+
+.recrow:last-child .tbbtn {
+  flex: 1
+}
+
+/* ── the monster card carries more than a character's ─────────────
+   PL, both checks with steppers, armour, wounds, damage, conditions and
+   up to three attacks. At the character card's 212px the checks row ran
+   past the edge. */
+
+#monsterCard {
+  width: 246px
+}
+
+#monsterCard .mcchecks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 6px;
+  align-items: center
+}
+
+#monsterCard .mcchecks span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3px;
+  min-width: 0;
+  padding: 2px 4px;
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-radius: 5px
+}
+
+#monsterCard .mcchecks b {
+  margin-left: 0;
+  font-size: calc(12px * var(--fs))
+}
+
+/* Attacks wrap rather than squeezing when a monster has three. */
+#monsterCard .tcbtns {
+  flex-wrap: wrap
+}
+
+#monsterCard .tcbtns .tbbtn {
+  flex: 1 1 auto;
+  min-width: 68px
+}
+
+/* Nothing on this card may run past its edge. */
+.tokencard {
+  overflow-wrap: anywhere
+}
+
+.tokencard .tcrow {
+  min-width: 0
+}
+
+/* ── features: what you have, then the road ahead ─────────────────
+   Upgrades nest inside the feature they upgrade; untaken steps are shut. */
+
+.featlocked > summary {
+  cursor: pointer;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: calc(10px * var(--fs));
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--gold-2);
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  list-style: none
+}
+
+.featlocked > summary::-webkit-details-marker {
+  display: none
+}
+
+.featlocked > summary::before { content: '\25be  ' }
+.featlocked:not([open]) > summary::before { content: '\25b8  ' }
+
+.featlocked > summary b {
+  font-family: var(--mono);
+  color: var(--cream);
+  opacity: .75
+}
+
+.featlocked {
+  margin-bottom: 7px
+}
+
+.featlocked > summary {
+  color: var(--cream);
+  opacity: .7
+}
+
+.featlocked > .featcard {
+  opacity: .62
+}
+
+/* Press On waiting on another fight. */
+.recwarn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: -2px 0 7px;
+  padding: 5px 8px;
+  font-size: calc(10.5px * var(--fs));
+  color: var(--cream);
+  background: var(--dark-1);
+  border: 1px solid var(--theme-2);
+  border-left: 2px solid var(--rust, #a45e3b);
+  border-radius: 5px
+}
+
+.recwarn .tbbtn {
+  flex: none;
+  font-size: calc(10px * var(--fs));
+  padding: 2px 7px
+}
+
+/* ── what a step grants ───────────────────────────────────────────
+   A modal rather than an inline row: it is a decision with ten options and
+   a cap to respect, and it only happens once per step. */
+
+.gainmodal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 8, 10, .62);
+  backdrop-filter: blur(2px)
+}
+
+.gainmodal[hidden] {
+  display: none
+}
+
+.gainbox {
+  width: min(400px, 94vw);
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 14px;
+  background: var(--panel-solid);
+  border: 1px solid var(--gold-2);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg)
+}
+
+.gainhead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px
+}
+
+.gainhead h4 {
+  flex: 1;
+  font-family: var(--serif);
+  font-size: calc(15px * var(--fs));
+  color: var(--gold-3)
+}
+
+.gainlede {
+  font-size: calc(11.5px * var(--fs));
+  color: var(--cream);
+  opacity: .8;
+  margin-bottom: 11px
+}
+
+.gainsection {
+  margin-bottom: 12px
+}
+
+.gainlabel {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-bottom: 6px;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--gold-2)
+}
+
+.gaintot {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--cream);
+  opacity: .75
+}
+
+.gainchecks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px
+}
+
+.gaincheck {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 6px 9px;
+  border-radius: 6px;
+  color: var(--text-cream);
+  background: var(--dark-1);
+  border: 1px solid var(--theme-2);
+  cursor: pointer;
+  font-size: calc(12px * var(--fs))
+}
+
+.gaincheck:hover {
+  border-color: var(--gold-2);
+  background: var(--theme-1)
+}
+
+.gaincheck.full {
+  opacity: .4;
+  cursor: not-allowed
+}
+
+.gaincheck .gcval {
+  font-family: var(--mono);
+  font-size: calc(11px * var(--fs));
+  color: var(--gold-3)
+}
+
+.gainothers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px
+}
+
+.gainother {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 9px;
+  border-radius: 7px;
+  color: var(--text-cream);
+  background: var(--dark-1);
+  border: 1px solid var(--theme-2);
+  cursor: pointer;
+  text-align: left
+}
+
+.gainother b {
+  font-size: calc(12px * var(--fs));
+  color: var(--gold-3)
+}
+
+.gainother span {
+  font-family: var(--mono);
+  font-size: calc(10.5px * var(--fs));
+  opacity: .75
+}
+
+.gainother:hover:not(:disabled) {
+  border-color: var(--gold-2);
+  background: var(--theme-1)
+}
+
+.gainother:disabled {
+  opacity: .42;
+  cursor: not-allowed
+}
+
+.gainlater {
+  width: 100%;
+  font-size: calc(11px * var(--fs))
+}
+
+/* the chip on a taken step */
+.gainchip {
+  cursor: pointer;
+  border-color: var(--theme-3)
+}
+
+.gainchip:hover {
+  border-color: var(--gold-2);
+  color: var(--gold-3)
+}
+
+.gainchip.none {
+  border-style: dashed;
+  color: var(--rust, #a45e3b);
+  border-color: var(--rust, #a45e3b)
+}
+
+/* ── the roll tray ────────────────────────────────────────────────
+   Opens before a roll so the modifier, Advantage and the damage are all
+   answerable in one place. Enter rolls, Escape cancels. */
+
+.traymodal {
+  position: fixed;
+  inset: 0;
+  z-index: 210;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 8, 10, .6);
+  backdrop-filter: blur(2px)
+}
+
+.traymodal[hidden] {
+  display: none
+}
+
+.traybox {
+  width: min(360px, 94vw);
+  padding: 14px;
+  background: var(--panel-solid);
+  border: 1px solid var(--gold-2);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg)
+}
+
+.trayhead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px
+}
+
+.trayhead h4 {
+  flex: 1;
+  font-family: var(--serif);
+  font-size: calc(14px * var(--fs));
+  color: var(--gold-3)
+}
+
+.traycost {
+  font-family: var(--mono);
+  font-size: calc(10.5px * var(--fs));
+  color: var(--cream);
+  opacity: .8;
+  margin-bottom: 7px
+}
+
+.traydesc {
+  font-size: calc(11.5px * var(--fs));
+  line-height: 1.5;
+  color: var(--text-cream);
+  background: var(--dark-1);
+  border-left: 2px solid var(--theme-3);
+  border-radius: 0 5px 5px 0;
+  padding: 6px 8px;
+  margin-bottom: 10px;
+  max-height: 128px;
+  overflow-y: auto
+}
+
+.trayrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px
+}
+
+.trayrow > label {
+  flex: none;
+  width: 62px;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.traybase {
+  font-family: var(--mono);
+  font-size: calc(14px * var(--fs));
+  color: var(--gold-3)
+}
+
+.trayplus {
+  color: var(--cream);
+  opacity: .6
+}
+
+.trayrow input[type=number] {
+  width: 62px;
+  text-align: center
+}
+
+.trayrow input[type=text] {
+  flex: 1;
+  min-width: 0
+}
+
+.trayrow .traytype {
+  flex: 0 1 84px
+}
+
+.trayrow input {
+  padding: 4px 7px;
+  font-family: var(--mono);
+  font-size: calc(12.5px * var(--fs));
+  color: var(--text-cream);
+  background: var(--dark-1);
+  border: 1px solid var(--dark-3);
+  border-radius: 5px
+}
+
+.trayrow input:focus {
+  outline: none;
+  border-color: var(--gold-2)
+}
+
+.trayadv {
+  display: flex;
+  flex: 1;
+  gap: 3px
+}
+
+.trayadv button {
+  flex: 1;
+  padding: 5px 4px;
+  font-size: calc(10.5px * var(--fs));
+  border-radius: 5px;
+  color: var(--cream);
+  background: var(--dark-1);
+  border: 1px solid var(--theme-2);
+  cursor: pointer
+}
+
+.trayadv button:hover {
+  border-color: var(--gold-2)
+}
+
+.trayadv button.on {
+  color: var(--gold-3);
+  background: var(--theme-2);
+  border-color: var(--gold-3)
+}
+
+.trayforced {
+  margin: -3px 0 9px;
+  padding: 5px 8px;
+  font-size: calc(10.5px * var(--fs));
+  color: var(--cream);
+  background: var(--dark-1);
+  border-left: 2px solid var(--rust, #a45e3b);
+  border-radius: 0 5px 5px 0
+}
+
+.trayacts .tbbtn {
+  width: 100%;
+  padding: 7px;
+  font-size: calc(13px * var(--fs))
+}
+
+.trayhint {
+  margin-top: 6px;
+  text-align: center;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: .6px;
+  color: var(--cream);
+  opacity: .55
+}
+
+/* Why a roll is using the check it is using. */
+.traywhy {
+  margin: -4px 0 9px 68px;
+  font-size: calc(10.5px * var(--fs));
+  line-height: 1.45;
+  color: var(--cream);
+  opacity: .72
+}
+
+.trayrow select {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 7px;
+  font-size: calc(12.5px * var(--fs));
+  color: var(--text-cream);
+  background: var(--dark-1);
+  border: 1px solid var(--dark-3);
+  border-radius: 5px
+}
+
+.trayrow select:focus {
+  outline: none;
+  border-color: var(--gold-2)
+}
+
+/* Not enough Mana is a warning, not a locked door: the row dims and says what
+   is missing, and the button still works, because a narrator can always allow
+   it. A greyed-out control that explains nothing reads as a broken app. */
+.spelltier.poor {
+  opacity: .82
+}
+
+.tiercost.short,
+.tbbtn.short {
+  color: var(--rust, #a45e3b);
+  border-color: var(--rust, #a45e3b)
+}
+
+.tbbtn.short:hover {
+  color: #fffaf0;
+  background: rgba(164, 94, 59, .2)
+}
+
+.traywarn {
+  margin-bottom: 9px;
+  padding: 6px 8px;
+  font-size: calc(11px * var(--fs));
+  line-height: 1.45;
+  color: var(--text-cream);
+  background: rgba(164, 94, 59, .14);
+  border-left: 2px solid var(--rust, #a45e3b);
+  border-radius: 0 5px 5px 0
+}
+
+/* ── editing a piece of gear ──────────────────────────────────────
+   Gear was spread out of the catalogue and then frozen. A weapon gets
+   enchanted, armour gets dented, a narrator hands over something one of a
+   kind — all of it needs to be changeable after the fact. */
+
+.geareditor {
+  margin-top: 8px;
+  padding: 9px;
+  background: var(--dark-1);
+  border: 1px solid var(--theme-2);
+  border-radius: var(--radius)
+}
+
+.gefields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px
+}
+
+.gefields label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: .9px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.gefields label.wide {
+  grid-column: 1 / -1
+}
+
+.gefields input,
+.gefields textarea {
+  width: 100%;
+  padding: 4px 7px;
+  font-size: calc(12px * var(--fs));
+  font-family: inherit;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-cream);
+  background: var(--dark-2);
+  border: 1px solid var(--dark-3);
+  border-radius: 5px
+}
+
+.gefields textarea {
+  resize: vertical;
+  line-height: 1.45
+}
+
+.gefields input:focus,
+.gefields textarea:focus {
+  outline: none;
+  border-color: var(--gold-2)
+}
+
+.gehint {
+  margin-top: 8px;
+  font-size: calc(10px * var(--fs));
+  line-height: 1.45;
+  color: var(--cream);
+  opacity: .72
+}
+
+.gearrow .icobtn[data-act=edit] {
+  opacity: .7
+}
+
+.gearrow:hover .icobtn[data-act=edit],
+.gearrow .icobtn[data-act=edit]:hover {
+  opacity: 1;
+  color: var(--gold-3)
+}
+
+/* ── the card for a handful of tokens ─────────────────────────────
+   Selecting one opens its card; selecting five opens this. It does the
+   things that are tedious one token at a time. */
+
+#groupCard {
+  width: 232px
+}
+
+#groupCard .gcount {
+  flex: none;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  font-family: var(--mono);
+  font-size: calc(12px * var(--fs));
+  color: var(--dark-1);
+  background: var(--gold-3)
+}
+
+.gcensus {
+  margin: -3px 0 7px;
+  font-size: calc(10.5px * var(--fs));
+  color: var(--cream);
+  opacity: .8
+}
+
+.gdots {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 8px
+}
+
+.gdot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, .55)
+}
+
+.gmore {
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  color: var(--cream);
+  opacity: .75
+}
+
+#groupCard select {
+  flex: 1;
+  min-width: 0;
+  padding: 3px 6px;
+  font-size: calc(11.5px * var(--fs));
+  color: var(--text-cream);
+  background: var(--dark-1);
+  border: 1px solid var(--dark-3);
+  border-radius: 5px
+}
+
+#groupCard select:focus {
+  outline: none;
+  border-color: var(--gold-2)
+}
+
+/* The character card now offers what the character can actually do, so its
+   action rows wrap instead of squeezing three weapon names onto one line. */
+#tokenCard {
+  width: 232px
+}
+
+#tokenCard .tcbtns {
+  flex-wrap: wrap
+}
+
+#tokenCard .tcbtns .tbbtn {
+  flex: 1 1 66px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
+}
+
+#tokenCard .tcbtns .tbbtn b {
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  opacity: .8;
+  margin-left: 3px
+}
+
+/* ── gear: the player's own order ─────────────────────────────────
+   Dragging rather than HTML5 drag-and-drop, so it works with touch and can
+   be styled. Ported from the companion, which does the same. */
+
+.gearlist {
+  position: relative
+}
+
+.gearrow .draghandle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  width: 14px;
+  color: var(--cream);
+  opacity: .35;
+  cursor: grab;
+  touch-action: none
+}
+
+.gearrow:hover .draghandle {
+  opacity: .8
+}
+
+.gearrow .draghandle:active {
+  cursor: grabbing
+}
+
+.draghandle svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.6;
+  stroke-linecap: round
+}
+
+.gearrow.dragging {
+  opacity: .45
+}
+
+.droplinerow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gold-3);
+  box-shadow: 0 0 6px var(--gold-2);
+  pointer-events: none;
+  border-radius: 1px
+}
+
+.droplinerow[hidden] {
+  display: none
+}
+
+/* The star that puts a weapon on the token card. */
+.pinbtn {
+  flex: none;
+  margin-left: auto;
+  width: 20px;
+  height: 20px;
+  line-height: 1;
+  font-size: calc(13px * var(--fs));
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--cream);
+  opacity: .45;
+  cursor: pointer
+}
+
+.gearrow:hover .pinbtn {
+  opacity: .8
+}
+
+.pinbtn:hover {
+  opacity: 1;
+  color: var(--gold-3)
+}
+
+.pinbtn.on {
+  opacity: 1;
+  color: var(--gold-3)
+}
+
+/* ── gear, told apart at a glance ─────────────────────────────────
+   Three kinds, three hues, three icons: something you hit with, something you
+   hide behind, and everything else. The hue is a left edge and a tint on the
+   icon rather than a coloured card, because a list of saturated blocks is
+   harder to read than the wall of text it replaced. */
+
+.gearrow.kind-weapon { --kind: #a8564b }
+.gearrow.kind-armour { --kind: #4a7ea0 }
+.gearrow.kind-kit    { --kind: #a8912f }
+
+.gearrow {
+  border-left: 2px solid var(--kind, transparent)
+}
+
+.gearicon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  color: var(--kind, var(--cream));
+  opacity: .9
+}
+
+.gearicon svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round
+}
+
+.gearrow .feattag {
+  border-color: color-mix(in srgb, var(--kind, var(--theme-3)) 55%, transparent);
+  color: color-mix(in srgb, var(--kind, var(--cream)) 85%, #fffaf0)
+}
+
+/* Features that can actually be done, rather than only read. */
+/* ── a feature rewritten for one character ────────────────────────
+   The data is shared, so an edit is an override on the character rather than
+   a change to the rulebook. The card says so. */
+
+.featcard.edited {
+  border-left: 2px solid var(--gold-2)
+}
+
+.feattag.edited {
+  border-color: var(--gold-2);
+  color: var(--gold-3)
+}
+
+/* The written wording shows through as a placeholder, so an empty field is
+   visibly "unchanged" rather than "blank". */
+.fehint {
+  margin-top: 8px;
+  font-size: calc(10px * var(--fs));
+  line-height: 1.5;
+  color: var(--cream);
+  opacity: .75
+}
+
+.fehint b {
+  color: var(--gold-3);
+  opacity: 1
+}
+
+/* ── one card, two columns ────────────────────────────────────────
+   What the thing is on the left, what you can do with it on the right. Gear
+   and features share it, so a weapon and a feature that both attack look and
+   behave the same rather than each having invented their own row.
+
+   The actions column is a fixed width so every button in a list lines up: a
+   column of ragged buttons is harder to hit than a column of aligned ones. */
+
+.actcard {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px
+}
+
+.actbody {
+  flex: 1;
+  min-width: 0
+}
+
+.actside {
+  flex: none;
+  width: 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px
+}
+
+.actside .tbbtn {
+  width: 100%;
+  padding: 3px 6px;
+  font-size: calc(10.5px * var(--fs));
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
+}
+
+.actside .tbbtn.small {
+  font-size: calc(9.5px * var(--fs));
+  padding: 2px 6px;
+  opacity: .72
+}
+
+.actside .tbbtn.small:hover {
+  opacity: 1
+}
+
+.actside .tbbtn.drop:hover {
+  color: var(--red-2);
+  border-color: var(--red-2)
+}
+
+/* ── a feature folds away ─────────────────────────────────────────
+   Eleven path steps is a wall of prose. Collapsed, the head still carries the
+   name, what it costs and what it rolls — and the buttons stay out, because
+   they are the reason to go looking for the feature at all. */
+
+.featcard .actbody {
+  cursor: pointer
+}
+
+.featcard .actbody p {
+  margin-top: 6px
+}
+
+.featcard:not(.open) .actbody:hover .feathead b {
+  color: var(--gold-3)
+}
+
+.featcard .feathead b::after {
+  content: ' \25b8';
+  font-size: calc(9px * var(--fs));
+  color: var(--gold-2);
+  opacity: .6
+}
+
+.featcard.open .feathead b::after {
+  content: ' \25be'
+}
+
+/* Closed, a card still says what it does — one line of it. Enough to pick the
+   right feature out of eleven without unfolding all eleven. */
+.featsnip {
+  opacity: .72;
+  font-size: calc(11.5px * var(--fs))
+}
+
+.featsnip .snip {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden
+}
+
+/* It is a control, not the end of the sentence, so it stops looking like
+   prose: its own line, mono, boxed, in the gold the other buttons use. */
+.readmore {
+  display: block;
+  margin: 5px 0 0;
+  padding: 1px 7px;
+  font-family: var(--mono);
+  font-size: calc(9px * var(--fs));
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: var(--gold-2);
+  background: var(--dark-1);
+  border: 1px solid var(--theme-3);
+  border-radius: 9px;
+  cursor: pointer
+}
+
+.readmore:hover {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+
+/* ── identity in two columns ──────────────────────────────────────
+   Four short facts do not need four full-width rows. */
+
+.idlist.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px
+}
+
+.idlist.two .idrow {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: baseline;
+  gap: 5px;
+  text-align: left
+}
+
+.idlist.two .idsub {
+  grid-column: 1 / -1;
+  font-size: calc(9.5px * var(--fs));
+  opacity: .7
+}
+
+/* The send button carries an icon and a word; in a 72px column the icon is
+   the part that has to survive. */
+.actside .sendbtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px
+}
+
+.actside .sendbtn svg {
+  width: 11px;
+  height: 11px;
+  flex: none
+}
+
+/* ── a feature and what it carries ────────────────────────────────
+   Bloodmark and Regen are not things a character announces; they are how
+   Bloodletting behaves once they are bought. So the base sends the whole
+   family and an upgrade keeps only what is its own. */
+
+.carries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 6px
+}
+
+.carries span {
+  font-size: calc(9px * var(--fs));
+  letter-spacing: .6px;
+  padding: 1px 6px;
+  border-radius: 9px;
+  color: var(--gold-3);
+  background: var(--theme-1);
+  border: 1px solid var(--theme-2)
+}
+
+.carries::before {
+  content: 'with';
+  align-self: center;
+  font-size: calc(9px * var(--fs));
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--cream);
+  opacity: .6;
+  margin-right: 2px
+}
+
+/* The upgrades live inside the base card, revealed with it. */
+.featkids {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--theme-2)
+}
+
+/* An upgrade sits under its base and reads as part of it. */
+.featcard.upgrade {
+  margin-left: 10px;
+  border-left: 2px solid var(--theme-2);
+  background: transparent
+}
+
+.featcard.upgrade .feathead b {
+  font-size: calc(12px * var(--fs));
+  color: var(--cream)
+}

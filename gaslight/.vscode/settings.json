@@ -1,0 +1,8 @@
+{
+  // Live Server binds to 127.0.0.1 by default, which only this machine can
+  // reach. 0.0.0.0 lets a phone on the same Wi-Fi open the table.
+  "liveServer.settings.host": "0.0.0.0",
+  "liveServer.settings.port": 5500,
+  "liveServer.settings.useLocalIp": true,
+  "liveServer.settings.CustomBrowser": "chrome"
+}

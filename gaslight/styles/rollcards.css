@@ -1,0 +1,555 @@
+/* ============ roll cards ============
+   The total is the headline; the tray under it shows every face that landed.
+   Same surface language as the rest of the app: dark-1 card, teal hairline,
+   gold reserved for the kept die, successes and criticals. */
+
+.rcard {
+  background: var(--dark-1);
+  border: 1px solid var(--theme-2);
+  border-left: 3px solid var(--theme-3);
+  border-radius: 6px;
+  padding: 6px 9px 7px
+}
+
+.rcard.crit {
+  border-left-color: var(--gold-3);
+  box-shadow: 0 0 0 1px rgba(255, 215, 0, .18), 0 0 14px rgba(255, 215, 0, .08)
+}
+
+.rcard.fumble {
+  border-left-color: var(--red-2)
+}
+
+.rchead {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 4px
+}
+
+.rcwho {
+  font-size: calc(10.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gold-3);
+  font-weight: 600;
+  white-space: nowrap
+}
+
+.rclabel {
+  flex: 1;
+  font-size: calc(12px * var(--fs));
+  color: var(--text-cream);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
+}
+
+.rchead .t {
+  color: var(--dark-3);
+  font-family: var(--mono);
+  font-size: calc(9px * var(--fs));
+  text-shadow: none
+}
+
+.rctag {
+  font-size: calc(8.5px * var(--fs));
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 9px;
+  white-space: nowrap
+}
+
+.rctag.crit {
+  background: var(--gold-3);
+  color: var(--dark-1);
+  text-shadow: none;
+  font-weight: 700
+}
+
+.rctag.fumble {
+  background: var(--danger-bg);
+  color: var(--red-2)
+}
+
+/* One row per stat: label, the dice that landed, then the total. An attack
+   stacks its check row above its damage row rather than sitting them side by
+   side, so each reads along a single line. */
+.rcbody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px
+}
+
+/* An attack rolls two things, and they belong beside each other: the check
+   that decides whether it lands, and the damage it does if it does. The
+   markup has asked for this with a `duel` class since roll cards existed;
+   nothing ever styled it, so they stacked.
+
+   No breakpoint. Each stat asks for 128px and wraps when the sidebar is
+   dragged narrower than the pair needs, so it answers to the sidebar's real
+   width rather than the window's. */
+.rcbody.duel {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px
+}
+
+/* Half the width, so the stat gives back what it can: less gap, less padding.
+   The dice already wrapped; they just need a row gap when they do. */
+.rcbody.duel > .rcstat {
+  flex: 1 1 128px;
+  min-width: 0;
+  gap: 5px;
+  padding: 4px 6px
+}
+
+.rcbody.duel .tray {
+  row-gap: 2px
+}
+
+.rcstat {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  background: var(--dark-2);
+  border: 1px solid var(--theme-1);
+  border-radius: 5px;
+  padding: 4px 8px
+}
+
+.rcstatlbl {
+  font-size: calc(8.5px * var(--fs));
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--cream);
+  opacity: .8;
+  white-space: nowrap
+}
+
+.rcstatlbl span {
+  font-family: var(--mono);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--theme-3);
+  margin-left: 4px
+}
+
+.rcval {
+  font-family: var(--mono);
+  font-size: calc(22px * var(--fs));
+  line-height: 1.15;
+  color: var(--text-plain);
+  text-align: right;
+  min-width: 34px
+}
+
+.rcval.nat20 {
+  color: var(--gold-3)
+}
+
+.rcval.nat1 {
+  color: var(--red-2)
+}
+
+/* Damage is the loudest number on an attack card. */
+.rcstat.dmg .rcval {
+  color: var(--gold-3)
+}
+
+.rcstat.dmg.crit {
+  border-color: var(--gold-2)
+}
+
+.rcstat.solo .rcval {
+  font-size: calc(20px * var(--fs))
+}
+
+.rcnote {
+  grid-column: 1 / -1;
+  font-size: calc(9.5px * var(--fs));
+  color: var(--theme-3)
+}
+
+/* ---- dice tray ---- */
+
+.tray {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px;
+  min-width: 0
+}
+
+.die {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background: var(--theme-1);
+  border: 1px solid var(--theme-2);
+  font-family: var(--mono);
+  font-size: calc(11px * var(--fs));
+  color: var(--text-cream);
+  text-shadow: none
+}
+
+.die sup {
+  font-size: calc(8px * var(--fs));
+  margin-left: 1px;
+  color: var(--gold-2)
+}
+
+/* the d20 that counted */
+.die.d20 {
+  border-color: var(--gold-2);
+  color: var(--gold-3);
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  min-width: 24px;
+  height: 24px;
+  border: none;
+  background: linear-gradient(160deg, var(--theme-2), var(--theme-1))
+}
+
+.die.d20.nat20 {
+  background: var(--gold-3);
+  color: var(--dark-1);
+  font-weight: 700
+}
+
+.die.d20.nat1 {
+  background: var(--danger-bg);
+  color: var(--red-2)
+}
+
+/* the d20 Advantage or Disadvantage threw away */
+.die.drop {
+  opacity: .45;
+  text-decoration: line-through;
+  background: transparent
+}
+
+/* a die that rolled its top face */
+.die.max {
+  border-color: var(--gold-2);
+  color: var(--gold-3)
+}
+
+/* an exploding die that went off and rolled again */
+.die.boom {
+  box-shadow: 0 0 0 1px var(--rust), 0 0 6px rgba(164, 94, 59, .6)
+}
+
+.die.neg {
+  color: var(--red-2)
+}
+
+.dmod {
+  font-family: var(--mono);
+  font-size: calc(11px * var(--fs));
+  color: var(--cream);
+  padding: 0 2px
+}
+
+.dmod.crit {
+  color: var(--gold-3);
+  font-weight: 700
+}
+
+.dcount {
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  color: var(--cream)
+}
+
+/* ---- outcome ---- */
+
+.rcout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 5px;
+  font-size: calc(10px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase
+}
+
+.rcout.ok {
+  color: var(--gold-2)
+}
+
+.rcout.fail {
+  color: var(--theme-3)
+}
+
+.pips {
+  display: inline-flex;
+  gap: 3px
+}
+
+.pip {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold-3);
+  box-shadow: 0 0 4px rgba(255, 215, 0, .5)
+}
+
+.rcprov {
+  margin-top: 4px;
+  font-size: calc(10.5px * var(--fs));
+  color: var(--rust)
+}
+
+.rcconds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 5px
+}
+
+/* ---- damage tables ---- */
+
+.rcbtn {
+  margin-top: 6px;
+  padding: 3px 10px;
+  font-size: calc(11px * var(--fs));
+  border-radius: 5px;
+  border: 1px solid var(--gold-2);
+  background: var(--theme-1);
+  color: var(--gold-3)
+}
+
+.rcbtn:hover:not(:disabled) {
+  background: var(--theme-2)
+}
+
+.rcbtn:disabled {
+  opacity: .5;
+  border-color: var(--theme-2);
+  cursor: default
+}
+
+.rcard.table {
+  border-left-color: var(--rust)
+}
+
+.tblrow {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 4px 0
+}
+
+.tblrow + .tblrow {
+  border-top: 1px solid var(--theme-1)
+}
+
+.tblrow b {
+  font-size: calc(12.5px * var(--fs));
+  font-weight: 600;
+  color: var(--text-plain)
+}
+
+.tblrow p {
+  margin-top: 2px;
+  font-size: calc(11px * var(--fs));
+  line-height: 1.35;
+  color: var(--text-cream);
+  opacity: .85
+}
+
+/* Narrow enough that a row no longer fits: stack label, dice and total. */
+@media (max-width: 460px) {
+  .rcstat {
+    grid-template-columns: 1fr;
+    gap: 2px
+  }
+
+  .rcval {
+    text-align: left
+  }
+}
+
+/* ---- chat notifications ---- */
+
+.notifytoast {
+  position: absolute;
+  left: 50%;
+  bottom: 54px;
+  transform: translate(-50%, 8px);
+  max-width: min(460px, 80%);
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: var(--panel-solid);
+  border: 1px solid var(--gold-2);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(4px);
+  font-size: calc(12.5px * var(--fs));
+  color: var(--text-plain);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .16s, transform .16s;
+  z-index: 30
+}
+
+.notifytoast.on {
+  opacity: 1;
+  transform: translate(-50%, 0)
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notifytoast {
+    transition: none
+  }
+}
+
+
+/* ============ sent text ============
+   A feature, a spell or a scrap of lore the narrator has put in front of the
+   table. Quieter than a roll card, and it keeps its rollable formulas. */
+.rcard.note {
+  border-left: 2px solid var(--gold-2)
+}
+
+.rcnote {
+  padding: 2px 2px 0;
+  font-size: calc(12.5px * var(--fs));
+  line-height: 1.5;
+  color: var(--text-cream)
+}
+
+.rcard.note .feattags {
+  padding: 0 2px
+}
+
+.rcard.note .gearacts {
+  margin-top: 6px;
+  padding: 0 2px
+}
+
+/* The text a spell or feature sent along with its roll. */
+.rcard .rcnote {
+  margin-top: 6px;
+  padding: 6px 8px;
+  font-size: calc(11.5px * var(--fs));
+  line-height: 1.5;
+  color: var(--text-cream);
+  background: var(--dark-1);
+  border-left: 2px solid var(--theme-3);
+  border-radius: 0 5px 5px 0
+}
+
+/* ── the fight's own beats ────────────────────────────────────────
+   A turn and a round were prose among the rolls, which made them the hardest
+   lines to find when scrolling back. Each is a card now, and which side is
+   acting is readable without reading. */
+
+.turnmsg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  border-left: 3px solid var(--side, var(--theme-3));
+  background: var(--dark-1)
+}
+
+.turnmsg.party  { --side: #4c8f6e }
+.turnmsg.enemy  { --side: #a8564b }
+.turnmsg.other  { --side: #7a7f88 }
+
+.tmdot {
+  width: 11px;
+  height: 11px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, .55)
+}
+
+.tmwho {
+  flex: 1;
+  font-size: calc(13px * var(--fs));
+  font-weight: 600;
+  color: var(--text-plain);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.tmword {
+  flex: none;
+  font-size: calc(9px * var(--fs));
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--side)
+}
+
+/* A round is a divider with a label in it: the log's chapter break. */
+.roundmsg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 3px 0
+}
+
+.rmline {
+  flex: 1;
+  height: 1px;
+  background: var(--theme-2)
+}
+
+.rmlabel {
+  flex: none;
+  font-family: var(--serif);
+  font-size: calc(10px * var(--fs));
+  font-weight: 700;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--gold-2)
+}
+
+.rmtime {
+  flex: none;
+  font-family: var(--mono);
+  font-size: calc(9.5px * var(--fs));
+  color: var(--cream);
+  opacity: .7
+}
+
+/* ── a note made of named pieces ──────────────────────────────────
+   A feature sent with four upgrades arrived as one block, because the markup
+   was a single <p> and HTML eats newlines. Each piece gets its own block and
+   its name above it. */
+
+.rcard.note .rcnote p {
+  margin: 0
+}
+
+.rcard.note .rcnote p + p {
+  margin-top: 6px
+}
+
+.notepart + .notepart {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--theme-2)
+}
+
+.notepartlbl {
+  display: block;
+  margin-bottom: 3px;
+  font-size: calc(9px * var(--fs));
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--gold-2)
+}

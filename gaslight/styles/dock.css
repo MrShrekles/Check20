@@ -1,0 +1,329 @@
+/* ============ windows, and the river ============
+
+   Four narrator panels that used to behave four different ways. A window has a
+   head that drags, folds and closes it; the river down the left edge is where
+   they lock into a column. Off the river they float.
+
+   Everything here is inside .stage, which is the positioning context. */
+
+.river {
+  position: absolute;
+  left: 0;
+  top: 44px;
+  bottom: 10px;
+  width: 258px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 0 6px 0 4px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* The gutter never takes the pointer; each window inside it does, so the map
+     stays live in the gaps between them. */
+  pointer-events: none
+}
+
+.river > * {
+  pointer-events: auto
+}
+
+/* An empty river is lost map, so it shows nothing at all until a window is
+   being dragged at it.
+
+   This is an outline rather than a pseudo-element on purpose. The first
+   version was an absolutely positioned ::before inset -4px top and bottom,
+   which overflowed the scroll box and so gave an EMPTY river a permanent
+   scrollbar — a 9px line down the map that had nothing to scroll. An outline
+   takes no part in layout and cannot overflow anything. */
+.river {
+  outline: 1px dashed transparent;
+  outline-offset: -3px;
+  border-radius: var(--radius);
+  transition: background .14s, outline-color .14s
+}
+
+.river.target {
+  outline-color: var(--gold-2);
+  background: rgba(255, 215, 0, .05)
+}
+
+/* Nothing docked means nothing to scroll: keep the bar off the map until it
+   is actually holding something. */
+.river:not(.holding) {
+  overflow: hidden
+}
+
+/* ---- the window ---- */
+
+.gwin {
+  background: var(--panel);
+  border: 1px solid var(--theme-2);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden
+}
+
+.gwin[hidden] {
+  display: none
+}
+
+/* Docked, it is a row in the column and takes its width from the river.
+   Floating, it carries its own coordinates and its own width. */
+.gwin.docked {
+  position: static;
+  flex: 0 1 auto;
+  width: auto;
+  max-height: 60%
+}
+
+.gwin:not(.docked) {
+  position: absolute;
+  width: 256px;
+  max-height: calc(100% - 60px);
+  z-index: 30
+}
+
+/* A wide panel is unreadable at river width; the book and the generators say
+   so for themselves. */
+.gwin.narwin:not(.docked) {
+  width: min(470px, 46vw)
+}
+
+.gwinhead {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: none;
+  padding: 5px 7px 5px 9px;
+  border-bottom: 1px solid var(--theme-2);
+  cursor: grab;
+  user-select: none;
+  touch-action: none
+}
+
+.gwinhead:active {
+  cursor: grabbing
+}
+
+.gwinhead h3 {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--serif);
+  font-size: calc(11px * var(--fs));
+  font-weight: 700;
+  letter-spacing: 2.4px;
+  color: var(--gold-3);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+/* Two ruled lines: the one piece of the head that says "this moves". */
+.gwgrip {
+  flex: none;
+  width: 8px;
+  height: 11px;
+  border-left: 2px dotted var(--theme-3);
+  border-right: 2px dotted var(--theme-3);
+  opacity: .8
+}
+
+.gwbtn {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--cream);
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer
+}
+
+.gwbtn svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round
+}
+
+.gwbtn:hover {
+  color: var(--gold-3);
+  background: var(--theme-1)
+}
+
+.gwinbody {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto
+}
+
+/* Folded, the head IS the window: one line you poke to get it back. */
+.gwin.collapsed > .gwinbody {
+  display: none
+}
+
+.gwin.collapsed > .gwinhead {
+  border-bottom: 0
+}
+
+.gwin.collapsed [data-gw="fold"] svg {
+  transform: rotate(-90deg)
+}
+
+.gwin.docked.collapsed {
+  flex: none
+}
+
+/* The book and the generators keep their own padding; the two older panels
+   bring their own from stage.css. */
+.narbody {
+  padding: 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px
+}
+
+@media (max-width: 900px) {
+  .river {
+    width: 216px
+  }
+}
+
+/* ============ the Map window ============
+   How the open scene looks: its map, grid, scale, lighting and wash. All of it
+   used to be in the scene's cog, which was wrong for one reason — you cannot
+   judge a colour wash on a page you are not looking at. */
+
+#winMap:not(.docked) {
+  width: 264px
+}
+
+.mapbody {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px
+}
+
+.mpscene {
+  font-family: var(--serif);
+  font-size: calc(12px * var(--fs));
+  color: var(--gold-3);
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--theme-2)
+}
+
+.mpblock {
+  display: flex;
+  flex-direction: column;
+  gap: 5px
+}
+
+.mpblock h5 {
+  font-size: calc(9.5px * var(--fs));
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--cream);
+  opacity: .85
+}
+
+.mpblock h5 small {
+  font-family: var(--mono);
+  font-size: calc(9px * var(--fs));
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--gold-2);
+  margin-left: 5px
+}
+
+/* A row wraps rather than squashing its buttons into a column, which is what
+   the old floating card did to `80 cells` — one letter per line. */
+.mprow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px
+}
+
+.mprow.off {
+  opacity: .45;
+  pointer-events: none
+}
+
+.mplbl {
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream);
+  opacity: .75
+}
+
+.mphint {
+  font-size: calc(9.5px * var(--fs));
+  line-height: 1.45;
+  color: var(--cream);
+  opacity: .7
+}
+
+.mphint b {
+  color: var(--gold-3);
+  opacity: .9
+}
+
+.mphint.warn {
+  color: var(--rust);
+  opacity: 1
+}
+
+.mapbody .tbbtn.on {
+  color: var(--gold-3);
+  border-color: var(--gold-3);
+  background: var(--theme-2)
+}
+
+.mapbody .tbbtn.del:hover {
+  color: var(--red-2);
+  border-color: var(--red-2)
+}
+
+/* A colour picker and a slider, for the two grid settings that are genuinely
+   continuous. They sit in a window body, which does not drag — the head does —
+   so a slider is safe here in a way it never was inside a draggable card. */
+
+.mpcolor {
+  width: 34px;
+  height: 22px;
+  padding: 1px;
+  border: 1px solid var(--theme-3);
+  border-radius: 5px;
+  background: var(--dark-1);
+  cursor: pointer
+}
+
+.mprange {
+  flex: 1;
+  min-width: 70px;
+  accent-color: var(--gold-2)
+}
+
+.mpnum {
+  min-width: 34px;
+  font-family: var(--mono);
+  font-size: calc(9.5px * var(--fs));
+  color: var(--gold-3);
+  text-align: right
+}

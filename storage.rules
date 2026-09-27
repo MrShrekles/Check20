@@ -1,0 +1,81 @@
+rules_version = '2';
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Cloud Storage: the bytes Firestore cannot hold.
+//
+// A Firestore document is capped at 1MB and a battlemap is many times that, so
+// the image lives here and the document keeps only its URL. That split is the
+// whole reason this file exists.
+//
+// Two rules of thumb, because Storage bills for reads as well as writes:
+//
+//   1. SIZE IS ENFORCED HERE, not only in the uploader. A client-side check is
+//      a courtesy; this is the limit. `request.resource.size` is the incoming
+//      object's size in bytes.
+//   2. CONTENT TYPE IS ENFORCED HERE. Without it this is a free file host for
+//      anyone with an account.
+//
+// Room maps are readable by any signed-in account, the same as the room
+// document itself — a player has no server-visible claim on a room yet (see
+// the Stage 2 note in firestore.rules), so narrowing reads to members is not
+// possible until membership is modelled. Writes are narrower: only the
+// uploader's own uid path.
+// ═══════════════════════════════════════════════════════════════════════════
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.firebase.sign_in_provider != 'anonymous';
+    }
+
+    function isImage() {
+      return request.resource.contentType.matches('image/(png|jpeg|webp|gif|svg\\+xml)');
+    }
+
+    function underMB(n) {
+      return request.resource.size < n * 1024 * 1024;
+    }
+
+    // ── ROOM MAPS ────────────────────────────────────────────────────────────
+    // rooms/{code}/scenes/{sceneId}/{file}
+    //
+    // The uid is in the filename rather than the path so a narrator can see at
+    // a glance who put a map on their table, and so deleting is checkable:
+    // the existing object's metadata carries the uploader.
+
+    match /rooms/{roomCode}/scenes/{sceneId}/{fileName} {
+      allow read: if isSignedIn();
+
+      // 12MB is a generous battlemap and a mean-spirited photo library.
+      allow create, update: if isSignedIn()
+        && isImage()
+        && underMB(12)
+        && request.resource.metadata.uploader == request.auth.uid;
+
+      // Only whoever put it there takes it away. A narrator clearing someone
+      // else's map replaces the scene's image field instead, which leaves the
+      // object orphaned — collecting those is a job for a scheduled function,
+      // not for a rule that would let one person delete another's uploads.
+      allow delete: if isSignedIn()
+        && resource.metadata.uploader == request.auth.uid;
+    }
+
+    // ── TOKEN ART ────────────────────────────────────────────────────────────
+    // users/{uid}/tokens/{file} — a person's own art, reusable across tables.
+
+    match /users/{uid}/tokens/{fileName} {
+      allow read: if isSignedIn();
+      allow write: if request.auth != null
+        && request.auth.uid == uid
+        && (request.resource == null || (isImage() && underMB(3)));
+    }
+
+    // ── EVERYTHING ELSE ──────────────────────────────────────────────────────
+    // Closed. A new path gets a rule of its own rather than falling through.
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

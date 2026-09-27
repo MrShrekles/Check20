@@ -1,0 +1,646 @@
+/* ============ the scene bar ============
+
+   The table's pages, across the top of the map. A card is a preview and a
+   name; the cog on it opens what that scene is, rather than what is on it.
+
+   It floats over the canvas and furls to a single button, because a map is
+   what the screen is for. */
+
+.scenebar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 24;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 6px 8px;
+  pointer-events: none
+}
+
+.scenebar[hidden] {
+  display: none
+}
+
+.scenebar > * {
+  pointer-events: auto
+}
+
+.scenepages {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px
+}
+
+.scenebar.furled .scenepages {
+  display: none
+}
+
+.scfurl {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  letter-spacing: 1px;
+  color: var(--cream);
+  background: var(--panel);
+  border: 1px solid var(--theme-2);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(4px);
+  cursor: pointer
+}
+
+.scfurl b {
+  color: var(--gold-3)
+}
+
+.scfurl:hover {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+/* Open, it is a caret you click to get the map back. Shut, it has to say what
+   it is hiding, or it is an arrow pointing at nothing. */
+.scenebar:not(.furled) .scfurlword {
+  display: none
+}
+
+.scenebar.furled .scfurlcaret {
+  transform: rotate(180deg)
+}
+
+.scfurlcaret {
+  font-size: calc(9px * var(--fs));
+  color: var(--gold-2)
+}
+
+/* Ten across and two deep, then it scrolls. A row of thirty cards is not a
+   strip, it is a filing problem — which is what the folders are for. Fixed
+   columns rather than auto-fill so the cards are the same size whether there
+   are three or thirty. */
+.scenestrip {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  grid-auto-rows: max-content;
+  align-items: start;
+  gap: 5px;
+  min-width: 0;
+  max-width: 1180px;
+  max-height: 168px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 2px 4px 0;
+  scrollbar-width: thin
+}
+
+/* A scene's settings hang below its card, and a scrolling strip would cut
+   them off. While one is open the strip stops clipping — you are editing a
+   page, not scrolling for one. */
+.scenepages.editing .scenestrip {
+  max-height: none;
+  overflow: visible
+}
+
+@media (max-width: 1500px) {
+  .scenestrip {
+    grid-template-columns: repeat(7, minmax(0, 1fr))
+  }
+}
+
+@media (max-width: 1100px) {
+  .scenestrip {
+    grid-template-columns: repeat(5, minmax(0, 1fr))
+  }
+}
+
+/* ---- a card ---- */
+
+.scenecard {
+  position: relative;
+  min-width: 0;
+  background: var(--panel);
+  border: 1px solid var(--theme-2);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  transition: border-color .12s, transform .12s
+}
+
+.scenecard:hover {
+  border-color: var(--gold-2);
+  transform: translateY(1px)
+}
+
+/* The open page is the one you are looking at, so it says so loudly: the map
+   below it IS this card. */
+.scenecard.on {
+  border-color: var(--gold-3);
+  box-shadow: var(--shadow-lg), inset 0 0 0 1px var(--gold-1)
+}
+
+.scthumb {
+  position: relative;
+  height: 46px;
+  overflow: hidden;
+  border-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
+  background: var(--dark-1);
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+.scthumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block
+}
+
+.scnothumb {
+  font-size: calc(9px * var(--fs));
+  letter-spacing: .6px;
+  color: var(--cream);
+  opacity: .5;
+  text-align: center;
+  padding: 0 6px
+}
+
+/* The scene's own colour, shown on its preview: a night scene looks like one
+   in the strip without having to open it. */
+.scwash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply
+}
+
+.scname {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 3px 4px 7px
+}
+
+.scname span {
+  flex: 1;
+  min-width: 0;
+  font-size: calc(10.5px * var(--fs));
+  color: var(--cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.scenecard.on .scname span {
+  color: var(--gold-3)
+}
+
+.sccog {
+  flex: none;
+  width: 19px;
+  height: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--cream);
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer
+}
+
+.sccog svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.7;
+  stroke-linecap: round
+}
+
+.sccog:hover,
+.sccog[aria-expanded="true"] {
+  color: var(--gold-3);
+  background: var(--theme-1)
+}
+
+/* ---- folders ----
+
+   A folder is a tile the same size and shape as a card, because in the strip
+   it is the same kind of thing: something you drop a scene on, and something
+   you open. Drag one card onto another and you get one of these. */
+
+.scfolder {
+  position: relative;
+  min-width: 0;
+  background: var(--panel);
+  border: 1px solid var(--theme-3);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(4px);
+  cursor: pointer
+}
+
+.scfolder:hover {
+  border-color: var(--gold-2)
+}
+
+/* The drawer the open scene is in, so a shut folder still says the live page
+   is inside it. */
+.scfolder.live {
+  border-color: var(--gold-3)
+}
+
+/* The first preview inside it, dimmed right down: enough to tell two folders
+   apart, not enough to be mistaken for a scene. */
+.scfoldthumb img {
+  opacity: .3
+}
+
+.scfoldicon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none
+}
+
+.scfoldicon svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--gold-2);
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linejoin: round
+}
+
+.scfolder.open .scfoldicon svg {
+  stroke: var(--gold-3)
+}
+
+.scfoldn {
+  position: absolute;
+  right: 3px;
+  bottom: 2px;
+  font-family: var(--mono);
+  font-size: calc(9px * var(--fs));
+  color: var(--gold-3);
+  text-shadow: var(--ink-shadow)
+}
+
+.scfoldname {
+  flex: 1;
+  min-width: 0;
+  font-size: calc(10.5px * var(--fs));
+  color: var(--cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  outline: none;
+  border-radius: 3px
+}
+
+.scfoldname:focus {
+  color: var(--text-plain);
+  background: var(--dark-2);
+  overflow: visible
+}
+
+/* ---- a folder's contents ----
+
+   An open folder's scenes follow it in the strip, and the first version told
+   them apart with a 2px rule and a border colour — far too quiet next to
+   cards that are already mostly dark rectangles. They need to read as
+   *inside* something at a glance, so: a tinted well behind them, an inset
+   edge on the side nearest the folder, and the card itself lifted off it. */
+
+.scenecard.filed {
+  background: var(--theme-1);
+  border-color: var(--gold-1);
+  border-left-width: 3px;
+  border-left-color: var(--gold-2);
+  box-shadow: inset 2px 0 0 rgba(0, 0, 0, .45)
+}
+
+.scenecard.filed .scname {
+  background: rgba(0, 0, 0, .25)
+}
+
+.scenecard.filed .scname span {
+  color: var(--text-cream)
+}
+
+/* The live page inside a folder still wins over the folder's own tinting. */
+.scenecard.filed.on {
+  border-color: var(--gold-3);
+  border-left-color: var(--gold-3)
+}
+
+/* A paperclip run joining each filed card back to the tile before it, so the
+   eye follows the row into the folder rather than reading a gap. */
+.scenecard.filed::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  width: 6px;
+  height: 2px;
+  background: var(--gold-1)
+}
+
+/* The last one closes the run off, so a folder's contents have an end. */
+.scenecard.filed:not(:has(+ .scenecard.filed))::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--gold-1)
+}
+
+/* An open folder is a drawer that is out, not just a tile you clicked. */
+.scfolder.open {
+  border-color: var(--gold-2);
+  background: var(--theme-1)
+}
+
+.scfolder.open .scname {
+  background: rgba(0, 0, 0, .25)
+}
+
+/* ---- dragging one onto another ---- */
+
+.scenecard.dragging {
+  opacity: .4
+}
+
+.scenecard.dropon,
+.scfolder.dropon {
+  border-color: var(--gold-3);
+  box-shadow: 0 0 0 2px var(--gold-1), var(--shadow-lg)
+}
+
+/* Dropped on the strip itself, a scene comes out of its folder. */
+.scenestrip.dropon {
+  outline: 1px dashed var(--gold-2);
+  outline-offset: 3px;
+  border-radius: var(--radius)
+}
+
+.scfolderval {
+  flex: 1;
+  min-width: 0;
+  font-size: calc(10.5px * var(--fs));
+  color: var(--gold-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+/* ---- what a scene is ----
+   Not what is on it: its name, its light and its colour. Hung under the card
+   it belongs to so there is no question which page you are editing. */
+
+.scset {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 4px);
+  width: 216px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 9px;
+  cursor: default;
+  background: var(--panel);
+  border: 1px solid var(--theme-3);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(6px)
+}
+
+.scfield {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.scfield.off {
+  opacity: .45
+}
+
+.scfield input[type=text] {
+  font-size: calc(12px * var(--fs))
+}
+
+.scrow {
+  display: flex;
+  align-items: center;
+  gap: 5px
+}
+
+.scrow.wrap {
+  flex-wrap: wrap
+}
+
+.sclbl {
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: var(--cream);
+  opacity: .8
+}
+
+.schint {
+  font-size: calc(9.5px * var(--fs));
+  line-height: 1.4;
+  color: var(--cream);
+  opacity: .7
+}
+
+.sctint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px 2px 3px;
+  font-size: calc(9.5px * var(--fs));
+  color: var(--cream);
+  background: var(--dark-1);
+  border: 1px solid var(--theme-3);
+  border-radius: 10px;
+  cursor: pointer
+}
+
+.sctint span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--theme-3)
+}
+
+.sctint:hover {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+.sctint.on {
+  color: var(--gold-3);
+  border-color: var(--gold-3)
+}
+
+/* ---- stepped settings ----
+   These were range sliders. A slider inside a card that is itself draggable is
+   unusable: the pointer-down that grabs the thumb starts the card's drag, so
+   adjusting the dim dragged the scene into a folder. Buttons cannot be
+   mistaken for a drag. */
+
+.scstep {
+  padding: 2px 7px;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: .4px;
+  color: var(--cream);
+  background: var(--dark-1);
+  border: 1px solid var(--theme-3);
+  border-radius: 9px;
+  cursor: pointer
+}
+
+.scstep:hover {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+.scstep.on {
+  color: var(--gold-3);
+  border-color: var(--gold-3);
+  background: var(--theme-2)
+}
+
+.scnum {
+  width: 58px;
+  font-family: var(--mono);
+  font-size: calc(11px * var(--fs))
+}
+
+.scunit {
+  width: 62px;
+  font-size: calc(11px * var(--fs))
+}
+
+/* ---- the map on a scene ---- */
+
+.scmap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 7px;
+  border: 1px solid var(--theme-2);
+  border-radius: 6px;
+  background: var(--dark-1)
+}
+
+.scmapwhere {
+  margin-left: auto;
+  font-size: calc(9px * var(--fs));
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--cream);
+  opacity: .7
+}
+
+.schint.warn {
+  color: var(--rust);
+  opacity: 1
+}
+
+.scmapname {
+  font-family: var(--mono);
+  font-size: calc(9.5px * var(--fs));
+  color: var(--gold-3)
+}
+
+.scprog {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--theme-1);
+  overflow: hidden
+}
+
+.scprog[hidden] {
+  display: none
+}
+
+.scprog span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--gold-2);
+  transition: width .15s
+}
+
+.scacts {
+  display: flex;
+  gap: 4px;
+  padding-top: 2px;
+  border-top: 1px solid var(--theme-2)
+}
+
+.scacts .tbbtn {
+  flex: 1
+}
+
+.scacts .tbbtn.del:hover {
+  color: var(--red-2);
+  border-color: var(--red-2)
+}
+
+/* ---- adding one ---- */
+
+.sceneadd {
+  min-width: 0;
+  min-height: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: .6px;
+  color: var(--cream);
+  background: var(--panel);
+  border: 1px dashed var(--theme-3);
+  border-radius: var(--radius);
+  backdrop-filter: blur(4px);
+  cursor: pointer
+}
+
+.sceneadd span {
+  font-size: calc(17px * var(--fs));
+  line-height: 1;
+  color: var(--gold-2)
+}
+
+.sceneadd:hover {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+/* The river starts below the bar, so a docked window never sits under a card. */
+.scenebar:not(.furled) ~ .river {
+  top: 104px
+}

@@ -1,0 +1,898 @@
+/* ============ sidebar ============ */
+
+/* Width lives on the root so the drag handle and the sidebar agree, and so a
+   saved width can be restored before first paint. */
+:root {
+  --side-w: 318px;
+}
+
+.sidegrip {
+  width: 6px;
+  flex: none;
+  cursor: col-resize;
+  background: var(--theme-1);
+  border-left: 1px solid var(--dark-1);
+  position: relative
+}
+
+.sidegrip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 1px;
+  width: 2px;
+  height: 34px;
+  margin-top: -17px;
+  border-radius: 2px;
+  background: var(--theme-3);
+  opacity: .7
+}
+
+.sidegrip:hover,
+.sidegrip.dragging {
+  background: var(--theme-2)
+}
+
+.sidegrip:hover::after,
+.sidegrip.dragging::after {
+  background: var(--gold-3);
+  opacity: 1
+}
+
+/* While dragging, stop the canvas and text from grabbing the pointer. */
+body.resizing-side {
+  cursor: col-resize;
+  user-select: none
+}
+
+body.resizing-side canvas {
+  pointer-events: none
+}
+
+.side {
+  width: var(--side-w);
+  flex: none;
+  background: var(--dark-2);
+  border-left: 2px solid var(--theme-2);
+  display: flex;
+  flex-direction: column;
+  min-height: 0
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--theme-2)
+}
+
+.tabs button {
+  flex: 1;
+  padding: 9px 2px;
+  font-size: calc(11px * var(--fs));
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--cream);
+  border-bottom: 2px solid transparent
+}
+
+.tabs button.on {
+  color: var(--gold-3);
+  border-bottom-color: var(--gold-3)
+}
+
+.tabpane {
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  min-height: 0
+}
+
+.tabpane.on {
+  display: flex
+}
+
+/* chat */
+.chatlog {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px
+}
+
+.msg {
+  font-size: calc(13px * var(--fs));
+  position: relative
+}
+
+/* The narrator's delete. Out of the way until the message is hovered, so a
+   log being read does not look like a row of buttons. */
+.msgdel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 18px;
+  height: 18px;
+  line-height: 1;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-dim, #8a8a8a);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity .12s
+}
+
+.msg:hover .msgdel,
+.msgdel:focus-visible {
+  opacity: .7
+}
+
+.msgdel:hover {
+  opacity: 1;
+  color: var(--rust, #a45e3b);
+  background: rgba(164, 94, 59, .14)
+}
+
+.msg .who {
+  font-size: calc(11px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gold-3);
+  margin-right: 6px;
+  font-weight: 600
+}
+
+.msg .t {
+  color: var(--dark-3);
+  font-family: var(--mono);
+  font-size: calc(9px * var(--fs));
+  float: right;
+  text-shadow: none
+}
+
+.msg.sys {
+  color: var(--cream);
+  font-style: italic;
+  font-size: calc(12px * var(--fs))
+}
+
+.rollcard {
+  margin-top: 3px;
+  background: var(--dark-1);
+  border: 1px solid var(--theme-2);
+  border-left: 3px solid var(--gold-2);
+  border-radius: 6px;
+  padding: 6px 9px
+}
+
+.rollcard .formula {
+  font-size: calc(11.5px * var(--fs));
+  color: var(--cream)
+}
+
+.rollcard .dice {
+  font-family: var(--mono);
+  font-size: calc(11px * var(--fs));
+  margin: 2px 0;
+  color: var(--text-cream)
+}
+
+.rollcard .total {
+  font-family: var(--mono);
+  font-size: calc(18px * var(--fs));
+  font-weight: 600;
+  color: var(--gold-3)
+}
+
+.rollcard .total.crit {
+  color: #8fbf8f
+}
+
+.rollcard .total.fumble {
+  color: var(--red-2)
+}
+
+.chatctl {
+  border-top: 1px solid var(--theme-2);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px
+}
+
+.dicebtns {
+  display: flex;
+  gap: 4px
+}
+
+.dicebtns button {
+  flex: 1;
+  padding: 4px 0;
+  border: 1px solid var(--theme-3);
+  border-radius: 5px;
+  font-family: var(--mono);
+  font-size: calc(11px * var(--fs));
+  color: var(--cream);
+  background: var(--dark-1)
+}
+
+.dicebtns button:hover {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+.checkrow {
+  display: flex;
+  gap: 4px;
+  align-items: center
+}
+
+.checkrow .modbtn {
+  width: 24px;
+  height: 26px;
+  border: 1px solid var(--theme-3);
+  border-radius: 5px;
+  background: var(--dark-1);
+  color: var(--cream);
+  font-size: calc(14px * var(--fs))
+}
+
+.checkrow .modbtn:hover {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+.checkrow input {
+  width: 44px;
+  text-align: center;
+  font-family: var(--mono)
+}
+
+.checkrow select {
+  flex: 1;
+  font-size: calc(12px * var(--fs))
+}
+
+.checkrow .go {
+  border: 1px solid var(--gold-2);
+  border-radius: 5px;
+  background: var(--gold-1);
+  color: var(--gold-3);
+  padding: 4px 12px;
+  font-weight: 600
+}
+
+.checkrow .go:hover {
+  box-shadow: 0 0 8px rgba(255, 215, 0, .3)
+}
+
+.msgtext {
+  white-space: pre-wrap
+}
+
+.chatrow {
+  display: flex;
+  gap: 5px;
+  align-items: center
+}
+
+.chatrow select {
+  max-width: 96px;
+  font-size: calc(11.5px * var(--fs))
+}
+
+.chatrow input {
+  flex: 1;
+  font-size: calc(13px * var(--fs))
+}
+
+/* ── the box you type in ──────────────────────────────────────────
+   Most of what crosses this chat is sentences, not dice notation, and a
+   one-line field made a paragraph unreadable while you wrote it. The dice fold
+   away behind a button; the writing gets the room they were taking. */
+
+#chatInput {
+  width: 100%;
+  min-height: 56px;
+  max-height: 180px;
+  padding: 6px 7px;
+  font-family: inherit;
+  font-size: calc(13px * var(--fs));
+  line-height: 1.4;
+  color: var(--cream);
+  background: var(--dark-1);
+  border: 1px solid var(--theme-3);
+  border-radius: 5px;
+  resize: vertical
+}
+
+#chatInput:focus {
+  outline: none;
+  border-color: var(--gold-2)
+}
+
+.dicetoggle {
+  margin-left: auto;
+  padding: 3px 9px;
+  font-family: var(--mono);
+  font-size: calc(11px * var(--fs));
+  letter-spacing: .5px;
+  color: var(--cream);
+  background: var(--dark-1);
+  border: 1px solid var(--theme-3);
+  border-radius: 5px;
+  cursor: pointer
+}
+
+.dicetoggle:hover,
+.dicetoggle[aria-expanded="true"] {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+.chattools {
+  display: flex;
+  flex-direction: column;
+  gap: 6px
+}
+
+.chattools[hidden] {
+  display: none
+}
+
+.hint {
+  font-size: calc(10.5px * var(--fs));
+  color: var(--cream);
+  opacity: .75
+}
+
+/* journal + chars + rules */
+.listpane {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px
+}
+
+.addrow {
+  padding: 8px;
+  border-top: 1px solid var(--theme-2)
+}
+
+.addbtn {
+  width: 100%;
+  padding: 6px;
+  border: 1px dashed var(--theme-3);
+  border-radius: 6px;
+  font-size: calc(11px * var(--fs));
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.addbtn:hover {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+.card {
+  background: var(--theme-1);
+  border: 1px solid var(--theme-2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow)
+}
+
+.cardhead {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  cursor: pointer
+}
+
+.cardhead .title {
+  flex: 1;
+  font-size: calc(13px * var(--fs));
+  letter-spacing: .3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600
+}
+
+.cardhead .icobtn {
+  opacity: 0
+}
+
+.card:hover .cardhead .icobtn {
+  opacity: .8
+}
+
+.cardbody {
+  padding: 0 11px 11px;
+  display: none;
+  flex-direction: column;
+  gap: 8px
+}
+
+.card.open .cardbody {
+  display: flex
+}
+
+.cardbody textarea {
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  font-size: calc(12.5px * var(--fs));
+  line-height: 1.5
+}
+
+.cardbody input.full {
+  width: 100%
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex: none;
+  border: 1px solid rgba(255, 255, 255, .3)
+}
+
+.checkcols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px
+}
+
+.checkcol h5 {
+  font-family: var(--serif);
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-2);
+  margin-bottom: 4px;
+  text-align: center
+}
+
+.ckrow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-radius: 5px;
+  padding: 2px 3px 2px 2px;
+  transition: border-color .12s, background .12s
+}
+
+.ckrow:hover {
+  border-color: var(--theme-3)
+}
+
+.ckrow .ckname {
+  flex: 1;
+  font-size: calc(11.5px * var(--fs));
+  color: var(--text-cream);
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 2px 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.ckrow .ckname:hover {
+  background: var(--theme-2);
+  color: var(--gold-3)
+}
+
+.ckrow input {
+  width: 38px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: calc(12px * var(--fs));
+  padding: 1px 2px
+}
+
+.resgrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px
+}
+
+.res {
+  background: var(--dark-1);
+  border: 1px solid var(--theme-2);
+  border-radius: 6px;
+  padding: 4px;
+  text-align: center
+}
+
+.res .rl {
+  font-size: calc(8.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.res .rv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-family: var(--mono)
+}
+
+.res input {
+  width: 30px;
+  border: none;
+  background: none;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: calc(13px * var(--fs));
+  padding: 0
+}
+
+.res .rmax {
+  font-size: calc(11px * var(--fs));
+  color: var(--cream)
+}
+
+.woundbar {
+  height: 7px;
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 1px 2px
+}
+
+.woundbar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--rust), var(--gold-2));
+  transition: .2s
+}
+
+.cbtns {
+  display: flex;
+  gap: 5px
+}
+
+.cbtns .tbbtn {
+  flex: 1;
+  text-align: center
+}
+
+/* rules tab */
+.rulesearch {
+  padding: 8px;
+  border-bottom: 1px solid var(--theme-2);
+  display: flex;
+  gap: 5px
+}
+
+.rulesearch input {
+  flex: 1
+}
+
+.rulesearch select {
+  max-width: 110px;
+  font-size: calc(12px * var(--fs))
+}
+
+.gcard {
+  background: var(--theme-1);
+  border: 1px solid var(--theme-2);
+  border-radius: 6px;
+  padding: 7px 10px
+}
+
+.gcard b {
+  color: var(--gold-3);
+  font-size: calc(13px * var(--fs))
+}
+
+.gcard .gcat {
+  font-size: calc(9px * var(--fs));
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--theme-3);
+  margin-left: 6px
+}
+
+.gcard p {
+  font-size: calc(12px * var(--fs));
+  color: var(--text-cream);
+  margin-top: 2px
+}
+
+.gcard .gdur {
+  font-size: calc(11px * var(--fs));
+  color: var(--cream);
+  font-style: italic
+}
+
+/* modal */
+.modalback {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .55);
+  z-index: 50;
+  display: none;
+  align-items: center;
+  justify-content: center
+}
+
+.modalback.on {
+  display: flex
+}
+
+.modal {
+  width: 280px;
+  background: var(--dark-2);
+  border: 1px solid var(--gold-2);
+  border-radius: var(--radius);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .8)
+}
+
+.modal h4 {
+  font-family: var(--serif);
+  font-size: calc(12px * var(--fs));
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-3)
+}
+
+.modal .frow input,
+.modal .frow select {
+  flex: 1
+}
+
+@media (max-width:900px) {
+  .side {
+    width: 272px
+  }
+
+  .tool span {
+    display: none
+  }
+}
+
+/* derived distances, styled to match the resource tiles above them */
+.derivedrow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px
+}
+
+.derivedrow span {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-radius: 6px;
+  padding: 3px 4px;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.derivedrow b {
+  color: var(--gold-3);
+  font-family: var(--mono);
+  font-size: calc(12px * var(--fs));
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none
+}
+
+/* unread chat messages while another tab is showing */
+.tabs button {
+  position: relative
+}
+
+.tabbadge {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--rust);
+  color: var(--text-plain);
+  font-family: var(--mono);
+  font-size: calc(9px * var(--fs));
+  line-height: 15px;
+  text-align: center;
+  text-shadow: none
+}
+
+
+/* ============ journal notes ============
+   The entry is the narrator's; the notes under it belong to the table. */
+
+.jcount {
+  flex: none;
+  min-width: 17px;
+  padding: 0 4px;
+  font-family: var(--mono);
+  font-size: calc(9.5px * var(--fs));
+  line-height: 15px;
+  text-align: center;
+  color: var(--gold-3);
+  background: var(--theme-1);
+  border: 1px solid var(--theme-2);
+  border-radius: 8px
+}
+
+.jnotes {
+  display: flex;
+  flex-direction: column;
+  gap: 5px
+}
+
+.jnotes:not(:empty) {
+  margin-top: 8px
+}
+
+.jnote {
+  padding: 5px 7px;
+  background: var(--dark-1);
+  border-left: 2px solid var(--theme-3);
+  border-radius: 0 5px 5px 0
+}
+
+.jnotehead {
+  display: flex;
+  align-items: baseline;
+  gap: 6px
+}
+
+.jnotehead b {
+  font-size: calc(11px * var(--fs));
+  color: var(--gold-3)
+}
+
+.jnotehead span {
+  flex: 1;
+  font-family: var(--mono);
+  font-size: calc(9px * var(--fs));
+  color: var(--theme-3)
+}
+
+.jnotehead .icobtn {
+  flex: none
+}
+
+.jnote p {
+  margin-top: 2px;
+  font-size: calc(11.5px * var(--fs));
+  line-height: 1.45;
+  color: var(--text-cream)
+}
+
+.jnoteadd {
+  display: flex;
+  gap: 5px;
+  margin-top: 7px
+}
+
+.jnoteadd input {
+  flex: 1;
+  min-width: 0;
+  font-size: calc(11.5px * var(--fs))
+}
+
+
+/* The log keeps only its recent end in the page; this asks for more of it. */
+.chatmore {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 5px;
+  font-size: calc(10.5px * var(--fs));
+  letter-spacing: .6px;
+  color: var(--cream);
+  background: var(--dark-1);
+  border: 1px dashed var(--theme-2);
+  border-radius: var(--radius)
+}
+
+.chatmore:hover {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+/* ── journal folders ───────────────────────────────────────────────
+   A folder is a field on the entry, so this is a grouping header, not a
+   container. It collapses for the session only. */
+
+.jfolder {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 9px;
+  margin-top: 6px;
+  cursor: pointer;
+  background: var(--dark-2, #1a1a1a);
+  border: 1px solid var(--theme-1, #2f4f4f);
+  border-radius: 6px;
+  user-select: none
+}
+
+.jfolder:hover {
+  border-color: var(--gold-2, #af8000)
+}
+
+.jfcaret {
+  font-size: calc(10px * var(--fs));
+  color: var(--gold-2, #af8000);
+  flex: none;
+  width: 9px
+}
+
+.jfname {
+  flex: 1;
+  font-size: calc(10.5px * var(--fs));
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--gold-3, #ffd700);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.jfcount {
+  flex: none;
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  color: var(--cream, #d9b382);
+  opacity: .75
+}
+
+.jfolderpick {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 5px 0
+}
+
+.jfolderpick label {
+  flex: none;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream, #d9b382)
+}
+
+.jfolderpick input {
+  flex: 1;
+  min-width: 0;
+  padding: 3px 7px;
+  font-size: calc(12px * var(--fs));
+  color: var(--text-cream, #f0e5c5);
+  background: var(--dark-1, #111);
+  border: 1px solid var(--dark-3, #333);
+  border-radius: 5px
+}
+
+.jfolderpick input:focus {
+  outline: none;
+  border-color: var(--gold-2, #af8000)
+}

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gaslight Table</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230a0a0a'/><circle cx='16' cy='14' r='6' fill='none' stroke='%23ffd700' stroke-width='2'/><circle cx='16' cy='14' r='2' fill='%23ffd700'/><path d='M13 22h6l-1 6h-4z' fill='none' stroke='%23af8000' stroke-width='2'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Apply the saved theme before first paint so there is no flash. -->
+  <script>
+    // Theme and text size, before first paint, so neither flashes or reflows.
+    try {
+      const r = document.documentElement;
+      r.dataset.theme = localStorage.getItem('gaslight.theme') || 'dark';
+      const fs = Number(localStorage.getItem('gaslight.textsize'));
+      if (Number.isFinite(fs) && fs) r.style.setProperty('--fs', String(Math.min(1.4, Math.max(.85, fs))));
+    } catch { document.documentElement.dataset.theme = 'dark'; }
+  </script>
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/topbar.css">
+  <link rel="stylesheet" href="styles/subbar.css">
+  <link rel="stylesheet" href="styles/stage.css">
+  <link rel="stylesheet" href="styles/sidebar.css">
+  <link rel="stylesheet" href="styles/sheet.css">
+  <link rel="stylesheet" href="styles/rollcards.css">
+  <link rel="stylesheet" href="styles/narrator.css">
+  <link rel="stylesheet" href="styles/dock.css">
+  <link rel="stylesheet" href="styles/scenes.css">
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- ============ TOP BAR ============ -->
+    <header class="topbar">
+      <a class="wordmark" href="index.html" title="Back to the lobby">Gaslight Table<small>A Check20 VTT</small></a>
+      <span class="tablename" id="tableName" contenteditable="true" spellcheck="false">Untitled Table</span>
+      <div class="roombadge" id="roomBadge" hidden></div>
+
+
+      <div class="spacer"></div>
+
+      <div class="tb-ctl" title="Preview the table as players see it: Narrator layers hidden, darkness at full strength">
+        Player view <div class="toggle" id="pvToggle"></div>
+      </div>
+      <div class="tb-ctl">
+        <button class="tbbtn" id="zoomOut">&minus;</button>
+        <button class="tbbtn" id="zoomReset" title="Reset view">100%</button>
+        <button class="tbbtn" id="zoomIn">+</button>
+      </div>
+      <input type="file" id="loadFile" accept=".json" hidden>
+      <div class="tb-ctl setwrap">
+        <button class="tbbtn setbtn" id="settingsBtn" type="button" title="Settings"
+          aria-haspopup="dialog" aria-expanded="false" aria-controls="settingsPop">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="2.6" />
+            <path d="M19.4 13.6a7.7 7.7 0 000-3.2l2-1.6-1.9-3.3-2.4 1a7.7 7.7 0 00-2.8-1.6L14 2.2h-4l-.3 2.7a7.7 7.7 0 00-2.8 1.6l-2.4-1L2.6 8.8l2 1.6a7.7 7.7 0 000 3.2l-2 1.6 1.9 3.3 2.4-1a7.7 7.7 0 002.8 1.6l.3 2.7h4l.3-2.7a7.7 7.7 0 002.8-1.6l2.4 1 1.9-3.3z" />
+          </svg>
+        </button>
+        <div class="settingspop" id="settingsPop" role="dialog" aria-label="Settings" hidden></div>
+      </div>
+    </header>
+
+    <!-- ============ SUB BARS ============ -->
+    <div class="subbar" id="sub-draw">
+      <span class="lbl">Draw</span>
+      <div class="subgroup" id="drawModes">
+        <button class="tool on" data-dm="pencil">Pencil</button>
+        <button class="tool" data-dm="line">Line</button>
+        <button class="tool" data-dm="rect">Rect</button>
+        <button class="tool" data-dm="ellipse">Ellipse</button>
+        <button class="tool" data-dm="text">Text</button>
+      </div>
+      <input type="color" id="drawColor" value="#d9b382" title="Colour">
+      <span class="lbl">Width</span><input type="range" id="drawWidth" min="1" max="10" value="3">
+      <span class="lbl">Snap</span>
+      <div class="toggle on" id="snapToggle" title="Snap lines and shapes to the grid. Pencil is always freeform."></div>
+      <span class="hintline">Pencil is always freeform. Line, rect and ellipse snap to grid points while Snap is on.</span>
+    </div>
+
+    <div class="subbar" id="sub-rooms">
+      <span class="lbl">Rooms</span>
+      <div class="subgroup" id="roomModes">
+        <button class="tool on" data-rm="add">Add</button>
+        <button class="tool" data-rm="cut">Cut</button>
+        <button class="tool" data-rm="door">Door</button>
+      </div>
+      <span class="lbl">Lighting</span>
+      <div class="toggle on" id="lightToggle" title="Turn room lighting on or off. Off is best for outdoor scenes."></div>
+      <span class="lbl">Narrator dim</span><input type="range" id="dimRange" min="0" max="90" value="55" title="How dark unlit rooms look to you. Players always see full dark.">
+      <span class="hintline">Drag to add or cut room shapes. Overlapping shapes merge into one room. Click a shared wall to place a door. Click doors with Select to open or close them.</span>
+    </div>
+
+    <!-- ============ MAIN ============ -->
+    <div class="main">
+      <!-- the narrator's tools, down the left edge -->
+      <div class="toolrail" id="toolRail">
+        <!-- Select and Pan are the same question asked twice: what does a drag
+             do. So they are one control with two halves, not two buttons that
+             happen to sit together. -->
+        <div class="toolpair" id="tools" role="group" aria-label="Pointer">
+          <button class="tool on" data-tool="select" title="Select and move. Drag empty space to pan. Double-click empty space to ping. Shift-drag to measure. (V)">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 3l7 18 2.5-7.5L21 11z" />
+            </svg><span>Select</span></button>
+          <button class="tool" data-tool="pan" title="Pan the map (H)">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2v20M2 12h20M12 2l-3 3M12 2l3 3M12 22l-3-3M12 22l3-3M2 12l3-3M2 12l3 3M22 12l-3-3M22 12l-3 3" />
+            </svg><span>Pan</span></button>
+          <button class="tool" data-tool="ruler" title="Measure: drag for a straight line, click to lay a path round a corner, Alt-release to leave it on the map, Esc to clear (M)">
+            <svg viewBox="0 0 24 24">
+              <path d="M3.6 14.9L14.9 3.6l5.5 5.5L9.1 20.4z" />
+              <path d="M7 11.2l1.6 1.6M9.8 8.4l2.4 2.4M12.6 5.6l1.6 1.6M15.4 8.4l1.6 1.6" />
+            </svg><span>Ruler</span></button>
+        </div>
+
+        <!-- Everything that puts something on the map, shut until you are
+             building. A narrator running a fight is not reaching for the room
+             builder, and five live buttons made it look like they were. -->
+        <div class="toolfold" id="buildFold">
+          <button class="foldbtn" id="buildBtn" type="button" aria-expanded="false"
+            aria-controls="buildTools" title="Building tools: tokens, drawing, rooms, lamps, erase">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 5v14M5 12h14" />
+            </svg><span class="foldcaret">&#9656;</span>
+          </button>
+          <div class="toolgroup build" id="buildTools">
+            <button class="tool" data-tool="token" title="Click the map to place a token on the active layer (T)">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="8" />
+                <circle cx="12" cy="12" r="3" />
+              </svg><span>Token</span></button>
+            <button class="tool" data-tool="draw" title="Drawing tools: pencil, line, rect, ellipse, text (D)">
+              <svg viewBox="0 0 24 24">
+                <path d="M17 3l4 4L8 20l-5 1 1-5z" />
+              </svg><span>Draw</span></button>
+            <button class="tool" data-tool="rooms" title="Room and lighting builder: add, cut, doors (R)">
+              <svg viewBox="0 0 24 24">
+                <rect x="3" y="4" width="12" height="10" />
+                <rect x="10" y="10" width="11" height="10" />
+              </svg><span>Rooms</span></button>
+            <button class="tool" data-tool="lamp" title="Place a lamp: keeps its room lit even with no token inside (L)">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2" />
+              </svg><span>Lamp</span></button>
+            <button class="tool" data-tool="erase" title="Click an item to delete it (E)">
+              <svg viewBox="0 0 24 24">
+                <path d="M18 13L11 20H7l-4-4L14 5z" />
+                <path d="M14 5l5 5" />
+              </svg><span>Erase</span></button>
+          </div>
+        </div>
+
+        <div class="railrule" aria-hidden="true"></div>
+
+        <!-- The four narrator panels. Each is a window; these are its switch. -->
+        <div class="winbuttons" id="winButtons"></div>
+      </div>
+      <div class="stage" id="stage">
+        <canvas id="cv"></canvas>
+
+        <!-- the table's pages, across the top -->
+        <div class="scenebar" id="sceneBar"></div>
+
+        <!-- the river: drop a window here and it locks into the column -->
+        <div class="river" id="river"></div>
+
+        <!-- initiative: a window; dock.js gives it its head -->
+        <div class="initbar" id="initbar" hidden>
+          <div class="gwinbody initbody">
+            <div id="initChips" class="initlist"></div>
+            <div class="initadd">
+              <input id="initName" placeholder="Name">
+              <input id="initVal" class="num" type="number" placeholder="Init">
+              <button class="tbbtn" id="initAdd">Add</button>
+            </div>
+            <div class="initacts">
+              <button class="tbbtn" id="initNext">Next &#9656;</button>
+              <button class="tbbtn" id="initClear">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- layers: a window -->
+        <div class="layers" id="layersPanel" hidden>
+          <div class="gwinbody layerbody">
+            <div class="layerlist" id="layerList"></div>
+            <div class="layerfoot">
+              <input type="range" id="layerOpacity" min="0" max="100" value="100" title="Active layer opacity">
+              <span class="opv" id="opv">100%</span>
+            </div>
+            <div class="layerops">
+              <button class="icobtn" id="layerAdd" title="New layer"><svg viewBox="0 0 24 24">
+                  <path d="M12 5v14M5 12h14" />
+                </svg></button>
+              <button class="icobtn" id="layerUp" title="Move layer up"><svg viewBox="0 0 24 24">
+                  <path d="M12 19V5M5 12l7-7 7 7" />
+                </svg></button>
+              <button class="icobtn" id="layerDown" title="Move layer down"><svg viewBox="0 0 24 24">
+                  <path d="M12 5v14M5 12l7 7 7-7" />
+                </svg></button>
+              <button class="icobtn" id="layerDel" title="Delete layer"><svg viewBox="0 0 24 24">
+                  <path d="M4 7h16M9 7V5h6v2M7 7l1 13h8l1-13" />
+                </svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- item properties -->
+        <div class="pop" id="pop">
+          <button class="tbbtn popback" id="popBack" type="button" hidden
+            title="Back to this token's card">← Card</button>
+          <h4 id="popTitle">Item</h4>
+          <div class="frow" id="popNameRow"><label>Name</label><input id="popName"></div>
+          <div class="frow" id="popTextRow"><label>Text</label><input id="popText"></div>
+          <div class="frow" id="popMarkRow">
+            <label>Mark</label>
+            <input id="popGlyph" maxlength="4" placeholder="Initials"
+              title="A shape, an emoji, or up to two letters. Leave it empty for the name's initials.">
+          </div>
+          <div class="glyphs" id="popGlyphs"></div>
+          <div class="frow"><label id="popColorLbl">Colour</label><input type="color" id="popColor" value="#d9b382">
+            <label id="popSizeLbl">Size</label><select id="popSize">
+              <option value="0.5">&frac12;</option>
+              <option value="1" selected>1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+          <div class="frow" id="popWidthRow"><label>Width</label><input type="range" id="popWidth" min="1" max="10" value="3"></div>
+          <div class="frow"><label>Layer</label><select id="popLayer"></select></div>
+          <div class="frow" id="popStatRow"><button class="tbbtn" id="popStat" type="button">Stat block</button></div>
+          <button class="tbbtn del" id="popDel">Delete item</button>
+        </div>
+
+        <!-- The monster book and the generators, each its own window. They
+             were one slide-out rail that could show one of them at a time and
+             covered half the map doing it. -->
+        <!-- How the open scene looks: its map, grid, scale, lighting, wash. -->
+        <div id="winMap" hidden>
+          <div class="gwinbody mapbody" id="winMapBody"></div>
+        </div>
+
+        <div class="narwin" id="winMonsters" hidden>
+          <div class="gwinbody narbody" id="winMonstersBody"></div>
+        </div>
+        <div class="narwin" id="winGens" hidden>
+          <div class="gwinbody narbody" id="winGensBody"></div>
+        </div>
+
+        <!-- character rail: a column of tabs; the open section's panel sits beside it -->
+        <div class="edgerail" id="edgeRail" hidden>
+          <div class="edgepanel" id="edgePanel" hidden></div>
+          <div class="edgetabs" id="edgeTabs">
+            <button class="edgetab" type="button" data-sec="checks" title="Checks" aria-label="Checks"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 20 7v10l-8 4.5L4 17V7z"/><path d="m12 2.5 4.6 8.2H7.4z"/><path d="M7.4 10.7 12 21.5l4.6-10.8"/></svg></button>
+            <button class="edgetab" type="button" data-sec="kit" title="Features &amp; Gear" aria-label="Features &amp; Gear"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4v4L10 18"/><path d="M16 4h4"/><path d="M7 12.5 11.5 17"/><path d="M8.6 15.4 5 19"/><path d="M5 19 3.5 20.5"/></svg></button>
+            <button class="edgetab" type="button" data-sec="spells" title="Spells" aria-label="Spells"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20 15 9"/><path d="M16.5 3.2l1.1 2.7 2.7 1.1-2.7 1.1-1.1 2.7-1.1-2.7-2.7-1.1 2.7-1.1z"/></svg></button>
+            <button class="edgetab" type="button" data-sec="prog" title="Progression" aria-label="Progression"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V8M10 20V4M16 20v-7M22 20H2"/></svg></button>
+            <button class="edgetab" type="button" data-sec="bio" title="Bio" aria-label="Bio"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20a7.2 7.2 0 0114.4 0"/></svg></button>
+            <button class="edgetab" type="button" data-sec="ref" title="Reference" aria-label="Reference"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 016.5 3H19v16H6.5A2.5 2.5 0 004 21.5z"/><path d="M4 18.5A2.5 2.5 0 016.5 16H19"/></svg></button>
+          </div>
+        </div>
+
+        <!-- token quick actions -->
+        <div class="tokencard" id="tokenCard"></div>
+        <div class="tokencard" id="monsterCard"></div>
+        <div class="tokencard" id="groupCard"></div>
+
+        <div class="textentry" id="textEntry"><input id="textEntryInput" placeholder="Label text, Enter to place"></div>
+        <div class="toast" id="toast"></div>
+        <div class="notifytoast" id="notifyToast"></div>
+      </div>
+
+      <!-- ============ SIDEBAR ============ -->
+      <div class="sidegrip" id="sidegrip" title="Drag to resize the sidebar. Double-click to reset."></div>
+      <aside class="side">
+        <nav class="tabs">
+          <button class="on" data-tab="chat">Chat<span class="tabbadge" id="chatBadge" hidden></span></button>
+          <button data-tab="journal">Journal</button>
+          <button data-tab="chars">Party</button>
+          <button data-tab="rules">Rules</button>
+        </nav>
+
+        <!-- CHAT -->
+        <section class="tabpane on" id="pane-chat">
+          <div class="chatlog" id="chatlog"></div>
+          <div class="chatctl">
+            <!-- The dice are a tool, not furniture. Most of what goes in this
+                 box is words, so the words get the room and the dice get a
+                 button. -->
+            <div class="chattools" id="chatTools" hidden>
+              <div class="checkrow">
+                <button class="modbtn" id="modDown">&minus;</button>
+                <input type="number" id="checkMod" value="0">
+                <button class="modbtn" id="modUp">+</button>
+                <select id="checkAdv">
+                  <option value="none">Normal</option>
+                  <option value="adv">Advantage</option>
+                  <option value="dis">Disadvantage</option>
+                </select>
+                <button class="go" id="rollCheckBtn" title="Check20 roll: d20 plus modifier. Advantage rolls d20+4 and d20, takes the higher.">Check</button>
+              </div>
+              <div class="dicebtns" id="dicebtns">
+                <button data-d="4">d4</button><button data-d="6">d6</button><button data-d="8">d8</button>
+                <button data-d="10">d10</button><button data-d="12">d12</button><button data-d="20">d20</button><button data-d="100">d%</button>
+              </div>
+              <div class="hint">/c mod [adv|dis] for a Check20 check. /r NdM+K for raw dice.
+                Enter sends, Shift+Enter is a new line. Hover dotted terms for rules.</div>
+            </div>
+            <div class="chatrow">
+              <select id="speaker">
+                <option value="Narrator">Narrator</option>
+              </select>
+              <button class="dicetoggle" id="diceToggle" aria-expanded="false"
+                aria-controls="chatTools" title="Dice and checks">&#9860; Dice</button>
+            </div>
+            <!-- Short on purpose: the long version wrapped onto two lines and
+                 filled the box it was describing. The keys live in the hint
+                 under the dice, with the rest of the syntax. -->
+            <textarea id="chatInput" rows="3" autocomplete="off"
+              placeholder="Message, or /r 2d6+3"></textarea>
+          </div>
+        </section>
+
+        <!-- JOURNAL -->
+        <section class="tabpane" id="pane-journal">
+          <div class="listpane" id="journalList"></div>
+          <div class="addrow"><button class="addbtn" id="journalAdd">+ New entry</button></div>
+        </section>
+
+        <!-- PARTY -->
+        <section class="tabpane" id="pane-chars">
+          <div class="listpane" id="charList"></div>
+          <div class="addrow"><button class="addbtn" id="charAdd">+ New character</button></div>
+        </section>
+
+        <!-- RULES -->
+        <section class="tabpane" id="pane-rules">
+          <div class="rulesearch">
+            <input id="ruleSearch" placeholder="Search the glossary">
+            <select id="ruleType">
+              <option value="">All types</option>
+            </select>
+          </div>
+          <div class="listpane" id="ruleList"></div>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <!-- new layer modal -->
+  <div class="modalback" id="layerModal">
+    <div class="modal">
+      <h4>New Layer</h4>
+      <div class="frow"><label>Name</label><input id="nlName" placeholder="Layer name"></div>
+      <div class="frow"><label>Type</label><select id="nlType">
+          <option value="draw">Drawing</option>
+          <option value="token">Tokens</option>
+          <option value="map">Map</option>
+          <option value="narrator">Narrator</option>
+        </select></div>
+      <div class="hint" id="nlHint">Narrator layers are hidden from players.</div>
+      <div class="cbtns">
+        <button class="tbbtn" id="nlCancel">Cancel</button>
+        <button class="tbbtn" id="nlCreate">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="gtip" id="gtip"></div>
+
+  <script type="module" src="scripts/main.js"></script>
+</body>
+
+</html>

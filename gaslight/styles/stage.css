@@ -1,0 +1,913 @@
+/* ============ main ============ */
+.main {
+  display: flex;
+  flex: 1;
+  min-height: 0
+}
+
+/* ============ tool rail ============
+   The tools were a row across the top bar. They are a column down the left
+   edge now, with the narrator's other rails: everything that builds the map
+   is on one side, everything that plays a character is on the other.
+
+   A real flex column rather than an absolute overlay, so it takes its own
+   space and the narrator rail sits beside it rather than under it. */
+.toolrail {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 6px;
+  background: var(--dark-2);
+  border-right: 1px solid var(--theme-2)
+}
+
+.toolrail .toolgroup {
+  display: flex;
+  flex-direction: column;
+  gap: 3px
+}
+
+/* ---- Select and Pan, as one control ----
+   They answer the same question — what does a drag do — so they read as one
+   switch with two halves rather than two buttons that happen to be adjacent. */
+.toolpair {
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  border: 1px solid var(--theme-3);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--dark-1)
+}
+
+.toolpair .tool {
+  border: 0;
+  border-radius: 0;
+  background: none
+}
+
+.toolpair .tool + .tool {
+  border-top: 1px solid var(--theme-2)
+}
+
+/* The lit half fills its end of the pill.
+
+   `.tool.on` carries `box-shadow: inset 0 0 0 1px` from the top bar, which
+   follows the element's own radius — square here — and drew a rounded-square
+   ring inside a stadium, with its corners clipped off by the pair's
+   `overflow: hidden`. Hence the crooked-looking selector. The pill's shape is
+   the frame; the lit half only needs to fill it. */
+.toolpair .tool.on {
+  background: var(--theme-2);
+  color: var(--gold-3);
+  box-shadow: none
+}
+
+/* Three halves is not a thing, but the question is still one question: what
+   does a drag do. Select moves, Pan slides, Ruler measures. */
+.toolpair .tool:first-child {
+  border-radius: 17px 17px 0 0
+}
+
+.toolpair .tool:last-child {
+  border-radius: 0 0 17px 17px
+}
+
+.toolpair .tool:hover:not(.on) {
+  background: var(--theme-1)
+}
+
+/* ---- the building tools, folded away ----
+   Shut, one button. Open, the five tools that put something on the map. */
+.toolfold {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 7px
+}
+
+.foldbtn {
+  position: relative;
+  width: 36px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--cream);
+  background: var(--dark-1);
+  border: 1px solid var(--theme-3);
+  border-radius: 8px;
+  cursor: pointer
+}
+
+.foldbtn svg {
+  width: 15px;
+  height: 15px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round
+}
+
+.foldcaret {
+  position: absolute;
+  right: 2px;
+  bottom: 0;
+  font-size: calc(8px * var(--fs));
+  color: var(--gold-2);
+  transition: transform .14s
+}
+
+.toolfold.open .foldcaret {
+  transform: rotate(90deg)
+}
+
+.foldbtn:hover {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+/* Lit while one of the tools inside it is the live tool, so a folded rail
+   never claims you are in Select when the map is in Erase. */
+.foldbtn.on {
+  color: var(--gold-3);
+  border-color: var(--gold-3);
+  background: var(--theme-2)
+}
+
+.toolfold:not(.open) .toolgroup.build {
+  display: none
+}
+
+.railrule {
+  flex: none;
+  height: 1px;
+  margin: 9px 2px;
+  background: var(--theme-2)
+}
+
+/* ---- the window switches ----
+   These stand alone rather than inside a bordered group, so each carries its
+   own edge. Without one they read as icons floating on the rail. */
+.winbuttons {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px
+}
+
+.winbtn {
+  background: var(--dark-1);
+  border: 1px solid var(--theme-2);
+  border-radius: 8px
+}
+
+.winbtn:hover {
+  border-color: var(--gold-2)
+}
+
+.winbtn.on {
+  color: var(--gold-3);
+  border-color: var(--gold-3);
+  background: var(--theme-2)
+}
+
+.winbtn[hidden] {
+  display: none
+}
+
+/* Icon only: a vertical rail has no room for the word, and every button
+   already carries its name and key in a title. */
+.toolrail .tool {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  justify-content: center
+}
+
+.toolrail .tool span {
+  display: none
+}
+
+.toolrail .tool svg {
+  width: 18px;
+  height: 18px
+}
+
+.stage {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  background: var(--stage-bg)
+}
+
+/* ---- the map's own card ----
+   The controls for a backdrop lived only in the scene cog, behind a furled
+   bar, a card and a scroll — so a map you had just dropped was a map you could
+   not touch. */
+
+#backdropCard .bdsize {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: calc(9.5px * var(--fs));
+  color: var(--gold-3)
+}
+
+#backdropCard .bdhint {
+  padding: 0 9px 8px;
+  font-size: calc(9.5px * var(--fs));
+  line-height: 1.4;
+  color: var(--cream);
+  opacity: .75
+}
+
+#backdropCard .bdhint b {
+  color: var(--gold-3);
+  opacity: .9
+}
+
+#backdropCard .tbbtn.del:hover {
+  color: var(--red-2);
+  border-color: var(--red-2)
+}
+
+/* The map answers the pointer while the Map layer is unlocked, so say so. */
+canvas.tool-select {
+  cursor: default
+}
+
+/* An image being dragged over the table. The whole stage is the target, so
+   there is nothing small to hit. */
+.stage.mapdrop::after {
+  content: "Drop to put this map on the scene";
+  position: absolute;
+  inset: 8px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(13px * var(--fs));
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--gold-3);
+  background: rgba(10, 10, 10, .55);
+  border: 2px dashed var(--gold-2);
+  border-radius: var(--radius);
+  pointer-events: none
+}
+
+canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none
+}
+
+canvas.tool-pan {
+  cursor: grab
+}
+
+canvas.tool-token,
+canvas.tool-lamp {
+  cursor: copy
+}
+
+canvas.tool-draw,
+canvas.tool-rooms,
+canvas.tool-ruler {
+  cursor: crosshair
+}
+
+canvas.tool-erase {
+  cursor: not-allowed
+}
+
+/* Initiative and Layers are windows now (styles/dock.css). Neither places
+   itself any more: docked, the river lays it out; floating, dock.js writes its
+   coordinates. What is left here is what is inside them. */
+
+.layerlist {
+  max-height: 210px;
+  overflow-y: auto
+}
+
+.lrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  border-bottom: 1px solid rgba(47, 79, 79, .35);
+  cursor: pointer
+}
+
+.lrow:hover {
+  background: rgba(255, 255, 255, .03)
+}
+
+.lrow.active {
+  background: rgba(47, 79, 79, .45);
+  box-shadow: inset 2px 0 0 var(--gold-3)
+}
+
+.lrow .lname {
+  flex: 1;
+  font-size: calc(12.5px * var(--fs));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.lrow .ltype {
+  font-size: calc(8.5px * var(--fs));
+  letter-spacing: 1px;
+  color: var(--theme-3);
+  text-transform: uppercase;
+  flex: none
+}
+
+.lrow.hiddenL .lname {
+  color: var(--dark-3);
+  text-decoration: line-through
+}
+
+.icobtn {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cream);
+  border-radius: 4px;
+  flex: none;
+  opacity: .75
+}
+
+.icobtn:hover {
+  color: var(--gold-3);
+  background: rgba(255, 255, 255, .06);
+  opacity: 1
+}
+
+.icobtn.lit {
+  color: var(--gold-3);
+  opacity: 1
+}
+
+.icobtn svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round
+}
+
+.nartag {
+  font-size: calc(8px * var(--fs));
+  letter-spacing: 1px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  border: 1px solid var(--rust);
+  color: var(--rust);
+  flex: none;
+  cursor: pointer;
+  opacity: .4;
+  text-transform: uppercase
+}
+
+.nartag.lit {
+  opacity: 1;
+  background: rgba(164, 94, 59, .2);
+  color: #e0956b
+}
+
+.layerfoot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 9px;
+  border-top: 1px solid var(--theme-2)
+}
+
+.layerfoot input[type=range] {
+  flex: 1;
+  accent-color: var(--gold-2);
+  height: 14px
+}
+
+.opv {
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  color: var(--cream);
+  width: 34px;
+  text-align: right
+}
+
+.layerops {
+  display: flex;
+  gap: 2px;
+  padding: 0 9px 7px
+}
+
+/* initiative */
+.initbody {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 8px 11px
+}
+
+/* a chip tied to something on the map */
+.ipill {
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  padding: 0 5px;
+  border-radius: 8px;
+  color: var(--text-cream);
+  background: var(--theme-1)
+}
+
+.ipill.hurt {
+  color: #e0956b;
+  background: var(--danger-bg)
+}
+
+.ipill.out {
+  color: var(--red-2);
+  background: var(--danger-bg-strong)
+}
+
+.iround {
+  align-self: center;
+  font-family: var(--serif);
+  font-size: calc(10px * var(--fs));
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-2);
+  padding-right: 4px
+}
+
+/* the monster token's card */
+.mcpl {
+  font-family: var(--mono);
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: .5px;
+  padding: 1px 6px;
+  border-radius: 9px;
+  color: var(--cream);
+  background: var(--theme-1);
+  border: 1px solid var(--theme-2)
+}
+
+.mcchecks {
+  display: flex;
+  gap: 12px;
+  margin: 6px 0 2px;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream)
+}
+
+.mcchecks b {
+  font-family: var(--mono);
+  font-size: calc(13px * var(--fs));
+  color: var(--gold-3);
+  margin-left: 4px
+}
+
+.initadd {
+  display: flex;
+  gap: 4px
+}
+
+.initadd input {
+  width: 88px;
+  font-size: calc(12px * var(--fs));
+  padding: 2px 6px
+}
+
+.initadd input.num {
+  width: 46px;
+  font-family: var(--mono)
+}
+
+/* item props popup */
+.pop {
+  position: absolute;
+  z-index: 30;
+  width: 206px;
+  background: var(--dark-2);
+  border: 1px solid var(--gold-2);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .65);
+  padding: 10px;
+  display: none;
+  flex-direction: column;
+  gap: 7px
+}
+
+.pop.on {
+  display: flex
+}
+
+.pop h4 {
+  font-family: var(--serif);
+  font-size: calc(10px * var(--fs));
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-3)
+}
+
+.frow {
+  display: flex;
+  gap: 6px;
+  align-items: center
+}
+
+.frow label {
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cream);
+  flex: none
+}
+
+.frow input,
+.frow select {
+  width: 100%;
+  min-width: 0
+}
+
+.frow input[type=color] {
+  width: 32px;
+  flex: none;
+  height: 24px;
+  padding: 1px
+}
+
+/* the token's mark: quick picks under the field */
+.glyphs {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 3px
+}
+
+.glyphbtn {
+  height: 24px;
+  font-size: calc(14px * var(--fs));
+  line-height: 1;
+  color: var(--text-cream);
+  background: var(--dark-1);
+  border: 1px solid var(--dark-3);
+  border-radius: 5px
+}
+
+.glyphbtn.none {
+  font-family: var(--mono);
+  font-size: calc(9px * var(--fs));
+  letter-spacing: .5px;
+  color: var(--cream)
+}
+
+.glyphbtn:hover {
+  border-color: var(--gold-2)
+}
+
+.glyphbtn.on {
+  border-color: var(--gold-3);
+  background: var(--theme-2);
+  box-shadow: inset 0 0 0 1px var(--theme-3)
+}
+
+.pop .del {
+  border-color: var(--rust);
+  color: #e0956b
+}
+
+.pop .del:hover {
+  background: rgba(164, 94, 59, .2)
+}
+
+/* text entry overlay */
+.textentry {
+  position: absolute;
+  z-index: 30;
+  display: none
+}
+
+.textentry input {
+  background: var(--dark-1);
+  border: 1px solid var(--gold-2);
+  font-size: calc(14px * var(--fs));
+  min-width: 140px
+}
+
+.toast {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  background: var(--dark-2);
+  border: 1px solid var(--gold-2);
+  color: var(--gold-3);
+  font-size: calc(12px * var(--fs));
+  letter-spacing: .5px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  opacity: 0;
+  transition: .25s;
+  pointer-events: none;
+  z-index: 40
+}
+
+.toast.on {
+  opacity: 1
+}
+
+/* glossary tooltip */
+.gtip {
+  position: fixed;
+  z-index: 60;
+  max-width: 270px;
+  background: var(--dark-2);
+  border: 1px solid var(--gold-2);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: calc(12px * var(--fs));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .7);
+  display: none;
+  pointer-events: none
+}
+
+.gtip b {
+  color: var(--gold-3)
+}
+
+.gtip .gcat {
+  font-size: calc(9px * var(--fs));
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--theme-3);
+  margin-left: 6px
+}
+
+.gtip .gdur {
+  display: block;
+  margin-top: 3px;
+  font-size: calc(11px * var(--fs));
+  color: var(--cream);
+  font-style: italic
+}
+
+.gterm {
+  border-bottom: 1px dotted var(--gold-2);
+  cursor: help
+}
+
+
+/* Back out of Style to the card the token came from. Only shown when there is
+   a card to return to. */
+.popback {
+  display: block;
+  width: 100%;
+  margin-bottom: 7px;
+  font-size: calc(10px * var(--fs));
+  padding: 3px 8px;
+  opacity: .85
+}
+
+.popback[hidden] {
+  display: none
+}
+
+.popback:hover {
+  opacity: 1
+}
+
+/* ── the order, as a list ─────────────────────────────────────────
+   It was a strip of chips that wrapped onto three lines and changed shape
+   every time a name was added. An order is read top to bottom; make it a
+   column and it stops moving under the eye. */
+
+.initlist {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-height: min(46vh, 420px);
+  overflow-y: auto;
+  margin-bottom: 7px
+}
+
+.turncard {
+  display: grid;
+  grid-template-columns: 14px 10px 1fr auto auto auto;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 7px;
+  border-radius: 6px;
+  background: var(--dark-1);
+  border: 1px solid var(--theme-1);
+  border-left: 2px solid transparent
+}
+
+.turncard.linked {
+  cursor: pointer
+}
+
+.turncard.linked:hover {
+  border-color: var(--gold-2);
+  background: var(--theme-1)
+}
+
+/* Whose turn it is, matching the gold glow on the token itself. */
+.turncard.turn {
+  border-left-color: var(--gold-3);
+  background: var(--theme-2);
+  box-shadow: inset 0 0 0 1px var(--theme-3)
+}
+
+.tcorder {
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  text-align: center;
+  color: var(--cream);
+  opacity: .6
+}
+
+.turncard.turn .tcorder {
+  color: var(--gold-3);
+  opacity: 1
+}
+
+.tcdot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, .55)
+}
+
+.tcwho {
+  font-size: calc(12.5px * var(--fs));
+  color: var(--text-plain);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.turncard .iv {
+  font-family: var(--mono);
+  font-size: calc(12px * var(--fs));
+  color: var(--gold-3);
+  min-width: 20px;
+  text-align: right
+}
+
+.turncard .x {
+  width: 16px;
+  height: 16px;
+  line-height: 1;
+  font-size: calc(10px * var(--fs));
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--cream);
+  opacity: 0;
+  cursor: pointer
+}
+
+.turncard:hover .x {
+  opacity: .7
+}
+
+.turncard .x:hover {
+  opacity: 1;
+  color: var(--red-2)
+}
+
+.initacts {
+  display: flex;
+  gap: 5px
+}
+
+.initacts .tbbtn {
+  flex: 1
+}
+
+
+/* Round and how long the fight has taken. Ten seconds a round. */
+.iround {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 2px 3px;
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--gold-2)
+}
+
+.ielapsed {
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--cream);
+  opacity: .75
+}
+
+/* What the combatant whose turn it is can do as they finish. Only ever on the
+   active card, so the order does not turn into a wall of buttons. */
+.turncard .turnacts {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 4px;
+  margin-top: 5px
+}
+
+.tstate {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 5px;
+  font-size: calc(10px * var(--fs));
+  border-radius: 5px;
+  color: var(--cream);
+  background: var(--dark-1);
+  border: 1px solid var(--theme-2);
+  cursor: pointer
+}
+
+.tstate svg {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round
+}
+
+.tstate:hover:not(:disabled) {
+  border-color: var(--gold-2);
+  color: var(--gold-3)
+}
+
+.tstate.on {
+  color: var(--gold-3);
+  background: var(--theme-2);
+  border-color: var(--gold-3)
+}
+
+.tstate:disabled {
+  opacity: .4;
+  cursor: not-allowed
+}
+
+.tstate.end {
+  color: var(--gold-3);
+  border-color: var(--gold-2)
+}
+
+.tstate.end:hover {
+  background: var(--gold-1)
+}
+
+/* The opposition acting as one. Red edge, their colours in a row, and no
+   per-token actions — there is no single "them" to go prone or take cover. */
+.turncard.foes {
+  grid-template-columns: 14px auto 1fr auto;
+  border-left-color: #a8564b
+}
+
+.turncard.foes.turn {
+  border-left-color: var(--gold-3)
+}
+
+.tcfoes {
+  display: flex;
+  align-items: center;
+  gap: 2px
+}
+
+.tcfoes .tcdot {
+  width: 8px;
+  height: 8px
+}
+
+.turncard.foes .tcwho small {
+  font-family: var(--mono);
+  font-size: calc(10px * var(--fs));
+  color: var(--cream);
+  opacity: .7;
+  margin-left: 4px
+}

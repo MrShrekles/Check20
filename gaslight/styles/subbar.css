@@ -1,0 +1,55 @@
+/* ============ sub bar (contextual tool options) ============ */
+.subbar {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 12px;
+  background: var(--dark-2);
+  border-bottom: 1px solid var(--dark-3);
+  flex-wrap: wrap
+}
+
+.subbar.on {
+  display: flex
+}
+
+.subbar .lbl {
+  font-size: calc(10px * var(--fs));
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-2)
+}
+
+.subgroup {
+  display: flex;
+  gap: 2px;
+  background: var(--dark-1);
+  border: 1px solid var(--dark-3);
+  border-radius: 6px;
+  padding: 2px
+}
+
+.subgroup .tool {
+  padding: 3px 8px;
+  font-size: calc(11.5px * var(--fs))
+}
+
+.subbar input[type=color] {
+  width: 28px;
+  height: 24px;
+  padding: 1px;
+  border-radius: 4px;
+  cursor: pointer
+}
+
+.subbar input[type=range] {
+  accent-color: var(--gold-2);
+  width: 90px
+}
+
+.subbar .hintline {
+  font-size: calc(11px * var(--fs));
+  color: var(--cream);
+  opacity: .8
+}
+

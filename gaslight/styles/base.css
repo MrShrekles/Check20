@@ -1,0 +1,151 @@
+:root {
+  /* Check20 site palette */
+  --dark-1: #0a0a0a;
+  --dark-2: #1e1e1e;
+  --dark-3: #3a3a3a;
+  --theme-1: #1b2c2c;
+  --theme-2: #2f4f4f;
+  --theme-3: #4c6e6e;
+  --gold-1: #664900;
+  --gold-2: #af8000;
+  --gold-3: #ffd700;
+  --cream: #d9b382;
+  --rust: #a45e3b;
+  --text-plain: #fffaf0;
+  --text-cream: #f0e5c5;
+  --red-2: rgb(255, 100, 100);
+  --radius: 8px;
+  --shadow: 0 2px 4px rgba(0, 0, 0, .5);
+  --serif: 'Playfair Display', serif;
+  --body: 'Candara', 'Segoe UI', system-ui, sans-serif;
+  --mono: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+  /* Surfaces that used to be written as literal rgba(), so a theme can move
+     them. --panel is the floating glass used by every panel and card. */
+  --panel: rgba(10, 10, 10, .93);
+  --panel-solid: #0f1414;
+  --shadow-lg: 0 10px 34px rgba(0, 0, 0, .6);
+  --shadow-panel: -10px 6px 30px rgba(0, 0, 0, .66);
+  --danger-bg: #5a1616;
+  --danger-bg-strong: #7a1c1c;
+  --ink-shadow: 1px 1px 1px black;
+  --stage-bg: radial-gradient(ellipse at 50% 40%, #16201f 0%, #070a0a 100%);
+
+  /* ---- text size ----
+
+     Every font-size in this app is written as calc(Npx * var(--fs)), so this
+     one number scales all of them and nothing else. Widths, padding and the
+     map are untouched, which is the point: a bigger word count in the same
+     panel, not a zoomed page with the map blown up with it.
+
+     Set on :root by settings.js and by the inline script in each page's head,
+     so there is no flash of the wrong size. */
+  --fs: 1;
+}
+
+/* Light is the same layout with a parchment palette: every variable above is
+   redefined, so no rule needs to know which theme is on. */
+:root[data-theme="light"] {
+  --dark-1: #f4ecd9;
+  --dark-2: #e9dfc6;
+  --dark-3: #c6b18b;
+  --theme-1: #dde6e1;
+  --theme-2: #b4ccc4;
+  --theme-3: #5c7a72;
+  --gold-1: #e2d2a0;
+  --gold-2: #a8821a;
+  --gold-3: #7a5c00;
+  --cream: #6b5a3c;
+  --rust: #8c4a2b;
+  --text-plain: #241d12;
+  --text-cream: #3a3020;
+  --red-2: rgb(176, 42, 42);
+  --shadow: 0 2px 4px rgba(90, 70, 35, .25);
+
+  --panel: rgba(249, 243, 229, .96);
+  --panel-solid: rgba(249, 243, 229, .99);
+  --shadow-lg: 0 8px 26px rgba(90, 70, 35, .22);
+  --shadow-panel: -10px 6px 30px rgba(90, 70, 35, .22);
+  --danger-bg: #f0cfcf;
+  --danger-bg-strong: #e3b4b4;
+  --ink-shadow: none;
+  --stage-bg: radial-gradient(ellipse at 50% 40%, #fbf6e8 0%, #e8dfc9 100%);
+}
+
+/* The hidden attribute always wins. Without this, any rule that sets display
+   (flex, grid, block) silently overrides it, and toggling .hidden stops
+   hiding anything. That has bitten this app three times. */
+[hidden] {
+  display: none !important
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0
+}
+
+html,
+body {
+  height: 100%
+}
+
+body {
+  background: var(--dark-1);
+  color: var(--text-plain);
+  /* Split out of the `font` shorthand so the size can scale with the rest. */
+  font-family: var(--body);
+  font-size: calc(14px * var(--fs));
+  line-height: 1.45;
+  overflow: hidden;
+  text-shadow: var(--ink-shadow)
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-shadow: inherit
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  color: var(--text-plain);
+  background: var(--dark-2);
+  border: 1px solid var(--dark-3);
+  border-radius: 5px;
+  padding: 3px 7px;
+  outline: none;
+  text-shadow: none
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--gold-2)
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--theme-2);
+  border-radius: 5px
+}
+
+::-webkit-scrollbar-track {
+  background: transparent
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh
+}
+
