@@ -1,6 +1,6 @@
 {
-    "name": "Active Sheet - ARC20",
-    "short_name": "ARC20",
+    "name": "Check20 Companion",
+    "short_name": "Companion",
     "description": "Mobile play companion for Armored Noir TTRPG",
     "start_url": "./home.html",
     "scope": "./",

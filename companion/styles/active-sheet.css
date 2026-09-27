@@ -6859,3 +6859,47 @@ body[data-page-title="Active-Sheet"] #site-header {
     cursor: pointer;
 }
 .chat-appeal-btn:disabled { opacity: 0.6; cursor: default; }
+
+/* ── HOVER, POINTER DEVICES ONLY ──────────────────────────────────
+   The app was built phone-first, so none of the primary controls had a
+   hover state at all. These use the per-character accents that
+   applyTheme() sets, so a hover carries the character's own colour.
+
+   Gated behind a real pointer on purpose: on a touchscreen the style
+   sticks after a tap until you tap something else, which reads as a
+   stuck selection. Same gate the tooltips above use. */
+
+@media (hover: hover) and (pointer: fine) {
+
+    .quick-btn,
+    .chip,
+    .resource-pill,
+    .pill-btn,
+    .done-btn,
+    .frm-roll-btn,
+    .dice-roll-btn {
+        transition: background-color .12s ease, border-color .12s ease;
+    }
+
+    /* Checks carry the second accent, which is the border they already wear. */
+    .quick-btn:hover {
+        background: var(--accent2-dim);
+        border-color: var(--accent2);
+    }
+
+    /* A condition already on the character keeps its red; only the ones you
+       could still turn on respond to the pointer. */
+    .chip:not([aria-pressed="true"]):hover {
+        background: var(--accent-dim);
+        border-color: var(--accent-mid);
+    }
+
+    .resource-pill:hover,
+    .pill-btn:hover,
+    .done-btn:hover,
+    .frm-roll-btn:hover,
+    .dice-roll-btn:hover {
+        background: var(--accent-dim);
+        border-color: var(--accent-mid);
+    }
+}
