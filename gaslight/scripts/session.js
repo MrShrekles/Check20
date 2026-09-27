@@ -122,6 +122,13 @@ export async function connectRoom() {
     session.roomName = room.name || '';
     document.getElementById('rbName').textContent = room.name || '';
     if (room.name) document.title = `${room.name} · Gaslight Table`;
+
+    /* Everything above this line is a badge. This is the part that makes it a
+       table: the narrator starts publishing the board, and a player starts
+       following it. Here, because this is the moment both the room and the
+       signed-in account are known to exist. */
+    const { startSync } = await import('./sync.js');
+    startSync();
   } catch (err) {
     console.warn('[gaslight] could not reach the room:', err);
     document.getElementById('rbName').textContent = 'offline';

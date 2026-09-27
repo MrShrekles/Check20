@@ -11,6 +11,7 @@
 
 import { snapshot, applyTable } from './persistence.js';
 import { autosaveKey } from './session.js';
+import { publishBoard } from './sync.js';
 
 const KEY = autosaveKey();
 const PERIOD_MS = 2000;      // how often a busy table is written
@@ -44,6 +45,13 @@ function write() {
     return;
   }
   reschedule(PERIOD_MS);
+
+  /* The table changed, which is exactly when the room wants to hear about it.
+     This is the one place in the app that already knows "something is
+     different", so it is the one place sync has to be wired into — rather
+     than every handler remembering to say so. publishBoard debounces again on
+     its own and skips a board that has not actually moved. */
+  publishBoard();
   try {
     localStorage.setItem(KEY, data);
     last = data;

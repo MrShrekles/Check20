@@ -127,6 +127,7 @@ Dependencies run one way, top to bottom. Nothing imports a module below it.
 | `ranges.js` | Check20's range bands, parsed out of the glossary, and path distance — no DOM |
 | `mapstore.js` | battlemaps in this browser's IndexedDB — the default, and the free one |
 | `mappanel.js` | the Map window: the open scene's map, grid, scale, lighting and wash |
+| `sync.js` | live sync: the narrator publishes the board, players follow it |
 | `storage.js` | Cloud Storage: uploading a map, the limits, and why a failure is never fatal |
 | `backdrop.js` | the battlemap under the grid: the decode cache, and placing one |
 | `ruler.js` | the ruler tool: measuring, waypoints, pins and what the label says |
@@ -1228,6 +1229,26 @@ Added 2026-09-24, none of it seen in a browser yet:
       touches the token selection.
 - [ ] **Lock the Map layer** and the map stops answering the pointer, so
       drawing over it no longer picks it up.
+**Live sync, 2026-09-27. None of this has been in a browser yet, and it is the
+first feature that writes to a shared server — so it is the first one where a
+mistake is not fixed by a reload. Test with two browsers, narrator and player,
+on the same room code.**
+
+- [ ] **The narrator drops a token and the player sees it** within a second.
+- [ ] **The player drags their own token and the narrator sees it move**, and
+      the token does not snap back under the player's hand while they drag.
+- [ ] **A player joins a room the narrator has never seen them in** and a
+      token appears on the narrator's map named after them.
+- [ ] **The narrator switches scene and the player follows.**
+- [ ] **A player cannot move anything but their own token** — the rules refuse
+      a write to `board/`, and the app refuses the drag.
+- [ ] **No echo.** Two browsers open, nobody touching anything: the board is
+      not being rewritten in a loop. Watch the Firestore usage graph.
+- [ ] **Drawing a lot** eventually warns about the size rather than failing
+      silently. 200 pencil strokes is about 343KB; the warning is at 700KB.
+- [ ] **Offline** — pull the network and the table keeps working locally, and
+      the room badge says so.
+
 - [ ] **The Erase tool does not resize the map** — the corner handles belong to
       Select only.
 - [ ] **A map survives a reload.** It did not: the scene reader hand-listed
@@ -1387,10 +1408,53 @@ from active-sheet's saved state on the same device (`arc-active-sheet`) by
 `fromActiveSheet()`, which also rekeys path steps from active-sheet's plain
 indexes to this app's `Path Name:index` form.
 
+**Live sync, built 2026-09-27.** `sync.js`. Until it, `onSnapshot` appeared
+nowhere in this app: the room code was a badge and a lobby handshake, and
+Gaslight looked multiplayer while being a single-player tool.
+
+    rooms/{CODE}                   sceneId    which page is open
+    rooms/{CODE}/board/{sceneId}   the board  items, layers, grid, light, image
+    rooms/{CODE}/moves/{uid}       one player's own token, written by them
+
+**One document per scene, not one per item.** A board is 7KB for sixty tokens
+and 34KB for twenty pencil strokes, nowhere near Firestore's 1MB cap; one
+document means one listener, one write, and no chance of a player seeing half
+an update. Heavy drawing is what would eventually push past it — 200 strokes is
+343KB — so the narrator is warned at 700KB rather than having a write fail
+somewhere nobody is looking.
+
+**The narrator owns the board; a player writes one thing.** Where their own
+token is. That asymmetry is the entire conflict-resolution story, and it is
+deliberate: two writers on one document needs merge rules, and a table does not
+need them — the narrator is the authority, which is what a narrator is.
+
+**`playerUid` on a token is the whole link.** The narrator matches a move to a
+token by it; a player recognises their own token in an incoming board by it.
+The handshake: a player says where their token is, the narrator materialises it
+on the board, and it comes back to everyone on the next publish. From then on
+there is one object and one truth, and the player only moves it. A player the
+narrator has never seen gets a token rather than having their move dropped —
+someone who joins should appear.
+
+**Two guards worth knowing about:**
+
+- `applying` — writing a snapshot into `state` is itself a change, and a
+  change is what triggers a publish. Without the flag a narrator's write would
+  echo off a player and come back.
+- A player's own position survives an incoming board. Taking the narrator's
+  copy would drag the token back under their hand every time a snapshot landed
+  mid-move.
+
+**Publishing hangs off the autosave**, which is already the one place in the
+app that knows "something is different". Wiring it there rather than into every
+handler means nothing has to remember to announce itself. It debounces again at
+450ms and skips a board that has not actually changed.
+
 **Not built yet:**
 
-- The map does not sync. A player's table shows that browser's own player
-  table, not the narrator's map. This is the next piece of Phase 7.
+- Chat, the journal and the roster do not sync. Only the board does.
+- A player switching scenes follows the narrator; they cannot wander.
+- No presence: nothing shows who is connected, or when someone drops.
 - Changes a player makes on the table (wounds, conditions) do not write back to
   active-sheet or to `players/{uid}`. Until they do, the phone sheet and the
   table can drift apart.

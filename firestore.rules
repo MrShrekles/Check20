@@ -142,6 +142,29 @@ service cloud.firestore {
         allow create: if isSignedIn() && request.resource.data.fromUid == request.auth.uid;
       }
 
+      // ── THE BOARD ──────────────────────────────────────────────────────
+      // Live map sync. The narrator owns the board and players read it; a
+      // player writes exactly one thing, which is where their own token is.
+      // That asymmetry is the whole conflict-resolution story.
+      //
+      // These paths work under the catch-all at the bottom today. They are
+      // written out because Stage 2 turns that catch-all into a deny, and
+      // because a rule that states the intent is worth more than one that
+      // happens to permit it.
+
+      match /board/{sceneId} {
+        allow read: if isSignedIn();
+        // Only the narrator publishes the map. A player writing here could
+        // move anything on the table, including other people's tokens.
+        allow write: if isSignedIn() && roomNarrator(roomCode) == request.auth.uid;
+      }
+
+      match /moves/{uid} {
+        allow read: if isSignedIn();
+        // Your own square, and nobody else's.
+        allow write: if isOwner(uid);
+      }
+
       match /loot/{lootId} {
         allow read, write: if isSignedIn();
       }

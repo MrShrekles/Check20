@@ -26,6 +26,7 @@ import {
 } from './ruler.js';
 import { backdropAt, backdropHandleAt, scaleFromCorner } from './backdrop.js';
 import { revealWin } from './dock.js';
+import { publishMyToken } from './sync.js';
 
 const TOOL_KEYS = {
   v: 'select', h: 'pan', m: 'ruler',
@@ -371,6 +372,10 @@ export function initTools() {
     }
     else if (drag.mode === 'move') {
       if (drag.moved && (drag.it.kind === 'token' || drag.it.kind === 'lamp')) computeLight();
+      /* A player owns exactly one thing on this map: where their token is.
+         Said on release rather than per frame — the room needs the answer,
+         not the journey. */
+      if (drag.moved && isPlayerMode()) publishMyToken();
       // A click, not a drag. A character or monster token opens its card;
       // anything else opens the property panel, the way it does when placed.
       if (!drag.moved) {
